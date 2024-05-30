@@ -4,7 +4,8 @@ export const appRoutes: Route[] = [
     {
         path: '',
         pathMatch: 'full',
-        loadComponent: () => import('@kitouch/ui/kit').then(comp => comp.KitComponent),
+        loadComponent: () => import('@kitouch/ui/kit').then(m => m.KitComponent),
+        loadChildren: () => import('@kitouch/ui/kit').then(m => m.kitRoutes)
     },
     {
         path: 'join',
