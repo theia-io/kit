@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { LayoutComponent } from '@kitouch/ui/shared';
+import { LayoutComponent, NAV_ITEMS, NavBarComponent } from '@kitouch/ui/shared';
 
 @Component({
   standalone: true,
@@ -10,6 +10,7 @@ import { LayoutComponent } from '@kitouch/ui/shared';
     RouterModule,
     /** Features */
     LayoutComponent,
+    NavBarComponent,
   ],
   templateUrl: './kit.component.html',
   styleUrl: './kit.component.scss',
@@ -17,4 +18,6 @@ import { LayoutComponent } from '@kitouch/ui/shared';
 })
 export class KitComponent {
   title = 'Kitouch';
+  
+  navBarItems = NAV_ITEMS;
 }

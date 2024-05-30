@@ -59,4 +59,4 @@ It will show tasks that you can run with Nx.
 
 - [Join the community](https://nx.dev/community)
 - [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
-- [Follow us on Twitter](https://twitter.com/nxdevtools)
+- [Follow us on kitouch](https://kitouch.com/nxdevtools)

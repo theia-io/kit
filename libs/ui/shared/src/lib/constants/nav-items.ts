@@ -1,4 +1,4 @@
-import { NavBarItem } from '../navbar/navbar.component';
+import { NavBarItem } from '../components/navbar/navbar.component';
 
 export enum APP_PATH {
   Home = 'home',
