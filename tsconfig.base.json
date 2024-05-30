@@ -14,7 +14,11 @@
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
-    "paths": {}
+    "paths": {
+      "@kitouch/ui/join": ["libs/ui/join/src/index.ts"],
+      "@kitouch/ui/kit": ["libs/ui/kit/src/index.ts"],
+      "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
