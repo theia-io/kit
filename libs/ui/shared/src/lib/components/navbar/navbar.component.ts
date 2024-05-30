@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  inject,
+} from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RouterModule } from '@angular/router';
+import { MyAccountTileComponent } from '@kitouch/ui/account';
+import { TweetComponent } from '@kitouch/ui/tweet';
 
 export interface NavBarItem {
   name: string;
@@ -14,7 +21,11 @@ export interface NavBarItem {
   standalone: true,
   imports: [
     CommonModule,
-    RouterModule
+    RouterModule,
+
+    /** Features */
+    MyAccountTileComponent,
+    TweetComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

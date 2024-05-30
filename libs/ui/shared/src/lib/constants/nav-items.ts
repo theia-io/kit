@@ -2,6 +2,7 @@ import { NavBarItem } from '../components/navbar/navbar.component';
 
 export enum APP_PATH {
   Home = 'home',
+  Tweets = 'tweets',
   Messages = 'messages',
   Bookmarks = 'bookmarks',
   Settings = 'settings',
