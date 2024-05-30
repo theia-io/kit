@@ -15,9 +15,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@kitouch/ui/bookmarks": ["libs/ui/features/bookmarks/src/index.ts"],
+      "@kitouch/ui/settings": ["libs/ui/features/settings/src/index.ts"],
       "@kitouch/ui/home": ["libs/ui/features/home/src/index.ts"],
       "@kitouch/ui/join": ["libs/ui/join/src/index.ts"],
       "@kitouch/ui/kit": ["libs/ui/kit/src/index.ts"],
+      "@kitouch/ui/messages": ["libs/ui/features/message/src/index.ts"],
       "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]
     }
   },

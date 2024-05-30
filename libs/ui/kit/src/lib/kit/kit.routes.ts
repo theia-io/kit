@@ -12,10 +12,19 @@ export const kitRoutes: Route[] = [
         loadComponent: () => import('@kitouch/ui/home').then(comp => comp.HomeComponent)
     },
     {
-        pa
-    }
+        path: APP_PATH.Messages,
+        loadComponent: () => import('@kitouch/ui/messages').then(comp => comp.MessagesComponent)
+    },
+    {
+        path: APP_PATH.Bookmarks,
+        loadComponent: () => import('@kitouch/ui/bookmarks').then(comp => comp.BookmarksComponent)
+    },
+    {
+        path: APP_PATH.Settings,
+        loadComponent: () => import('@kitouch/ui/settings').then(comp => comp.SettingsComponent)
+    },
     {
         path: '**',
-        redirectTo: ''
+        redirectTo: APP_PATH.Home
     }
 ];
