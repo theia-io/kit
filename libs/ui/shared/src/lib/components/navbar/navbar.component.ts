@@ -7,8 +7,8 @@ import {
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { TweetButtonComponent } from '@kitouch/ui/components';
 import { MyAccountTileComponent } from '@kitouch/ui/features/account';
-import { TweetComponent } from '@kitouch/ui/features/tweet';
 
 export interface NavBarItem {
   name: string;
@@ -24,7 +24,7 @@ export interface NavBarItem {
     RouterModule,
     /** Features */
     MyAccountTileComponent,
-    TweetComponent,
+    TweetButtonComponent,
   ],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',

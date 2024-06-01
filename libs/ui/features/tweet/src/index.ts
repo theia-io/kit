@@ -1,1 +1,2 @@
-export * from './lib/tweet/tweet.component';
+export * from './lib/tweeting/tweeting.component';
+export * from './lib/tweety/tweety.component';

@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
@@ -17,4 +17,19 @@ import { RouterModule } from '@angular/router';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MyAccountTileComponent {}
+export class MyAccountTileComponent {
+  @Input({required: true})
+  primaryText = '';
+
+  @Input()
+  primarySecondaryText: string | null = null;
+
+  @Input()
+  secondaryText: string | null = null;
+
+  @Input()
+  picture: string | null = null;
+
+  @Input()
+  link: string | null = null;
+}
