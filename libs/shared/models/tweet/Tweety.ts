@@ -1,6 +1,6 @@
 import { Account } from '../account/account';
 import { TimeStamp } from '../helpers';
-import { Profile } from '../kit-entities';
+import { Profile } from '../entities-kitouch';
 
 /** 
  * @TODO @FIXME 

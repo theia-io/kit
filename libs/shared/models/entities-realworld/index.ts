@@ -1,4 +1,4 @@
 export * from './user';
-export * from './company';
+export * from './legal';
 // 
 export * from './shared';

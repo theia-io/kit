@@ -3,7 +3,7 @@ export * from './helpers';
 
 // business
 
-export * from './customer';
+export * from './entities-realworld';
 export * from './account';
 export * from './tweet';
-export * from './customer/company';
+export * from './entities-realworld/legal';

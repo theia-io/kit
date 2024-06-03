@@ -1,0 +1,362 @@
+[
+  {
+    "id": 1,
+    "accountId": 1,
+    "name": "John",
+    "surname": "Doe",
+    "middleName": "A",
+    "gender": "male",
+    "languages": [
+      {
+        "name": "English",
+        "code": "en",
+        "isPrimary": true
+      },
+      {
+        "name": "Spanish",
+        "code": "es"
+      }
+    ],
+    "educations": [
+      {
+        "name": "University of California, Berkeley",
+        "level": "Bachelor's Degree",
+        "start": 2010,
+        "url": "https://www.berkeley.edu/",
+        "end": 2014
+      }
+    ],
+    "certificates": [
+      {
+        "name": "AWS Certified Solutions Architect - Associate",
+        "level": "Associate",
+        "start": 2022,
+        "url": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+        "end": 2022
+      }
+    ],
+    "cvs": [
+      {
+        "id": 1,
+        "educations": [
+          {
+            "name": "University of California, Berkeley",
+            "level": "Bachelor's Degree",
+            "start": 2010,
+            "url": "https://www.berkeley.edu/",
+            "end": 2014
+          }
+        ],
+        "skills": [
+          {
+            "name": "Java",
+            "level": "Expert"
+          },
+          {
+            "name": "Python",
+            "level": "Intermediate"
+          }
+        ],
+        "projects": [
+          {
+            "name": "E-commerce platform",
+            "description": "Developed a full-stack e-commerce platform using Java and Spring Boot.",
+            "image": "https://example.com/ecommerce-platform.png",
+            "link": "https://github.com/johndoe/ecommerce-platform"
+          }
+        ],
+        "companies": [
+          {
+            "accountId": 12345,
+            "profileId": 67890,
+            "name": "Google",
+            "description": "Worked as a software engineer at Google.",
+            "businessType": "Outsource",
+            "sector": "IT",
+            "type": "Employ",
+            "registration": "1234567890",
+            "logo": "https://example.com/google-logo.png",
+            "website": "https://www.google.com/",
+            "customerInfo": {
+              "contact": {
+                "alias": "John Doe",
+                "isPrimary": true,
+                "email": "john.doe@google.com",
+                "phone": "+1 555-123-4567",
+                "fax": "+1 555-123-4568",
+                "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+                "website": "https://www.google.com/"
+              },
+              "birthday": "1990-01-01",
+              "experience": [
+                {
+                  "title": "Software Engineer",
+                  "description": "Developed and maintained software applications for Google.",
+                  "image": "https://example.com/google-office.jpg",
+                  "link": "https://www.google.com/careers/"
+                }
+              ],
+              "location": "Mountain View, CA"
+            }
+          }
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "name": "Java",
+        "level": "Expert"
+      },
+      {
+        "name": "Python",
+        "level": "Intermediate"
+      }
+    ],
+    "projects": [
+      {
+        "name": "E-commerce platform",
+        "description": "Developed a full-stack e-commerce platform using Java and Spring Boot.",
+        "image": "https://example.com/ecommerce-platform.png",
+        "link": "https://github.com/johndoe/ecommerce-platform"
+      }
+    ],
+    "companies": [
+      {
+        "accountId": 12345,
+        "profileId": 67890,
+        "name": "Google",
+        "description": "Worked as a software engineer at Google.",
+        "businessType": "Outsource",
+        "sector": "IT",
+        "type": "Employ",
+        "registration": "1234567890",
+        "logo": "https://example.com/google-logo.png",
+        "website": "https://www.google.com/",
+        "customerInfo": {
+          "contact": {
+            "alias": "John Doe",
+            "isPrimary": true,
+            "email": "john.doe@google.com",
+            "phone": "+1 555-123-4567",
+            "fax": "+1 555-123-4568",
+            "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+            "website": "https://www.google.com/"
+          },
+          "birthday": "1990-01-01",
+          "experience": [
+            {
+              "title": "Software Engineer",
+              "description": "Developed and maintained software applications for Google.",
+              "image": "https://example.com/google-office.jpg",
+              "link": "https://www.google.com/careers/"
+            }
+          ],
+          "location": "Mountain View, CA"
+        }
+      }
+    ],
+    "roles": ["admin", "user"],
+    "customerInfo": {
+      "contact": {
+        "alias": "John Doe",
+        "isPrimary": true,
+        "email": "john.doe@example.com",
+        "phone": "+1 555-123-4567",
+        "fax": "+1 555-123-4568",
+        "address": "123 Main Street, Anytown, CA 12345",
+        "website": "https://www.johndoe.com/"
+      },
+      "birthday": "1990-01-01",
+      "experience": [
+        {
+          "title": "Software Engineer",
+          "description": "Developed and maintained software applications for Google.",
+          "image": "https://example.com/google-office.jpg",
+          "link": "https://www.google.com/careers/"
+        }
+      ],
+      "location": "Anytown, CA"
+    },
+    "privateFields": ["password", "services"]
+  },
+  {
+    "id": 2,
+    "accountId": 2,
+    "name": "Jane",
+    "surname": "Doe",
+    "middleName": "A",
+    "gender": "female",
+    "languages": [
+      {
+        "name": "English",
+        "code": "en",
+        "isPrimary": true
+      },
+      {
+        "name": "Spanish",
+        "code": "es"
+      }
+    ],
+    "educations": [
+      {
+        "name": "University of California, Berkeley",
+        "level": "Bachelor's Degree",
+        "start": 2010,
+        "url": "https://www.berkeley.edu/",
+        "end": 2014
+      }
+    ],
+    "certificates": [
+      {
+        "name": "AWS Certified Solutions Architect - Associate",
+        "level": "Associate",
+        "start": 2022,
+        "url": "https://aws.amazon.com/certification/certified-solutions-architect-associate/",
+        "end": 2022
+      }
+    ],
+    "cvs": [
+      {
+        "id": 2,
+        "educations": [
+          {
+            "name": "University of California, Berkeley",
+            "level": "Bachelor's Degree",
+            "start": 2010,
+            "url": "https://www.berkeley.edu/",
+            "end": 2014
+          }
+        ],
+        "skills": [
+          {
+            "name": "Java",
+            "level": "Expert"
+          },
+          {
+            "name": "Python",
+            "level": "Intermediate"
+          }
+        ],
+        "projects": [
+          {
+            "name": "E-commerce platform",
+            "description": "Developed a full-stack e-commerce platform using Java and Spring Boot.",
+            "image": "https://example.com/ecommerce-platform.png",
+            "link": "https://github.com/johndoe/ecommerce-platform"
+          }
+        ],
+        "companies": [
+          {
+            "accountId": 12346,
+            "profileId": 67891,
+            "name": "Google",
+            "description": "Worked as a software engineer at Google.",
+            "businessType": "Outsource",
+            "sector": "IT",
+            "type": "Employ",
+            "registration": "1234567890",
+            "logo": "https://example.com/google-logo.png",
+            "website": "https://www.google.com/",
+            "customerInfo": {
+              "contact": {
+                "alias": "Jane Doe",
+                "isPrimary": true,
+                "email": "jane.doe@google.com",
+                "phone": "+1 555-123-4567",
+                "fax": "+1 555-123-4568",
+                "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+                "website": "https://www.google.com/"
+              },
+              "birthday": "1990-01-01",
+              "experience": [
+                {
+                  "title": "Software Engineer",
+                  "description": "Developed and maintained software applications for Google.",
+                  "image": "https://example.com/google-office.jpg",
+                  "link": "https://www.google.com/careers/"
+                }
+              ],
+              "location": "Mountain View, CA"
+            }
+          }
+        ]
+      }
+    ],
+    "skills": [
+      {
+        "name": "Java",
+        "level": "Expert"
+      },
+      {
+        "name": "Python",
+        "level": "Intermediate"
+      }
+    ],
+    "projects": [
+      {
+        "name": "E-commerce platform",
+        "description": "Developed a full-stack e-commerce platform using Java and Spring Boot.",
+        "image": "https://example.com/ecommerce-platform.png",
+        "link": "https://github.com/johndoe/ecommerce-platform"
+      }
+    ],
+    "companies": [
+      {
+        "accountId": 12346,
+        "profileId": 67891,
+        "name": "Google",
+        "description": "Worked as a software engineer at Google.",
+        "businessType": "Outsource",
+        "sector": "IT",
+        "type": "Employ",
+        "registration": "1234567890",
+        "logo": "https://example.com/google-logo.png",
+        "website": "https://www.google.com/",
+        "customerInfo": {
+          "contact": {
+            "alias": "Jane Doe",
+            "isPrimary": true,
+            "email": "jane.doe@google.com",
+            "phone": "+1 555-123-4567",
+            "fax": "+1 555-123-4568",
+            "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+            "website": "https://www.google.com/"
+          },
+          "birthday": "1990-01-01",
+          "experience": [
+            {
+              "title": "Software Engineer",
+              "description": "Developed and maintained software applications for Google.",
+              "image": "https://example.com/google-office.jpg",
+              "link": "https://www.google.com/careers/"
+            }
+          ],
+          "location": "Mountain View, CA"
+        }
+      }
+    ],
+    "roles": ["admin", "user"],
+    "customerInfo": {
+      "contact": {
+        "alias": "Jane Doe",
+        "isPrimary": true,
+        "email": "jane.doe@example.com",
+        "phone": "+1 555-123-4567",
+        "fax": "+1 555-123-4568",
+        "address": "123 Main Street, Anytown, CA 12345",
+        "website": "https://www.janedoe.com/"
+      },
+      "birthday": "1990-01-01",
+      "experience": [
+        {
+          "title": "Software Engineer",
+          "description": "Developed and maintained software applications for Google.",
+          "image": "https://example.com/google-office.jpg",
+          "link": "https://www.google.com/careers/"
+        }
+      ],
+      "location": "Anytown, CA"
+    },
+    "privateFields": ["password", "services"]
+  }
+]

@@ -1,8 +1,7 @@
-import { Profile } from '../kit-entities';
 
 import { Account } from '../account';
 import { Languages } from '../helpers';
-import { Company } from './company';
+import { Legal } from './legal';
 import {
   Certificates,
   CurriculumVitae,
@@ -18,11 +17,9 @@ export enum UserRoles {
 }
 
 export interface User {
+  // id
   accountId: Account['id'];
-  profileId: Profile['id'];
-  //];
-  roles: UserRoles[];
-  //
+  // business
   name: string;
   surname: string;
   middleName: string;
@@ -33,8 +30,9 @@ export interface User {
   cvs: Array<CurriculumVitae>;
   skills: Skill[]; // ids?
   projects: Project[]; // ids?
-  companies: Company[]; // ids?
-  //
+  companies: Legal[]; // ids?
+  // meta
+  roles: UserRoles[];
   customerInfo: CustomerInfo;
   privateFields: keyof User;
 }

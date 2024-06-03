@@ -1,5 +1,5 @@
 import { Contact } from '../Contact/Contact';
-import { Company } from './company';
+import { Legal } from './legal';
 
 export interface Skill {
   name: string;
@@ -35,7 +35,7 @@ export interface CurriculumVitae {
   educations: Education[];
   skills: Skill[];
   projects: Project[];
-  companies: Company[];
+  companies: Legal[];
 }
 
 export interface CustomerInfo {

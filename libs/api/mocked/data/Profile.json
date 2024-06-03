@@ -1,0 +1,171 @@
+[
+    {
+      "id": "1",
+      "userId": "1",
+      "legalId": null,
+      "name": "John Doe",
+      "type": "Personal",
+      "title": "Software Engineer",
+      "subtitle": "at Google",
+      "description": "I am a passionate software engineer with 5+ years of experience in building web applications. I am proficient in various technologies including Java, Python, and JavaScript.",
+      "pictures": [
+        {
+          "id": "1",
+          "url": "/public/john-dou.png",
+          "isPrimary": true,
+          "createdAt": "2023-04-01T12:00:00.000Z",
+          "updatedAt": "2023-04-01T12:00:00.000Z",
+          "deletedAt": null
+        },
+        {
+          "id": "2",
+          "url": "/public/john-dou.png",
+          "isPrimary": false,
+          "createdAt": "2023-04-15T10:00:00.000Z",
+          "updatedAt": "2023-04-15T10:00:00.000Z",
+          "deletedAt": null
+        }
+      ],
+      "links": [
+        {
+          "name": "LinkedIn",
+          "url": "https://www.linkedin.com/in/johndoe"
+        },
+        {
+          "name": "GitHub",
+          "url": "https://github.com/johndoe"
+        }
+      ],
+      "followers": ["2", "3"],
+      "following": ["4", "5"]
+    },
+    {
+      "id": "2",
+      "userId": "2",
+      "legalId": null,
+      "name": "Jane Doe",
+      "type": "Personal",
+      "title": "Product Manager",
+      "subtitle": "at Apple",
+      "description": "I am a product manager with 3+ years of experience in building and launching successful products. I am passionate about user experience and data-driven decision making.",
+      "pictures": [
+        {
+          "id": "3",
+          "url": "https://example.com/jane-doe-profile-picture.jpg",
+          "isPrimary": true,
+          "createdAt": "2023-03-15T09:00:00.000Z",
+          "updatedAt": "2023-03-15T09:00:00.000Z",
+          "deletedAt": null
+        }
+      ],
+      "links": [
+        {
+          "name": "Twitter",
+          "url": "https://twitter.com/janedoe"
+        },
+        {
+          "name": "Instagram",
+          "url": "https://www.instagram.com/janedoe"
+        }
+      ],
+      "followers": ["1", "4"],
+      "following": ["3", "5"]
+    },
+    {
+      "id": "3",
+      "userId": null,
+      "legalId": "1",
+      "name": "Google",
+      "type": "Company",
+      "title": "Search Engine",
+      "subtitle": "Mountain View, CA",
+      "description": "Google LLC is an American multinational technology company that specializes in Internet-related services and products, which include online advertising technologies, a search engine, cloud computing, software, and hardware.",
+      "pictures": [
+        {
+          "id": "4",
+          "url": "https://example.com/google-logo.png",
+          "isPrimary": true,
+          "createdAt": "2023-01-01T00:00:00.000Z",
+          "updatedAt": "2023-01-01T00:00:00.000Z",
+          "deletedAt": null
+        }
+      ],
+      "links": [
+        {
+          "name": "Website",
+          "url": "https://www.google.com/"
+        },
+        {
+          "name": "Careers",
+          "url": "https://careers.google.com/"
+        }
+      ],
+      "followers": ["1", "2", "5"],
+      "following": []
+    },
+    {
+      "id": "4",
+      "userId": null,
+      "legalId": "2",
+      "name": "Apple",
+      "type": "Company",
+      "title": "Technology Company",
+      "subtitle": "Cupertino, CA",
+      "description": "Apple Inc. is an American multinational technology company that designs, develops, and sells consumer electronics, computer software, and online services. It is considered one of the Big Five companies in the U.S. information technology industry, along with Amazon, Google, Microsoft, and Meta.",
+      "pictures": [
+        {
+          "id": "5",
+          "url": "https://example.com/apple-logo.png",
+          "isPrimary": true,
+          "createdAt": "2023-02-01T00:00:00.000Z",
+          "updatedAt": "2023-02-01T00:00:00.000Z",
+          "deletedAt": null
+        }
+      ],
+      "links": [
+        {
+          "name": "Website",
+          "url": "https://www.apple.com/"
+        },
+        {
+          "name": "Careers",
+          "url": "https://jobs.apple.com/"
+        }
+      ],
+      "followers": ["2", "3", "5"],
+      "following": []
+    },
+    {
+      "id": "5",
+      "userId": null,
+      "legalId": null,
+      "name": "Kitouch",
+      "type": "Company",
+      "title": "Social Network",
+      "subtitle": "San Francisco, CA",
+      "description": "Kitouch is a social network that connects people with similar interests and passions. It is a place where people can share their thoughts, ideas, and experiences with others who understand and appreciate them.",
+      "pictures": [
+        {
+          "id": "6",
+          "url": "https://example.com/kitouch-logo.png",
+          "isPrimary": true,
+          "createdAt": "2023-05-01T00:00:00.000Z",
+          "updatedAt": "2023-05-01T00:00:00.000Z",
+          "deletedAt": null
+        }
+      ],
+      "links": [
+        {
+          "name": "Website",
+          "url": "https://www.kitouch.com/"
+        },
+        {
+          "name": "Careers",
+          "url": "https://careers.kitouch.com/"
+        }
+      ],
+      "followers": ["1", "3", "4"],
+      "following": []
+    }
+  ]
+  
