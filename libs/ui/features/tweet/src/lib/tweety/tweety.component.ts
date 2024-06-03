@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Tweety } from '@kitouch/shared/models';
-import { MyAccountTileComponent } from '@kitouch/ui/features/account';
+import { AccountTileComponent } from '@kitouch/ui/components';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MyAccountTileComponent],
+  imports: [CommonModule, AccountTileComponent],
   selector: 'feat-tweet-tweety',
   templateUrl: './tweety.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

@@ -3,13 +3,13 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'my-account-tile',
+  selector: 'account-tile',
   standalone: true,
   imports: [
     CommonModule,
     RouterModule
   ],
-  templateUrl: './my-account-tile.component.html',
+  templateUrl: './account-tile.component.html',
   styles: `
     :host {
       display: block;
@@ -17,7 +17,7 @@ import { RouterModule } from '@angular/router';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MyAccountTileComponent {
+export class AccountTileComponent {
   @Input({required: true})
   primaryText = '';
 

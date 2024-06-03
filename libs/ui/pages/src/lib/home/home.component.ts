@@ -1,14 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TweetButtonComponent } from '@kitouch/ui/components';
-import { MyAccountTileComponent } from '@kitouch/ui/features/account';
+import { AccountTileComponent, TweetButtonComponent } from '@kitouch/ui/components';
 import { FeatTweetTweetingComponent, FeatTweetTweetyComponent } from '@kitouch/ui/features/tweet';
 
 @Component({
   standalone: true,
   imports: [
     CommonModule,
-    MyAccountTileComponent,
+    //
+    AccountTileComponent,
     FeatTweetTweetingComponent,
     FeatTweetTweetyComponent,
     TweetButtonComponent,

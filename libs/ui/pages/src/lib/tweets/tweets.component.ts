@@ -1,11 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { TweetButtonComponent } from '@kitouch/ui/components';
-import { MyAccountTileComponent } from '@kitouch/ui/features/account';
+import {
+  AccountTileComponent,
+  TweetButtonComponent,
+} from '@kitouch/ui/components';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, MyAccountTileComponent, TweetButtonComponent],
+  imports: [CommonModule, AccountTileComponent, TweetButtonComponent],
   templateUrl: './tweets.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
