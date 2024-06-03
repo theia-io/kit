@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "setttings": {
+      "mfa": ["phone"],
+      "subscriptionOns": ["email", "sms"]
+    },
+    "type": "user",
+    "status": "active",
+    "password": "asdsadsad",
+    "services": [],
+    "timestamp": {
+      "createdAt": "2010-09-22T14:55:52.553Z",
+      "updatedAt": "2011-07-22T08:51:57.706Z",
+      "deletedAt": "2013-11-26T05:10:56.171Z"
+    }
+  },
+  {
+    "id": 2,
+    "setttings": {
+      "mfa": ["phone"],
+      "subscriptionOns": ["email", "sms"]
+    },
+    "type": "user",
+    "status": "active",
+    "password": "asdsadsad",
+    "services": [],
+    "timestamp": {
+      "createdAt": "2010-09-22T14:55:52.553Z",
+      "updatedAt": "2011-07-22T08:51:57.706Z"
+    }
+  }
+]

@@ -1,6 +1,5 @@
 import { ThirdPartyServices } from '../3dServices/3d';
 import { TimeStamp } from '../helpers';
-import { AccountSettings } from './settings';
 
 export enum AccountStatus {
   ACTIVE = 'active',
@@ -18,11 +17,16 @@ export enum AccountType {
 export interface Account {
   // keys
   id: string;
-  settingIds: AccountSettings['id'][];
+  settings: {
+    mfa: string[];
+    // info, publicitly, searchibility, etc
+    subscriptionOns: string[];
+  };
+
   // meta
+  timestamp: TimeStamp;
   type: AccountType;
   status: AccountStatus;
   password?: string;
-  services: ThirdPartyServices;
-  timestamp: TimeStamp;
+  services?: Array<ThirdPartyServices>;
 }
