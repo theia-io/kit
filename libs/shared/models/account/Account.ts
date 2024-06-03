@@ -1,4 +1,6 @@
-import { CurriculumVitae } from '../CurriculumVitae';
+import { ThirdPartyServices } from '../3dServices/3d';
+import { TimeStamp } from '../helpers';
+import { AccountSettings } from './settings';
 
 export enum AccountStatus {
   ACTIVE = 'active',
@@ -7,21 +9,20 @@ export enum AccountStatus {
   DELETED = 'deleted',
 }
 
+export enum AccountType {
+  ADMIN = 'admin',
+  USER = 'user',
+  GROUP = 'group',
+}
+
 export interface Account {
+  // keys
   id: string;
-  email: string;
-  name: string;
-  surname: string;
-  profilePicture: string;
-  pictures: Array<string>;
-  cvs: Array<CurriculumVitae>;
-  phone: string;
-  address: string;
-  birthday: Date;
-  gender: string;
-  password: string;
-  role: string;
+  settingIds: AccountSettings['id'][];
+  // meta
+  type: AccountType;
   status: AccountStatus;
-  createdAt: Date;
-  updatedAt: Date;
+  password?: string;
+  services: ThirdPartyServices;
+  timestamp: TimeStamp;
 }
