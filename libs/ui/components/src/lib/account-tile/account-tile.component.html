@@ -1,0 +1,32 @@
+<div class="flex-shrink-0 flex hover:bg-blue-00 rounded-full">
+    @if (link) {
+    <a [routerLink]="link" class="flex-shrink-0 group block">
+        <ng-container *ngTemplateOutlet="accountInfoTmpl"></ng-container>
+    </a>
+    } @else {
+    <ng-container *ngTemplateOutlet="accountInfoTmpl"></ng-container>
+    }
+
+    <ng-template #accountInfoTmpl>
+        <div class="flex items-center">
+            <div>
+                <img class="inline-block h-10 w-10 rounded-full" [src]="picture ?? 'account/placeholder.jpeg'" alt="" />
+            </div>
+            <div class="ml-3">
+                <p class="text-base leading-6 font-medium font-bold">
+                    {{primaryText}}
+
+                    <span
+                        *ngIf="primarySecondaryText"
+                        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                        {{primarySecondaryText}}
+                    </span>
+                </p>
+                <p  *ngIf="secondaryText"
+                    class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                    {{secondaryText}}
+                </p>
+            </div>
+        </div>
+    </ng-template>
+</div>

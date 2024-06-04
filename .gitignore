@@ -8,6 +8,11 @@ tmp
 # dependencies
 node_modules
 
+# secrets 
+.env*
+!.env.example
+secrets/
+
 # IDEs and editors
 /.idea
 .project

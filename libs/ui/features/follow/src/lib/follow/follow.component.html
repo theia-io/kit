@@ -1,90 +1,31 @@
-<div class="max-w-sm rounded-lg bg-blue-800 overflow-hidden shadow-lg m-4 mr-20">
-    <div class="flex">
+<div class="max-w-sm m-4 mr-20 overflow-hidden">
+    <div class="flex rounded-lg bg-neutral-200">
         <div class="flex-1 m-2">
-            <h2 class="px-4 py-2 text-xl w-48 font-semibold text-white">My (ex-) colleague to follow</h2>
+            <h2 class="px-4 py-2 text-xl font-semibold ">My (ex-) colleagues</h2>
         </div>
     </div>
-
-
-    <hr class="border-gray-600">
 
     <!--first person who to follow-->
-
-    <div class="flex flex-shrink-0">
-        <div class="flex-1 ">
-            <div class="flex items-center w-48">
-                <div class="min-w-14">
-                    <img class="inline-block h-10 w-auto rounded-full ml-4 mt-2"
-                        src="account/placeholder.jpeg"
-                        alt="" />
-                </div>
-                <div class="ml-3 mt-3">
-                    <p class="text-base leading-6 font-medium text-white">
-                        Danylo Bilokha
-                    </p>
-                    <p
-                        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                        Software Engineer
-                    </p>
-                </div>
-            </div>
-
-        </div>
-        <div class="flex-1 px-4 py-2 m-2">
-            <a href="" class=" float-right">
-                <button
-                    class="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-full">
-                    Follow
-                </button>
-            </a>
-
-        </div>
+    <div class="flex mt-2 p-4 shadow-sm justify-end rounded-lg bg-neutral-200">
+        <account-tile class="flex-1 w-full" primaryText="Danylo Bilokha" secondaryText="Software Engineer" />
+        <app-follow-button />
     </div>
-    <hr class="border-gray-600">
 
     <!--second person who to follow-->
-
-    <div class="flex flex-shrink-0">
-        <div class="flex-1 ">
-            <div class="flex items-center w-48">
-                <div class="min-w-14">
-                    <img class="inline-block h-10 w-auto rounded-full ml-4 mt-2"
-                        src="account/placeholder.jpeg"
-                        alt="" />
-                </div>
-                <div class="ml-3 mt-3">
-                    <p class="text-base leading-6 font-medium text-white">
-                        Kornel Javor
-                    </p>
-                    <p
-                        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                        Information Technology Manager
-                    </p>
-                </div>
-            </div>
-
-        </div>
-        <div class="flex-1 px-4 py-2 m-2">
-            <a href="" class=" float-right">
-                <button
-                    class="bg-transparent hover:bg-blue-500 text-white font-semibold hover:text-white py-2 px-4 border border-white hover:border-transparent rounded-full">
-                    Follow
-                </button>
-            </a>
-
-        </div>
+    <div class="flex mt-2 p-4 shadow-sm justify-end rounded-lg bg-neutral-200">
+        <account-tile class="flex-1 w-full" primaryText="Kornel Javor" secondaryText="Information Technology Manager" />
+        <app-follow-button />
     </div>
 
-    <hr class="border-gray-600">
-
-
-
-    <!--show more-->
-
-    <div class="flex">
-        <div class="flex-1 p-4">
-            <h2 class="px-4 ml-2 w-48 font-bold text-blue-400">Show more</h2>
-        </div>
+    <div class="flex mt-2 p-4 shadow-sm justify-end rounded-lg bg-neutral-200">
+        <account-tile class="flex-1 w-full" primaryText="Johnny Papa" secondaryText="World class developer" />
+        <app-follow-button />
     </div>
 
+    <!--show more @TODO and Follow buttons above must be aligned to the right-->
+
+    <div class="flex mt-2 justify-end">
+        <button class="py-2 px-4 rounded-full bg-neutral-400 hover:bg-neutral-600 text-white font-bold">Show
+            more</button>
+    </div>
 </div>

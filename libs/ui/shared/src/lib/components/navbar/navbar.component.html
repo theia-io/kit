@@ -11,16 +11,13 @@
     <a [routerLink]="item.link" routerLinkActive="bg-neutral-200 font-semibold" [ngClass]="{
                 'mt-1': !$first
             }"
-        class="group flex items-center px-2 py-2 text-base leading-6 font-semibold rounded-full hover:bg-neutral-200 hover:font-semibold">
+        class="group flex items-center px-2 py-2 leading-6 rounded-full text-base font-semibold  hover:font-semibold hover:bg-neutral-200">
         <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
         {{item.name}}
     </a>
     }
 
-    <!-- <button class="bg-neutral-400 w-48 mt-5 hover:bg-neutral-600 text-white font-bold py-2 px-4 rounded-full">
-        Tweet
-    </button> -->
-    <tweet class="w-48 mt-5"></tweet>
+    <tweet-button class="w-48 mt-5" />
 </nav>
 
-<my-account-tile class="mt-12 mr-2 ml-4" />
+<account-tile primaryText="Danylo Bilokha" primarySecondaryText="16 April" secondaryText="Software Engineer" link="/tweets" class="mt-12 mr-2 ml-4" />
