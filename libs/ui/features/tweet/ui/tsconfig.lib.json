@@ -13,5 +13,5 @@
     "jest.config.ts",
     "src/**/*.test.ts"
   ],
-  "include": ["src/**/*.ts", "../../components/src/lib/tweet-button/tweet-button.component.ts"]
+  "include": ["src/**/*.ts"]
 }

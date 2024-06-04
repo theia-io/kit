@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { APP_PATH } from '@kitouch/ui/shared';
+import { APP_PATH, isLoggedInGuard } from '@kitouch/ui/shared';
 import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/ui/pages');
@@ -33,6 +33,7 @@ export const appRoutes: Route[] = [
   {
     path: '',
     component: KitComponent,
+    canActivate: [isLoggedInGuard],
     children: [
       {
         path: '',

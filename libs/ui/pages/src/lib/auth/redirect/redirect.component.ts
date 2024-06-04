@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+
+import * as Realm from 'realm-web';
 
 @Component({
   standalone: true,
@@ -7,4 +9,8 @@ import { Component } from '@angular/core';
   selector: 'kit-page-redirect',
   templateUrl: './redirect.component.html',
 })
-export class RedirectComponent {}
+export class RedirectComponent implements OnInit {
+  ngOnInit() {
+    Realm.handleAuthRedirect();
+  }
+}

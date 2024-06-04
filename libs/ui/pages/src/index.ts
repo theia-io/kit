@@ -1,5 +1,5 @@
 // entry
-export * from './lib/join/join.component';
+export * from './lib/auth/join/join.component';
 // shared
 export * from './lib/terms-conditions/terms-conditions.component';
 export * from './lib/privacy-policy/privacy-policy.component';
