@@ -11,6 +11,21 @@ export const appRoutes: Route[] = [
       import('@kitouch/ui/pages').then((comp) => comp.JoinComponent),
   },
   {
+    path: 'terms-and-conditions',
+    loadComponent: () =>
+      import('@kitouch/ui/pages').then((comp) => comp.TermsConditionsComponent),
+  },
+  {
+    path: 'privacy-policy',
+    loadComponent: () =>
+      import('@kitouch/ui/pages').then((comp) => comp.PrivacyPolicyComponent),
+  },
+  {
+    path: 'cookie',
+    loadComponent: () =>
+      import('@kitouch/ui/pages').then((comp) => comp.CookiesComponent),
+  },
+  {
     path: '',
     component: KitComponent,
     children: [

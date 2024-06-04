@@ -1,5 +1,9 @@
 // entry
 export * from './lib/join/join.component';
+// shared
+export * from './lib/terms-conditions/terms-conditions.component';
+export * from './lib/privacy-policy/privacy-policy.component';
+export * from './lib/cookies/cookies.component';
 // KIT
 export * from './lib/home/home.component';
 export * from './lib/bookmarks/bookmarks.component';
