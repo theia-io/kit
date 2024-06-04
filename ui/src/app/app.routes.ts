@@ -11,6 +11,11 @@ export const appRoutes: Route[] = [
       import('@kitouch/ui/pages').then((comp) => comp.JoinComponent),
   },
   {
+    path: 'redirect',
+    loadComponent: () =>
+      import('@kitouch/ui/pages').then((comp) => comp.RedirectComponent),
+  },
+  {
     path: 'terms-and-conditions',
     loadComponent: () =>
       import('@kitouch/ui/pages').then((comp) => comp.TermsConditionsComponent),

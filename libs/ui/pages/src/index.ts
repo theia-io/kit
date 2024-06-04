@@ -4,6 +4,7 @@ export * from './lib/join/join.component';
 export * from './lib/terms-conditions/terms-conditions.component';
 export * from './lib/privacy-policy/privacy-policy.component';
 export * from './lib/cookies/cookies.component';
+export * from './lib/auth/redirect/redirect.component';
 // KIT
 export * from './lib/home/home.component';
 export * from './lib/bookmarks/bookmarks.component';
