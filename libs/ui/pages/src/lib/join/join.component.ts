@@ -7,4 +7,5 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   templateUrl: './join.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class JoinComponent {}
+export class JoinComponent {
+}
