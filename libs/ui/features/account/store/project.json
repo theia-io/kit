@@ -1,23 +1,23 @@
 {
-  "name": "account",
-  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/ui/features/account/src",
+  "name": "account-store",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/features/account/store/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["ui", "features"],
+  "tags": ["ui", "feature", "feature-store", "account"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/ui/features/account/ng-package.json"
+        "project": "libs/ui/features/account/store/ng-package.json"
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/ui/features/account/tsconfig.lib.prod.json"
+          "tsConfig": "libs/ui/features/account/store/tsconfig.lib.prod.json"
         },
         "development": {
-          "tsConfig": "libs/ui/features/account/tsconfig.lib.json"
+          "tsConfig": "libs/ui/features/account/store/tsconfig.lib.json"
         }
       },
       "defaultConfiguration": "production"
@@ -26,7 +26,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/ui/features/account/jest.config.ts"
+        "jestConfig": "libs/ui/features/account/store/jest.config.ts"
       }
     },
     "lint": {

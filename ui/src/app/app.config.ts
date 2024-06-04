@@ -1,4 +1,8 @@
-import { APP_INITIALIZER, ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideRouter, withDebugTracing } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -6,8 +10,10 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { HttpClient, provideHttpClient } from '@angular/common/http';
 
 const realAppFactory = () => {
-return () => Promise.resolve();
-}
+  return () => Promise.resolve(
+    
+  );
+};
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -16,7 +22,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes, withDebugTracing()),
     provideAnimationsAsync(),
 
-    // auth 
+    // auth
     provideHttpClient(),
     {
       provide: APP_INITIALIZER,

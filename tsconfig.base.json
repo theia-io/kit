@@ -16,14 +16,22 @@
     "baseUrl": ".",
     "paths": {
       "@kitouch/shared/models": ["libs/shared/models/index.ts"],
-      "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"],
       "@kitouch/ui/components": ["libs/ui/components/src/index.ts"],
-      "@kitouch/ui/pages": ["libs/ui/pages/src/index.ts"],
-      "@kitouch/ui/features/account": ["libs/ui/features/account/src/index.ts"],
+      "@kitouch/ui/features/account/ui": [
+        "libs/ui/features/account/ui/src/index.ts"
+      ],
+      "@kitouch/features/account/data": [
+        "libs/ui/features/account/data/src/index.ts"
+      ],
+      "@kitouch/features/account/store": [
+        "libs/ui/features/account/store/src/index.ts"
+      ],
       "@kitouch/ui/features/follow": ["libs/ui/features/follow/src/index.ts"],
       "@kitouch/ui/features/legal": ["libs/ui/features/legal/src/index.ts"],
       "@kitouch/ui/features/search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/ui/features/tweet": ["libs/ui/features/tweet/src/index.ts"],
+      "@kitouch/ui/pages": ["libs/ui/pages/src/index.ts"],
+      "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]
