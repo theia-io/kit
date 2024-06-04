@@ -23,8 +23,8 @@
       "@kitouch/features/account/data": [
         "libs/ui/features/account/data/src/index.ts"
       ],
-      "@kitouch/features/account/store": [
-        "libs/ui/features/account/store/src/index.ts"
+      "@kitouch/features/account/effects": [
+        "libs/ui/features/account/effects/src/index.ts"
       ],
       "@kitouch/ui/features/follow": ["libs/ui/features/follow/src/index.ts"],
       "@kitouch/ui/features/legal": ["libs/ui/features/legal/src/index.ts"],
