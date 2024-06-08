@@ -1,9 +1,13 @@
 import { Route } from '@angular/router';
+import { pageHomeReducer } from '@kitouch/feat-tweet-data';
+import { HomeTweetsEffects } from '@kitouch/feat-tweet-effects';
 import {
   APP_PATH,
   onlyForLoggedInGuard,
   onlyForNotLoggedInGuard,
 } from '@kitouch/ui/shared';
+import { provideEffects } from '@ngrx/effects';
+import { provideState } from '@ngrx/store';
 import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/ui/pages');
@@ -49,6 +53,10 @@ export const appRoutes: Route[] = [
       {
         path: APP_PATH.Home,
         loadComponent: () => pages.then((comp) => comp.HomeComponent),
+        providers: [
+          provideState({ name: 'home', reducer: pageHomeReducer }),
+          provideEffects(HomeTweetsEffects),
+        ],
       },
       {
         path: APP_PATH.Tweets,

@@ -15,16 +15,20 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@kitouch/shared/models": ["libs/shared/models/index.ts"],
-      "@kitouch/ui/components": ["libs/ui/components/src/index.ts"],
-      "@kitouch/ui/features/account/ui": [
-        "libs/ui/features/account/ui/src/index.ts"
+      "@kitouch/feat-tweet-data": ["libs/ui/features/tweet/data/src/index.ts"],
+      "@kitouch/feat-tweet-effects": [
+        "libs/ui/features/tweet/effects/src/index.ts"
       ],
       "@kitouch/features/account/data": [
         "libs/ui/features/account/data/src/index.ts"
       ],
       "@kitouch/features/account/effects": [
         "libs/ui/features/account/effects/src/index.ts"
+      ],
+      "@kitouch/shared/models": ["libs/shared/models/index.ts"],
+      "@kitouch/ui/components": ["libs/ui/components/src/index.ts"],
+      "@kitouch/ui/features/account/ui": [
+        "libs/ui/features/account/ui/src/index.ts"
       ],
       "@kitouch/ui/features/follow": ["libs/ui/features/follow/src/index.ts"],
       "@kitouch/ui/features/legal": ["libs/ui/features/legal/src/index.ts"],

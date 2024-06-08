@@ -11,9 +11,9 @@
     <a [routerLink]="item.link" routerLinkActive="bg-neutral-200 font-semibold" [ngClass]="{
                 'mt-1': !$first
             }"
-        class="group flex items-center py-2 leading-6 rounded-full text-base font-semibold  hover:font-semibold hover:bg-neutral-200">
+        class="group flex items-center p-2 leading-6 rounded-full text-base font-semibold hover:font-semibold hover:bg-neutral-200">
 
-        <div class="ml-2" [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
+        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
         {{item.name}}
     </a>
     }

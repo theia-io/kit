@@ -1,19 +1,16 @@
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'account-tile',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule],
   templateUrl: './account-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountTileComponent {
-  @Input({required: true})
+  @Input({ required: true })
   primaryText = '';
 
   @Input()

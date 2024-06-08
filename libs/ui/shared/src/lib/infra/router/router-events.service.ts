@@ -17,8 +17,6 @@ import {
 export class RouterEventsService {
   #router = inject(Router);
 
-  latestBeforeRedirect$ = new BehaviorSubject<string>('');
-
   lastUrlBeforeCancelled$ = this.#router.events.pipe(
     filter((event): event is NavigationCancel => event instanceof NavigationCancel),
     switchMap(({ url: urlBeforeCancel }) =>

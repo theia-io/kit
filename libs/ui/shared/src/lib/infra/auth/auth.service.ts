@@ -1,7 +1,16 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import * as Realm from 'realm-web';
-import { BehaviorSubject, map, merge, of, switchMap, take, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  map,
+  merge,
+  of,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
@@ -17,9 +26,11 @@ export class AuthService {
   redirectUrl = 'http://localhost:4200/redirect';
 
   // essential of the store
-  user$ = new BehaviorSubject<any>(undefined);
+  user$ = new BehaviorSubject<Realm.User | undefined>(undefined);
 
   // helpers, usually can be avoided
+  loggedInUser$ = this.user$.asObservable().pipe(filter(Boolean));
+
   isLoggedIn$ = this.user$.asObservable().pipe(
     take(1),
     map((user) => !!user)
@@ -30,11 +41,7 @@ export class AuthService {
     switchMap((user) =>
       !user ? merge(this.user$, of(this.#refreshUser())) : this.user$
     ),
-    tap((user) =>
-      console.log('TESTING TESTING TESTING isHardLoggedIn$ ---- 000', user)
-    ),
-    map((user) => !!user),
-    tap((user) => console.log('TESTING TESTING TESTING isHardLoggedIn$', user))
+    map((user) => !!user)
   );
 
   init() {
@@ -43,7 +50,7 @@ export class AuthService {
       return;
     }
 
-    console.log('Initializing Realm...');
+    console.info('Initializing Realm...');
 
     this.#realmApp = new Realm.App({ id: 'application-0-gnmmqxd' });
     return this.#realmApp;
@@ -58,7 +65,7 @@ export class AuthService {
    *  2. or Home if not exist
    */
   googleSignIn() {
-    console.log('Google signin initiated', this.#realmApp);
+    console.info('Google signin initiated', this.#realmApp);
     if (!this.#realmApp) {
       this.init();
     }
@@ -75,6 +82,7 @@ export class AuthService {
         this.routerEventsService.lastUrlBeforeCancelled$
           .pipe(take(1))
           .subscribe((urlBeforeSignIn) => {
+            console.info('[AUTH SERVICE] URL:', urlBeforeSignIn);
             this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
           });
 
@@ -118,7 +126,7 @@ export class AuthService {
   }
 
   async #refreshAccessToken() {
-    // this does 2 API requests 
+    // this does 2 API requests
     // to location and to session (to create a new one token)
     await this.#realmApp?.currentUser?.refreshAccessToken();
   }
