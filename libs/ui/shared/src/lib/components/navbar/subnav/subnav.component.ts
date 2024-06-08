@@ -10,4 +10,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
 export class SubnavComponent {
   @Output()
   logout = new EventEmitter<void>();
+
+  @Output() 
+  help = new EventEmitter<void>();
 }

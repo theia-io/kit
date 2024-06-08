@@ -45,5 +45,8 @@ export class NavBarComponent {
   @Output()
   logout = new EventEmitter<void>();
 
+  @Output()
+  help = new EventEmitter<void>();
+
   sanitizer: DomSanitizer = inject(DomSanitizer);
 }

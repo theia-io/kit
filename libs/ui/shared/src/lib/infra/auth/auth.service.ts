@@ -70,14 +70,12 @@ export class AuthService {
     this.#realmApp
       ?.logIn(credentials)
       .then((user) => {
-        console.log('User logged in:', user, this.#realmApp);
         this.user$.next(user);
 
-        this.routerEventsService.latestBeforeRedirect$
+        this.routerEventsService.lastUrlBeforeCancelled$
           .pipe(take(1))
-          .subscribe((beforeRedirect) => {
-            console.log('beforeRedirect', beforeRedirect);
-            this.#router.navigateByUrl(beforeRedirect);
+          .subscribe((urlBeforeSignIn) => {
+            this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
           });
 
         return user;

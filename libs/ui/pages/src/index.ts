@@ -5,6 +5,7 @@ export * from './lib/terms-conditions/terms-conditions.component';
 export * from './lib/privacy-policy/privacy-policy.component';
 export * from './lib/cookies/cookies.component';
 export * from './lib/auth/redirect/redirect.component';
+export * from './lib/404/404-page.component';
 // KIT
 export * from './lib/home/home.component';
 export * from './lib/bookmarks/bookmarks.component';

@@ -48,8 +48,6 @@ export const onlyForLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  console.log('onlyForLoggedInGuard CALLED 222');
-
   return authService.isHardLoggedIn$.pipe(
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {

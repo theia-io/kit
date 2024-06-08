@@ -20,7 +20,13 @@ import {
   selector: 'app-kitouch',
   template: `
     <layout>
-      <navbar (logout)="logoutHandler()" class="block mr-4" left [items]="navBarItems"></navbar>
+      <navbar
+        (help)="helpHandler()"
+        (logout)="logoutHandler()"
+        class="block mr-4"
+        left
+        [items]="navBarItems"
+      ></navbar>
       <router-outlet></router-outlet> </layout
     >,
   `,
@@ -35,5 +41,10 @@ export class KitComponent {
   async logoutHandler() {
     await this.#authService.logout();
     window.location.reload();
+  }
+
+  helpHandler() {
+    /** @TODO @FIXME Implement - read the comment below */
+    console.log('Implement help support handler (with a little popup)');
   }
 }

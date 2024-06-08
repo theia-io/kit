@@ -1,5 +1,9 @@
 import { Route } from '@angular/router';
-import { APP_PATH, onlyForLoggedInGuard, onlyForNotLoggedInGuard } from '@kitouch/ui/shared';
+import {
+  APP_PATH,
+  onlyForLoggedInGuard,
+  onlyForNotLoggedInGuard,
+} from '@kitouch/ui/shared';
 import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/ui/pages');
@@ -33,7 +37,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: '',
-    pathMatch: 'full',
     component: KitComponent,
     canActivate: [onlyForLoggedInGuard],
     canActivateChild: [onlyForLoggedInGuard],
@@ -61,17 +64,20 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Settings,
-        loadComponent: () =>
-          import('@kitouch/ui/pages').then((comp) => comp.SettingsComponent),
+        loadComponent: () => pages.then((comp) => comp.SettingsComponent),
       },
-      {
-        path: '**',
-        redirectTo: APP_PATH.Home,
-      },
+      // {
+      //   path: '**',
+      //   redirectTo: APP_PATH.Home,
+      // },
     ],
   },
   {
+    path: 'not-found-error',
+    loadComponent: () => pages.then((comp) => comp.ErrorPageComponent),
+  },
+  {
     path: '**',
-    redirectTo: '',
+    redirectTo: 'not-found-error',
   },
 ];
