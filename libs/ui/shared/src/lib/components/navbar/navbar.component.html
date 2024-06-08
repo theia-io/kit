@@ -1,23 +1,29 @@
 <div class="flex items-center hover:cursor-pointer">
-    <img class="inline-block h-10 w-auto rounded-full ml-4 mt-2" src="logo.jpeg" alt="" />
+    <img class="inline-block h-10 w-auto rounded-full mt-2" src="logo.jpeg" alt="" />
 
-    <p class="ml-3 font-bold">
+    <p class="ml-2 font-bold">
         Kit ouch
     </p>
 </div>
 
-<nav class="mt-5 px-2">
+<nav class="mt-4">
     @for (item of items; track $index) {
     <a [routerLink]="item.link" routerLinkActive="bg-neutral-200 font-semibold" [ngClass]="{
                 'mt-1': !$first
             }"
-        class="group flex items-center px-2 py-2 leading-6 rounded-full text-base font-semibold  hover:font-semibold hover:bg-neutral-200">
-        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
+        class="group flex items-center py-2 leading-6 rounded-full text-base font-semibold  hover:font-semibold hover:bg-neutral-200">
+
+        <div class="ml-2" [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
         {{item.name}}
     </a>
     }
-
-    <tweet-button class="w-48 mt-5" />
 </nav>
 
-<account-tile primaryText="Danylo Bilokha" primarySecondaryText="16 April" secondaryText="Software Engineer" link="/tweets" class="mt-12 mr-2 ml-4" />
+<tweet-button class="w-48 mt-4" />
+
+<account-tile class="block mt-12" primaryText="Danylo Bilokha" primarySecondaryText="16 April"
+    secondaryText="Software Engineer" link="/tweets" />
+
+<app-divider class="block mt-4" />
+
+<sub-navbar (logout)="logout.emit()" class="block mt-4" />

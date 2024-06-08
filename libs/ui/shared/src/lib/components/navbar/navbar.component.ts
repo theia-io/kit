@@ -2,15 +2,19 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  EventEmitter,
   Input,
+  Output,
   inject,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import {
   AccountTileComponent,
+  DividerComponent,
   TweetButtonComponent,
 } from '@kitouch/ui/components';
+import { SubnavComponent } from './subnav/subnav.component';
 
 export interface NavBarItem {
   name: string;
@@ -25,6 +29,8 @@ export interface NavBarItem {
     CommonModule,
     RouterModule,
     /** Features */
+    SubnavComponent,
+    DividerComponent,
     AccountTileComponent,
     TweetButtonComponent,
   ],
@@ -35,6 +41,9 @@ export interface NavBarItem {
 export class NavBarComponent {
   @Input()
   items: Array<NavBarItem> = [];
+
+  @Output()
+  logout = new EventEmitter<void>();
 
   sanitizer: DomSanitizer = inject(DomSanitizer);
 }

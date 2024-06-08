@@ -10,11 +10,6 @@ import { RouterModule } from '@angular/router';
     RouterModule
   ],
   templateUrl: './account-tile.component.html',
-  styles: `
-    :host {
-      display: block;
-    }
-  `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AccountTileComponent {

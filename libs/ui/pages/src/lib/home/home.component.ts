@@ -4,10 +4,8 @@ import {
   AccountTileComponent,
   TweetButtonComponent,
 } from '@kitouch/ui/components';
-import {
-  FeatTweetTweetingComponent,
-  FeatTweetTweetyComponent,
-} from 'libs/ui/features/tweet/ui/src';
+import { FeatTweetTweetingComponent, FeatTweetTweetyComponent } from '@kitouch/ui/features/tweet';
+
 
 @Component({
   standalone: true,

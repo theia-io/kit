@@ -2,7 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FollowComponent } from '@kitouch/ui/features/follow';
 import { LegalComponent } from '@kitouch/ui/features/legal';
-import { GlobalSearchComponent, SearchComponent } from '@kitouch/ui/features/search';
+import {
+  GlobalSearchComponent
+} from '@kitouch/ui/features/search';
 
 @Component({
   selector: 'layout',
@@ -11,12 +13,10 @@ import { GlobalSearchComponent, SearchComponent } from '@kitouch/ui/features/sea
     CommonModule,
     FollowComponent,
     GlobalSearchComponent,
-    LegalComponent
+    LegalComponent,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent {
-  
-}
+export class LayoutComponent {}

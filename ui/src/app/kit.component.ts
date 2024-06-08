@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
+  AuthService,
   LayoutComponent,
   NAV_ITEMS,
   NavBarComponent,
@@ -19,7 +20,7 @@ import {
   selector: 'app-kitouch',
   template: `
     <layout>
-      <navbar left [items]="navBarItems"></navbar>
+      <navbar (logout)="logoutHandler()" class="block mr-4" left [items]="navBarItems"></navbar>
       <router-outlet></router-outlet> </layout
     >,
   `,
@@ -27,5 +28,12 @@ import {
 export class KitComponent {
   title = 'Kitouch';
 
+  #authService = inject(AuthService);
+
   navBarItems = NAV_ITEMS;
+
+  async logoutHandler() {
+    await this.#authService.logout();
+    window.location.reload();
+  }
 }

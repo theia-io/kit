@@ -1,5 +1,5 @@
 import { Route } from '@angular/router';
-import { APP_PATH, isLoggedInGuard } from '@kitouch/ui/shared';
+import { APP_PATH, onlyForLoggedInGuard, onlyForNotLoggedInGuard } from '@kitouch/ui/shared';
 import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/ui/pages');
@@ -9,6 +9,7 @@ export const appRoutes: Route[] = [
     path: 'join',
     loadComponent: () =>
       import('@kitouch/ui/pages').then((comp) => comp.JoinComponent),
+    canActivate: [onlyForNotLoggedInGuard],
   },
   {
     path: 'redirect',
@@ -32,8 +33,10 @@ export const appRoutes: Route[] = [
   },
   {
     path: '',
+    pathMatch: 'full',
     component: KitComponent,
-    canActivate: [isLoggedInGuard],
+    canActivate: [onlyForLoggedInGuard],
+    canActivateChild: [onlyForLoggedInGuard],
     children: [
       {
         path: '',

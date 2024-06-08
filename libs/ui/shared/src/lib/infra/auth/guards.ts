@@ -4,16 +4,16 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { map, tap } from 'rxjs';
+import { map } from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
 import { AuthService } from './auth.service';
 
 /**
- * Checks if user is in RxJS (RAM) state. If it is not check 
- * if Realm can resolve the user. If so it was refresh of the app 
- * and user willis resolved by 
+ * Checks if user is in RxJS (RAM) state. If it is not check
+ * if Realm can resolve the user. If so it was refresh of the app
+ * and user willis resolved by
  */
-export const isLoggedInGuard = (
+export const onlyForNotLoggedInGuard = (
   route: ActivatedRouteSnapshot,
   state: RouterStateSnapshot
 ) => {
@@ -21,19 +21,40 @@ export const isLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  return authService.isLoggedIn$.pipe(
-    tap((v) => console.log('from isLoggedInGuard', v)),
-    map(async (isLoggedIn: boolean) => {
-      if (!isLoggedIn) {
-        const user = await authService.tryGetAndRefreshUser();
-        if (user) {
-          isLoggedIn = true;
-        }
+  console.log('onlyForNotLoggedInGuard CALLED 111');
+
+  return authService.isHardLoggedIn$.pipe(
+    map((isLoggedIn: boolean) => {
+      if (isLoggedIn) {
+        // we might want to get a last valid route in a future? 
+        return router.createUrlTree(['']);
       }
 
+      return !isLoggedIn;
+    })
+  );
+};
+
+/**
+ * Checks if user is in RxJS (RAM) state. If it is not check
+ * if Realm can resolve the user. If so it was refresh of the app
+ * and user willis resolved by
+ */
+export const onlyForLoggedInGuard = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
+  const routerEventsService = inject(RouterEventsService);
+  const router = inject(Router);
+  const authService = inject(AuthService);
+
+  console.log('onlyForLoggedInGuard CALLED 222');
+
+  return authService.isHardLoggedIn$.pipe(
+    map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
         routerEventsService.latestBeforeRedirect$.next(state.url);
-        router.navigate(['/join']);
+        return router.createUrlTree(['/join']);
       }
 
       return isLoggedIn;
