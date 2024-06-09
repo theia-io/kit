@@ -1,9 +1,16 @@
 import { CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  inject,
+} from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { Tweety } from '@kitouch/shared/models';
 import { AccountTileComponent } from '@kitouch/ui/components';
+import { Store } from '@ngrx/store';
 import { FeatTweetActionsComponent } from '../actions/actions.component';
-import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   standalone: true,
@@ -24,6 +31,8 @@ export class FeatTweetTweetyComponent {
 
   domSanitizer = inject(DomSanitizer);
 
+  #store = inject(Store);
+
   replyHandler() {
     console.info('Implement replyHandler');
   }
@@ -33,7 +42,7 @@ export class FeatTweetTweetyComponent {
   }
 
   likeHandler() {
-    console.info('Implement likeHandler');
+    this.#store.dispatch(FeatTweetActions.likeTweet({ tweet: this.tweet }));
   }
 
   shareHandler() {

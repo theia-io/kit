@@ -10,7 +10,11 @@
     <ng-template #accountInfoTmpl>
         <div class="flex items-center">
             <div>
-                <img class="inline-block h-10 w-10 rounded-full" [src]="picture ?? 'account/placeholder.jpeg'" alt="" />
+                @if(picture) {
+                    <img class="inline-block h-10 w-10 rounded-full" [src]="picture" height="40" width="40" alt="kitouch profile picture" />
+                } @else {
+                    <img class="inline-block h-10 w-10 rounded-full" ngSrc="account/placeholder-small.jpeg'" height="40" width="40" alt="kitouch profile picture placeholder" />
+                }
             </div>
             <div class="ml-2">
                 <p class="text-base leading-6 font-medium font-bold">

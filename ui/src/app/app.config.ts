@@ -1,4 +1,4 @@
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient } from '@angular/common/http';
 import {
   APP_INITIALIZER,
   ApplicationConfig,
@@ -7,7 +7,9 @@ import {
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { AuthService } from '@kitouch/ui/shared';
+import { featTweetReducer } from '@kitouch/feat-tweet-data';
+import { TweetsEffects } from '@kitouch/feat-tweet-effects';
+import { AuthInterceptor, AuthService } from '@kitouch/ui/shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -21,13 +23,15 @@ export const appConfig: ApplicationConfig = {
   providers: [
     //
     provideAnimationsAsync(),
-    provideClientHydration(),
+    // provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
 
     provideRouter(appRoutes),
     // provideRouter(appRoutes, withDebugTracing()),
-    provideStore(),
-    provideEffects(),
+    provideStore({
+      tweet: featTweetReducer,
+    }),
+    provideEffects([TweetsEffects]),
     provideStoreDevtools(),
 
     // auth
@@ -38,5 +42,10 @@ export const appConfig: ApplicationConfig = {
       multi: true,
       deps: [HttpClient, AuthService],
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    }
   ],
 };

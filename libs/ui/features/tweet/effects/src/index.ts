@@ -1,1 +1,1 @@
-export * from './lib/home-tweets.effects';
+export * from './lib/tweet.effects';

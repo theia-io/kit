@@ -1,3 +1,4 @@
-export * from './lib/home-actions';
-export * from './lib/home-reducer';
-export * from './lib/home-selector';
+/** Feature related actions */
+export * from './lib/tweet.actions';
+export * from './lib/tweet.reducers';
+export * from './lib/tweet.selectors';

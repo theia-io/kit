@@ -1,12 +1,12 @@
 <account-tile 
     [primaryText]="tweet.denormalization?.profile?.name ?? 'Unknown'" 
     [primarySecondaryText]="$any(tweet.timestamp) | date"
-    [secondaryText]="tweet?.denormalization?.profile?.type ?? ''" 
-    [picture]="tweet?.denormalization?.profile?.pictures?.[0]?.url ?? ''" />
+    [secondaryText]="tweet.denormalization?.profile?.type ?? ''" 
+    [picture]="tweet.denormalization?.profile?.pictures?.[0]?.url" />
 
 <div class="pl-16">
     <p class="text-base width-auto font-medium flex-shrink"
-        [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet?.content ?? '')">
+        [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)">
     </p>
 
     <feat-tweet-actions (reply)="replyHandler()" (repost)="repostHandler()" (like)="likeHandler()"

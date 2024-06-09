@@ -60,7 +60,7 @@ export class AuthService {
    * This logs user in and redirects either
    * to:
    *  1. Last page user followed // @TODO @FIXME I think there is a bug currently
-   * when it redirects to a JoinComponent that re-writes one the user followed (
+   * when it redirects to a PageJoinComponent that re-writes one the user followed (
    * somebody has sent it to him or he found on the internet, etc. )
    *  2. or Home if not exist
    */

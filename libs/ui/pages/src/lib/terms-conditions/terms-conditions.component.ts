@@ -5,6 +5,6 @@ import { Component } from "@angular/core";
     selector: 'kit-page-terms-conditions',
   templateUrl: './terms-conditions.component.html'
 })
-export class TermsConditionsComponent {
+export class PageTermsConditionsComponent {
  
 }

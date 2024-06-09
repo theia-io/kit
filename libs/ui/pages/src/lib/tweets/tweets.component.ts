@@ -7,8 +7,9 @@ import {
 
 @Component({
   standalone: true,
+  selector: 'kit-page-tweets',
   imports: [CommonModule, AccountTileComponent, TweetButtonComponent],
   templateUrl: './tweets.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TweetsComponent {}
+export class PageTweetsComponent {}

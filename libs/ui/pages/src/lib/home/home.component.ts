@@ -5,7 +5,10 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { HomeTweetActions, selectHomeTweets } from '@kitouch/feat-tweet-data';
+import {
+  FeatTweetActions,
+  selectAllTweets
+} from '@kitouch/feat-tweet-data';
 import {
   AccountTileComponent,
   DividerComponent,
@@ -19,6 +22,8 @@ import { Store, select } from '@ngrx/store';
 
 @Component({
   standalone: true,
+  templateUrl: './home.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     //
@@ -28,15 +33,13 @@ import { Store, select } from '@ngrx/store';
     FeatTweetTweetyComponent,
     TweetButtonComponent,
   ],
-  templateUrl: './home.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnInit {
+export class PageHomeComponent implements OnInit {
   #store = inject(Store);
 
-  homeTweets$ = this.#store.pipe(select(selectHomeTweets));
+  homeTweets$ = this.#store.pipe(select(selectAllTweets));
 
   ngOnInit(): void {
-    this.#store.dispatch(HomeTweetActions.getAll());
+    this.#store.dispatch(FeatTweetActions.getAll());
   }
 }

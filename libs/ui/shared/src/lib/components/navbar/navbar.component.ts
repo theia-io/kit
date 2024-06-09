@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -25,18 +25,20 @@ export interface NavBarItem {
 @Component({
   selector: 'navbar',
   standalone: true,
+  
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
+    NgOptimizedImage,
     /** Features */
     SubnavComponent,
     DividerComponent,
     AccountTileComponent,
     TweetButtonComponent,
   ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavBarComponent {
   @Input()
