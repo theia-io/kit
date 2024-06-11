@@ -1,8 +1,7 @@
 import { Tweety } from '@kitouch/shared/models';
-import { mongooseEqual } from '@kitouch/shared/utils';
-
 import { createReducer, on } from '@ngrx/store';
-import { FeatTweetActions } from './tweet.actions';
+import {mongooseEqual} from '@kitouch/shared/utils';
+import { FeatTweetActions, TweetApiActions } from './tweet.actions';
 
 export interface FeatureTweetState {
   tweets: Array<Tweety>;
@@ -14,17 +13,22 @@ export const featTweetInitialState: FeatureTweetState = {
 
 export const featTweetReducer = createReducer(
   featTweetInitialState,
-  on(FeatTweetActions.setAll, (state, { tweets }) => ({
+  on(TweetApiActions.setAll, (state, { tweets }) => ({
     ...state,
     tweets,
   })),
-  on(FeatTweetActions.set, (state, { tweet }) => ({
+  on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
     ...state,
-    tweets: state.tweets.map((currentTweet) => {
-      if (mongooseEqual(currentTweet, tweet)) {
+    tweets: [...state.tweets, tweet],
+  })),
+  on(FeatTweetActions.likeSuccess, (state, { tweet }) => ({
+    ...state,
+    tweets: state.tweets.map(existingTweet => {
+      if(mongooseEqual(existingTweet, tweet)) {
         return tweet;
-      }
-      return currentTweet;
+      };
+      
+      return existingTweet;
     }),
-  }))
+  })),
 );

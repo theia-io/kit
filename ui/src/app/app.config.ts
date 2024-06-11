@@ -1,12 +1,15 @@
-import { HTTP_INTERCEPTORS, HttpClient, provideHttpClient } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+} from '@angular/common/http';
 import {
   APP_INITIALIZER,
   ApplicationConfig,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withDebugTracing } from '@angular/router';
 import { featTweetReducer } from '@kitouch/feat-tweet-data';
 import { TweetsEffects } from '@kitouch/feat-tweet-effects';
 import { AuthInterceptor, AuthService } from '@kitouch/ui/shared';
@@ -46,6 +49,6 @@ export const appConfig: ApplicationConfig = {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,
       multi: true,
-    }
+    },
   ],
 };

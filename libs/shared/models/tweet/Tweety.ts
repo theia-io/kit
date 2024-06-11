@@ -20,11 +20,11 @@ interface PagedData<T> {
  * */
 
 export enum TweetyType {
-  Tweet = 'Tweet',
-  Retweet = 'Retweet',
-  Quotes = 'Quotes',
-  Reply = 'Reply',
-  Comment = 'Comment',
+  Tweet = 'tweet',
+  Retweet = 'retweet',
+  Quotes = 'quotes',
+  Reply = 'reply',
+  Comment = 'comment',
 }
 
 //

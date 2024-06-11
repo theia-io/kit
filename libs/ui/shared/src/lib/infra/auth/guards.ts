@@ -21,7 +21,7 @@ export const onlyForNotLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  console.log('\n[Auth GUARD] NOT LOGGED IN:');
+  console.log('\n[Auth GUARD] NOT LOGGED IN:', router.url);
 
   return authService.isHardLoggedIn$.pipe(
     map((isLoggedIn: boolean) => {

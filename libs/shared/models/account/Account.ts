@@ -1,4 +1,3 @@
-import { ThirdPartyServices } from '../3dServices/3d';
 import { TimeStamp } from '../helpers';
 
 export enum AccountStatus {
@@ -19,10 +18,10 @@ export interface Account {
   id: string;
   settingsId: string;
   // busines
-  email: string[],
+  email: string[];
   type: AccountType;
   status: AccountStatus;
-  // denormilized 
+  // denormilized
   settings: {
     mfa: string[];
     // info, publicitly, searchibility, etc

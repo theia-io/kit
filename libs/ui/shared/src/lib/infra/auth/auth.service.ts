@@ -2,9 +2,17 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account, Profile, User } from '@kitouch/shared/models';
 import * as Realm from 'realm-web';
-import { BehaviorSubject, filter, map, merge, of, switchMap, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  from,
+  map,
+  of,
+  switchMap,
+  take,
+  tap
+} from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
-import { profile } from 'console';
 
 @Injectable({
   providedIn: 'root',
@@ -19,38 +27,29 @@ export class AuthService {
   redirectUrl = 'http://localhost:4200/redirect';
 
   #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
+
   #account$$ = new BehaviorSubject<Partial<Account> | undefined>(undefined);
   #user$$ = new BehaviorSubject<Partial<User> | undefined>(undefined);
-  #profiles$$ = new BehaviorSubject<Array<Partial<Profile>> | undefined>(
-    undefined
-  );
+  #profiles$$ = new BehaviorSubject<Array<Profile> | undefined>(undefined);
 
   // essential of the store
   realmUser$ = this.#realmUser$$.asObservable();
-  currentProfile$ = this.#profiles$$
-    .asObservable()
-    .pipe(
-      map((profiles) => profiles?.[0]),
-      filter(Boolean)
-    );
+  currentProfile$ = this.#profiles$$.asObservable().pipe(
+    map((profiles) => profiles?.[0]),
+    filter(Boolean)
+  );
 
   /** Realm helpers */
   // helpers, usually can be avoided
-  loggedInRealmUser$ = this.realmUser$.pipe(filter(Boolean));
-
-  isLoggedIn$ = this.realmUser$.pipe(
-    take(1),
-    map((user) => !!user)
-  );
   /** check that the user is not logged in nor refreshed page nor having a valid token after getting to an application a while in a future (once refresh token is not valid anymore) */
   isHardLoggedIn$ = this.realmUser$.pipe(
     take(1),
-    switchMap((user) =>
-      !user ? merge(this.realmUser$, of(this.#refreshUser())) : this.realmUser$
-    ),
+    switchMap((realmUser) => {
+      if(realmUser) { return of(realmUser) };
+      return from(this.#refreshUser());
+    }),
     map((user) => !!user)
   );
-
 
   init() {
     if (this.#realmApp) {
@@ -149,7 +148,7 @@ export class AuthService {
     this.#user$$.next(user);
     this.#profiles$$.next(profiles);
 
-    return user;
+    return realmUser;
   }
 
   async #refreshAccessToken() {

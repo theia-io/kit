@@ -5,7 +5,10 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import { selectAllTweets } from '@kitouch/feat-tweet-data';
+import {
+  TweetApiActions,
+  selectAllTweets
+} from '@kitouch/feat-tweet-data';
 import {
   AccountTileComponent,
   DividerComponent,
@@ -37,6 +40,6 @@ export class PageHomeComponent implements OnInit {
   homeTweets$ = this.#store.pipe(select(selectAllTweets));
 
   ngOnInit(): void {
-    // this.#store.dispatch(FeatTweetActions.getAll());
+    this.#store.dispatch(TweetApiActions.getAll());
   }
 }
