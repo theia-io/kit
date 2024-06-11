@@ -9,24 +9,22 @@
 
     <ng-template #accountInfoTmpl>
         <div class="flex items-center">
-            <div>
-                @if(picture) {
-                    <img class="inline-block h-10 w-10 rounded-full" [src]="picture" height="40" width="40" alt="kitouch profile picture" />
-                } @else {
-                    <img class="inline-block h-10 w-10 rounded-full" ngSrc="account/placeholder-small.jpeg'" height="40" width="40" alt="kitouch profile picture placeholder" />
-                }
-            </div>
+            @if(picture) {
+            <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer" [src]="picture" height="40" width="40"
+                alt="kitouch profile picture" />
+            } @else {
+            <img class="inline-block h-10 w-10 rounded-full" ngSrc="/account/placeholder-small.jpeg" height="40"
+                width="40" alt="kitouch profile picture placeholder" />
+            }
             <div class="ml-2">
                 <p class="text-base leading-6 font-medium font-bold">
                     {{primaryText}}
 
-                    <span
-                        *ngIf="primarySecondaryText"
-                        class="text-sm leading-5 font-medium text-gray-400">
+                    <span *ngIf="primarySecondaryText" class="text-sm leading-5 font-medium text-gray-400">
                         {{primarySecondaryText}}
                     </span>
                 </p>
-                <p  *ngIf="secondaryText"
+                <p *ngIf="secondaryText"
                     class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
                     {{secondaryText}}
                 </p>

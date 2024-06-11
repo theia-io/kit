@@ -21,8 +21,8 @@
 
 <tweet-button class="w-48 mt-4" />
 
-<account-tile class="block mt-12" primaryText="Danylo Bilokha" primarySecondaryText="16 April"
-    secondaryText="Software Engineer" link="/tweets" />
+<account-tile class="block mt-12" [primaryText]="profiles?.[0]?.name ?? 'N/A'"
+  link="/tweets" [picture]="profiles?.[0]?.pictures?.[0]?.url" />
 
 <app-divider class="block mt-4" />
 

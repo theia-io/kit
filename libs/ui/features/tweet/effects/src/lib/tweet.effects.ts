@@ -11,7 +11,7 @@ export class TweetsEffects {
   #tweetApi = inject(TweetApiService);
   #auth = inject(AuthService);
 
-  #user$ = this.#auth.loggedInUser$;
+  #realmUser$ = this.#auth.loggedInRealmUser$;
 
   allTweets$ = createEffect(() =>
     this.#actions$.pipe(
@@ -31,7 +31,7 @@ export class TweetsEffects {
   likeTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.likeTweet),
-      withLatestFrom(this.#user$),
+      withLatestFrom(this.#realmUser$),
       switchMap(
         ([
           {

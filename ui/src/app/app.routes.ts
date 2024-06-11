@@ -10,9 +10,9 @@ const pages = import('@kitouch/ui/pages');
 
 export const appRoutes: Route[] = [
   {
-    path: 'join',
+    path: 'sign-in',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PageJoinComponent),
+      import('@kitouch/ui/pages').then((comp) => comp.PageSignInComponent),
     canActivate: [onlyForNotLoggedInGuard],
   },
   {
@@ -21,14 +21,22 @@ export const appRoutes: Route[] = [
       import('@kitouch/ui/pages').then((comp) => comp.PageRedirectComponent),
   },
   {
+    path: 'join',
+    loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
+  },
+  {
     path: 'terms-and-conditions',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PageTermsConditionsComponent),
+      import('@kitouch/ui/pages').then(
+        (comp) => comp.PageTermsConditionsComponent
+      ),
   },
   {
     path: 'privacy-policy',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PagePrivacyPolicyComponent),
+      import('@kitouch/ui/pages').then(
+        (comp) => comp.PagePrivacyPolicyComponent
+      ),
   },
   {
     path: 'cookie',

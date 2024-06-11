@@ -11,11 +11,6 @@ import {
   Skill,
 } from './shared';
 
-export enum UserRoles {
-  ADMIN = 'admin',
-  USER = 'user',
-}
-
 export interface User {
   // id
   accountId: Account['id'];
@@ -32,7 +27,6 @@ export interface User {
   projects: Project[]; // ids?
   companies: Legal[]; // ids?
   // meta
-  roles: UserRoles[];
   customerInfo: CustomerInfo;
   privateFields: keyof User;
 }

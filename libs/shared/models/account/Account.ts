@@ -10,23 +10,26 @@ export enum AccountStatus {
 
 export enum AccountType {
   ADMIN = 'admin',
-  USER = 'user',
+  USER = 'normal',
   GROUP = 'group',
 }
 
 export interface Account {
   // keys
   id: string;
+  settingsId: string;
+  // busines
+  email: string[],
+  type: AccountType;
+  status: AccountStatus;
+  // denormilized 
   settings: {
     mfa: string[];
     // info, publicitly, searchibility, etc
     subscriptionOns: string[];
   };
-
   // meta
   timestamp: TimeStamp;
-  type: AccountType;
-  status: AccountStatus;
-  password?: string;
-  services?: Array<ThirdPartyServices>;
+  // password?: string;
+  // services?: Array<ThirdPartyServices>;
 }

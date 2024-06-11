@@ -40,6 +40,6 @@ export class PageHomeComponent implements OnInit {
   homeTweets$ = this.#store.pipe(select(selectAllTweets));
 
   ngOnInit(): void {
-    this.#store.dispatch(FeatTweetActions.getAll());
+    // this.#store.dispatch(FeatTweetActions.getAll());
   }
 }

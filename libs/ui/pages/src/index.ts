@@ -1,4 +1,5 @@
 // entry
+export * from './lib/auth/sign-in/sign-in.component';
 export * from './lib/auth/join/join.component';
 // shared
 export * from './lib/terms-conditions/terms-conditions.component';

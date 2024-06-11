@@ -7,6 +7,7 @@ import {
   NAV_ITEMS,
   NavBarComponent,
 } from '@kitouch/ui/shared';
+import { map } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -21,11 +22,12 @@ import {
   template: `
     <layout>
       <navbar
+      [items]="navBarItems"
+      [profiles]="$profiles | async"
         (help)="helpHandler()"
         (logout)="logoutHandler()"
         class="block mr-4"
         left
-        [items]="navBarItems"
       ></navbar>
       <router-outlet></router-outlet> </layout
     >,
@@ -37,6 +39,8 @@ export class KitComponent {
   #authService = inject(AuthService);
 
   navBarItems = NAV_ITEMS;
+
+  $profiles = this.#authService.profiles$;
 
   async logoutHandler() {
     await this.#authService.logout();

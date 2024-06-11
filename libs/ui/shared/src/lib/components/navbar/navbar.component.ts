@@ -15,12 +15,15 @@ import {
   TweetButtonComponent,
 } from '@kitouch/ui/components';
 import { SubnavComponent } from './subnav/subnav.component';
+import { Profile } from '@kitouch/shared/models';
 
 export interface NavBarItem {
   name: string;
   link: string;
   icon: string;
 }
+
+
 
 @Component({
   selector: 'navbar',
@@ -43,6 +46,9 @@ export interface NavBarItem {
 export class NavBarComponent {
   @Input()
   items: Array<NavBarItem> = [];
+
+  @Input() 
+  profiles: Array<Partial<Profile>> | undefined | null;
 
   @Output()
   logout = new EventEmitter<void>();

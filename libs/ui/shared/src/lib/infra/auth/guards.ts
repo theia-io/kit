@@ -56,7 +56,7 @@ export const onlyForLoggedInGuard = (
     map((isLoggedIn: boolean) => {
       console.log('\n[Auth GUARD] LOGGED IN:', isLoggedIn);
       if (!isLoggedIn) {
-        return router.createUrlTree(['/join']);
+        return router.createUrlTree(['/sign-in']);
       }
 
       return isLoggedIn;
