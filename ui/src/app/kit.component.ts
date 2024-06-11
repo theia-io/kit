@@ -23,7 +23,7 @@ import { map } from 'rxjs/operators';
     <layout>
       <navbar
       [items]="navBarItems"
-      [profiles]="$profiles | async"
+      [profile]="$profile | async"
         (help)="helpHandler()"
         (logout)="logoutHandler()"
         class="block mr-4"
@@ -40,7 +40,7 @@ export class KitComponent {
 
   navBarItems = NAV_ITEMS;
 
-  $profiles = this.#authService.profiles$;
+  $profile = this.#authService.currentProfile$;
 
   async logoutHandler() {
     await this.#authService.logout();

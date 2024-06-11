@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'tweet-button',
@@ -12,11 +12,15 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   `,
   template: `
     <button
-      class="w-full py-2 px-4 rounded-full bg-neutral-400 hover:bg-neutral-600 text-white font-bold"
+      [disabled]="disabled"
+      class="w-full py-2 px-4 rounded-full bg-neutral-400 disabled:bg-neutral-300 hover:bg-neutral-600 text-white font-bold"
     >
       Tweet
     </button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TweetButtonComponent {}
+export class TweetButtonComponent {
+  @Input()
+  disabled = false;
+}

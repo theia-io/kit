@@ -5,10 +5,7 @@ import {
   OnInit,
   inject,
 } from '@angular/core';
-import {
-  FeatTweetActions,
-  selectAllTweets
-} from '@kitouch/feat-tweet-data';
+import { selectAllTweets } from '@kitouch/feat-tweet-data';
 import {
   AccountTileComponent,
   DividerComponent,

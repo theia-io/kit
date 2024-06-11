@@ -48,7 +48,7 @@ export class NavBarComponent {
   items: Array<NavBarItem> = [];
 
   @Input() 
-  profiles: Array<Partial<Profile>> | undefined | null;
+  profile: Partial<Profile> | undefined | null;
 
   @Output()
   logout = new EventEmitter<void>();

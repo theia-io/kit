@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { Tweety } from '@kitouch/shared/models';
 import { AuthService } from '@kitouch/ui/shared';
 import { shareReplay, switchMap, take, tap } from 'rxjs/operators';
 
@@ -16,6 +17,13 @@ export class TweetApiService {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['allTweets']()),
       tap((v) => console.log('[TweetApiService] getAll', v))
+    );
+  }
+
+  tweet(tweet: Partial<Tweety>) {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['postTweet']({ tweet })),
+      tap((v) => console.log('[TweetApiService] tweet', v)),
     );
   }
 

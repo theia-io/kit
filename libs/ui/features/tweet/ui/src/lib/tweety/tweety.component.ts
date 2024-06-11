@@ -42,7 +42,7 @@ export class FeatTweetTweetyComponent {
   }
 
   likeHandler() {
-    this.#store.dispatch(FeatTweetActions.likeTweet({ tweet: this.tweet }));
+    this.#store.dispatch(FeatTweetActions.like({ tweet: this.tweet }));
   }
 
   shareHandler() {

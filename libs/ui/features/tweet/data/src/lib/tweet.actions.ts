@@ -7,20 +7,20 @@ export const FeatTweetActions = createActionGroup({
     GetAll: emptyProps(),
     SetAll: props<{ tweets: Tweety[] }>(),
     Set: props<{ tweet: Tweety }>(),
-    LikeTweet: props<{ tweet: Tweety }>(),
+    Create: props<{ content: string }>(),
+    Like: props<{ tweet: Tweety }>(),
   },
 });
 
 export const TweetApiActions = createActionGroup({
-    source: 'TweetApiActions',
-    events: {
-      GetAll: emptyProps(),
-      SetAll: props<{ tweets: Tweety[] }>(),
-      Get: props<{ id: string }>(),
-      Set: props<{ tweet: Tweety }>(),
-      Delete: props<{ id: string }>(),
-      Post: props<{ tweet: Tweety }>(),
-      Update: props<{ tweet: Tweety }>(),
-    },
-  });
-  
+  source: 'TweetApiActions',
+  events: {
+    GetAll: emptyProps(),
+    SetAll: props<{ tweets: Tweety[] }>(),
+    Get: props<{ id: string }>(),
+    Set: props<{ tweet: Tweety }>(),
+    Delete: props<{ id: string }>(),
+    Post: props<{ tweet: Tweety }>(),
+    Update: props<{ tweet: Tweety }>(),
+  },
+});

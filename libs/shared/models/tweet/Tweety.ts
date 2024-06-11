@@ -1,3 +1,5 @@
+import {prop} from '@typegoose/typegoose';
+
 import { Account } from '../account/account';
 import { TimeStamp } from '../helpers';
 import { Profile } from '../entities-kitouch';
@@ -29,6 +31,7 @@ export enum TweetyType {
 export interface Tweety {
   // keys
   id: string;
+  //
   profileId: Profile['id'];
   retweetId?: Tweety['id']; // for retweets, quotes, comments, replies
   // business
@@ -46,4 +49,8 @@ export interface Tweety {
   // meta
   type: TweetyType;
   timestamp: TimeStamp;
+}
+
+export class TweetySchema {
+  
 }

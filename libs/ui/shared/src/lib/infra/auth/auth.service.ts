@@ -2,16 +2,9 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account, Profile, User } from '@kitouch/shared/models';
 import * as Realm from 'realm-web';
-import {
-  BehaviorSubject,
-  filter,
-  map,
-  merge,
-  of,
-  switchMap,
-  take
-} from 'rxjs';
+import { BehaviorSubject, filter, map, merge, of, switchMap, take } from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
+import { profile } from 'console';
 
 @Injectable({
   providedIn: 'root',
@@ -25,30 +18,39 @@ export class AuthService {
   #realmApp: Realm.App | null = null;
   redirectUrl = 'http://localhost:4200/redirect';
 
-  // essential of the store
-  realmUser$ = new BehaviorSubject<Realm.User | undefined>(undefined);
-  account$ = new BehaviorSubject<Partial<Account> | undefined>(undefined);
-  user$ = new BehaviorSubject<Partial<User> | undefined>(undefined);
-  profiles$ = new BehaviorSubject<Array<Partial<Profile>> | undefined>(
+  #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
+  #account$$ = new BehaviorSubject<Partial<Account> | undefined>(undefined);
+  #user$$ = new BehaviorSubject<Partial<User> | undefined>(undefined);
+  #profiles$$ = new BehaviorSubject<Array<Partial<Profile>> | undefined>(
     undefined
   );
 
+  // essential of the store
+  realmUser$ = this.#realmUser$$.asObservable();
+  currentProfile$ = this.#profiles$$
+    .asObservable()
+    .pipe(
+      map((profiles) => profiles?.[0]),
+      filter(Boolean)
+    );
+
   /** Realm helpers */
   // helpers, usually can be avoided
-  loggedInRealmUser$ = this.realmUser$.asObservable().pipe(filter(Boolean));
+  loggedInRealmUser$ = this.realmUser$.pipe(filter(Boolean));
 
-  isLoggedIn$ = this.realmUser$.asObservable().pipe(
+  isLoggedIn$ = this.realmUser$.pipe(
     take(1),
     map((user) => !!user)
   );
   /** check that the user is not logged in nor refreshed page nor having a valid token after getting to an application a while in a future (once refresh token is not valid anymore) */
-  isHardLoggedIn$ = this.realmUser$.asObservable().pipe(
+  isHardLoggedIn$ = this.realmUser$.pipe(
     take(1),
     switchMap((user) =>
       !user ? merge(this.realmUser$, of(this.#refreshUser())) : this.realmUser$
     ),
     map((user) => !!user)
   );
+
 
   init() {
     if (this.#realmApp) {
@@ -83,7 +85,7 @@ export class AuthService {
     this.#realmApp
       ?.logIn(credentials)
       .then((realmUser) => {
-        this.realmUser$.next(realmUser);
+        this.#realmUser$$.next(realmUser);
         return this.#getAccountUserProfiles(realmUser);
       })
       .then(({ account, user, profiles }: any) => {
@@ -93,9 +95,9 @@ export class AuthService {
           return this.#router.navigateByUrl('join');
         }
 
-        this.account$.next(account);
-        this.user$.next(user);
-        this.profiles$.next(profiles);
+        this.#account$$.next(account);
+        this.#user$$.next(user);
+        this.#profiles$$.next(profiles);
 
         this.routerEventsService.lastUrlBeforeCancelled$
           .pipe(take(1))
@@ -113,7 +115,7 @@ export class AuthService {
 
   async logout() {
     await this.#realmApp?.currentUser?.logOut();
-    this.realmUser$.next(undefined);
+    this.#realmUser$$.next(undefined);
   }
 
   /**
@@ -139,13 +141,13 @@ export class AuthService {
     // I dont want to have 2 requests at this moment
     // await this.#refreshAccessToken();
 
-    this.realmUser$.next(realmUser);
+    this.#realmUser$$.next(realmUser);
     const { account, user, profiles } = await this.#getAccountUserProfiles(
       realmUser
     );
-    this.account$.next(account);
-    this.user$.next(user);
-    this.profiles$.next(profiles);
+    this.#account$$.next(account);
+    this.#user$$.next(user);
+    this.#profiles$$.next(profiles);
 
     return user;
   }
