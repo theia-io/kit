@@ -10,30 +10,38 @@ const pages = import('@kitouch/ui/pages');
 
 export const appRoutes: Route[] = [
   {
-    path: 'join',
+    path: 'sign-in',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.JoinComponent),
+      import('@kitouch/ui/pages').then((comp) => comp.PageSignInComponent),
     canActivate: [onlyForNotLoggedInGuard],
   },
   {
     path: 'redirect',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.RedirectComponent),
+      import('@kitouch/ui/pages').then((comp) => comp.PageRedirectComponent),
+  },
+  {
+    path: 'join',
+    loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
   },
   {
     path: 'terms-and-conditions',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.TermsConditionsComponent),
+      import('@kitouch/ui/pages').then(
+        (comp) => comp.PageTermsConditionsComponent
+      ),
   },
   {
     path: 'privacy-policy',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PrivacyPolicyComponent),
+      import('@kitouch/ui/pages').then(
+        (comp) => comp.PagePrivacyPolicyComponent
+      ),
   },
   {
     path: 'cookie',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.CookiesComponent),
+      import('@kitouch/ui/pages').then((comp) => comp.PageCookiesComponent),
   },
   {
     path: '',
@@ -48,23 +56,36 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Home,
-        loadComponent: () => pages.then((comp) => comp.HomeComponent),
+        loadComponent: () => pages.then((comp) => comp.PageHomeComponent),
+        providers: [
+          // provideState({ name: 'pages.home', reducer: pageHomeReducer }),
+          // provideEffects(HomeTweetsEffects),
+        ],
       },
       {
         path: APP_PATH.Tweets,
-        loadComponent: () => pages.then((comp) => comp.TweetsComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () => pages.then((comp) => comp.PageTweetsComponent),
+          },
+          {
+            path: ':id',
+            loadComponent: () => pages.then((comp) => comp.PageTweetComponent),
+          },
+        ],
       },
       {
         path: APP_PATH.Messages,
-        loadComponent: () => pages.then((comp) => comp.MessagesComponent),
+        loadComponent: () => pages.then((comp) => comp.PageMessagesComponent),
       },
       {
         path: APP_PATH.Bookmarks,
-        loadComponent: () => pages.then((comp) => comp.BookmarksComponent),
+        loadComponent: () => pages.then((comp) => comp.PageBookmarksComponent),
       },
       {
         path: APP_PATH.Settings,
-        loadComponent: () => pages.then((comp) => comp.SettingsComponent),
+        loadComponent: () => pages.then((comp) => comp.PageSettingsComponent),
       },
       // {
       //   path: '**',
@@ -74,7 +95,7 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'not-found-error',
-    loadComponent: () => pages.then((comp) => comp.ErrorPageComponent),
+    loadComponent: () => pages.then((comp) => comp.PageErrorComponent),
   },
   {
     path: '**',

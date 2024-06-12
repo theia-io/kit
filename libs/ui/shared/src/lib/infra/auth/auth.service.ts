@@ -1,7 +1,17 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Account, Profile, User } from '@kitouch/shared/models';
 import * as Realm from 'realm-web';
-import { BehaviorSubject, map, merge, of, switchMap, take, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  from,
+  map,
+  of,
+  switchMap,
+  take,
+  tap
+} from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
@@ -16,25 +26,29 @@ export class AuthService {
   #realmApp: Realm.App | null = null;
   redirectUrl = 'http://localhost:4200/redirect';
 
-  // essential of the store
-  user$ = new BehaviorSubject<any>(undefined);
+  #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
 
-  // helpers, usually can be avoided
-  isLoggedIn$ = this.user$.asObservable().pipe(
-    take(1),
-    map((user) => !!user)
+  #account$$ = new BehaviorSubject<Partial<Account> | undefined>(undefined);
+  #user$$ = new BehaviorSubject<Partial<User> | undefined>(undefined);
+  #profiles$$ = new BehaviorSubject<Array<Profile> | undefined>(undefined);
+
+  // essential of the store
+  realmUser$ = this.#realmUser$$.asObservable();
+  currentProfile$ = this.#profiles$$.asObservable().pipe(
+    map((profiles) => profiles?.[0]),
+    filter(Boolean)
   );
+
+  /** Realm helpers */
+  // helpers, usually can be avoided
   /** check that the user is not logged in nor refreshed page nor having a valid token after getting to an application a while in a future (once refresh token is not valid anymore) */
-  isHardLoggedIn$ = this.user$.asObservable().pipe(
+  isHardLoggedIn$ = this.realmUser$.pipe(
     take(1),
-    switchMap((user) =>
-      !user ? merge(this.user$, of(this.#refreshUser())) : this.user$
-    ),
-    tap((user) =>
-      console.log('TESTING TESTING TESTING isHardLoggedIn$ ---- 000', user)
-    ),
-    map((user) => !!user),
-    tap((user) => console.log('TESTING TESTING TESTING isHardLoggedIn$', user))
+    switchMap((realmUser) => {
+      if(realmUser) { return of(realmUser) };
+      return from(this.#refreshUser());
+    }),
+    map((user) => !!user)
   );
 
   init() {
@@ -43,7 +57,7 @@ export class AuthService {
       return;
     }
 
-    console.log('Initializing Realm...');
+    console.info('Initializing Realm...');
 
     this.#realmApp = new Realm.App({ id: 'application-0-gnmmqxd' });
     return this.#realmApp;
@@ -53,12 +67,12 @@ export class AuthService {
    * This logs user in and redirects either
    * to:
    *  1. Last page user followed // @TODO @FIXME I think there is a bug currently
-   * when it redirects to a JoinComponent that re-writes one the user followed (
+   * when it redirects to a PageSignInComponent that re-writes one the user followed (
    * somebody has sent it to him or he found on the internet, etc. )
    *  2. or Home if not exist
    */
   googleSignIn() {
-    console.log('Google signin initiated', this.#realmApp);
+    console.info('Google signin initiated', this.#realmApp);
     if (!this.#realmApp) {
       this.init();
     }
@@ -69,16 +83,29 @@ export class AuthService {
 
     this.#realmApp
       ?.logIn(credentials)
-      .then((user) => {
-        this.user$.next(user);
+      .then((realmUser) => {
+        this.#realmUser$$.next(realmUser);
+        return this.#getAccountUserProfiles(realmUser);
+      })
+      .then(({ account, user, profiles }: any) => {
+        console.log(account, user, profiles);
+
+        if (!account || !user || !profiles) {
+          return this.#router.navigateByUrl('join');
+        }
+
+        this.#account$$.next(account);
+        this.#user$$.next(user);
+        this.#profiles$$.next(profiles);
 
         this.routerEventsService.lastUrlBeforeCancelled$
           .pipe(take(1))
           .subscribe((urlBeforeSignIn) => {
+            console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
             this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
           });
 
-        return user;
+        return;
       })
       .catch((error) => {
         console.error('Error logging  in:', error);
@@ -87,7 +114,7 @@ export class AuthService {
 
   async logout() {
     await this.#realmApp?.currentUser?.logOut();
-    this.user$.next(undefined);
+    this.#realmUser$$.next(undefined);
   }
 
   /**
@@ -104,8 +131,8 @@ export class AuthService {
       this.init();
     }
 
-    const user = await this.#realmApp?.currentUser;
-    if (!user) {
+    const realmUser = await this.#realmApp?.currentUser;
+    if (!realmUser) {
       console.error('No User, cannot refresh');
       return null;
     }
@@ -113,13 +140,24 @@ export class AuthService {
     // I dont want to have 2 requests at this moment
     // await this.#refreshAccessToken();
 
-    this.user$.next(user);
-    return user;
+    this.#realmUser$$.next(realmUser);
+    const { account, user, profiles } = await this.#getAccountUserProfiles(
+      realmUser
+    );
+    this.#account$$.next(account);
+    this.#user$$.next(user);
+    this.#profiles$$.next(profiles);
+
+    return realmUser;
   }
 
   async #refreshAccessToken() {
-    // this does 2 API requests 
+    // this does 2 API requests
     // to location and to session (to create a new one token)
     await this.#realmApp?.currentUser?.refreshAccessToken();
+  }
+
+  async #getAccountUserProfiles(realmUser: Realm.User) {
+    return await realmUser.functions['getAccountUserProfiles'](realmUser.id);
   }
 }

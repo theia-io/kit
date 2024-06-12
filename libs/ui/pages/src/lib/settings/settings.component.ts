@@ -3,8 +3,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  selector: 'kit-page-settings',
   templateUrl: './settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule],
 })
-export class SettingsComponent {}
+export class PageSettingsComponent {}

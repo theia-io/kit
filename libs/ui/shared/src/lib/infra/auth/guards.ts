@@ -21,12 +21,14 @@ export const onlyForNotLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  console.log('onlyForNotLoggedInGuard CALLED 111');
+  console.log('\n[Auth GUARD] NOT LOGGED IN:', router.url);
 
   return authService.isHardLoggedIn$.pipe(
     map((isLoggedIn: boolean) => {
+      console.log('[Auth GUARD] NOT LOGGED IN:', isLoggedIn);
+
       if (isLoggedIn) {
-        // we might want to get a last valid route in a future? 
+        // we might want to get a last valid route in a future?
         return router.createUrlTree(['']);
       }
 
@@ -48,11 +50,13 @@ export const onlyForLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
+  console.log('\n[Auth GUARD] LOGGED IN:');
+
   return authService.isHardLoggedIn$.pipe(
     map((isLoggedIn: boolean) => {
+      console.log('\n[Auth GUARD] LOGGED IN:', isLoggedIn);
       if (!isLoggedIn) {
-        routerEventsService.latestBeforeRedirect$.next(state.url);
-        return router.createUrlTree(['/join']);
+        return router.createUrlTree(['/sign-in']);
       }
 
       return isLoggedIn;

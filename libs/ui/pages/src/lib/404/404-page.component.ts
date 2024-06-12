@@ -76,4 +76,4 @@ import { ButtonComponent } from '@kitouch/ui/components';
   `,
   imports: [CommonModule, RouterModule, ButtonComponent],
 })
-export class ErrorPageComponent {}
+export class PageErrorComponent {}

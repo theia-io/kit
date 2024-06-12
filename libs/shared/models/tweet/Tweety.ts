@@ -1,3 +1,5 @@
+import {prop} from '@typegoose/typegoose';
+
 import { Account } from '../account/account';
 import { TimeStamp } from '../helpers';
 import { Profile } from '../entities-kitouch';
@@ -18,17 +20,18 @@ interface PagedData<T> {
  * */
 
 export enum TweetyType {
-  Tweet = 'Tweet',
-  Retweet = 'Retweet',
-  Quotes = 'Quotes',
-  Reply = 'Reply',
-  Comment = 'Comment',
+  Tweet = 'tweet',
+  Retweet = 'retweet',
+  Quotes = 'quotes',
+  Reply = 'reply',
+  Comment = 'comment',
 }
 
 //
 export interface Tweety {
   // keys
   id: string;
+  //
   profileId: Profile['id'];
   retweetId?: Tweety['id']; // for retweets, quotes, comments, replies
   // business
@@ -41,9 +44,13 @@ export interface Tweety {
   // />
   // some statistics connections
   denormalization: {
-    profile: Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>;
+    profile: Partial<Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>>;
   };
   // meta
   type: TweetyType;
   timestamp: TimeStamp;
+}
+
+export class TweetySchema {
+  
 }

@@ -5,4 +5,4 @@ import { Component } from '@angular/core';
   selector: 'kit-page-cookies',
   templateUrl: './cookies.component.html',
 })
-export class CookiesComponent {}
+export class PageCookiesComponent {}

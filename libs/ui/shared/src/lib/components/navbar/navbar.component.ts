@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,6 +15,7 @@ import {
   TweetButtonComponent,
 } from '@kitouch/ui/components';
 import { SubnavComponent } from './subnav/subnav.component';
+import { Profile } from '@kitouch/shared/models';
 
 export interface NavBarItem {
   name: string;
@@ -22,25 +23,32 @@ export interface NavBarItem {
   icon: string;
 }
 
+
+
 @Component({
   selector: 'navbar',
   standalone: true,
+  
+  templateUrl: './navbar.component.html',
+  styleUrl: './navbar.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
     RouterModule,
+    NgOptimizedImage,
     /** Features */
     SubnavComponent,
     DividerComponent,
     AccountTileComponent,
     TweetButtonComponent,
   ],
-  templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
-  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class NavBarComponent {
   @Input()
   items: Array<NavBarItem> = [];
+
+  @Input() 
+  profile: Partial<Profile> | undefined | null;
 
   @Output()
   logout = new EventEmitter<void>();

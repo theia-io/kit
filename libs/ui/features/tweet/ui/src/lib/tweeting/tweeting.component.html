@@ -1,9 +1,15 @@
 <div class="flex">
     <div class="m-2 w-10 py-1">
-        <img class="inline-block h-10 w-10 rounded-full" src="account/placeholder.jpeg" alt="user account image" />
+        @if(profilePic$ | async) {
+            <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer" [src]="profilePic$ | async" height="40" width="40"
+                alt="kitouch profile picture" />
+            } @else {
+            <img class="inline-block h-10 w-10 rounded-full" ngSrc="/account/placeholder-small.jpeg" height="40"
+                width="40" alt="kitouch profile picture placeholder" />
+            }
     </div>
     <div class="flex-1 px-2 pt-2 mt-2">
-        <textarea class=" bg-transparent text-gray-400 font-medium text-lg w-full" rows="2" cols="50"
+        <textarea [formControl]="tweetContentControl" class="bg-transparent text-gray-400 font-medium text-lg w-full" rows="2" cols="50"
             placeholder="What's happening?"></textarea>
     </div>
 </div>
@@ -66,6 +72,6 @@
     </div>
 
     <div class="flex-1">
-        <tweet-button class="mt-5 mr-8 w-24 float-right" />
+        <tweet-button [disabled]="!tweetContentControl.valid" (click)="tweetingHandle()" class="mt-5 mr-8 w-24 float-right" />
     </div>
 </div>

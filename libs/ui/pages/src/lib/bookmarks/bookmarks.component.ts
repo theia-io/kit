@@ -3,8 +3,9 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  selector: 'kit-page-bookmarks',
   templateUrl: './bookmarks.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule],
 })
-export class BookmarksComponent {}
+export class PageBookmarksComponent {}

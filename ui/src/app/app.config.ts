@@ -1,13 +1,21 @@
-import { HttpClient, provideHttpClient } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  provideHttpClient,
+} from '@angular/common/http';
 import {
   APP_INITIALIZER,
   ApplicationConfig,
   provideZoneChangeDetection,
 } from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withDebugTracing } from '@angular/router';
-import { AuthService } from '@kitouch/ui/shared';
+import { featTweetReducer } from '@kitouch/feat-tweet-data';
+import { TweetsEffects } from '@kitouch/feat-tweet-effects';
+import { AuthInterceptor, AuthService } from '@kitouch/ui/shared';
+import { provideEffects } from '@ngrx/effects';
+import { provideStore } from '@ngrx/store';
+import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { appRoutes } from './app.routes';
 
 const realAppFactory = (_: HttpClient, _1: AuthService) => {
@@ -16,13 +24,18 @@ const realAppFactory = (_: HttpClient, _1: AuthService) => {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideClientHydration(),
-    provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(
-      appRoutes,
-      withDebugTracing()
-    ),
+    //
     provideAnimationsAsync(),
+    // provideClientHydration(),
+    provideZoneChangeDetection({ eventCoalescing: true }),
+
+    provideRouter(appRoutes),
+    // provideRouter(appRoutes, withDebugTracing()),
+    provideStore({
+      tweet: featTweetReducer,
+    }),
+    provideEffects([TweetsEffects]),
+    provideStoreDevtools(),
 
     // auth
     provideHttpClient(),
@@ -31,6 +44,11 @@ export const appConfig: ApplicationConfig = {
       useFactory: realAppFactory,
       multi: true,
       deps: [HttpClient, AuthService],
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
     },
   ],
 };

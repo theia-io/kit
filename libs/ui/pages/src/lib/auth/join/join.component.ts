@@ -1,18 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AuthService } from '@kitouch/ui/shared';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
+  selector: 'kit-page-join',
   templateUrl: './join.component.html',
-  styleUrls: ['./join.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule],
 })
-export class JoinComponent {
-  #authService = inject(AuthService);
-
-  handleGoogleSignIn() {
-    this.#authService.googleSignIn();
-  }
-}
+export class PageJoinComponent {}

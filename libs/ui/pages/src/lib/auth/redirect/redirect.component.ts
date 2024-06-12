@@ -5,11 +5,11 @@ import * as Realm from 'realm-web';
 
 @Component({
   standalone: true,
-  imports: [CommonModule],
   selector: 'kit-page-redirect',
   templateUrl: './redirect.component.html',
+  imports: [CommonModule],
 })
-export class RedirectComponent implements OnInit {
+export class PageRedirectComponent implements OnInit {
   ngOnInit() {
     Realm.handleAuthRedirect();
   }
