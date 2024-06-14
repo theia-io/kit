@@ -26,9 +26,8 @@ export interface NavBarItem {
 
 
 @Component({
-  selector: 'navbar',
   standalone: true,
-  
+  selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,

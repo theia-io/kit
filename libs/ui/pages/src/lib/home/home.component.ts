@@ -13,6 +13,7 @@ import {
   AccountTileComponent,
   DividerComponent,
   TweetButtonComponent,
+  UiCompGradientCardComponent,
 } from '@kitouch/ui/components';
 import {
   FeatTweetTweetingComponent,
@@ -27,6 +28,7 @@ import { Store, select } from '@ngrx/store';
   imports: [
     CommonModule,
     //
+    UiCompGradientCardComponent,
     AccountTileComponent,
     DividerComponent,
     FeatTweetTweetingComponent,

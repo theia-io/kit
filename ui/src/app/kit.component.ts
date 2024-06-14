@@ -26,7 +26,7 @@ import { map } from 'rxjs/operators';
       [profile]="$profile | async"
         (help)="helpHandler()"
         (logout)="logoutHandler()"
-        class="block mr-4"
+        class="block"
         left
       ></navbar>
       <router-outlet></router-outlet> </layout

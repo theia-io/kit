@@ -1,6 +1,6 @@
 <account-tile 
     [primaryText]="tweet.denormalization?.profile?.name ?? 'Unknown'" 
-    [primarySecondaryText]="tweet.timestamp?.createdAt| date"
+    [primarySecondaryText]="tweet.timestamp?.createdAt| date:'MMM d, h:mm a'"
     [secondaryText]="tweet.denormalization?.profile?.type ?? ''" 
     [picture]="tweet.denormalization?.profile?.pictures?.[0]?.url" />
 

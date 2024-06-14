@@ -1,18 +1,18 @@
-<div class="container mx-auto h-full flex">
-        <!-- left -->
-        <div class="w-2/5 h-full ml-32 my-4">
-            <ng-content select="[left]"></ng-content>
-        </div>
+<div class="container flex h-full max-w-fit mx-auto my-4">
+    <!-- left -->
+    <div class="w-2/5 mr-4">
+        <ng-content select="[left]"></ng-content>
+    </div>
 
-        <!--middle-->
-        <div class="w-3/5 h-auto">
-            <ng-content></ng-content>
-        </div>
+    <!--middle-->
+    <div class="w-3/5">
+        <ng-content></ng-content>
+    </div>
 
-        <!--right -->
-        <div class="w-2/5 h-12">
-            <global-search />
-            <follow />
-            <legal></legal>
-        </div>
+    <!--right -->
+    <div class="w-2/5 ml-4">
+        <global-search />
+        <follow />
+        <legal></legal>
+    </div>
 </div>
