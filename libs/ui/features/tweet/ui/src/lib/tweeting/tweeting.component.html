@@ -9,15 +9,14 @@
         }
     </div>
     <div class="flex-1 px-2 pt-2 mt-2">
-        <textarea [formControl]="tweetContentControl" class="bg-transparent text-gray-400 font-medium text-lg w-full"
+        <textarea [formControl]="tweetContentControl" class="w-full bg-transparent font-semibold text-xl outline-transparent"
             rows="2" cols="50" placeholder="What's happening?"></textarea>
     </div>
 </div>
 
-<!--middle creat Tweet below icons-->
 <div class="flex justify-end items-center">
     <feat-tweet-tweeting-actions (image)="imageHandler()" (reaction)="reactionHandler()" />
 
-    <tweet-button [disabled]="!tweetContentControl.valid || true" [loader]="true" (click)="tweetingHandle()"
+    <ui-comp-tweet-button [disabled]="!tweetContentControl.valid || tweettingInProgress()" [loader]="tweettingInProgress()" (click)="tweetingHandle()"
         class="mx-8 min-w-28 float-right" />
 </div>

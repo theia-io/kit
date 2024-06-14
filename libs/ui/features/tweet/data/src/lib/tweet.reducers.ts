@@ -19,7 +19,7 @@ export const featTweetReducer = createReducer(
   })),
   on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
     ...state,
-    tweets: [...state.tweets, tweet],
+    tweets: [tweet, ...state.tweets],
   })),
   on(FeatTweetActions.likeSuccess, (state, { tweet }) => ({
     ...state,

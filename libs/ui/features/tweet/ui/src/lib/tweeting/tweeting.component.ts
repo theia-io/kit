@@ -12,14 +12,14 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
+import { Tweety } from '@kitouch/shared/models';
 import { TweetButtonComponent } from '@kitouch/ui/components';
-import { APP_PATH, AuthService } from '@kitouch/ui/shared';
+import { APP_PATH, AuthService, TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -59,7 +59,7 @@ export class FeatTweetTweetingComponent {
     Validators.minLength(2),
     Validators.maxLength(1000),
   ]);
-  
+
   tweettingInProgress = signal(false);
 
   imageHandler() {
@@ -68,7 +68,6 @@ export class FeatTweetTweetingComponent {
 
   reactionHandler() {
     console.log('reaction handler');
-
   }
 
   tweetingHandle() {
@@ -96,12 +95,26 @@ export class FeatTweetTweetingComponent {
           this.tweetContentControl.setValue('');
 
           this.tweettingInProgress.set(false);
-          const snackBarRef = this.#snackBar.open('Posted!', 'See it');
-          snackBarRef.onAction().subscribe(() => {
-            console.log(APP_PATH.Tweets, tweet.id);
-            this.#router.navigate(['/', APP_PATH.Tweets, tweet.id]);
-          });
+
+          this.#openSnackBar(tweet);
         }
       });
+  }
+
+  #openSnackBar(tweet: Tweety) {
+    const content =
+      tweet.content.length > 13
+        ? tweet.content.slice(0, 10) + '...'
+        : tweet.content;
+    const snackBarRef = this.#snackBar.open(content, 'See it');
+
+    snackBarRef.onAction().subscribe(() => {
+      console.log(APP_PATH.Tweets, tweet.id);
+      this.#router.navigate(['/', APP_PATH.Tweets, tweet.id]);
+    });
+
+    setTimeout(() => {
+      snackBarRef.dismiss();
+    }, TWEET_NEW_TWEET_TIMEOUT);
   }
 }

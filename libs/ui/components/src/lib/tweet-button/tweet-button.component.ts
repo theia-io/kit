@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'tweet-button',
+  selector: 'ui-comp-tweet-button',
   standalone: true,
   imports: [CommonModule],
   styles: `

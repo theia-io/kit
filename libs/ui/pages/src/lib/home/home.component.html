@@ -4,5 +4,12 @@
 
 @for (tweet of homeTweets$ | async; track $index) {
 <app-divider class="block my-2" [class.mt-12]="$first" />
-<feat-tweet-tweety class="block p-2" [tweet]="tweet" />
+
+<div class="relative p-2">
+    <feat-tweet-tweety class="block" [tweet]="tweet" />
+    <span *ngIf="newlyAddedTweets().has(tweet.id)" class="absolute top-1 right-1 flex h-3 w-3">
+        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+        <span class="relative inline-flex rounded-full h-3 w-3 bg-sky-500"></span>
+    </span>
+</div>
 }
