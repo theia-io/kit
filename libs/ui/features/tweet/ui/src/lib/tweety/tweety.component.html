@@ -9,6 +9,6 @@
         [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)">
     </p>
 
-    <feat-tweet-actions (reply)="replyHandler()" (repost)="repostHandler()" (like)="likeHandler()"
+    <feat-tweet-actions (comment)="commentHandler()" [likes]="tweet.upProfileIds?.length ?? 0" (repost)="repostHandler()" (like)="likeHandler()"
         (share)="shareHandler()" (bookmark)="bookmarkHandler()" />
 </div>

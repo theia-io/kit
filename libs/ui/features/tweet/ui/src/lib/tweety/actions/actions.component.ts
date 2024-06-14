@@ -12,16 +12,19 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
 })
 export class FeatTweetActionsComponent {
     @Input() 
+    comments = 0;
+
+    @Input() 
+    repostsAndQuotes = 0;
+
+    @Input() 
     likes = 0;
 
-    @Input() 
-    retweets = 0;
-
-    @Input() 
-    replies = 0;
+    @Input()
+    bookmarked = false;
 
     @Output() 
-    reply = new EventEmitter<void>();
+    comment = new EventEmitter<void>();
 
     @Output() 
     repost = new EventEmitter<void>();

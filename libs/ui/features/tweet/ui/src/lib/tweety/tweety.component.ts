@@ -33,8 +33,8 @@ export class FeatTweetTweetyComponent {
 
   #store = inject(Store);
 
-  replyHandler() {
-    console.info('Implement replyHandler');
+  commentHandler() {
+    console.info('Implement commentHandler');
   }
 
   repostHandler() {
