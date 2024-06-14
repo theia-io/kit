@@ -11,12 +11,13 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FeatTweetActions,
   TweetApiActions,
-  selectAllTweets
+  selectAllTweets,
 } from '@kitouch/feat-tweet-data';
 import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
+  NewUIItemComponent,
   TweetButtonComponent,
   UiCompGradientCardComponent,
 } from '@kitouch/ui/components';
@@ -27,7 +28,6 @@ import {
 import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { sign } from 'crypto';
 import { take } from 'rxjs';
 
 @Component({
@@ -37,6 +37,7 @@ import { take } from 'rxjs';
   imports: [
     CommonModule,
     //
+    NewUIItemComponent,
     UiCompGradientCardComponent,
     AccountTileComponent,
     DividerComponent,
@@ -53,7 +54,7 @@ export class PageHomeComponent implements OnInit {
   homeTweets$ = this.#store.pipe(select(selectAllTweets));
 
   newlyAddedTweets = signal<Set<Tweety['id']>>(new Set());
-  
+
   ngOnInit(): void {
     this.#store.dispatch(TweetApiActions.getAll());
 
@@ -64,11 +65,16 @@ export class PageHomeComponent implements OnInit {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(({ tweet }) => {
-        this.newlyAddedTweets.update((tweetsSet) => new Set([...tweetsSet.values(), tweet.id]));
+        this.newlyAddedTweets.update(
+          (tweetsSet) => new Set([...tweetsSet.values(), tweet.id])
+        );
 
         setTimeout(() => {
-          this.newlyAddedTweets.update((tweetsSet) => new Set([...tweetsSet].filter((id) => id !== tweet.id)));
-        }, TWEET_NEW_TWEET_TIMEOUT * 2)
+          this.newlyAddedTweets.update(
+            (tweetsSet) =>
+              new Set([...tweetsSet].filter((id) => id !== tweet.id))
+          );
+        }, TWEET_NEW_TWEET_TIMEOUT * 2);
       });
   }
 }

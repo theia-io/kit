@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -45,6 +45,7 @@ import { Component, EventEmitter, Output } from '@angular/core';
       </button>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
 })
 export class FeatTweetTweetingActionsComponent {

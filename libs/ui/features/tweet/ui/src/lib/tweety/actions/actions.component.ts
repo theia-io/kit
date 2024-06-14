@@ -1,15 +1,25 @@
 import { CommonModule } from "@angular/common";
-import { Component, EventEmitter, Output } from "@angular/core";
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
     standalone: true,
     selector: 'feat-tweet-actions',
     templateUrl: `actions.component.html`,
+    changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
         CommonModule
     ]
 })
 export class FeatTweetActionsComponent {
+    @Input() 
+    likes = 0;
+
+    @Input() 
+    retweets = 0;
+
+    @Input() 
+    replies = 0;
+
     @Output() 
     reply = new EventEmitter<void>();
 

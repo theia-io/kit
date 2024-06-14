@@ -1,4 +1,5 @@
 export * from './lib/account-tile/account-tile.component';
+export * from './lib/animated/new-ui-item.component';
 export * from './lib/button/button.component';
 export * from './lib/card/gradient-card.component';
 export * from './lib/divider/divider.component';
