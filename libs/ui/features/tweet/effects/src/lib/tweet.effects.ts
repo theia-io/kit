@@ -26,22 +26,41 @@ export class TweetsEffects {
             profile.following.map((following) => following.id)
           )
           .pipe(
-            map((tweets) => TweetApiActions.setAll({ tweets: tweets.map((tweet => {
-              if(tweet.profileId === profile.id) {
-                return {
-                  ...tweet,
-                  denormalization: {
-                    profile
+            map((tweets) =>
+              TweetApiActions.getAllSuccess({
+                tweets: tweets.map((tweet) => {
+                  if (tweet.profileId === profile.id) {
+                    return {
+                      ...tweet,
+                      denormalization: {
+                        profile,
+                      },
+                    };
                   }
-                }
-              }
-              return tweet;
-            })) })),
+                  return tweet;
+                }),
+              })
+            ),
             catchError((err) => {
               console.error('[TweetsEffects] allTweets ERROR', err);
               return of(TweetApiActions.getAllFailure());
             })
           )
+      )
+    )
+  );
+
+  tweet$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(TweetApiActions.get),
+      switchMap(({ id }) =>
+        this.#tweetApi.get(id).pipe(
+          map((tweet) => TweetApiActions.getSuccess({ tweet })),
+          catchError((err) => {
+            console.error('[TweetsEffects] tweet ERROR', err);
+            return of(TweetApiActions.getFailure({ id }));
+          })
+        )
       )
     )
   );

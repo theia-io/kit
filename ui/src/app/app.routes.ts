@@ -71,7 +71,7 @@ export const appRoutes: Route[] = [
           },
           {
             path: ':id',
-            loadComponent: () => pages.then((comp) => comp.PageTweetComponent),
+            loadComponent: () => pages.then((comp) => comp.PageTweetComponent)
           },
         ],
       },

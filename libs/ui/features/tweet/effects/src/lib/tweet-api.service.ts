@@ -26,6 +26,13 @@ export class TweetApiService {
     );
   }
 
+  get(id: string) {
+    return this.#realmUser$
+      .pipe(
+        switchMap((user) => user.functions['getTweet']({ id }))
+      )
+  }
+
   tweet(tweet: Partial<Tweety>): Observable<Tweety> {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['postTweet']({ ...tweet }))

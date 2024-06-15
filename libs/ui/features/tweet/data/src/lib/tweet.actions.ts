@@ -17,9 +17,11 @@ export const TweetApiActions = createActionGroup({
   source: 'TweetApiActions',
   events: {
     GetAll: emptyProps(),
+    GetAllSuccess: props<{ tweets: Tweety[] }>(),
     GetAllFailure: emptyProps(),
-    SetAll: props<{ tweets: Tweety[] }>(),
     Get: props<{ id: string }>(),
+    GetSuccess: props<{ tweet: Tweety }>(),
+    GetFailure: props<{ id: string }>(),
     Delete: props<{ id: string }>(),
     Post: props<{ tweet: Tweety }>(),
     Update: props<{ tweet: Tweety }>(),

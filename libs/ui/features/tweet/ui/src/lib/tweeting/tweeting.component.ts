@@ -1,13 +1,4 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  DestroyRef,
-  HostListener,
-  inject,
-  signal,
-} from '@angulaimport { Actions, createEffect, ofType } from '@ngrx/effects';simport { concatLatestFrom } from '@ngrx/operators';
--interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -21,6 +12,8 @@ import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
+import { Component, ChangeDetectionStrategy, inject, DestroyRef, HostListener, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,

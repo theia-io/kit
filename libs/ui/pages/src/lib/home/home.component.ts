@@ -1,4 +1,5 @@
 import { CommonModule } from '@angular/common';
+
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,8 +8,8 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUnimport { Actions, createEffect, ofType } from '@ngrx/effects';timport { concatLatestFrom } from '@ngrx/operators';
-er } from '@angular/router';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import {
   FeatTweetActions,
   TweetApiActions,
@@ -26,10 +27,9 @@ import {
 import {
   FeatTweetTweetingComponent,
   FeatTweetTweetyComponent,
-} from '@kitouch/ui/features/tweet'import { Actions, ofType } from '@ngrx/effects';rimport { concatLatestFrom } from '@ngrx/operators';
-om '@kitouch/ui/shared';
+} from '@kitouch/ui/features/tweet';
+import { APP_PATH, TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
-import { concatLatestFrom } from '@ngrx/operators';
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs';
 
