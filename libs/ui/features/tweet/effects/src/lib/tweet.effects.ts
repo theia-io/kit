@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { FeatTweetActions, TweetApiActions } from '@kitouch/feat-tweet-data';
 import { AuthService } from '@kitouch/ui/shared';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { concatLatestFrom } from '@ngrx/operators';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
