@@ -23,9 +23,9 @@ export class TweetApiService {
     );
   }
 
-  getAllProfile(profileId: string): Observable<Array<Tweety>> {
+  getProfileTweets(profileId: string): Observable<Array<Tweety>> {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getTweetsProfile']({ profileId }))
+      switchMap((user) => user.functions['getProfileTweets']({ profileId }))
     );
   }
 

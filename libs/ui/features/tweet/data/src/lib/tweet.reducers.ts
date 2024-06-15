@@ -17,7 +17,7 @@ export const featTweetReducer = createReducer(
     ...state,
     tweets,
   })),
-  on(TweetApiActions.getAllProfileSuccess, (state, { tweets }) => ({
+  on(TweetApiActions.getProfileTweetsSuccess, (state, { tweets }) => ({
     ...state,
     tweets,
   })),
