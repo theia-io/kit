@@ -29,8 +29,8 @@ import { map } from 'rxjs/operators';
         class="block"
         left
       ></navbar>
-      <router-outlet></router-outlet> </layout
-    >,
+      <router-outlet></router-outlet>
+    </layout>,
   `,
 })
 export class KitComponent {

@@ -109,7 +109,6 @@ export class FeatTweetTweetingComponent {
     const snackBarRef = this.#snackBar.open(content, 'See it');
 
     snackBarRef.onAction().subscribe(() => {
-      console.log(APP_PATH.Tweets, tweet.id);
       this.#router.navigate(['/', APP_PATH.Tweets, tweet.id]);
     });
 
