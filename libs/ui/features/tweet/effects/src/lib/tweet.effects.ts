@@ -20,22 +20,26 @@ export class TweetsEffects {
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
         this.#tweetApi
-          .getAll(
+          .getFeed(
             profile.id,
             profile.following.map((following) => following.id)
           )
           .pipe(
-            map((tweets) => TweetApiActions.setAll({ tweets: tweets.map((tweet => {
-              if(tweet.profileId === profile.id) {
-                return {
-                  ...tweet,
-                  denormalization: {
-                    profile
+            map((tweets) =>
+              TweetApiActions.getAllSuccess({
+                tweets: tweets.map((tweet) => {
+                  if (tweet.profileId === profile.id) {
+                    return {
+                      ...tweet,
+                      denormalization: {
+                        profile,
+                      },
+                    };
                   }
-                }
-              }
-              return tweet;
-            })) })),
+                  return tweet;
+                }),
+              })
+            ),
             catchError((err) => {
               console.error('[TweetsEffects] allTweets ERROR', err);
               return of(TweetApiActions.getAllFailure());
@@ -45,12 +49,42 @@ export class TweetsEffects {
     )
   );
 
+  profileTweets = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(TweetApiActions.getAllProfile),
+      switchMap(({ profileId }) =>
+        this.#tweetApi.getAllProfile(profileId).pipe(
+          map((tweets) => TweetApiActions.getAllProfileSuccess({ tweets })),
+          catchError((err) => {
+            console.error('[TweetsEffects] profileTweets ERROR', err);
+            return of(TweetApiActions.getAllProfileFailure({ profileId }));
+          })
+        )
+      )
+    )
+  );
+
+  tweet$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(TweetApiActions.get),
+      switchMap(({ tweetId, profileId }) =>
+        this.#tweetApi.get(tweetId, profileId).pipe(
+          map((tweet) => TweetApiActions.getSuccess({ tweet })),
+          catchError((err) => {
+            console.error('[TweetsEffects] tweet ERROR', err);
+            return of(TweetApiActions.getFailure({ tweetId, profileId }));
+          })
+        )
+      )
+    )
+  );
+
   createTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.tweet),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ uuid, content }, profile]) =>
-        this.#tweetApi.tweet({ profileId: profile.id, content }).pipe(
+        this.#tweetApi.newTweet({ profileId: profile.id, content }).pipe(
           map((tweet) =>
             FeatTweetActions.tweetSuccess({
               uuid,

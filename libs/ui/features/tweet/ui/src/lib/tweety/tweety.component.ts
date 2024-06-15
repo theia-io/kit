@@ -10,7 +10,7 @@ import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { Tweety } from '@kitouch/shared/models';
 import { AccountTileComponent } from '@kitouch/ui/components';
 import { Store } from '@ngrx/store';
-import { FeatTweetActionsComponent } from '../actions/actions.component';
+import { FeatTweetActionsComponent } from './actions/actions.component';
 
 @Component({
   standalone: true,
@@ -33,8 +33,8 @@ export class FeatTweetTweetyComponent {
 
   #store = inject(Store);
 
-  replyHandler() {
-    console.info('Implement replyHandler');
+  commentHandler() {
+    console.info('Implement commentHandler');
   }
 
   repostHandler() {

@@ -1,0 +1,7 @@
+@if (tweet$ | async; as tweet) {
+<ui-comp-card>
+    <feat-tweet-tweety class="block" [tweet]="tweet" />
+</ui-comp-card>
+} @else {
+<p>No tweet</p>
+}

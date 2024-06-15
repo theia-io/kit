@@ -1,5 +1,6 @@
 <div class="flex items-center hover:cursor-pointer">
-    <img class="inline-block h-10 w-auto rounded-full mt-2" ngSrc="logo-small.jpeg"  alt="Kitouch logo" height="40" width="40" />
+    <img class="inline-block h-10 w-auto rounded-full mt-2" ngSrc="logo-small.jpeg" alt="Kitouch logo" height="40"
+        width="40" />
 
     <p class="ml-2 font-bold">
         Kit ouch
@@ -19,10 +20,14 @@
     }
 </nav>
 
-<tweet-button class="w-48 mt-4" />
+<ui-comp-tweet-button class="w-48 mt-4" />
 
-<account-tile class="block mt-12" [primaryText]="profile?.name ?? 'N/A'"
-  link="/tweets" [picture]="profile?.pictures?.[0]?.url" />
+<ui-comp-card class="block mt-12">
+    <a [routerLink]="profileBaseUrl + '/' + profile?.id" routerLinkActive="underline">
+    <ui-comp-account-tile [primaryText]="profile?.name ?? 'N/A'"
+        [picture]="profile?.pictures?.[0]?.url" />
+    </a>
+</ui-comp-card>
 
 <app-divider class="block mt-4" />
 

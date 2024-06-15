@@ -13,6 +13,7 @@ import {
   AccountTileComponent,
   DividerComponent,
   TweetButtonComponent,
+  UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { SubnavComponent } from './subnav/subnav.component';
 import { Profile } from '@kitouch/shared/models';
@@ -23,12 +24,9 @@ export interface NavBarItem {
   icon: string;
 }
 
-
-
 @Component({
-  selector: 'navbar',
   standalone: true,
-  
+  selector: 'navbar',
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -37,6 +35,7 @@ export interface NavBarItem {
     RouterModule,
     NgOptimizedImage,
     /** Features */
+    UiCompCardComponent,
     SubnavComponent,
     DividerComponent,
     AccountTileComponent,
@@ -47,7 +46,10 @@ export class NavBarComponent {
   @Input()
   items: Array<NavBarItem> = [];
 
-  @Input() 
+  @Input()
+  profileBaseUrl: string;
+
+  @Input()
   profile: Partial<Profile> | undefined | null;
 
   @Output()

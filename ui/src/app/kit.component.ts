@@ -2,12 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
+  APP_PATH,
   AuthService,
   LayoutComponent,
   NAV_ITEMS,
   NavBarComponent,
 } from '@kitouch/ui/shared';
-import { map } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -22,11 +22,12 @@ import { map } from 'rxjs/operators';
   template: `
     <layout>
       <navbar
-      [items]="navBarItems"
-      [profile]="$profile | async"
+        [items]="navBarItems"
+        [profileBaseUrl]="profileUrl"
+        [profile]="$profile | async"
         (help)="helpHandler()"
         (logout)="logoutHandler()"
-        class="block mr-4"
+        class="block"
         left
       ></navbar>
       <router-outlet></router-outlet> </layout
@@ -38,6 +39,7 @@ export class KitComponent {
 
   #authService = inject(AuthService);
 
+  profileUrl = APP_PATH.Profile;
   navBarItems = NAV_ITEMS;
 
   $profile = this.#authService.currentProfile$;

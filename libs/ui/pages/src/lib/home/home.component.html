@@ -1,6 +1,13 @@
-<feat-tweeting  />
+<ui-comp-gradient-card>
+    <feat-tweet-tweeting />
+</ui-comp-gradient-card>
 
 @for (tweet of homeTweets$ | async; track $index) {
 <app-divider class="block my-2" [class.mt-12]="$first" />
-<feat-tweet-tweety class="block p-2" [tweet]="tweet" />
+
+<ui-comp-new-ui-item [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
+    <ui-comp-card (click)="tweetHandler(tweet)" class="cursor-pointer">
+        <feat-tweet-tweety class="block" [tweet]="tweet" />
+    </ui-comp-card>
+</ui-comp-new-ui-item>
 }

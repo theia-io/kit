@@ -26,8 +26,8 @@
       "@kitouch/features/account/effects": [
         "libs/ui/features/account/effects/src/index.ts"
       ],
-      "@kitouch/shared/utils": ["libs/shared/utils/index.ts"],
       "@kitouch/shared/models": ["libs/shared/models/index.ts"],
+      "@kitouch/shared/utils": ["libs/shared/utils/index.ts"],
       "@kitouch/ui/components": ["libs/ui/components/src/index.ts"],
       "@kitouch/ui/features/account/ui": [
         "libs/ui/features/account/ui/src/index.ts"

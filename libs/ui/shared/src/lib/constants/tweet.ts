@@ -1,0 +1,1 @@
+export const TWEET_NEW_TWEET_TIMEOUT = 5000;

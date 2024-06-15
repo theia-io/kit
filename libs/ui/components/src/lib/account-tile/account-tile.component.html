@@ -1,17 +1,12 @@
 <div class="flex-shrink-0 flex hover:bg-blue-00 rounded-full">
-    @if (link) {
-    <a [routerLink]="link" class="flex-shrink-0 group block">
-        <ng-container *ngTemplateOutlet="accountInfoTmpl"></ng-container>
-    </a>
-    } @else {
+
     <ng-container *ngTemplateOutlet="accountInfoTmpl"></ng-container>
-    }
 
     <ng-template #accountInfoTmpl>
         <div class="flex items-center">
             @if(picture) {
-            <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer" [src]="picture" height="40" width="40"
-                alt="kitouch profile picture" />
+            <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer" [src]="picture" height="40"
+                width="40" alt="kitouch profile picture" />
             } @else {
             <img class="inline-block h-10 w-10 rounded-full" ngSrc="/account/placeholder-small.jpeg" height="40"
                 width="40" alt="kitouch profile picture placeholder" />
