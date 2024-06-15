@@ -51,13 +51,13 @@ export class TweetsEffects {
 
   profileTweets = createEffect(() =>
     this.#actions$.pipe(
-      ofType(TweetApiActions.getAllProfile),
+      ofType(TweetApiActions.getProfileTweets),
       switchMap(({ profileId }) =>
-        this.#tweetApi.getAllProfile(profileId).pipe(
-          map((tweets) => TweetApiActions.getAllProfileSuccess({ tweets })),
+        this.#tweetApi.getProfileTweets(profileId).pipe(
+          map((tweets) => TweetApiActions.getProfileTweetsSuccess({ tweets })),
           catchError((err) => {
             console.error('[TweetsEffects] profileTweets ERROR', err);
-            return of(TweetApiActions.getAllProfileFailure({ profileId }));
+            return of(TweetApiActions.getProfileTweetsFailure({ profileId }));
           })
         )
       )

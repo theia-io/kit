@@ -1,15 +1,11 @@
-import {
-  HTTP_INTERCEPTORS,
-  provideHttpClient
-} from '@angular/common/http';
-import {
-  ApplicationConfig,
-  provideZoneChangeDetection
-} from '@angular/core';
+import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { featTweetReducer } from '@kitouch/feat-tweet-data';
 import { TweetsEffects } from '@kitouch/feat-tweet-effects';
+import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
+import { ProfileEffects } from '@kitouch/features/kit/effects';
 import { AuthInterceptor } from '@kitouch/ui/shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
@@ -26,9 +22,10 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     // provideRouter(appRoutes, withDebugTracing()),
     provideStore({
+      kit: accountFeatureReducer,
       tweet: featTweetReducer,
     }),
-    provideEffects([TweetsEffects]),
+    provideEffects([ProfileEffects, TweetsEffects]),
     provideStoreDevtools(),
 
     // auth

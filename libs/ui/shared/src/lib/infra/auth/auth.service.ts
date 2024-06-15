@@ -1,17 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Account, Profile, User } from '@kitouch/shared/models';
-import * as Realm from 'realm-web';
 import {
-  BehaviorSubject,
-  filter,
-  from,
-  map,
-  of,
-  switchMap,
-  take,
-  tap
-} from 'rxjs';
+  FeatAccountApiActions,
+  FeatProfileApiActions,
+  FeatUserApiActions,
+} from 'libs/ui/features/kit/data/src';
+import { Account, Profile, User } from '@kitouch/shared/models';
+import { Store } from '@ngrx/store';
+import * as Realm from 'realm-web';
+import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
@@ -20,6 +17,7 @@ import { RouterEventsService } from '../router/router-events.service';
 export class AuthService {
   // angular
   #router = inject(Router);
+  #store = inject(Store);
   // app
   routerEventsService = inject(RouterEventsService);
   // service
@@ -28,12 +26,16 @@ export class AuthService {
 
   #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
 
-  #account$$ = new BehaviorSubject<Partial<Account> | undefined>(undefined);
-  #user$$ = new BehaviorSubject<Partial<User> | undefined>(undefined);
+  /** @deprecated will become outdated, use Account from store */
+  #account$$ = new BehaviorSubject<Account | undefined>(undefined);
+  /** @deprecated will become outdated, use User from store */
+  #user$$ = new BehaviorSubject<User | undefined>(undefined);
+  /** @deprecated will become outdated, use Profile from store */
   #profiles$$ = new BehaviorSubject<Array<Profile> | undefined>(undefined);
 
   // essential of the store
   realmUser$ = this.#realmUser$$.asObservable();
+  /** @deprecated get current profile from Store */
   currentProfile$ = this.#profiles$$.asObservable().pipe(
     map((profiles) => profiles?.[0]),
     filter(Boolean)
@@ -45,11 +47,38 @@ export class AuthService {
   isHardLoggedIn$ = this.realmUser$.pipe(
     take(1),
     switchMap((realmUser) => {
-      if(realmUser) { return of(realmUser) };
+      if (realmUser) {
+        return of(realmUser);
+      }
       return from(this.#refreshUser());
     }),
     map((user) => !!user)
   );
+
+  constructor() {
+    this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
+      this.#store.dispatch(FeatAccountApiActions.setAccount({ account }));
+    });
+
+    this.#user$$.pipe(filter(Boolean)).subscribe((user) => {
+      this.#store.dispatch(FeatUserApiActions.setUser({ user }));
+    });
+
+    this.#profiles$$.pipe(filter(Boolean)).subscribe((profiles) => {
+      /** @TODO @FIXME add better logic for default profile once multi-profile feature is implemented */
+      const currentProfile = profiles?.[0];
+
+      this.#store.dispatch(
+        FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
+      );
+      this.#store.dispatch(
+        FeatProfileApiActions.getFollowingProfiles({
+          profileIds: currentProfile.following.map((profile) => profile.id),
+        })
+      )
+      this.#store.dispatch(FeatProfileApiActions.setProfiles({ profiles }));
+    });
+  }
 
   init() {
     if (this.#realmApp) {

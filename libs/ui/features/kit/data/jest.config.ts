@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
-  displayName: 'account-effects',
+  displayName: 'kit-data',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../../coverage/libs/ui/features/account/effects',
+  coverageDirectory: '../../../../../coverage/libs/ui/features/kit/data',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

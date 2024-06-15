@@ -20,11 +20,14 @@
       "@kitouch/feat-tweet-effects": [
         "libs/ui/features/tweet/effects/src/index.ts"
       ],
-      "@kitouch/features/account/data": [
-        "libs/ui/features/account/data/src/index.ts"
+      "@kitouch/features/kit/ui": [
+        "libs/ui/features/kit/data/src/index.ts"
       ],
-      "@kitouch/features/account/effects": [
-        "libs/ui/features/account/effects/src/index.ts"
+      "@kitouch/features/kit/data": [
+        "libs/ui/features/kit/data/src/index.ts"
+      ],
+      "@kitouch/features/kit/effects": [
+        "libs/ui/features/kit/effects/src/index.ts"
       ],
       "@kitouch/shared/models": ["libs/shared/models/index.ts"],
       "@kitouch/shared/utils": ["libs/shared/utils/index.ts"],
