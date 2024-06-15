@@ -1,13 +1,12 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
-import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'account-tile',
+  selector: 'ui-comp-account-tile',
   standalone: true,
   templateUrl: './account-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, NgOptimizedImage],
+  imports: [CommonModule, NgOptimizedImage],
 })
 export class AccountTileComponent {
   @Input({ required: true })
@@ -21,7 +20,4 @@ export class AccountTileComponent {
 
   @Input()
   picture: string | null | undefined = null;
-
-  @Input()
-  link: string | null = null;
 }

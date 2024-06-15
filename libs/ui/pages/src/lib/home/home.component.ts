@@ -41,8 +41,8 @@ import { take } from 'rxjs';
     CommonModule,
     //
     NewUIItemComponent,
-    UiCompGradientCardComponent,
     UiCompCardComponent,
+    UiCompGradientCardComponent,
     AccountTileComponent,
     DividerComponent,
     FeatTweetTweetingComponent,
@@ -83,7 +83,13 @@ export class PageHomeComponent implements OnInit {
       });
   }
 
-  tweetHandler(id: string) {
-    this.#router.navigate(['/', APP_PATH.Tweets, id]);
+  tweetHandler(tweet: Tweety) {
+    this.#router.navigate([
+      '/',
+      APP_PATH.Profile,
+      tweet.profileId,
+      APP_PATH.Tweet,
+      tweet.id,
+    ]);
   }
 }

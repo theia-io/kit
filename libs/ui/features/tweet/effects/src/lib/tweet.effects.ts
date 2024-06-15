@@ -2,7 +2,6 @@ import { Injectable, inject } from '@angular/core';
 import { FeatTweetActions, TweetApiActions } from '@kitouch/feat-tweet-data';
 import { AuthService } from '@kitouch/ui/shared';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatLatestFrom } from '@ngrx/operators';
 import { of } from 'rxjs';
 import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
@@ -21,7 +20,7 @@ export class TweetsEffects {
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
         this.#tweetApi
-          .getAll(
+          .getFeed(
             profile.id,
             profile.following.map((following) => following.id)
           )
@@ -50,15 +49,30 @@ export class TweetsEffects {
     )
   );
 
+  profileTweets = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(TweetApiActions.getAllProfile),
+      switchMap(({ profileId }) =>
+        this.#tweetApi.getAllProfile(profileId).pipe(
+          map((tweets) => TweetApiActions.getAllProfileSuccess({ tweets })),
+          catchError((err) => {
+            console.error('[TweetsEffects] profileTweets ERROR', err);
+            return of(TweetApiActions.getAllProfileFailure({ profileId }));
+          })
+        )
+      )
+    )
+  );
+
   tweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
-      switchMap(({ id }) =>
-        this.#tweetApi.get(id).pipe(
+      switchMap(({ tweetId, profileId }) =>
+        this.#tweetApi.get(tweetId, profileId).pipe(
           map((tweet) => TweetApiActions.getSuccess({ tweet })),
           catchError((err) => {
             console.error('[TweetsEffects] tweet ERROR', err);
-            return of(TweetApiActions.getFailure({ id }));
+            return of(TweetApiActions.getFailure({ tweetId, profileId }));
           })
         )
       )
@@ -70,7 +84,7 @@ export class TweetsEffects {
       ofType(FeatTweetActions.tweet),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ uuid, content }, profile]) =>
-        this.#tweetApi.tweet({ profileId: profile.id, content }).pipe(
+        this.#tweetApi.newTweet({ profileId: profile.id, content }).pipe(
           map((tweet) =>
             FeatTweetActions.tweetSuccess({
               uuid,

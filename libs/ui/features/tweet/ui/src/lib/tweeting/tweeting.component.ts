@@ -5,14 +5,25 @@ import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { Tweety } from '@kitouch/shared/models';
 import { TweetButtonComponent } from '@kitouch/ui/components';
-import { APP_PATH, AuthService, TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
+import {
+  APP_PATH,
+  AuthService,
+  TWEET_NEW_TWEET_TIMEOUT,
+} from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { concatLatestFrom } from '@ngrx/operators';
 import { Store } from '@ngrx/store';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
-import { Component, ChangeDetectionStrategy, inject, DestroyRef, HostListener, signal } from '@angular/core';
+import {
+  Component,
+  ChangeDetectionStrategy,
+  inject,
+  DestroyRef,
+  HostListener,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 @Component({
@@ -103,7 +114,13 @@ export class FeatTweetTweetingComponent {
     const snackBarRef = this.#snackBar.open(content, 'See it');
 
     snackBarRef.onAction().subscribe(() => {
-      this.#router.navigate(['/', APP_PATH.Tweets, tweet.id]);
+      this.#router.navigate([
+        '/',
+        APP_PATH.Profile,
+        tweet.profileId,
+        APP_PATH.Tweet,
+        tweet.id,
+      ]);
     });
 
     setTimeout(() => {

@@ -6,7 +6,7 @@
 <app-divider class="block my-2" [class.mt-12]="$first" />
 
 <ui-comp-new-ui-item [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
-    <ui-comp-card (click)="tweetHandler(tweet.id)" class="cursor-pointer">
+    <ui-comp-card (click)="tweetHandler(tweet)" class="cursor-pointer">
         <feat-tweet-tweety class="block" [tweet]="tweet" />
     </ui-comp-card>
 </ui-comp-new-ui-item>

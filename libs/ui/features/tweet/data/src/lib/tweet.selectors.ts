@@ -10,6 +10,11 @@ export const selectAllTweets = createSelector(
   (state: FeatureTweetState) => state.tweets
 );
 
+export const selectTweetsProfile = (profileId: string) =>
+  createSelector(selectAllTweets, (tweets: Tweety[]) =>
+    tweets.filter(tweet => tweet.profileId === profileId)
+  )
+
 export const selectTweet = (id: string) =>
   createSelector(selectAllTweets, (tweets: Tweety[]) =>
     tweets.find(tweet => tweet.id === id)

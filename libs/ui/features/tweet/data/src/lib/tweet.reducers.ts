@@ -17,6 +17,10 @@ export const featTweetReducer = createReducer(
     ...state,
     tweets,
   })),
+  on(TweetApiActions.getAllProfileSuccess, (state, { tweets }) => ({
+    ...state,
+    tweets,
+  })),
   on(TweetApiActions.getSuccess, (state, { tweet }) => {
     let tweetFoundUpdated = false;
     const updatedTweets = state.tweets.map(existingTweet => {

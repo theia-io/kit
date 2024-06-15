@@ -5,7 +5,7 @@ import { Component, Input } from '@angular/core';
   standalone: true,
   selector: 'ui-comp-card',
   template: `
-    <article class="flex  p-4 sm:p-6 rounded-[10px] transition hover:shadow-xl bg-white">
+    <article class="flex sm:p-2 md:p-4 rounded-[10px] transition hover:shadow-xl bg-white">
       <div *ngIf="verticalContent" class="rotate-180 p-2 [writing-mode:_vertical-lr]">
         <!-- <time
           datetime="2022-10-10"

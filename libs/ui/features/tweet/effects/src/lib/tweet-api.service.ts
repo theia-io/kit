@@ -9,7 +9,6 @@ import { filter, shareReplay, switchMap, take, tap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class TweetApiService {
-  #http = inject(HttpClient);
   #auth = inject(AuthService);
 
   #realmUser$ = this.#auth.realmUser$.pipe(
@@ -18,22 +17,25 @@ export class TweetApiService {
     take(1)
   );
 
-  getAll(profileId: string, following: string[]): Observable<Array<Tweety>> {
+  getFeed(profileId: string, following: string[]): Observable<Array<Tweety>> {
     return this.#realmUser$.pipe(
-      switchMap((user) =>
-        user.functions['allTweets']({profileId, following})
-      )
+      switchMap((user) => user.functions['getTweets']({ profileId, following }))
     );
   }
 
-  get(id: string) {
-    return this.#realmUser$
-      .pipe(
-        switchMap((user) => user.functions['getTweet']({ id }))
-      )
+  getAllProfile(profileId: string): Observable<Array<Tweety>> {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['getTweetsProfile']({ profileId }))
+    );
   }
 
-  tweet(tweet: Partial<Tweety>): Observable<Tweety> {
+  get(tweetId: string, profileId: string) {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['getTweet']({ tweetId, profileId }))
+    );
+  }
+
+  newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['postTweet']({ ...tweet }))
     );

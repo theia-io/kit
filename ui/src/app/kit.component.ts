@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
+  APP_PATH,
   AuthService,
   LayoutComponent,
   NAV_ITEMS,
@@ -22,6 +23,7 @@ import {
     <layout>
       <navbar
         [items]="navBarItems"
+        [profileBaseUrl]="profileUrl"
         [profile]="$profile | async"
         (help)="helpHandler()"
         (logout)="logoutHandler()"
@@ -37,6 +39,7 @@ export class KitComponent {
 
   #authService = inject(AuthService);
 
+  profileUrl = APP_PATH.Profile;
   navBarItems = NAV_ITEMS;
 
   $profile = this.#authService.currentProfile$;

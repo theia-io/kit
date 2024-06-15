@@ -7,7 +7,8 @@ import { Tweety } from '@kitouch/shared/models';
 import { UiCompCardComponent } from '@kitouch/ui/components';
 import { FeatTweetTweetyComponent } from '@kitouch/ui/features/tweet';
 import { Store } from '@ngrx/store';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { profile } from 'console';
+import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -26,22 +27,22 @@ export class PageTweetComponent {
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
 
-  #tweetId$ = this.#activatedRouter.params.pipe(
-    map((params) => params['id']),
+  #ids$ = this.#activatedRouter.params.pipe(
+    tap((params) => console.log(params)),
+    map((params) => ({tweetId: params['id'], profileId: params['profileId']})),
   );
 
-  tweet$ = this.#tweetId$.pipe(
-    switchMap((id) => this.#store.select(selectTweet(id))),
+  tweet$ = this.#ids$.pipe(
+    switchMap(({tweetId}) => this.#store.select(selectTweet(tweetId))),
     filter((tweet): tweet is Tweety => !!tweet),
     shareReplay(),
   );
 
   constructor() {
-    this.tweet$.pipe(takeUntilDestroyed()).subscribe((tweet) => console.log('tweet', tweet));
-    this.#tweetId$
+    this.#ids$
       .pipe(takeUntilDestroyed())
-      .subscribe((tweetId) =>
-        this.#store.dispatch(TweetApiActions.get({ id: tweetId }))
+      .subscribe(({tweetId, profileId}) =>
+        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId }))
       );
   }
 }
