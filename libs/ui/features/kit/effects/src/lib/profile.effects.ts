@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
     FeatProfileApiActions
-} from '@kitouch/features/account/data';
+} from '@kitouch/features/kit/data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';

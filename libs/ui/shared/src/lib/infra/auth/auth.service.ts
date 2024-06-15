@@ -4,7 +4,7 @@ import {
   FeatAccountApiActions,
   FeatProfileApiActions,
   FeatUserApiActions,
-} from '@kitouch/features/account/data';
+} from 'libs/ui/features/kit/data/src';
 import { Account, Profile, User } from '@kitouch/shared/models';
 import { Store } from '@ngrx/store';
 import * as Realm from 'realm-web';

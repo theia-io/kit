@@ -1,5 +1,5 @@
 {
-  "name": "@kitouch/account-effects",
+  "name": "@kitouch/kit-effects",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.0.0",
