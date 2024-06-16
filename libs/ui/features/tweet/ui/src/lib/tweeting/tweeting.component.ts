@@ -21,6 +21,8 @@ import {
 } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 import { map, take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
@@ -34,11 +36,12 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
     CommonModule,
     NgOptimizedImage,
     ReactiveFormsModule,
-    // MatSnackBarModule,
+    ToastModule,
     //
     TweetButtonComponent,
     FeatTweetTweetingActionsComponent,
   ],
+  providers: [MessageService],
 })
 export class FeatTweetTweetingComponent {
   #destroyRef = inject(DestroyRef);
@@ -47,6 +50,7 @@ export class FeatTweetTweetingComponent {
 
   #auth = inject(AuthService);
   #store = inject(Store);
+  #messageService = inject(MessageService);
   // #snackBar = inject(MatSnackBar);
 
   @HostListener('window:keydown.enter', ['$event'])
@@ -64,7 +68,10 @@ export class FeatTweetTweetingComponent {
     Validators.maxLength(1000),
   ]);
 
+  tweet = signal<Tweety | null>(null);
   tweettingInProgress = signal(false);
+
+  readonly newTweetTimeout = TWEET_NEW_TWEET_TIMEOUT;
 
   imageHandler() {
     console.log('image handler');
@@ -98,34 +105,43 @@ export class FeatTweetTweetingComponent {
         if (uuid === tweetuuidv4) {
           this.tweetContentControl.setValue('');
 
+          this.tweet.set(tweet);
           this.tweettingInProgress.set(false);
-
-          this.#openSnackBar(tweet);
+          this.#showSuccessMessage(tweet);
         }
       });
   }
 
-  #openSnackBar(tweet: Tweety) {
+  successMessageClickHandler() {
+    const tweet = this.tweet();
+
+    if (tweet) {
+      this.successMessageCloseHandler();
+      this.#router.navigate([
+        '/',
+        APP_PATH.Profile,
+        tweet.profileId,
+        APP_PATH.Tweet,
+        tweet.id,
+      ]);
+    }
+  }
+
+  successMessageCloseHandler() {
+    this.tweet.set(null);
+  }
+
+  #showSuccessMessage(tweet: Tweety) {
     const content =
       tweet.content.length > 13
         ? tweet.content.slice(0, 10) + '...'
         : tweet.content;
 
-    console.log(content);
-    // const snackBarRef = this.#snackBar.open(content, 'See it');
-
-    // snackBarRef.onAction().subscribe(() => {
-    //   this.#router.navigate([
-    //     '/',
-    //     APP_PATH.Profile,
-    //     tweet.profileId,
-    //     APP_PATH.Tweet,
-    //     tweet.id,
-    //   ]);
-    // });
-
-    // setTimeout(() => {
-    //   snackBarRef.dismiss();
-    // }, TWEET_NEW_TWEET_TIMEOUT);
+    this.#messageService.add({
+      severity: 'success',
+      summary: 'Tweet posted :)',
+      detail: content,
+      data: tweet,
+    });
   }
 }
