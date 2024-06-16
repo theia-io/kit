@@ -1,14 +1,15 @@
-<ui-comp-account-tile 
-    [primaryText]="tweet.denormalization?.profile?.name ?? 'Unknown'" 
+<ui-comp-account-tile [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
     [primarySecondaryText]="tweet.timestamp?.createdAt| date:'MMM d, h:mm a'"
-    [secondaryText]="tweet.denormalization?.profile?.type ?? ''" 
-    [picture]="tweet.denormalization?.profile?.pictures?.[0]?.url" />
+    [secondaryText]="(tweetProfile$ | async)?.type" 
+    [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
+    [link]="profileUrlPath + tweet.profileId" />
 
-<div class="pl-16">
+<div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
     <p class="text-base width-auto font-medium flex-shrink"
         [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)">
     </p>
 
-    <feat-tweet-actions (comment)="commentHandler()" [likes]="tweet.upProfileIds?.length ?? 0" (repost)="repostHandler()" (like)="likeHandler()"
+    <feat-tweet-actions (comment)="commentHandler()" (repost)="repostHandler()"
+        [liked]="tweetLiked$ | async" [likes]="tweet.upProfileIds?.length ?? 0" (like)="likeHandler()"
         (share)="shareHandler()" (bookmark)="bookmarkHandler()" />
 </div>

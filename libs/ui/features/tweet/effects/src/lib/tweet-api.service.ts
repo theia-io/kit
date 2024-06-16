@@ -41,9 +41,9 @@ export class TweetApiService {
     );
   }
 
-  likeTweet(tweetId: string, profileId: string) {
+  likeTweet(tweet: Tweety) {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['putTweet']({ tweetId, profileId })),
+      switchMap((user) => user.functions['putTweet'](tweet)),
       tap((v) => console.log('[TweetApiService] putTweet', v))
     );
   }

@@ -44,7 +44,7 @@ export interface Tweety {
   // />
   // some statistics connections
   denormalization: {
-    profile: Partial<Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>>;
+    profile: Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>;
   };
   // meta
   type: TweetyType;

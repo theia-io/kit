@@ -1,5 +1,5 @@
 <div class="flex items-center justify-around">
-    <button role="button" (click)="comment.emit()"
+    <button role="button" (click)="$event.stopPropagation(); comment.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -14,7 +14,7 @@
     </button>
 
     <!-- Implement repost or quote selection functionality -->
-    <button role="button" (click)="repost.emit()"
+    <button role="button" (click)="$event.stopPropagation(); repost.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -26,9 +26,12 @@
         </span>
     </button>
 
-    <button role="button" (click)="like.emit()"
+    <button role="button" (click)="$event.stopPropagation(); like.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
-        <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+        <svg [ngClass]="{
+            'fill-rose-200 hover:fill-rose-700': !liked,
+            'fill-rose-700 hover:fill-rose-200': liked
+        }" class="h-7 w- " stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
             <path
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
@@ -40,7 +43,7 @@
         </span>
     </button>
 
-    <button role="button" (click)="share.emit()"
+    <button role="button" (click)="$event.stopPropagation(); share.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -48,7 +51,7 @@
         </svg>
     </button>
 
-    <button role="button" (click)="bookmark.emit()"
+    <button role="button" (click)="$event.stopPropagation(); bookmark.emit()"
         [ngClass]="{
         'text-lg hover:text-base font-bold hover:font-medium text-cyan-400 hover:text-gray-500': bookmarked,
         'text-base hover:text-lg font-medium hover:font-bold text-gray-500 hover:text-cyan-400 hover:bg-neutral-200': !bookmarked

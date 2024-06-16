@@ -21,6 +21,9 @@ export class FeatTweetActionsComponent {
     likes = 0;
 
     @Input()
+    liked: boolean | null = false;
+
+    @Input()
     bookmarked = false;
 
     @Output() 

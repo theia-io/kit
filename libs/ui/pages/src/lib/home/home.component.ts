@@ -9,7 +9,6 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
 import {
   FeatTweetActions,
   TweetApiActions,
@@ -28,7 +27,7 @@ import {
   FeatTweetTweetingComponent,
   FeatTweetTweetyComponent,
 } from '@kitouch/ui/features/tweet';
-import { APP_PATH, TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
+import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { take } from 'rxjs';
@@ -52,7 +51,6 @@ import { take } from 'rxjs';
 })
 export class PageHomeComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
-  #router = inject(Router);
   #store = inject(Store);
   #actions = inject(Actions);
 
@@ -81,15 +79,5 @@ export class PageHomeComponent implements OnInit {
           );
         }, TWEET_NEW_TWEET_TIMEOUT * 2);
       });
-  }
-
-  tweetHandler(tweet: Tweety) {
-    this.#router.navigate([
-      '/',
-      APP_PATH.Profile,
-      tweet.profileId,
-      APP_PATH.Tweet,
-      tweet.id,
-    ]);
   }
 }

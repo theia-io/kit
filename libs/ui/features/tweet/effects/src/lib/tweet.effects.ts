@@ -1,18 +1,28 @@
 import { Injectable, inject } from '@angular/core';
 import { FeatTweetActions, TweetApiActions } from '@kitouch/feat-tweet-data';
-import { AuthService } from '@kitouch/ui/shared';
+import { selectCurrentProfile } from '@kitouch/features/kit/ui';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
-import { catchError, map, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  catchError,
+  filter,
+  map,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
+import { tweetIsLikedByProfile } from './like';
 import { TweetApiService } from './tweet-api.service';
 
 @Injectable()
 export class TweetsEffects {
   #actions$ = inject(Actions);
+  #store = inject(Store);
   #tweetApi = inject(TweetApiService);
-  #auth = inject(AuthService);
 
-  currentProfile$ = this.#auth.currentProfile$;
+  currentProfile$ = this.#store
+    .select(selectCurrentProfile)
+    .pipe(filter(Boolean));
 
   allTweets$ = createEffect(() =>
     this.#actions$.pipe(
@@ -110,18 +120,25 @@ export class TweetsEffects {
     this.#actions$.pipe(
       ofType(FeatTweetActions.like),
       withLatestFrom(this.currentProfile$),
-      switchMap(([{ tweet }, profile]) =>
-        this.#tweetApi.likeTweet(tweet.id, profile.id).pipe(
-          map((tweet) =>
-            FeatTweetActions.likeSuccess({
-              tweet: { ...tweet, denormalization: { profile } },
-            })
-          ),
-          catchError((err) => {
-            console.error('[TweetsEffects] likeTweet ERROR', err);
-            return of(FeatTweetActions.likeFailure({ tweet }));
+      switchMap(([{ tweet }, currentProfile]) =>
+        this.#tweetApi
+          .likeTweet({
+            ...tweet,
+            upProfileIds: tweetIsLikedByProfile(tweet, currentProfile.id)
+              ? tweet.upProfileIds.filter((id) => id !== currentProfile.id)
+              : [currentProfile.id, ...(tweet.upProfileIds ?? [])],
           })
-        )
+          .pipe(
+            map((tweet) =>
+              FeatTweetActions.likeSuccess({
+                tweet,
+              })
+            ),
+            catchError((err) => {
+              console.error('[TweetsEffects] likeTweet ERROR', err);
+              return of(FeatTweetActions.likeFailure({ tweet }));
+            })
+          )
       )
     )
   );

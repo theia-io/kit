@@ -21,3 +21,10 @@ For this we will have business layer to actually structure a data in SQL normali
 ## UX from Performance standpoint
 
 In Software with User Interfaces there are many ways to improve performance. Those can be real performance of the systems involved e.g. improving algorithms, machines, TTL, optimizing code and many more. Moreover, performance can be improved also by improving (optimizing business) logic to utlimately make it simpler. At last, we can make none, all or some of the suggested approaches and apply what I called "unexpected" improvements - those that neither User nor BA knows about. Example of such can be Twitter post - once user writing a post system based on some criteria already does all the heavy lifting of post creation - maybe profile population, maybe doing preparation work. At the moment user hits "Post" system only confirms activness of the post by sending light-weight request updating, e.g, field. Such improvements are not feasible today because requires a lot of engineering investments and prone to issues since increase overall complexity of the system. In future, however, possible.
+
+## How to suggest which profile to follow
+
+We can suggest which profiles to follow based on:
+
+- what follows who we follow,
+- we worked together in same period in same company

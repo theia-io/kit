@@ -3,11 +3,30 @@ import { createReducer, on } from '@ngrx/store';
 import {mongooseEqual} from '@kitouch/shared/utils';
 import { FeatTweetActions, TweetApiActions } from './tweet.actions';
 
+// 2*N(0)
+const combineTweetsV2 = (
+  arr1: Array<Tweety>,
+  arr2: Array<Tweety>
+): Array<Tweety> => {
+  const combined = new Map<string, Tweety>();
+
+  arr1.forEach((tweet) => {
+    combined.set(tweet.id, tweet);
+  });
+
+  // has to be after "current" state since might have better info
+  arr2.forEach((tweet) => {
+    combined.set(tweet.id, tweet);
+  });
+
+  return [...combined.values()];
+};
+
 export interface FeatureTweetState {
   tweets: Array<Tweety>;
 }
 
-export const featTweetInitialState: FeatureTweetState = {
+const featTweetInitialState: FeatureTweetState = {
   tweets: [],
 };
 
@@ -23,6 +42,7 @@ export const featTweetReducer = createReducer(
   })),
   on(TweetApiActions.getSuccess, (state, { tweet }) => {
     let tweetFoundUpdated = false;
+
     const updatedTweets = state.tweets.map(existingTweet => {
       if(mongooseEqual(existingTweet, tweet)) {
         tweetFoundUpdated = true;
