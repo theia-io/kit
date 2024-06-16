@@ -32,7 +32,7 @@ export class TweetsEffects {
         this.#tweetApi
           .getFeed(
             profile.id,
-            profile.following.map((following) => following.id)
+            profile.following.map((followingId) => followingId)
           )
           .pipe(
             map((tweets) =>
