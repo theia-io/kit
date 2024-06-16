@@ -9,7 +9,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+// import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { Tweety } from '@kitouch/shared/models';
@@ -34,7 +34,7 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
     CommonModule,
     NgOptimizedImage,
     ReactiveFormsModule,
-    MatSnackBarModule,
+    // MatSnackBarModule,
     //
     TweetButtonComponent,
     FeatTweetTweetingActionsComponent,
@@ -47,7 +47,7 @@ export class FeatTweetTweetingComponent {
 
   #auth = inject(AuthService);
   #store = inject(Store);
-  #snackBar = inject(MatSnackBar);
+  // #snackBar = inject(MatSnackBar);
 
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
@@ -110,20 +110,22 @@ export class FeatTweetTweetingComponent {
       tweet.content.length > 13
         ? tweet.content.slice(0, 10) + '...'
         : tweet.content;
-    const snackBarRef = this.#snackBar.open(content, 'See it');
 
-    snackBarRef.onAction().subscribe(() => {
-      this.#router.navigate([
-        '/',
-        APP_PATH.Profile,
-        tweet.profileId,
-        APP_PATH.Tweet,
-        tweet.id,
-      ]);
-    });
+    console.log(content);
+    // const snackBarRef = this.#snackBar.open(content, 'See it');
 
-    setTimeout(() => {
-      snackBarRef.dismiss();
-    }, TWEET_NEW_TWEET_TIMEOUT);
+    // snackBarRef.onAction().subscribe(() => {
+    //   this.#router.navigate([
+    //     '/',
+    //     APP_PATH.Profile,
+    //     tweet.profileId,
+    //     APP_PATH.Tweet,
+    //     tweet.id,
+    //   ]);
+    // });
+
+    // setTimeout(() => {
+    //   snackBarRef.dismiss();
+    // }, TWEET_NEW_TWEET_TIMEOUT);
   }
 }
