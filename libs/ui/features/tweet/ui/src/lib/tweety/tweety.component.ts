@@ -3,34 +3,44 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  HostListener,
   Input,
   OnInit,
+  ViewChild,
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { FeatTweetActions, selectTweet } from '@kitouch/feat-tweet-data';
+import { tweetIsLikedByProfile } from '@kitouch/feat-tweet-effects';
 import {
   selectCurrentProfile,
   selectProfile,
 } from '@kitouch/features/kit/data';
 import { Tweety } from '@kitouch/shared/models';
-import { AccountTileComponent } from '@kitouch/ui/components';
+import {
+  AccountTileComponent,
+  TweetButtonComponent,
+} from '@kitouch/ui/components';
+import { v4 as uuidv4 } from 'uuid';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
+import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { SidebarModule } from 'primeng/sidebar';
 import {
   ReplaySubject,
-  Subject,
   combineLatestWith,
   filter,
   map,
   startWith,
   switchMap,
-  tap,
+  take,
 } from 'rxjs';
 import { FeatTweetActionsComponent } from './actions/actions.component';
-import { tweetIsLikedByProfile } from '@kitouch/feat-tweet-effects';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -39,11 +49,18 @@ import { tweetIsLikedByProfile } from '@kitouch/feat-tweet-effects';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     DatePipe,
     AsyncPipe,
     //
-    FeatTweetActionsComponent,
+    OverlayPanelModule,
+    SidebarModule,
+    InputTextareaModule,
+    FloatLabelModule,
+    //
     AccountTileComponent,
+    FeatTweetActionsComponent,
+    TweetButtonComponent,
   ],
 })
 export class FeatTweetTweetyComponent implements OnInit {
@@ -56,24 +73,45 @@ export class FeatTweetTweetyComponent implements OnInit {
 
   domSanitizer = inject(DomSanitizer);
 
-  #currentProfile$ = this.#store.select(selectCurrentProfile).pipe(filter(Boolean));
+  #currentProfile$ = this.#store
+    .select(selectCurrentProfile)
+    .pipe(filter(Boolean));
 
   #tweet$$ = new ReplaySubject<Tweety>(1);
 
   tweetProfile$ = this.#tweet$$.pipe(
     switchMap((tweet) => this.#store.select(selectProfile(tweet.profileId))),
     startWith(this.tweet?.denormalization?.profile ?? undefined),
-    filter(Boolean),
+    filter(Boolean)
   );
+
+  tweetComments$ = this.#tweet$$.pipe(
+    map(({comments}) => comments)
+  )
 
   tweetLiked$ = this.#tweet$$.pipe(
     combineLatestWith(this.#currentProfile$),
     map(([tweet, currentProfile]) =>
       tweetIsLikedByProfile(tweet, currentProfile?.id)
-    ),
+    )
   );
 
-  profileUrlPath = `/${APP_PATH.Profile}/`;
+  readonly profileUrlPath = `/${APP_PATH.Profile}/`;
+  /** Comment section */
+  @HostListener('window:keydown.enter', ['$event'])
+  keyDownEnterHandler() {
+    this.tweetCommentHandler();
+  }
+  
+  commentSideBar = false;
+  commentControl = new FormControl('', [
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(1000),
+  ]);
+
+  @ViewChild('commentOverlayTmpl')
+  commentOverlayTmpl: OverlayPanel;
 
   ngOnInit(): void {
     if (this.tweet.id) {
@@ -96,8 +134,28 @@ export class FeatTweetTweetyComponent implements OnInit {
     ]);
   }
 
-  commentHandler() {
-    console.info('Implement commentHandler');
+  tweetCommentHandler() {
+    if (!this.commentControl.valid) {
+      return;
+    }
+
+    console.info('Implement tweetCommentHandler', this.commentOverlayTmpl, this.commentControl);
+
+    this.#tweet$$
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.#destroyRef),
+      )
+      .subscribe(tweet => {
+        const tweetuuidv4 = uuidv4();
+        const content: string = this.commentControl.value as string;
+        this.#store.dispatch(
+          FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
+        );
+
+        this.commentControl.setValue('');
+        this.commentOverlayTmpl.hide();
+      })
   }
 
   repostHandler() {

@@ -36,8 +36,8 @@ export interface Tweety {
   retweetId?: Tweety['id']; // for retweets, quotes, comments, replies
   // business
   content: string;
-  comments?: Tweety[]; // PagedData<Tweety[]>;
-  replies?: Tweety[]; // PagedData<Tweety[]>;
+  comments?: Partial<Tweety>[]; // PagedData<Tweety[]>;
+  replies?: Partial<Tweety>[]; // PagedData<Tweety[]>;
   // Instagram-issue solution ->
   upProfileIds: Account['id'][];
   downProfileIds: Account['id'][];

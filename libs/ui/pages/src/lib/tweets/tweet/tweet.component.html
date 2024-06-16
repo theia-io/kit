@@ -2,6 +2,25 @@
 <ui-comp-card>
     <feat-tweet-tweety class="block" [tweet]="tweet" />
 </ui-comp-card>
+
+<app-divider *ngIf="tweet.comments" class="block my-12" />
+
+<p-timeline [value]="(tweetComments$ | async) ?? []" class="w-full md:w-20rem" align="alternate">
+    <ng-template pTemplate="content" let-event>
+        <div class="min-h-28">
+        {{ event.content }}
+    </div>
+    </ng-template>
+
+    <ng-template pTemplate="opposite" let-comment>
+        <div class="min-h-28">
+        <ui-comp-account-tile 
+            [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
+            [primarySecondaryText]="comment.createdAt| date:'MMM d, h:mm a'"
+            [link]="profileUrlPath + tweet.profileId" />
+        </div>
+    </ng-template>
+</p-timeline>
 } @else {
 <p>No tweet</p>
 }

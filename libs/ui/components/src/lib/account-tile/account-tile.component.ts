@@ -14,7 +14,7 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule, NgOptimizedImage],
 })
 export class AccountTileComponent {
-  @Input({ required: true })
+  @Input()
   primaryText = '';
 
   @Input()

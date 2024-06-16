@@ -1,7 +1,6 @@
 <ui-comp-account-tile [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
     [primarySecondaryText]="tweet.timestamp?.createdAt| date:'MMM d, h:mm a'"
-    [secondaryText]="(tweetProfile$ | async)?.type" 
-    [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
+    [secondaryText]="(tweetProfile$ | async)?.type" [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
     [link]="profileUrlPath + tweet.profileId" />
 
 <div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
@@ -9,7 +8,24 @@
         [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)">
     </p>
 
-    <feat-tweet-actions (comment)="commentHandler()" (repost)="repostHandler()"
-        [liked]="tweetLiked$ | async" [likes]="tweet.upProfileIds?.length ?? 0" (like)="likeHandler()"
-        (share)="shareHandler()" (bookmark)="bookmarkHandler()" />
+    <feat-tweet-actions [comments]="(tweetComments$ | async)?.length ?? 0" (comment)="commentOverlayTmpl.toggle($event)" (repost)="repostHandler()" [liked]="tweetLiked$ | async"
+        [likes]="tweet.upProfileIds?.length ?? 0" (like)="likeHandler()" (share)="shareHandler()"
+        (bookmark)="bookmarkHandler()" />
+
+    <p-overlayPanel #commentOverlayTmpl>
+        <div class="flex flex-col min-h-24">
+            <p-floatLabel>
+                <textarea id="float-input" [formControl]="commentControl" rows="5" cols="30"  pInputTextarea>
+                </textarea>
+                <label for="float-input">Your comment</label>
+            </p-floatLabel>
+
+            <ui-comp-tweet-button text="Comment" [disabled]="!commentControl.valid" [loader]="false" (click)="tweetCommentHandler()"
+                class="mt-2 mx-8 float-right" />
+        </div>
+    </p-overlayPanel>
+
+    <p-sidebar [(visible)]="commentSideBar" position="right">
+        <h3>Right Sidebar</h3>
+    </p-sidebar>
 </div>

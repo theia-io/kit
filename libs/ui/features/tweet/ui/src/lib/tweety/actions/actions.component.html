@@ -1,5 +1,5 @@
 <div class="flex items-center justify-around">
-    <button role="button" (click)="$event.stopPropagation(); comment.emit()"
+    <button role="button" (click)="$event.stopPropagation(); comment.emit($event)"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -14,7 +14,7 @@
     </button>
 
     <!-- Implement repost or quote selection functionality -->
-    <button role="button" (click)="$event.stopPropagation(); repost.emit()"
+    <button role="button" (click)="$event.stopPropagation(); op.toggle($event)"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -25,6 +25,11 @@
             {{ repostsAndQuotes > 1_000_000 ? '1M +' : repostsAndQuotes }}
         </span>
     </button>
+    <p-overlayPanel #op>
+        <div class="flex flex-column gap-3 w-25rem">
+            quote or reply
+        </div>
+    </p-overlayPanel>
 
     <button role="button" (click)="$event.stopPropagation(); like.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">

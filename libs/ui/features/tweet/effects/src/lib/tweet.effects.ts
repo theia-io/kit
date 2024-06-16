@@ -59,7 +59,7 @@ export class TweetsEffects {
     )
   );
 
-  profileTweets = createEffect(() =>
+  profileTweets$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.getProfileTweets),
       switchMap(({ profileId }) =>
@@ -74,7 +74,7 @@ export class TweetsEffects {
     )
   );
 
-  tweet$ = createEffect(() =>
+  getTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
       switchMap(({ tweetId, profileId }) =>
@@ -95,6 +95,39 @@ export class TweetsEffects {
       withLatestFrom(this.currentProfile$),
       switchMap(([{ uuid, content }, profile]) =>
         this.#tweetApi.newTweet({ profileId: profile.id, content }).pipe(
+          map((tweet) =>
+            FeatTweetActions.tweetSuccess({
+              uuid,
+              tweet: { ...tweet, denormalization: { profile } },
+            })
+          ),
+          catchError((err) => {
+            console.error('TweetsEffects createTweet', err);
+            return of(
+              FeatTweetActions.tweetFailure({
+                uuid,
+                message:
+                  'Sorry, error. We will take a look at it and meanwhile try later',
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  commentTweet$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatTweetActions.comment),
+      withLatestFrom(this.currentProfile$),
+      switchMap(([{ uuid, tweet, content }, profile]) =>
+        this.#tweetApi.commentTweet({ ...tweet, comments: [
+          {
+            profileId: profile.id,
+            content,
+          },
+          ...(tweet.comments ?? [])
+        ] }).pipe(
           map((tweet) =>
             FeatTweetActions.tweetSuccess({
               uuid,

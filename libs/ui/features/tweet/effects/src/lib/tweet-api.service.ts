@@ -37,7 +37,13 @@ export class TweetApiService {
 
   newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['postTweet']({ ...tweet }))
+      switchMap((user) => user.functions['postTweet'](tweet))
+    );
+  }
+
+  commentTweet(tweet: Partial<Tweety>) {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['putTweet'](tweet))
     );
   }
 

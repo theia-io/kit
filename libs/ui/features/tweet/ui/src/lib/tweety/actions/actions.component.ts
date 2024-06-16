@@ -1,4 +1,5 @@
 import { CommonModule } from "@angular/common";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
 
 @Component({
@@ -7,7 +8,8 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from 
     templateUrl: `actions.component.html`,
     changeDetection: ChangeDetectionStrategy.OnPush,
     imports: [
-        CommonModule
+        CommonModule,
+        OverlayPanelModule,
     ]
 })
 export class FeatTweetActionsComponent {
@@ -21,13 +23,13 @@ export class FeatTweetActionsComponent {
     likes = 0;
 
     @Input()
-    liked: boolean | null = false;
+    liked: boolean | null | undefined = false;
 
     @Input()
     bookmarked = false;
 
     @Output() 
-    comment = new EventEmitter<void>();
+    comment = new EventEmitter<Event>();
 
     @Output() 
     repost = new EventEmitter<void>();
