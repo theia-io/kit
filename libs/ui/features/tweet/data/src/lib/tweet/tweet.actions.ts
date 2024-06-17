@@ -7,7 +7,7 @@ export const FeatTweetActions = createActionGroup({
     Tweet: props<{ uuid: string; content: string }>(),
     TweetSuccess: props<{ uuid: string; tweet: Tweety }>(),
     TweetFailure: props<{ uuid: string; message: string }>(),
-    Comment: props<{ uuid: string; tweet: Tweety, content: string }>(),
+    Comment: props<{ uuid: string; tweet: Tweety; content: string }>(),
     CommentSuccess: props<{ uuid: string; tweet: Tweety }>(),
     CommentFailure: props<{ uuid: string; tweet: Tweety }>(),
     Like: props<{ tweet: Tweety }>(),

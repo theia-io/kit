@@ -1,9 +1,8 @@
-import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Tweety } from '@kitouch/shared/models';
+import { Bookmark, Tweety } from '@kitouch/shared/models';
 import { AuthService } from '@kitouch/ui/shared';
 import { Observable } from 'rxjs';
-import { filter, shareReplay, switchMap, take, tap } from 'rxjs/operators';
+import { filter, shareReplay, switchMap, take } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -49,8 +48,31 @@ export class TweetApiService {
 
   likeTweet(tweet: Tweety) {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['putTweet'](tweet)),
-      tap((v) => console.log('[TweetApiService] putTweet', v))
+      switchMap((user) => user.functions['putTweet'](tweet))
+    );
+  }
+
+  getBookmarks(profileId: string): Observable<Array<Bookmark>> {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['getBookmarks'](profileId))
+    );
+  }
+
+  bookmark(bookmark: {
+    tweetId: string;
+    profileId: string;
+  }): Observable<Bookmark> {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['postBookmark'](bookmark))
+    );
+  }
+
+  deleteBookmark(bookmark: {
+    tweetId: string;
+    profileId: string;
+  }): Observable<Bookmark> {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['deleteBookmark'](bookmark))
     );
   }
 }

@@ -11,7 +11,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { FeatTweetActions } from '@kitouch/feat-tweet-data';
+import { FeatTweetActions } from '@kitouch/features/tweet/data';
 import { Tweety } from '@kitouch/shared/models';
 import { TweetButtonComponent } from '@kitouch/ui/components';
 import {

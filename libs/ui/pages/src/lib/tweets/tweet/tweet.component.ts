@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { TweetApiActions, selectTweet } from '@kitouch/feat-tweet-data';
+import { TweetApiActions, selectTweet } from '@kitouch/features/tweet/data';
 import { selectProfile } from '@kitouch/features/kit/ui';
 import { Tweety } from '@kitouch/shared/models';
 import {
@@ -10,7 +10,7 @@ import {
   DividerComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
-import { FeatTweetTweetyComponent } from '@kitouch/ui/features/tweet';
+import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { TimelineModule } from 'primeng/timeline';

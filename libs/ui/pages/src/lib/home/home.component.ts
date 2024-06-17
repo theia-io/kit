@@ -11,9 +11,10 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FeatTweetActions,
+  FeatTweetBookmarkActions,
   TweetApiActions,
   selectAllTweets,
-} from '@kitouch/feat-tweet-data';
+} from '@kitouch/features/tweet/data';
 import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
@@ -26,7 +27,7 @@ import {
 import {
   FeatTweetTweetingComponent,
   FeatTweetTweetyComponent,
-} from '@kitouch/ui/features/tweet';
+} from '@kitouch/features/tweet/ui';
 import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';

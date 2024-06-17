@@ -1,4 +1,4 @@
 /** Feature related actions */
-export * from './lib/tweet.actions';
-export * from './lib/tweet.reducers';
-export * from './lib/tweet.selectors';
+export * from './lib/feat.actions';
+export * from './lib/feat.reducers';
+export * from './lib/feat.selectors';

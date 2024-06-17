@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatTweetActions, TweetApiActions } from '@kitouch/feat-tweet-data';
+import { FeatTweetActions, TweetApiActions, tweetIsLikedByProfile } from '@kitouch/features/tweet/data';
 import { selectCurrentProfile } from '@kitouch/features/kit/ui';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -11,7 +11,6 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { tweetIsLikedByProfile } from './like';
 import { TweetApiService } from './tweet-api.service';
 
 @Injectable()

@@ -10,10 +10,16 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { FeatTweetActions, selectTweet } from '@kitouch/feat-tweet-data';
-import { tweetIsLikedByProfile } from '@kitouch/feat-tweet-effects';
+import {
+  FeatTweetActions,
+  FeatTweetBookmarkActions,
+  selectIsBookmarked,
+  selectTweet,
+  tweetIsLikedByProfile
+} from '@kitouch/features/tweet/data';
 import {
   selectCurrentProfile,
   selectProfile,
@@ -23,12 +29,11 @@ import {
   AccountTileComponent,
   TweetButtonComponent,
 } from '@kitouch/ui/components';
-import { v4 as uuidv4 } from 'uuid';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
-import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
 import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { SidebarModule } from 'primeng/sidebar';
 import {
   ReplaySubject,
@@ -38,9 +43,10 @@ import {
   startWith,
   switchMap,
   take,
+  withLatestFrom,
 } from 'rxjs';
+import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetActionsComponent } from './actions/actions.component';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   standalone: true,
@@ -66,18 +72,18 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 export class FeatTweetTweetyComponent implements OnInit {
   @Input({ required: true })
   tweet!: Tweety; /** @TODO @FIXME think on converting to tweet id */
-
+  // Deps
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
-
+  //
   domSanitizer = inject(DomSanitizer);
+  // State
+  #tweet$$ = new ReplaySubject<Tweety>(1);
 
   #currentProfile$ = this.#store
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
-
-  #tweet$$ = new ReplaySubject<Tweety>(1);
 
   tweetProfile$ = this.#tweet$$.pipe(
     switchMap((tweet) => this.#store.select(selectProfile(tweet.profileId))),
@@ -85,9 +91,8 @@ export class FeatTweetTweetyComponent implements OnInit {
     filter(Boolean)
   );
 
-  tweetComments$ = this.#tweet$$.pipe(
-    map(({comments}) => comments)
-  )
+  // Component logic
+  tweetComments$ = this.#tweet$$.pipe(map(({ comments }) => comments));
 
   tweetLiked$ = this.#tweet$$.pipe(
     combineLatestWith(this.#currentProfile$),
@@ -96,13 +101,17 @@ export class FeatTweetTweetyComponent implements OnInit {
     )
   );
 
+  tweetBookmarked$ = this.#tweet$$.pipe(
+    switchMap((tweet) => this.#store.select(selectIsBookmarked(tweet)))
+  );
+
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
   /** Comment section */
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
     this.tweetCommentHandler();
   }
-  
+
   commentSideBar = false;
   commentControl = new FormControl('', [
     Validators.required,
@@ -139,14 +148,9 @@ export class FeatTweetTweetyComponent implements OnInit {
       return;
     }
 
-    console.info('Implement tweetCommentHandler', this.commentOverlayTmpl, this.commentControl);
-
     this.#tweet$$
-      .pipe(
-        take(1),
-        takeUntilDestroyed(this.#destroyRef),
-      )
-      .subscribe(tweet => {
+      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
+      .subscribe((tweet) => {
         const tweetuuidv4 = uuidv4();
         const content: string = this.commentControl.value as string;
         this.#store.dispatch(
@@ -155,7 +159,7 @@ export class FeatTweetTweetyComponent implements OnInit {
 
         this.commentControl.setValue('');
         this.commentOverlayTmpl.hide();
-      })
+      });
   }
 
   repostHandler() {
@@ -163,7 +167,11 @@ export class FeatTweetTweetyComponent implements OnInit {
   }
 
   likeHandler() {
-    this.#store.dispatch(FeatTweetActions.like({ tweet: this.tweet }));
+    this.#tweet$$
+      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
+      .subscribe((tweet) => {
+        this.#store.dispatch(FeatTweetActions.like({ tweet }));
+      });
   }
 
   shareHandler() {
@@ -171,6 +179,22 @@ export class FeatTweetTweetyComponent implements OnInit {
   }
 
   bookmarkHandler() {
-    console.info('Implement bookmarkHandler');
+    this.#tweet$$
+      .pipe(
+        take(1),
+        takeUntilDestroyed(this.#destroyRef),
+        withLatestFrom(this.tweetBookmarked$)
+      )
+      .subscribe(([tweet, bookmarked]) => {
+        if(bookmarked) {
+          this.#store.dispatch(
+            FeatTweetBookmarkActions.removeBookmark({ tweetId: tweet.id })
+          );
+        }  else {
+          this.#store.dispatch(
+            FeatTweetBookmarkActions.bookmark({ tweetId: tweet.id })
+          );
+        }
+      });
   }
 }

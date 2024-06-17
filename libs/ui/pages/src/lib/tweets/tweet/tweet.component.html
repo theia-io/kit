@@ -17,6 +17,7 @@
         <ui-comp-account-tile 
             [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
             [primarySecondaryText]="comment.createdAt| date:'MMM d, h:mm a'"
+            [secondaryText]="comment?.denormalization?.profile?.name"
             [link]="profileUrlPath + tweet.profileId" />
         </div>
     </ng-template>

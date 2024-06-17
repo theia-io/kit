@@ -8,8 +8,15 @@
         [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)">
     </p>
 
-    <feat-tweet-actions [comments]="(tweetComments$ | async)?.length ?? 0" (comment)="commentOverlayTmpl.toggle($event)" (repost)="repostHandler()" [liked]="tweetLiked$ | async"
-        [likes]="tweet.upProfileIds?.length ?? 0" (like)="likeHandler()" (share)="shareHandler()"
+    <feat-tweet-actions 
+        [comments]="(tweetComments$ | async)?.length ?? 0" 
+        (comment)="commentOverlayTmpl.toggle($event)" 
+        (repost)="repostHandler()" 
+        [liked]="tweetLiked$ | async"
+        [likes]="tweet.upProfileIds?.length ?? 0" 
+        (like)="likeHandler()" 
+        (share)="shareHandler()"
+        [bookmarked]="(tweetBookmarked$ | async) ?? false"
         (bookmark)="bookmarkHandler()" />
 
     <p-overlayPanel #commentOverlayTmpl>
