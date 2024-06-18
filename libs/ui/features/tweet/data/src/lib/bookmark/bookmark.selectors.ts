@@ -18,3 +18,8 @@ export const selectIsBookmarked = ({ id }: Tweety) =>
   createSelector(selectBookmarks, (bookmarks) =>
     bookmarks.some(({ tweetId }) => tweetId === id)
   );
+
+  export const selectBookmarksFeed = createSelector(
+    selectBookmarkState,
+    (state) => state.tweets
+  );

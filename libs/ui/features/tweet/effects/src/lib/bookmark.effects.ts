@@ -1,8 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatTweetBookmarkActions } from '@kitouch/features/tweet/data';
+import { FeatTweetBookmarkActions, selectBookmarks } from '@kitouch/features/tweet/data';
 import { selectCurrentProfile } from '@kitouch/features/kit/ui';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import {concatLatestFrom} from '@ngrx/operators';
 import { of } from 'rxjs';
 import {
     catchError,
@@ -38,6 +39,31 @@ export class BookmarkEffects {
             console.error('[BookmarkEffects] getBookmarks', err);
             return of(
               FeatTweetBookmarkActions.getAllFailure({
+                message:
+                  'Sorry, error. We will take a look at it and meanwhile try later',
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  getBookmarksFeed$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatTweetBookmarkActions.getBookmarksFeed),
+      switchMap(({bookmarks}) =>
+        this.#tweetApi.get(bookmarks).pipe(
+          map((tweets) =>
+            FeatTweetBookmarkActions.getBookmarksFeedSuccess({
+              tweets,
+            })
+          ),
+          catchError((err) => {
+            console.error('[BookmarkEffects] getBookmarksFeed', err);
+            return of(
+              FeatTweetBookmarkActions.getBookmarksFeedFailure({
+                bookmarks,
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
               })

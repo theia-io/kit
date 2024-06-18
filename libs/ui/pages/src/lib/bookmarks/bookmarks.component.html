@@ -2,10 +2,10 @@
     Bookmarks info here
 </div>
 
-<!-- @for (tweet of tweets$ | async; track $index) {
+@for (tweet of bookmarkFeedTweets$ | async; track $index) {
 <app-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-comp-card (click)="tweetHandler(tweet)" class="cursor-pointer">
+<ui-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
     <feat-tweet-tweety class="block" [tweet]="tweet" />
 </ui-comp-card>
-} -->
+}

@@ -73,7 +73,7 @@ export class TweetsEffects {
     )
   );
 
-  getTweet$ = createEffect(() =>
+  getTweets$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
       switchMap(({ids}) =>
