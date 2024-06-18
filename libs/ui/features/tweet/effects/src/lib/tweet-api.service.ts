@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Bookmark, Tweety } from '@kitouch/shared/models';
+import { Bookmark, Profile, Tweety } from '@kitouch/shared/models';
 import { AuthService } from '@kitouch/ui/shared';
 import { Observable } from 'rxjs';
 import { filter, shareReplay, switchMap, take } from 'rxjs/operators';
@@ -18,19 +18,19 @@ export class TweetApiService {
 
   getFeed(profileId: string, following: string[]): Observable<Array<Tweety>> {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getTweets']({ profileId, following }))
+      switchMap((user) => user.functions['getTweetsFeed']({ profileId, following }))
     );
   }
 
-  getProfileTweets(profileId: string): Observable<Array<Tweety>> {
+  getTweetsForProfile(profileId: string): Observable<Array<Tweety>> {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getProfileTweets']({ profileId }))
+      switchMap((user) => user.functions['getTweetsForProfile']({ profileId }))
     );
   }
 
-  get(tweetId: string, profileId: string) {
+  get(ids: Array<{tweetId: Tweety['id']; profileId: Profile['id']}>) {
     return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getTweet']({ tweetId, profileId }))
+      switchMap((user) => user.functions['getTweets'](ids))
     );
   }
 

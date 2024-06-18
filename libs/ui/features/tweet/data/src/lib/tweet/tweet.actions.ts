@@ -1,4 +1,4 @@
-import { Tweety } from '@kitouch/shared/models';
+import { Profile, Tweety } from '@kitouch/shared/models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const FeatTweetActions = createActionGroup({
@@ -22,12 +22,12 @@ export const TweetApiActions = createActionGroup({
     GetAll: emptyProps(),
     GetAllSuccess: props<{ tweets: Tweety[] }>(),
     GetAllFailure: emptyProps(),
-    GetProfileTweets: props<{ profileId: string }>(),
-    GetProfileTweetsSuccess: props<{ tweets: Tweety[] }>(),
-    GetProfileTweetsFailure: props<{ profileId: string }>(),
-    Get: props<{ tweetId: string; profileId: string }>(),
-    GetSuccess: props<{ tweet: Tweety }>(),
-    GetFailure: props<{ tweetId: string; profileId: string }>(),
+    Get: props<{ ids: Array<{tweetId: Tweety['id']; profileId: Profile['id']}> }>(),
+    GetSuccess: props<{ tweets: Array<Tweety> }>(),
+    GetFailure: props<{ ids: Array<{tweetId: Tweety['id']; profileId: Profile['id']}> }>(),
+    GetTweetsForProfile: props<{ profileId: string }>(),
+    GetTweetsForProfileSuccess: props<{ tweets: Tweety[] }>(),
+    GetTweetsForProfileFailure: props<{ profileId: string }>(),
     Delete: props<{ id: string }>(),
     Post: props<{ tweet: Tweety }>(),
     Update: props<{ tweet: Tweety }>(),

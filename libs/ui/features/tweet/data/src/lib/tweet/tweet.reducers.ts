@@ -1,10 +1,8 @@
 import { Tweety } from '@kitouch/shared/models';
 import { mongooseEqual } from '@kitouch/shared/utils';
 import { createReducer, on } from '@ngrx/store';
-import {
-  FeatTweetActions,
-  TweetApiActions
-} from './tweet.actions';
+import { FeatTweetActions, TweetApiActions } from './tweet.actions';
+import { mergeArr } from '@kitouch/ui/shared';
 
 // 2*N(0)
 const combineV2 = <T>(
@@ -39,34 +37,14 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets,
   })),
-  on(TweetApiActions.getProfileTweetsSuccess, (state, { tweets }) => ({
+  on(TweetApiActions.getTweetsForProfileSuccess, (state, { tweets }) => ({
     ...state,
     tweets,
   })),
-  on(TweetApiActions.getSuccess, (state, { tweet }) => {
-    let tweetFoundUpdated = false;
-
-    const updatedTweets = state.tweets.map((existingTweet) => {
-      if (mongooseEqual(existingTweet, tweet)) {
-        tweetFoundUpdated = true;
-        return tweet;
-      }
-
-      return existingTweet;
-    });
-
-    if (tweetFoundUpdated) {
-      return {
-        ...state,
-        tweets: updatedTweets,
-      };
-    } else {
-      return {
-        ...state,
-        tweets: [tweet, ...state.tweets],
-      };
-    }
-  }),
+  on(TweetApiActions.getSuccess, (state, { tweets }) => ({
+    ...state,
+    tweets: mergeArr(state.tweets, tweets),
+  })),
   on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
     ...state,
     tweets: [tweet, ...state.tweets],

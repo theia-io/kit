@@ -53,7 +53,7 @@ export class PageTweetsComponent {
     this.#profileId$
       .pipe(takeUntilDestroyed())
       .subscribe((profileId) =>
-        this.#store.dispatch(TweetApiActions.getProfileTweets({ profileId }))
+        this.#store.dispatch(TweetApiActions.getTweetsForProfile({ profileId }))
       );
   }
 

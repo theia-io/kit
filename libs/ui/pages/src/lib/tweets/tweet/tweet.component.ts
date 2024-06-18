@@ -84,7 +84,7 @@ export class PageTweetComponent {
     this.#ids$
       .pipe(takeUntilDestroyed())
       .subscribe(({ tweetId, profileId }) =>
-        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId }))
+        this.#store.dispatch(TweetApiActions.get({ ids: [{tweetId, profileId}] }))
       );
   }
 }

@@ -60,13 +60,13 @@ export class TweetsEffects {
 
   profileTweets$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(TweetApiActions.getProfileTweets),
+      ofType(TweetApiActions.getTweetsForProfile),
       switchMap(({ profileId }) =>
-        this.#tweetApi.getProfileTweets(profileId).pipe(
-          map((tweets) => TweetApiActions.getProfileTweetsSuccess({ tweets })),
+        this.#tweetApi.getTweetsForProfile(profileId).pipe(
+          map((tweets) => TweetApiActions.getTweetsForProfileSuccess({ tweets })),
           catchError((err) => {
             console.error('[TweetsEffects] profileTweets ERROR', err);
-            return of(TweetApiActions.getProfileTweetsFailure({ profileId }));
+            return of(TweetApiActions.getTweetsForProfileFailure({ profileId }));
           })
         )
       )
@@ -76,12 +76,12 @@ export class TweetsEffects {
   getTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
-      switchMap(({ tweetId, profileId }) =>
-        this.#tweetApi.get(tweetId, profileId).pipe(
-          map((tweet) => TweetApiActions.getSuccess({ tweet })),
+      switchMap(({ids}) =>
+        this.#tweetApi.get(ids).pipe(
+          map((tweets) => TweetApiActions.getSuccess({ tweets })),
           catchError((err) => {
             console.error('[TweetsEffects] tweet ERROR', err);
-            return of(TweetApiActions.getFailure({ tweetId, profileId }));
+            return of(TweetApiActions.getFailure({ ids }));
           })
         )
       )
