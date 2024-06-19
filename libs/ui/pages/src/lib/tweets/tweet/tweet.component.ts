@@ -1,7 +1,7 @@
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { TweetApiActions, selectTweet } from '@kitouch/features/tweet/data';
 import { selectProfile } from '@kitouch/features/kit/ui';
 import { Tweety } from '@kitouch/shared/models';
@@ -36,6 +36,7 @@ import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
   ],
 })
 export class PageTweetComponent {
+  #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
 
@@ -75,7 +76,6 @@ export class PageTweetComponent {
         })
       );
     }),
-    tap(v => console.log('tweetComments',v))
   );
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
@@ -86,5 +86,9 @@ export class PageTweetComponent {
       .subscribe(({ tweetId, profileId }) =>
         this.#store.dispatch(TweetApiActions.get({ ids: [{tweetId, profileId}] }))
       );
+  }
+
+  tweetDeletedHandler() {
+    this.#router.navigateByUrl('/');
   }
 }

@@ -1,5 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import {
+  FeatTweetActions,
   FeatTweetBookmarkActions,
   selectAllTweets,
   selectBookmarks,
@@ -120,23 +121,35 @@ export class BookmarkEffects {
       ofType(FeatTweetBookmarkActions.removeBookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId }, profile]) =>
-        this.#tweetApi.deleteBookmark({ profileIdBookmarker: profile.id, tweetId }).pipe(
-          map((bookmark) =>
-            FeatTweetBookmarkActions.removeBookmarkSuccess({
-              bookmark,
-            })
-          ),
-          catchError((err) => {
-            console.error('[BookmarkEffects] deleteBookmark', err);
-            return of(
-              FeatTweetBookmarkActions.removeBookmarkFailure({
-                tweetId,
-                message:
-                  'Sorry, error. We will take a look at it and meanwhile try later',
+        this.#tweetApi
+          .deleteBookmark({ profileIdBookmarker: profile.id, tweetId })
+          .pipe(
+            map((bookmark) =>
+              FeatTweetBookmarkActions.removeBookmarkSuccess({
+                bookmark,
               })
-            );
-          })
-        )
+            ),
+            catchError((err) => {
+              console.error('[BookmarkEffects] deleteBookmark', err);
+              return of(
+                FeatTweetBookmarkActions.removeBookmarkFailure({
+                  tweetId,
+                  message:
+                    'Sorry, error. We will take a look at it and meanwhile try later',
+                })
+              );
+            })
+          )
+      )
+    )
+  );
+
+  deleteBookmarkWhenTweetDeleted$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatTweetActions.deleteSuccess),
+      map(({ ids }) =>
+        /** @TODO @FIXME has to take into account deleteSuccess batch results  */
+        FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved({ tweetId: ids[0].tweetId })
       )
     )
   );

@@ -1,6 +1,6 @@
 @if (tweet$ | async; as tweet) {
 <ui-comp-card>
-    <feat-tweet-tweety class="block" [tweetId]="tweet.id" />
+    <feat-tweet-tweety class="block" [tweetId]="tweet.id" (tweetDeleted)="tweetDeletedHandler()" />
 </ui-comp-card>
 
 <app-divider *ngIf="tweet.comments" class="block my-12" />
@@ -23,5 +23,10 @@
     </ng-template>
 </p-timeline>
 } @else {
+
 <p>No tweet</p>
+
+<p>It might have been deleted or never existed</p>
+
+<p>If somebody shared with you this link ask to double check if it is correct.</p>
 }

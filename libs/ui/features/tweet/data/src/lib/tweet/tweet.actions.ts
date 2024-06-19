@@ -11,6 +11,10 @@ export const FeatTweetActions = createActionGroup({
     Delete: props<{
       ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
     }>(),
+    /** 
+     * @TODO @FIXME we need to implement functionality when tweet is deleted 
+     * by author but somebody else has deleted the tweet? 
+     */
     DeleteSuccess: props<{
       ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
     }>(),
@@ -20,7 +24,7 @@ export const FeatTweetActions = createActionGroup({
     //
     Comment: props<{ uuid: string; tweet: Tweety; content: string }>(),
     CommentSuccess: props<{ uuid: string; tweet: Tweety }>(),
-    CommentFailure: props<{ uuid: string; tweet: Tweety }>(),
+    CommentFailure: props<{ uuid: string; tweet: Tweety, message: string }>(),
     //
     Like: props<{ tweet: Tweety }>(),
     LikeSuccess: props<{ tweet: Tweety }>(),

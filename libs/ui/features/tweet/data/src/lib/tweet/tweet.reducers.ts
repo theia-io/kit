@@ -60,5 +60,15 @@ export const featTweetTweetsReducer = createReducer(
 
       return existingTweet;
     }),
-  }))
+  })),
+  on(FeatTweetActions.commentSuccess, (state, { tweet }) => ({
+    ...state,
+    tweets: state.tweets.map((existingTweet) => {
+      if (mongooseEqual(existingTweet, tweet)) {
+        return tweet;
+      }
+
+      return existingTweet;
+    }),
+  })),
 );

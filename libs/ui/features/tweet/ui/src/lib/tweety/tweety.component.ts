@@ -3,12 +3,14 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  EventEmitter,
   HostListener,
   Input,
   OnChanges,
+  Output,
   SimpleChanges,
   ViewChild,
-  inject
+  inject,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -32,6 +34,7 @@ import {
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
+import { AutoFocusModule } from 'primeng/autofocus';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
@@ -46,7 +49,7 @@ import {
   startWith,
   switchMap,
   take,
-  withLatestFrom
+  withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetActionsComponent } from './actions/actions.component';
@@ -76,6 +79,10 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
 export class FeatTweetTweetyComponent implements OnChanges {
   @Input({ required: true })
   tweetId!: Tweety['id'];
+
+  @Output()
+  tweetDeleted = new EventEmitter<void>();
+
   // Deps
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
@@ -117,12 +124,14 @@ export class FeatTweetTweetyComponent implements OnChanges {
 
   tweetCanBeDeleted$ = combineLatest([
     this.#currentProfile$,
-    this.tweetProfile$
-  ])
-  .pipe(
-    map(([currentProfile, tweetProfile]) => currentProfile && tweetProfile && currentProfile.id === tweetProfile.id),
+    this.tweetProfile$,
+  ]).pipe(
+    map(
+      ([currentProfile, tweetProfile]) =>
+        currentProfile && tweetProfile && currentProfile.id === tweetProfile.id
+    ),
     startWith(false)
-  )
+  );
 
   tweetBookmarked$ = this.#tweet$.pipe(
     switchMap((tweet) => this.#store.select(selectIsBookmarked(tweet)))
@@ -179,6 +188,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
             ids: [{ tweetId: id, profileId: profile.id }],
           })
         );
+        this.tweetDeleted.emit();
       });
   }
 

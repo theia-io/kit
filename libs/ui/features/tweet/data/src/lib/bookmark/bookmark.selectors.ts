@@ -3,7 +3,7 @@ import { createSelector } from '@ngrx/store';
 import { FeatureBookmarkState } from './bookmark.reducers';
 
 /** selectors */
-export const selectBookmarkState = (state: {
+const selectBookmarkState = (state: {
   tweet: {
     bookmark: FeatureBookmarkState;
   };

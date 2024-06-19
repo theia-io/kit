@@ -166,16 +166,17 @@ export class TweetsEffects {
           })
           .pipe(
             map((tweet) =>
-              FeatTweetActions.tweetSuccess({
+              FeatTweetActions.commentSuccess({
                 uuid,
                 tweet: { ...tweet, denormalization: { profile } },
               })
             ),
             catchError((err) => {
-              console.error('TweetsEffects createTweet', err);
+              console.error('TweetsEffects commentTweet', err);
               return of(
-                FeatTweetActions.tweetFailure({
+                FeatTweetActions.commentFailure({
                   uuid,
+                  tweet,
                   message:
                     'Sorry, error. We will take a look at it and meanwhile try later',
                 })

@@ -5,7 +5,7 @@ import { Router } from '@angular/router';
 import {
   FeatTweetBookmarkActions,
   selectAllTweets,
-  selectBookmarks
+  selectBookmarks,
 } from '@kitouch/features/tweet/data';
 import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { Bookmark, Tweety } from '@kitouch/shared/models';
@@ -15,10 +15,9 @@ import {
   TweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
-import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
-import {combineLatest} from 'rxjs';
-import { filter, map, switchMap, take } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { filter, map, take } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -41,21 +40,23 @@ export class PageBookmarksComponent {
   #router = inject(Router);
 
   bookmarkFeedTweets$ = combineLatest([
+    this.#store.select(selectBookmarks),
     this.#store
-    .select(selectBookmarks),
-    this.#store.select(selectAllTweets).pipe(
+      .select(selectAllTweets)
+      .pipe
       // filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
-    ),
-  ])    
-    .pipe(
-      map(([bookmarks, tweets, ]) => {
-        /** @TODO @FIXME */
-        // likely should be memoized and improved
-        const tweetsMap = new Map(tweets.map((tweet) => ([tweet.id, tweet])));
-        return bookmarks.map((bookmark) => tweetsMap.get(bookmark.tweetId) ?? bookmark)
-      }),
-      filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
-    );
+      (),
+  ]).pipe(
+    map(([bookmarks, tweets]) => {
+      /** @TODO @FIXME */
+      // likely should be memoized and improved
+      const tweetsMap = new Map(tweets.map((tweet) => [tweet.id, tweet]));
+      return bookmarks.map(
+        (bookmark) => tweetsMap.get(bookmark.tweetId) ?? bookmark
+      );
+    }),
+    filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
+  );
 
   constructor() {
     this.#store
@@ -73,15 +74,5 @@ export class PageBookmarksComponent {
           FeatTweetBookmarkActions.getBookmarksFeed({ bookmarks })
         );
       });
-  }
-
-  tweetClickHandler(tweet: Tweety) {
-    this.#router.navigate([
-      '/',
-      APP_PATH.Profile,
-      tweet.profileId,
-      APP_PATH.Tweet,
-      tweet.id,
-    ]);
   }
 }

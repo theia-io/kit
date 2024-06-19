@@ -32,9 +32,9 @@ export const featTweetBookmarkReducer = createReducer(
       bookmarks: state.bookmarks.filter((bookmark) => bookmark.id !== id),
       // tweets: state.tweets.filter((bookmarkedTweet) => bookmarkedTweet.id !== tweetId && bookmarkedTweet.profileId !== profileId)
     })
-  )
-  // on(FeatTweetBookmarkActions.getBookmarksFeedSuccess, (state, { tweets }) => ({
-  //   ...state,
-  //   tweets,
-  // }))
+  ),
+  on(FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved, (state, {tweetId}) => ({
+    ...state,
+    bookmarks: state.bookmarks.filter((bookmark) => bookmark.tweetId !== tweetId)
+  })),
 );
