@@ -52,16 +52,13 @@ export class TweetApiService {
     );
   }
 
-  getBookmarks(profileId: string): Observable<Array<Bookmark>> {
+  getBookmarks(profileId: Profile['id']): Observable<Array<Bookmark>> {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['getBookmarks'](profileId))
     );
   }
 
-  bookmark(bookmark: {
-    tweetId: string;
-    profileId: string;
-  }): Observable<Bookmark> {
+  bookmark(bookmark: Omit<Bookmark, 'id'>): Observable<Bookmark> {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['postBookmark'](bookmark))
     );

@@ -1,11 +1,11 @@
 <ui-comp-account-tile [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
-    [primarySecondaryText]="tweet.timestamp?.createdAt| date:'MMM d, h:mm a'"
+    [primarySecondaryText]="tweet().timestamp?.createdAt| date:'MMM d, h:mm a'"
     [secondaryText]="(tweetProfile$ | async)?.type" [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
-    [link]="profileUrlPath + tweet.profileId" />
+    [link]="profileUrlPath + tweet().profileId" />
 
-<div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
+<div (click)="tweetClickHandler(tweet())" class="pl-16 cursor-pointer">
     <p class="text-base width-auto font-medium flex-shrink"
-        [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)">
+        [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet().content)">
     </p>
 
     <feat-tweet-actions 
@@ -13,7 +13,7 @@
         (comment)="commentOverlayTmpl.toggle($event)" 
         (repost)="repostHandler()" 
         [liked]="tweetLiked$ | async"
-        [likes]="tweet.upProfileIds?.length ?? 0" 
+        [likes]="tweet().upProfileIds?.length ?? 0" 
         (like)="likeHandler()" 
         (share)="shareHandler()"
         [bookmarked]="(tweetBookmarked$ | async) ?? false"

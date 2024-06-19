@@ -4,20 +4,21 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import {
   FeatTweetBookmarkActions,
-  selectBookmarks,
-  selectBookmarksFeed,
+  selectAllTweets,
+  selectBookmarks
 } from '@kitouch/features/tweet/data';
 import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { Bookmark, Tweety } from '@kitouch/shared/models';
 import {
-  UiCompCardComponent,
   AccountTileComponent,
   DividerComponent,
   TweetButtonComponent,
+  UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
-import { filter, take } from 'rxjs/operators';
+import {combineLatest} from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -39,20 +40,38 @@ export class PageBookmarksComponent {
   #store = inject(Store);
   #router = inject(Router);
 
-  bookmarkFeedTweets$ = this.#store
-    .select(selectBookmarksFeed)
-    .pipe(filter((tweets): tweets is Array<Tweety> => tweets.length > 0));
+  bookmarkFeedTweets$ = combineLatest([
+    this.#store
+    .select(selectBookmarks),
+    this.#store.select(selectAllTweets).pipe(
+      // filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
+    ),
+  ])    
+    .pipe(
+      map(([bookmarks, tweets, ]) => {
+        /** @TODO @FIXME */
+        // likely should be memoized and improved
+        const tweetsMap = new Map(tweets.map((tweet) => ([tweet.id, tweet])));
+        return bookmarks.map((bookmark) => tweetsMap.get(bookmark.tweetId) ?? bookmark)
+      }),
+      filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
+    );
 
   constructor() {
-    this.#store.select(selectBookmarks)
+    this.#store
+      .select(selectBookmarks)
       .pipe(
-        filter((bookmarks): bookmarks is Array<Bookmark> => bookmarks.length > 0),
+        filter(
+          (bookmarks): bookmarks is Array<Bookmark> => bookmarks.length > 0
+        ),
         /** @TODO @FIXME refine me */
         take(1), // this is needed once initial request for bookmarks returned
-        takeUntilDestroyed(),
+        takeUntilDestroyed()
       )
       .subscribe((bookmarks) => {
-        this.#store.dispatch(FeatTweetBookmarkActions.getBookmarksFeed({bookmarks}));
+        this.#store.dispatch(
+          FeatTweetBookmarkActions.getBookmarksFeed({ bookmarks })
+        );
       });
   }
 

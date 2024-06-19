@@ -28,6 +28,7 @@ export const TweetApiActions = createActionGroup({
     GetTweetsForProfile: props<{ profileId: string }>(),
     GetTweetsForProfileSuccess: props<{ tweets: Tweety[] }>(),
     GetTweetsForProfileFailure: props<{ profileId: string }>(),
+    GetTweetsForBookmarkSuccess: props<{ tweets: Tweety[] }>(),
     Delete: props<{ id: string }>(),
     Post: props<{ tweet: Tweety }>(),
     Update: props<{ tweet: Tweety }>(),

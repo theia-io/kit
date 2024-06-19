@@ -1,16 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatTweetBookmarkActions, selectBookmarks } from '@kitouch/features/tweet/data';
+import {
+  FeatTweetBookmarkActions,
+  selectAllTweets,
+  selectBookmarks,
+} from '@kitouch/features/tweet/data';
 import { selectCurrentProfile } from '@kitouch/features/kit/ui';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import {concatLatestFrom} from '@ngrx/operators';
+import { concatLatestFrom } from '@ngrx/operators';
 import { of } from 'rxjs';
 import {
-    catchError,
-    filter,
-    map,
-    switchMap,
-    withLatestFrom,
+  catchError,
+  filter,
+  map,
+  switchMap,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
 
@@ -52,8 +56,14 @@ export class BookmarkEffects {
   getBookmarksFeed$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetBookmarkActions.getBookmarksFeed),
-      switchMap(({bookmarks}) =>
-        this.#tweetApi.get(bookmarks).pipe(
+      map(({ bookmarks }) =>
+        bookmarks.map((bookmark) => ({
+          tweetId: bookmark.tweetId,
+          profileId: bookmark.profileIdTweetyOwner,
+        }))
+      ),
+      switchMap((tweetGetRequest) =>
+        this.#tweetApi.get(tweetGetRequest).pipe(
           map((tweets) =>
             FeatTweetBookmarkActions.getBookmarksFeedSuccess({
               tweets,
@@ -63,7 +73,6 @@ export class BookmarkEffects {
             console.error('[BookmarkEffects] getBookmarksFeed', err);
             return of(
               FeatTweetBookmarkActions.getBookmarksFeedFailure({
-                bookmarks,
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
               })
@@ -78,24 +87,30 @@ export class BookmarkEffects {
     this.#actions$.pipe(
       ofType(FeatTweetBookmarkActions.bookmark),
       withLatestFrom(this.currentProfile$),
-      switchMap(([{ tweetId }, profile]) =>
-        this.#tweetApi.bookmark({ profileId: profile.id, tweetId }).pipe(
-          map((bookmark) =>
-            FeatTweetBookmarkActions.bookmarkSuccess({
-              bookmark,
-            })
-          ),
-          catchError((err) => {
-            console.error('[BookmarkEffects] bookmark', err);
-            return of(
-              FeatTweetBookmarkActions.bookmarkFailure({
-                tweetId,
-                message:
-                  'Sorry, error. We will take a look at it and meanwhile try later',
-              })
-            );
+      switchMap(([{ tweetId, profileIdTweetyOwner }, profile]) =>
+        this.#tweetApi
+          .bookmark({
+            tweetId,
+            profileIdTweetyOwner,
+            profileIdBookmarker: profile.id,
           })
-        )
+          .pipe(
+            map((bookmark) =>
+              FeatTweetBookmarkActions.bookmarkSuccess({
+                bookmark,
+              })
+            ),
+            catchError((err) => {
+              console.error('[BookmarkEffects] bookmark', err);
+              return of(
+                FeatTweetBookmarkActions.bookmarkFailure({
+                  tweetId,
+                  message:
+                    'Sorry, error. We will take a look at it and meanwhile try later',
+                })
+              );
+            })
+          )
       )
     )
   );

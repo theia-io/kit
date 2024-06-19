@@ -33,18 +33,24 @@ const featTweetInitialState: FeatureTweetState = {
 
 export const featTweetTweetsReducer = createReducer(
   featTweetInitialState,
-  on(TweetApiActions.getAllSuccess, (state, { tweets }) => ({
-    ...state,
-    tweets,
-  })),
-  on(TweetApiActions.getTweetsForProfileSuccess, (state, { tweets }) => ({
-    ...state,
-    tweets,
-  })),
-  on(TweetApiActions.getSuccess, (state, { tweets }) => ({
-    ...state,
-    tweets: mergeArr(state.tweets, tweets),
-  })),
+  on(
+    TweetApiActions.getAllSuccess,
+    TweetApiActions.getSuccess,
+    TweetApiActions.getTweetsForProfileSuccess,
+    TweetApiActions.getTweetsForBookmarkSuccess,
+    (state, { tweets }) => ({
+      ...state,
+      tweets: mergeArr(state.tweets, tweets),
+    })
+  ),
+  // on(TweetApiActions.getTweetsForProfileSuccess, (state, { tweets }) => ({
+  //   ...state,
+  //   tweets: mergeArr(state.tweets, tweets),
+  // })),
+  // on(TweetApiActions.getSuccess, (state, { tweets }) => ({
+  //   ...state,
+  //   tweets: mergeArr(state.tweets, tweets),
+  // })),
   on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
     ...state,
     tweets: [tweet, ...state.tweets],

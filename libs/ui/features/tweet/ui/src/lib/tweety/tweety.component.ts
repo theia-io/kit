@@ -5,11 +5,13 @@ import {
   DestroyRef,
   HostListener,
   Input,
+  OnChanges,
   OnInit,
+  SimpleChanges,
   ViewChild,
   inject,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -18,7 +20,7 @@ import {
   FeatTweetBookmarkActions,
   selectIsBookmarked,
   selectTweet,
-  tweetIsLikedByProfile
+  tweetIsLikedByProfile,
 } from '@kitouch/features/tweet/data';
 import {
   selectCurrentProfile,
@@ -40,6 +42,7 @@ import {
   combineLatestWith,
   filter,
   map,
+  shareReplay,
   startWith,
   switchMap,
   take,
@@ -69,9 +72,9 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     TweetButtonComponent,
   ],
 })
-export class FeatTweetTweetyComponent implements OnInit {
+export class FeatTweetTweetyComponent implements OnChanges {
   @Input({ required: true })
-  tweet!: Tweety; /** @TODO @FIXME think on converting to tweet id */
+  tweetId!: Tweety['id'];
   // Deps
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
@@ -79,29 +82,37 @@ export class FeatTweetTweetyComponent implements OnInit {
   //
   domSanitizer = inject(DomSanitizer);
   // State
-  #tweet$$ = new ReplaySubject<Tweety>(1);
+  #tweetId$$ = new ReplaySubject<Tweety['id']>(1);
+
+  // #tweet$ = new ReplaySubject<Tweety>(1);
+  #tweet$ = this.#tweetId$$.pipe(
+    switchMap((tweetId) => this.#store.select(selectTweet(tweetId))),
+    filter(Boolean),
+    shareReplay(1)
+  );
+  /** @TODO @FIXME Implement loader while tweet is loading */
+  tweet = toSignal(this.#tweet$, {initialValue: {} as Tweety}); /** @TODO @FIXME this initial value */
 
   #currentProfile$ = this.#store
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
 
-  tweetProfile$ = this.#tweet$$.pipe(
+  tweetProfile$ = this.#tweet$.pipe(
     switchMap((tweet) => this.#store.select(selectProfile(tweet.profileId))),
-    startWith(this.tweet?.denormalization?.profile ?? undefined),
     filter(Boolean)
   );
 
   // Component logic
-  tweetComments$ = this.#tweet$$.pipe(map(({ comments }) => comments));
+  tweetComments$ = this.#tweet$.pipe(map(({ comments }) => comments));
 
-  tweetLiked$ = this.#tweet$$.pipe(
+  tweetLiked$ = this.#tweet$.pipe(
     combineLatestWith(this.#currentProfile$),
     map(([tweet, currentProfile]) =>
       tweetIsLikedByProfile(tweet, currentProfile?.id)
     )
   );
 
-  tweetBookmarked$ = this.#tweet$$.pipe(
+  tweetBookmarked$ = this.#tweet$.pipe(
     switchMap((tweet) => this.#store.select(selectIsBookmarked(tweet)))
   );
 
@@ -122,14 +133,14 @@ export class FeatTweetTweetyComponent implements OnInit {
   @ViewChild('commentOverlayTmpl')
   commentOverlayTmpl: OverlayPanel;
 
-  ngOnInit(): void {
-    if (this.tweet.id) {
-      this.#store
-        .select(selectTweet(this.tweet.id))
-        .pipe(filter(Boolean), takeUntilDestroyed(this.#destroyRef))
-        .subscribe((tweet) => {
-          this.#tweet$$.next(tweet);
-        });
+  ngOnChanges(changes: SimpleChanges): void {
+    const tweetId = changes['tweetId'];
+
+    if (
+      !!tweetId.currentValue &&
+      tweetId.currentValue !== tweetId.previousValue
+    ) {
+      this.#tweetId$$.next(tweetId.currentValue);
     }
   }
 
@@ -148,7 +159,7 @@ export class FeatTweetTweetyComponent implements OnInit {
       return;
     }
 
-    this.#tweet$$
+    this.#tweet$
       .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
       .subscribe((tweet) => {
         const tweetuuidv4 = uuidv4();
@@ -167,7 +178,7 @@ export class FeatTweetTweetyComponent implements OnInit {
   }
 
   likeHandler() {
-    this.#tweet$$
+    this.#tweet$
       .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
       .subscribe((tweet) => {
         this.#store.dispatch(FeatTweetActions.like({ tweet }));
@@ -179,20 +190,20 @@ export class FeatTweetTweetyComponent implements OnInit {
   }
 
   bookmarkHandler() {
-    this.#tweet$$
+    this.#tweet$
       .pipe(
         take(1),
         takeUntilDestroyed(this.#destroyRef),
         withLatestFrom(this.tweetBookmarked$)
       )
       .subscribe(([tweet, bookmarked]) => {
-        if(bookmarked) {
+        if (bookmarked) {
           this.#store.dispatch(
             FeatTweetBookmarkActions.removeBookmark({ tweetId: tweet.id })
           );
-        }  else {
+        } else {
           this.#store.dispatch(
-            FeatTweetBookmarkActions.bookmark({ tweetId: tweet.id })
+            FeatTweetBookmarkActions.bookmark({ tweetId: tweet.id, profileIdTweetyOwner: tweet.profileId })
           );
         }
       });

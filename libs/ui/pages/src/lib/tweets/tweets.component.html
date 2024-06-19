@@ -6,6 +6,6 @@
 <app-divider class="block my-2" [class.mt-12]="$first" />
 
 <ui-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
-    <feat-tweet-tweety class="block" [tweet]="tweet" />
+    <feat-tweet-tweety class="block" [tweetId]="tweet.id" />
 </ui-comp-card>
 }
