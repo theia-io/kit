@@ -1,5 +1,5 @@
 {
-  "name": "@kitouch/feat-tweet-data",
+  "name": "@kitouch/features/tweet/data",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.0.0",

@@ -8,7 +8,6 @@ import {
   profileReducer,
 } from './profile/profile.reducers';
 import { FeatureUserState, userReducer } from './user/user.reducers';
-// import { mongooseEqual } from '@kitouch/shared/utils';
 
 export interface AccountState {
   account?: FeatureAccountState;

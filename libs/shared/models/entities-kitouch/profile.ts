@@ -28,6 +28,6 @@ export interface Profile {
   pictures: Array<Picture & TimeStamp>;
   links: Link[];
   // meta
-  followers: Array<Pick<Profile, 'id' | 'name' | 'pictures'>>;
-  following: Array<Pick<Profile, 'id' | 'name' | 'pictures'>>;
+  followers: Array<Profile['id']>;
+  following: Array<Profile['id']>;
 }

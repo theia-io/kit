@@ -1,7 +1,32 @@
 @if (tweet$ | async; as tweet) {
 <ui-comp-card>
-    <feat-tweet-tweety class="block" [tweet]="tweet" />
+    <feat-tweet-tweety class="block" [tweetId]="tweet.id" (tweetDeleted)="tweetDeletedHandler()" />
 </ui-comp-card>
+
+<app-divider *ngIf="tweet.comments" class="block my-12" />
+
+<p-timeline [value]="(tweetComments$ | async) ?? []" class="w-full md:w-20rem" align="alternate">
+    <ng-template pTemplate="content" let-event>
+        <div class="min-h-28">
+        {{ event.content }}
+    </div>
+    </ng-template>
+
+    <ng-template pTemplate="opposite" let-comment>
+        <div class="min-h-28">
+        <ui-comp-account-tile 
+            [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
+            [primarySecondaryText]="comment.createdAt| date:'MMM d, h:mm a'"
+            [secondaryText]="comment?.denormalization?.profile?.name"
+            [link]="profileUrlPath + tweet.profileId" />
+        </div>
+    </ng-template>
+</p-timeline>
 } @else {
+
 <p>No tweet</p>
+
+<p>It might have been deleted or never existed</p>
+
+<p>If somebody shared with you this link ask to double check if it is correct.</p>
 }

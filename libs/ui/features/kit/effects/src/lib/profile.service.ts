@@ -16,10 +16,10 @@ export class ProfileService {
         filter(Boolean)
     );
 
-    getFollowingProfiles(following: Array<string>): Observable<Array<Profile>> {
+    getProfiles(profiles: Array<Profile['id']>): Observable<Array<Profile>> {
         return this.#functions$
             .pipe(
-                switchMap(fns => fns['getProfilesFollowing']({following}))
+                switchMap(fns => fns['getProfiles'](profiles))
             )
     }
 }

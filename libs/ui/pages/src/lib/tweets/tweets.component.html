@@ -1,7 +1,11 @@
+<div class="mb-2">
+    Profile info here
+</div>
+
 @for (tweet of tweets$ | async; track $index) {
-    <app-divider class="block my-2" [class.mt-12]="$first" />
-    
-        <ui-comp-card (click)="tweetHandler(tweet)" class="cursor-pointer">
-            <feat-tweet-tweety class="block" [tweet]="tweet" />
-        </ui-comp-card>
-    }
+<app-divider class="block my-2" [class.mt-12]="$first" />
+
+<ui-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
+    <feat-tweet-tweety class="block" [tweetId]="tweet.id" />
+</ui-comp-card>
+}

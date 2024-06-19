@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import {
+  FeatTweetBookmarkActions,
+  TweetApiActions,
+} from '@kitouch/features/tweet/data';
 import {
   APP_PATH,
   AuthService,
@@ -8,6 +12,7 @@ import {
   NAV_ITEMS,
   NavBarComponent,
 } from '@kitouch/ui/shared';
+import { Store } from '@ngrx/store';
 
 @Component({
   standalone: true,
@@ -34,15 +39,22 @@ import {
     >,
   `,
 })
-export class KitComponent {
+export class KitComponent implements OnInit {
   title = 'Kitouch';
 
+  #store = inject(Store);
+  //
   #authService = inject(AuthService);
 
   profileUrl = APP_PATH.Profile;
   navBarItems = NAV_ITEMS;
 
   $profile = this.#authService.currentProfile$;
+
+  ngOnInit(): void {
+    /** Data that will be required across all app */
+    this.#store.dispatch(FeatTweetBookmarkActions.getAll());
+  }
 
   async logoutHandler() {
     await this.#authService.logout();

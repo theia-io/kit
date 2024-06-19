@@ -16,10 +16,11 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@kitouch/feat-tweet-data": ["libs/ui/features/tweet/data/src/index.ts"],
-      "@kitouch/feat-tweet-effects": [
+      "@kitouch/features/tweet/data": ["libs/ui/features/tweet/data/src/index.ts"],
+      "@kitouch/features/tweet/effects": [
         "libs/ui/features/tweet/effects/src/index.ts"
       ],
+      "@kitouch/features/tweet/ui": ["libs/ui/features/tweet/ui/src/index.ts"],
       "@kitouch/features/kit/ui": [
         "libs/ui/features/kit/data/src/index.ts"
       ],
@@ -38,7 +39,6 @@
       "@kitouch/ui/features/follow": ["libs/ui/features/follow/src/index.ts"],
       "@kitouch/ui/features/legal": ["libs/ui/features/legal/src/index.ts"],
       "@kitouch/ui/features/search": ["libs/ui/features/search/src/index.ts"],
-      "@kitouch/ui/features/tweet": ["libs/ui/features/tweet/ui/src/index.ts"],
       "@kitouch/ui/pages": ["libs/ui/pages/src/index.ts"],
       "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]
     }

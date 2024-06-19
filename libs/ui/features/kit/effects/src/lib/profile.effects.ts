@@ -18,7 +18,7 @@ export class ProfileEffects {
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.getFollowingProfiles),
       switchMap(({ profileIds }) =>
-        this.#profileService.getFollowingProfiles(profileIds).pipe(
+        this.#profileService.getProfiles(profileIds).pipe(
           map((profiles) =>
             FeatProfileApiActions.getFollowingProfilesSuccess({ profiles })
           ),

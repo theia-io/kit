@@ -2,8 +2,8 @@ import { Profile } from '@kitouch/shared/models';
 import { createSelector } from '@ngrx/store';
 import { FeatureProfileState } from './profile.reducers';
 
-const selectProfileState = (state: { profile: FeatureProfileState }) =>
-  state.profile;
+const selectProfileState = (state: { kit: { profile: FeatureProfileState} }) =>
+  state.kit?.profile;
 
 /** Profiles */
 export const selectCurrentProfile = createSelector(
@@ -17,6 +17,6 @@ export const selectProfiles = createSelector(
 );
 
 export const selectProfile = (profileId: string) =>
-  createSelector(selectProfiles, (profile: Profile[]) =>
-    profile.filter(({ id }) => id === profileId)
+  createSelector(selectProfiles, (profiles: Profile[]) =>
+    profiles.find(({ id }) => id === profileId)
   );

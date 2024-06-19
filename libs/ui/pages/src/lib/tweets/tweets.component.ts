@@ -5,7 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import {
   TweetApiActions,
   selectTweetsProfile
-} from '@kitouch/feat-tweet-data';
+} from '@kitouch/features/tweet/data';
 import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
@@ -13,7 +13,7 @@ import {
   TweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
-import { FeatTweetTweetyComponent } from '@kitouch/ui/features/tweet';
+import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
@@ -53,11 +53,11 @@ export class PageTweetsComponent {
     this.#profileId$
       .pipe(takeUntilDestroyed())
       .subscribe((profileId) =>
-        this.#store.dispatch(TweetApiActions.getProfileTweets({ profileId }))
+        this.#store.dispatch(TweetApiActions.getTweetsForProfile({ profileId }))
       );
   }
 
-  tweetHandler(tweet: Tweety) {
+  tweetClickHandler(tweet: Tweety) {
     this.#router.navigate([
       '/',
       APP_PATH.Profile,

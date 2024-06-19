@@ -1,29 +1,31 @@
 <div class="flex-shrink-0 flex hover:bg-blue-00 rounded-full">
+    <div class="flex items-center">
+        <ng-template #picTmp>
+            <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer"
+            [src]="picture ?? '/account/placeholder-small.jpeg'" height="40" width="40" alt="kitouch profile picture" />
+        </ng-template>
 
-    <ng-container *ngTemplateOutlet="accountInfoTmpl"></ng-container>
+        @if (link) {
+            <a [routerLink]="link" class="hover:animate-pulse">
+                <ng-container *ngTemplateOutlet="picTmp"></ng-container>
+            </a>
+        } @else {
+            <ng-container *ngTemplateOutlet="picTmp"></ng-container>
+        }
 
-    <ng-template #accountInfoTmpl>
-        <div class="flex items-center">
-            @if(picture) {
-            <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer" [src]="picture" height="40"
-                width="40" alt="kitouch profile picture" />
-            } @else {
-            <img class="inline-block h-10 w-10 rounded-full" ngSrc="/account/placeholder-small.jpeg" height="40"
-                width="40" alt="kitouch profile picture placeholder" />
-            }
-            <div class="ml-2">
-                <p class="text-base leading-6 font-medium font-bold">
-                    {{primaryText}}
+        
+        <div class="ml-2">
+            <p class="text-base leading-6 font-medium font-bold">
+                {{primaryText}}
 
-                    <span *ngIf="primarySecondaryText" class="text-sm leading-5 font-medium text-gray-400">
-                        {{primarySecondaryText}}
-                    </span>
-                </p>
-                <p *ngIf="secondaryText"
-                    class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-                    {{secondaryText}}
-                </p>
-            </div>
+                <span *ngIf="primarySecondaryText" class="text-sm leading-5 font-medium text-gray-400">
+                    {{primarySecondaryText}}
+                </span>
+            </p>
+            <p *ngIf="secondaryText"
+                class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                {{secondaryText}}
+            </p>
         </div>
-    </ng-template>
+    </div>
 </div>
