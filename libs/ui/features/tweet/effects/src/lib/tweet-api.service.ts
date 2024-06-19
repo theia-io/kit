@@ -40,6 +40,12 @@ export class TweetApiService {
     );
   }
 
+  deleteTweets(ids: Array<{tweetId: Tweety['id'], profileId: Profile['id']}>): Observable<Tweety> {
+    return this.#realmUser$.pipe(
+      switchMap((user) => user.functions['deleteTweets'](ids))
+    );
+  }
+  
   commentTweet(tweet: Partial<Tweety>) {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['putTweet'](tweet))
@@ -65,8 +71,8 @@ export class TweetApiService {
   }
 
   deleteBookmark(bookmark: {
-    tweetId: string;
-    profileId: string;
+    tweetId: Tweety['id'];
+    profileIdBookmarker: Profile['id'];
   }): Observable<Bookmark> {
     return this.#realmUser$.pipe(
       switchMap((user) => user.functions['deleteBookmark'](bookmark))

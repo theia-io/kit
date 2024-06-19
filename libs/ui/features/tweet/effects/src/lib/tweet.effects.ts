@@ -106,6 +106,21 @@ export class TweetsEffects {
     )
   );
 
+  deleteTweets$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatTweetActions.delete),
+      switchMap(({ ids }) =>
+        this.#tweetApi.deleteTweets(ids).pipe(
+          map(() => FeatTweetActions.deleteSuccess({ ids })),
+          catchError((err) => {
+            console.error('[TweetsEffects] deleteTweets ERROR', err);
+            return of(FeatTweetActions.deleteFailure({ ids }));
+          })
+        )
+      )
+    )
+  );
+
   createTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.tweet),

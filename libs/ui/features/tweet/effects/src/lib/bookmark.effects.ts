@@ -120,7 +120,7 @@ export class BookmarkEffects {
       ofType(FeatTweetBookmarkActions.removeBookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId }, profile]) =>
-        this.#tweetApi.deleteBookmark({ profileId: profile.id, tweetId }).pipe(
+        this.#tweetApi.deleteBookmark({ profileIdBookmarker: profile.id, tweetId }).pipe(
           map((bookmark) =>
             FeatTweetBookmarkActions.removeBookmarkSuccess({
               bookmark,

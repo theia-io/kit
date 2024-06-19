@@ -27,7 +27,7 @@
                 <label for="float-input">Your comment</label>
             </p-floatLabel>
 
-            <ui-comp-tweet-button text="Comment" [disabled]="!commentControl.valid" [loader]="false" (click)="tweetCommentHandler()"
+            <ui-comp-tweet-button text="Comment" [disabled]="!commentControl.valid" [loader]="false" (click)="commentHandler()"
                 class="mt-2 mx-8 float-right" />
         </div>
     </p-overlayPanel>
@@ -36,3 +36,5 @@
         <h3>Right Sidebar</h3>
     </p-sidebar>
 </div>
+
+<svg *ngIf="tweetCanBeDeleted$ | async" class="h-6 w-6 absolute top-2 right-2" role="button" (click)="deleteHandler()"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round">  <line x1="18" y1="6" x2="6" y2="18" />  <line x1="6" y1="6" x2="18" y2="18" /></svg>

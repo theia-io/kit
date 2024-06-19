@@ -43,17 +43,13 @@ export const featTweetTweetsReducer = createReducer(
       tweets: mergeArr(state.tweets, tweets),
     })
   ),
-  // on(TweetApiActions.getTweetsForProfileSuccess, (state, { tweets }) => ({
-  //   ...state,
-  //   tweets: mergeArr(state.tweets, tweets),
-  // })),
-  // on(TweetApiActions.getSuccess, (state, { tweets }) => ({
-  //   ...state,
-  //   tweets: mergeArr(state.tweets, tweets),
-  // })),
   on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
     ...state,
     tweets: [tweet, ...state.tweets],
+  })),
+  on(FeatTweetActions.deleteSuccess, (state, { ids }) => ({
+    ...state,
+    tweets: state.tweets.filter(({id}) => !ids.some(({tweetId}) => tweetId === id)),
   })),
   on(FeatTweetActions.likeSuccess, (state, { tweet }) => ({
     ...state,

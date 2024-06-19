@@ -6,15 +6,18 @@ import {
   HostListener,
   Input,
   OnChanges,
-  OnInit,
   SimpleChanges,
   ViewChild,
-  inject,
+  inject
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
+import {
+  selectCurrentProfile,
+  selectProfile,
+} from '@kitouch/features/kit/data';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
@@ -22,10 +25,6 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
 } from '@kitouch/features/tweet/data';
-import {
-  selectCurrentProfile,
-  selectProfile,
-} from '@kitouch/features/kit/data';
 import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
@@ -39,6 +38,7 @@ import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { SidebarModule } from 'primeng/sidebar';
 import {
   ReplaySubject,
+  combineLatest,
   combineLatestWith,
   filter,
   map,
@@ -46,7 +46,7 @@ import {
   startWith,
   switchMap,
   take,
-  withLatestFrom,
+  withLatestFrom
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetActionsComponent } from './actions/actions.component';
@@ -56,6 +56,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
   selector: 'feat-tweet-tweety',
   templateUrl: './tweety.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  styles: [':host { position: relative; }'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -91,7 +92,9 @@ export class FeatTweetTweetyComponent implements OnChanges {
     shareReplay(1)
   );
   /** @TODO @FIXME Implement loader while tweet is loading */
-  tweet = toSignal(this.#tweet$, {initialValue: {} as Tweety}); /** @TODO @FIXME this initial value */
+  tweet = toSignal(this.#tweet$, {
+    initialValue: {} as Tweety,
+  }); /** @TODO @FIXME this initial value */
 
   #currentProfile$ = this.#store
     .select(selectCurrentProfile)
@@ -112,6 +115,15 @@ export class FeatTweetTweetyComponent implements OnChanges {
     )
   );
 
+  tweetCanBeDeleted$ = combineLatest([
+    this.#currentProfile$,
+    this.tweetProfile$
+  ])
+  .pipe(
+    map(([currentProfile, tweetProfile]) => currentProfile && tweetProfile && currentProfile.id === tweetProfile.id),
+    startWith(false)
+  )
+
   tweetBookmarked$ = this.#tweet$.pipe(
     switchMap((tweet) => this.#store.select(selectIsBookmarked(tweet)))
   );
@@ -120,7 +132,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
   /** Comment section */
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
-    this.tweetCommentHandler();
+    this.commentHandler();
   }
 
   commentSideBar = false;
@@ -154,7 +166,23 @@ export class FeatTweetTweetyComponent implements OnChanges {
     ]);
   }
 
-  tweetCommentHandler() {
+  deleteHandler() {
+    this.#tweet$
+      .pipe(
+        take(1),
+        withLatestFrom(this.#currentProfile$),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe(([{ id }, profile]) => {
+        this.#store.dispatch(
+          FeatTweetActions.delete({
+            ids: [{ tweetId: id, profileId: profile.id }],
+          })
+        );
+      });
+  }
+
+  commentHandler() {
     if (!this.commentControl.valid) {
       return;
     }
@@ -203,7 +231,10 @@ export class FeatTweetTweetyComponent implements OnChanges {
           );
         } else {
           this.#store.dispatch(
-            FeatTweetBookmarkActions.bookmark({ tweetId: tweet.id, profileIdTweetyOwner: tweet.profileId })
+            FeatTweetBookmarkActions.bookmark({
+              tweetId: tweet.id,
+              profileIdTweetyOwner: tweet.profileId,
+            })
           );
         }
       });
