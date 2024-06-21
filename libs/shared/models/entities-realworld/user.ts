@@ -20,6 +20,7 @@ export enum UserStatus {
 
 export interface User {
   // id
+  id: string;
   accountId: Account['id'];
   // business
   name: string;
@@ -32,7 +33,7 @@ export interface User {
   cvs: Array<CurriculumVitae>;
   skills: Skill[]; // ids?
   projects: Project[]; // ids?
-  companies: Legal[]; // ids?
+  experience: Array<{id: Pick<Legal, 'id'>}>; // ids?
   status: UserStatus;
   // meta
   customerInfo: CustomerInfo;

@@ -18,6 +18,7 @@ export enum BusinessType {
 // User has to be replaced with Physical person and Company to Legal entity.
 export interface Legal {
   // id
+  id: string;
   accountId: string;
   // business
   type: LegalType;

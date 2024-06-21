@@ -8,9 +8,10 @@ export interface Skill {
 
 export interface Experience {
   title: string;
-  description: string;
-  image: string;
-  link: string;
+  period: Array<{start: string, end: string}>;
+  description?: string;
+  link?: string;
+  image?: string;
 }
 
 export interface Project {
@@ -41,6 +42,5 @@ export interface CurriculumVitae {
 export interface CustomerInfo {
   contact: Contact;
   birthday: Date;
-  experience: Array<Experience>;
   location: string;
 }

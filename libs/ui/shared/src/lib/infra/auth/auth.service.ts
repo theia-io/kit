@@ -1,12 +1,12 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { Account, Profile, User } from '@kitouch/shared/models';
+import { Store } from '@ngrx/store';
 import {
   FeatAccountApiActions,
   FeatProfileApiActions,
   FeatUserApiActions,
 } from 'libs/ui/features/kit/data/src';
-import { Account, Profile, User } from '@kitouch/shared/models';
-import { Store } from '@ngrx/store';
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
@@ -75,7 +75,7 @@ export class AuthService {
         FeatProfileApiActions.getFollowingProfiles({
           profileIds: currentProfile.following.map((id) => id),
         })
-      )
+      );
       this.#store.dispatch(FeatProfileApiActions.setProfiles({ profiles }));
     });
   }
@@ -117,8 +117,6 @@ export class AuthService {
         return this.#getAccountUserProfiles(realmUser);
       })
       .then(({ account, user, profiles }: any) => {
-        console.log(account, user, profiles);
-
         if (!account || !user || !profiles) {
           return this.#router.navigateByUrl('join');
         }
@@ -127,6 +125,7 @@ export class AuthService {
         this.#user$$.next(user);
         this.#profiles$$.next(profiles);
 
+        /** TODO HERE WE CAN REDIRECT TO FILL IN INFORMATION PAGE */
         this.routerEventsService.lastUrlBeforeCancelled$
           .pipe(take(1))
           .subscribe((urlBeforeSignIn) => {
@@ -186,7 +185,9 @@ export class AuthService {
     await this.#realmApp?.currentUser?.refreshAccessToken();
   }
 
-  async #getAccountUserProfiles(realmUser: Realm.User) {
+  async #getAccountUserProfiles(
+    realmUser: Realm.User
+  ): Promise<{ account: Account; user: User; profiles: Array<Profile> }> {
     return await realmUser.functions['getAccountUserProfiles'](realmUser.id);
   }
 }
