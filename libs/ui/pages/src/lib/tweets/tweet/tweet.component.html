@@ -1,6 +1,6 @@
 @if (tweet$ | async; as tweet) {
 <ui-comp-card>
-    <feat-tweet-tweety class="block" [tweetId]="tweet.id" (tweetDeleted)="tweetDeletedHandler()" />
+    <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" (tweetDeleted)="tweetDeletedHandler()" />
 </ui-comp-card>
 
 <app-divider *ngIf="tweet.comments" class="block my-12" />
