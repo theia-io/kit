@@ -1,1 +1,59 @@
-<p>FeatSettingsExperience works!</p>
+<form  [formGroup]="experienceForm">
+    <p-floatLabel>
+        <input pInputText id="title" formControlName="title" />
+        <label for="title">Title*</label>
+    </p-floatLabel>
+
+    <p-dropdown formControlName="type" [options]="experienceType" placeholder="Experience type" />
+
+    <p-floatLabel>
+        <input pInputText id="title" formControlName="company" />
+        <label for="company">Company*</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+        <input pInputText id="title" formControlName="location" />
+        <label for="company">Location</label>
+    </p-floatLabel>
+
+    <p-dropdown formControlName="locationType" [options]="locationType" placeholder="Remote, hybrid or office?" />
+
+    <p-calendar formControlName="startDate" />
+
+    <label for="currentlyWorking">Currently working here</label>
+    <p-inputSwitch inputId="currentlyWorking" />
+
+    <p-calendar formControlName="endDate" />
+
+    <p-floatLabel>
+        <textarea id="description" formControlName="description" rows="5" cols="30" pInputTextarea>
+        </textarea>
+        <label for="description">Tell us about it</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+        <p-chips id="skills" formControlName="skills" />
+        <label for="skills">Skills</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+        <p-chips id="links" formControlName="links" />
+        <label for="links">Links</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+        <p-chips id="chips" formControlName="skills" />
+        <label for="chips">Skills</label>
+    </p-floatLabel>
+
+    <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($any($event))"
+        [multiple]="true" accept="image/*" maxFileSize="1000000">
+        <ng-template pTemplate="content">
+            <ul *ngIf="uploadedFiles.length">
+                <li *ngFor="let file of uploadedFiles">
+                    {{ file.name }} - {{ file.size }} bytes
+                </li>
+            </ul>
+        </ng-template>
+    </p-fileUpload>
+</form>

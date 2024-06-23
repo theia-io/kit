@@ -6,12 +6,35 @@ export interface Skill {
   level: string;
 }
 
+export enum ExperienceType {
+  FullTime = 'Full-time',
+  PartTime = 'Part-time',
+  SelfEmployed = 'Self-employed',
+  Freelance = 'Freelance',
+  Contract = 'Contract',
+  Internship = 'Internship',
+  Apprenticeship = 'Apprenticeship',
+}
+
+export enum LocationType {
+  Office = 'Office',
+  Remote = 'Remote',
+  Hybrid = 'Hybrid'
+}
+
+
 export interface Experience {
   title: string;
-  period: Array<{start: string, end: string}>;
+  type: ExperienceType;
+  company: string;
+  location: string;
+  locationType: LocationType;
+  startDate: Date;
+  endDate: Date;
   description?: string;
-  link?: string;
-  image?: string;
+  skills?: Array<string>;
+  links?: Array<string>;
+  media?: Array<string>;
 }
 
 export interface Project {

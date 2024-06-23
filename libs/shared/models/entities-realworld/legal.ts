@@ -19,7 +19,13 @@ export enum BusinessType {
 export interface Legal {
   // id
   id: string;
-  accountId: string;
+  alias: string; // unique to 
+  /** 
+   * @TODO Implement accountId linking - or ids 
+   * when users become an admins to a legal entities 
+   * e.g. those who are currently working there? Or by vote? Or? 
+   */
+  // accountId: string; 
   // business
   type: LegalType;
   businessType: BusinessType;

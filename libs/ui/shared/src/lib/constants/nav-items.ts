@@ -7,6 +7,7 @@ export enum APP_PATH {
   Messages = 'messages',
   Bookmarks = 'bookmarks',
   Settings = 'settings',
+  AboutYourself = 'tell-us-about-yourself',
 }
 
 export const NAV_ITEMS: Array<NavBarItem> = [

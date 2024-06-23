@@ -85,7 +85,18 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Settings,
-        loadComponent: () => pages.then((comp) => comp.PageSettingsComponent),
+        children: [
+          {
+            path: APP_PATH.AboutYourself,
+            loadComponent: () =>
+              pages.then((comp) => comp.PageAboutYourselfComponent),
+          },
+          {
+            path: '',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageSettingsComponent),
+          },
+        ],
       },
       // {
       //   path: '**',

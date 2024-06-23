@@ -10,6 +10,7 @@ import {
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
+import { APP_PATH } from '../../constants';
 
 @Injectable({
   providedIn: 'root',
@@ -71,11 +72,14 @@ export class AuthService {
       this.#store.dispatch(
         FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
       );
-      this.#store.dispatch(
-        FeatProfileApiActions.getFollowingProfiles({
-          profileIds: currentProfile.following.map((id) => id),
-        })
-      );
+      const followingProfilesIds = currentProfile.following.map((id) => id);
+      if (followingProfilesIds?.length) {
+        this.#store.dispatch(
+          FeatProfileApiActions.getFollowingProfiles({
+            profileIds: followingProfilesIds,
+          })
+        );
+      }
       this.#store.dispatch(FeatProfileApiActions.setProfiles({ profiles }));
     });
   }
@@ -116,7 +120,7 @@ export class AuthService {
         this.#realmUser$$.next(realmUser);
         return this.#getAccountUserProfiles(realmUser);
       })
-      .then(({ account, user, profiles }: any) => {
+      .then(({ account, user, profiles }) => {
         if (!account || !user || !profiles) {
           return this.#router.navigateByUrl('join');
         }
@@ -124,6 +128,13 @@ export class AuthService {
         this.#account$$.next(account);
         this.#user$$.next(user);
         this.#profiles$$.next(profiles);
+
+        if (!user.experience?.length) {
+          this.#router.navigateByUrl(
+            `${APP_PATH.Settings}/${APP_PATH.AboutYourself}`
+          );
+          return;
+        }
 
         /** TODO HERE WE CAN REDIRECT TO FILL IN INFORMATION PAGE */
         this.routerEventsService.lastUrlBeforeCancelled$

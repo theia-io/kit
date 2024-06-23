@@ -7,6 +7,7 @@ import {
   CurriculumVitae,
   CustomerInfo,
   Education,
+  Experience,
   Project,
   Skill,
 } from './shared';
@@ -25,6 +26,8 @@ export interface User {
   // business
   name: string;
   surname: string;
+  experience: Array<{legalId: Pick<Legal, 'id' | 'alias'>} & Experience>; // ids?
+  // not implemented yet
   middleName: string;
   gender: Gender; // ids?
   languages: Languages[]; // ids?
@@ -33,7 +36,6 @@ export interface User {
   cvs: Array<CurriculumVitae>;
   skills: Skill[]; // ids?
   projects: Project[]; // ids?
-  experience: Array<{id: Pick<Legal, 'id'>}>; // ids?
   status: UserStatus;
   // meta
   customerInfo: CustomerInfo;
