@@ -1,59 +1,145 @@
-<form  [formGroup]="experienceForm">
-    <p-floatLabel>
-        <input pInputText id="title" formControlName="title" />
-        <label for="title">Title*</label>
-    </p-floatLabel>
+<form [formGroup]="experienceForm">
+    <div class="card flex justify-content-center">
+        <p-stepper orientation="vertical" [(activeStep)]="stepperActive">
+            <p-stepperPanel>
+                <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                    <button (click)="onClick.emit()">
+                        <span
+                            [ngClass]="{
+                                'bg-primary border-primary': index <= stepperActive,
+                                'surface-border': index > stepperActive
+                            }">
+                            <i class="pi pi-user text-lg"></i>
+                        </span>
+                    </button>
+                </ng-template>
 
-    <p-dropdown formControlName="type" [options]="experienceType" placeholder="Experience type" />
+                <ng-template pTemplate="content" let-nextCallback="nextCallback">
+                    <div class="flex flex-col gap-6">
+                        <p-floatLabel>
+                            <input pInputText id="title" formControlName="title" class="w-full" />
+                            <label for="title">Title/Role you had*</label>
+                        </p-floatLabel>
 
-    <p-floatLabel>
-        <input pInputText id="title" formControlName="company" />
-        <label for="company">Company*</label>
-    </p-floatLabel>
+                        <p-floatLabel>
+                            <input pInputText id="title" formControlName="company" class="w-full" />
+                            <label for="company">Company*</label>
+                        </p-floatLabel>
 
-    <p-floatLabel>
-        <input pInputText id="title" formControlName="location" />
-        <label for="company">Location</label>
-    </p-floatLabel>
+                        <p-floatLabel>
+                            <input pInputText id="title" formControlName="location" class="w-full" />
+                            <label for="company">Location</label>
+                        </p-floatLabel>
+                    </div>
 
-    <p-dropdown formControlName="locationType" [options]="locationType" placeholder="Remote, hybrid or office?" />
+                    <div class="flex pt-4 justify-end">
+                        <p-button (onClick)="nextCallback.emit()" label="Next" icon="pi pi-arrow-right"
+                            iconPos="right" />
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
 
-    <p-calendar formControlName="startDate" />
+            <p-stepperPanel>
+                <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                    <button (click)="onClick.emit()">
+                        <span
+                            [ngClass]="{
+                                'bg-primary border-primary': index <= stepperActive,
+                                'surface-border': index > stepperActive
+                            }">
+                            <i class="pi pi-briefcase text-lg"></i>
+                        </span>
+                    </button>
+                </ng-template>
+                <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
+                    <div class="flex flex-col gap-6">
+                        <p-dropdown class="w-full" formControlName="type" [options]="experienceType"
+                            placeholder="Experience type" />
 
-    <label for="currentlyWorking">Currently working here</label>
-    <p-inputSwitch inputId="currentlyWorking" />
+                        <p-dropdown class="w-full" formControlName="locationType" [options]="locationType"
+                            placeholder="Remote, hybrid or office?" />
 
-    <p-calendar formControlName="endDate" />
 
-    <p-floatLabel>
-        <textarea id="description" formControlName="description" rows="5" cols="30" pInputTextarea>
-        </textarea>
-        <label for="description">Tell us about it</label>
-    </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar id="startDate" formControlName="startDate" />
+                            <label for="startDate">Start date</label>
+                        </p-floatLabel>
 
-    <p-floatLabel>
-        <p-chips id="skills" formControlName="skills" />
-        <label for="skills">Skills</label>
-    </p-floatLabel>
+                        <p-floatLabel>
+                            <label for="currentlyWorking">Currently working here</label>
+                            <p-inputSwitch id="currentlyWorking" inputId="currentlyWorking" />
+                        </p-floatLabel>
 
-    <p-floatLabel>
-        <p-chips id="links" formControlName="links" />
-        <label for="links">Links</label>
-    </p-floatLabel>
+                        <p-floatLabel>
+                            <p-calendar id="endDate" formControlName="endDate" />
+                            <label for="endDate">End date</label>
+                        </p-floatLabel>
+                    </div>
 
-    <p-floatLabel>
-        <p-chips id="chips" formControlName="skills" />
-        <label for="chips">Skills</label>
-    </p-floatLabel>
+                    <div class="flex pt-4 justify-between">
+                        <p-button (onClick)="prevCallback.emit()" label="Back" severity="secondary"
+                            icon="pi pi-arrow-left" />
+                        <p-button (onClick)="nextCallback.emit()" label="Next" icon="pi pi-arrow-right"
+                            iconPos="right" />
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
 
-    <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php" (onUpload)="onUpload($any($event))"
-        [multiple]="true" accept="image/*" maxFileSize="1000000">
-        <ng-template pTemplate="content">
-            <ul *ngIf="uploadedFiles.length">
-                <li *ngFor="let file of uploadedFiles">
-                    {{ file.name }} - {{ file.size }} bytes
-                </li>
-            </ul>
-        </ng-template>
-    </p-fileUpload>
+            <p-stepperPanel>
+                <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
+                    <button  (click)="onClick.emit()">
+                        <span
+                            [ngClass]="{
+                                'bg-primary border-primary': index <= stepperActive,
+                                'surface-border': index > stepperActive
+                            }">
+                            <i class="pi pi-bolt text-lg"></i>
+                        </span>
+                    </button>
+                </ng-template>
+                <ng-template pTemplate="content" let-prevCallback="prevCallback">
+                    <div class="flex flex-col gap-6">
+
+                        <p-floatLabel>
+                            <textarea id="description" formControlName="description" rows="5" cols="30" pInputTextarea>
+                            </textarea>
+                            <label for="description">Tell us about it</label>
+                        </p-floatLabel>
+
+                        <p-floatLabel>
+                            <p-chips id="skills" formControlName="skills" />
+                            <label for="skills">Skills</label>
+                        </p-floatLabel>
+
+                        <p-floatLabel>
+                            <p-chips id="links" formControlName="links" />
+                            <label for="links">Links</label>
+                        </p-floatLabel>
+
+                        <p-floatLabel>
+                            <p-chips id="media" formControlName="media" />
+                            <label for="media">Media</label>
+                        </p-floatLabel>
+
+                        <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
+                            (onUpload)="onUpload($any($event))" [multiple]="true" accept="image/*"
+                            maxFileSize="1000000">
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="uploadedFiles.length">
+                                    <li *ngFor="let file of uploadedFiles">
+                                        {{ file.name }} - {{ file.size }} bytes
+                                    </li>
+                                </ul>
+                            </ng-template>
+                        </p-fileUpload>
+
+                    </div>
+                    <div class="flex pt-4 justify-start">
+                        <p-button (onClick)="prevCallback.emit()" label="Back" severity="secondary"
+                            icon="pi pi-arrow-left" />
+                    </div>
+                </ng-template>
+            </p-stepperPanel>
+        </p-stepper>
+    </div>
 </form>

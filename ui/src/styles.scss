@@ -1,8 +1,22 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@layer tailwind-base, primeng, tailwind-utilities;
+
+/** @TODO Import it so it being downloaded in parallel - in project.json / index.html */
+@import "primeicons/primeicons.css";
+@import "tailwindcss/base" layer(tailwind-base);
+@import "tailwindcss/components" layer(tailwind-utilities);
+@import "tailwindcss/utilities" layer(tailwind-utilities);
+@import "primeng/resources/themes/lara-light-blue/theme.css" layer(primeng);
+@import "primeng/resources/primeng.css" layer(primeng);
+
 
 /* You can add global styles to this file, and also import other style files */
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
