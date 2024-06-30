@@ -44,7 +44,6 @@
         "libs/ui/features/account/ui/src/index.ts"
       ],
       "@kitouch/ui/features/follow": ["libs/ui/features/follow/src/index.ts"],
-      "@kitouch/ui/features/legal": ["libs/ui/features/legal/src/index.ts"],
       "@kitouch/ui/features/search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/ui/pages": ["libs/ui/pages/src/index.ts"],
       "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]

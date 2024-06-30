@@ -4,12 +4,11 @@
             <p-stepperPanel>
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                     <button (click)="onClick.emit()">
-                        <span
-                            [ngClass]="{
+                        <span [ngClass]="{
                                 'bg-primary border-primary': index <= stepperActive,
                                 'surface-border': index > stepperActive
                             }">
-                            <i class="pi pi-user text-lg"></i>
+                            <i class="pi pi-user" style="font-size: 1.5rem"></i>
                         </span>
                     </button>
                 </ng-template>
@@ -21,14 +20,28 @@
                             <label for="title">Title/Role you had*</label>
                         </p-floatLabel>
 
-                        <p-floatLabel>
+                        <!-- <p-floatLabel>
                             <input pInputText id="title" formControlName="company" class="w-full" />
                             <label for="company">Company*</label>
+                        </p-floatLabel> -->
+
+                        <p-floatLabel>
+                            <p-dropdown id="company" formControlName="company" class="w-full" [showClear]="true"
+                                [options]="(suggestedCompanies$ | async) ?? []"
+                                emptyFilterMessage="You are the first!"
+                                emptyMessage="You are the first!"
+                                [checkmark]="true"
+                                [editable]="true" optionLabel="name" />
+                            <label for="company">Company*</label>
                         </p-floatLabel>
+
 
                         <p-floatLabel>
                             <input pInputText id="title" formControlName="location" class="w-full" />
                             <label for="company">Location</label>
+                            @if(geolocationAvailable) {
+                                <i class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]" role="button" (click)="$event.stopPropagation(); setCurrentGeolocation()" style="font-size: 1.5rem"></i>
+                            }
                         </p-floatLabel>
                     </div>
 
@@ -42,12 +55,11 @@
             <p-stepperPanel>
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                     <button (click)="onClick.emit()">
-                        <span
-                            [ngClass]="{
+                        <span [ngClass]="{
                                 'bg-primary border-primary': index <= stepperActive,
                                 'surface-border': index > stepperActive
                             }">
-                            <i class="pi pi-briefcase text-lg"></i>
+                            <i class="pi pi-briefcase" style="font-size: 1.5rem"></i>
                         </span>
                     </button>
                 </ng-template>
@@ -58,7 +70,6 @@
 
                         <p-dropdown class="w-full" formControlName="locationType" [options]="locationType"
                             placeholder="Remote, hybrid or office?" />
-
 
                         <p-floatLabel>
                             <p-calendar id="startDate" formControlName="startDate" />
@@ -87,13 +98,12 @@
 
             <p-stepperPanel>
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
-                    <button  (click)="onClick.emit()">
-                        <span
-                            [ngClass]="{
+                    <button (click)="onClick.emit()">
+                        <span [ngClass]="{
                                 'bg-primary border-primary': index <= stepperActive,
                                 'surface-border': index > stepperActive
                             }">
-                            <i class="pi pi-bolt text-lg"></i>
+                            <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
                         </span>
                     </button>
                 </ng-template>

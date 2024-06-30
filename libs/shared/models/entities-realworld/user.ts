@@ -26,7 +26,7 @@ export interface User {
   // business
   name: string;
   surname: string;
-  experience: Array<{legalId: Pick<Legal, 'id' | 'alias'>} & Experience>; // ids?
+  experience: Array<{legalId: Pick<Legal, '_id' | 'alias'>} & Experience>; // ids?
   // not implemented yet
   middleName: string;
   gender: Gender; // ids?

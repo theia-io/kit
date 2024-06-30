@@ -16,7 +16,7 @@ export enum BusinessType {
 }
 
 // User has to be replaced with Physical person and Company to Legal entity.
-export interface Legal {
+export interface Legal extends Realm.Services.MongoDB.Document {
   // id
   id: string;
   alias: string; // unique to 
