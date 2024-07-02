@@ -5,7 +5,7 @@ import { provideRouter } from '@angular/router';
 import { featTweetReducer } from '@kitouch/features/tweet/data';
 import { BookmarkEffects, TweetsEffects } from '@kitouch/features/tweet/effects';
 import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
-import { ProfileEffects } from '@kitouch/features/kit/effects';
+import { LegalEffects, ProfileEffects, UserEffects } from '@kitouch/features/kit/effects';
 import { AuthInterceptor } from '@kitouch/ui/shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
@@ -25,7 +25,7 @@ export const appConfig: ApplicationConfig = {
       kit: accountFeatureReducer,
       tweet: featTweetReducer,
     }),
-    provideEffects([ProfileEffects, TweetsEffects, BookmarkEffects]),
+    provideEffects([ProfileEffects, UserEffects, LegalEffects, TweetsEffects, BookmarkEffects]),
     provideStoreDevtools(),
 
     // auth

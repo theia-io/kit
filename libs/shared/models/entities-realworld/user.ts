@@ -19,14 +19,14 @@ export enum UserStatus {
   DELETED = 'deleted',
 }
 
-export interface User {
+export interface User extends Realm.Services.MongoDB.Document {
   // id
   id: string;
   accountId: Account['id'];
   // business
   name: string;
   surname: string;
-  experience: Array<{legalId: Pick<Legal, '_id' | 'alias'>} & Experience>; // ids?
+  experiences: Array<{legalId: Pick<Legal, '_id' | 'alias'>} & Experience>; // ids?
   // not implemented yet
   middleName: string;
   gender: Gender; // ids?

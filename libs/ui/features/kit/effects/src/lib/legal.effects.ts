@@ -1,21 +1,19 @@
 import { Injectable, inject } from '@angular/core';
-import {
-    FeatLegalApiActions
-} from '@kitouch/features/kit/data';
-import { DataSourceService } from '@kitouch/ui/shared';
+import { FeatLegalApiActions } from '@kitouch/features/kit/data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
+import { LegalService } from './legal.service';
 
 @Injectable()
 export class LegalEffects {
   #actions$ = inject(Actions);
-  #dataSource = inject(DataSourceService);
+  #legalService = inject(LegalService);
 
   companies$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatLegalApiActions.getCompanies),
       switchMap(() =>
-        this.#dataSource.getCompanies$().pipe(
+        this.#legalService.getCompanies$().pipe(
           map((companies) =>
             FeatLegalApiActions.getCompaniesSuccess({ companies })
           ),

@@ -129,7 +129,7 @@ export class AuthService {
         this.#user$$.next(user);
         this.#profiles$$.next(profiles);
 
-        if (!user.experience?.length) {
+        if (!user.experiences?.length) {
           this.#router.navigateByUrl(
             `${APP_PATH.Settings}/${APP_PATH.AboutYourself}`
           );

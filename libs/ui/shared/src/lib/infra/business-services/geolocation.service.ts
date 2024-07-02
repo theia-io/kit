@@ -13,7 +13,7 @@ export class GeolocationService {
 
   getCurrentUserLocationCity$() {
     return from(
-      new Promise((res, rej) => {
+      new Promise((res: (value: string) => void, rej) => {
         const options = {
           enableHighAccuracy: false,
           timeout: 5000,
@@ -29,7 +29,7 @@ export class GeolocationService {
           console.log(`More or less ${crd.accuracy} meters.`);
 
           this.#http
-            .get(
+            .get<string>(
               `https://maps.googleapis.com/maps/api/geocode/json?latlng=${crd.latitude},${crd.longitude}&key=AIzaSyCz6vnqrBfRRV1VgmhlKhcHdPGiQszD2FE`
             )
             .subscribe((result) => res(result));

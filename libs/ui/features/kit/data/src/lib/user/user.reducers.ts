@@ -1,8 +1,6 @@
 import { User } from '@kitouch/shared/models';
 import { createReducer, on } from '@ngrx/store';
-import {
-  FeatUserApiActions
-} from './user.actions';
+import { FeatUserApiActions } from './user.actions';
 // import { mongooseEqual } from '@kitouch/shared/utils';
 
 export interface FeatureUserState {
@@ -18,5 +16,12 @@ export const userReducer = createReducer(
   on(FeatUserApiActions.setUser, (state, { user }) => ({
     ...state,
     user,
+  })),
+  on(FeatUserApiActions.addExperienceSuccess, (state, { experiences }) => ({
+    ...state,
+    user: {
+      ...(state.user ?? {}),
+      experiences
+    } as any,
   }))
 );

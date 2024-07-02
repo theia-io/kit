@@ -1,12 +1,12 @@
-@layer tailwind-base, primeng, tailwind-utilities;
+@layer tailwind-base, primeng, primeng-theme-lara-light, tailwind-components, tailwind-utilities;
 
 /** @TODO Import it so it being downloaded in parallel - in project.json / index.html */
 @import "primeicons/primeicons.css";
 @import "tailwindcss/base" layer(tailwind-base);
-@import "tailwindcss/components" layer(tailwind-utilities);
-@import "tailwindcss/utilities" layer(tailwind-utilities);
-@import "primeng/resources/themes/lara-light-blue/theme.css" layer(primeng);
 @import "primeng/resources/primeng.css" layer(primeng);
+@import "primeng/resources/themes/aura-light-noir/theme.css" layer(primeng-theme-lara-light);
+@import "tailwindcss/components" layer(tailwind-components);
+@import "tailwindcss/utilities" layer(tailwind-utilities);
 
 
 /* You can add global styles to this file, and also import other style files */
@@ -22,7 +22,6 @@ body {
 }
 
 /** CSS bugfixes */
-
 p-floatLabel .p-float-label p-dropdown input.p-placeholder {
     opacity: 1;
 }

@@ -1,5 +1,5 @@
 <form [formGroup]="experienceForm">
-    <div class="card flex justify-content-center">
+    <div class="card flex flex-col justify-content-center">
         <p-stepper orientation="vertical" [(activeStep)]="stepperActive">
             <p-stepperPanel>
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
@@ -19,11 +19,6 @@
                             <input pInputText id="title" formControlName="title" class="w-full" />
                             <label for="title">Title/Role you had*</label>
                         </p-floatLabel>
-
-                        <!-- <p-floatLabel>
-                            <input pInputText id="title" formControlName="company" class="w-full" />
-                            <label for="company">Company*</label>
-                        </p-floatLabel> -->
 
                         <p-floatLabel>
                             <p-dropdown id="company" formControlName="company" class="w-full" [showClear]="true"
@@ -72,17 +67,18 @@
                             placeholder="Remote, hybrid or office?" />
 
                         <p-floatLabel>
-                            <p-calendar id="startDate" formControlName="startDate" />
+                            <p-calendar id="startDate" [showIcon]="true" formControlName="startDate" />
                             <label for="startDate">Start date</label>
                         </p-floatLabel>
 
-                        <p-floatLabel>
-                            <label for="currentlyWorking">Currently working here</label>
-                            <p-inputSwitch id="currentlyWorking" inputId="currentlyWorking" />
-                        </p-floatLabel>
+                        <div class="flex">
+                            <p-inputSwitch id="currentlyWorking" inputId="currentlyWorking" [formControl]="currentlyWorkingHere" />
+                            <label class="ml-2" for="currentlyWorking">Currently working here</label>
+                        </div>
 
                         <p-floatLabel>
-                            <p-calendar id="endDate" formControlName="endDate" />
+                            <p-calendar id="endDate" [showIcon]="true" formControlName="endDate"
+                            [disabled]="currentlyWorkingHere.value" />
                             <label for="endDate">End date</label>
                         </p-floatLabel>
                     </div>
@@ -111,13 +107,14 @@
                     <div class="flex flex-col gap-6">
 
                         <p-floatLabel>
-                            <textarea id="description" formControlName="description" rows="5" cols="30" pInputTextarea>
+                            <textarea id="description-float" formControlName="description" rows="5" cols="30" pInputTextarea>
                             </textarea>
-                            <label for="description">Tell us about it</label>
+                            <label for="description-float">Tell us about it</label>
                         </p-floatLabel>
 
                         <p-floatLabel>
-                            <p-chips id="skills" formControlName="skills" />
+                            <p-chips id="skills" formControlName="skills"
+                            separator="," />
                             <label for="skills">Skills</label>
                         </p-floatLabel>
 
@@ -131,17 +128,26 @@
                             <label for="media">Media</label>
                         </p-floatLabel>
 
-                        <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
-                            (onUpload)="onUpload($any($event))" [multiple]="true" accept="image/*"
-                            maxFileSize="1000000">
-                            <ng-template pTemplate="content">
-                                <ul *ngIf="uploadedFiles.length">
-                                    <li *ngFor="let file of uploadedFiles">
-                                        {{ file.name }} - {{ file.size }} bytes
-                                    </li>
-                                </ul>
-                            </ng-template>
-                        </p-fileUpload>
+                        <p-fileUpload 
+    name="demo[]" 
+    url="https://www.primefaces.org/cdn/api/upload.php" 
+    (onUpload)="onUpload($any($event))" 
+    [multiple]="true" 
+    accept="image/*" 
+    maxFileSize="1000000">
+        <ng-template pTemplate="content">
+            <ul *ngIf="experienceForm.get('media')?.value?.length">
+                <li *ngFor="let file of experienceForm.get('media')?.value">
+                    {{ file.name }} - {{ file.size }} bytes
+                </li>
+            </ul>
+        </ng-template>
+        <ng-template pTemplate="empty">
+            <div class="flex align-items-center justify-content-center flex-column">
+                <p class="mt-4 mb-0">Drag and drop image files to here to upload.</p>
+            </div>
+        </ng-template>
+</p-fileUpload>
 
                     </div>
                     <div class="flex pt-4 justify-start">
@@ -151,5 +157,7 @@
                 </ng-template>
             </p-stepperPanel>
         </p-stepper>
+
+        <p-button class="flex justify-end mt-2" (click)="saveExperience()" label="Submit" [raised]="true" icon="pi pi-check" iconPos="right" />
     </div>
 </form>

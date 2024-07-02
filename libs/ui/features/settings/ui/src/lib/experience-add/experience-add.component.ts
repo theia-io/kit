@@ -1,12 +1,13 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { selectCompaniesState } from '@kitouch/features/kit/data';
+import { FeatUserApiActions, selectCompaniesState } from '@kitouch/features/kit/data';
 import {
   Experience,
   ExperienceType,
@@ -25,7 +26,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { StepperModule } from 'primeng/stepper';
-import { combineLatest, map, tap } from 'rxjs';
+import { Nullable } from 'primeng/ts-helpers';
+import { combineLatest, map, take, tap } from 'rxjs';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -80,13 +82,14 @@ export class FeatSettingsExperienceAddComponent {
     description: [''],
     skills: [''],
     links: [''],
-    media: [''],
+    media: [[] as any],
   });
+
+  currentlyWorkingHere = new FormControl();
 
   experienceType = Object.values(ExperienceType);
   locationType = Object.values(LocationType);
 
-  uploadedFiles: any[] = [];
 
   suggestedCompanies$ = combineLatest([
     this.#store.select(selectCompaniesState),
@@ -108,13 +111,19 @@ export class FeatSettingsExperienceAddComponent {
   setCurrentGeolocation() {
     this.#geolocationService
       .getCurrentUserLocationCity$()
-      .subscribe((v) => console.log('CITY', v));
+      .pipe(
+        take(1),
+      )
+      .subscribe((yourLocation) => this.experienceForm.get('location')?.setValue(yourLocation));
   }
 
   onUpload(event: UploadEvent) {
+    const uploadedFiles = [];
     for (const file of event.files) {
-      this.uploadedFiles.push(file);
+      uploadedFiles.push(file);
     }
+
+    this.experienceForm.get('media')?.setValue(uploadedFiles);
 
     this.#messageService.add({
       severity: 'info',
@@ -123,7 +132,8 @@ export class FeatSettingsExperienceAddComponent {
     });
   }
 
-  saveExperience(experience: Experience) {
-    console.log(experience);
+  saveExperience() {
+    const experience = this.experienceForm.value as Experience;
+    this.#store.dispatch(FeatUserApiActions.addExperience({experience}))
   }
 }
