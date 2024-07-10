@@ -13,41 +13,35 @@ export class UserService extends DataSourceService {
   user$ = inject(Store).select(selectUser).pipe(filter(Boolean));
 
   addUserExperience$(experience: Experience) {
-    return this.db$.pipe(
+    return this.realmFunctions$.pipe(
       withLatestFrom(this.user$),
-      switchMap(([db, user]) =>
-        // @TODO aggregate does not insert data :/// 
-        db.collection<User>('user').aggregate([
-          { $match: { _id: new BSON.ObjectId(user.id) } },
-          {
-            $set: {
+      switchMap(([realmFunctions, user]) =>
+        realmFunctions['genericRealmFunction']({
+          collection: 'user',
+          executeFn: 'updateOne',
+          filter: { _id: new BSON.ObjectId(user.id) },
+          query: [
+            {
+              $set: {
                 experiences: {
                   $cond: [
+                    { $not: [{ $isArray: '$experiences' }] }, // Check if experiences is not an array
+                    [experience],
                     {
-                      $or: [
-                        { $ifNull: ["$experiences", true] }, // Check if $experience is null or missing
-                        { $eq: ["$experiences", []] } // Check if $experience is an empty array
-                      ]
+                      $cond: [
+                        { $eq: [{ $size: '$experiences' }, 0] }, // Check if experiences is an empty array
+                        [experience],
+                        { $concatArrays: ['$experiences', [experience]] },
+                      ],
                     },
-                    [experience], // If experience is null or empty, keep the existing experiences
-                    {
-                      $concatArrays: [
-                        ["$experiences"],
-                        [experience]
-                      ]
-                    } // Otherwise, concatenate
-                  ]
-                }
-              }
-          },
-          {
-            $project: {
-                _id: 0,
-                experiences: 1,
-              }
-          }
-        ])
+                  ],
+                },
+              },
+            },
+          ],
+        })
       ),
+      map(() => ({ experiences: [experience] }))
     );
   }
 }

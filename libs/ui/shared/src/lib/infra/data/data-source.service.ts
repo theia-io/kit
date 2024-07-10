@@ -11,4 +11,10 @@ export class DataSourceService {
     filter(Boolean),
     shareReplay(1)
   );
+
+  protected realmFunctions$ = inject(AuthService).realmUser$.pipe(
+    map(currentUser => currentUser?.functions),
+    filter(Boolean),
+    shareReplay(1)
+  )
 }
