@@ -5,8 +5,8 @@
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                     <button (click)="onClick.emit()">
                         <span [ngClass]="{
-                                'bg-primary border-primary': index <= stepperActive,
-                                'surface-border': index > stepperActive
+                                'bg-primary border-primary': index <= stepperActive(),
+                                'surface-border': index > stepperActive()
                             }">
                             <i class="pi pi-user" style="font-size: 1.5rem"></i>
                         </span>
@@ -16,26 +16,52 @@
                 <ng-template pTemplate="content" let-nextCallback="nextCallback">
                     <div class="flex flex-col gap-6">
                         <p-floatLabel>
-                            <input pInputText id="title" formControlName="title" class="w-full" />
+                            <input pInputText id="title" formControlName="title" class="w-full" autofocus />
                             <label for="title">Title/Role you had*</label>
                         </p-floatLabel>
 
                         <p-floatLabel>
-                            <p-dropdown id="company" formControlName="company" class="w-full" [showClear]="true"
-                                [options]="(suggestedCompanies$ | async) ?? []"
-                                emptyFilterMessage="You are the first!"
-                                emptyMessage="You are the first!"
-                                [checkmark]="true"
-                                [editable]="true" optionLabel="name" />
+                            <p-dropdown id="company" formControlName="company" styleClass="w-full" [showClear]="true"
+                                [options]="(suggestedCompanies$ | async) ?? []" emptyFilterMessage="You are the first!"
+                                [checkmark]="true" [editable]="true">
+                                <ng-template pTemplate="emptyfilter">
+                                    You will be the first from {{experienceForm.get('company')?.value}}
+                                </ng-template>
+                                <ng-template pTemplate="empty">
+                                    {{(experienceForm.get('company')?.value?.length ?? 0) > 2
+                                    ? 'You will be the first from ' + experienceForm.get('company')?.value
+                                    : 'Enter more then 2 symbols to start searching'}}
+                                </ng-template>
+                            </p-dropdown>
                             <label for="company">Company*</label>
                         </p-floatLabel>
 
 
                         <p-floatLabel>
-                            <input pInputText id="title" formControlName="location" class="w-full" />
-                            <label for="company">Location</label>
+                            <p-dropdown id="country" formControlName="country" styleClass="w-full" [showClear]="true"
+                                [options]="countries" [checkmark]="true">
+                            </p-dropdown>
+                            <label for="country">Country</label>
+
                             @if(geolocationAvailable) {
-                                <i class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]" role="button" (click)="$event.stopPropagation(); setCurrentGeolocation()" style="font-size: 1.5rem"></i>
+                            <i class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]" role="button"
+                                (click)="$event.stopPropagation(); setCurrentGeolocation()"
+                                style="font-size: 1.5rem"></i>
+                            }
+                        </p-floatLabel>
+
+                        <p-floatLabel>
+                            <p-dropdown id="city" formControlName="city" styleClass="w-full"
+                                [options]="citiesInCountries()" [showClear]="true"
+                                [disabled]="(experienceForm.get('country')?.value?.length ?? 0) < 2" [editable]="true"
+                                [checkmark]="true" [focusOnHover]="true" [autofocusFilter]="true">
+                            </p-dropdown>
+                            <label for="city">City</label>
+
+                            @if(geolocationAvailable) {
+                            <i class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]" role="button"
+                                (click)="$event.stopPropagation(); setCurrentGeolocation()"
+                                style="font-size: 1.5rem"></i>
                             }
                         </p-floatLabel>
                     </div>
@@ -51,8 +77,8 @@
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                     <button (click)="onClick.emit()">
                         <span [ngClass]="{
-                                'bg-primary border-primary': index <= stepperActive,
-                                'surface-border': index > stepperActive
+                                'bg-primary border-primary': index <= stepperActive(),
+                                'surface-border': index > stepperActive()
                             }">
                             <i class="pi pi-briefcase" style="font-size: 1.5rem"></i>
                         </span>
@@ -72,13 +98,14 @@
                         </p-floatLabel>
 
                         <div class="flex">
-                            <p-inputSwitch id="currentlyWorking" inputId="currentlyWorking" [formControl]="currentlyWorkingHere" />
+                            <p-inputSwitch id="currentlyWorking" inputId="currentlyWorking"
+                                [formControl]="currentlyWorkingHere" />
                             <label class="ml-2" for="currentlyWorking">Currently working here</label>
                         </div>
 
                         <p-floatLabel>
                             <p-calendar id="endDate" [showIcon]="true" formControlName="endDate"
-                            [disabled]="currentlyWorkingHere.value" />
+                                [disabled]="currentlyWorkingHere.value" />
                             <label for="endDate">End date</label>
                         </p-floatLabel>
                     </div>
@@ -96,8 +123,8 @@
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
                     <button (click)="onClick.emit()">
                         <span [ngClass]="{
-                                'bg-primary border-primary': index <= stepperActive,
-                                'surface-border': index > stepperActive
+                                'bg-primary border-primary': index <= stepperActive(),
+                                'surface-border': index > stepperActive()
                             }">
                             <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
                         </span>
@@ -107,14 +134,14 @@
                     <div class="flex flex-col gap-6">
 
                         <p-floatLabel>
-                            <textarea id="description-float" formControlName="description" rows="5" cols="30" pInputTextarea>
+                            <textarea id="description-float" formControlName="description" rows="5" cols="30"
+                                pInputTextarea>
                             </textarea>
                             <label for="description-float">Tell us about it</label>
                         </p-floatLabel>
 
                         <p-floatLabel>
-                            <p-chips id="skills" formControlName="skills"
-                            separator="," />
+                            <p-chips id="skills" formControlName="skills" separator="," />
                             <label for="skills">Skills</label>
                         </p-floatLabel>
 
@@ -128,26 +155,22 @@
                             <label for="media">Media</label>
                         </p-floatLabel>
 
-                        <p-fileUpload 
-    name="demo[]" 
-    url="https://www.primefaces.org/cdn/api/upload.php" 
-    (onUpload)="onUpload($any($event))" 
-    [multiple]="true" 
-    accept="image/*" 
-    maxFileSize="1000000">
-        <ng-template pTemplate="content">
-            <ul *ngIf="experienceForm.get('media')?.value?.length">
-                <li *ngFor="let file of experienceForm.get('media')?.value">
-                    {{ file.name }} - {{ file.size }} bytes
-                </li>
-            </ul>
-        </ng-template>
-        <ng-template pTemplate="empty">
-            <div class="flex align-items-center justify-content-center flex-column">
-                <p class="mt-4 mb-0">Drag and drop image files to here to upload.</p>
-            </div>
-        </ng-template>
-</p-fileUpload>
+                        <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
+                            (onUpload)="onUpload($any($event))" [multiple]="true" accept="image/*"
+                            maxFileSize="1000000">
+                            <ng-template pTemplate="content">
+                                <ul *ngIf="experienceForm.get('media')?.value?.length">
+                                    <li *ngFor="let file of experienceForm.get('media')?.value">
+                                        {{ file.name }} - {{ file.size }} bytes
+                                    </li>
+                                </ul>
+                            </ng-template>
+                            <ng-template pTemplate="empty">
+                                <div class="flex align-items-center justify-content-center flex-column">
+                                    <p class="mt-4 mb-0">Drag and drop image files to here to upload.</p>
+                                </div>
+                            </ng-template>
+                        </p-fileUpload>
 
                     </div>
                     <div class="flex pt-4 justify-start">
@@ -158,6 +181,8 @@
             </p-stepperPanel>
         </p-stepper>
 
-        <p-button class="flex justify-end mt-2" (click)="saveExperience()" label="Submit" [raised]="true" icon="pi pi-check" iconPos="right" />
+        <p-button class="flex justify-end mt-2"
+            [disabled]="!((allStepsVisited$ | async) === true && experienceForm.valid)" (click)="saveExperience()"
+            label="Submit" [raised]="true" icon="pi pi-check" iconPos="right" />
     </div>
 </form>

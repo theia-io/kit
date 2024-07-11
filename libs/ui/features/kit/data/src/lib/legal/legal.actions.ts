@@ -7,5 +7,8 @@ export const FeatLegalApiActions = createActionGroup({
     GetCompanies: emptyProps(),
     GetCompaniesSuccess: props<{ companies: Array<Legal> }>(),
     GetCompaniesFailure: props<{ message: string }>(),
+    AddCompanies: props<{ companies: Array<Pick<Legal, 'alias' | 'name'>> }>(),
+    AddCompaniesSuccess: props<{ companies: Array<Pick<Legal, 'alias' | 'name'>> }>(),
+    AddCompaniesFailure: props<{ message: string }>(),
   },
 });

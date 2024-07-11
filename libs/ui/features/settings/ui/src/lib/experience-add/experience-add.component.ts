@@ -1,19 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { FeatUserApiActions, selectCompaniesState } from '@kitouch/features/kit/data';
+import {
+  FeatLegalApiActions,
+  FeatUserApiActions,
+  getMatchingCompanies,
+} from '@kitouch/features/kit/data';
 import {
   Experience,
   ExperienceType,
   LocationType,
 } from '@kitouch/shared/models';
-import { GeolocationService } from '@kitouch/ui/shared';
+import {
+  citiesInCountries,
+  countries,
+  GeolocationService,
+} from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -26,8 +41,8 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { StepperModule } from 'primeng/stepper';
-import { Nullable } from 'primeng/ts-helpers';
-import { combineLatest, map, take, tap } from 'rxjs';
+import { filter, map, of, scan, startWith, switchMap, take, takeUntil } from 'rxjs';
+import { runInThisContext } from 'vm';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -57,14 +72,32 @@ interface UploadEvent {
   changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [MessageService],
 })
-export class FeatSettingsExperienceAddComponent {
+export class FeatSettingsExperienceAddComponent implements OnInit {
   #fb = inject(FormBuilder);
   #store = inject(Store);
   #messageService = inject(MessageService);
   //
   #geolocationService = inject(GeolocationService);
+  //
+  readonly #takeUntilDestroyed = takeUntilDestroyed();
 
-  stepperActive = 0;
+  stepperActive = signal(0);
+  #stepsVisited$ = toObservable(this.stepperActive).pipe(
+    scan(
+      (previouslyActivatedSteps, activatedStep) => ({
+        ...previouslyActivatedSteps,
+        [activatedStep]: true,
+      }),
+      {}
+    )
+  );
+  allStepsVisited$ = this.#stepsVisited$.pipe(
+    map(
+      (stepsVisited) =>
+        Object.values(stepsVisited).filter((visited) => visited).length === 3
+    ),
+    startWith(false)
+  );
 
   experienceForm = this.#fb.group({
     title: ['', { validators: [Validators.required, Validators.minLength(2)] }],
@@ -73,7 +106,8 @@ export class FeatSettingsExperienceAddComponent {
       '',
       { validators: [Validators.required, Validators.minLength(2)] },
     ],
-    location: [''],
+    country: [''],
+    city: [{value: '', disabled: true}],
     locationType: new FormControl<LocationType | null>(null, [
       Validators.required,
     ]),
@@ -90,31 +124,53 @@ export class FeatSettingsExperienceAddComponent {
   experienceType = Object.values(ExperienceType);
   locationType = Object.values(LocationType);
 
+  suggestedCompanies$ = this.experienceForm
+    .get('company')
+    ?.valueChanges.pipe(
+      switchMap((typedCompany: string | null) =>
+        (typedCompany?.length ?? 0) > 2
+          ? this.#store.select(getMatchingCompanies(typedCompany as string))
+          : of([])
+      )
+    );
 
-  suggestedCompanies$ = combineLatest([
-    this.#store.select(selectCompaniesState),
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    this.experienceForm.get('company')!.valueChanges, //.pipe(map(v => v.company))
-  ]).pipe(
-    tap((v) => console.log('suggestedCompanies', v)),
-    map(([companies, typedCompany]) =>
-      companies
-        // @TODO add fuzzy search ? https://en.wikipedia.org/wiki/Approximate_string_matching
-        .filter((company) => company.name.includes(typedCompany ?? ''))
-        .splice(-10)
-    ),
-    tap((v) => console.log('suggestedCompanies', v))
+  countries = countries.map(country => country.name);
+  citiesInCountries = toSignal(
+    this.experienceForm.get('country')!.valueChanges.pipe(
+      filter((country) => !!country),
+      map(
+        (country) =>
+          citiesInCountries[country as keyof typeof citiesInCountries]
+      ),
+      startWith([])
+    )
   );
 
   readonly geolocationAvailable = this.#geolocationService.geolocationAvailable;
 
+  ngOnInit(): void {
+    this.#store.dispatch(FeatLegalApiActions.getCompanies());
+
+    this.experienceForm.get('country')
+      ?.valueChanges
+      .pipe(
+        this.#takeUntilDestroyed
+      )
+      .subscribe(() => this.experienceForm.get('city')?.reset())
+
+    this.experienceForm.valueChanges.subscribe((formValue) => {
+      console.log(formValue, this.experienceForm.valid);
+    });
+  }
+
   setCurrentGeolocation() {
     this.#geolocationService
       .getCurrentUserLocationCity$()
-      .pipe(
-        take(1),
-      )
-      .subscribe((yourLocation) => this.experienceForm.get('location')?.setValue(yourLocation));
+      .pipe(take(1))
+      .subscribe((yourLocation) => {
+        this.experienceForm.get('country')?.setValue(yourLocation);
+        this.experienceForm.get('city')?.setValue(yourLocation);
+      });
   }
 
   onUpload(event: UploadEvent) {
@@ -134,6 +190,6 @@ export class FeatSettingsExperienceAddComponent {
 
   saveExperience() {
     const experience = this.experienceForm.value as Experience;
-    this.#store.dispatch(FeatUserApiActions.addExperience({experience}))
+    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
   }
 }

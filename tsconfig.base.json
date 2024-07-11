@@ -12,6 +12,8 @@
     "target": "es2015",
     "module": "esnext",
     "lib": ["es2020", "dom"],
+    "resolveJsonModule": true,
+    "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
