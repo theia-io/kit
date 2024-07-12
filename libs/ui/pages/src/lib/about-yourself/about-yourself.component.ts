@@ -12,8 +12,12 @@ import {
   selectCurrentProfile,
   selectProfilePicture,
 } from '@kitouch/features/kit/data';
-import { FeatSettingsExperienceAddComponent, FeatSettingsProfileInformationComponent } from '@kitouch/features/settings/ui';
+import {
+  FeatSettingsExperienceAddComponent,
+  FeatSettingsProfileInformationComponent,
+} from '@kitouch/features/settings/ui';
 import { Experience } from '@kitouch/shared/models';
+import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { filter } from 'rxjs/operators';
@@ -45,15 +49,6 @@ import { filter } from 'rxjs/operators';
           animation-duration: 3s;
           animation-iteration-count: infinite;
         }
-
-        .box {
-          background-image: radial-gradient(
-            var(--primary-300),
-            var(--primary-600)
-          );
-          border-radius: 50% !important;
-          color: var(--primary-color-text);
-        }
       }
     `,
   ],
@@ -64,6 +59,7 @@ import { filter } from 'rxjs/operators';
     //
     FeatSettingsExperienceAddComponent,
     FeatSettingsProfileInformationComponent,
+    FeatFollowSuggestionsComponent,
   ],
 })
 export class PageAboutYourselfComponent implements OnInit {

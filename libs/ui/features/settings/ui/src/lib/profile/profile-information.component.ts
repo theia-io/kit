@@ -48,11 +48,9 @@ export class FeatSettingsProfileInformationComponent {
   });
 
   constructor() {
-    this.profileForm.valueChanges.subscribe(v => console.log(v));
-    console.log(this.profile());
-    console.log(this.profileForm.value);
     effect(() => {
-      const {id, alias, name, title, subtitle, description} = this.profile() ?? {};
+      const { id, alias, name, title, subtitle, description } =
+        this.profile() ?? {};
 
       this.profileForm.setValue({
         alias: alias ?? id ?? '',
@@ -61,8 +59,6 @@ export class FeatSettingsProfileInformationComponent {
         subtitle: subtitle ?? '',
         description: description ?? '',
       });
-
     });
-
   }
 }

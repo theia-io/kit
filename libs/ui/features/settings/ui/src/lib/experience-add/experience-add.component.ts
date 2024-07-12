@@ -114,8 +114,8 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     locationType: new FormControl<LocationType | null>(null, [
       Validators.required,
     ]),
-    startDate: new FormControl<Date | null>(null, [Validators.required]),
-    endDate: new FormControl<Date | null>(null),
+    startDate: new FormControl<string | null>(null, [Validators.required]),
+    endDate: new FormControl<string | null>(null),
     description: [''],
     skills: [''],
     links: [''],

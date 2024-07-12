@@ -27,10 +27,11 @@ export interface Experience {
   title: string;
   type: ExperienceType;
   company: string;
-  location: string;
+  country: string;
+  city: string;
   locationType: LocationType;
-  startDate: Date;
-  endDate: Date;
+  startDate: string; // isoDate
+  endDate: string | null; // isoDate
   description?: string;
   skills?: Array<string>;
   links?: Array<string>;

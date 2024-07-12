@@ -1,5 +1,5 @@
-<form class="flex flex-col items-center justify-center" [formGroup]="profileForm">
-    <div class="grid grid-rows-[65px_50px_130px] grid-cols-2 gap-y-2">
+<form class="grid items-center justify-center grid-rows-[65px_50px_130px] sm:grid-cols-1 md:grid-cols-2 gap-y-2"
+    [formGroup]="profileForm">
         <div class="justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
             <img class="rounded-md" [src]="profilePic() ?? '/public/john-dou.png'" referrerpolicy="no-referrer" />
         </div>
@@ -25,7 +25,7 @@
             </p-floatLabel>
         </div>
 
-        <div class="flex flex-col justify-between mr-2">
+        <div class="flex flex-col justify-between h-full mr-2">
             <div class="flex flex-col">
                 <p-floatLabel>
                     <input pInputText id="title" class="w-full" aria-describedby="profile-title"
@@ -46,6 +46,6 @@
             </div>
         </div>
 
-        <textarea class="ml-2" rows="5" cols="30" pInputTextarea formControlName="description" placeholder="What's your story?"></textarea>
-    </div>
+        <textarea class="ml-2" rows="5" cols="30" pInputTextarea formControlName="description"
+            placeholder="What's your story?"></textarea>
 </form>

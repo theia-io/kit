@@ -16,7 +16,7 @@
                 <ng-template pTemplate="content" let-nextCallback="nextCallback">
                     <div class="flex flex-col gap-6">
                         <p-floatLabel>
-                            <input pInputText id="title" formControlName="title" class="w-full" autofocus />
+                            <input pInputText id="title" formControlName="title" class="w-full" />
                             <label for="title">Title/Role you had*</label>
                         </p-floatLabel>
 
@@ -182,7 +182,7 @@
         </p-stepper>
 
         <p-button class="flex justify-end mt-2"
-            [disabled]="!((allStepsVisited$ | async) === true && experienceForm.valid)" (click)="onSaveExperienceClick()"
+            [disabled]="!((allStepsVisited$ | async) === true && experienceForm.valid)" (onClick)="onSaveExperienceClick()"
             label="Submit" [raised]="true" icon="pi pi-check" iconPos="right" />
     </div>
 </form>
