@@ -11,6 +11,11 @@ export const selectCurrentProfile = createSelector(
   (state: FeatureProfileState) => state.currentProfile
 );
 
+export const selectProfilePicture = createSelector(
+  selectCurrentProfile,
+  currentProfile => currentProfile?.pictures?.find(pic => pic.isPrimary)?.url ?? currentProfile?.pictures?.[0]?.url ?? '/public/john-dou.png'
+)
+
 export const selectProfiles = createSelector(
   selectProfileState,
   (state: FeatureProfileState) => state.profiles ?? []

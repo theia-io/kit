@@ -2,23 +2,24 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
+  EventEmitter,
   inject,
   OnInit,
+  Output,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toObservable, toSignal } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import {
-  FeatLegalApiActions,
-  FeatUserApiActions,
-  getMatchingCompanies,
-} from '@kitouch/features/kit/data';
+import { getMatchingCompanies } from '@kitouch/features/kit/data';
 import {
   Experience,
   ExperienceType,
@@ -41,8 +42,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { StepperModule } from 'primeng/stepper';
-import { filter, map, of, scan, startWith, switchMap, take, takeUntil } from 'rxjs';
-import { runInThisContext } from 'vm';
+import { filter, map, of, scan, startWith, switchMap, take } from 'rxjs';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -73,6 +73,9 @@ interface UploadEvent {
   providers: [MessageService],
 })
 export class FeatSettingsExperienceAddComponent implements OnInit {
+  @Output()
+  saveExperience = new EventEmitter<Experience>();
+
   #fb = inject(FormBuilder);
   #store = inject(Store);
   #messageService = inject(MessageService);
@@ -107,7 +110,7 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       { validators: [Validators.required, Validators.minLength(2)] },
     ],
     country: [''],
-    city: [{value: '', disabled: true}],
+    city: [{ value: '', disabled: true }],
     locationType: new FormControl<LocationType | null>(null, [
       Validators.required,
     ]),
@@ -134,7 +137,7 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       )
     );
 
-  countries = countries.map(country => country.name);
+  countries = countries.map((country) => country.name);
   citiesInCountries = toSignal(
     this.experienceForm.get('country')!.valueChanges.pipe(
       filter((country) => !!country),
@@ -149,18 +152,10 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
   readonly geolocationAvailable = this.#geolocationService.geolocationAvailable;
 
   ngOnInit(): void {
-    this.#store.dispatch(FeatLegalApiActions.getCompanies());
-
-    this.experienceForm.get('country')
-      ?.valueChanges
-      .pipe(
-        this.#takeUntilDestroyed
-      )
-      .subscribe(() => this.experienceForm.get('city')?.reset())
-
-    this.experienceForm.valueChanges.subscribe((formValue) => {
-      console.log(formValue, this.experienceForm.valid);
-    });
+    this.experienceForm
+      .get('country')
+      ?.valueChanges.pipe(this.#takeUntilDestroyed)
+      .subscribe(() => this.experienceForm.get('city')?.reset());
   }
 
   setCurrentGeolocation() {
@@ -188,8 +183,8 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     });
   }
 
-  saveExperience() {
+  onSaveExperienceClick() {
     const experience = this.experienceForm.value as Experience;
-    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
+    this.saveExperience.emit(experience);
   }
 }

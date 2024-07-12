@@ -44,6 +44,12 @@ export const appRoutes: Route[] = [
       import('@kitouch/ui/pages').then((comp) => comp.PageCookiesComponent),
   },
   {
+    path: APP_PATH.AboutYourself,
+    canActivate: [onlyForLoggedInGuard],
+    loadComponent: () =>
+      pages.then((comp) => comp.PageAboutYourselfComponent),
+  },
+  {
     path: '',
     component: KitComponent,
     canActivate: [onlyForLoggedInGuard],
@@ -86,11 +92,6 @@ export const appRoutes: Route[] = [
       {
         path: APP_PATH.Settings,
         children: [
-          {
-            path: APP_PATH.AboutYourself,
-            loadComponent: () =>
-              pages.then((comp) => comp.PageAboutYourselfComponent),
-          },
           {
             path: '',
             loadComponent: () =>

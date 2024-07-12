@@ -86,14 +86,14 @@
                 </ng-template>
                 <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback">
                     <div class="flex flex-col gap-6">
-                        <p-dropdown class="w-full" formControlName="type" [options]="experienceType"
+                        <p-dropdown styleClass="w-full" formControlName="type" [options]="experienceType"
                             placeholder="Experience type" />
 
-                        <p-dropdown class="w-full" formControlName="locationType" [options]="locationType"
+                        <p-dropdown styleClass="w-full" formControlName="locationType" [options]="locationType"
                             placeholder="Remote, hybrid or office?" />
 
                         <p-floatLabel>
-                            <p-calendar id="startDate" [showIcon]="true" formControlName="startDate" />
+                            <p-calendar styleClass="w-full" id="startDate" [showIcon]="true" formControlName="startDate" />
                             <label for="startDate">Start date</label>
                         </p-floatLabel>
 
@@ -104,7 +104,7 @@
                         </div>
 
                         <p-floatLabel>
-                            <p-calendar id="endDate" [showIcon]="true" formControlName="endDate"
+                            <p-calendar styleClass="w-full" id="endDate" [showIcon]="true" formControlName="endDate"
                                 [disabled]="currentlyWorkingHere.value" />
                             <label for="endDate">End date</label>
                         </p-floatLabel>
@@ -135,17 +135,18 @@
 
                         <p-floatLabel>
                             <textarea id="description-float" formControlName="description" rows="5" cols="30"
+                            class="p-inputtextarea p-inputtext p-component p-element w-full"
                                 pInputTextarea>
                             </textarea>
                             <label for="description-float">Tell us about it</label>
                         </p-floatLabel>
 
                         <p-floatLabel>
-                            <p-chips id="skills" formControlName="skills" separator="," />
+                            <p-chips styleClass="block w-full" inputStyleClass="w-full" id="skills" formControlName="skills" separator="," />
                             <label for="skills">Skills</label>
                         </p-floatLabel>
 
-                        <p-floatLabel>
+                        <!-- <p-floatLabel>
                             <p-chips id="links" formControlName="links" />
                             <label for="links">Links</label>
                         </p-floatLabel>
@@ -170,8 +171,7 @@
                                     <p class="mt-4 mb-0">Drag and drop image files to here to upload.</p>
                                 </div>
                             </ng-template>
-                        </p-fileUpload>
-
+                        </p-fileUpload> -->
                     </div>
                     <div class="flex pt-4 justify-start">
                         <p-button (onClick)="prevCallback.emit()" label="Back" severity="secondary"
@@ -182,7 +182,7 @@
         </p-stepper>
 
         <p-button class="flex justify-end mt-2"
-            [disabled]="!((allStepsVisited$ | async) === true && experienceForm.valid)" (click)="saveExperience()"
+            [disabled]="!((allStepsVisited$ | async) === true && experienceForm.valid)" (click)="onSaveExperienceClick()"
             label="Submit" [raised]="true" icon="pi pi-check" iconPos="right" />
     </div>
 </form>
