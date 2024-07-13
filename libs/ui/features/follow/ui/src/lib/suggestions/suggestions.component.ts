@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectionStrategy,
-    Component,
-    effect,
-    inject,
-    input,
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  inject,
+  input,
 } from '@angular/core';
 import { User } from '@kitouch/shared/models';
 import { Store } from '@ngrx/store';

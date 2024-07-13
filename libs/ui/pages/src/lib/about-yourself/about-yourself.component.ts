@@ -21,7 +21,8 @@ import {
 } from '@kitouch/features/settings/ui';
 import { Experience, Profile } from '@kitouch/shared/models';
 import { fadeInUpAnimation, NewUIItemComponent } from '@kitouch/ui/components';
-import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow';
+import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
+import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import {
@@ -107,6 +108,10 @@ export class PageAboutYourselfComponent implements OnInit {
 
   ngOnInit(): void {
     this.#store.dispatch(FeatLegalApiActions.getCompanies());
+
+    setTimeout(() => {
+      this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
+    }, 1000);
   }
 
   scroll(el: HTMLElement) {
@@ -115,8 +120,8 @@ export class PageAboutYourselfComponent implements OnInit {
 
   saveExperienceHandler(experience: Experience) {
     this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
-    // this.#router.navigateByUrl('/');
     this.savedExperience.set(true);
+    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
   #saveProfileHandler(profile: Partial<Profile>) {
@@ -129,6 +134,6 @@ export class PageAboutYourselfComponent implements OnInit {
 
     setTimeout(() => {
       this.updatingProfile.set(false);
-    }, 3000)
+    }, 3000);
   }
 }

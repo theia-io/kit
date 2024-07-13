@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FollowComponent } from '@kitouch/ui/features/follow';
+import { FollowComponent } from '@kitouch/ui/features/follow/ui';
 import { GlobalSearchComponent } from '@kitouch/ui/features/search';
 
 @Component({

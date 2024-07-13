@@ -45,7 +45,15 @@
       "@kitouch/ui/features/account/ui": [
         "libs/ui/features/account/ui/src/index.ts"
       ],
-      "@kitouch/ui/features/follow": ["libs/ui/features/follow/src/index.ts"],
+      "@kitouch/ui/features/follow/data": [
+        "libs/ui/features/follow/data/src/index.ts"
+      ],
+      "@kitouch/ui/features/follow/effects": [
+        "libs/ui/features/follow/effects/src/index.ts"
+      ],
+      "@kitouch/ui/features/follow/ui": [
+        "libs/ui/features/follow/ui/src/index.ts"
+      ],
       "@kitouch/ui/features/search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/ui/pages": ["libs/ui/pages/src/index.ts"],
       "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]
