@@ -5,9 +5,9 @@
 @for (tweet of homeTweets$ | async; track $index) {
 <app-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-comp-new-ui-item [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
+<feat-kit-ui-comp-new-ui-item [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
     <ui-comp-card>
         <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
     </ui-comp-card>
-</ui-comp-new-ui-item>
+</feat-kit-ui-comp-new-ui-item>
 }

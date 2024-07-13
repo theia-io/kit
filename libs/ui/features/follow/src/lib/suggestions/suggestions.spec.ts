@@ -1,4 +1,16 @@
-import { A, B, C, D, E, ExperienceDates, F, G, K, L } from './experience.mocks';
+import {
+  A,
+  B,
+  C,
+  D,
+  DB_USERS_20240713,
+  E,
+  ExperienceDates,
+  F,
+  G,
+  K,
+  L
+} from './experience.mocks';
 
 const getExperienceIntersection = (
   { startDate: s1, endDate: e1 }: ExperienceDates,
@@ -39,5 +51,26 @@ describe('Suggestions', () => {
     expect(result).toHaveLength(2);
     expect(result[0]).toEqual(C);
     expect(result[1]).toEqual(D);
+  });
+
+  //** @TODO @FIXME Huge performance bottleneck to fix */
+  it('should return that B worked with C, D', () => {
+    const [belohadk, danbilokha, ...reversedRest] = DB_USERS_20240713.reverse();
+
+    const result = [danbilokha, ...reversedRest]
+      .reverse()
+      .filter((anotherUser) =>
+        belohadk.experiences?.some((thisUserExperience) =>
+          anotherUser.experiences?.some((anotherUserExperience) =>
+            getExperienceIntersection(
+              thisUserExperience as any,
+              anotherUserExperience as any
+            )
+          )
+        )
+      );
+
+    expect(result).toHaveLength(1);
+    expect(result[0]).toEqual(danbilokha);
   });
 });

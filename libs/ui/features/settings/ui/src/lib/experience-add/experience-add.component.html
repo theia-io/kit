@@ -51,11 +51,9 @@
                         </p-floatLabel>
 
                         <p-floatLabel>
-                            <p-dropdown id="city" formControlName="city" styleClass="w-full"
-                                [options]="citiesInCountries()" [showClear]="true"
-                                [disabled]="(experienceForm.get('country')?.value?.length ?? 0) < 2" [editable]="true"
-                                [checkmark]="true" [focusOnHover]="true" [autofocusFilter]="true">
-                            </p-dropdown>
+                            <input pInputText id="city" formControlName="city" class="w-full"
+                                [disabled]="(experienceForm.get('country')?.value?.length ?? 0) < 2"
+                                />
                             <label for="city">City</label>
 
                             @if(geolocationAvailable) {

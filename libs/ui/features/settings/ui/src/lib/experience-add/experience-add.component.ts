@@ -185,6 +185,11 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
 
   onSaveExperienceClick() {
     const experience = this.experienceForm.value as Experience;
+
+    /** @TODO @FIXME we can also keep this experience form and create a new one next to this so user can update it straight away **/
+    this.experienceForm.reset();
+    this.stepperActive.set(0);
+
     this.saveExperience.emit(experience);
   }
 }

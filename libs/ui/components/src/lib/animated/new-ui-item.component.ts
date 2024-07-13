@@ -8,7 +8,7 @@ import {
 
 @Component({
   standalone: true,
-  selector: 'ui-comp-new-ui-item',
+  selector: 'feat-kit-ui-comp-new-ui-item',
   template: `
     <div class="relative p-2">
       <ng-content />
@@ -32,7 +32,7 @@ export class NewUIItemComponent implements OnInit {
     const isNotDefinedByDev = this.newlyAddedItem === undefined;
     if (isNotDefinedByDev) {
       throw new Error(
-        'newlyAddedItem must be defined, take a look at examples in a project'
+        'newlyAddedItem must be defined, take a look at examples in the project'
       );
     }
   }

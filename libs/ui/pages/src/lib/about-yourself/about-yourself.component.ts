@@ -20,7 +20,7 @@ import {
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
 import { Experience, Profile } from '@kitouch/shared/models';
-import { fadeInUpAnimation } from '@kitouch/ui/components';
+import { fadeInUpAnimation, NewUIItemComponent } from '@kitouch/ui/components';
 import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
@@ -68,6 +68,7 @@ import {
     //
     AnimateOnScrollModule,
     //
+    NewUIItemComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsProfileInformationComponent,
     FeatFollowSuggestionsComponent,
@@ -80,6 +81,7 @@ export class PageAboutYourselfComponent implements OnInit {
 
   #currentProfile = this.#store.select(selectCurrentProfile);
   profileControl = new FormControl<Partial<Profile>>({});
+  updatingProfile = signal(false);
 
   savedExperience = signal(false);
 
@@ -118,10 +120,15 @@ export class PageAboutYourselfComponent implements OnInit {
   }
 
   #saveProfileHandler(profile: Partial<Profile>) {
+    this.updatingProfile.set(true);
     this.#store.dispatch(
       FeatProfileApiActions.updateProfile({
         profile,
       })
     );
+
+    setTimeout(() => {
+      this.updatingProfile.set(false);
+    }, 3000)
   }
 }
