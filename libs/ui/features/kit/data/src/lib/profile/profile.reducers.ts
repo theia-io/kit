@@ -47,5 +47,9 @@ export const profileReducer = createReducer(
       ...state,
       profiles: combineProfiles(state.profiles || [], profiles),
     })
-  )
+  ),
+  on(FeatProfileApiActions.updateProfileSuccess, (state, { profile }) => ({
+    ...state,
+    currentProfile: { ...state.currentProfile, ...profile } as Profile,
+  }))
 );

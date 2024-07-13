@@ -4,23 +4,33 @@ import {
   Component,
   inject,
   OnInit,
+  signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import {
   FeatLegalApiActions,
+  FeatProfileApiActions,
   FeatUserApiActions,
   selectCurrentProfile,
-  selectProfilePicture,
 } from '@kitouch/features/kit/data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
-import { Experience } from '@kitouch/shared/models';
+import { Experience, Profile } from '@kitouch/shared/models';
+import { fadeInUpAnimation } from '@kitouch/ui/components';
 import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
-import { filter } from 'rxjs/operators';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  take,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -46,7 +56,7 @@ import { filter } from 'rxjs/operators';
 
         .slidedown-icon {
           animation: slidedown-icon;
-          animation-duration: 3s;
+          animation-duration: 5s;
           animation-iteration-count: infinite;
         }
       }
@@ -54,6 +64,7 @@ import { filter } from 'rxjs/operators';
   ],
   imports: [
     CommonModule,
+    ReactiveFormsModule,
     //
     AnimateOnScrollModule,
     //
@@ -61,25 +72,56 @@ import { filter } from 'rxjs/operators';
     FeatSettingsProfileInformationComponent,
     FeatFollowSuggestionsComponent,
   ],
+  animations: [fadeInUpAnimation],
 })
 export class PageAboutYourselfComponent implements OnInit {
   #router = inject(Router);
   #store = inject(Store);
 
-  profile$ = this.#store.select(selectCurrentProfile).pipe(filter(Boolean));
+  #currentProfile = this.#store.select(selectCurrentProfile);
+  profileControl = new FormControl<Partial<Profile>>({});
 
-  profilePic$ = this.#store.select(selectProfilePicture);
+  savedExperience = signal(false);
 
-  scroll(el: HTMLElement) {
-    el.scrollIntoView({ behavior: 'smooth' });
+  constructor() {
+    this.#currentProfile
+      .pipe(filter(Boolean), take(1), takeUntilDestroyed())
+      .subscribe((profile) => {
+        this.profileControl.setValue(profile);
+      });
+
+    this.profileControl.valueChanges
+      .pipe(
+        filter(Boolean),
+        debounceTime(2000),
+        distinctUntilChanged(),
+        withLatestFrom(this.#currentProfile),
+        takeUntilDestroyed()
+      )
+      .subscribe(([updatedProfile, currentProfile]) => {
+        this.#saveProfileHandler({ ...currentProfile, ...updatedProfile });
+      });
   }
 
   ngOnInit(): void {
     this.#store.dispatch(FeatLegalApiActions.getCompanies());
   }
 
+  scroll(el: HTMLElement) {
+    el.scrollIntoView({ behavior: 'smooth' });
+  }
+
   saveExperienceHandler(experience: Experience) {
     this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
-    this.#router.navigateByUrl('/');
+    // this.#router.navigateByUrl('/');
+    this.savedExperience.set(true);
+  }
+
+  #saveProfileHandler(profile: Partial<Profile>) {
+    this.#store.dispatch(
+      FeatProfileApiActions.updateProfile({
+        profile,
+      })
+    );
   }
 }

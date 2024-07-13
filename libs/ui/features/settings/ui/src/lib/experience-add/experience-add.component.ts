@@ -104,13 +104,13 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
 
   experienceForm = this.#fb.group({
     title: ['', { validators: [Validators.required, Validators.minLength(2)] }],
-    type: new FormControl<ExperienceType | null>(null, [Validators.required]),
     company: [
       '',
       { validators: [Validators.required, Validators.minLength(2)] },
     ],
     country: [''],
     city: [{ value: '', disabled: true }],
+    type: new FormControl<ExperienceType | null>(null, [Validators.required]),
     locationType: new FormControl<LocationType | null>(null, [
       Validators.required,
     ]),

@@ -2,25 +2,37 @@
     <div class="flex flex-col items-center justify-center h-screen">
         <span class="text-2xl mb-24">Let's get to know each other</span>
 
-        <feat-settings-profile-information [profile]="(profile$ | async)"
-            [profilePic]="profilePic$ | async"></feat-settings-profile-information>
+        <feat-settings-profile-information [formControl]="profileControl" />
 
-        <button (click)="scroll(experienceTmpl)"
+        <button (click)="scroll(experienceTmpl)" class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">
+            <i class="pi pi-arrow-down" style="font-size: 1.5rem"></i>
+        </button>
+    </div>
+
+    <div #experienceTmpl pAnimateOnScroll enterClass="fadeIn" leaveClass="fadeOut"
+        class="flex flex-col justify-center items-center h-screen duration-[5000ms]">
+        <span class="text-2xl mb-24">
+            @if(!savedExperience()) {
+                Add <span class="font-mono decoration-pink-500 decoration-2 underline">even more</span> working experience ⚡🔥
+            } @else {
+                Add your working experience 😎
+            }
+        </span>
+
+        <lib-feat-settings-experience-add (saveExperience)="saveExperienceHandler($event)" />
+
+        <button [@fadeInUp]="savedExperience() ? 'shown' : 'hidden'"  (click)="scroll(suggestionTmpl)"
             class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">
             <i class="pi pi-arrow-down"></i>
         </button>
     </div>
 
-    <div #experienceTmpl pAnimateOnScroll enterClass="fadeIn" leaveClass="fadeOut"
+    <div #suggestionTmpl pAnimateOnScroll enterClass="fadeIn" leaveClass="fadeOut"
         class="flex justify-center h-screen items-center duration-[5000ms]">
-        <lib-feat-settings-experience-add (saveExperience)="saveExperienceHandler($event)" />
+        <!-- <feat-follow-suggestions /> -->
     </div>
 
-    <!-- <div pAnimateOnScroll enterClass="fadeinleft" leaveClass="fadeoutleft"
-        class="flex justify-center h-screen items-center duration-[5000ms]">
-        <lib-feat-settings-experience-add />
-    </div>
-
+    <!--
     <div pAnimateOnScroll enterClass="fadeinright" leaveClass="fadeoutright"
         class="flex justify-center h-screen items-center duration-[5000ms]">
         <span class="text-3xl font-bold">fade-right</span>

@@ -13,7 +13,7 @@ export enum ProfileStatus {
   DELETED = 'deleted',
 }
 
-export interface Profile {
+export interface Profile extends Realm.Services.MongoDB.Document {
   id: string;
   alias: string;
   userId?: string /** @FIXME @TODO This is Profile depends on an Account and the Account on Profile?  */;
