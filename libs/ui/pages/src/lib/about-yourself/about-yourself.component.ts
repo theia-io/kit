@@ -8,7 +8,7 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import {
   FeatLegalApiActions,
   FeatProfileApiActions,
@@ -20,7 +20,7 @@ import {
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
 import { Experience, Profile } from '@kitouch/shared/models';
-import { fadeInUpAnimation, NewUIItemComponent } from '@kitouch/ui/components';
+import { ButtonComponent, fadeInUpAnimation, NewUIItemComponent } from '@kitouch/ui/components';
 import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
 import { Store } from '@ngrx/store';
@@ -65,6 +65,7 @@ import {
   ],
   imports: [
     CommonModule,
+    RouterLink,
     ReactiveFormsModule,
     //
     AnimateOnScrollModule,
@@ -73,6 +74,7 @@ import {
     FeatSettingsExperienceAddComponent,
     FeatSettingsProfileInformationComponent,
     FeatFollowSuggestionsComponent,
+    ButtonComponent,
   ],
   animations: [fadeInUpAnimation],
 })
@@ -108,10 +110,7 @@ export class PageAboutYourselfComponent implements OnInit {
 
   ngOnInit(): void {
     this.#store.dispatch(FeatLegalApiActions.getCompanies());
-
-    setTimeout(() => {
-      this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
-    }, 1000);
+    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
   scroll(el: HTMLElement) {
@@ -119,8 +118,8 @@ export class PageAboutYourselfComponent implements OnInit {
   }
 
   saveExperienceHandler(experience: Experience) {
-    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
     this.savedExperience.set(true);
+    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
     this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
@@ -134,6 +133,6 @@ export class PageAboutYourselfComponent implements OnInit {
 
     setTimeout(() => {
       this.updatingProfile.set(false);
-    }, 3000);
+    }, 2000);
   }
 }

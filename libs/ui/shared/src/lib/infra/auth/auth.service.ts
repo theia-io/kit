@@ -76,7 +76,7 @@ export class AuthService {
       if (followingProfilesIds?.length) {
         this.#store.dispatch(
           FeatProfileApiActions.getFollowingProfiles({
-            profileIds: followingProfilesIds,
+            profileIds: followingProfilesIds.map(({id}) => id),
           })
         );
       }

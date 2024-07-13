@@ -1,4 +1,4 @@
-import { Link, Picture, TimeStamp } from '../helpers';
+import { Link, Picture } from '../helpers';
 
 export enum ProfileType {
   Personal = 'Physical',
@@ -30,5 +30,5 @@ export interface Profile extends Realm.Services.MongoDB.Document {
   links: Link[];
   // meta
   followers: Array<Profile['id']>;
-  following: Array<Profile['id']>;
+  following: Array<{ id: Profile['id'] }>;
 }

@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 import { FeatProfileApiActions } from '@kitouch/features/kit/data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { ProfileService } from './profile.service';
+import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 
 @Injectable()
 export class ProfileEffects {
@@ -23,6 +23,15 @@ export class ProfileEffects {
             return of(FeatProfileApiActions.getFollowingProfilesFailure());
           })
         )
+      )
+    )
+  );
+
+  enrichProfilesFromSuggestions$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFollowActions.getSuggestionColleaguesToFollowSuccess),
+      map(({ profiles }) =>
+        FeatProfileApiActions.getFollowingProfilesSuccess({ profiles })
       )
     )
   );

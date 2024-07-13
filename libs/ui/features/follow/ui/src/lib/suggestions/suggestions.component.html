@@ -1,1 +1,8 @@
-suggestion profiles to follow here 
+<div class="flex flex-wrap justify-center gap-2">
+    @for (profile of (exColleaguesProfiles$ | async); track $index) {
+    <feat-follow-profile-card [profile]="profile" [followed]="(followedProfilesMap$ | async)?.[profile.id] ?? false"
+        (followProfile)="followProfileHandler($event)" (stopFollowProfile)="unFollowProfileHandler($event)" />
+    } @empty {
+    We cannot suggest anyone to follow. Add your working experience above.
+    }
+</div>

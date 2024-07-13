@@ -50,7 +50,7 @@ interface UploadEvent {
 }
 
 @Component({
-  selector: 'lib-feat-settings-experience-add',
+  selector: 'feat-settings-experience-add',
   standalone: true,
   imports: [
     CommonModule,

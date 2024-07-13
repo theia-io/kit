@@ -4,11 +4,11 @@ import { createReducer, on } from '@ngrx/store';
 import { FeatFollowActions } from './follow.actions';
 
 export interface FeatureFollowState {
-  colleagues: Array<Profile>;
+  colleaguesProfiles: Array<Profile>;
 }
 
 const featFollowInitialState: FeatureFollowState = {
-  colleagues: [],
+  colleaguesProfiles: [],
 };
 
 export const featFollowReducer = createReducer(
@@ -17,7 +17,7 @@ export const featFollowReducer = createReducer(
     FeatFollowActions.getSuggestionColleaguesToFollowSuccess,
     (state, { profiles }) => ({
       ...state,
-      colleagues: mergeArr(state.colleagues, profiles),
+      colleaguesProfiles: mergeArr(state.colleaguesProfiles, profiles),
     })
   )
 );

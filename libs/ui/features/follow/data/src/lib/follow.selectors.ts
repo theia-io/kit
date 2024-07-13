@@ -5,7 +5,7 @@ import { FeatureFollowState } from './follow.reducers';
 const selectFollowState = (state: { follow: FeatureFollowState }) =>
   state.follow;
 
-export const selectColleaguesSuggestions = createSelector(
+export const selectColleaguesProfilesSuggestions = createSelector(
   selectFollowState,
-  (state) => state.colleagues
+  (state) => state.colleaguesProfiles
 );
