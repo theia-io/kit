@@ -15,7 +15,7 @@ import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { TimelineModule } from 'primeng/timeline';
 import { combineLatest, of } from 'rxjs';
-import { filter, map, shareReplay, switchMap } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -41,7 +41,15 @@ export class PageTweetComponent {
   #store = inject(Store);
 
   #ids$ = this.#activatedRouter.params.pipe(
-    map((params) => ({ tweetId: params['id'], profileId: params['profileId'] }))
+    map((params) => ({ tweetId: params['id'], profileIdOrAlias: params['profileIdOrAlias'] }))
+  );
+
+  #profile$ = this.#ids$.pipe(
+    switchMap(({profileIdOrAlias}) =>
+      this.#store.select(selectProfile(profileIdOrAlias))
+    ),
+    filter(Boolean),
+    shareReplay(1)
   );
 
   tweet$ = this.#ids$.pipe(
@@ -82,10 +90,13 @@ export class PageTweetComponent {
 
   constructor() {
     this.#ids$
-      .pipe(takeUntilDestroyed())
-      .subscribe(({ tweetId, profileId }) =>
+      .pipe(
+        withLatestFrom(this.#profile$),
+        takeUntilDestroyed()
+      )
+      .subscribe(([{ tweetId }, {id}]) =>
         this.#store.dispatch(
-          TweetApiActions.get({ ids: [{ tweetId, profileId }] })
+          TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
         )
       );
   }

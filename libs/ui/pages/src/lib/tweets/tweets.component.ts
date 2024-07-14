@@ -1,8 +1,8 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectProfile } from '@kitouch/features/kit/data';
+import { profilePicture, selectProfile } from '@kitouch/features/kit/data';
 import {
   TweetApiActions,
   selectTweetsProfile,
@@ -52,6 +52,9 @@ export class PageTweetsComponent {
     filter(Boolean),
     shareReplay(1)
   );
+
+  profile = toSignal(this.#profile$);
+  profilePic = computed(() => profilePicture(this.profile() ?? {}))
 
   tweets$ = this.#profile$.pipe(
     switchMap(({ id }) => this.#store.select(selectTweetsProfile(id))),
