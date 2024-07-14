@@ -34,9 +34,12 @@ export const selectProfiles = createSelector(
 
 /** Utilities */
 
-export const selectProfile = (profileId: string) =>
-  createSelector(selectProfiles, (profiles: Profile[]) =>
-    profiles.find(({ id }) => id === profileId)
+export const selectProfile = (profileIdOrAlias: string) =>
+  createSelector(
+    selectProfiles,
+    (profiles: Profile[]) =>
+      profiles.find(({ id }) => id === profileIdOrAlias) ??
+      profiles.find(({ alias }) => alias === profileIdOrAlias)
   );
 
 export const selectProfileFollowingOrNot = (profiles: Array<Profile>) =>
@@ -46,7 +49,7 @@ export const selectProfileFollowingOrNot = (profiles: Array<Profile>) =>
     );
 
     const followingProfiles: Map<Profile['id'], Profile> = new Map(),
-      notFollowingProfiles: Map<Profile['id'], Profile> = new Map;
+      notFollowingProfiles: Map<Profile['id'], Profile> = new Map();
 
     profiles.forEach((profile) => {
       if (currentProfileFollowingSet.has(profile.id)) {

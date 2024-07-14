@@ -1,7 +1,7 @@
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withDebugTracing } from '@angular/router';
 import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
 import {
   LegalEffects,
@@ -28,8 +28,8 @@ export const appConfig: ApplicationConfig = {
     // provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
 
-    provideRouter(appRoutes),
-    // provideRouter(appRoutes, withDebugTracing()),
+    // provideRouter(appRoutes),
+    provideRouter(appRoutes, withDebugTracing()),
     provideStore({
       follow: featFollowReducer,
       kit: accountFeatureReducer,

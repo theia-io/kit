@@ -72,11 +72,11 @@ export const appRoutes: Route[] = [
         path: APP_PATH.Profile,
         children: [
           {
-            path: `:profileId/${APP_PATH.Tweet}/:id`,
+            path: `:profileIdOrAlias/${APP_PATH.Tweet}/:id`,
             loadComponent: () => pages.then((comp) => comp.PageTweetComponent),
           },
           {
-            path: ':profileId',
+            path: ':profileIdOrAlias',
             loadComponent: () => pages.then((comp) => comp.PageTweetsComponent),
           },
         ],

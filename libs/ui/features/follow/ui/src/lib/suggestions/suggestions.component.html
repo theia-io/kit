@@ -4,10 +4,10 @@
     <ui-kit-comp-card>
         <ui-kit-comp-account-tile [primaryText]="profile.name" [primarySecondaryText]="profile.title"
             [secondaryText]="profile.description" [picture]="profilePicture(profile)"
-            [link]="profileUrlPath + (profile.alias ?? profile.id)" />
+            [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)" />
 
         <div *ngIf="{followed: (followedProfilesMap$ | async)?.[profile.id] ?? false} as data"
-            class="flex mt-4 md:mt-6">
+            class="flex mt-1 md:mt-2">
             <ui-kit-follow-button [alreadyFollowing]="data.followed"
                 (click)="data.followed ? unFollowProfileHandler(profile) : followProfileHandler(profile)" />
         </div>
