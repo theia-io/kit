@@ -5,9 +5,9 @@
 @for (tweet of (bookmarkFeedTweets$ | async); track $index) {
 <app-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-comp-card class="cursor-pointer">
+<ui-kit-comp-card class="cursor-pointer">
     <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
-</ui-comp-card>
+</ui-kit-comp-card>
 } @empty {
 <p class="mt-12"> There are no bookmarks yet, start adding one!</p>
 }

@@ -72,7 +72,7 @@ export class AuthService {
       this.#store.dispatch(
         FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
       );
-      const followingProfilesIds = currentProfile.following.map((id) => id);
+      const followingProfilesIds = currentProfile.following?.map((id) => id);
       if (followingProfilesIds?.length) {
         this.#store.dispatch(
           FeatProfileApiActions.getFollowingProfiles({

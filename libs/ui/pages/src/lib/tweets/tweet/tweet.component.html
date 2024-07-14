@@ -1,7 +1,7 @@
 @if (tweet$ | async; as tweet) {
-<ui-comp-card>
+<ui-kit-comp-card>
     <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" (tweetDeleted)="tweetDeletedHandler()" />
-</ui-comp-card>
+</ui-kit-comp-card>
 
 <app-divider *ngIf="tweet.comments" class="block my-12" />
 
@@ -14,7 +14,7 @@
 
     <ng-template pTemplate="opposite" let-comment>
         <div class="min-h-28">
-        <ui-comp-account-tile 
+        <ui-kit-comp-account-tile 
             [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
             [primarySecondaryText]="comment.createdAt| date:'MMM d, h:mm a'"
             [secondaryText]="comment?.denormalization?.profile?.name"

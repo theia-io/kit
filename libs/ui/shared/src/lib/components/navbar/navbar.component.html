@@ -22,12 +22,12 @@
 
 <ui-comp-tweet-button class="w-48 mt-4" />
 
-<ui-comp-card class="block mt-12">
+<ui-kit-comp-card class="block mt-12">
     <a [routerLink]="profileBaseUrl + '/' + profile?.id" routerLinkActive="underline">
-    <ui-comp-account-tile [primaryText]="profile?.name ?? 'N/A'"
+    <ui-kit-comp-account-tile [primaryText]="profile?.name ?? 'N/A'"
         [picture]="profile?.pictures?.[0]?.url" />
     </a>
-</ui-comp-card>
+</ui-kit-comp-card>
 
 <app-divider class="block mt-4" />
 

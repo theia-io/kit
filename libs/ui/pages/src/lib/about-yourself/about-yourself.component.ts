@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   OnInit,
   signal,
@@ -20,9 +21,14 @@ import {
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
 import { Experience, Profile } from '@kitouch/shared/models';
-import { ButtonComponent, fadeInUpAnimation, NewUIItemComponent } from '@kitouch/ui/components';
+import {
+  ButtonComponent,
+  fadeInUpAnimation,
+  NewUIItemComponent,
+} from '@kitouch/ui/components';
 import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import {
@@ -30,6 +36,7 @@ import {
   distinctUntilChanged,
   filter,
   take,
+  takeUntil,
   withLatestFrom,
 } from 'rxjs/operators';
 
@@ -80,7 +87,9 @@ import {
 })
 export class PageAboutYourselfComponent implements OnInit {
   #router = inject(Router);
+  #destroyRef = inject(DestroyRef);
   #store = inject(Store);
+  #actions = inject(Actions);
 
   #currentProfile = this.#store.select(selectCurrentProfile);
   profileControl = new FormControl<Partial<Profile>>({});
@@ -119,8 +128,18 @@ export class PageAboutYourselfComponent implements OnInit {
 
   saveExperienceHandler(experience: Experience) {
     this.savedExperience.set(true);
+    this.#actions
+      .pipe(
+        ofType(FeatUserApiActions.addExperienceSuccess),
+        take(1),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe(() =>
+        this.#store.dispatch(
+          FeatFollowActions.getSuggestionColleaguesToFollow()
+        )
+      );
     this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
-    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
   #saveProfileHandler(profile: Partial<Profile>) {

@@ -7,7 +7,7 @@ import {
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'ui-comp-account-tile',
+  selector: 'ui-kit-comp-account-tile',
   standalone: true,
   templateUrl: './account-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

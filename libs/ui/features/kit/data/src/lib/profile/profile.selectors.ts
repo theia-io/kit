@@ -32,7 +32,29 @@ export const selectProfiles = createSelector(
   (state: FeatureProfileState) => state.profiles ?? []
 );
 
+/** Utilities */
+
 export const selectProfile = (profileId: string) =>
   createSelector(selectProfiles, (profiles: Profile[]) =>
     profiles.find(({ id }) => id === profileId)
   );
+
+export const selectProfileFollowingOrNot = (profiles: Array<Profile>) =>
+  createSelector(selectCurrentProfile, (currentProfile) => {
+    const currentProfileFollowingSet = new Set(
+      currentProfile?.following?.map(({ id }) => id)
+    );
+
+    const followingProfiles: Map<Profile['id'], Profile> = new Map(),
+      notFollowingProfiles: Map<Profile['id'], Profile> = new Map;
+
+    profiles.forEach((profile) => {
+      if (currentProfileFollowingSet.has(profile.id)) {
+        followingProfiles.set(profile.id, profile);
+      } else {
+        notFollowingProfiles.set(profile.id, profile);
+      }
+    }, {});
+
+    return [followingProfiles, notFollowingProfiles];
+  });

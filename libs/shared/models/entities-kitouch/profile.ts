@@ -15,7 +15,7 @@ export enum ProfileStatus {
 
 export interface Profile extends Realm.Services.MongoDB.Document {
   id: string;
-  alias: string;
+  alias?: string;
   userId?: string /** @FIXME @TODO This is Profile depends on an Account and the Account on Profile?  */;
   legalId?: string; // so either user or some legal entity owns the profile. We can also take it further and have the
   // many owners to achieve "Group"? functionality with many admins?

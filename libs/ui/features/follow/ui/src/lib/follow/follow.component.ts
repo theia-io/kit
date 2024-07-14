@@ -5,6 +5,7 @@ import {
   FollowButtonComponent,
 } from '@kitouch/ui/components';
 
+/** @deprecated todo scheduled for decommission */
 @Component({
   selector: 'follow',
   standalone: true,

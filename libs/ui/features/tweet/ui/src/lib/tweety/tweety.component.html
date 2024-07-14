@@ -1,4 +1,4 @@
-<ui-comp-account-tile [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
+<ui-kit-comp-account-tile [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
     [primarySecondaryText]="tweet().timestamp?.createdAt| date:'MMM d, h:mm a'"
     [secondaryText]="(tweetProfile$ | async)?.type" [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
     [link]="profileUrlPath + tweet().profileId" />

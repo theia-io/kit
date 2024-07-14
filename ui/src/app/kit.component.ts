@@ -2,9 +2,9 @@ import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
-  FeatTweetBookmarkActions,
-  TweetApiActions,
+  FeatTweetBookmarkActions
 } from '@kitouch/features/tweet/data';
+import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 import {
   APP_PATH,
   AuthService,
@@ -54,6 +54,7 @@ export class KitComponent implements OnInit {
   ngOnInit(): void {
     /** Data that will be required across all app */
     this.#store.dispatch(FeatTweetBookmarkActions.getAll());
+    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
   async logoutHandler() {

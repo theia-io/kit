@@ -11,8 +11,11 @@
 
     <!--right -->
     <div class="w-2/5 ml-4">
-        <global-search />
-        <follow />
+        <!-- <global-search /> -->
+        <div class="flex rounded-lg bg-neutral-200 mb-2">
+                <h2 class="px-4 py-2 text-xl font-semibold ">My (ex-) colleagues</h2>
+        </div>
+        <feat-follow-suggestions [suggestionConfig]="{cards: false, showFollowed: true, showRandomOrder: false}" />
         
         <div class="flow-root m-6 inline">
             <div class="flex-1">
@@ -29,7 +32,7 @@
             </div>
             <div class="flex-2">
                 <p class="text-sm leading-6 font-medium text-gray-600"> © {{year}} Theia, LLCs ,. All rights reserved.</p>
-                <p class="text-sm leading-6 font-medium text-gray-600">Kitouch product</p>
+                <!-- <p class="text-sm leading-6 font-medium text-gray-600">Kitouch product</p> -->
             </div>
         </div>
     </div>
