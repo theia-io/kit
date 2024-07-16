@@ -2,20 +2,20 @@ import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { TweetApiActions, selectTweet } from '@kitouch/features/tweet/data';
 import { selectProfile } from '@kitouch/features/kit/ui';
+import { TweetApiActions, selectTweet } from '@kitouch/features/tweet/data';
+import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
-import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { TimelineModule } from 'primeng/timeline';
-import { combineLatest, forkJoin, of } from 'rxjs';
-import { filter, map, shareReplay, switchMap, tap } from 'rxjs/operators';
+import { combineLatest, of } from 'rxjs';
+import { filter, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -41,7 +41,15 @@ export class PageTweetComponent {
   #store = inject(Store);
 
   #ids$ = this.#activatedRouter.params.pipe(
-    map((params) => ({ tweetId: params['id'], profileId: params['profileId'] }))
+    map((params) => ({ tweetId: params['id'], profileIdOrAlias: params['profileIdOrAlias'] }))
+  );
+
+  #profile$ = this.#ids$.pipe(
+    switchMap(({profileIdOrAlias}) =>
+      this.#store.select(selectProfile(profileIdOrAlias))
+    ),
+    filter(Boolean),
+    shareReplay(1)
   );
 
   tweet$ = this.#ids$.pipe(
@@ -51,7 +59,7 @@ export class PageTweetComponent {
   );
 
   tweetComments$ = this.tweet$.pipe(
-    map(({comments}) => comments),
+    map(({ comments }) => comments),
     filter(Boolean),
     switchMap((comments) => {
       if (!comments) return of([]);
@@ -75,16 +83,21 @@ export class PageTweetComponent {
           });
         })
       );
-    }),
+    })
   );
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
 
   constructor() {
     this.#ids$
-      .pipe(takeUntilDestroyed())
-      .subscribe(({ tweetId, profileId }) =>
-        this.#store.dispatch(TweetApiActions.get({ ids: [{tweetId, profileId}] }))
+      .pipe(
+        withLatestFrom(this.#profile$),
+        takeUntilDestroyed()
+      )
+      .subscribe(([{ tweetId }, {id}]) =>
+        this.#store.dispatch(
+          TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
+        )
       );
   }
 

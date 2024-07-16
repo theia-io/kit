@@ -16,9 +16,16 @@ export enum BusinessType {
 }
 
 // User has to be replaced with Physical person and Company to Legal entity.
-export interface Legal {
+export interface Legal extends Realm.Services.MongoDB.Document {
   // id
-  accountId: string;
+  id: string;
+  alias: string; // unique to 
+  /** 
+   * @TODO Implement accountId linking - or ids 
+   * when users become an admins to a legal entities 
+   * e.g. those who are currently working there? Or by vote? Or? 
+   */
+  // accountId: string; 
   // business
   type: LegalType;
   businessType: BusinessType;

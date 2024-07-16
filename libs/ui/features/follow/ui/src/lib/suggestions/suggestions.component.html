@@ -1,0 +1,26 @@
+@if (!suggestionConfig().cards) {
+<div class="flex flex-col justify-center items-center gap-2">
+    @for (profile of (exColleaguesDisplaySettings$ | async); track $index) {
+    <ui-kit-comp-card>
+        <ui-kit-comp-account-tile [primaryText]="profile.name" [primarySecondaryText]="profile.title"
+            [secondaryText]="profile.description" [picture]="profilePicture(profile)"
+            [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)" />
+
+        <div *ngIf="{followed: (followedProfilesMap$ | async)?.[profile.id] ?? false} as data"
+            class="flex mt-1 md:mt-2">
+            <ui-kit-follow-button [alreadyFollowing]="data.followed"
+                (click)="data.followed ? unFollowProfileHandler(profile) : followProfileHandler(profile)" />
+        </div>
+    </ui-kit-comp-card>
+    }
+</div>
+} @else {
+<div class="flex flex-wrap justify-center gap-2">
+    @for (profile of (exColleaguesDisplaySettings$ | async); track $index) {
+    <feat-follow-profile-card [profile]="profile" [followed]="(followedProfilesMap$ | async)?.[profile.id] ?? false"
+        (followProfile)="followProfileHandler($event)" (stopFollowProfile)="unFollowProfileHandler($event)" />
+    } @empty {
+    We cannot suggest anyone to follow. Add your working experience above.
+    }
+</div>
+}

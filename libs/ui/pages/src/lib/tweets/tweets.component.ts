@@ -1,11 +1,13 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { profilePicture, selectProfile } from '@kitouch/features/kit/data';
 import {
   TweetApiActions,
-  selectTweetsProfile
+  selectTweetsProfile,
 } from '@kitouch/features/tweet/data';
+import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
@@ -13,7 +15,6 @@ import {
   TweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
-import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
@@ -37,23 +38,36 @@ import { filter, map, shareReplay, switchMap } from 'rxjs';
 export class PageTweetsComponent {
   #store = inject(Store);
   #router = inject(Router);
+
   #activatedRouter = inject(ActivatedRoute);
 
-  #profileId$ = this.#activatedRouter.params.pipe(
-    map((params) => params['profileId']),
-    shareReplay()
+  #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
+    map((params) => params['profileIdOrAlias'])
   );
 
-  tweets$ = this.#profileId$.pipe(
-    switchMap((profileId) => this.#store.select(selectTweetsProfile(profileId))),
-    filter((tweets): tweets is Array<Tweety> => tweets.length > 0),
+  #profile$ = this.#profileIdOrAlias$.pipe(
+    switchMap((profileIdOrAlias) =>
+      this.#store.select(selectProfile(profileIdOrAlias))
+    ),
+    filter(Boolean),
+    shareReplay(1)
+  );
+
+  profile = toSignal(this.#profile$);
+  profilePic = computed(() => profilePicture(this.profile() ?? {}))
+
+  tweets$ = this.#profile$.pipe(
+    switchMap(({ id }) => this.#store.select(selectTweetsProfile(id))),
+    filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
   );
 
   constructor() {
-    this.#profileId$
+    this.#profile$
       .pipe(takeUntilDestroyed())
-      .subscribe((profileId) =>
-        this.#store.dispatch(TweetApiActions.getTweetsForProfile({ profileId }))
+      .subscribe(({ id }) =>
+        this.#store.dispatch(
+          TweetApiActions.getTweetsForProfile({ profileId: id })
+        )
       );
   }
 

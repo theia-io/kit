@@ -305,6 +305,7 @@
         "accountId": 12346,
         "profileId": 67891,
         "name": "Google",
+        "alias": "Google",
         "description": "Worked as a software engineer at Google.",
         "businessType": "Outsource",
         "sector": "IT",

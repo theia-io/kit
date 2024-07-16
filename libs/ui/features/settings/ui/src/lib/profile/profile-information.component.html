@@ -1,0 +1,49 @@
+<form class="grid items-center justify-center grid-rows-[65px_50px_130px] sm:grid-cols-1 md:grid-cols-2 gap-y-6"
+    [formGroup]="profileForm">
+    <div class="justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
+        <img class="rounded-md" [src]="profilePic ?? '/john-dou.png'" referrerpolicy="no-referrer" />
+    </div>
+
+    <div class="ml-2">
+        <div class="flex flex-col">
+            <p-floatLabel>
+                <input pInputText id="alias" class="w-full" aria-describedby="profile-alias" formControlName="alias" />
+                <label for="alias">Profile alias</label>
+            </p-floatLabel>
+
+            <small id="alias">
+                You can use custom alias to have a nice profile URL.
+            </small>
+        </div>
+    </div>
+
+    <div class="col-span-2 flex flex-col gap-2">
+        <p-floatLabel>
+            <input pInputText id="name" class="w-full" aria-describedby="profile-name" formControlName="name" />
+            <label for="name">Profile name</label>
+        </p-floatLabel>
+    </div>
+
+    <div class="flex flex-col justify-between h-full mr-2">
+        <div class="flex flex-col">
+            <p-floatLabel>
+                <input pInputText id="title" class="w-full" aria-describedby="profile-title" formControlName="title" />
+                <label for="title">Profile title</label>
+            </p-floatLabel>
+            <small id="title" class="w-full">
+                Add your current role or calling, e.g. <i>professional late-drinker.</i>
+            </small>
+        </div>
+
+        <div class="flex flex-col mt-2">
+            <p-floatLabel>
+                <input pInputText id="subtitle" class="w-full" aria-describedby="profile-subtitle"
+                    formControlName="subtitle" />
+                <label for="subtitle">Profile subtitle</label>
+            </p-floatLabel>
+        </div>
+    </div>
+
+    <textarea class="ml-2" rows="5" cols="30" pInputTextarea formControlName="description"
+        placeholder="What's your story?"></textarea>
+</form>

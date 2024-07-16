@@ -1,11 +1,20 @@
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter } from '@angular/router';
-import { featTweetReducer } from '@kitouch/features/tweet/data';
-import { BookmarkEffects, TweetsEffects } from '@kitouch/features/tweet/effects';
+import { provideRouter, withDebugTracing } from '@angular/router';
 import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
-import { ProfileEffects } from '@kitouch/features/kit/effects';
+import {
+  LegalEffects,
+  ProfileEffects,
+  UserEffects,
+} from '@kitouch/features/kit/effects';
+import { featTweetReducer } from '@kitouch/features/tweet/data';
+import {
+  BookmarkEffects,
+  TweetsEffects,
+} from '@kitouch/features/tweet/effects';
+import { featFollowReducer } from '@kitouch/ui/features/follow/data';
+import { FollowEffects } from '@kitouch/ui/features/follow/effects';
 import { AuthInterceptor } from '@kitouch/ui/shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
@@ -19,13 +28,21 @@ export const appConfig: ApplicationConfig = {
     // provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
 
-    provideRouter(appRoutes),
-    // provideRouter(appRoutes, withDebugTracing()),
+    // provideRouter(appRoutes),
+    provideRouter(appRoutes, withDebugTracing()),
     provideStore({
+      follow: featFollowReducer,
       kit: accountFeatureReducer,
       tweet: featTweetReducer,
     }),
-    provideEffects([ProfileEffects, TweetsEffects, BookmarkEffects]),
+    provideEffects([
+      FollowEffects,
+      ProfileEffects,
+      UserEffects,
+      LegalEffects,
+      TweetsEffects,
+      BookmarkEffects,
+    ]),
     provideStoreDevtools(),
 
     // auth

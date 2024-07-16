@@ -1,1 +1,2 @@
-export * as Account from './Account.json';
+export * as Account from './data/Account.json';
+export * as KitouchUsers from './data/kitouch.user.json'

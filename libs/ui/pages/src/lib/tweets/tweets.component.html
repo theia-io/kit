@@ -1,11 +1,31 @@
-<div class="mb-2">
-    Profile info here
+<div class="flex items-start justify-center">
+    <div class="min-w-20">
+        <img class="inline-block h-20 w-20 rounded-full" referrerpolicy="no-referrer" [src]="profilePic()" height="40"
+            width="40" [alt]="profile()?.name + 'profile picture'" />
+    </div>
+
+    <div class="ml-2">
+        <p class="text-base leading-6 font-medium font-bold">
+            {{profile()?.name}}
+
+            <span *ngIf="profile()?.title" class="text-sm leading-5 font-medium text-gray-400">
+                {{profile()?.title}}
+
+                <br />
+
+                {{profile()?.subtitle}}
+            </span>
+        </p>
+    </div>
 </div>
+<p class="mt-2" *ngIf="profile()?.description">
+    {{profile()?.description}}
+</p>
 
+<app-divider class="block my-2 mt-12" />
 @for (tweet of tweets$ | async; track $index) {
-<app-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
-    <feat-tweet-tweety class="block" [tweetId]="tweet.id" />
-</ui-comp-card>
+<ui-kit-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
+    <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
+</ui-kit-comp-card>
 }

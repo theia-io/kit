@@ -44,6 +44,12 @@ export const appRoutes: Route[] = [
       import('@kitouch/ui/pages').then((comp) => comp.PageCookiesComponent),
   },
   {
+    path: APP_PATH.AboutYourself,
+    canActivate: [onlyForLoggedInGuard],
+    loadComponent: () =>
+      pages.then((comp) => comp.PageAboutYourselfComponent),
+  },
+  {
     path: '',
     component: KitComponent,
     canActivate: [onlyForLoggedInGuard],
@@ -66,11 +72,11 @@ export const appRoutes: Route[] = [
         path: APP_PATH.Profile,
         children: [
           {
-            path: `:profileId/${APP_PATH.Tweet}/:id`,
+            path: `:profileIdOrAlias/${APP_PATH.Tweet}/:id`,
             loadComponent: () => pages.then((comp) => comp.PageTweetComponent),
           },
           {
-            path: ':profileId',
+            path: ':profileIdOrAlias',
             loadComponent: () => pages.then((comp) => comp.PageTweetsComponent),
           },
         ],
@@ -85,7 +91,13 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Settings,
-        loadComponent: () => pages.then((comp) => comp.PageSettingsComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageSettingsComponent),
+          },
+        ],
       },
       // {
       //   path: '**',

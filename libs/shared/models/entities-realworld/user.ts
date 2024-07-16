@@ -7,6 +7,7 @@ import {
   CurriculumVitae,
   CustomerInfo,
   Education,
+  Experience,
   Project,
   Skill,
 } from './shared';
@@ -18,12 +19,15 @@ export enum UserStatus {
   DELETED = 'deleted',
 }
 
-export interface User {
+export interface User extends Realm.Services.MongoDB.Document {
   // id
+  id: string;
   accountId: Account['id'];
   // business
   name: string;
   surname: string;
+  experiences: Array<{legalId: Pick<Legal, '_id' | 'alias'>} & Experience>; // ids?
+  // not implemented yet
   middleName: string;
   gender: Gender; // ids?
   languages: Languages[]; // ids?
@@ -32,7 +36,6 @@ export interface User {
   cvs: Array<CurriculumVitae>;
   skills: Skill[]; // ids?
   projects: Project[]; // ids?
-  companies: Legal[]; // ids?
   status: UserStatus;
   // meta
   customerInfo: CustomerInfo;
