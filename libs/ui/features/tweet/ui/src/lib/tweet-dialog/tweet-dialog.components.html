@@ -2,13 +2,13 @@
     [style]="{ width: '25rem' }">
     <textarea [formControl]="tweetContentControl"
         class="w-full bg-transparent font-semibold text-xl outline-transparent" rows="10" cols="50"
-        placeholder="Ready to share? Or... \n\n - got a new certification passed?\n - got a new job?\n - wrote or just thinking about contribute/write article/etc."></textarea>
+        [placeholder]="placeholderText"></textarea>
 
     <div class="flex justify-end gap-4">
         <p-button label="Clear" severity="secondary" (onClick)="tweetContentControl.setValue('')" />
         <p-button (onClick)="tweetingHandle()" aria-label="tweet">
             <span class="px-3">Tweet</span>
-            <i class="pi pi-send animate-bounce" style="font-size: 1.5rem"></i>
+            <i class="pi pi-send animate-wiggle" style="font-size: 1.5rem"></i>
         </p-button>
     </div>
 </p-dialog>

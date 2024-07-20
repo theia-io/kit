@@ -18,7 +18,7 @@
 <div class="flex justify-end items-center">
     <feat-tweet-tweeting-actions (image)="imageHandler()" (reaction)="reactionHandler()" />
 
-    <ui-comp-tweet-button [disabled]="!tweetContentControl.valid || tweettingInProgress()"
+    <ui-kit-tweet-button [disabled]="!tweetContentControl.valid || tweettingInProgress()"
         [loader]="tweettingInProgress()" (click)="tweetingHandle()" class="mx-8 min-w-28 float-right" />
 </div>
 

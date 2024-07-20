@@ -10,20 +10,15 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/features/tweet/data';
 // import { Tweety } from '@kitouch/shared/models';
 import { TweetButtonComponent } from '@kitouch/ui/components';
-import {
-  TWEET_NEW_TWEET_TIMEOUT
-} from '@kitouch/ui/shared';
+import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 // import { MessageService } from 'primeng/api';
 // import { ToastModule } from 'primeng/toast';
-import {
-  selectProfilePicture
-} from '@kitouch/features/kit/data';
+import { selectProfilePicture } from '@kitouch/features/kit/data';
 import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
@@ -47,8 +42,6 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
 export class FeatTweetTweetingComponent {
   #destroyRef = inject(DestroyRef);
   #actions = inject(Actions);
-  #router = inject(Router);
-
   #store = inject(Store);
   // #messageService = inject(MessageService);
   // #snackBar = inject(MatSnackBar);

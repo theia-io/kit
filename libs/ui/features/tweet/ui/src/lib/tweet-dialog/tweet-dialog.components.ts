@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, DestroyRef, HostListener, inject, signal } from '@angular/core';
+import {
+    Component,
+    DestroyRef,
+    HostListener,
+    inject,
+    signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
@@ -9,7 +15,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
-import { single, take } from 'rxjs';
+import { take } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
@@ -25,9 +31,9 @@ import { v4 as uuidv4 } from 'uuid';
   ],
 })
 export class FeatTweetDialogComponent {
-    #destroyRef = inject(DestroyRef);
-    #actions = inject(Actions);
-    #router = inject(Router);
+  #destroyRef = inject(DestroyRef);
+  #actions = inject(Actions);
+  #router = inject(Router);
   #store = inject(Store);
 
   @HostListener('window:keydown.enter', ['$event'])
@@ -45,6 +51,13 @@ export class FeatTweetDialogComponent {
     Validators.maxLength(1000),
   ]);
 
+  placeholderText = `Share anything:
+  - got an idea to share?
+  - got a new certification?
+  - got a new job?
+  - wrote an article or looking for collaborators?
+  - looking for a open-source projects to join?`;
+
   constructor() {
     this.#actions
       .pipe(
@@ -56,8 +69,8 @@ export class FeatTweetDialogComponent {
         if (uuid === this.tweetuuidv4()) {
           this.tweettingInProgress.set(false);
           // @TODO Implement error message that
-          // we got an error ON OUR side and we will try better next time 
-          // and now we need ~X time to fix this issue. Try to tweet from 
+          // we got an error ON OUR side and we will try better next time
+          // and now we need ~X time to fix this issue. Try to tweet from
           // other place or safe as a draft meanwhile?
         }
       });
@@ -100,4 +113,3 @@ export class FeatTweetDialogComponent {
     this.#router.navigate([{ outlets: { [OUTLET_DIALOG]: null } }]);
   }
 }
-
