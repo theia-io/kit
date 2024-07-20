@@ -8,7 +8,7 @@ import {
 
 @Component({
   standalone: true,
-  selector: 'feat-kit-ui-comp-new-ui-item',
+  selector: 'ui-kit-comp-new-ui-item',
   template: `
     <div class="relative p-2">
       <ng-content />

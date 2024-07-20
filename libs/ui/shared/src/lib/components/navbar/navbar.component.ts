@@ -6,6 +6,7 @@ import {
   Input,
   Output,
   inject,
+  output,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -57,6 +58,8 @@ export class NavBarComponent {
 
   @Output()
   help = new EventEmitter<void>();
+
+  tweetButtonClick = output();
 
   sanitizer: DomSanitizer = inject(DomSanitizer);
 }

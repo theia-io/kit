@@ -10,6 +10,12 @@ export enum APP_PATH {
   AboutYourself = 'tell-us-about-yourself',
 }
 
+export const OUTLET_DIALOG = 'dialog';
+
+export enum APP_PATH_DIALOG {
+  Tweet = `tweet`,
+}
+
 export const NAV_ITEMS: Array<NavBarItem> = [
   {
     name: 'Home',
@@ -19,16 +25,6 @@ export const NAV_ITEMS: Array<NavBarItem> = [
         d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1h3a1 1 0 001-1V10M9 21h6" />
 </svg>`,
   },
-//   {
-//     name: 'Messages',
-//     link: APP_PATH.Messages,
-//     icon: `<svg class="mr-2 h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-//     stroke="currentColor" viewBox="0 0 24 24">
-//     <path
-//         d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
-//     </path>
-// </svg>`,
-//   },
   {
     name: 'Bookmarks',
     link: APP_PATH.Bookmarks,

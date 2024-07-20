@@ -11,17 +11,14 @@
 
     <!--right -->
     <div class="w-2/5 ml-4">
-        <!-- <global-search /> -->
-        <div class="flex rounded-lg bg-neutral-200 mb-2">
-                <h2 class="px-4 py-2 text-xl font-semibold ">My (ex-) colleagues</h2>
-        </div>
-        <feat-follow-suggestions [suggestionConfig]="{cards: false, showFollowed: true, showRandomOrder: false}" />
-        
+        <ng-content select="[right]"></ng-content>
+
         <div class="flow-root m-6 inline">
             <div class="flex-1">
                 <p class="text-sm leading-6 font-medium text-gray-500">
                     <a routerLink="/terms-and-conditions"
-                        class="leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">Terms and
+                        class="leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">Terms
+                        and
                         Conditions, </a>
                     <a routerLink="/privacy-policy"
                         class="leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">Privacy
@@ -31,7 +28,8 @@
                 </p>
             </div>
             <div class="flex-2">
-                <p class="text-sm leading-6 font-medium text-gray-600"> © {{year}} Theia, LLCs ,. All rights reserved.</p>
+                <p class="text-sm leading-6 font-medium text-gray-600"> © {{year}} Theia, LLCs ,. All rights reserved.
+                </p>
                 <!-- <p class="text-sm leading-6 font-medium text-gray-600">Kitouch product</p> -->
             </div>
         </div>
