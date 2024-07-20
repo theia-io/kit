@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  output
+} from '@angular/core';
 
 @Component({
   standalone: true,
@@ -7,7 +11,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
   template: `
     <div class="flex items-center">
       <button
-        (click)="image.emit()"
+        (click)="imageClick.emit()"
         class="w-12 mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150"
       >
         <svg
@@ -25,7 +29,7 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
         </svg>
       </button>
 
-      <button
+      <!-- <button
         (click)="reaction.emit()"
         class="w-12 mt-1 group flex items-center text-gray-500 px-3 py-2 text-base leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150"
       >
@@ -42,16 +46,13 @@ import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angul
             d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
           ></path>
         </svg>
-      </button>
+      </button> -->
     </div>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule],
 })
 export class FeatTweetTweetingActionsComponent {
-  @Output()
-  image = new EventEmitter<void>();
-
-  @Output()
-  reaction = new EventEmitter<void>();
+  imageClick = output();
+  reactionClick = output();
 }
