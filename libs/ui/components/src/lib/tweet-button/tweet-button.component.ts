@@ -18,13 +18,17 @@ import { ButtonModule } from 'primeng/button';
   `,
   template: `
     <p-button
+      styleClass="w-full flex justify-between"
       [disabled]="disabled()"
       (onClick)="onClickEvent.emit($event)"
       aria-label="tweet"
     >
-      @if(loader()) { }
-      <span class="px-3">{{ text() }}</span>
-      <i class="pi pi-send animate-wiggle" style="font-size: 1.5rem"></i>
+      <span>{{ text() }}</span>
+      @if(loader()) {
+      <i class="pi pi-sync animate-spin" style="font-size: 1rem"></i>
+      } @else {
+      <i class="pi pi-send" [class.animate-wiggle]="animate()" style="font-size: 1.5rem"></i>
+      }
     </p-button>
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -33,6 +37,7 @@ export class TweetButtonComponent {
   text = input('Tweet');
   disabled = input(false);
   loader = input(false);
+  animate = input(true);
 
   onClickEvent = output<Event>();
 }

@@ -10,6 +10,7 @@ import {
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
+import { Profile } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
@@ -17,7 +18,6 @@ import {
   UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { SubnavComponent } from './subnav/subnav.component';
-import { Profile } from '@kitouch/shared/models';
 
 export interface NavBarItem {
   name: string;
@@ -29,7 +29,6 @@ export interface NavBarItem {
   standalone: true,
   selector: 'navbar',
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,

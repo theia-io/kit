@@ -3,9 +3,11 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   HostListener,
   inject,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -19,9 +21,12 @@ import { Store } from '@ngrx/store';
 // import { MessageService } from 'primeng/api';
 // import { ToastModule } from 'primeng/toast';
 import { selectProfilePicture } from '@kitouch/features/kit/data';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
+import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
 
 @Component({
   standalone: true,
@@ -32,6 +37,9 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
     CommonModule,
     NgOptimizedImage,
     ReactiveFormsModule,
+    //
+    FloatLabelModule,
+    InputTextareaModule,
     // ToastModule,
     //
     TweetButtonComponent,
@@ -51,6 +59,9 @@ export class FeatTweetTweetingComponent {
     this.tweetingHandle();
   }
 
+  @ViewChild('textControl')
+  textControlTmp: ElementRef<HTMLTextAreaElement>;
+
   profilePic$ = this.#store.select(selectProfilePicture);
 
   tweetContentControl = new FormControl<string>('', [
@@ -58,7 +69,7 @@ export class FeatTweetTweetingComponent {
     Validators.minLength(2),
     Validators.maxLength(1000),
   ]);
-
+  tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
   // tweet = signal<Tweety | null>(null);
   tweettingInProgress = signal(false);
 
@@ -70,6 +81,13 @@ export class FeatTweetTweetingComponent {
 
   reactionHandler() {
     console.log('reaction handler');
+  }
+
+  tweetControlBlur () {
+    if(!this.tweetContentControl.value?.length) {
+      this.tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+      return;
+    }
   }
 
   tweetingHandle() {
@@ -96,10 +114,12 @@ export class FeatTweetTweetingComponent {
       )
       .subscribe(({ uuid }) => {
         if (uuid === tweetuuidv4) {
-          this.tweetContentControl.setValue('');
+          this.tweetContentControl.reset();
+          this.textControlTmp.nativeElement.blur();
 
           // this.tweet.set(tweet);
           this.tweettingInProgress.set(false);
+          this.tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
           // this.#showSuccessMessage(tweet);
         }
       });
