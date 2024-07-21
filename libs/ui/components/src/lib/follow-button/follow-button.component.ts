@@ -17,6 +17,6 @@ export class FollowButtonComponent {
     this.alreadyFollowing() ? 'secondary' : 'contrast'
   );
   icon = computed(() =>
-    this.alreadyFollowing() ? 'pi-user-plus' : 'pi-user-minus'
+    this.alreadyFollowing() ? 'pi-user-minus' : 'pi-user-plus'
   );
 }

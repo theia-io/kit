@@ -114,8 +114,11 @@ export class PageTweetComponent {
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
 
   constructor() {
-    this.#ids$
-      .pipe(withLatestFrom(this.#profile$), takeUntilDestroyed())
+    combineLatest([
+      this.#ids$,  
+      this.#profile$
+    ])
+      .pipe(takeUntilDestroyed())
       .subscribe(([{ tweetId }, { id }]) =>
         this.#store.dispatch(
           TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
