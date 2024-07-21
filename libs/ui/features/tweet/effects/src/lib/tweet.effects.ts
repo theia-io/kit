@@ -36,7 +36,7 @@ export class TweetsEffects {
         this.#tweetApi
           .getFeed(
             profile.id,
-            profile.following.map(({id}) => id)
+            profile.following.map(({ id }) => id)
           )
           .pipe(
             map((tweets) =>
@@ -63,7 +63,7 @@ export class TweetsEffects {
     )
   );
 
-  bookmarkTweets$ = createEffect(() =>
+  bookmarkFeedSuccess$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetBookmarkActions.getBookmarksFeedSuccess),
       map(({ tweets }) =>
@@ -144,45 +144,6 @@ export class TweetsEffects {
             );
           })
         )
-      )
-    )
-  );
-
-  commentTweet$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatTweetActions.comment),
-      withLatestFrom(this.currentProfile$),
-      switchMap(([{ uuid, tweet, content }, profile]) =>
-        this.#tweetApi
-          .commentTweet({
-            ...tweet,
-            comments: [
-              {
-                profileId: profile.id,
-                content,
-              },
-              ...(tweet.comments ?? []),
-            ],
-          })
-          .pipe(
-            map((tweet) =>
-              FeatTweetActions.commentSuccess({
-                uuid,
-                tweet: { ...tweet, denormalization: { profile } },
-              })
-            ),
-            catchError((err) => {
-              console.error('TweetsEffects commentTweet', err);
-              return of(
-                FeatTweetActions.commentFailure({
-                  uuid,
-                  tweet,
-                  message:
-                    'Sorry, error. We will take a look at it and meanwhile try later',
-                })
-              );
-            })
-          )
       )
     )
   );

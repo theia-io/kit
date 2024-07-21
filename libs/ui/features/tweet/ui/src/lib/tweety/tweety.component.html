@@ -13,7 +13,8 @@
         (like)="likeHandler()" (share)="shareHandler()" [bookmarked]="(tweetBookmarked$ | async) ?? false"
         (bookmark)="bookmarkHandler()" />
 
-    <p-overlayPanel #commentOverlayTmpl>
+    <p-overlayPanel (onShow)="commentOverlayVisible.set(true)" (onHide)="commentOverlayVisible.set(false)"
+        #commentOverlayTmpl>
         <div class="flex flex-col min-h-24">
             <p-floatLabel>
                 <textarea id="float-input" autofocus [formControl]="commentControl" rows="5" cols="30" pInputTextarea>
@@ -21,19 +22,15 @@
                 <label for="float-input">Your comment</label>
             </p-floatLabel>
 
-            <ui-kit-tweet-button text="Comment" [disabled]="!commentControl.valid" [loader]="false"
-                (click)="commentHandler()" class="mt-2 mx-8 float-right" />
+            <ui-kit-tweet-button text="Comment" [animate]="false" [disabled]="!commentControl.valid" [loader]="false"
+                (click)="commentHandler()" />
         </div>
     </p-overlayPanel>
-
-    <p-sidebar [(visible)]="commentSideBar" position="right">
-        <h3>Right Sidebar</h3>
-    </p-sidebar>
 </div>
 
 <svg *ngIf="tweetCanBeDeleted$ | async" class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
-    (click)="$event.stopPropagation(); deleteHandler()" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-    stroke-linecap="round" stroke-linejoin="round">
+    (click)="$event.stopPropagation(); deleteHandler()" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <line x1="18" y1="6" x2="6" y2="18" />
     <line x1="6" y1="6" x2="18" y2="18" />
 </svg>

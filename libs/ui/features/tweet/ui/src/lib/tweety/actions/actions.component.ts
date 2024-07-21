@@ -1,6 +1,6 @@
 import { CommonModule } from "@angular/common";
-import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from "@angular/core";
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
     standalone: true,

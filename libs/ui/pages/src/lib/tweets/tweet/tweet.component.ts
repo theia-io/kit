@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectProfile } from '@kitouch/features/kit/ui';
+import { selectCurrentProfile, selectProfile } from '@kitouch/features/kit/ui';
 import { TweetApiActions, selectTweet } from '@kitouch/features/tweet/data';
 import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
 import { Tweety } from '@kitouch/shared/models';
@@ -15,12 +15,28 @@ import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { TimelineModule } from 'primeng/timeline';
 import { combineLatest, of } from 'rxjs';
-import { filter, map, shareReplay, switchMap, withLatestFrom } from 'rxjs/operators';
+import {
+  filter,
+  map,
+  shareReplay,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs/operators';
 
 @Component({
   standalone: true,
   selector: 'kit-page-tweet',
   templateUrl: './tweet.component.html',
+  styles: [
+    `
+      :host ::ng-deep .kit-timeline .p-timeline-event {
+        .p-timeline-event-content {
+          flex-grow: 3;
+          padding-bottom: 16px;
+        }
+      }
+    `,
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     CommonModule,
@@ -41,16 +57,23 @@ export class PageTweetComponent {
   #store = inject(Store);
 
   #ids$ = this.#activatedRouter.params.pipe(
-    map((params) => ({ tweetId: params['id'], profileIdOrAlias: params['profileIdOrAlias'] }))
+    map((params) => ({
+      tweetId: params['id'],
+      profileIdOrAlias: params['profileIdOrAlias'],
+    }))
   );
 
   #profile$ = this.#ids$.pipe(
-    switchMap(({profileIdOrAlias}) =>
+    switchMap(({ profileIdOrAlias }) =>
       this.#store.select(selectProfile(profileIdOrAlias))
     ),
     filter(Boolean),
     shareReplay(1)
   );
+
+  #currentProfile$ = this.#store
+    .select(selectCurrentProfile)
+    .pipe(filter(Boolean));
 
   tweet$ = this.#ids$.pipe(
     switchMap(({ tweetId }) => this.#store.select(selectTweet(tweetId))),
@@ -61,7 +84,8 @@ export class PageTweetComponent {
   tweetComments$ = this.tweet$.pipe(
     map(({ comments }) => comments),
     filter(Boolean),
-    switchMap((comments) => {
+    withLatestFrom(this.#currentProfile$),
+    switchMap(([comments, currentProfile]) => {
       if (!comments) return of([]);
 
       const commentProfileObservables = comments.map((comment) =>
@@ -76,6 +100,7 @@ export class PageTweetComponent {
             );
             return {
               ...comment,
+              canBeDeleted: commentProfile?.id === currentProfile.id,
               denormalization: {
                 profile: commentProfile,
               },
@@ -90,11 +115,8 @@ export class PageTweetComponent {
 
   constructor() {
     this.#ids$
-      .pipe(
-        withLatestFrom(this.#profile$),
-        takeUntilDestroyed()
-      )
-      .subscribe(([{ tweetId }, {id}]) =>
+      .pipe(withLatestFrom(this.#profile$), takeUntilDestroyed())
+      .subscribe(([{ tweetId }, { id }]) =>
         this.#store.dispatch(
           TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
         )
@@ -103,5 +125,9 @@ export class PageTweetComponent {
 
   tweetDeletedHandler() {
     this.#router.navigateByUrl('/');
+  }
+
+  commentDeleteHandler() {
+    console.log('Implement comment removal');
   }
 }

@@ -5,21 +5,30 @@
 
 <app-divider *ngIf="tweet.comments" class="block my-12" />
 
-<p-timeline [value]="(tweetComments$ | async) ?? []" class="w-full md:w-20rem" align="alternate">
-    <ng-template pTemplate="content" let-event>
-        <div class="min-h-28">
-        {{ event.content }}
-    </div>
+<p-timeline [value]="(tweetComments$ | async) ?? []" styleClass="w-full md:w-20rem kit-timeline">
+    <ng-template pTemplate="content" let-comment>
+        <div>
+            <p class="text-sm leading-5 font-medium text-gray-400">
+                {{comment.createdAt| date:'MMM d, h:mm a'}}
+            </p>
+
+            {{ comment.content }}
+
+            @if(comment.canBeDeleted) {
+                <svg  class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
+                (click)="$event.stopPropagation(); commentDeleteHandler()" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18" />
+                <line x1="6" y1="6" x2="18" y2="18" />
+            </svg>
+            }
+</div>
     </ng-template>
 
     <ng-template pTemplate="opposite" let-comment>
-        <div class="min-h-28">
-        <ui-kit-comp-account-tile 
-            [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
-            [primarySecondaryText]="comment.createdAt| date:'MMM d, h:mm a'"
-            [secondaryText]="comment?.denormalization?.profile?.name"
-            [link]="profileUrlPath + tweet.profileId" />
-        </div>
+            <ui-kit-comp-account-tile [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
+                [primarySecondaryText]="comment?.denormalization?.profile?.name"
+                [link]="profileUrlPath + tweet.profileId" />
     </ng-template>
 </p-timeline>
 } @else {

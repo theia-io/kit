@@ -8,7 +8,7 @@
 
         <div *ngIf="{followed: (followedProfilesMap$ | async)?.[profile.id] ?? false} as data"
             class="flex mt-1 md:mt-2">
-            <ui-kit-follow-button [alreadyFollowing]="data.followed"
+            <ui-kit-follow-button class="block w-full" [alreadyFollowing]="data.followed"
                 (click)="data.followed ? unFollowProfileHandler(profile) : followProfileHandler(profile)" />
         </div>
     </ui-kit-comp-card>
