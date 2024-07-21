@@ -1,6 +1,11 @@
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  HostListener,
+  inject
+} from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectCurrentProfile, selectProfile } from '@kitouch/features/kit/ui';
@@ -14,7 +19,8 @@ import { TweetComment, Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
-  UiCompCardComponent
+  TweetButtonComponent,
+  UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
@@ -31,6 +37,7 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   standalone: true,
@@ -58,6 +65,7 @@ import {
     TimelineModule,
     ButtonModule,
     //
+    TweetButtonComponent,
     AccountTileComponent,
     DividerComponent,
     UiCompCardComponent,
@@ -93,6 +101,7 @@ export class PageTweetComponent {
     filter((tweet): tweet is Tweety => !!tweet),
     shareReplay()
   );
+  tweet = toSignal(this.tweet$);
 
   tweetComments$ = this.tweet$.pipe(
     map(({ comments }) => comments),
@@ -126,6 +135,18 @@ export class PageTweetComponent {
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
 
+  @HostListener('window:keydown', ['$event'])
+  keyDownEnterHandler(event: KeyboardEvent) {
+    if (
+      this.commentContentControl.valid &&
+      event.key === 'Enter' &&
+      (event.metaKey || event.ctrlKey) // Check for Cmd/Ctrl key
+    ) {
+      this.commentHandler();
+      // Your Cmd/Ctrl Enter logic here
+    }
+  }
+
   commentContentControl = new FormControl<string>('', [
     Validators.required,
     Validators.minLength(2),
@@ -141,6 +162,26 @@ export class PageTweetComponent {
           TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
         )
       );
+  }
+
+  commentHandler() {
+    if (!this.commentContentControl.valid) {
+      return;
+    }
+
+    const tweet = this.tweet();
+    if (!tweet) {
+      return;
+    }
+
+    const tweetuuidv4 = uuidv4();
+    const content: string = this.commentContentControl.value as string;
+    this.#store.dispatch(
+      FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
+    );
+
+    this.commentContentControl.reset();
+    this.commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
   }
 
   commentControlBlur() {

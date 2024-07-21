@@ -192,6 +192,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
       });
   }
 
+  /** @TODO migrate commentHandler to a specific class and re-use it here and in tweet.component */
   commentHandler() {
     if (!this.commentControl.valid) {
       return;
@@ -206,7 +207,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
           FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
         );
 
-        this.commentControl.setValue('');
+        this.commentControl.reset();
         this.commentOverlayTmpl.hide();
       });
   }
