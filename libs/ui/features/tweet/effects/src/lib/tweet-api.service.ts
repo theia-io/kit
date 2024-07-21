@@ -1,72 +1,86 @@
-import { Injectable, inject } from '@angular/core';
-import { Bookmark, Profile, Tweety } from '@kitouch/shared/models';
-import { AuthService } from '@kitouch/ui/shared';
+import { Injectable } from '@angular/core';
+import {
+  Bookmark,
+  Profile,
+  TweetComment,
+  Tweety,
+} from '@kitouch/shared/models';
+import { DataSourceService } from '@kitouch/ui/shared';
+import { BSON } from 'realm-web';
 import { Observable } from 'rxjs';
-import { filter, shareReplay, switchMap, take } from 'rxjs/operators';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
 })
-export class TweetApiService {
-  #auth = inject(AuthService);
-
-  #realmUser$ = this.#auth.realmUser$.pipe(
-    filter(Boolean),
-    shareReplay(1),
-    take(1)
-  );
-
+export class TweetApiService extends DataSourceService {
   getFeed(profileId: string, following: string[]): Observable<Array<Tweety>> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getTweetsFeed']({ profileId, following }))
+    return this.realmFunctions$.pipe(
+      switchMap((fn) => fn['getTweetsFeed']({ profileId, following }))
     );
   }
 
   getTweetsForProfile(profileId: string): Observable<Array<Tweety>> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getTweetsForProfile']({ profileId }))
+    return this.realmFunctions$.pipe(
+      switchMap((fn) => fn['getTweetsForProfile']({ profileId }))
     );
   }
 
-  get(ids: Array<{tweetId: Tweety['id']; profileId: Profile['id']}>) {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getTweets'](ids))
-    );
+  get(ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>) {
+    return this.realmFunctions$.pipe(switchMap((fn) => fn['getTweets'](ids)));
   }
 
   newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['postTweet'](tweet))
+    return this.realmFunctions$.pipe(switchMap((fn) => fn['postTweet'](tweet)));
+  }
+
+  deleteTweets(
+    ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>
+  ): Observable<Tweety> {
+    return this.realmFunctions$.pipe(
+      switchMap((fn) => fn['deleteTweets'](ids))
     );
   }
 
-  deleteTweets(ids: Array<{tweetId: Tweety['id'], profileId: Profile['id']}>): Observable<Tweety> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['deleteTweets'](ids))
-    );
-  }
-  
   commentTweet(tweet: Partial<Tweety>) {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['putTweet'](tweet))
+    return this.realmFunctions$.pipe(switchMap((fn) => fn['putTweet'](tweet)));
+  }
+
+  deleteComment(
+    tweet: Tweety,
+    { profileId, content, createdAt }: TweetComment
+  ) {
+    return this.db$.pipe(
+      switchMap((db) =>
+        db.collection<Tweety>('tweet').updateOne(
+          { _id: new BSON.ObjectId(tweet.id) },
+          {
+            $pull: {
+              comments: {
+                profileId,
+                content,
+                createdAt,
+              },
+            },
+          }
+        )
+      )
     );
   }
 
   likeTweet(tweet: Tweety) {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['putTweet'](tweet))
-    );
+    return this.realmFunctions$.pipe(switchMap((fn) => fn['putTweet'](tweet)));
   }
 
   getBookmarks(profileId: Profile['id']): Observable<Array<Bookmark>> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['getBookmarks'](profileId))
+    return this.realmFunctions$.pipe(
+      switchMap((fn) => fn['getBookmarks'](profileId))
     );
   }
 
   bookmark(bookmark: Omit<Bookmark, 'id'>): Observable<Bookmark> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['postBookmark'](bookmark))
+    return this.realmFunctions$.pipe(
+      switchMap((fn) => fn['postBookmark'](bookmark))
     );
   }
 
@@ -74,8 +88,8 @@ export class TweetApiService {
     tweetId: Tweety['id'];
     profileIdBookmarker: Profile['id'];
   }): Observable<Bookmark> {
-    return this.#realmUser$.pipe(
-      switchMap((user) => user.functions['deleteBookmark'](bookmark))
+    return this.realmFunctions$.pipe(
+      switchMap((fn) => fn['deleteBookmark'](bookmark))
     );
   }
 }

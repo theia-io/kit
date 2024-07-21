@@ -3,9 +3,13 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectCurrentProfile, selectProfile } from '@kitouch/features/kit/ui';
-import { TweetApiActions, selectTweet } from '@kitouch/features/tweet/data';
+import {
+  FeatTweetActions,
+  TweetApiActions,
+  selectTweet,
+} from '@kitouch/features/tweet/data';
 import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
-import { Tweety } from '@kitouch/shared/models';
+import { TweetComment, Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
@@ -114,10 +118,7 @@ export class PageTweetComponent {
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
 
   constructor() {
-    combineLatest([
-      this.#ids$,  
-      this.#profile$
-    ])
+    combineLatest([this.#ids$, this.#profile$])
       .pipe(takeUntilDestroyed())
       .subscribe(([{ tweetId }, { id }]) =>
         this.#store.dispatch(
@@ -130,7 +131,7 @@ export class PageTweetComponent {
     this.#router.navigateByUrl('/');
   }
 
-  commentDeleteHandler() {
-    console.log('Implement comment removal');
+  commentDeleteHandler(tweet: Tweety, comment: TweetComment) {
+    this.#store.dispatch(FeatTweetActions.commentDelete({ tweet, comment }));
   }
 }

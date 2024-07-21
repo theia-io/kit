@@ -1,22 +1,20 @@
 import { Injectable, inject } from '@angular/core';
 import { selectCurrentProfile } from '@kitouch/features/kit/ui';
-import {
-    FeatTweetActions
-} from '@kitouch/features/tweet/data';
+import { FeatTweetActions } from '@kitouch/features/tweet/data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
-    catchError,
-    filter,
-    map,
-    switchMap,
-    withLatestFrom,
+  catchError,
+  filter,
+  map,
+  switchMap,
+  withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
 
 @Injectable()
-export class TweetsEffects {
+export class CommentsEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
   #tweetApi = inject(TweetApiService);
@@ -49,7 +47,7 @@ export class TweetsEffects {
               })
             ),
             catchError((err) => {
-              console.error('TweetsEffects commentTweet', err);
+              console.error('[CommentsEffects] commentTweet', err);
               return of(
                 FeatTweetActions.commentFailure({
                   uuid,
@@ -65,6 +63,24 @@ export class TweetsEffects {
   );
 
   deleteCommentTweet$ = createEffect(() =>
-    this.#actions$.pipe(ofType(FeatTweetActions.commentDelete))
+    this.#actions$.pipe(
+      ofType(FeatTweetActions.commentDelete),
+      switchMap(({ tweet, comment }) =>
+        this.#tweetApi
+          .deleteComment(tweet, comment)
+          .pipe(
+            map(() => FeatTweetActions.commentDeleteSuccess({ tweet, comment }))
+          )
+      ),
+      catchError((err) => {
+        console.error('[CommentsEffects] deleteCommentTweet', err);
+        return of(
+          FeatTweetActions.commentDeleteFailure({
+            message:
+              'Sorry, error. We will take a look at it and meanwhile try later.',
+          })
+        );
+      })
+    )
   );
 }

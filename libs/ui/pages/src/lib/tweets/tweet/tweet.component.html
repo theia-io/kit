@@ -16,7 +16,7 @@
 
             @if(comment.canBeDeleted) {
                 <svg  class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
-                (click)="$event.stopPropagation(); commentDeleteHandler()" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                (click)="$event.stopPropagation(); commentDeleteHandler(tweet, comment)" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />

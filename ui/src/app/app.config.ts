@@ -11,6 +11,7 @@ import {
 import { featTweetReducer } from '@kitouch/features/tweet/data';
 import {
   BookmarkEffects,
+  CommentsEffects,
   TweetsEffects,
 } from '@kitouch/features/tweet/effects';
 import { featFollowReducer } from '@kitouch/ui/features/follow/data';
@@ -42,6 +43,7 @@ export const appConfig: ApplicationConfig = {
       LegalEffects,
       TweetsEffects,
       BookmarkEffects,
+      CommentsEffects,
     ]),
     provideStoreDevtools(),
 
