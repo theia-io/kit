@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -82,6 +82,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
   tweetDeleted = new EventEmitter<void>();
 
   // Deps
+  #document = inject(DOCUMENT);
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
@@ -165,14 +166,18 @@ export class FeatTweetTweetyComponent implements OnChanges {
     }
   }
 
-  tweetClickHandler(tweet: Tweety) {
-    this.#router.navigate([
-      '/',
+  tweetUrl(tweet: Tweety, absolute?: boolean) {
+    return [
+      absolute ? this.#document.location.origin : '/',
       APP_PATH.Profile,
       tweet.profileId,
       APP_PATH.Tweet,
       tweet.id,
-    ]);
+    ].join('/');
+  }
+
+  tweetClickHandler(tweet: Tweety) {
+    this.#router.navigate([this.tweetUrl(tweet)]);
   }
 
   deleteHandler() {
@@ -222,10 +227,6 @@ export class FeatTweetTweetyComponent implements OnChanges {
       .subscribe((tweet) => {
         this.#store.dispatch(FeatTweetActions.like({ tweet }));
       });
-  }
-
-  shareHandler() {
-    console.info('Implement shareHandler');
   }
 
   bookmarkHandler() {

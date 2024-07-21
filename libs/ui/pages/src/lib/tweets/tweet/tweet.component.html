@@ -3,7 +3,6 @@
     <feat-tweet-tweety class="block w-full" [tweetId]="tweet()!.id" (tweetDeleted)="tweetDeletedHandler()" />
 </ui-kit-comp-card>
 
-@if(tweet()!.comments) {
 <app-divider class="block my-4" />
 
 <p-floatLabel class="relative">
@@ -24,7 +23,8 @@
         [loader]="false" (click)="commentHandler()" />
     }
 </p-floatLabel>
-}
+
+@if(tweet()!.comments) {
 
 <p-timeline [value]="(tweetComments$ | async) ?? []" styleClass="w-full md:w-20rem kit-timeline">
     <ng-template pTemplate="content" let-comment>
@@ -52,6 +52,9 @@
             [link]="profileUrlPath + comment.profileId" />
     </ng-template>
 </p-timeline>
+} @else {
+    <p> You are the first to comment 😎 </p>
+}
 } @else {
 
 <p>No tweet</p>
