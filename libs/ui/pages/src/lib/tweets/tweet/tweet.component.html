@@ -3,7 +3,29 @@
     <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" (tweetDeleted)="tweetDeletedHandler()" />
 </ui-kit-comp-card>
 
-<app-divider *ngIf="tweet.comments" class="block my-12" />
+@if(tweet.comments) {
+<app-divider class="block my-4" />
+
+<p-floatLabel class="relative">
+    <textarea #textControl [formControl]="commentContentControl" pInputTextarea id="comment-content" variant="filled"
+        (focus)="commentContentControlRows = 4" (blur)="commentControlBlur()" class="relative w-full font-semibold text-xl mb-4"
+        [rows]="commentContentControlRows" cols="50">
+    </textarea>
+    <label for="comment-content">Got a reply?</label>
+
+    @if(commentContentControlRows === 2) {
+        <p-button
+        styleClass="absolute top-2/4 translate-y-[-70%] right-2"
+        [disabled]="true"
+        aria-label="comment"
+      >
+      <i class="pi pi-send"></i>
+      </p-button>
+    } @else {
+
+    }
+</p-floatLabel>
+}
 
 <p-timeline [value]="(tweetComments$ | async) ?? []" styleClass="w-full md:w-20rem kit-timeline">
     <ng-template pTemplate="content" let-comment>
@@ -15,20 +37,20 @@
             {{ comment.content }}
 
             @if(comment.canBeDeleted) {
-                <svg  class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
-                (click)="$event.stopPropagation(); commentDeleteHandler(tweet, comment)" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
+                (click)="$event.stopPropagation(); commentDeleteHandler(tweet, comment)" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18" />
                 <line x1="6" y1="6" x2="18" y2="18" />
             </svg>
             }
-</div>
+        </div>
     </ng-template>
 
     <ng-template pTemplate="opposite" let-comment>
-            <ui-kit-comp-account-tile [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
-                [primarySecondaryText]="comment?.denormalization?.profile?.name"
-                [link]="profileUrlPath + tweet.profileId" />
+        <ui-kit-comp-account-tile [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
+            [primarySecondaryText]="comment?.denormalization?.profile?.name"
+            [link]="profileUrlPath + tweet.profileId" />
     </ng-template>
 </p-timeline>
 } @else {

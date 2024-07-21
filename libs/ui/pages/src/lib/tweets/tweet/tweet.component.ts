@@ -1,6 +1,7 @@
 import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectCurrentProfile, selectProfile } from '@kitouch/features/kit/ui';
 import {
@@ -13,10 +14,14 @@ import { TweetComment, Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
-  UiCompCardComponent,
+  UiCompCardComponent
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
+import { TWEET_CONTROL_INITIAL_ROWS } from 'libs/ui/features/tweet/ui/src/lib/tweet-control/constants';
+import { ButtonModule } from 'primeng/button';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
 import { combineLatest, of } from 'rxjs';
 import {
@@ -46,8 +51,12 @@ import {
     CommonModule,
     AsyncPipe,
     DatePipe,
+    ReactiveFormsModule,
     //
+    FloatLabelModule,
+    InputTextareaModule,
     TimelineModule,
+    ButtonModule,
     //
     AccountTileComponent,
     DividerComponent,
@@ -117,6 +126,13 @@ export class PageTweetComponent {
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
 
+  commentContentControl = new FormControl<string>('', [
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(1000),
+  ]);
+  commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+
   constructor() {
     combineLatest([this.#ids$, this.#profile$])
       .pipe(takeUntilDestroyed())
@@ -125,6 +141,13 @@ export class PageTweetComponent {
           TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
         )
       );
+  }
+
+  commentControlBlur() {
+    if (!this.commentContentControl.value?.length) {
+      this.commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+      return;
+    }
   }
 
   tweetDeletedHandler() {
