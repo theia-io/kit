@@ -1,11 +1,17 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  ElementRef,
   EventEmitter,
   Input,
   Output,
+  QueryList,
+  ViewChildren,
+  effect,
   inject,
+  input,
   output,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -17,13 +23,9 @@ import {
   TweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
+import { MenuItem } from 'primeng/api';
+import { MenuItemContent, MenuModule } from 'primeng/menu';
 import { SubnavComponent } from './subnav/subnav.component';
-
-export interface NavBarItem {
-  name: string;
-  link: string;
-  icon: string;
-}
 
 @Component({
   standalone: true,
@@ -34,6 +36,8 @@ export interface NavBarItem {
     CommonModule,
     RouterModule,
     NgOptimizedImage,
+    //
+    MenuModule,
     /** Features */
     UiCompCardComponent,
     SubnavComponent,
@@ -42,9 +46,10 @@ export interface NavBarItem {
     TweetButtonComponent,
   ],
 })
-export class NavBarComponent {
-  @Input()
-  items: Array<NavBarItem> = [];
+export class NavBarComponent implements AfterViewInit {
+  items = input<Array<MenuItem & { kitShouldInitiallyBeFocused?: boolean }>>(
+    []
+  );
 
   @Input()
   profileBaseUrl: string;
@@ -61,4 +66,47 @@ export class NavBarComponent {
   tweetButtonClick = output();
 
   sanitizer: DomSanitizer = inject(DomSanitizer);
+
+  #elemRef = inject(ElementRef);
+  #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
+
+  constructor() {
+    effect(() => {
+      console.log(this.items());
+    });
+  }
+
+  ngAfterViewInit(): void {
+    const shouldInitiallyFocus = this.items().find(
+      (item) => item.kitShouldInitiallyBeFocused
+    );
+
+    // well, obviously this should not focus like this however p-menu
+    // does not allow any better way than that
+    /** @FIXME focus initial routing better */
+    if (shouldInitiallyFocus) {
+      console.log(shouldInitiallyFocus);
+      (this.#elemRef.nativeElement as HTMLElement)
+        .querySelectorAll('[role="menuitem"]')
+        .forEach((menuItemNativeElem) => {
+          if (
+            menuItemNativeElem.getAttribute('aria-label') ===
+            shouldInitiallyFocus.label
+          ) {
+            this.#menuItemNativeElemInitiallyFocused =
+              menuItemNativeElem as HTMLLIElement;
+            setTimeout(() => {
+              this.#menuItemNativeElemInitiallyFocused?.classList.add(
+                'p-focus'
+              );
+            }, 200);
+          }
+        });
+    }
+  }
+
+  onFocusHandler(event: Event) {
+    this.#menuItemNativeElemInitiallyFocused?.classList.remove('p-focus');
+    console.log('onFocusHandler', event);
+  }
 }

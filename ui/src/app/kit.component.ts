@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FeatTweetBookmarkActions } from '@kitouch/features/tweet/data';
@@ -70,6 +70,7 @@ import { Store } from '@ngrx/store';
 export class KitComponent implements OnInit {
   title = 'Kitouch';
 
+  #document = inject(DOCUMENT);
   #router = inject(Router);
   #store = inject(Store);
   //
@@ -77,7 +78,16 @@ export class KitComponent implements OnInit {
 
   readonly outletSecondary = OUTLET_DIALOG;
   profileUrl = APP_PATH.Profile;
-  navBarItems = NAV_ITEMS;
+  navBarItems = NAV_ITEMS.map((navItem) =>
+    navItem.routerLink ===
+    this.#document.location.pathname?.split('/')?.filter(Boolean)?.[0]
+      ? {
+          ...navItem,
+          kitShouldInitiallyBeFocused: true,
+          routerLinkActiveOptions: { exact: true },
+        }
+      : { ...navItem }
+  );
 
   $profile = this.#authService.currentProfile$;
 
