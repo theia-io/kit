@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, computed, input } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  input
+} from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -8,6 +13,7 @@ import { ButtonModule } from 'primeng/button';
   imports: [CommonModule, ButtonModule],
   templateUrl: './follow-button.component.html',
   styleUrls: ['./follow-button.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FollowButtonComponent {
   alreadyFollowing = input(false);

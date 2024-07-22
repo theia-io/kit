@@ -4,16 +4,21 @@ import {
   Component,
   inject,
   input,
-  Input,
 } from '@angular/core';
 import {
   FeatProfileApiActions,
   profilePicture,
   selectCurrentProfile,
-  selectProfileFollowingOrNot,
+  selectFollowingAndNotProfilesMap,
 } from '@kitouch/features/kit/data';
 import { Profile } from '@kitouch/shared/models';
+import {
+  AccountTileComponent,
+  FollowButtonComponent,
+  UiCompCardComponent,
+} from '@kitouch/ui/components';
 import { selectColleaguesProfilesSuggestions } from '@kitouch/ui/features/follow/data';
+import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import {
   combineLatest,
@@ -23,20 +28,19 @@ import {
   shareReplay,
   switchMap,
   take,
+  tap,
 } from 'rxjs';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
-import {
-  AccountTileComponent,
-  FollowButtonComponent,
-  UiCompCardComponent,
-} from '@kitouch/ui/components';
-import { APP_PATH } from '@kitouch/ui/shared';
 
-export interface FeatFollowSuggestionsComponentConfig {
+interface FeatFollowSuggestionsComponentConfig {
   cards: boolean;
   showFollowed: boolean;
   showRandomOrder: boolean;
   profilesToDisplay: number;
+}
+
+interface FeatFollowSuggestedProfile extends Profile {
+  followed: boolean;
 }
 
 @Component({
@@ -68,21 +72,22 @@ export class FeatFollowSuggestionsComponent {
   readonly profileUrlPath = APP_PATH.Profile;
   readonly profilePicture = profilePicture;
 
-  #exColleaguesProfiles$ = this.#store.select(
-    selectColleaguesProfilesSuggestions
-  );
-
-  exColleaguesDisplaySettings$ = this.#exColleaguesProfiles$.pipe(
-    switchMap((exColleaguesSuggestions) =>
+  suggestedExColleaguesProfilesConfigured$: Observable<
+    FeatFollowSuggestedProfile[]
+  > = combineLatest([
+    this.#store.select(selectColleaguesProfilesSuggestions),
+    this.#store.select(selectCurrentProfile),
+  ]).pipe(
+    switchMap(([exColleaguesSuggestions, currentProfile]) =>
       this.#store
-        .select(selectProfileFollowingOrNot(exColleaguesSuggestions))
+        .select(selectFollowingAndNotProfilesMap(exColleaguesSuggestions))
         .pipe(
           map(([followingProfilesMap, notFollowingProfilesMap]) => {
             let resultProfiles = [...exColleaguesSuggestions];
 
             if (!this.suggestionConfig().showFollowed) {
-              resultProfiles = resultProfiles.filter((profile) =>
-                !followingProfilesMap.has(profile.id)
+              resultProfiles = resultProfiles.filter(
+                (profile) => !followingProfilesMap.has(profile.id)
               );
             }
 
@@ -97,33 +102,27 @@ export class FeatFollowSuggestionsComponent {
 
             return resultProfiles.slice(
               0,
-              (this.suggestionConfig().profilesToDisplay ?? 10)
+              this.suggestionConfig().profilesToDisplay ?? 10
+            );
+          }),
+          // enrich with an id who is already been followed
+          map((listProfilesToShowToUser) => {
+            const currentProfileFollowingSet = new Set(
+              currentProfile?.following?.map(({ id }) => id)
+            );
+            return listProfilesToShowToUser.map(
+              (suggestedProfile) => ({
+                ...suggestedProfile,
+                followed: currentProfileFollowingSet.has(suggestedProfile.id),
+              }),
+              {}
             );
           })
         )
-    )
-    // map((profilesSuggested) => profilesSuggested.slice(0, this.suggestionConfig().profilesToDisplay))
+    ),
+    tap((v) => console.log('suggestedExColleaguesProfilesConfigured', v)),
+    shareReplay(1)
   );
-
-  followedProfilesMap$: Observable<{ [profileId: string]: boolean }> =
-    combineLatest([
-      this.#store.select(selectCurrentProfile),
-      this.#store.select(selectColleaguesProfilesSuggestions),
-    ]).pipe(
-      map(([currentProfile, exColleagues]) => {
-        const currentProfileFollowingSet = new Set(
-          currentProfile?.following?.map(({ id }) => id)
-        );
-        return exColleagues.reduce(
-          (acc, curr) => ({
-            ...acc,
-            [curr.id]: currentProfileFollowingSet.has(curr.id),
-          }),
-          {}
-        );
-      }),
-      shareReplay(1)
-    );
 
   followProfileHandler(profile: Profile) {
     this.#store

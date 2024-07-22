@@ -42,7 +42,10 @@ export const selectProfile = (profileIdOrAlias: string) =>
       profiles.find(({ alias }) => alias === profileIdOrAlias)
   );
 
-export const selectProfileFollowingOrNot = (profiles: Array<Profile>) =>
+/** 2N Get following and not following (but suggest) profiles
+ * @returns [SuggestedFollowingMap, SuggestedNotFollowingMap]
+ *   */
+export const selectFollowingAndNotProfilesMap = (profiles: Array<Profile>) =>
   createSelector(selectCurrentProfile, (currentProfile) => {
     const currentProfileFollowingSet = new Set(
       currentProfile?.following?.map(({ id }) => id)
