@@ -9,15 +9,7 @@ import {
   FeatUserApiActions,
 } from 'libs/ui/features/kit/data/src';
 import * as Realm from 'realm-web';
-import {
-  BehaviorSubject,
-  filter,
-  from,
-  map,
-  of,
-  switchMap,
-  take
-} from 'rxjs';
+import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
 import { APP_PATH } from '../../constants';
 import { RouterEventsService } from '../router/router-events.service';
 
@@ -71,11 +63,13 @@ export class AuthService {
       .pipe(
         ofType(FeatAccountApiActions.deleteSuccess),
         switchMap(() => this.realmUser$),
-        filter(Boolean)
+        filter(Boolean),
+        switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
       )
-      .subscribe(async (realmUser) => {
-        await this.#realmApp?.deleteUser(realmUser);
-        this.#router.navigateByUrl('/');
+      .subscribe(() => {
+        setTimeout(() => {
+          this.#router.navigateByUrl('/sign-in');
+        }, 2000)
       });
 
     this.#account$$.pipe(filter(Boolean)).subscribe((account) => {

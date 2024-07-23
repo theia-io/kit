@@ -8,10 +8,10 @@
         [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet().content)">
     </p>
 
-    <feat-tweet-actions [tweetUrl]="tweetUrl(tweet(), true)" [comments]="(tweetComments$ | async)?.length ?? 0" (comment)="commentOverlayTmpl.toggle($event)"
-        (repost)="repostHandler()" [liked]="tweetLiked$ | async" [likes]="tweet().upProfileIds?.length ?? 0"
-        (like)="likeHandler()" [bookmarked]="(tweetBookmarked$ | async) ?? false"
-        (bookmark)="bookmarkHandler()" />
+    <feat-tweet-actions [tweetUrl]="tweetUrl(tweet(), true)" [comments]="(tweetComments$ | async)?.length ?? 0"
+        (comment)="commentOverlayTmpl.toggle($event)" (repost)="repostHandler()" [liked]="tweetLiked$ | async"
+        [likes]="tweet().upProfileIds?.length ?? 0" (like)="likeHandler()"
+        [bookmarked]="(tweetBookmarked$ | async) ?? false" (bookmark)="bookmarkHandler()" />
 
     <p-overlayPanel (onShow)="commentOverlayVisible.set(true)" (onHide)="commentOverlayVisible.set(false)"
         #commentOverlayTmpl>
@@ -22,15 +22,13 @@
                 <label for="float-input">Your comment</label>
             </p-floatLabel>
 
-            <ui-kit-tweet-button text="Comment" [iconAnimate]="false" [disabled]="!commentControl.valid" [loader]="false"
-                (click)="commentHandler()" />
+            <ui-kit-tweet-button text="Comment" [iconAnimate]="false" [disabled]="!commentControl.valid"
+                [loader]="false" (click)="commentHandler()" />
         </div>
     </p-overlayPanel>
 </div>
 
-<svg *ngIf="tweetCanBeDeleted$ | async" class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
-    (click)="$event.stopPropagation(); deleteHandler()" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-    stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-    <line x1="18" y1="6" x2="6" y2="18" />
-    <line x1="6" y1="6" x2="18" y2="18" />
-</svg>
+@if(tweetCanBeDeleted$ | async) {
+<i (click)="$event.stopPropagation(); deleteHandler()" role="button"
+    class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse" style="font-size: 1.5rem;"></i>
+}

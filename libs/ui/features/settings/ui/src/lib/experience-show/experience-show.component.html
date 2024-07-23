@@ -1,0 +1,33 @@
+<div class="relative flex gap-2">
+    <section>
+        <p class="font-semibold">{{experience().company}},</p>
+        <p class="text-sm  text-gray-500">{{experience().type}}</p>
+    </section>
+    <section>
+        <p class="text-sm  text-gray-500">
+            {{experience().startDate | date }} - {{(experience().endDate | date) ?? 'I work here' }}
+        </p>
+
+        <p class="text-sm  text-gray-500">
+            @if(experience().city) {
+            {{experience().city }},
+            }
+
+            @if(experience().country) {
+            {{experience().country }}.
+            }
+
+            @if(experience().locationType) {
+            {{experience().locationType }}
+            }
+        </p>
+
+        <p class="mt-2 text-sm">
+            {{experience().description}}
+        </p>
+    </section>
+
+    @if(showRemove()) {
+
+    }
+</div>

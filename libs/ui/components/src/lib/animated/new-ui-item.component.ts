@@ -10,7 +10,7 @@ import {
   standalone: true,
   selector: 'ui-kit-comp-new-ui-item',
   template: `
-    <div class="relative p-2">
+    <div class="relative">
       <ng-content />
       <span *ngIf="newlyAddedItem" class="absolute top-1 right-1 flex h-3 w-3">
         <span

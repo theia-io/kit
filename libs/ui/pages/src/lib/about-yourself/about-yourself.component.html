@@ -2,7 +2,7 @@
     <div class="flex flex-col items-center justify-center h-screen">
         <span class="text-2xl mb-24">Let's get to know each other</span>
 
-        <ui-kit-comp-new-ui-item [newlyAddedItem]="updatingProfile()">
+        <ui-kit-comp-new-ui-item class="p-2" [newlyAddedItem]="updatingProfile()">
             <feat-settings-profile-information [profile]="currentProfile$ | async" [withHints]="true"
                 (updatingProfile)="updatingProfileHandler()" />
         </ui-kit-comp-new-ui-item>
@@ -25,8 +25,8 @@
             }
         </span>
 
-        <feat-settings-experience-add (onSavingExperience)="savingExperienceHandler()"
-            (onSavedExperience)="savedExperienceHandler()" />
+        <feat-settings-experience-add (onSaving)="savingExperienceHandler()"
+            (onSaved)="savedExperienceHandler()" />
 
         <button [@fadeInUp]="savedExperience() ? 'shown' : 'hidden'" (click)="scroll(suggestionTmpl)"
             class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">

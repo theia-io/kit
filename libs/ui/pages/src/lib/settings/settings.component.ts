@@ -9,16 +9,21 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FeatAccountApiActions,
+  FeatUserApiActions,
   selectAccount,
   selectCurrentProfile,
+  selectExperiences,
 } from '@kitouch/features/kit/data';
 import {
   FeatSettingsExperienceAddComponent,
+  FeatSettingsExperienceShowComponent,
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
+import { Experience } from '@kitouch/shared/models';
 import { NewUIItemComponent } from '@kitouch/ui/components';
 import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { AccordionModule } from 'primeng/accordion';
 import { Message } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
@@ -33,11 +38,13 @@ import { take } from 'rxjs';
     AsyncPipe,
     //
     MessagesModule,
+    AccordionModule,
     ButtonModule,
     //
     NewUIItemComponent,
     FeatSettingsProfileInformationComponent,
     FeatSettingsExperienceAddComponent,
+    FeatSettingsExperienceShowComponent,
   ],
 })
 export class PageSettingsComponent {
@@ -56,9 +63,11 @@ export class PageSettingsComponent {
     }
   });
 
+  experiences$ = this.#store.pipe(select(selectExperiences));
+
   experienceMessage: Message = {
     severity: 'contrast',
-    detail: 'Add your experience',
+    detail: 'Experience section.',
   };
 
   currentAccount = toSignal(this.#store.select(selectAccount));
@@ -74,6 +83,10 @@ export class PageSettingsComponent {
     setTimeout(() => {
       this.updatingProfile.set(false);
     }, 3000);
+  }
+
+  deleteTweetHandler(experience: Experience) {
+    this.#store.dispatch(FeatUserApiActions.deleteExperience({ experience }));
   }
 
   deleteAccountHandler() {

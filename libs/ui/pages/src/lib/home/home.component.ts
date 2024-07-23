@@ -82,7 +82,6 @@ export class PageHomeComponent implements OnInit {
     this.#actions
       .pipe(
         ofType(FeatTweetActions.tweetSuccess),
-        take(1),
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(({ tweet }) => {
@@ -93,7 +92,7 @@ export class PageHomeComponent implements OnInit {
         setTimeout(() => {
           this.newlyAddedTweets.update(
             (tweetsSet) =>
-              new Set([...tweetsSet].filter((id) => id !== tweet.id))
+              new Set([...tweetsSet.values()].filter((id) => id !== tweet.id))
           );
         }, TWEET_NEW_TWEET_TIMEOUT * 2);
       });

@@ -3,9 +3,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   OnInit,
   output,
-  signal
+  signal,
 } from '@angular/core';
 import {
   takeUntilDestroyed,
@@ -76,8 +77,9 @@ interface UploadEvent {
   providers: [MessageService],
 })
 export class FeatSettingsExperienceAddComponent implements OnInit {
-  onSavingExperience = output();
-  onSavedExperience = output();
+  onSaving = output();
+  onSaved = output();
+  onRemove = output();
 
   #actions = inject(Actions);
   #store = inject(Store);
@@ -195,11 +197,11 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     this.experienceForm.reset();
     this.stepperActive.set(0);
 
-    this.onSavingExperience.emit();
+    this.onSaving.emit();
 
     this.#actions
       .pipe(ofType(FeatUserApiActions.addExperienceSuccess), take(1))
-      .subscribe(() => this.onSavedExperience.emit());
+      .subscribe(() => this.onSaved.emit());
     this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
   }
 }

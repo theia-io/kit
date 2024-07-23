@@ -1,6 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { selectUser } from '@kitouch/features/kit/data';
-import { Experience, User } from '@kitouch/shared/models';
+import {
+  getExperienceEqualityObject,
+  selectUser,
+} from '@kitouch/features/kit/data';
+import { Experience } from '@kitouch/shared/models';
 import { DataSourceService } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { BSON } from 'realm-web';
@@ -42,6 +45,21 @@ export class UserService extends DataSourceService {
         })
       ),
       map(() => ({ experiences: [experience] }))
+    );
+  }
+
+  deleteUserExperience$(experience: Experience) {
+    return this.db$.pipe(
+      withLatestFrom(this.user$),
+      switchMap(([db, user]) =>
+        db.collection('user').deleteOne({
+          _id: new BSON.ObjectId(user.id),
+          experiences: {
+            $elemMatch: getExperienceEqualityObject(experience)
+          }
+        })
+      ),
+      map(() => ({ experience }))
     );
   }
 }

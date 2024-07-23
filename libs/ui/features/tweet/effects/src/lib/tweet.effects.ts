@@ -33,11 +33,10 @@ export class TweetsEffects {
       ofType(TweetApiActions.getAll),
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
-        profile.following
-          ? this.#tweetApi
+        this.#tweetApi
               .getFeed(
                 profile.id,
-                profile.following?.map(({ id }) => id)
+                profile.following?.map(({ id }) => id) ?? []
               )
               .pipe(
                 map((tweets) =>
@@ -60,7 +59,6 @@ export class TweetsEffects {
                   return of(TweetApiActions.getAllFailure());
                 })
               )
-          : of(TweetApiActions.getAllSuccess({ tweets: [] }))
       )
     )
   );
