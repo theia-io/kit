@@ -19,7 +19,10 @@
     <feat-follow-profile-card [profile]="profile" [followed]="profile.followed"
         (followProfile)="followProfileHandler($event)" (stopFollowProfile)="unFollowProfileHandler($event)" />
     } @empty {
-    We cannot suggest anyone to follow. Add your working experience above.
+    <span>
+        We cannot suggest anyone to follow. Add your working experience above.
+        Add experience on <a class="font-bold underline" [routerLink]="'/' + settingsPageUrl"> Settings page.</a>
+    </span>
     }
 </div>
 }

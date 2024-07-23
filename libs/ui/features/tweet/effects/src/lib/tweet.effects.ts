@@ -33,32 +33,34 @@ export class TweetsEffects {
       ofType(TweetApiActions.getAll),
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
-        this.#tweetApi
-          .getFeed(
-            profile.id,
-            profile.following.map(({ id }) => id)
-          )
-          .pipe(
-            map((tweets) =>
-              TweetApiActions.getAllSuccess({
-                tweets: tweets.map((tweet) => {
-                  if (tweet.profileId === profile.id) {
-                    return {
-                      ...tweet,
-                      denormalization: {
-                        profile,
-                      },
-                    };
-                  }
-                  return tweet;
-                }),
-              })
-            ),
-            catchError((err) => {
-              console.error('[TweetsEffects] allTweets ERROR', err);
-              return of(TweetApiActions.getAllFailure());
-            })
-          )
+        profile.following
+          ? this.#tweetApi
+              .getFeed(
+                profile.id,
+                profile.following?.map(({ id }) => id)
+              )
+              .pipe(
+                map((tweets) =>
+                  TweetApiActions.getAllSuccess({
+                    tweets: tweets.map((tweet) => {
+                      if (tweet.profileId === profile.id) {
+                        return {
+                          ...tweet,
+                          denormalization: {
+                            profile,
+                          },
+                        };
+                      }
+                      return tweet;
+                    }),
+                  })
+                ),
+                catchError((err) => {
+                  console.error('[TweetsEffects] allTweets ERROR', err);
+                  return of(TweetApiActions.getAllFailure());
+                })
+              )
+          : of(TweetApiActions.getAllSuccess({ tweets: [] }))
       )
     )
   );

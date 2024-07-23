@@ -1,9 +1,5 @@
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-import {
-  ChangeDetectionStrategy,
-  Component,
-  Input
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 @Component({
@@ -14,18 +10,9 @@ import { RouterModule } from '@angular/router';
   imports: [CommonModule, RouterModule, NgOptimizedImage],
 })
 export class AccountTileComponent {
-  @Input()
-  primaryText = '';
-
-  @Input()
-  primarySecondaryText: string | undefined | null = undefined;
-
-  @Input()
-  secondaryText: string | undefined = undefined;
-
-  @Input()
-  picture: string | undefined = undefined;
-
-  @Input()
-  link: string | undefined = undefined;
+  primaryText = input<string | undefined | null>();
+  primarySecondaryText = input<string | undefined | null>(undefined);
+  secondaryText = input<string | undefined>(undefined);
+  picture = input<string | undefined>(undefined);
+  link = input<string | undefined>(undefined);
 }

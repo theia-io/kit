@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 
 import {
   ChangeDetectionStrategy,
@@ -8,11 +8,12 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { selectCurrentProfileFollowing } from '@kitouch/features/kit/data';
 import {
   FeatTweetActions,
   TweetApiActions,
-  selectAllTweets
+  selectAllTweets,
 } from '@kitouch/features/tweet/data';
 import {
   FeatTweetTweetingComponent,
@@ -27,23 +28,25 @@ import {
   UiCompCardComponent,
   UiCompGradientCardComponent,
 } from '@kitouch/ui/components';
+import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
 import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { take } from 'rxjs';
+import { BehaviorSubject, map, merge, switchMap, take, tap, timer } from 'rxjs';
 
 @Component({
   standalone: true,
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
+    AsyncPipe,
     //
     NewUIItemComponent,
     UiCompCardComponent,
     UiCompGradientCardComponent,
     AccountTileComponent,
     DividerComponent,
+    FeatFollowSuggestionsComponent,
     FeatTweetTweetingComponent,
     FeatTweetTweetyComponent,
     TweetButtonComponent,
@@ -54,8 +57,25 @@ export class PageHomeComponent implements OnInit {
   #store = inject(Store);
   #actions = inject(Actions);
 
-  homeTweets$ = this.#store.pipe(select(selectAllTweets));
+  homeTweets$ = this.#store.pipe(
+    select(selectAllTweets),
+    tap(() => this.tweetsLoading.set(false))
+  );
+  followingProfiles = toSignal(
+    this.#store.pipe(select(selectCurrentProfileFollowing))
+  );
 
+  tweetsLoading = signal(true);
+  #reloadTweetsDisabled$$ = new BehaviorSubject<boolean>(false);
+  reloadTweetsDisabled$ = merge(
+    this.#reloadTweetsDisabled$$.asObservable(),
+    this.#reloadTweetsDisabled$$.asObservable().pipe(
+      tap(v => console.log('0',v)),
+      switchMap(() => timer(2500)),
+      map(() => false),
+      tap(v => console.log('1',v)),
+    )
+  );
   newlyAddedTweets = signal<Set<Tweety['id']>>(new Set());
 
   ngOnInit(): void {
@@ -79,5 +99,11 @@ export class PageHomeComponent implements OnInit {
           );
         }, TWEET_NEW_TWEET_TIMEOUT * 2);
       });
+  }
+
+  reloadTweets() {
+    this.tweetsLoading.set(true);
+    this.#reloadTweetsDisabled$$.next(true);
+    this.#store.dispatch(TweetApiActions.getAll());
   }
 }

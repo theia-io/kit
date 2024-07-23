@@ -1,11 +1,83 @@
-import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { AsyncPipe } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+  signal,
+} from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import {
+  FeatAccountApiActions,
+  selectAccount,
+  selectCurrentProfile,
+} from '@kitouch/features/kit/data';
+import { FeatSettingsProfileInformationComponent } from '@kitouch/features/settings/ui';
+import { NewUIItemComponent } from '@kitouch/ui/components';
+import { Store } from '@ngrx/store';
+import { Message } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { MessagesModule } from 'primeng/messages';
+import { take } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'kit-page-settings',
   templateUrl: './settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule],
+  imports: [
+    AsyncPipe,
+    //
+    MessagesModule,
+    ButtonModule,
+    //
+    NewUIItemComponent,
+    FeatSettingsProfileInformationComponent,
+  ],
 })
-export class PageSettingsComponent {}
+export class PageSettingsComponent {
+  #store = inject(Store);
+
+  currentProfile$ = this.#store.select(selectCurrentProfile).pipe(take(1));
+  updatingProfile = signal(false);
+  profileMessage = computed<Message>(() => {
+    if (this.updatingProfile()) {
+      return { severity: 'success', detail: 'Saving updated profile' };
+    } else {
+      return {
+        severity: 'info',
+        detail: 'Edit your information and we will save it automatically',
+      };
+    }
+  });
+
+  experienceMessage: Message = {
+    severity: 'contrast',
+    detail: 'Add your experience',
+  };
+
+  currentAccount = toSignal(this.#store.select(selectAccount));
+  dangerZoneMessage: Message = {
+    severity: 'warn',
+    detail: 'Danger Zone area. Actions here can lead to unexpected results',
+  };
+
+  updatingProfileHandler() {
+    console.log('updatingProfileHandler');
+    this.updatingProfile.set(true);
+
+    setTimeout(() => {
+      this.updatingProfile.set(false);
+    }, 3000);
+  }
+
+  deleteAccountHandler() {
+    const currentAccount = this.currentAccount();
+    console.log(currentAccount);
+    if (currentAccount) {
+      this.#store.dispatch(
+        FeatAccountApiActions.delete({ account: currentAccount })
+      );
+    }
+  }
+}

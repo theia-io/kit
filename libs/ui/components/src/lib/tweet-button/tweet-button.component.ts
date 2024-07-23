@@ -2,9 +2,11 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   input,
   output,
 } from '@angular/core';
+import { throws } from 'assert';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -18,7 +20,7 @@ import { ButtonModule } from 'primeng/button';
   `,
   template: `
     <p-button
-      styleClass="w-full flex justify-between"
+      [styleClass]="'w-full flex ' + styleClass()"
       [disabled]="disabled()"
       (onClick)="onClickEvent.emit($event)"
       aria-label="tweet"
@@ -26,8 +28,12 @@ import { ButtonModule } from 'primeng/button';
       <span>{{ text() }}</span>
       @if(loader()) {
       <i class="pi pi-sync animate-spin" style="font-size: 1rem"></i>
-      } @else {
-      <i class="pi pi-send" [class.animate-wiggle]="animate()" style="font-size: 1.5rem"></i>
+      } @if(icon()) {
+      <i
+        class="pi pi-send"
+        [class.animate-wiggle]="iconAnimate()"
+        style="font-size: 1.5rem"
+      ></i>
       }
     </p-button>
   `,
@@ -35,9 +41,13 @@ import { ButtonModule } from 'primeng/button';
 })
 export class TweetButtonComponent {
   text = input('Tweet');
+
   disabled = input(false);
   loader = input(false);
-  animate = input(true);
+  icon = input(true);
+  iconAnimate = input(true);
+
+  styleClass = computed(() =>  !this.loader() && !this.icon() ? 'justify-center' : 'justify-between')
 
   onClickEvent = output<Event>();
 }

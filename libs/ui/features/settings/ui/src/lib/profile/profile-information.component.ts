@@ -1,18 +1,26 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  ControlValueAccessor,
-  FormBuilder,
-  NG_VALUE_ACCESSOR,
-  ReactiveFormsModule,
-  Validators
-} from '@angular/forms';
-import { profilePicture } from '@kitouch/features/kit/data';
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  output,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FeatProfileApiActions,
+  profilePicture,
+} from '@kitouch/features/kit/data';
 import { Profile } from '@kitouch/shared/models';
+import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -27,27 +35,17 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
     InputTextareaModule,
     //
   ],
-  providers: [
-    {
-      provide: NG_VALUE_ACCESSOR,
-      multi: true,
-      useExisting: FeatSettingsProfileInformationComponent,
-    },
-    // {
-    //   provide: NG_VALIDATORS,
-    //   multi: true,
-    //   useExisting: FeatSettingsProfileInformationComponent,
-    // },
-  ],
-}) //, Validator
-export class FeatSettingsProfileInformationComponent
-  implements ControlValueAccessor
-{
-  @Input()
-  profilePic: string | null;
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class FeatSettingsProfileInformationComponent {
+  #cdr = inject(ChangeDetectorRef);
+  #store = inject(Store);
 
-  @Output()
-  valid = new EventEmitter<boolean>();
+  profile = input.required<Profile | null | undefined>();
+  withHints = input(false);
+  updatingProfile = output<void>();
+
+  profilePic = computed(() => profilePicture(this.profile()));
 
   profileForm = inject(FormBuilder).nonNullable.group({
     alias: [
@@ -63,69 +61,50 @@ export class FeatSettingsProfileInformationComponent
     description: ['', [Validators.minLength(2), Validators.max(5096)]],
   });
 
-  onChange: (profile: Partial<Profile>) => void;
-  // onValidationChange: any = () => {};
   disabled = false;
 
   constructor() {
     this.profileForm.valueChanges
-      .pipe(takeUntilDestroyed())
-      .subscribe((profile) => {
-        this.onChange(profile);
-        // this.onValidationChange();
+      .pipe(
+        filter(Boolean),
+        debounceTime(2000),
+        distinctUntilChanged(),
+        takeUntilDestroyed()
+      )
+      .subscribe((updatedProfile) => {
+        this.#saveProfileHandler({ ...this.profile(), ...updatedProfile });
       });
+
+    effect(() => {
+      const profile = this.profile();
+      if (profile) {
+        this.profileForm.setValue(
+          {
+            alias: profile.alias ?? profile.id,
+            name: profile.name ?? '',
+            title: profile.title ?? '',
+            subtitle: profile.subtitle ?? '',
+            description: profile.description ?? '',
+          },
+          { emitEvent: false }
+        );
+        /** @FIXME should it be handled better? Likely. However
+         * it is said that changedetection is not called in effect
+         * and they are good for other reasons - but how best to
+         * implement this use-case?
+         */
+        this.#cdr.detectChanges();
+      }
+    });
   }
 
-  writeValue(profile: Partial<Profile>) {
-    // console.log('[CHILD] writeValue', profile);
-    this.profileForm.patchValue(
-      {
-        ...profile,
-        alias: profile.alias ?? profile.id ?? '',
-      },
-      { emitEvent: false }
+  #saveProfileHandler(profile: Partial<Profile>) {
+    this.updatingProfile.emit();
+    /** @TODO p2 Add updatingProfile true/false and waiting for an action from Store with ID expected (uuid) */
+    this.#store.dispatch(
+      FeatProfileApiActions.updateProfile({
+        profile,
+      })
     );
-
-    if (profile.pictures) {
-      this.profilePic = profilePicture(profile);
-    }
   }
-
-  registerOnChange(onChange: (profile: Partial<Profile>) => void) {
-    this.onChange = onChange;
-  }
-
-  registerOnTouched(_: unknown) {
-    // implement once mobile is supported
-  }
-
-  markAsTouched() {
-    // implement once mobile is supported
-  }
-
-  setDisabledState(disabled: boolean) {
-    this.disabled = disabled;
-  }
-
-  // registerOnValidatorChange?(fn: () => void): void {
-  //   this.onValidationChange = fn;
-  // }
-
-  // validate(control: AbstractControl): ValidationErrors | null {
-  //   console.log('[CHILD] validate', control.valid, this.profileForm.valid, control, this.profileForm)
-  //   const errors = this.profileForm.errors; // Get errors from the profileForm
-
-  //   // Set a custom validation status to indicate if the entire profileForm is valid
-  //   control.setErrors(
-  //     this.profileForm.valid
-  //       ? null
-  //       : { ...this.profileForm.errors, profileInvalid: true }
-  //   );
-
-  //   console.log('control', this.profileForm.valid);
-
-  //   this.valid.emit(this.profileForm.valid);
-
-  //   return errors; // Return the specific errors for individual controls
-  // }
 }

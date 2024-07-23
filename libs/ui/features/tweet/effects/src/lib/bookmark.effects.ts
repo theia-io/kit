@@ -1,14 +1,11 @@
 import { Injectable, inject } from '@angular/core';
+import { selectCurrentProfile } from '@kitouch/features/kit/ui';
 import {
   FeatTweetActions,
-  FeatTweetBookmarkActions,
-  selectAllTweets,
-  selectBookmarks,
+  FeatTweetBookmarkActions
 } from '@kitouch/features/tweet/data';
-import { selectCurrentProfile } from '@kitouch/features/kit/ui';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { concatLatestFrom } from '@ngrx/operators';
 import { of } from 'rxjs';
 import {
   catchError,
@@ -149,7 +146,9 @@ export class BookmarkEffects {
       ofType(FeatTweetActions.deleteSuccess),
       map(({ ids }) =>
         /** @TODO @FIXME has to take into account deleteSuccess batch results  */
-        FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved({ tweetId: ids[0].tweetId })
+        FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved({
+          tweetId: ids[0].tweetId,
+        })
       )
     )
   );

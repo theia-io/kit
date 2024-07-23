@@ -4,6 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter } from '@angular/router';
 import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
 import {
+  AccountsEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
@@ -44,13 +45,17 @@ export const appConfig: ApplicationConfig = {
       tweet: featTweetReducer,
     }),
     provideEffects([
+      // follow feat effects
       FollowEffects,
+      // kit feat effects
+      AccountsEffects,
+      LegalEffects,
       ProfileEffects,
       UserEffects,
-      LegalEffects,
-      TweetsEffects,
+      // tweet feat effects
       BookmarkEffects,
       CommentsEffects,
+      TweetsEffects,
     ]),
     provideStoreDevtools(),
 

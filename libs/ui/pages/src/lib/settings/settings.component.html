@@ -1,1 +1,17 @@
-Settings
+<p-messages [value]="[profileMessage()]" showTransitionOptions="250ms" hideTransitionOptions="0ms"
+    [enableService]="false" [closable]="false" />
+
+<ui-kit-comp-new-ui-item [newlyAddedItem]="updatingProfile()">
+    <feat-settings-profile-information [profile]="currentProfile$ | async"
+        (updatingProfile)="updatingProfileHandler()" />
+</ui-kit-comp-new-ui-item>
+
+<p-messages [value]="[experienceMessage]" showTransitionOptions="500ms" hideTransitionOptions="0ms"
+    [enableService]="false" [closable]="false" />
+
+<p-messages [value]="[dangerZoneMessage]" showTransitionOptions="1000ms" hideTransitionOptions="0ms"
+    [enableService]="false" [closable]="false" />
+
+<div>
+    <p-button label="Delete my account" severity="danger" (onClick)="deleteAccountHandler()" />
+</div>

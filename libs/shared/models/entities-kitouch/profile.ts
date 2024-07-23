@@ -20,15 +20,15 @@ export interface Profile extends Realm.Services.MongoDB.Document {
   legalId?: string; // so either user or some legal entity owns the profile. We can also take it further and have the
   // many owners to achieve "Group"? functionality with many admins?
   name: string;
-  type: ProfileType;
-  status: ProfileStatus;
+  type?: ProfileType;
+  status?: ProfileStatus;
   // own
-  title: string;
-  subtitle: string;
-  description: string;
-  pictures: Array<Picture>;
-  links: Link[];
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  pictures?: Array<Picture>;
+  links?: Link[];
   // meta
-  followers: Array<Profile['id']>;
-  following: Array<{ id: Profile['id'] }>;
+  followers?: Array<Profile['id']>;
+  following?: Array<{ id: Profile['id'] }>;
 }

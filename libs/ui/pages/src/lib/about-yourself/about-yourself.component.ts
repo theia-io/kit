@@ -8,11 +8,10 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   FeatLegalApiActions,
-  FeatProfileApiActions,
   FeatUserApiActions,
   selectCurrentProfile,
 } from '@kitouch/features/kit/data';
@@ -20,7 +19,7 @@ import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
-import { Experience, Profile } from '@kitouch/shared/models';
+import { Experience } from '@kitouch/shared/models';
 import {
   ButtonComponent,
   fadeInUpAnimation,
@@ -31,14 +30,7 @@ import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
-import {
-  debounceTime,
-  distinctUntilChanged,
-  filter,
-  take,
-  takeUntil,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { take } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -86,36 +78,14 @@ import {
   animations: [fadeInUpAnimation],
 })
 export class PageAboutYourselfComponent implements OnInit {
-  #router = inject(Router);
   #destroyRef = inject(DestroyRef);
   #store = inject(Store);
   #actions = inject(Actions);
 
-  #currentProfile = this.#store.select(selectCurrentProfile);
-  profileControl = new FormControl<Partial<Profile>>({});
+  currentProfile$ = this.#store.select(selectCurrentProfile).pipe(take(1));
   updatingProfile = signal(false);
 
   savedExperience = signal(false);
-
-  constructor() {
-    this.#currentProfile
-      .pipe(filter(Boolean), take(1), takeUntilDestroyed())
-      .subscribe((profile) => {
-        this.profileControl.setValue(profile);
-      });
-
-    this.profileControl.valueChanges
-      .pipe(
-        filter(Boolean),
-        debounceTime(2000),
-        distinctUntilChanged(),
-        withLatestFrom(this.#currentProfile),
-        takeUntilDestroyed()
-      )
-      .subscribe(([updatedProfile, currentProfile]) => {
-        this.#saveProfileHandler({ ...currentProfile, ...updatedProfile });
-      });
-  }
 
   ngOnInit(): void {
     this.#store.dispatch(FeatLegalApiActions.getCompanies());
@@ -142,13 +112,8 @@ export class PageAboutYourselfComponent implements OnInit {
     this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
   }
 
-  #saveProfileHandler(profile: Partial<Profile>) {
+  updatingProfileHandler() {
     this.updatingProfile.set(true);
-    this.#store.dispatch(
-      FeatProfileApiActions.updateProfile({
-        profile,
-      })
-    );
 
     setTimeout(() => {
       this.updatingProfile.set(false);

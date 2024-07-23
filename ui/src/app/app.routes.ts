@@ -84,11 +84,13 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Settings,
+        loadComponent: () => pages.then((comp) => comp.PageSettingsComponent),
         children: [
           {
             path: '',
+            canActivate: [onlyForLoggedInGuard],
             loadComponent: () =>
-              pages.then((comp) => comp.PageSettingsComponent),
+              pages.then((comp) => comp.PageAboutYourselfComponent),
           },
         ],
       },

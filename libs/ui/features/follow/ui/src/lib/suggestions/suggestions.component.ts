@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -27,9 +27,10 @@ import {
   Observable,
   shareReplay,
   switchMap,
-  take
+  take,
 } from 'rxjs';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
+import { RouterModule } from '@angular/router';
 
 interface FeatFollowSuggestionsComponentConfig {
   cards: boolean;
@@ -48,7 +49,8 @@ interface FeatFollowSuggestedProfile extends Profile {
   templateUrl: './suggestions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    RouterModule,
     //
 
     //
@@ -68,6 +70,7 @@ export class FeatFollowSuggestionsComponent {
 
   #store = inject(Store);
 
+  readonly settingsPageUrl = APP_PATH.Settings;
   readonly profileUrlPath = APP_PATH.Profile;
   readonly profilePicture = profilePicture;
 

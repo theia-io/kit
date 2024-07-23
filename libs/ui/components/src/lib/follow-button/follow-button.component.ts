@@ -17,8 +17,10 @@ import { ButtonModule } from 'primeng/button';
 })
 export class FollowButtonComponent {
   alreadyFollowing = input(false);
+  connectText = input('Connect');
+  stopConnectText = input('Stop seeing');
 
-  text = computed(() => (this.alreadyFollowing() ? 'Stop seeing' : 'Connect'));
+  text = computed(() => (this.alreadyFollowing() ?  this.stopConnectText() : this.connectText()));
   severity = computed(() =>
     this.alreadyFollowing() ? 'secondary' : 'contrast'
   );

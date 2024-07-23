@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account, Profile, User } from '@kitouch/shared/models';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
   FeatAccountApiActions,
@@ -8,9 +9,17 @@ import {
   FeatUserApiActions,
 } from 'libs/ui/features/kit/data/src';
 import * as Realm from 'realm-web';
-import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
-import { RouterEventsService } from '../router/router-events.service';
+import {
+  BehaviorSubject,
+  filter,
+  from,
+  map,
+  of,
+  switchMap,
+  take
+} from 'rxjs';
 import { APP_PATH } from '../../constants';
+import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +27,7 @@ import { APP_PATH } from '../../constants';
 export class AuthService {
   // angular
   #router = inject(Router);
+  #actions$ = inject(Actions);
   #store = inject(Store);
   // app
   routerEventsService = inject(RouterEventsService);
@@ -57,6 +67,17 @@ export class AuthService {
   );
 
   constructor() {
+    this.#actions$
+      .pipe(
+        ofType(FeatAccountApiActions.deleteSuccess),
+        switchMap(() => this.realmUser$),
+        filter(Boolean)
+      )
+      .subscribe(async (realmUser) => {
+        await this.#realmApp?.deleteUser(realmUser);
+        this.#router.navigateByUrl('/');
+      });
+
     this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
       this.#store.dispatch(FeatAccountApiActions.setAccount({ account }));
     });
@@ -76,7 +97,7 @@ export class AuthService {
       if (followingProfilesIds?.length) {
         this.#store.dispatch(
           FeatProfileApiActions.getFollowingProfiles({
-            profileIds: followingProfilesIds.map(({id}) => id),
+            profileIds: followingProfilesIds.map(({ id }) => id),
           })
         );
       }
@@ -130,9 +151,7 @@ export class AuthService {
         this.#profiles$$.next(profiles);
 
         if (!user.experiences?.length) {
-          this.#router.navigateByUrl(
-            APP_PATH.AboutYourself
-          );
+          this.#router.navigateByUrl(APP_PATH.AboutYourself);
           return;
         }
 
