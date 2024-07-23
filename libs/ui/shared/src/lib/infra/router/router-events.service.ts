@@ -1,14 +1,13 @@
-import { Injectable, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Inject, inject, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationStart, Router } from '@angular/router';
+import { Environment, ENVIRONMENT } from '@kitouch/ui/shared';
 import {
-  BehaviorSubject,
   filter,
   map,
   shareReplay,
   startWith,
   switchMap,
-  take,
+  take
 } from 'rxjs';
 
 @Injectable({
@@ -18,7 +17,9 @@ export class RouterEventsService {
   #router = inject(Router);
 
   lastUrlBeforeCancelled$ = this.#router.events.pipe(
-    filter((event): event is NavigationCancel => event instanceof NavigationCancel),
+    filter(
+      (event): event is NavigationCancel => event instanceof NavigationCancel
+    ),
     switchMap(({ url: urlBeforeCancel }) =>
       this.#router.events.pipe(
         filter((v) => v instanceof NavigationStart),
@@ -30,5 +31,11 @@ export class RouterEventsService {
     shareReplay({ refCount: false, bufferSize: 1 })
   );
 
-  #lastUrlBeforeCancelledSub = this.lastUrlBeforeCancelled$.subscribe(v => console.log("\nLAST URL event", v));
+  constructor(@Inject(ENVIRONMENT) private environment: Environment) {
+    if (!environment.production) {
+      this.lastUrlBeforeCancelled$.subscribe((v) =>
+        console.log('\n[ROUTE] LAST URL event', v)
+      );
+    }
+  }
 }

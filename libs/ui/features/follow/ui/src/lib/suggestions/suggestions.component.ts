@@ -27,8 +27,7 @@ import {
   Observable,
   shareReplay,
   switchMap,
-  take,
-  tap,
+  take
 } from 'rxjs';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
 
@@ -120,7 +119,6 @@ export class FeatFollowSuggestionsComponent {
           })
         )
     ),
-    tap((v) => console.log('suggestedExColleaguesProfilesConfigured', v)),
     shareReplay(1)
   );
 

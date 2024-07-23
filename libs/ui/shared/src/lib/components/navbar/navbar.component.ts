@@ -7,8 +7,6 @@ import {
   EventEmitter,
   Input,
   Output,
-  QueryList,
-  ViewChildren,
   effect,
   inject,
   input,
@@ -24,7 +22,7 @@ import {
   UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { MenuItem } from 'primeng/api';
-import { MenuItemContent, MenuModule } from 'primeng/menu';
+import { MenuModule } from 'primeng/menu';
 import { SubnavComponent } from './subnav/subnav.component';
 
 @Component({
@@ -70,12 +68,6 @@ export class NavBarComponent implements AfterViewInit {
   #elemRef = inject(ElementRef);
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
-  constructor() {
-    effect(() => {
-      console.log(this.items());
-    });
-  }
-
   ngAfterViewInit(): void {
     const shouldInitiallyFocus = this.items().find(
       (item) => item.kitShouldInitiallyBeFocused
@@ -83,9 +75,8 @@ export class NavBarComponent implements AfterViewInit {
 
     // well, obviously this should not focus like this however p-menu
     // does not allow any better way than that
-    /** @FIXME focus initial routing better */
+    /** @FIXME (not is scope of fixme ticket) focus initial routing better */
     if (shouldInitiallyFocus) {
-      console.log(shouldInitiallyFocus);
       (this.#elemRef.nativeElement as HTMLElement)
         .querySelectorAll('[role="menuitem"]')
         .forEach((menuItemNativeElem) => {
@@ -107,6 +98,5 @@ export class NavBarComponent implements AfterViewInit {
 
   onFocusHandler(event: Event) {
     this.#menuItemNativeElemInitiallyFocused?.classList.remove('p-focus');
-    console.log('onFocusHandler', event);
   }
 }

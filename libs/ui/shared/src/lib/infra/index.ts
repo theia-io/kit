@@ -6,5 +6,6 @@ export * from './auth/auth.interceptor';
 // 
 export * from './business-services';
 export * from './data/data-source.service';
+export * from './environments';
 
 export * from './router/router-events.service';

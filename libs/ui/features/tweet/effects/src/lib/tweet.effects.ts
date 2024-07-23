@@ -157,7 +157,7 @@ export class TweetsEffects {
           .likeTweet({
             ...tweet,
             upProfileIds: tweetIsLikedByProfile(tweet, currentProfile.id)
-              ? tweet.upProfileIds.filter((id) => id !== currentProfile.id)
+              ? tweet.upProfileIds?.filter((id) => id !== currentProfile.id)
               : [currentProfile.id, ...(tweet.upProfileIds ?? [])],
           })
           .pipe(

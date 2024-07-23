@@ -44,16 +44,16 @@ export interface Tweety extends Realm.Services.MongoDB.Document {
   comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;
   replies?: Partial<Tweety>[]; // PagedData<Tweety[]>;
   // Instagram-issue solution ->
-  upProfileIds: Account['id'][];
-  downProfileIds: Account['id'][];
+  upProfileIds?: Account['id'][];
+  downProfileIds?: Account['id'][];
   // />
   // some statistics connections
-  denormalization: {
+  denormalization?: {
     profile: Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>;
   };
   // meta
-  type: TweetyType;
-  timestamp: TimeStamp;
+  type?: TweetyType;
+  timestamp?: TimeStamp;
 }
 
 export class TweetySchema {}
