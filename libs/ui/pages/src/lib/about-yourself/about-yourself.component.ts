@@ -7,19 +7,16 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import {
   FeatLegalApiActions,
-  FeatUserApiActions,
   selectCurrentProfile,
 } from '@kitouch/features/kit/data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
-import { Experience } from '@kitouch/shared/models';
 import {
   ButtonComponent,
   fadeInUpAnimation,
@@ -27,7 +24,7 @@ import {
 } from '@kitouch/ui/components';
 import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
-import { Actions, ofType } from '@ngrx/effects';
+import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { take } from 'rxjs/operators';
@@ -96,20 +93,11 @@ export class PageAboutYourselfComponent implements OnInit {
     el.scrollIntoView({ behavior: 'smooth' });
   }
 
-  saveExperienceHandler(experience: Experience) {
+  savingExperienceHandler() {
     this.savedExperience.set(true);
-    this.#actions
-      .pipe(
-        ofType(FeatUserApiActions.addExperienceSuccess),
-        take(1),
-        takeUntilDestroyed(this.#destroyRef)
-      )
-      .subscribe(() =>
-        this.#store.dispatch(
-          FeatFollowActions.getSuggestionColleaguesToFollow()
-        )
-      );
-    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
+  }
+  savedExperienceHandler() {
+    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
   updatingProfileHandler() {

@@ -59,7 +59,7 @@ export class PageBookmarksComponent {
   );
 
   // Instead of QUOTE I might be able to suggest most trending tweets?
-  quote$ = merge(of(null)).pipe(
+  quote$ = merge(of(null), interval(10_000)).pipe(
     switchMap(() => this.#quotesService.getRandomQuote())
   );
 

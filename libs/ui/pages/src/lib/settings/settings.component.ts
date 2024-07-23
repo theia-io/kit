@@ -12,8 +12,12 @@ import {
   selectAccount,
   selectCurrentProfile,
 } from '@kitouch/features/kit/data';
-import { FeatSettingsProfileInformationComponent } from '@kitouch/features/settings/ui';
+import {
+  FeatSettingsExperienceAddComponent,
+  FeatSettingsProfileInformationComponent,
+} from '@kitouch/features/settings/ui';
 import { NewUIItemComponent } from '@kitouch/ui/components';
+import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 import { Store } from '@ngrx/store';
 import { Message } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -33,6 +37,7 @@ import { take } from 'rxjs';
     //
     NewUIItemComponent,
     FeatSettingsProfileInformationComponent,
+    FeatSettingsExperienceAddComponent,
   ],
 })
 export class PageSettingsComponent {
@@ -79,5 +84,9 @@ export class PageSettingsComponent {
         FeatAccountApiActions.delete({ account: currentAccount })
       );
     }
+  }
+
+  savedExperienceHandler() {
+    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 }

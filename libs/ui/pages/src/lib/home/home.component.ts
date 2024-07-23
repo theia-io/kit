@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 
 import {
   ChangeDetectionStrategy,
@@ -70,10 +70,8 @@ export class PageHomeComponent implements OnInit {
   reloadTweetsDisabled$ = merge(
     this.#reloadTweetsDisabled$$.asObservable(),
     this.#reloadTweetsDisabled$$.asObservable().pipe(
-      tap(v => console.log('0',v)),
       switchMap(() => timer(2500)),
-      map(() => false),
-      tap(v => console.log('1',v)),
+      map(() => false)
     )
   );
   newlyAddedTweets = signal<Set<Tweety['id']>>(new Set());

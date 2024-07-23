@@ -25,7 +25,8 @@
             }
         </span>
 
-        <feat-settings-experience-add (saveExperience)="saveExperienceHandler($event)" />
+        <feat-settings-experience-add (onSavingExperience)="savingExperienceHandler()"
+            (onSavedExperience)="savedExperienceHandler()" />
 
         <button [@fadeInUp]="savedExperience() ? 'shown' : 'hidden'" (click)="scroll(suggestionTmpl)"
             class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">

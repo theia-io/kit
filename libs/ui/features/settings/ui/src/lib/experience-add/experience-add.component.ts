@@ -2,11 +2,10 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
   inject,
   OnInit,
-  Output,
-  signal,
+  output,
+  signal
 } from '@angular/core';
 import {
   takeUntilDestroyed,
@@ -19,7 +18,10 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { getMatchingCompanies } from '@kitouch/features/kit/data';
+import {
+  FeatUserApiActions,
+  getMatchingCompanies,
+} from '@kitouch/features/kit/data';
 import {
   Experience,
   ExperienceType,
@@ -30,6 +32,7 @@ import {
   countries,
   GeolocationService,
 } from '@kitouch/ui/shared';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -73,11 +76,13 @@ interface UploadEvent {
   providers: [MessageService],
 })
 export class FeatSettingsExperienceAddComponent implements OnInit {
-  @Output()
-  saveExperience = new EventEmitter<Experience>();
+  onSavingExperience = output();
+  onSavedExperience = output();
+
+  #actions = inject(Actions);
+  #store = inject(Store);
 
   #fb = inject(FormBuilder);
-  #store = inject(Store);
   #messageService = inject(MessageService);
   //
   #geolocationService = inject(GeolocationService);
@@ -190,6 +195,11 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     this.experienceForm.reset();
     this.stepperActive.set(0);
 
-    this.saveExperience.emit(experience);
+    this.onSavingExperience.emit();
+
+    this.#actions
+      .pipe(ofType(FeatUserApiActions.addExperienceSuccess), take(1))
+      .subscribe(() => this.onSavedExperience.emit());
+    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
   }
 }

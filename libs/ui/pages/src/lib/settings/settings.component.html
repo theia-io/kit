@@ -9,6 +9,8 @@
 <p-messages [value]="[experienceMessage]" showTransitionOptions="500ms" hideTransitionOptions="0ms"
     [enableService]="false" [closable]="false" />
 
+<feat-settings-experience-add (onSavedExperience)="savedExperienceHandler()" />
+
 <p-messages [value]="[dangerZoneMessage]" showTransitionOptions="1000ms" hideTransitionOptions="0ms"
     [enableService]="false" [closable]="false" />
 
