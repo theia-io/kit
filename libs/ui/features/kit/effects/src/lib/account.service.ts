@@ -2,8 +2,8 @@ import { Injectable } from '@angular/core';
 import { Account } from '@kitouch/shared/models';
 import { DataSourceService } from '@kitouch/ui/shared';
 import { BSON } from 'realm-web';
-import { from } from 'rxjs';
-import { concatMap } from 'rxjs/operators';
+import { forkJoin } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root',
@@ -11,8 +11,8 @@ import { concatMap } from 'rxjs/operators';
 export class AccountService extends DataSourceService {
   deleteAccount$(accountId: Account['id']) {
     return this.db$.pipe(
-      concatMap((db) =>
-        from([
+      switchMap((db) =>
+        forkJoin([
           db
             .collection('account')
             .deleteOne({ _id: new BSON.ObjectId(accountId) }),

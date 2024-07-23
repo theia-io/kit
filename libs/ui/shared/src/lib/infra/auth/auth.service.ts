@@ -67,9 +67,8 @@ export class AuthService {
         switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
       )
       .subscribe(() => {
-        setTimeout(() => {
-          this.#router.navigateByUrl('/sign-in');
-        }, 2000)
+        this.#realmUser$$.next(undefined);
+        this.#router.navigateByUrl('/sign-in');
       });
 
     this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
