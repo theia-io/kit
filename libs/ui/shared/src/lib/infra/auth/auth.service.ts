@@ -62,8 +62,7 @@ export class AuthService {
     this.#actions$
       .pipe(
         ofType(FeatAccountApiActions.deleteSuccess),
-        switchMap(() => this.realmUser$),
-        filter(Boolean),
+        switchMap(() => this.realmUser$.pipe(filter(Boolean), take(1))),
         switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
       )
       .subscribe(() => {

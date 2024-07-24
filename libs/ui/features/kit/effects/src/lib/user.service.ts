@@ -16,7 +16,7 @@ export class UserService extends DataSourceService {
   user$ = inject(Store).select(selectUser).pipe(filter(Boolean));
 
   addUserExperience$(experience: Experience) {
-    return this.realmFunctions$.pipe(
+    return this.realmFunctions$().pipe(
       withLatestFrom(this.user$),
       switchMap(([realmFunctions, user]) =>
         realmFunctions['genericRealmFunction']({
@@ -49,7 +49,7 @@ export class UserService extends DataSourceService {
   }
 
   deleteUserExperience$(experience: Experience) {
-    return this.db$.pipe(
+    return this.db$().pipe(
       withLatestFrom(this.user$),
       switchMap(([db, user]) =>
         db.collection('user').deleteOne({

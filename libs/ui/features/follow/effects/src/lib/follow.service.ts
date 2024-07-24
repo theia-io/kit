@@ -6,7 +6,7 @@ import { Observable, switchMap } from 'rxjs';
 @Injectable({ providedIn: 'root' })
 export class FollowService extends DataSourceService {
   getColleaguesProfileSuggestions$(user: User): Observable<Array<Profile>> {
-    return this.realmFunctions$.pipe(
+    return this.realmFunctions$().pipe(
       switchMap((realmFunctions) =>
         realmFunctions['getSuggestionColleaguesToFollow'](user)
       )
