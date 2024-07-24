@@ -1,10 +1,11 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   inject,
   input,
 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import {
   FeatProfileApiActions,
   profilePicture,
@@ -19,7 +20,7 @@ import {
 } from '@kitouch/ui/components';
 import { selectColleaguesProfilesSuggestions } from '@kitouch/ui/features/follow/data';
 import { APP_PATH } from '@kitouch/ui/shared';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import {
   combineLatest,
   filter,
@@ -27,10 +28,9 @@ import {
   Observable,
   shareReplay,
   switchMap,
-  take,
+  take
 } from 'rxjs';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
-import { RouterModule } from '@angular/router';
 
 interface FeatFollowSuggestionsComponentConfig {
   cards: boolean;
@@ -81,46 +81,45 @@ export class FeatFollowSuggestionsComponent {
     this.#store.select(selectCurrentProfile),
   ]).pipe(
     switchMap(([exColleaguesSuggestions, currentProfile]) =>
-      this.#store
-        .select(selectFollowingAndNotProfilesMap(exColleaguesSuggestions))
-        .pipe(
-          map(([followingProfilesMap, notFollowingProfilesMap]) => {
-            let resultProfiles = [...exColleaguesSuggestions];
+      this.#store.pipe(
+        select(selectFollowingAndNotProfilesMap(exColleaguesSuggestions)),
+        map(([followingProfilesMap, notFollowingProfilesMap]) => {
+          let resultProfiles = [...exColleaguesSuggestions];
 
-            if (!this.suggestionConfig().showFollowed) {
-              resultProfiles = resultProfiles.filter(
-                (profile) => !followingProfilesMap.has(profile.id)
-              );
-            }
+          if (!this.suggestionConfig().showFollowed) {
+            resultProfiles = resultProfiles.filter(
+              (profile) => !followingProfilesMap.has(profile.id)
+            );
+          }
 
-            if (!this.suggestionConfig().showRandomOrder) {
-              resultProfiles = resultProfiles.sort((p1, p2) =>
-                notFollowingProfilesMap.has(p1.id) >
-                notFollowingProfilesMap.has(p2.id)
-                  ? -1
-                  : 1
-              );
-            }
+          if (!this.suggestionConfig().showRandomOrder) {
+            resultProfiles = resultProfiles.sort((p1, p2) =>
+              notFollowingProfilesMap.has(p1.id) >
+              notFollowingProfilesMap.has(p2.id)
+                ? -1
+                : 1
+            );
+          }
 
-            return resultProfiles.slice(
-              0,
-              this.suggestionConfig().profilesToDisplay ?? 10
-            );
-          }),
-          // enrich with an id who is already been followed
-          map((listProfilesToShowToUser) => {
-            const currentProfileFollowingSet = new Set(
-              currentProfile?.following?.map(({ id }) => id)
-            );
-            return listProfilesToShowToUser.map(
-              (suggestedProfile) => ({
-                ...suggestedProfile,
-                followed: currentProfileFollowingSet.has(suggestedProfile.id),
-              }),
-              {}
-            );
-          })
-        )
+          return resultProfiles.slice(
+            0,
+            this.suggestionConfig().profilesToDisplay ?? 10
+          );
+        }),
+        // enrich with an id who is already been followed
+        map((listProfilesToShowToUser) => {
+          const currentProfileFollowingSet = new Set(
+            currentProfile?.following?.map(({ id }) => id)
+          );
+          return listProfilesToShowToUser.map(
+            (suggestedProfile) => ({
+              ...suggestedProfile,
+              followed: currentProfileFollowingSet.has(suggestedProfile.id),
+            }),
+            {}
+          );
+        })
+      )
     ),
     shareReplay(1)
   );
