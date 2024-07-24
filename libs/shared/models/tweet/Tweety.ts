@@ -1,4 +1,4 @@
-import {prop} from '@typegoose/typegoose';
+import { prop } from '@typegoose/typegoose';
 
 import { Account } from '../account/account';
 import { TimeStamp } from '../helpers';
@@ -27,8 +27,13 @@ export enum TweetyType {
   Comment = 'comment',
 }
 
+export interface TweetComment extends Partial<TimeStamp> {
+  profileId: Profile['id'];
+  content: string;
+}
+
 //
-export interface Tweety {
+export interface Tweety extends Realm.Services.MongoDB.Document {
   // keys
   id: string;
   //
@@ -36,21 +41,19 @@ export interface Tweety {
   retweetId?: Tweety['id']; // for retweets, quotes, comments, replies
   // business
   content: string;
-  comments?: Partial<Tweety>[]; // PagedData<Tweety[]>;
+  comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;
   replies?: Partial<Tweety>[]; // PagedData<Tweety[]>;
   // Instagram-issue solution ->
-  upProfileIds: Account['id'][];
-  downProfileIds: Account['id'][];
+  upProfileIds?: Account['id'][];
+  downProfileIds?: Account['id'][];
   // />
   // some statistics connections
-  denormalization: {
+  denormalization?: {
     profile: Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>;
   };
   // meta
-  type: TweetyType;
-  timestamp: TimeStamp;
+  type?: TweetyType;
+  timestamp?: TimeStamp;
 }
 
-export class TweetySchema {
-  
-}
+export class TweetySchema {}

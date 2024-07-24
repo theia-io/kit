@@ -3,29 +3,30 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   HostListener,
   inject,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/features/tweet/data';
-import { Tweety } from '@kitouch/shared/models';
+// import { Tweety } from '@kitouch/shared/models';
 import { TweetButtonComponent } from '@kitouch/ui/components';
-import {
-  APP_PATH,
-  AuthService,
-  TWEET_NEW_TWEET_TIMEOUT,
-} from '@kitouch/ui/shared';
+import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { MessageService } from 'primeng/api';
-import { ToastModule } from 'primeng/toast';
-import { map, take } from 'rxjs/operators';
+// import { MessageService } from 'primeng/api';
+// import { ToastModule } from 'primeng/toast';
+import { selectProfilePicture } from '@kitouch/features/kit/data';
+import { FloatLabelModule } from 'primeng/floatlabel';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
+import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
 
 @Component({
   standalone: true,
@@ -36,21 +37,21 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
     CommonModule,
     NgOptimizedImage,
     ReactiveFormsModule,
-    ToastModule,
+    //
+    FloatLabelModule,
+    InputTextareaModule,
+    // ToastModule,
     //
     TweetButtonComponent,
     FeatTweetTweetingActionsComponent,
   ],
-  providers: [MessageService],
+  // providers: [MessageService],
 })
 export class FeatTweetTweetingComponent {
   #destroyRef = inject(DestroyRef);
   #actions = inject(Actions);
-  #router = inject(Router);
-
-  #auth = inject(AuthService);
   #store = inject(Store);
-  #messageService = inject(MessageService);
+  // #messageService = inject(MessageService);
   // #snackBar = inject(MatSnackBar);
 
   @HostListener('window:keydown.enter', ['$event'])
@@ -58,17 +59,18 @@ export class FeatTweetTweetingComponent {
     this.tweetingHandle();
   }
 
-  profilePic$ = this.#auth.currentProfile$.pipe(
-    map((profiles) => profiles?.pictures?.[0]?.url)
-  );
+  @ViewChild('textControl')
+  textControlTmp: ElementRef<HTMLTextAreaElement>;
+
+  profilePic$ = this.#store.select(selectProfilePicture);
 
   tweetContentControl = new FormControl<string>('', [
     Validators.required,
     Validators.minLength(2),
     Validators.maxLength(1000),
   ]);
-
-  tweet = signal<Tweety | null>(null);
+  tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+  // tweet = signal<Tweety | null>(null);
   tweettingInProgress = signal(false);
 
   readonly newTweetTimeout = TWEET_NEW_TWEET_TIMEOUT;
@@ -79,6 +81,13 @@ export class FeatTweetTweetingComponent {
 
   reactionHandler() {
     console.log('reaction handler');
+  }
+
+  tweetControlBlur () {
+    if(!this.tweetContentControl.value?.length) {
+      this.tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+      return;
+    }
   }
 
   tweetingHandle() {
@@ -94,54 +103,58 @@ export class FeatTweetTweetingComponent {
 
     this.tweettingInProgress.set(true);
 
-    /** @todo @fixme likely it is better to refactor and move below outside of the method  */
+    /** @todo @fixme likely it is better to refactor and move below outside of the method or move
+     * altogether to some sort of effect that handles notifications?
+     */
     this.#actions
       .pipe(
         ofType(FeatTweetActions.tweetSuccess),
         take(1),
         takeUntilDestroyed(this.#destroyRef)
       )
-      .subscribe(({ uuid, tweet }) => {
+      .subscribe(({ uuid }) => {
         if (uuid === tweetuuidv4) {
-          this.tweetContentControl.setValue('');
+          this.tweetContentControl.reset();
+          this.textControlTmp.nativeElement.blur();
 
-          this.tweet.set(tweet);
+          // this.tweet.set(tweet);
           this.tweettingInProgress.set(false);
-          this.#showSuccessMessage(tweet);
+          this.tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+          // this.#showSuccessMessage(tweet);
         }
       });
   }
 
-  successMessageClickHandler() {
-    const tweet = this.tweet();
+  // successMessageClickHandler() {
+  //   const tweet = this.tweet();
 
-    if (tweet) {
-      this.successMessageCloseHandler();
-      this.#router.navigate([
-        '/',
-        APP_PATH.Profile,
-        tweet.profileId,
-        APP_PATH.Tweet,
-        tweet.id,
-      ]);
-    }
-  }
+  //   if (tweet) {
+  //     this.successMessageCloseHandler();
+  //     this.#router.navigate([
+  //       '/',
+  //       APP_PATH.Profile,
+  //       tweet.profileId,
+  //       APP_PATH.Tweet,
+  //       tweet.id,
+  //     ]);
+  //   }
+  // }
 
-  successMessageCloseHandler() {
-    this.tweet.set(null);
-  }
+  // successMessageCloseHandler() {
+  //   this.tweet.set(null);
+  // }
 
-  #showSuccessMessage(tweet: Tweety) {
-    const content =
-      tweet.content.length > 13
-        ? tweet.content.slice(0, 10) + '...'
-        : tweet.content;
+  // #showSuccessMessage(tweet: Tweety) {
+  //   const content =
+  //     tweet.content.length > 13
+  //       ? tweet.content.slice(0, 10) + '...'
+  //       : tweet.content;
 
-    this.#messageService.add({
-      severity: 'success',
-      summary: 'Tweet posted :)',
-      detail: content,
-      data: tweet,
-    });
-  }
+  //   this.#messageService.add({
+  //     severity: 'success',
+  //     summary: 'Tweet posted :)',
+  //     detail: content,
+  //     data: tweet,
+  //   });
+  // }
 }

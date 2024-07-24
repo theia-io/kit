@@ -14,7 +14,7 @@
     </button>
 
     <!-- Implement repost or quote selection functionality -->
-    <button role="button" (click)="$event.stopPropagation(); op.toggle($event)"
+    <!-- <button role="button" (click)="$event.stopPropagation(); op.toggle($event)"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -29,7 +29,7 @@
         <div class="flex flex-column gap-3 w-25rem">
             quote or reply
         </div>
-    </p-overlayPanel>
+    </p-overlayPanel> -->
 
     <button role="button" (click)="$event.stopPropagation(); like.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
@@ -48,12 +48,13 @@
         </span>
     </button>
 
-    <button role="button" (click)="$event.stopPropagation(); share.emit()"
+    <button role="button" (click)="$event.stopPropagation(); copyToClipBoard()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
-        <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            stroke="currentColor" viewBox="0 0 24 24">
-            <path d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"></path>
-        </svg>
+        @if(copied()) {
+            <i class="pi pi-check" style="font-size: 1.5rem; color: 'var(--primary-color)'"></i>
+        } @else {
+           <i class="pi pi-copy" style="font-size: 1.5rem;"></i>
+        }
     </button>
 
     <button role="button" (click)="$event.stopPropagation(); bookmark.emit()"

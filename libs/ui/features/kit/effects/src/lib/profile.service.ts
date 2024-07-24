@@ -10,13 +10,13 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class ProfileService extends DataSourceService {
   getProfiles(profiles: Array<Profile['id']>): Observable<Array<Profile>> {
-    return this.realmFunctions$.pipe(
+    return this.realmFunctions$().pipe(
       switchMap((fns) => fns['getProfiles'](profiles))
     );
   }
 
   put(profile: Partial<Profile>) {
-    return this.db$.pipe(
+    return this.db$().pipe(
       switchMap((db) =>
         db.collection<Profile>('profile').updateOne(
           { _id: new BSON.ObjectId(profile.id) },

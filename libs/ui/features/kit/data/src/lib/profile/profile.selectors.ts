@@ -5,9 +5,9 @@ import { FeatureProfileState } from './profile.reducers';
 /**
  * Utilities
  */
-export const profilePicture = (profile: Partial<Profile>) =>
-  profile.pictures?.find((pic) => pic.isPrimary)?.url ??
-  profile.pictures?.[0]?.url ??
+export const profilePicture = (profile: Partial<Profile> | undefined | null) =>
+  profile?.pictures?.find((pic) => pic.isPrimary)?.url ??
+  profile?.pictures?.[0]?.url ??
   '/public/john-dou.png';
 
 /**
@@ -20,6 +20,11 @@ const selectProfileState = (state: { kit: { profile: FeatureProfileState } }) =>
 export const selectCurrentProfile = createSelector(
   selectProfileState,
   (state: FeatureProfileState) => state.currentProfile
+);
+
+export const selectCurrentProfileFollowing = createSelector(
+  selectCurrentProfile,
+  (currentProfile: Profile | undefined) => currentProfile?.following ?? []
 );
 
 export const selectProfilePicture = createSelector(
@@ -42,7 +47,10 @@ export const selectProfile = (profileIdOrAlias: string) =>
       profiles.find(({ alias }) => alias === profileIdOrAlias)
   );
 
-export const selectProfileFollowingOrNot = (profiles: Array<Profile>) =>
+/** 2N Get following and not following (but suggest) profiles
+ * @returns [SuggestedFollowingMap, SuggestedNotFollowingMap]
+ *   */
+export const selectFollowingAndNotProfilesMap = (profiles: Array<Profile>) =>
   createSelector(selectCurrentProfile, (currentProfile) => {
     const currentProfileFollowingSet = new Set(
       currentProfile?.following?.map(({ id }) => id)

@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   selector: 'ui-kit-comp-card',
   template: `
     <article
-      class="sm:p-2 md:p-4 rounded-[10px] transition hover:shadow-xl bg-white"
+      class="sm:p-2 md:p-4 rounded-[10px] transition hover:shadow-xl bg-transparent"
     >
       <ng-content />
     </article>

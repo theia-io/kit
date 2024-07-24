@@ -30,4 +30,25 @@ export class UserEffects {
       )
     )
   );
+
+  deleteExperience$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatUserApiActions.deleteExperience),
+      switchMap(({ experience }) =>
+        this.#userService.deleteUserExperience$(experience).pipe(
+          map(({ experience }) =>
+            FeatUserApiActions.deleteExperienceSuccess({ experience })
+          ),
+          catchError((err) => {
+            console.error('[UserEffects] deleteExperience', err);
+            return of(
+              FeatUserApiActions.deleteExperienceFailure({
+                message: 'Cannot delete experience now',
+              })
+            );
+          })
+        )
+      )
+    )
+  );
 }

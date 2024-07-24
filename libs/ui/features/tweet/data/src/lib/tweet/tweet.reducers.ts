@@ -1,8 +1,9 @@
 import { Tweety } from '@kitouch/shared/models';
 import { mongooseEqual } from '@kitouch/shared/utils';
-import { createReducer, on } from '@ngrx/store';
-import { FeatTweetActions, TweetApiActions } from './tweet.actions';
 import { mergeArr } from '@kitouch/ui/shared';
+import { createReducer, on } from '@ngrx/store';
+import _ from 'lodash';
+import { FeatTweetActions, TweetApiActions } from './tweet.actions';
 
 // 2*N(0)
 const combineV2 = <T>(
@@ -49,7 +50,9 @@ export const featTweetTweetsReducer = createReducer(
   })),
   on(FeatTweetActions.deleteSuccess, (state, { ids }) => ({
     ...state,
-    tweets: state.tweets.filter(({id}) => !ids.some(({tweetId}) => tweetId === id)),
+    tweets: state.tweets.filter(
+      ({ id }) => !ids.some(({ tweetId }) => tweetId === id)
+    ),
   })),
   on(FeatTweetActions.likeSuccess, (state, { tweet }) => ({
     ...state,
@@ -71,4 +74,24 @@ export const featTweetTweetsReducer = createReducer(
       return existingTweet;
     }),
   })),
+  on(
+    FeatTweetActions.commentDeleteSuccess,
+    (state, { tweet, comment: { profileId, content, createdAt } }) => ({
+      ...state,
+      tweets: state.tweets.map((stateTweet) => {
+        if (stateTweet.id === tweet.id) {
+          return {
+            ...stateTweet,
+            ...tweet,
+            ...state,
+            comments: stateTweet.comments?.filter(
+              (stateComment) =>
+                !_.isEqual(stateComment, { profileId, content, createdAt })
+            ),
+          };
+        }
+        return stateTweet;
+      }),
+    })
+  )
 );

@@ -1,8 +1,10 @@
 import { Route } from '@angular/router';
 import {
   APP_PATH,
+  APP_PATH_DIALOG,
   onlyForLoggedInGuard,
   onlyForNotLoggedInGuard,
+  OUTLET_DIALOG,
 } from '@kitouch/ui/shared';
 import { KitComponent } from './kit.component';
 
@@ -11,14 +13,12 @@ const pages = import('@kitouch/ui/pages');
 export const appRoutes: Route[] = [
   {
     path: 'sign-in',
-    loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PageSignInComponent),
+    loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
     canActivate: [onlyForNotLoggedInGuard],
   },
   {
     path: 'redirect',
-    loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PageRedirectComponent),
+    loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
   },
   {
     path: 'join',
@@ -27,27 +27,20 @@ export const appRoutes: Route[] = [
   {
     path: 'terms-and-conditions',
     loadComponent: () =>
-      import('@kitouch/ui/pages').then(
-        (comp) => comp.PageTermsConditionsComponent
-      ),
+      pages.then((comp) => comp.PageTermsConditionsComponent),
   },
   {
     path: 'privacy-policy',
-    loadComponent: () =>
-      import('@kitouch/ui/pages').then(
-        (comp) => comp.PagePrivacyPolicyComponent
-      ),
+    loadComponent: () => pages.then((comp) => comp.PagePrivacyPolicyComponent),
   },
   {
     path: 'cookie',
-    loadComponent: () =>
-      import('@kitouch/ui/pages').then((comp) => comp.PageCookiesComponent),
+    loadComponent: () => pages.then((comp) => comp.PageCookiesComponent),
   },
   {
     path: APP_PATH.AboutYourself,
     canActivate: [onlyForLoggedInGuard],
-    loadComponent: () =>
-      pages.then((comp) => comp.PageAboutYourselfComponent),
+    loadComponent: () => pages.then((comp) => comp.PageAboutYourselfComponent),
   },
   {
     path: '',
@@ -91,18 +84,24 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Settings,
+        loadComponent: () => pages.then((comp) => comp.PageSettingsComponent),
         children: [
           {
             path: '',
+            canActivate: [onlyForLoggedInGuard],
             loadComponent: () =>
-              pages.then((comp) => comp.PageSettingsComponent),
+              pages.then((comp) => comp.PageAboutYourselfComponent),
           },
         ],
       },
-      // {
-      //   path: '**',
-      //   redirectTo: APP_PATH.Home,
-      // },
+      {
+        path: APP_PATH_DIALOG.Tweet,
+        outlet: OUTLET_DIALOG,
+        loadComponent: () =>
+          import('@kitouch/features/tweet/ui').then(
+            (feat) => feat.FeatTweetDialogComponent
+          ),
+      },
     ],
   },
   {

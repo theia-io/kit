@@ -1,7 +1,6 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { Router } from '@angular/router';
 import {
   FeatTweetBookmarkActions,
   selectAllTweets,
@@ -15,9 +14,10 @@ import {
   TweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
+import { QuotesService } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
-import { combineLatest } from 'rxjs';
-import { filter, map, take } from 'rxjs/operators';
+import { combineLatest, interval, merge, of } from 'rxjs';
+import { filter, map, switchMap, take } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -37,7 +37,7 @@ import { filter, map, take } from 'rxjs/operators';
 })
 export class PageBookmarksComponent {
   #store = inject(Store);
-  #router = inject(Router);
+  #quotesService = inject(QuotesService);
 
   bookmarkFeedTweets$ = combineLatest([
     this.#store.select(selectBookmarks),
@@ -56,6 +56,11 @@ export class PageBookmarksComponent {
       );
     }),
     filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
+  );
+
+  // Instead of QUOTE I might be able to suggest most trending tweets?
+  quote$ = merge(of(null), interval(10_000)).pipe(
+    switchMap(() => this.#quotesService.getRandomQuote())
   );
 
   constructor() {

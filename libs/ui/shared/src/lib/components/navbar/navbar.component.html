@@ -3,29 +3,18 @@
         width="40" />
 
     <p class="ml-2 font-bold">
-        Kit ouch
+        KITouch
     </p>
 </div>
 
-<nav class="mt-4">
-    @for (item of items; track $index) {
-    <a [routerLink]="item.link" routerLinkActive="bg-neutral-200 font-semibold" [ngClass]="{
-                'mt-1': !$first
-            }"
-        class="group flex items-center p-2 leading-6 rounded-full text-base font-semibold hover:font-semibold hover:bg-neutral-200">
+<p-menu styleClass="border-0 mt-4" [model]="items()" (onFocus)="onFocusHandler($event)">
+</p-menu>
 
-        <div [innerHTML]="sanitizer.bypassSecurityTrustHtml(item.icon)"></div>
-        {{item.name}}
-    </a>
-    }
-</nav>
-
-<ui-comp-tweet-button class="w-48 mt-4" />
+<ui-kit-tweet-button [iconAnimate]="false" text="Tweet Big." (click)="tweetButtonClick.emit()" class="w-48 mt-4" />
 
 <ui-kit-comp-card class="block mt-12">
     <a [routerLink]="profileBaseUrl + '/' + profile?.id" routerLinkActive="underline">
-    <ui-kit-comp-account-tile [primaryText]="profile?.name ?? 'N/A'"
-        [picture]="profile?.pictures?.[0]?.url" />
+        <ui-kit-comp-account-tile [primaryText]="profile?.name ?? 'N/A'" [picture]="profile?.pictures?.[0]?.url" />
     </a>
 </ui-kit-comp-card>
 

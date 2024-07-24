@@ -4,6 +4,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideRouter, withDebugTracing } from '@angular/router';
 import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
 import {
+  AccountsEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
@@ -11,14 +12,16 @@ import {
 import { featTweetReducer } from '@kitouch/features/tweet/data';
 import {
   BookmarkEffects,
+  CommentsEffects,
   TweetsEffects,
 } from '@kitouch/features/tweet/effects';
 import { featFollowReducer } from '@kitouch/ui/features/follow/data';
 import { FollowEffects } from '@kitouch/ui/features/follow/effects';
-import { AuthInterceptor } from '@kitouch/ui/shared';
+import { AuthInterceptor, ENVIRONMENT } from '@kitouch/ui/shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
@@ -28,6 +31,12 @@ export const appConfig: ApplicationConfig = {
     // provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
 
+    //
+    {
+      provide: ENVIRONMENT,
+      useValue: environment,
+    },
+
     // provideRouter(appRoutes),
     provideRouter(appRoutes, withDebugTracing()),
     provideStore({
@@ -36,12 +45,17 @@ export const appConfig: ApplicationConfig = {
       tweet: featTweetReducer,
     }),
     provideEffects([
+      // follow feat effects
       FollowEffects,
+      // kit feat effects
+      AccountsEffects,
+      LegalEffects,
       ProfileEffects,
       UserEffects,
-      LegalEffects,
-      TweetsEffects,
+      // tweet feat effects
       BookmarkEffects,
+      CommentsEffects,
+      TweetsEffects,
     ]),
     provideStoreDevtools(),
 

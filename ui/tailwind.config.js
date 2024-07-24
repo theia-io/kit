@@ -12,6 +12,7 @@ module.exports = {
       animation: {
 				fadeIn: 'fadeIn .5s ease-in-out',
         fadeOut: 'fadeOut .5s ease-in-out',
+        wiggle: 'wiggle 1s ease-in-out infinite',
 			},
 
 			keyframes: {
@@ -23,6 +24,10 @@ module.exports = {
           from: { opacity: 1 },
 					to: { opacity: 0 },
         },
+        wiggle: {
+          '0%, 100%': { transform: 'rotate(-3deg)' },
+          '50%': { transform: 'rotate(3deg)' },
+        }
 			},
     },
   },

@@ -34,36 +34,36 @@ export class TweetsEffects {
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
         this.#tweetApi
-          .getFeed(
-            profile.id,
-            profile.following.map(({id}) => id)
-          )
-          .pipe(
-            map((tweets) =>
-              TweetApiActions.getAllSuccess({
-                tweets: tweets.map((tweet) => {
-                  if (tweet.profileId === profile.id) {
-                    return {
-                      ...tweet,
-                      denormalization: {
-                        profile,
-                      },
-                    };
-                  }
-                  return tweet;
-                }),
-              })
-            ),
-            catchError((err) => {
-              console.error('[TweetsEffects] allTweets ERROR', err);
-              return of(TweetApiActions.getAllFailure());
-            })
-          )
+              .getFeed(
+                profile.id,
+                profile.following?.map(({ id }) => id) ?? []
+              )
+              .pipe(
+                map((tweets) =>
+                  TweetApiActions.getAllSuccess({
+                    tweets: tweets.map((tweet) => {
+                      if (tweet.profileId === profile.id) {
+                        return {
+                          ...tweet,
+                          denormalization: {
+                            profile,
+                          },
+                        };
+                      }
+                      return tweet;
+                    }),
+                  })
+                ),
+                catchError((err) => {
+                  console.error('[TweetsEffects] allTweets ERROR', err);
+                  return of(TweetApiActions.getAllFailure());
+                })
+              )
       )
     )
   );
 
-  bookmarkTweets$ = createEffect(() =>
+  bookmarkFeedSuccess$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetBookmarkActions.getBookmarksFeedSuccess),
       map(({ tweets }) =>
@@ -148,45 +148,6 @@ export class TweetsEffects {
     )
   );
 
-  commentTweet$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatTweetActions.comment),
-      withLatestFrom(this.currentProfile$),
-      switchMap(([{ uuid, tweet, content }, profile]) =>
-        this.#tweetApi
-          .commentTweet({
-            ...tweet,
-            comments: [
-              {
-                profileId: profile.id,
-                content,
-              },
-              ...(tweet.comments ?? []),
-            ],
-          })
-          .pipe(
-            map((tweet) =>
-              FeatTweetActions.commentSuccess({
-                uuid,
-                tweet: { ...tweet, denormalization: { profile } },
-              })
-            ),
-            catchError((err) => {
-              console.error('TweetsEffects commentTweet', err);
-              return of(
-                FeatTweetActions.commentFailure({
-                  uuid,
-                  tweet,
-                  message:
-                    'Sorry, error. We will take a look at it and meanwhile try later',
-                })
-              );
-            })
-          )
-      )
-    )
-  );
-
   likeTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.like),
@@ -196,7 +157,7 @@ export class TweetsEffects {
           .likeTweet({
             ...tweet,
             upProfileIds: tweetIsLikedByProfile(tweet, currentProfile.id)
-              ? tweet.upProfileIds.filter((id) => id !== currentProfile.id)
+              ? tweet.upProfileIds?.filter((id) => id !== currentProfile.id)
               : [currentProfile.id, ...(tweet.upProfileIds ?? [])],
           })
           .pipe(

@@ -1,17 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { FeatFollowSuggestionsComponent, FollowComponent } from '@kitouch/ui/features/follow/ui';
-import { GlobalSearchComponent } from '@kitouch/ui/features/search';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'layout',
   standalone: true,
   imports: [
     CommonModule,
-     FollowComponent,
-      GlobalSearchComponent,
-      FeatFollowSuggestionsComponent
-    ],
+    RouterModule
+  ],
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

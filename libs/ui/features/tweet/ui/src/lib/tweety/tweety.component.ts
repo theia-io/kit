@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { AsyncPipe, CommonModule, DatePipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,6 +11,7 @@ import {
   SimpleChanges,
   ViewChild,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -34,11 +35,9 @@ import {
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
-import { AutoFocusModule } from 'primeng/autofocus';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
-import { SidebarModule } from 'primeng/sidebar';
 import {
   ReplaySubject,
   combineLatest,
@@ -67,7 +66,6 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     AsyncPipe,
     //
     OverlayPanelModule,
-    SidebarModule,
     InputTextareaModule,
     FloatLabelModule,
     //
@@ -84,6 +82,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
   tweetDeleted = new EventEmitter<void>();
 
   // Deps
+  #document = inject(DOCUMENT);
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
@@ -114,6 +113,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
 
   // Component logic
   tweetComments$ = this.#tweet$.pipe(map(({ comments }) => comments));
+  commentOverlayVisible = signal(false);
 
   tweetLiked$ = this.#tweet$.pipe(
     combineLatestWith(this.#currentProfile$),
@@ -141,10 +141,11 @@ export class FeatTweetTweetyComponent implements OnChanges {
   /** Comment section */
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
-    this.commentHandler();
+    if (this.commentOverlayVisible()) {
+      this.commentHandler();
+    }
   }
 
-  commentSideBar = false;
   commentControl = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
@@ -165,14 +166,18 @@ export class FeatTweetTweetyComponent implements OnChanges {
     }
   }
 
-  tweetClickHandler(tweet: Tweety) {
-    this.#router.navigate([
-      '/',
+  tweetUrl(tweet: Tweety, absolute?: boolean) {
+    return [
+      absolute ? this.#document.location.origin : '/',
       APP_PATH.Profile,
       tweet.profileId,
       APP_PATH.Tweet,
       tweet.id,
-    ]);
+    ].join('/');
+  }
+
+  tweetClickHandler(tweet: Tweety) {
+    this.#router.navigate([this.tweetUrl(tweet)]);
   }
 
   deleteHandler() {
@@ -192,6 +197,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
       });
   }
 
+  /** @TODO migrate commentHandler to a specific class and re-use it here and in tweet.component */
   commentHandler() {
     if (!this.commentControl.valid) {
       return;
@@ -206,7 +212,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
           FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
         );
 
-        this.commentControl.setValue('');
+        this.commentControl.reset();
         this.commentOverlayTmpl.hide();
       });
   }
@@ -221,10 +227,6 @@ export class FeatTweetTweetyComponent implements OnChanges {
       .subscribe((tweet) => {
         this.#store.dispatch(FeatTweetActions.like({ tweet }));
       });
-  }
-
-  shareHandler() {
-    console.info('Implement shareHandler');
   }
 
   bookmarkHandler() {
