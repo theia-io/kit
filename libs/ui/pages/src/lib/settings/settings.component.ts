@@ -102,4 +102,8 @@ export class PageSettingsComponent {
   savedExperienceHandler() {
     this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
+
+  editHandler(experience: Experience){
+    console.log(experience);
+   }
 }

@@ -1,7 +1,7 @@
 @if (!suggestionConfig().cards) {
 <div class="flex flex-col justify-center items-center gap-2">
     @for (profile of (suggestedExColleaguesProfilesConfigured$ | async); track $index) {
-    <ui-kit-comp-card>
+    <ui-kit-comp-card class="block w-full">
         <ui-kit-comp-account-tile [primaryText]="profile.name" [primarySecondaryText]="profile.title"
             [secondaryText]="profile.description" [picture]="profilePicture(profile)"
             [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)" />

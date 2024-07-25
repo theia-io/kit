@@ -17,6 +17,9 @@
             <div class="relative">
                 <feat-settings-experience-show [showRemove]="true"
                     [experience]="experience"></feat-settings-experience-show>
+                    <i (click)="editHandler(experience)" role="button"
+                    class="pi pi-file-edit absolute top-2 right-10 hover:animate-pulse"
+                    style="font-size: 1.5rem;"></i>
                 <i (click)="deleteTweetHandler(experience)" role="button"
                     class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
                     style="font-size: 1.5rem;"></i>

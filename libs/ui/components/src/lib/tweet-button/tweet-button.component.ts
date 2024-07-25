@@ -28,7 +28,7 @@ import { ButtonModule } from 'primeng/button';
       <span>{{ text() }}</span>
       @if(loader()) {
       <i class="pi pi-sync animate-spin" style="font-size: 1rem"></i>
-      } @if(icon()) {
+      } @if(icon() && !loader()) {
       <i
         class="pi pi-send"
         [class.animate-wiggle]="iconAnimate()"
@@ -47,7 +47,9 @@ export class TweetButtonComponent {
   icon = input(true);
   iconAnimate = input(true);
 
-  styleClass = computed(() =>  !this.loader() && !this.icon() ? 'justify-center' : 'justify-between')
+  styleClass = computed(() =>
+    !this.loader() && !this.icon() ? 'justify-center' : 'justify-between'
+  );
 
   onClickEvent = output<Event>();
 }

@@ -22,7 +22,7 @@ export const featTweetBookmarkReducer = createReducer(
   })),
   on(FeatTweetBookmarkActions.bookmarkSuccess, (state, { bookmark }) => ({
     ...state,
-    bookmarks: mergeArr(state.bookmarks, [bookmark]),
+    bookmarks: mergeArr([bookmark], state.bookmarks),
     // tweets: mergeArr(state.tweets, )
   })),
   on(
