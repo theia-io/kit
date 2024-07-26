@@ -1,8 +1,7 @@
-import { prop } from '@typegoose/typegoose';
 
 import { Account } from '../account/account';
-import { TimeStamp } from '../helpers';
 import { Profile } from '../entities-kitouch';
+import { TimeStamp } from '../helpers';
 
 /** 
  * @TODO @FIXME 
@@ -22,9 +21,7 @@ interface PagedData<T> {
 export enum TweetyType {
   Tweet = 'tweet',
   Retweet = 'retweet',
-  Quotes = 'quotes',
-  Reply = 'reply',
-  Comment = 'comment',
+  Quote = 'quote',
 }
 
 export interface TweetComment extends Partial<TimeStamp> {
@@ -38,7 +35,8 @@ export interface Tweety extends Realm.Services.MongoDB.Document {
   id: string;
   //
   profileId: Profile['id'];
-  retweetId?: Tweety['id']; // for retweets, quotes, comments, replies
+  referenceId?: Tweety['id']; // for retweets, quotes, comments, replies
+  referenceProfileId?:Profile['id'];
   // business
   content: string;
   comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;

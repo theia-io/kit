@@ -1,13 +1,17 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   EventEmitter,
   inject,
+  input,
   Input,
+  output,
   Output,
   signal,
 } from '@angular/core';
+import { UiKitTweetButtonComponent } from '@kitouch/ui/components';
+import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
@@ -15,50 +19,36 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   selector: 'feat-tweet-actions',
   templateUrl: `actions.component.html`,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, OverlayPanelModule],
+  imports: [
+    NgClass,
+    //
+    OverlayPanelModule,
+    ButtonModule,
+    //
+  ],
 })
 export class FeatTweetActionsComponent {
-  @Input({ required: true })
-  tweetUrl: string;
+  tweetUrl = input.required<string>();
+  comments = input(0);
+  retweetsAndQuotes = input(0);
+  likes = input(0);
+  liked = input<boolean | null | undefined>(false);
+  bookmarked = input(false);
 
-  @Input()
-  comments = 0;
-
-  @Input()
-  repostsAndQuotes = 0;
-
-  @Input()
-  likes = 0;
-
-  @Input()
-  liked: boolean | null | undefined = false;
-
-  @Input()
-  bookmarked = false;
-
-  @Output()
-  comment = new EventEmitter<Event>();
-
-  @Output()
-  repost = new EventEmitter<void>();
-
-  @Output()
-  quote = new EventEmitter<void>();
-
-  @Output()
-  like = new EventEmitter<void>();
-
-  @Output()
-  bookmark = new EventEmitter<void>();
+  comment = output<void>();
+  retweet = output<void>();
+  quote = output<void>();
+  like = output<void>();
+  bookmark = output<void>();
 
   copied = signal(false);
 
   copyToClipBoard() {
-    navigator.clipboard.writeText(this.tweetUrl);
+    navigator.clipboard.writeText(this.tweetUrl());
     this.copied.set(true);
     // @TODO add also bubbling text saying that copied
     setTimeout(() => {
-        this.copied.set(false);
+      this.copied.set(false);
     }, 5000);
   }
 }

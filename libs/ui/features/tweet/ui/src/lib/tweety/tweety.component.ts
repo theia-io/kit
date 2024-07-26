@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DatePipe, DOCUMENT } from '@angular/common';
+import { AsyncPipe, CommonModule, DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,12 +11,12 @@ import {
   SimpleChanges,
   ViewChild,
   inject,
-  signal,
+  signal
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import {
   selectCurrentProfile,
   selectProfile,
@@ -28,10 +28,10 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
 } from '@kitouch/features/tweet/data';
-import { Tweety } from '@kitouch/shared/models';
+import { Tweety, TweetyType } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
-  TweetButtonComponent,
+  UiKitTweetButtonComponent,
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
@@ -44,10 +44,12 @@ import {
   combineLatestWith,
   filter,
   map,
+  of,
   shareReplay,
   startWith,
   switchMap,
   take,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -64,6 +66,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     ReactiveFormsModule,
     DatePipe,
     AsyncPipe,
+    RouterModule,
     //
     OverlayPanelModule,
     InputTextareaModule,
@@ -71,7 +74,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     //
     AccountTileComponent,
     FeatTweetActionsComponent,
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
   ],
 })
 export class FeatTweetTweetyComponent implements OnChanges {
@@ -91,6 +94,8 @@ export class FeatTweetTweetyComponent implements OnChanges {
   // State
   #tweetId$$ = new ReplaySubject<Tweety['id']>(1);
 
+  tweetTypes = TweetyType;
+
   // #tweet$ = new ReplaySubject<Tweety>(1);
   #tweet$ = this.#tweetId$$.pipe(
     switchMap((tweetId) => this.#store.select(selectTweet(tweetId))),
@@ -105,6 +110,22 @@ export class FeatTweetTweetyComponent implements OnChanges {
   #currentProfile$ = this.#store
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
+
+  currentProfile = toSignal(this.#currentProfile$);
+
+  retweetProfile$ = combineLatest([
+    this.#tweet$.pipe(
+      filter(Boolean),
+      filter(({ type }) => type === this.tweetTypes.Retweet)
+    ),
+    this.#currentProfile$,
+  ]).pipe(
+    switchMap(([retweet, profile]) =>
+      retweet.referenceProfileId === profile.id
+        ? of(profile)
+        : this.#store.select(selectProfile(retweet.referenceProfileId!))
+    ),
+  );
 
   tweetProfile$ = this.#tweet$.pipe(
     switchMap((tweet) => this.#store.select(selectProfile(tweet.profileId))),
@@ -217,8 +238,12 @@ export class FeatTweetTweetyComponent implements OnChanges {
       });
   }
 
-  repostHandler() {
-    console.info('Implement repostHandler');
+  retweetHandler() {
+    this.#store.dispatch(FeatTweetActions.reTweet({ tweet: this.tweet() }));
+  }
+
+  quoteHandler() {
+    // this.#store.dispatch(FeatTweetActions.quote({tweet: this.tweet()}));
   }
 
   likeHandler() {

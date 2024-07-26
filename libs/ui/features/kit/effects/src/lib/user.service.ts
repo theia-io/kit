@@ -52,12 +52,17 @@ export class UserService extends DataSourceService {
     return this.db$().pipe(
       withLatestFrom(this.user$),
       switchMap(([db, user]) =>
-        db.collection('user').deleteOne({
-          _id: new BSON.ObjectId(user.id),
-          experiences: {
-            $elemMatch: getExperienceEqualityObject(experience)
+        db.collection('user').updateOne(
+          {
+            _id: new BSON.ObjectId(user.id),
+            experiences: {
+              $elemMatch: getExperienceEqualityObject(experience),
+            },
+          },
+          {
+            $pull: { experiences: getExperienceEqualityObject(experience) },
           }
-        })
+        )
       ),
       map(() => ({ experience }))
     );

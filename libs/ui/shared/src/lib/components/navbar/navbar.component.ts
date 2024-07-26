@@ -18,7 +18,7 @@ import { Profile } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
-  TweetButtonComponent,
+  UiKitTweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { MenuItem } from 'primeng/api';
@@ -41,7 +41,7 @@ import { SubnavComponent } from './subnav/subnav.component';
     SubnavComponent,
     DividerComponent,
     AccountTileComponent,
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
   ],
 })
 export class NavBarComponent implements AfterViewInit {

@@ -3,7 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   HostListener,
-  inject
+  inject,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -14,17 +14,19 @@ import {
   TweetApiActions,
   selectTweet,
 } from '@kitouch/features/tweet/data';
-import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
+import {
+  FeatTweetTweetyComponent,
+  TWEET_CONTROL_INITIAL_ROWS,
+} from '@kitouch/features/tweet/ui';
 import { TweetComment, Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
-  TweetButtonComponent,
+  UiKitTweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
-import { TWEET_CONTROL_INITIAL_ROWS } from 'libs/ui/features/tweet/ui/src/lib/tweet-control/constants';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -65,7 +67,7 @@ import { v4 as uuidv4 } from 'uuid';
     TimelineModule,
     ButtonModule,
     //
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
     AccountTileComponent,
     DividerComponent,
     UiCompCardComponent,
