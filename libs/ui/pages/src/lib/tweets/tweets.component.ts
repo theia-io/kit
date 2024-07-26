@@ -12,7 +12,7 @@ import { Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
-  TweetButtonComponent,
+  UiKitTweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { APP_PATH } from '@kitouch/ui/shared';
@@ -32,7 +32,7 @@ import { filter, map, shareReplay, switchMap } from 'rxjs';
     FeatTweetTweetyComponent,
     AccountTileComponent,
     DividerComponent,
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
   ],
 })
 export class PageTweetsComponent {

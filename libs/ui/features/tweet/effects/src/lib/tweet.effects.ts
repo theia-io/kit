@@ -6,6 +6,7 @@ import {
   TweetApiActions,
   tweetIsLikedByProfile,
 } from '@kitouch/features/tweet/data';
+import { TweetyType } from '@kitouch/shared/models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -34,31 +35,28 @@ export class TweetsEffects {
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
         this.#tweetApi
-              .getFeed(
-                profile.id,
-                profile.following?.map(({ id }) => id) ?? []
-              )
-              .pipe(
-                map((tweets) =>
-                  TweetApiActions.getAllSuccess({
-                    tweets: tweets.map((tweet) => {
-                      if (tweet.profileId === profile.id) {
-                        return {
-                          ...tweet,
-                          denormalization: {
-                            profile,
-                          },
-                        };
-                      }
-                      return tweet;
-                    }),
-                  })
-                ),
-                catchError((err) => {
-                  console.error('[TweetsEffects] allTweets ERROR', err);
-                  return of(TweetApiActions.getAllFailure());
-                })
-              )
+          .getFeed(profile.id, profile.following?.map(({ id }) => id) ?? [])
+          .pipe(
+            map((tweets) =>
+              TweetApiActions.getAllSuccess({
+                tweets: tweets.map((tweet) => {
+                  if (tweet.profileId === profile.id) {
+                    return {
+                      ...tweet,
+                      denormalization: {
+                        profile,
+                      },
+                    };
+                  }
+                  return tweet;
+                }),
+              })
+            ),
+            catchError((err) => {
+              console.error('[TweetsEffects] allTweets ERROR', err);
+              return of(TweetApiActions.getAllFailure());
+            })
+          )
       )
     )
   );
@@ -170,6 +168,29 @@ export class TweetsEffects {
               console.error('[TweetsEffects] likeTweet ERROR', err);
               return of(FeatTweetActions.likeFailure({ tweet }));
             })
+          )
+      )
+    )
+  );
+
+  retweet$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatTweetActions.reTweet),
+      withLatestFrom(this.currentProfile$),
+      switchMap(([{ tweet }, profile]) =>
+        this.#tweetApi
+          .retweet(tweet.id, profile.id)
+          .pipe(
+            map(({ insertedId }) =>
+              FeatTweetActions.reTweetSuccess({
+                tweet: {
+                  ...tweet,
+                  id: insertedId,
+                  referenceId: tweet.id,
+                  type: TweetyType.Retweet,
+                },
+              })
+            )
           )
       )
     )

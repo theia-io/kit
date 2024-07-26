@@ -92,4 +92,18 @@ export class TweetApiService extends DataSourceService {
       switchMap((fn) => fn['deleteBookmark'](bookmark))
     );
   }
+
+  retweet(tweetId: Tweety['id'], profileId: Profile['id']) {
+    return this.db$()
+      .pipe(
+        switchMap((db) => db.collection('retweet').insertOne({
+          tweetId: new BSON.ObjectId(tweetId),
+          profileId: new BSON.ObjectId(profileId),
+          timestamp: {
+            createdAt: (new Date(Date.now())),
+            updatedAt: (new Date(Date.now()))
+          }
+        }))
+      )
+  }
 }

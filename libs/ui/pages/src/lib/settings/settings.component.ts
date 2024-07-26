@@ -4,11 +4,13 @@ import {
   Component,
   computed,
   inject,
+  OnInit,
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import {
   FeatAccountApiActions,
+  FeatLegalApiActions,
   FeatUserApiActions,
   selectAccount,
   selectCurrentProfile,
@@ -47,7 +49,7 @@ import { take } from 'rxjs';
     FeatSettingsExperienceShowComponent,
   ],
 })
-export class PageSettingsComponent {
+export class PageSettingsComponent implements OnInit {
   #store = inject(Store);
 
   currentProfile$ = this.#store.select(selectCurrentProfile).pipe(take(1));
@@ -76,6 +78,10 @@ export class PageSettingsComponent {
     detail: 'Danger Zone area. Actions here can lead to unexpected results',
   };
 
+  ngOnInit(): void {
+    this.#store.dispatch(FeatLegalApiActions.getCompanies());
+  }
+
   updatingProfileHandler() {
     console.log('updatingProfileHandler');
     this.updatingProfile.set(true);
@@ -103,7 +109,7 @@ export class PageSettingsComponent {
     this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
-  editHandler(experience: Experience){
+  editHandler(experience: Experience) {
     console.log(experience);
-   }
+  }
 }

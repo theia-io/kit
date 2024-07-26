@@ -41,7 +41,7 @@ export const featTweetTweetsReducer = createReducer(
     TweetApiActions.getTweetsForBookmarkSuccess,
     (state, { tweets }) => ({
       ...state,
-      tweets: mergeArr(state.tweets, tweets),
+      tweets: mergeArr(tweets, state.tweets),
     })
   ),
   on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
@@ -93,5 +93,9 @@ export const featTweetTweetsReducer = createReducer(
         return stateTweet;
       }),
     })
-  )
+  ),
+  on(FeatTweetActions.reTweetSuccess, (state, { tweet }) => ({
+    ...state,
+    tweets: [tweet, ...state.tweets],
+  }))
 );

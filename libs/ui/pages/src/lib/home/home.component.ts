@@ -24,7 +24,7 @@ import {
   AccountTileComponent,
   DividerComponent,
   NewUIItemComponent,
-  TweetButtonComponent,
+  UiKitTweetButtonComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
 } from '@kitouch/ui/components';
@@ -49,7 +49,7 @@ import { BehaviorSubject, map, merge, switchMap, take, tap, timer } from 'rxjs';
     FeatFollowSuggestionsComponent,
     FeatTweetTweetingComponent,
     FeatTweetTweetyComponent,
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
   ],
 })
 export class PageHomeComponent implements OnInit {

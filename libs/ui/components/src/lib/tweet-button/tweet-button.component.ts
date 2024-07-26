@@ -6,7 +6,6 @@ import {
   input,
   output,
 } from '@angular/core';
-import { throws } from 'assert';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
@@ -39,7 +38,7 @@ import { ButtonModule } from 'primeng/button';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class TweetButtonComponent {
+export class UiKitTweetButtonComponent {
   text = input('Tweet');
 
   disabled = input(false);

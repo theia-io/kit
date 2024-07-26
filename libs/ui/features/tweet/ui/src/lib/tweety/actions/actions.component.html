@@ -1,5 +1,5 @@
 <div class="flex items-center justify-around">
-    <button role="button" (click)="$event.stopPropagation(); comment.emit($event)"
+    <button role="button" (click)="$event.stopPropagation(); comment.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-6 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
@@ -8,64 +8,78 @@
             </path>
         </svg>
 
-        <span  *ngIf="comments > 0" class="ml-2">
-            {{ comments > 1_000_000 ? '1M +' : comments }}
+        @if(comments() > 0) {
+        <span class="ml-2">
+            {{ comments() > 1_000_000 ? '1M +' : comments() }}
         </span>
+        }
+
     </button>
 
-    <!-- Implement repost or quote selection functionality -->
-    <!-- <button role="button" (click)="$event.stopPropagation(); op.toggle($event)"
+    <button role="button" (click)="$event.stopPropagation(); op.toggle($event)"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg class="h-7 w-6" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
             stroke="currentColor" viewBox="0 0 24 24">
             <path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
         </svg>
 
-        <span  *ngIf="repostsAndQuotes > 0" class="ml-2">
-            {{ repostsAndQuotes > 1_000_000 ? '1M +' : repostsAndQuotes }}
+        @if(retweetsAndQuotes() > 0) {
+        <span class="ml-2">
+            {{ retweetsAndQuotes() > 1_000_000 ? '1M +' : retweetsAndQuotes() }}
         </span>
+        }
+
     </button>
     <p-overlayPanel #op>
-        <div class="flex flex-column gap-3 w-25rem">
-            quote or reply
+        <div class="flex flex-col gap-3 w-[150px]">
+            <p-button class="block w-full" styleClass="w-full" (onClick)="retweet.emit(); op.hide()" aria-label="re-tweet">
+                Re-tweet
+                <i class="pi pi-sync ml-auto" style="font-size: 1rem"></i>
+            </p-button>
+
+            <p-button class="block w-full" styleClass="w-full" (onClick)="quote.emit(); op.hide()" aria-label="quote">
+                Quote
+                <i class="pi pi-send ml-auto" style="font-size: 1.5rem"></i>
+            </p-button>
         </div>
-    </p-overlayPanel> -->
+    </p-overlayPanel>
 
     <button role="button" (click)="$event.stopPropagation(); like.emit()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         <svg [ngClass]="{
-            'fill-rose-200 hover:fill-rose-700': !liked,
-            'fill-rose-700 hover:fill-rose-200': liked
-        }" class="h-7 w- " stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            stroke="currentColor" viewBox="0 0 24 24">
+            'fill-rose-200 hover:fill-rose-700': !liked(),
+            'fill-rose-700 hover:fill-rose-200': liked()
+        }" class="h-7 w- " stroke-linecap="round" stroke-linejoin="round" stroke-width="2" stroke="currentColor"
+            viewBox="0 0 24 24">
             <path
                 d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z">
             </path>
         </svg>
 
-        <span  *ngIf="likes > 0" class="ml-2">
-            {{ likes > 1_000_000 ? '1M +' : likes }}
+        @if(likes()) {
+        <span class="ml-2">
+            {{ likes() > 1_000_000 ? '1M +' : likes() }}
         </span>
+        }
     </button>
 
     <button role="button" (click)="$event.stopPropagation(); copyToClipBoard()"
         class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
         @if(copied()) {
-            <i class="pi pi-check" style="font-size: 1.5rem; color: 'var(--primary-color)'"></i>
+        <i class="pi pi-check" style="font-size: 1.5rem; color: 'var(--primary-color)'"></i>
         } @else {
-           <i class="pi pi-copy" style="font-size: 1.5rem;"></i>
+        <i class="pi pi-copy" style="font-size: 1.5rem;"></i>
         }
     </button>
 
-    <button role="button" (click)="$event.stopPropagation(); bookmark.emit()"
-        [ngClass]="{
-        'text-lg hover:text-base font-bold hover:font-medium text-cyan-400 hover:text-gray-500': bookmarked,
-        'text-base hover:text-lg font-medium hover:font-bold text-gray-500 hover:text-cyan-400 hover:bg-neutral-200': !bookmarked
+    <button role="button" (click)="$event.stopPropagation(); bookmark.emit()" [ngClass]="{
+        'text-lg hover:text-base font-bold hover:font-medium text-cyan-400 hover:text-gray-500': bookmarked(),
+        'text-base hover:text-lg font-medium hover:font-bold text-gray-500 hover:text-cyan-400 hover:bg-neutral-200': !bookmarked()
         }"
         class="group flex items-center rounded-full px-3 py-2 leading-6 font-medium transition ease-in-out duration-150">
         <!-- @TODO @FIXME transition -->
-        <svg class="h-7 w-6 transition ease-in-out duration-150" fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            stroke="currentColor" viewBox="0 0 24 24">
+        <svg class="h-7 w-6 transition ease-in-out duration-150" fill="none" stroke-linecap="round"
+            stroke-linejoin="round" stroke-width="2" stroke="currentColor" viewBox="0 0 24 24">
             <path
                 d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20">
             </path>

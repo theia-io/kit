@@ -14,7 +14,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FeatTweetActions } from '@kitouch/features/tweet/data';
 // import { Tweety } from '@kitouch/shared/models';
-import { TweetButtonComponent } from '@kitouch/ui/components';
+import { UiKitTweetButtonComponent } from '@kitouch/ui/components';
 import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -42,7 +42,7 @@ import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
     InputTextareaModule,
     // ToastModule,
     //
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
     FeatTweetTweetingActionsComponent,
   ],
   // providers: [MessageService],

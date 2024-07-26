@@ -11,7 +11,7 @@ import { Bookmark, Tweety } from '@kitouch/shared/models';
 import {
   AccountTileComponent,
   DividerComponent,
-  TweetButtonComponent,
+  UiKitTweetButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui/components';
 import { QuotesService } from '@kitouch/ui/shared';
@@ -32,7 +32,7 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
     FeatTweetTweetyComponent,
     AccountTileComponent,
     DividerComponent,
-    TweetButtonComponent,
+    UiKitTweetButtonComponent,
   ],
 })
 export class PageBookmarksComponent {

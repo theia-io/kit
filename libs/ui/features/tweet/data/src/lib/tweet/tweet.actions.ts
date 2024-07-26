@@ -8,6 +8,14 @@ export const FeatTweetActions = createActionGroup({
     TweetSuccess: props<{ uuid: string; tweet: Tweety }>(),
     TweetFailure: props<{ uuid: string; message: string }>(),
     //
+    ReTweet: props<{ tweet: Tweety }>(),
+    ReTweetSuccess: props<{ tweet: Tweety }>(),
+    ReTweetFailure: props<{ message: string }>(),
+    //
+    Quote: props<{ tweet: Tweety }>(),
+    QuoteSuccess: props<{ tweet: Tweety }>(),
+    QuoteFailure: props<{ message: string }>(),
+    //
     Delete: props<{
       ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
     }>(),
