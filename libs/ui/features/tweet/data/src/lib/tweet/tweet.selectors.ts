@@ -14,6 +14,7 @@ export const selectTweetState = (state: {
 export const selectAllTweets = createSelector(
   selectTweetState,
   (state: FeatureTweetState) => state.tweets
+  //(state: FeatureTweetState) => []: Array<Tweety>
 );
 
 export const selectTweetsProfile = (profileId: string) =>

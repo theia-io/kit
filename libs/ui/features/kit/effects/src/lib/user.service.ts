@@ -62,4 +62,13 @@ export class UserService extends DataSourceService {
       map(() => ({ experience }))
     );
   }
+
+  /* modifyUserExperience$(experience: Experience) {
+    return this.db$().pipe(
+      withLatestFrom(this.user$),
+      switchMap(([db, user]) =>
+        db.collection('user').u
+      )
+    );
+  } */
 }

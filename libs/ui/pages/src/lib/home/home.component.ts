@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentProfileFollowing } from '@kitouch/features/kit/data';
+import { selectCurrentProfileFollowing, selectExperiences } from '@kitouch/features/kit/data';
 import {
   FeatTweetActions,
   TweetApiActions,
@@ -63,6 +63,11 @@ export class PageHomeComponent implements OnInit {
   );
   followingProfiles = toSignal(
     this.#store.pipe(select(selectCurrentProfileFollowing))
+  );
+
+  //experiences$ = this.#store.pipe(select(selectExperiences));
+  experiences = toSignal(
+    this.#store.pipe(select(selectExperiences))
   );
 
   tweetsLoading = signal(true);

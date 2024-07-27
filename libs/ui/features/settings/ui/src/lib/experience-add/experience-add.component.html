@@ -1,5 +1,6 @@
 <form [formGroup]="experienceForm">
     <div class="card flex flex-col justify-content-center">
+        <div>editing: {{editMode}}</div>
         <p-stepper orientation="vertical" [(activeStep)]="stepperActive">
             <p-stepperPanel>
                 <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
@@ -12,6 +13,8 @@
                         </span>
                     </button>
                 </ng-template>
+
+                
 
                 <ng-template pTemplate="content" let-nextCallback="nextCallback">
                     <div class="flex flex-col gap-6">

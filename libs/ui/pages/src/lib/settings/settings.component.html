@@ -15,11 +15,32 @@
         @for (experience of experiences; track $index) {
         <p-accordionTab [header]="experience.title">
             <div class="relative">
-                <feat-settings-experience-show [showRemove]="true"
+                
+                
+                @if ( expEditMode() ) {
+                    <feat-settings-experience-add 
+                    class="block p-[18px]" 
+                    [editMode]="expEditMode()"
+                    [experience]="experience" 
+                    (onSaved)="savedExperienceHandler()" />
+                    
+                } @else {
+                    <feat-settings-experience-show [showRemove]="true" (click)="experienceClicked(experience)"
                     [experience]="experience"></feat-settings-experience-show>
-                <i (click)="deleteTweetHandler(experience)" role="button"
+                }
+
+                
+                <div>
+
+                    
+
+                    <i (click)="deleteTweetHandler(experience)" role="button"
                     class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
                     style="font-size: 1.5rem;"></i>
+                </div>
+
+                
+                
             </div>
         </p-accordionTab>
         }
@@ -28,11 +49,13 @@
 }
 }
 
+@if ( !expEditMode() ) {
+    <div class="w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
+        <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
+        <feat-settings-experience-add class="block p-[18px]" (onSaved)="savedExperienceHandler()" />
+    </div>
+}
 
-<div class="w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
-    <feat-settings-experience-add class="block p-[18px]" (onSaved)="savedExperienceHandler()" />
-</div>
 
 <p-messages [value]="[dangerZoneMessage]" showTransitionOptions="1000ms" hideTransitionOptions="0ms"
     [enableService]="false" [closable]="false" />

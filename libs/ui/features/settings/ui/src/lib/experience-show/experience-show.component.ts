@@ -12,4 +12,5 @@ import { Experience } from '@kitouch/shared/models';
 export class FeatSettingsExperienceShowComponent {
   experience = input.required<Experience>();
   showRemove = input(false);
+  showEdit = input(false);
 }

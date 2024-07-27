@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  Input,
   input,
   OnInit,
   output,
@@ -81,6 +82,11 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
   onSaved = output();
   onRemove = output();
 
+  @Input('editMode') editMode: boolean;
+  //experience = input.required<Experience>();
+  @Input('experience') experienceObj: Experience; 
+
+
   #actions = inject(Actions);
   #store = inject(Store);
 
@@ -129,6 +135,8 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     media: [[] as any],
   });
 
+  
+
   currentlyWorkingHere = new FormControl();
 
   experienceType = Object.values(ExperienceType);
@@ -163,6 +171,9 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       .get('country')
       ?.valueChanges.pipe(this.#takeUntilDestroyed)
       .subscribe(() => this.experienceForm.get('city')?.reset());
+    
+    //console.log('editMode: ', this.editMode);
+    
   }
 
   setCurrentGeolocation() {

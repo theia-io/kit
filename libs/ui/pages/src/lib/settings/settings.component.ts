@@ -52,6 +52,10 @@ export class PageSettingsComponent {
 
   currentProfile$ = this.#store.select(selectCurrentProfile).pipe(take(1));
   updatingProfile = signal(false);
+
+  expEditMode = signal(false);
+  //editedExperience = signal<Experience>(null);
+
   profileMessage = computed<Message>(() => {
     if (this.updatingProfile()) {
       return { severity: 'success', detail: 'Saving updated profile' };
@@ -87,6 +91,15 @@ export class PageSettingsComponent {
 
   deleteTweetHandler(experience: Experience) {
     this.#store.dispatch(FeatUserApiActions.deleteExperience({ experience }));
+  }
+
+  editExperienceHandler(experience: Experience) {
+    this.#store.dispatch(FeatUserApiActions.modifyExperience({ experience }));
+  }
+
+  experienceClicked(experience: Experience) {
+    console.log('exp: ', experience);
+    this.expEditMode.set(true);
   }
 
   deleteAccountHandler() {
