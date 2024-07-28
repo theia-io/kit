@@ -1,4 +1,4 @@
-import { Tweety } from '@kitouch/shared/models';
+import { Tweety } from '@kitouch/shared-models';
 import { mongooseEqual } from '@kitouch/shared/utils';
 import { mergeArr } from '@kitouch/ui/shared';
 import { createReducer, on } from '@ngrx/store';

@@ -1,6 +1,5 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationStart, Router } from '@angular/router';
-import { Environment, ENVIRONMENT } from '@kitouch/ui/shared';
 import {
   filter,
   map,
@@ -9,6 +8,7 @@ import {
   switchMap,
   take
 } from 'rxjs';
+import { ENVIRONMENT, Environment } from '../environments';
 
 @Injectable({
   providedIn: 'root',

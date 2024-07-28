@@ -16,6 +16,7 @@ interface PagedData<T> {
 import { Account } from '../account/account';
 import { Profile } from '../entities-kitouch/profile';
 import { TimeStamp } from '../helpers/time';
+import * as Realm from 'realm';
 
 export enum TweetyType {
   Tweet = 'tweet',

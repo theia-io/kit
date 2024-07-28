@@ -1,4 +1,4 @@
-import { Legal } from '@kitouch/shared/models';
+import { Legal } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
 import { FeatLegalApiActions } from './legal.actions';
 

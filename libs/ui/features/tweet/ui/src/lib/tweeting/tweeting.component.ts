@@ -13,7 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 // import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FeatTweetActions } from '@kitouch/features/tweet/data';
-// import { Tweety } from '@kitouch/shared/models';
+// import { Tweety } from '@kitouch/shared-models';
 import { UiKitTweetButtonComponent } from '@kitouch/ui/components';
 import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
 import { Actions, ofType } from '@ngrx/effects';

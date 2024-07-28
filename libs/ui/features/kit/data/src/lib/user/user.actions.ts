@@ -1,4 +1,4 @@
-import { Experience, User } from '@kitouch/shared/models';
+import { Experience, User } from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatUserApiActions = createActionGroup({

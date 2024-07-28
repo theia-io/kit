@@ -21,7 +21,7 @@ import {
   FeatSettingsExperienceShowComponent,
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/features/settings/ui';
-import { Experience } from '@kitouch/shared/models';
+import { Experience } from '@kitouch/shared-models';
 import { NewUIItemComponent } from '@kitouch/ui/components';
 import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
 import { select, Store } from '@ngrx/store';

@@ -1,6 +1,6 @@
 import { DatePipe } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { Experience } from '@kitouch/shared/models';
+import { Experience } from '@kitouch/shared-models';
 
 @Component({
   standalone: true,

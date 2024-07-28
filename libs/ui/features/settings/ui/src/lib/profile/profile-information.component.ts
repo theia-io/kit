@@ -15,7 +15,7 @@ import {
   FeatProfileApiActions,
   profilePicture,
 } from '@kitouch/features/kit/data';
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';

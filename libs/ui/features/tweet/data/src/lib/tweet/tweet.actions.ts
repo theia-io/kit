@@ -1,4 +1,4 @@
-import { Profile, TweetComment, Tweety } from '@kitouch/shared/models';
+import { Profile, TweetComment, Tweety } from '@kitouch/shared-models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const FeatTweetActions = createActionGroup({

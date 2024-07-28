@@ -1,4 +1,4 @@
-import { Tweety } from '@kitouch/shared/models';
+import { Tweety } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureTweetState } from './tweet.reducers';
 

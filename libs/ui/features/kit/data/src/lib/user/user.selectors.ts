@@ -1,4 +1,4 @@
-import { Experience } from '@kitouch/shared/models';
+import { Experience } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureUserState } from './user.reducers';
 

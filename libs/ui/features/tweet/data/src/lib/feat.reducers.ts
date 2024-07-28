@@ -1,4 +1,4 @@
-import { Bookmark, Tweety } from '@kitouch/shared/models';
+import { Bookmark, Tweety } from '@kitouch/shared-models';
 import { combineReducers } from '@ngrx/store';
 import { featTweetBookmarkReducer } from './bookmark/bookmark.reducers';
 import { featTweetTweetsReducer } from './tweet/tweet.reducers';

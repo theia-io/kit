@@ -12,7 +12,7 @@ import {
   selectCurrentProfile,
   selectFollowingAndNotProfilesMap,
 } from '@kitouch/features/kit/data';
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   FollowButtonComponent,

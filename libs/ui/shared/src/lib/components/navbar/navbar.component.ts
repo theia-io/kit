@@ -7,19 +7,18 @@ import {
   EventEmitter,
   Input,
   Output,
-  effect,
   inject,
   input,
-  output,
+  output
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
-  UiKitTweetButtonComponent,
   UiCompCardComponent,
+  UiKitTweetButtonComponent,
 } from '@kitouch/ui/components';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';

@@ -1,4 +1,4 @@
-import { Account } from '@kitouch/shared/models';
+import { Account } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
 import {
   FeatAccountApiActions

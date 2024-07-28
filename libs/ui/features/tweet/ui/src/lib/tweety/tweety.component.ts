@@ -28,7 +28,7 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
 } from '@kitouch/features/tweet/data';
-import { Tweety, TweetyType } from '@kitouch/shared/models';
+import { Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitTweetButtonComponent,
