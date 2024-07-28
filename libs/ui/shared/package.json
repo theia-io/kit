@@ -1,5 +1,5 @@
 {
-  "name": "@kitouch/ui/shared",
+  "name": "@kitouch/shared",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.0.0",
