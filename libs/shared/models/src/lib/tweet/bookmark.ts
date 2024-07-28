@@ -1,4 +1,4 @@
-import { Profile } from '../entities-kitouch';
+import { Profile } from '../entities-kitouch/profile';
 import { Tweety } from './tweety';
 
 export interface Bookmark {

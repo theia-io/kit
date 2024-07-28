@@ -1,8 +1,3 @@
-
-import { Account } from '../account/account';
-import { Profile } from '../entities-kitouch';
-import { TimeStamp } from '../helpers';
-
 /** 
  * @TODO @FIXME 
  * Lazy Loading for tweets could be implemented by Special interface 
@@ -17,6 +12,10 @@ interface PagedData<T> {
 ```
  * 
  * */
+
+import { Account } from '../account/account';
+import { Profile } from '../entities-kitouch/profile';
+import { TimeStamp } from '../helpers/time';
 
 export enum TweetyType {
   Tweet = 'tweet',
@@ -36,7 +35,7 @@ export interface Tweety extends Realm.Services.MongoDB.Document {
   //
   profileId: Profile['id'];
   referenceId?: Tweety['id']; // for retweets, quotes, comments, replies
-  referenceProfileId?:Profile['id'];
+  referenceProfileId?: Profile['id'];
   // business
   content: string;
   comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;

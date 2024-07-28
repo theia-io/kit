@@ -39,6 +39,7 @@
         "libs/ui/features/tweet/effects/src/index.ts"
       ],
       "@kitouch/features/tweet/ui": ["libs/ui/features/tweet/ui/src/index.ts"],
+      "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],
       "@kitouch/shared/models": ["libs/shared/models/index.ts"],
       "@kitouch/shared/utils": ["libs/shared/utils/index.ts"],
       "@kitouch/ui/components": ["libs/ui/components/src/index.ts"],
