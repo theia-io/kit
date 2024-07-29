@@ -1,4 +1,4 @@
-import { Contact } from '../contact/contact';
+import { Contact } from '../contact';
 import { Legal } from './legal';
 
 export interface Skill {
