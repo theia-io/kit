@@ -22,7 +22,7 @@ import {
 import {
   FeatUserApiActions,
   getMatchingCompanies,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import {
   Experience,
   ExperienceType,

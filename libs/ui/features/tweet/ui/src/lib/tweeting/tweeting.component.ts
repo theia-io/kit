@@ -20,7 +20,7 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 // import { MessageService } from 'primeng/api';
 // import { ToastModule } from 'primeng/toast';
-import { selectProfilePicture } from '@kitouch/features/kit/data';
+import { selectProfilePicture } from '@kitouch/kit-data';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { take } from 'rxjs/operators';

@@ -15,12 +15,12 @@ import {
   selectAccount,
   selectCurrentProfile,
   selectExperiences,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsExperienceShowComponent,
   FeatSettingsProfileInformationComponent,
-} from '@kitouch/features/settings/ui';
+} from '@kitouch/feat-settings-ui';
 import { Experience } from '@kitouch/shared-models';
 import { NewUIItemComponent } from '@kitouch/ui/components';
 import { FeatFollowActions } from '@kitouch/ui/features/follow/data';

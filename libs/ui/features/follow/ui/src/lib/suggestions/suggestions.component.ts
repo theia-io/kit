@@ -11,7 +11,7 @@ import {
   profilePicture,
   selectCurrentProfile,
   selectFollowingAndNotProfilesMap,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,

@@ -12,11 +12,11 @@ import { RouterLink } from '@angular/router';
 import {
   FeatLegalApiActions,
   selectCurrentProfile,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsProfileInformationComponent,
-} from '@kitouch/features/settings/ui';
+} from '@kitouch/feat-settings-ui';
 import {
   ButtonComponent,
   fadeInUpAnimation,

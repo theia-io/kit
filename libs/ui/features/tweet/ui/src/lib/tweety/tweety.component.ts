@@ -20,7 +20,7 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import {
   selectCurrentProfile,
   selectProfile,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,

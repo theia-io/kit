@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { profilePicture, selectProfile } from '@kitouch/features/kit/data';
+import { profilePicture, selectProfile } from '@kitouch/kit-data';
 import {
   TweetApiActions,
   selectTweetsProfile,

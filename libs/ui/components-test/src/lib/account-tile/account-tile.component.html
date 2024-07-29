@@ -1,0 +1,42 @@
+<div class="flex-shrink-0 flex hover:bg-blue-00 rounded-full">
+    <div class="flex items-center">
+        <ng-template #picTmp>
+            <div class="min-w-10">
+                <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer"
+                    [src]="picture() ?? '/account/placeholder-small.jpeg'" height="40" width="40"
+                    alt="kitouch profile picture" />
+            </div>
+        </ng-template>
+
+        @if (link()) {
+        <a [routerLink]="link()" class="hover:animate-pulse">
+            <ng-container *ngTemplateOutlet="picTmp"></ng-container>
+        </a>
+        } @else {
+        <ng-container *ngTemplateOutlet="picTmp"></ng-container>
+        }
+
+
+        <div class="ml-2">
+            <p class="text-base leading-6 font-bold">
+                @if(primaryText()) {
+                {{primaryText()!.length > 16 ? primaryText()!.slice(0, 16) + '...' : primaryText()}}
+
+                }
+
+                @if(primarySecondaryText()) {
+                <span class="text-sm leading-5 font-medium text-gray-400">
+                    {{primarySecondaryText()!.length > 32 ? primarySecondaryText()!.slice(0,32) + '...' :
+                    primarySecondaryText()}}
+                </span>
+                }
+            </p>
+            @if(secondaryText()) {
+            <p
+                class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+                {{secondaryText()!.length > 64 ? secondaryText()!.slice(0,64) + '...' : secondaryText()}}
+            </p>
+            }
+        </div>
+    </div>
+</div>

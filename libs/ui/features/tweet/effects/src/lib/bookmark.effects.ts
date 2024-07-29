@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/features/kit/ui';
+import { selectCurrentProfile } from '@kitouch/feat-kit-ui';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions

@@ -2,13 +2,13 @@ import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
+import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
   AccountsEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
-} from '@kitouch/features/kit/effects';
+} from '@kitouch/feat-kit-effects';
 import { featTweetReducer } from '@kitouch/features/tweet/data';
 import {
   BookmarkEffects,

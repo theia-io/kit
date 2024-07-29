@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatUserApiActions } from '@kitouch/features/kit/data';
+import { FeatUserApiActions } from '@kitouch/kit-data';
 
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
