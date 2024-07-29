@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Account } from '@kitouch/shared/models';
+import { Account } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui/shared';
 import { BSON } from 'realm-web';
 import { forkJoin } from 'rxjs';

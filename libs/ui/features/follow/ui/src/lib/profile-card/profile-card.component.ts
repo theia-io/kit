@@ -8,7 +8,7 @@ import {
     output
 } from '@angular/core';
 import { profilePicture } from '@kitouch/features/kit/data';
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import { FollowButtonComponent } from '@kitouch/ui/components';
 
 @Component({

@@ -27,7 +27,7 @@ import {
   Experience,
   ExperienceType,
   LocationType,
-} from '@kitouch/shared/models';
+} from '@kitouch/shared-models';
 import {
   citiesInCountries,
   countries,

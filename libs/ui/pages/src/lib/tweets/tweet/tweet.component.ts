@@ -18,7 +18,7 @@ import {
   FeatTweetTweetyComponent,
   TWEET_CONTROL_INITIAL_ROWS,
 } from '@kitouch/features/tweet/ui';
-import { TweetComment, Tweety } from '@kitouch/shared/models';
+import { TweetComment, Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,

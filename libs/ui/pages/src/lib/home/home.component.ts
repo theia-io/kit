@@ -19,7 +19,7 @@ import {
   FeatTweetTweetingComponent,
   FeatTweetTweetyComponent,
 } from '@kitouch/features/tweet/ui';
-import { Tweety } from '@kitouch/shared/models';
+import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,

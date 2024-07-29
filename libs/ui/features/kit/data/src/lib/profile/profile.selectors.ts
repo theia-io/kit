@@ -1,4 +1,4 @@
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureProfileState } from './profile.reducers';
 

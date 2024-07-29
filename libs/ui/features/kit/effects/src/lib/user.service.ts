@@ -3,7 +3,7 @@ import {
   getExperienceEqualityObject,
   selectUser,
 } from '@kitouch/features/kit/data';
-import { Experience } from '@kitouch/shared/models';
+import { Experience } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui/shared';
 import { Store } from '@ngrx/store';
 import { BSON } from 'realm-web';

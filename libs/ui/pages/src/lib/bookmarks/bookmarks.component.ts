@@ -7,7 +7,7 @@ import {
   selectBookmarks,
 } from '@kitouch/features/tweet/data';
 import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
-import { Bookmark, Tweety } from '@kitouch/shared/models';
+import { Bookmark, Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,

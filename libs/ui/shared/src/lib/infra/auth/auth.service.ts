@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Account, Profile, User } from '@kitouch/shared/models';
+import { Account, Profile, User } from '@kitouch/shared-models';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {

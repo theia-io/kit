@@ -1,4 +1,4 @@
-import { User } from '@kitouch/shared/models';
+import { User } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
 import { FeatUserApiActions } from './user.actions';
 import _ from 'lodash';

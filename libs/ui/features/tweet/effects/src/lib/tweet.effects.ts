@@ -6,7 +6,7 @@ import {
   TweetApiActions,
   tweetIsLikedByProfile,
 } from '@kitouch/features/tweet/data';
-import { TweetyType } from '@kitouch/shared/models';
+import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';

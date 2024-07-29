@@ -4,7 +4,7 @@ import {
   Profile,
   TweetComment,
   Tweety,
-} from '@kitouch/shared/models';
+} from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui/shared';
 import { BSON } from 'realm-web';
 import { Observable } from 'rxjs';
