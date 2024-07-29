@@ -9,16 +9,16 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentProfileFollowing } from '@kitouch/features/kit/data';
+import { selectCurrentProfileFollowing } from '@kitouch/feat-kit-data';
 import {
   FeatTweetActions,
   TweetApiActions,
   selectAllTweets,
-} from '@kitouch/features/tweet/data';
+} from '@kitouch/feat-tweet-data';
 import {
   FeatTweetTweetingComponent,
   FeatTweetTweetyComponent,
-} from '@kitouch/features/tweet/ui';
+} from '@kitouch/feat-tweet-ui';
 import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -27,9 +27,9 @@ import {
   UiKitTweetButtonComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
-} from '@kitouch/ui/components';
-import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
-import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { FeatFollowSuggestionsComponent } from '@kitouch/feat-follow-ui';
+import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { BehaviorSubject, map, merge, switchMap, take, tap, timer } from 'rxjs';

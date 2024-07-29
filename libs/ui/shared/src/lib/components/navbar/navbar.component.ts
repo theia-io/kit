@@ -20,7 +20,7 @@ import {
   DividerComponent,
   UiKitTweetButtonComponent,
   UiCompCardComponent,
-} from '@kitouch/ui/components';
+} from '@kitouch/ui-components';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { SubnavComponent } from './subnav/subnav.component';

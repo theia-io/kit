@@ -1,5 +1,5 @@
 {
-  "name": "@kitouch/features/settings/data",
+  "name": "@kitouch/feat-settings-data",
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.0.0",

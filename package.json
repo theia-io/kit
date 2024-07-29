@@ -4,7 +4,8 @@
   "license": "MIT",
   "scripts": {
     "dev": "nx run ui:serve",
-    "dev:ssr": "nx run ui:serve-ssr"
+    "dev:ssr": "nx run ui:serve-ssr",
+    "build": "nx run ui:build"
   },
   "private": true,
   "dependencies": {

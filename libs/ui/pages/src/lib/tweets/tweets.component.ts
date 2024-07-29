@@ -2,20 +2,20 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { profilePicture, selectProfile } from '@kitouch/features/kit/data';
+import { profilePicture, selectProfile } from '@kitouch/feat-kit-data';
 import {
   TweetApiActions,
   selectTweetsProfile,
-} from '@kitouch/features/tweet/data';
-import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
+} from '@kitouch/feat-tweet-data';
+import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
 import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
   UiKitTweetButtonComponent,
   UiCompCardComponent,
-} from '@kitouch/ui/components';
-import { APP_PATH } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 

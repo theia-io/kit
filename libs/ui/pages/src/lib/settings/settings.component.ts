@@ -15,15 +15,15 @@ import {
   selectAccount,
   selectCurrentProfile,
   selectExperiences,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/feat-kit-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsExperienceShowComponent,
   FeatSettingsProfileInformationComponent,
-} from '@kitouch/features/settings/ui';
+} from '@kitouch/feat-settings-ui';
 import { Experience } from '@kitouch/shared-models';
-import { NewUIItemComponent } from '@kitouch/ui/components';
-import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
+import { NewUIItemComponent } from '@kitouch/ui-components';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
 import { Message } from 'primeng/api';

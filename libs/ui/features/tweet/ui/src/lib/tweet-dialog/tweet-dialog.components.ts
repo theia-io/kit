@@ -9,8 +9,8 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { FeatTweetActions } from '@kitouch/features/tweet/data';
-import { OUTLET_DIALOG } from '@kitouch/ui/shared';
+import { FeatTweetActions } from '@kitouch/feat-tweet-data';
+import { OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';

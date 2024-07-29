@@ -11,15 +11,15 @@ import {
   profilePicture,
   selectCurrentProfile,
   selectFollowingAndNotProfilesMap,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/feat-kit-data';
 import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   FollowButtonComponent,
   UiCompCardComponent,
-} from '@kitouch/ui/components';
-import { selectColleaguesProfilesSuggestions } from '@kitouch/ui/features/follow/data';
-import { APP_PATH } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { selectColleaguesProfilesSuggestions } from '@kitouch/feat-follow-data';
+import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import {
   combineLatest,

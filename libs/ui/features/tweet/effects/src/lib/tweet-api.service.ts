@@ -5,7 +5,7 @@ import {
   TweetComment,
   Tweety,
 } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui/shared';
+import { DataSourceService } from '@kitouch/ui-shared';
 import { BSON } from 'realm-web';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';

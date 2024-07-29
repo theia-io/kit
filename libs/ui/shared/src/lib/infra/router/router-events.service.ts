@@ -1,6 +1,6 @@
 import { Inject, inject, Injectable } from '@angular/core';
 import { NavigationCancel, NavigationStart, Router } from '@angular/router';
-import { Environment, ENVIRONMENT } from '@kitouch/ui/shared';
+import { Environment, ENVIRONMENT } from '@kitouch/ui-shared';
 import {
   filter,
   map,

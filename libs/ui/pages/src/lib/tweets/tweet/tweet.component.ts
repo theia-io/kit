@@ -8,24 +8,24 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentProfile, selectProfile } from '@kitouch/features/kit/ui';
+import { selectCurrentProfile, selectProfile } from '@kitouch/feat-kit-ui';
 import {
   FeatTweetActions,
   TweetApiActions,
   selectTweet,
-} from '@kitouch/features/tweet/data';
+} from '@kitouch/feat-tweet-data';
 import {
   FeatTweetTweetyComponent,
   TWEET_CONTROL_INITIAL_ROWS,
-} from '@kitouch/features/tweet/ui';
+} from '@kitouch/feat-tweet-ui';
 import { TweetComment, Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
   UiKitTweetButtonComponent,
   UiCompCardComponent,
-} from '@kitouch/ui/components';
-import { APP_PATH } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';

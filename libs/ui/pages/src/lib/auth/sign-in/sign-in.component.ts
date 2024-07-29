@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
-import { AuthService } from '@kitouch/ui/shared';
+import { AuthService } from '@kitouch/ui-shared';
 import { ButtonModule } from 'primeng/button';
 
 @Component({

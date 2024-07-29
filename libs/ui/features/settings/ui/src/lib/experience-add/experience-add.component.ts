@@ -22,7 +22,7 @@ import {
 import {
   FeatUserApiActions,
   getMatchingCompanies,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/feat-kit-data';
 import {
   Experience,
   ExperienceType,
@@ -32,7 +32,7 @@ import {
   citiesInCountries,
   countries,
   GeolocationService,
-} from '@kitouch/ui/shared';
+} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';

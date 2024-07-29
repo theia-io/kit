@@ -1,5 +1,5 @@
 import { Profile } from '@kitouch/shared-models';
-import { mergeArr } from '@kitouch/ui/shared';
+import { mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFollowActions } from './follow.actions';
 

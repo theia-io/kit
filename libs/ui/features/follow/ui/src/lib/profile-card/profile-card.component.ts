@@ -7,9 +7,9 @@ import {
     input,
     output
 } from '@angular/core';
-import { profilePicture } from '@kitouch/features/kit/data';
+import { profilePicture } from '@kitouch/feat-kit-data';
 import { Profile } from '@kitouch/shared-models';
-import { FollowButtonComponent } from '@kitouch/ui/components';
+import { FollowButtonComponent } from '@kitouch/ui-components';
 
 @Component({
   standalone: true,

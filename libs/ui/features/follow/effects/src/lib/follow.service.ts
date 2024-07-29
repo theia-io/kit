@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Profile, User } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui/shared';
+import { DataSourceService } from '@kitouch/ui-shared';
 import { Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })

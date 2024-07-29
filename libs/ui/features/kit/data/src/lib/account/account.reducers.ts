@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 import {
   FeatAccountApiActions
 } from './account.actions';
-// import { mongooseEqual } from '@kitouch/shared/utils';
+// import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureAccountState {
   account?: Account;

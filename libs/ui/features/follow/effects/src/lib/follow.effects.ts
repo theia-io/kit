@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { selectUser } from '@kitouch/features/kit/data';
+import { selectUser } from '@kitouch/feat-kit-data';
 
-import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
