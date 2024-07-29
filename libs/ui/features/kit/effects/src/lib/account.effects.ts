@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatAccountApiActions } from '@kitouch/feat-kit-data';
+import { FeatAccountApiActions } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { AccountService } from './account.service';

@@ -18,7 +18,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@kitouch/feat-kit-data": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
       "@kitouch/feat-kit-effects": [
         "libs/ui/features/kit/effects/src/index.ts"
       ],

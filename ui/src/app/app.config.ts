@@ -2,7 +2,7 @@ import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { featReducer as accountFeatureReducer } from '@kitouch/feat-kit-data';
+import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
   AccountsEffects,
   LegalEffects,

@@ -22,7 +22,7 @@ import {
 import {
   FeatUserApiActions,
   getMatchingCompanies,
-} from '@kitouch/feat-kit-data';
+} from '@kitouch/kit-data';
 import {
   Experience,
   ExperienceType,
@@ -144,7 +144,7 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       )
     );
 
-  countries = countries.map((country) => country.name);
+  countries = countries.map((country: {name: string, code: string}) => country.name);
   citiesInCountries = toSignal(
     this.experienceForm.get('country')!.valueChanges.pipe(
       filter((country) => !!country),

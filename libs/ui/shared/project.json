@@ -1,6 +1,6 @@
 {
   "name": "shared",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ui/shared/src",
   "prefix": "lib",
   "projectType": "library",
@@ -10,14 +10,14 @@
       "executor": "@nx/angular:ng-packagr-lite",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/ui/shared//ng-package.json"
+        "project": "libs/ui/shared/ng-package.json"
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/ui/shared//tsconfig.lib.prod.json"
+          "tsConfig": "libs/ui/shared/tsconfig.lib.prod.json"
         },
         "development": {
-          "tsConfig": "libs/ui/shared//tsconfig.lib.json"
+          "tsConfig": "libs/ui/shared/tsconfig.lib.json"
         }
       },
       "defaultConfiguration": "production"

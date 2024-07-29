@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { selectUser } from '@kitouch/feat-kit-data';
+import { selectUser } from '@kitouch/kit-data';
 
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';

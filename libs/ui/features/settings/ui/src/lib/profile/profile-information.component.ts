@@ -14,7 +14,7 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
   FeatProfileApiActions,
   profilePicture,
-} from '@kitouch/feat-kit-data';
+} from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';

@@ -15,7 +15,7 @@ import {
   selectAccount,
   selectCurrentProfile,
   selectExperiences,
-} from '@kitouch/feat-kit-data';
+} from '@kitouch/kit-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsExperienceShowComponent,

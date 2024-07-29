@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentProfileFollowing } from '@kitouch/feat-kit-data';
+import { selectCurrentProfileFollowing } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   TweetApiActions,
