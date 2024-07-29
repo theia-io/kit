@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/features/kit/ui';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions
-} from '@kitouch/features/tweet/data';
+} from '@kitouch/feat-tweet-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';

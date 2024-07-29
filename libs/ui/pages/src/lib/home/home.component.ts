@@ -9,30 +9,30 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { selectCurrentProfileFollowing } from '@kitouch/features/kit/data';
 import {
   FeatTweetActions,
   TweetApiActions,
   selectAllTweets,
-} from '@kitouch/features/tweet/data';
+} from '@kitouch/feat-tweet-data';
 import {
   FeatTweetTweetingComponent,
   FeatTweetTweetyComponent,
-} from '@kitouch/features/tweet/ui';
-import { Tweety } from '@kitouch/shared/models';
+} from '@kitouch/feat-tweet-ui';
+import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
+import { selectCurrentProfileFollowing } from '@kitouch/kit-data';
+import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
   NewUIItemComponent,
-  UiKitTweetButtonComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
-} from '@kitouch/ui/components';
-import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
-import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui/shared';
+  UiKitTweetButtonComponent,
+} from '@kitouch/ui-components';
+import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
-import { BehaviorSubject, map, merge, switchMap, take, tap, timer } from 'rxjs';
+import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
 
 @Component({
   standalone: true,

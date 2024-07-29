@@ -5,10 +5,10 @@ import {
   onlyForLoggedInGuard,
   onlyForNotLoggedInGuard,
   OUTLET_DIALOG,
-} from '@kitouch/ui/shared';
+} from '@kitouch/ui-shared';
 import { KitComponent } from './kit.component';
 
-const pages = import('@kitouch/ui/pages');
+const pages = import('@kitouch/pages');
 
 export const appRoutes: Route[] = [
   {
@@ -98,7 +98,7 @@ export const appRoutes: Route[] = [
         path: APP_PATH_DIALOG.Tweet,
         outlet: OUTLET_DIALOG,
         loadComponent: () =>
-          import('@kitouch/features/tweet/ui').then(
+          import('@kitouch/feat-tweet-ui').then(
             (feat) => feat.FeatTweetDialogComponent
           ),
       },

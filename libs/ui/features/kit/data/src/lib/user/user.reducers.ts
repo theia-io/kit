@@ -1,9 +1,9 @@
-import { User } from '@kitouch/shared/models';
+import { User } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
 import { FeatUserApiActions } from './user.actions';
 import _ from 'lodash';
 import { getExperienceEqualityObject } from './user.selectors';
-// import { mongooseEqual } from '@kitouch/shared/utils';
+// import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureUserState {
   user?: User;

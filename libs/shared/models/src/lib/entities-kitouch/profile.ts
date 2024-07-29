@@ -1,4 +1,6 @@
 import { Link, Picture } from '../helpers';
+/** @FIXME include into TS itself (so not importing) */
+import * as Realm from 'realm';
 
 export enum ProfileType {
   Personal = 'Physical',

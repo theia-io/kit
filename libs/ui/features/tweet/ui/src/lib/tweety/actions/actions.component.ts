@@ -10,7 +10,7 @@ import {
   Output,
   signal,
 } from '@angular/core';
-import { UiKitTweetButtonComponent } from '@kitouch/ui/components';
+import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 

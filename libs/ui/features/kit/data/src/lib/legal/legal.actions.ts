@@ -1,4 +1,4 @@
-import { Legal } from '@kitouch/shared/models';
+import { Legal } from '@kitouch/shared-models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const FeatLegalApiActions = createActionGroup({

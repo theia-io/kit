@@ -1,4 +1,4 @@
-import { Experience } from '@kitouch/shared/models';
+import { Experience } from '@kitouch/shared-models';
 
 export type ExperienceDates = Pick<
   Experience,

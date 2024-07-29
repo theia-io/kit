@@ -1,6 +1,6 @@
-import { Tweety } from '@kitouch/shared/models';
-import { mongooseEqual } from '@kitouch/shared/utils';
-import { mergeArr } from '@kitouch/ui/shared';
+import { Tweety } from '@kitouch/shared-models';
+import { mongooseEqual } from '@kitouch/utils';
+import { mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
 import { FeatTweetActions, TweetApiActions } from './tweet.actions';

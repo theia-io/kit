@@ -1,5 +1,5 @@
-import { Bookmark } from '@kitouch/shared/models';
-import { mergeArr } from '@kitouch/ui/shared';
+import { Bookmark } from '@kitouch/shared-models';
+import { mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import { FeatTweetBookmarkActions } from './bookmark.actions';
 

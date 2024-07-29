@@ -22,17 +22,17 @@ import {
 import {
   FeatUserApiActions,
   getMatchingCompanies,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import {
   Experience,
   ExperienceType,
   LocationType,
-} from '@kitouch/shared/models';
+} from '@kitouch/shared-models';
 import {
   citiesInCountries,
   countries,
   GeolocationService,
-} from '@kitouch/ui/shared';
+} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
@@ -144,7 +144,7 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       )
     );
 
-  countries = countries.map((country) => country.name);
+  countries = countries.map((country: {name: string, code: string}) => country.name);
   citiesInCountries = toSignal(
     this.experienceForm.get('country')!.valueChanges.pipe(
       filter((country) => !!country),

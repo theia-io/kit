@@ -1,10 +1,10 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { FeatTweetBookmarkActions } from '@kitouch/features/tweet/data';
-import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
+import { FeatTweetBookmarkActions } from '@kitouch/feat-tweet-data';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
 
-import { FeatFollowSuggestionsComponent } from '@kitouch/ui/features/follow/ui';
+import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import {
   APP_PATH,
   APP_PATH_DIALOG,
@@ -13,7 +13,7 @@ import {
   NAV_ITEMS,
   NavBarComponent,
   OUTLET_DIALOG,
-} from '@kitouch/ui/shared';
+} from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 
 @Component({

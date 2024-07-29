@@ -1,4 +1,4 @@
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const FeatProfileApiActions = createActionGroup({

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Legal } from '@kitouch/shared/models';
-import { DataSourceService } from '@kitouch/ui/shared';
+import { Legal } from '@kitouch/shared-models';
+import { DataSourceService } from '@kitouch/ui-shared';
 import { map, switchMap } from 'rxjs';
 
 @Injectable({

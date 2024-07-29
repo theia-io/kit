@@ -1,4 +1,4 @@
-import { Account } from '@kitouch/shared/models';
+import { Account } from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatAccountApiActions = createActionGroup({

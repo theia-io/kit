@@ -1,7 +1,7 @@
-import { Profile } from '@kitouch/shared/models';
+import { Profile } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
 import { FeatProfileApiActions } from './profile.actions';
-// import { mongooseEqual } from '@kitouch/shared/utils';
+// import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureProfileState {
   currentProfile?: Profile;

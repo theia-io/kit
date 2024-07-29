@@ -3,7 +3,7 @@ import {
   FeatLegalApiActions,
   FeatUserApiActions,
   getMatchingCompanies,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, filter, map, of, switchMap } from 'rxjs';

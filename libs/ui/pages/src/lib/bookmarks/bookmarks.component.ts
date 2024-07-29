@@ -5,16 +5,16 @@ import {
   FeatTweetBookmarkActions,
   selectAllTweets,
   selectBookmarks,
-} from '@kitouch/features/tweet/data';
-import { FeatTweetTweetyComponent } from '@kitouch/features/tweet/ui';
-import { Bookmark, Tweety } from '@kitouch/shared/models';
+} from '@kitouch/feat-tweet-data';
+import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
+import { Bookmark, Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
   UiKitTweetButtonComponent,
   UiCompCardComponent,
-} from '@kitouch/ui/components';
-import { QuotesService } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { QuotesService } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { combineLatest, interval, merge, of } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';

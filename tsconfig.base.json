@@ -18,45 +18,41 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@kitouch/features/kit/data": ["libs/ui/features/kit/data/src/index.ts"],
-      "@kitouch/features/kit/effects": [
-        "libs/ui/features/kit/effects/src/index.ts"
-      ],
-      "@kitouch/features/kit/ui": ["libs/ui/features/kit/data/src/index.ts"],
-      "@kitouch/features/settings/data": [
-        "libs/ui/features/settings/data/src/index.ts"
-      ],
-      "@kitouch/features/settings/effects": [
-        "libs/ui/features/settings/effects/src/index.ts"
-      ],
-      "@kitouch/features/settings/ui": [
-        "libs/ui/features/settings/ui/src/index.ts"
-      ],
-      "@kitouch/features/tweet/data": [
-        "libs/ui/features/tweet/data/src/index.ts"
-      ],
-      "@kitouch/features/tweet/effects": [
-        "libs/ui/features/tweet/effects/src/index.ts"
-      ],
-      "@kitouch/features/tweet/ui": ["libs/ui/features/tweet/ui/src/index.ts"],
-      "@kitouch/shared/models": ["libs/shared/models/index.ts"],
-      "@kitouch/shared/utils": ["libs/shared/utils/index.ts"],
-      "@kitouch/ui/components": ["libs/ui/components/src/index.ts"],
-      "@kitouch/ui/features/account/ui": [
-        "libs/ui/features/account/ui/src/index.ts"
-      ],
-      "@kitouch/ui/features/follow/data": [
+      "@kitouch/feat-account-ui": ["libs/ui/features/account/ui/src/index.ts"],
+      "@kitouch/feat-follow-data": [
         "libs/ui/features/follow/data/src/index.ts"
       ],
-      "@kitouch/ui/features/follow/effects": [
+      "@kitouch/feat-follow-effects": [
         "libs/ui/features/follow/effects/src/index.ts"
       ],
-      "@kitouch/ui/features/follow/ui": [
-        "libs/ui/features/follow/ui/src/index.ts"
+      "@kitouch/follow-ui": ["libs/ui/features/follow/ui/src/index.ts"],
+      "@kitouch/feat-kit-effects": [
+        "libs/ui/features/kit/effects/src/index.ts"
       ],
-      "@kitouch/ui/features/search": ["libs/ui/features/search/src/index.ts"],
-      "@kitouch/ui/pages": ["libs/ui/pages/src/index.ts"],
-      "@kitouch/ui/shared": ["libs/ui/shared/src/index.ts"]
+      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/feat-search": ["libs/ui/features/search/src/index.ts"],
+      "@kitouch/feat-settings-data": [
+        "libs/ui/features/settings/data/src/index.ts"
+      ],
+      "@kitouch/feat-settings-effects": [
+        "libs/ui/features/settings/effects/src/index.ts"
+      ],
+      "@kitouch/feat-settings-ui": [
+        "libs/ui/features/settings/ui/src/index.ts"
+      ],
+      "@kitouch/feat-tweet-data": ["libs/ui/features/tweet/data/src/index.ts"],
+      "@kitouch/feat-tweet-effects": [
+        "libs/ui/features/tweet/effects/src/index.ts"
+      ],
+      "@kitouch/feat-tweet-ui": ["libs/ui/features/tweet/ui/src/index.ts"],
+      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/pages": ["libs/ui/pages/src/index.ts"],
+      "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],
+      "@kitouch/shared-utils": ["libs/shared/utils/index.ts"],
+      "@kitouch/ui-components": ["libs/ui/components/src/index.ts"],
+      "@kitouch/ui-shared": ["libs/ui/shared/src/index.ts"],
+      "@kitouch/utils": ["libs/shared/utils/src/index.ts"],
+      "realm": ["node_modules/realm-web/types/realm"]
     }
   },
   "exclude": ["node_modules", "tmp"]

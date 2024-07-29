@@ -7,20 +7,14 @@ import {
   EventEmitter,
   Input,
   Output,
-  effect,
   inject,
   input,
   output,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { Profile } from '@kitouch/shared/models';
-import {
-  AccountTileComponent,
-  DividerComponent,
-  UiKitTweetButtonComponent,
-  UiCompCardComponent,
-} from '@kitouch/ui/components';
+import { Profile } from '@kitouch/shared-models';
+import { AccountTileComponent, DividerComponent, UiCompCardComponent, UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { SubnavComponent } from './subnav/subnav.component';
@@ -38,10 +32,10 @@ import { SubnavComponent } from './subnav/subnav.component';
     MenuModule,
     /** Features */
     UiCompCardComponent,
-    SubnavComponent,
     DividerComponent,
     AccountTileComponent,
     UiKitTweetButtonComponent,
+    SubnavComponent,
   ],
 })
 export class NavBarComponent implements AfterViewInit {

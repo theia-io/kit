@@ -1,13 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { Account, Profile, User } from '@kitouch/shared/models';
+import { Account, Profile, User } from '@kitouch/shared-models';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+
 import {
   FeatAccountApiActions,
   FeatProfileApiActions,
   FeatUserApiActions,
-} from 'libs/ui/features/kit/data/src';
+} from '@kitouch/kit-data';
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
 import { APP_PATH } from '../../constants';

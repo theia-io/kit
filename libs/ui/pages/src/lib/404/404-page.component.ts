@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { ButtonComponent } from '@kitouch/ui/components';
+import { ButtonComponent } from '@kitouch/ui-components';
 
 @Component({
   standalone: true,

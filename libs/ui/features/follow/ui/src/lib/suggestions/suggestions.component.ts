@@ -6,20 +6,20 @@ import {
   input,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { selectColleaguesProfilesSuggestions } from '@kitouch/feat-follow-data';
 import {
   FeatProfileApiActions,
   profilePicture,
   selectCurrentProfile,
   selectFollowingAndNotProfilesMap,
-} from '@kitouch/features/kit/data';
-import { Profile } from '@kitouch/shared/models';
+} from '@kitouch/kit-data';
+import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   FollowButtonComponent,
   UiCompCardComponent,
-} from '@kitouch/ui/components';
-import { selectColleaguesProfilesSuggestions } from '@kitouch/ui/features/follow/data';
-import { APP_PATH } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import {
   combineLatest,
@@ -28,7 +28,7 @@ import {
   Observable,
   shareReplay,
   switchMap,
-  take
+  take,
 } from 'rxjs';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
 

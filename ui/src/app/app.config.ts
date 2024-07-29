@@ -2,22 +2,22 @@ import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { featReducer as accountFeatureReducer } from '@kitouch/features/kit/data';
+import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
   AccountsEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
-} from '@kitouch/features/kit/effects';
-import { featTweetReducer } from '@kitouch/features/tweet/data';
+} from '@kitouch/feat-kit-effects';
+import { featTweetReducer } from '@kitouch/feat-tweet-data';
 import {
   BookmarkEffects,
   CommentsEffects,
   TweetsEffects,
-} from '@kitouch/features/tweet/effects';
-import { featFollowReducer } from '@kitouch/ui/features/follow/data';
-import { FollowEffects } from '@kitouch/ui/features/follow/effects';
-import { AuthInterceptor, ENVIRONMENT } from '@kitouch/ui/shared';
+} from '@kitouch/feat-tweet-effects';
+import { featFollowReducer } from '@kitouch/feat-follow-data';
+import { FollowEffects } from '@kitouch/feat-follow-effects';
+import { AuthInterceptor, ENVIRONMENT } from '@kitouch/ui-shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';

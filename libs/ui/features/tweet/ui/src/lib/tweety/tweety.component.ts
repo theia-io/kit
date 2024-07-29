@@ -20,20 +20,20 @@ import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import {
   selectCurrentProfile,
   selectProfile,
-} from '@kitouch/features/kit/data';
+} from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
   selectIsBookmarked,
   selectTweet,
   tweetIsLikedByProfile,
-} from '@kitouch/features/tweet/data';
-import { Tweety, TweetyType } from '@kitouch/shared/models';
+} from '@kitouch/feat-tweet-data';
+import { Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitTweetButtonComponent,
-} from '@kitouch/ui/components';
-import { APP_PATH } from '@kitouch/ui/shared';
+} from '@kitouch/ui-components';
+import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';

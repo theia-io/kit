@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatProfileApiActions } from '@kitouch/features/kit/data';
+import { FeatProfileApiActions } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { ProfileService } from './profile.service';
-import { FeatFollowActions } from '@kitouch/ui/features/follow/data';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
 
 @Injectable()
 export class ProfileEffects {

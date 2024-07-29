@@ -1,4 +1,3 @@
-
 import { Account } from '../account/account';
 import { Profile } from '../entities-kitouch';
 import { TimeStamp } from '../helpers';
@@ -36,7 +35,7 @@ export interface Tweety extends Realm.Services.MongoDB.Document {
   //
   profileId: Profile['id'];
   referenceId?: Tweety['id']; // for retweets, quotes, comments, replies
-  referenceProfileId?:Profile['id'];
+  referenceProfileId?: Profile['id'];
   // business
   content: string;
   comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;
