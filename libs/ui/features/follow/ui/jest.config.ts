@@ -1,9 +1,9 @@
 /* eslint-disable */
 export default {
   displayName: 'follow',
-  preset: '../../../../jest.preset.js',
+  preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/ui/features/follow',
+  coverageDirectory: '../../../../../coverage/libs/ui/features/follow',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',

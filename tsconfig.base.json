@@ -18,11 +18,19 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/feat-account-ui": ["libs/ui/features/account/ui/src/index.ts"],
+      "@kitouch/feat-follow-data": [
+        "libs/ui/features/follow/data/src/index.ts"
+      ],
+      "@kitouch/feat-follow-effects": [
+        "libs/ui/features/follow/effects/src/index.ts"
+      ],
+      "@kitouch/feat-follow-ui": ["libs/ui/features/follow/ui/src/index.ts"],
       "@kitouch/feat-kit-effects": [
         "libs/ui/features/kit/effects/src/index.ts"
       ],
       "@kitouch/feat-kit-ui": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/feat-search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/feat-settings-data": [
         "libs/ui/features/settings/data/src/index.ts"
       ],
@@ -32,31 +40,18 @@
       "@kitouch/feat-settings-ui": [
         "libs/ui/features/settings/ui/src/index.ts"
       ],
-      "@kitouch/feat-tweet-data": [
-        "libs/ui/features/tweet/data/src/index.ts"
-      ],
+      "@kitouch/feat-tweet-data": ["libs/ui/features/tweet/data/src/index.ts"],
       "@kitouch/feat-tweet-effects": [
         "libs/ui/features/tweet/effects/src/index.ts"
       ],
       "@kitouch/feat-tweet-ui": ["libs/ui/features/tweet/ui/src/index.ts"],
+      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/pages": ["libs/ui/pages/src/index.ts"],
       "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],
       "@kitouch/shared-utils": ["libs/shared/utils/index.ts"],
       "@kitouch/ui-components": ["libs/ui/components/src/index.ts"],
-      "@kitouch/feat-account-ui": [
-        "libs/ui/features/account/ui/src/index.ts"
-      ],
-      "@kitouch/feat-follow-data": [
-        "libs/ui/features/follow/data/src/index.ts"
-      ],
-      "@kitouch/feat-follow-effects": [
-        "libs/ui/features/follow/effects/src/index.ts"
-      ],
-      "@kitouch/feat-follow-ui": [
-        "libs/ui/features/follow/ui/src/index.ts"
-      ],
-      "@kitouch/feat-search": ["libs/ui/features/search/src/index.ts"],
-      "@kitouch/pages": ["libs/ui/pages/src/index.ts"],
       "@kitouch/ui-shared": ["libs/ui/shared/src/index.ts"],
+      "@kitouch/utils": ["libs/shared/utils/src/index.ts"],
       "realm": ["node_modules/realm-web/types/realm"]
     }
   },
