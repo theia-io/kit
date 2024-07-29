@@ -1,5 +1,5 @@
 {
-  "name": "follow",
+  "name": "follow-ui",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ui/features/follow/ui/src",
   "prefix": "lib",

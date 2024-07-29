@@ -8,7 +8,7 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentProfile, selectProfile } from '@kitouch/feat-kit-ui';
+import { selectCurrentProfile, selectProfile } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   TweetApiActions,

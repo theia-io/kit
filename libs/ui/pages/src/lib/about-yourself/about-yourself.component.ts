@@ -23,7 +23,7 @@ import {
   NewUIItemComponent,
 } from '@kitouch/ui-components';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
-import { FeatFollowSuggestionsComponent } from '@kitouch/feat-follow-ui';
+import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import { Actions } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';

@@ -4,7 +4,7 @@ import { Router, RouterModule } from '@angular/router';
 import { FeatTweetBookmarkActions } from '@kitouch/feat-tweet-data';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 
-import { FeatFollowSuggestionsComponent } from '@kitouch/feat-follow-ui';
+import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import {
   APP_PATH,
   APP_PATH_DIALOG,

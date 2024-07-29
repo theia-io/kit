@@ -25,11 +25,11 @@
       "@kitouch/feat-follow-effects": [
         "libs/ui/features/follow/effects/src/index.ts"
       ],
-      "@kitouch/feat-follow-ui": ["libs/ui/features/follow/ui/src/index.ts"],
+      "@kitouch/follow-ui": ["libs/ui/features/follow/ui/src/index.ts"],
       "@kitouch/feat-kit-effects": [
         "libs/ui/features/kit/effects/src/index.ts"
       ],
-      "@kitouch/feat-kit-ui": ["libs/ui/features/kit/data/src/index.ts"],
+      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
       "@kitouch/feat-search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/feat-settings-data": [
         "libs/ui/features/settings/data/src/index.ts"

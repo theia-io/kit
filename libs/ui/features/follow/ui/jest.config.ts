@@ -1,6 +1,6 @@
 /* eslint-disable */
 export default {
-  displayName: 'follow',
+  displayName: 'follow-ui',
   preset: '../../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
   coverageDirectory: '../../../../../coverage/libs/ui/features/follow',

@@ -6,6 +6,7 @@ import {
   input,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { selectColleaguesProfilesSuggestions } from '@kitouch/feat-follow-data';
 import {
   FeatProfileApiActions,
   profilePicture,
@@ -18,7 +19,6 @@ import {
   FollowButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui-components';
-import { selectColleaguesProfilesSuggestions } from '@kitouch/feat-follow-data';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import {
@@ -28,7 +28,7 @@ import {
   Observable,
   shareReplay,
   switchMap,
-  take
+  take,
 } from 'rxjs';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
 
