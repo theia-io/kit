@@ -1,4 +1,4 @@
-import { Account } from '../account/account';
+import { Account } from '../account/a-account';
 import { Profile } from '../entities-kitouch';
 import { TimeStamp } from '../helpers';
 
