@@ -183,7 +183,7 @@ export class PageTweetComponent {
     );
 
     this.commentContentControl.reset();
-    this.commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+    // this.commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
   }
 
   commentControlBlur() {

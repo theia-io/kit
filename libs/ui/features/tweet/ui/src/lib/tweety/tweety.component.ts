@@ -11,16 +11,12 @@ import {
   SimpleChanges,
   ViewChild,
   inject,
-  signal
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import {
-  selectCurrentProfile,
-  selectProfile,
-} from '@kitouch/kit-data';
+import { Router, RouterModule } from '@angular/router';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
@@ -28,6 +24,7 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
+import { selectCurrentProfile, selectProfile } from '@kitouch/kit-data';
 import { Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -49,7 +46,6 @@ import {
   startWith,
   switchMap,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -124,7 +120,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
       retweet.referenceProfileId === profile.id
         ? of(profile)
         : this.#store.select(selectProfile(retweet.referenceProfileId!))
-    ),
+    )
   );
 
   tweetProfile$ = this.#tweet$.pipe(
@@ -193,7 +189,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
       APP_PATH.Profile,
       tweet.profileId,
       APP_PATH.Tweet,
-      tweet.id,
+      tweet.type === TweetyType.Retweet ? tweet.referenceId : tweet.id,
     ].join('/');
   }
 

@@ -28,7 +28,8 @@
         [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet().content)">
     </p>
 
-    <feat-tweet-actions [tweetUrl]="tweetUrl(tweet(), true)" [comments]="(tweetComments$ | async)?.length ?? 0"
+    @if(tweet().type !== tweetTypes.Retweet) {
+        <feat-tweet-actions [tweetUrl]="tweetUrl(tweet(), true)" [comments]="(tweetComments$ | async)?.length ?? 0"
         (comment)="commentOverlayTmpl.toggle($event)" (retweet)="retweetHandler()" (quote)="quoteHandler()"
         [liked]="tweetLiked$ | async" [likes]="tweet().upProfileIds?.length ?? 0" (like)="likeHandler()"
         [bookmarked]="(tweetBookmarked$ | async) ?? false" (bookmark)="bookmarkHandler()" />
@@ -46,6 +47,7 @@
                 [loader]="false" (click)="commentHandler()" />
         </div>
     </p-overlayPanel>
+    }
 </div>
 
 @if(tweetCanBeDeleted$ | async) {

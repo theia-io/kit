@@ -47,7 +47,7 @@ import { Store } from '@ngrx/store';
 
       <div right>
         <article
-          class="flex justify-center align-center gap-1 p-0.5  rounded-xl shadow-xl transition hover:animate-background hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]"
+          class="mb-4 flex justify-center align-center gap-1 p-0.5  rounded-xl shadow-xl transition hover:animate-background hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]"
         >
           <span class="text-xl font-bold mr-2">(ex-)</span>
           <i class="pi pi-user" style="font-size: 1.5rem"></i>

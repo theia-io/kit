@@ -18,9 +18,12 @@
         </p>
     </div>
 </div>
-<p class="mt-2" *ngIf="profile()?.description">
-    {{profile()?.description}}
-</p>
+
+@if(profile()?.description) {
+    <p class="mt-2">
+        {{profile()?.description}}
+    </p>
+}
 
 <app-divider class="block my-2 mt-12" />
 @for (tweet of tweets$ | async; track $index) {
