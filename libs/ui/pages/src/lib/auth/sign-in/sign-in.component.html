@@ -1,27 +1,36 @@
-<div class="surface-section px-4 py-8 md:px-6 lg:px-8">
-    <div class="text-700 text-center">
-        <div class="text-blue-600 font-bold mb-3"><i class="pi pi-discord"></i>&nbsp;POWERED BY Theia</div>
-        <div class="text-900 font-bold text-5xl mb-3">Join Your Colleagues Community</div>
-        <div class="text-700 text-2xl mb-5">Lorem ipsum dolor sit, amet consectetur adipisicing elit. Velit numquam
-            eligendi quos.</div>
-        <button pButton pRipple label="Join Now" icon="pi pi-discord"
-            class="font-bold px-5 py-3 p-button-raised p-button-rounded white-space-nowrap"></button>
-    </div>
-</div>
-
-<div class="flex w-full justify-center items-center">
+<div class="w-full h-full flex justify-center items-center bg-[#FCFCFC]">
     <div class="w-4/6">
-        What is Lorem Ipsum?
-        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's
-        standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make
-        a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing
-        Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-        of Lorem Ipsum.
+        <img class="w-full h-full" src="sign-in/coworking-space/4880332.jpg" />
     </div>
-    <div class="w-2/6">
-        <button (click)="handleGoogleSignIn()" type="button" class="login-with-google-btn">
+
+    <div class="w-2/6 flex flex-col justify-center items-center gap-20">
+        <!-- <section class="wrapper">
+            <div class="top">Kitouch - Keep In Touch</div>
+            <div class="bottom" aria-hidden="true">Kitouch - Keep In Touch</div>
+        </section> -->
+
+        <div class="relative">
+            <p-tag icon="pi pi-info-circle" severity="info" class="absolute top-0 right-0 -rotate-12" value="BETA" [rounded]="true" />
+
+            <div class="name">
+                Kitouch
+            </div>
+        </div>
+
+        <button (click)="handleGoogleSignIn()" type="button"
+            class="flex justify-center items-center gap-4 login-with-google-btn">
+            <img class="inline-block h-6" src="sign-in/g-icon.png" />
             Sign in with Google
         </button>
+
+
+
+        <blockquote class="wrapper">
+            <p>
+                Keep in Touch. "Reconnect with your former colleagues, share achievements, and discover new
+                opportunities. Your
+                professional network, streamlined"
+            </p>
+        </blockquote>
     </div>
 </div>

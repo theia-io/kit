@@ -2,9 +2,14 @@
     <img class="inline-block h-10 w-auto rounded-full mt-2" ngSrc="logo-small.jpeg" alt="Kitouch logo" height="40"
         width="40" />
 
-    <p class="ml-2 font-bold">
-        KITouch
-    </p>
+        <div class="relative">
+            <p-tag severity="info" class="absolute -top-2 -right-12 rotate-12" value="BETA" [rounded]="true" />
+
+            <p class="ml-2 font-bold">
+                KITouch
+            </p>
+        </div>
+   
 </div>
 
 <p-menu styleClass="border-0 mt-4" [model]="items()" (onFocus)="onFocusHandler($event)">

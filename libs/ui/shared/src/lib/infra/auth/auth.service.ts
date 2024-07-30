@@ -26,7 +26,7 @@ export class AuthService {
   routerEventsService = inject(RouterEventsService);
   // service
   #realmApp: Realm.App | null = null;
-  redirectUrl = 'http://localhost:4200/redirect';
+  redirectUrl = `${window.location.origin}/redirect`;
 
   #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
 
@@ -60,6 +60,7 @@ export class AuthService {
   );
 
   constructor() {
+    console.log(this.redirectUrl);
     this.#actions$
       .pipe(
         ofType(FeatAccountApiActions.deleteSuccess),

@@ -18,6 +18,7 @@ import { AccountTileComponent, DividerComponent, UiCompCardComponent, UiKitTweet
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { SubnavComponent } from './subnav/subnav.component';
+import { TagModule } from 'primeng/tag';
 
 @Component({
   standalone: true,
@@ -30,6 +31,7 @@ import { SubnavComponent } from './subnav/subnav.component';
     NgOptimizedImage,
     //
     MenuModule,
+    TagModule,
     /** Features */
     UiCompCardComponent,
     DividerComponent,
