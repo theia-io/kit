@@ -172,7 +172,41 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       ?.valueChanges.pipe(this.#takeUntilDestroyed)
       .subscribe(() => this.experienceForm.get('city')?.reset());
     
-    //console.log('editMode: ', this.editMode);
+    
+    console.log('ngOnInit');
+    if (this.editMode) {
+      console.log('ngOnInit expObj: ', this.experienceObj);
+
+      this.experienceForm = this.#fb.group({
+        title: [`${this.experienceObj.title}`, { validators: [Validators.required, Validators.minLength(2)] }],
+        company: [
+          `${this.experienceObj.company}`,
+          { validators: [Validators.required, Validators.minLength(2)] },
+        ],
+        country: [`${this.experienceObj.country}`],
+        city: [{ value: `${this.experienceObj.city}`, disabled: true }],
+        type: new FormControl<ExperienceType | null>(this.experienceObj.type, [Validators.required]),
+        locationType: new FormControl<LocationType | null>(this.experienceObj.locationType, [
+          Validators.required,
+        ]),
+        startDate: new FormControl<string | null>(this.experienceObj.startDate, [Validators.required]),
+        endDate: new FormControl<string | null>(this.experienceObj.endDate),
+        description: [`${this.experienceObj.description}`],
+        skills: [`${this.experienceObj.skills}`],
+
+        //skills: this.experienceObj.skills,
+        
+        links: [''],
+        media: [[] as any],
+      });
+
+      
+    } else {
+
+    }
+    
+    
+    
     
   }
 
@@ -202,17 +236,33 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
   }
 
   onSaveExperienceClick() {
-    const experience = this.experienceForm.value as Experience;
+    if (this.editMode) {
+      console.log('save edit');
+      console.log('add new skill, editMode: ', this.editMode);
+      //console.log('expForm: ', this.experienceForm);
+      //console.log('expObj: ', this.experienceObj);
+      
+      
 
-    /** @TODO @FIXME we can also keep this experience form and create a new one next to this so user can update it straight away **/
-    this.experienceForm.reset();
-    this.stepperActive.set(0);
 
-    this.onSaving.emit();
+    } else {
+      
+      const experience = this.experienceForm.value as Experience;
+      //console.log(experience);
+      
 
-    this.#actions
-      .pipe(ofType(FeatUserApiActions.addExperienceSuccess), take(1))
-      .subscribe(() => this.onSaved.emit());
-    this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
+      /** @TODO @FIXME we can also keep this experience form and create a new one next to this so user can update it straight away **/
+      this.experienceForm.reset();
+      this.stepperActive.set(0);
+
+      this.onSaving.emit();
+
+      this.#actions
+        .pipe(ofType(FeatUserApiActions.addExperienceSuccess), take(1))
+        .subscribe(() => this.onSaved.emit());
+      this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
+    }
+
+    
   }
 }
