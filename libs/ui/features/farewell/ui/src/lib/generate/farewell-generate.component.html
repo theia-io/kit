@@ -6,7 +6,7 @@
 
     <div class="w-full">
         <p-floatLabel class="block mb-2">
-            <input id="title" type="text" pInputText [formControl]="farewellTitleControl" />
+            <input class="w-full" id="title" type="text" pInputText [formControl]="farewellTitleControl" />
             <label for="title">Title</label>
 
             @if(farewellTitleControl.errors?.['minlength']) {
