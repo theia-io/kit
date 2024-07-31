@@ -3,7 +3,7 @@
         width="40" />
 
         <div class="relative">
-            <p-tag severity="info" class="absolute -top-2 -right-12 rotate-12" value="BETA" [rounded]="true" />
+            <p-tag severity="info" class="absolute -top-2 -right-12 rotate-12" value="Alpha" [rounded]="true" />
 
             <p class="ml-2 font-bold">
                 KITouch
@@ -25,4 +25,4 @@
 
 <app-divider class="block mt-4" />
 
-<sub-navbar (help)="help.emit()" (logout)="logout.emit()" class="block mt-4" />
+<sub-navbar [generate]="farewellGenerateUrl" (help)="help.emit()" (logout)="logout.emit()" class="block mt-4" />

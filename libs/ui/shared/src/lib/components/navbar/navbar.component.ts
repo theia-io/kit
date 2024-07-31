@@ -19,6 +19,7 @@ import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { SubnavComponent } from './subnav/subnav.component';
 import { TagModule } from 'primeng/tag';
+import { APP_PATH } from '../../constants';
 
 @Component({
   standalone: true,
@@ -63,6 +64,8 @@ export class NavBarComponent implements AfterViewInit {
 
   #elemRef = inject(ElementRef);
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
+
+  farewellGenerateUrl = `${APP_PATH.Farewell}/generate`;
 
   ngAfterViewInit(): void {
     const shouldInitiallyFocus = this.items().find(

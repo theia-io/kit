@@ -19,17 +19,24 @@
     "baseUrl": ".",
     "paths": {
       "@kitouch/feat-account-ui": ["libs/ui/features/account/ui/src/index.ts"],
+      "@kitouch/feat-farewell-data": [
+        "libs/ui/features/farewell/data/src/index.ts"
+      ],
+      "@kitouch/feat-farewell-effects": [
+        "libs/ui/features/farewell/effects/src/index.ts"
+      ],
+      "@kitouch/feat-farewell-ui": [
+        "libs/ui/features/farewell/ui/src/index.ts"
+      ],
       "@kitouch/feat-follow-data": [
         "libs/ui/features/follow/data/src/index.ts"
       ],
       "@kitouch/feat-follow-effects": [
         "libs/ui/features/follow/effects/src/index.ts"
       ],
-      "@kitouch/follow-ui": ["libs/ui/features/follow/ui/src/index.ts"],
       "@kitouch/feat-kit-effects": [
         "libs/ui/features/kit/effects/src/index.ts"
       ],
-      "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
       "@kitouch/feat-search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/feat-settings-data": [
         "libs/ui/features/settings/data/src/index.ts"
@@ -45,6 +52,7 @@
         "libs/ui/features/tweet/effects/src/index.ts"
       ],
       "@kitouch/feat-tweet-ui": ["libs/ui/features/tweet/ui/src/index.ts"],
+      "@kitouch/follow-ui": ["libs/ui/features/follow/ui/src/index.ts"],
       "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
       "@kitouch/pages": ["libs/ui/pages/src/index.ts"],
       "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],
