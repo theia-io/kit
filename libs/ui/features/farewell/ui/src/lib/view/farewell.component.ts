@@ -3,15 +3,18 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  input
+  input,
+  output
 } from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
+  FeatFarewellActions,
   findFarewellById,
-  selectFarewells
+  selectFarewells,
 } from '@kitouch/feat-farewell-data';
+import { Profile } from '@kitouch/shared-models';
 import { Store } from '@ngrx/store';
-import { combineLatest, map, tap } from 'rxjs';
+import { combineLatest, distinctUntilKeyChanged, filter, map } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -23,14 +26,35 @@ import { combineLatest, map, tap } from 'rxjs';
 export class FeatFarewellComponent {
   farewellId = input.required<string>();
 
+  profile = output<Profile>();
+
   #store = inject(Store);
 
   farewell$ = combineLatest([
     toObservable(this.farewellId),
     this.#store.select(selectFarewells),
   ]).pipe(
-    tap((v) => console.log('farewell0', v)),
     map(([farewellId, farewells]) => findFarewellById(farewellId, farewells)),
-    tap((v) => console.log('farewell', v))
+    filter(Boolean)
   );
+
+  constructor() {
+    this.farewell$
+      .pipe(
+        map(({ profile }) => profile),
+        distinctUntilKeyChanged('id'),
+        takeUntilDestroyed()
+      )
+      .subscribe((profile) => this.profile.emit(profile));
+
+    this.farewell$
+      .pipe(distinctUntilKeyChanged('_id'), takeUntilDestroyed())
+      .subscribe((farewell) =>
+        this.#store.dispatch(
+          FeatFarewellActions.putFarewell({
+            farewell: { ...farewell, viewed: farewell.viewed + 1 },
+          })
+        )
+      );
+  }
 }

@@ -7,6 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { APP_PATH } from '@kitouch/ui-shared';
@@ -23,7 +24,7 @@ import { take } from 'rxjs';
   selector: 'feat-farewell-generate',
   templateUrl: './farewell-generate.component.html',
   imports: [
-    // ReactiveFormsModule,
+    ReactiveFormsModule,
     //
     EditorModule,
     FloatLabelModule,
@@ -55,11 +56,11 @@ export class FeatFarewellGenerateComponent {
   editorText = signal<EditorTextChangeEvent | null>(null);
   textValue = computed(() => this.editorText()?.textValue ?? '');
 
-  // farewellControl = new FormControl<string>('', [
-  //   Validators.required,
-  //   Validators.minLength(100),
-  //   Validators.maxLength(10000),
-  // ]);
+  farewellTitleControl = new FormControl<string>('', [
+    Validators.required,
+    Validators.minLength(10),
+    Validators.maxLength(100),
+  ]);
 
   onTextChangeHandler(value: EditorTextChangeEvent) {
     this.editorText.set(value);
@@ -68,6 +69,7 @@ export class FeatFarewellGenerateComponent {
   saveFarewellHandler() {
     this.#store.dispatch(
       FeatFarewellActions.createFarewell({
+        title: this.farewellTitleControl.value ?? '',
         content: this.editorText()?.htmlValue ?? '',
       })
     );

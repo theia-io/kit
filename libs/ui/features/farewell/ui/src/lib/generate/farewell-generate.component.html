@@ -5,9 +5,22 @@
     </span>
 
     <div class="w-full">
-        <!-- <textarea id="farewell-float" [formControl]="farewellControl" rows="15" cols="30"
-            class="p-inputtextarea p-inputtext p-component p-element w-full" pInputTextarea>
-        </textarea> -->
+        <p-floatLabel class="block mb-2">
+            <input id="title" type="text" pInputText [formControl]="farewellTitleControl" />
+            <label for="title">Title</label>
+
+            @if(farewellTitleControl.errors?.['minlength']) {
+                <strong class="block text-xs text-gray-400">
+                    Must be at least 10 characters long. Current length is {{farewellTitleControl.value?.length}} characters.
+                    </strong>
+            }
+
+            @if(farewellTitleControl.errors?.['maxlength']) {
+                <strong class="block text-xs text-gray-400">
+                    Must be less than 100 characters long. Current length is {{farewellTitleControl.value?.length}} characters.
+                    </strong>
+            }
+        </p-floatLabel>
 
         <p-editor id="farewell-float" placeholder="Add farewell message to your (ex-) colleagues 🔥" [modules]="modules"
             [style]="{ height: '320px' }" class="w-full" (onTextChange)="onTextChangeHandler($event)">

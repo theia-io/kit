@@ -29,10 +29,20 @@ export class FarewellEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellActions.createFarewell),
       withLatestFrom(this.#currentProfile),
-      switchMap(([{ content }, profile]) =>
-        this.#farewellService.createFarewell(profile.id, content)
+      switchMap(([{ title, content }, profile]) =>
+        this.#farewellService.createFarewell({ profile, title, content })
       ),
       map((farewell) => FeatFarewellActions.createFarewellSuccess({ farewell }))
+    )
+  );
+
+  putFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.putFarewell),
+      switchMap(({ farewell }) =>
+        this.#farewellService.putFarewell(farewell)
+      ),
+      map((farewell) => FeatFarewellActions.putFarewellSuccess({ farewell }))
     )
   );
 }

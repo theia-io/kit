@@ -20,5 +20,14 @@ export const featFarewellReducer = createReducer(
   on(FeatFarewellActions.getFarewellSuccess, (state, { farewell }) => ({
     ...state,
     farewells: mergeArrV2([farewell], state.farewells),
+  })),
+  on(FeatFarewellActions.putFarewellSuccess, (state, { farewell }) => ({
+    ...state,
+    farewells: state.farewells.map((stateFarewell) => {
+      if (stateFarewell._id === farewell._id) {
+        return farewell;
+      }
+      return stateFarewell;
+    }),
   }))
 );

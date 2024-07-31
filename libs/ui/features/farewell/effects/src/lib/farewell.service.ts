@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { Farewell } from '@kitouch/shared-models';
+import { Farewell, Profile } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
+import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
@@ -12,9 +13,10 @@ export class FarewellService extends DataSourceService {
     );
   }
 
-  createFarewell(profileId: string, content: string): Observable<Farewell> {
+  createFarewell({profile, title, content}: {profile: Profile, title: string, content: string}): Observable<Farewell> {
     const farewell: Omit<Farewell, '_id'> = {
-      profileId,
+      profile,
+      title,
       content,
       viewed: 0,
       timestamp: {
@@ -30,6 +32,20 @@ export class FarewellService extends DataSourceService {
         })
       ),
       map(({ insertedId }) => ({ ...farewell, _id: insertedId }))
+    );
+  }
+
+  putFarewell({_id, ...rest}: Farewell) {
+    return this.anonymousDb$().pipe(
+      switchMap((db) => db.collection<Farewell>('farewell').updateOne(
+        { _id: new BSON.ObjectId(_id) },
+        {
+          $set: {
+            ...rest
+          }
+        }
+    )),
+      map(() => ({...rest, _id}))
     );
   }
 }
