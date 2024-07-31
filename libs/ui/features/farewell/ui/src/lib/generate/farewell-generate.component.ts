@@ -59,7 +59,7 @@ export class FeatFarewellGenerateComponent {
   farewellTitleControl = new FormControl<string>('', [
     Validators.required,
     Validators.minLength(10),
-    Validators.maxLength(100),
+    Validators.maxLength(150),
   ]);
 
   onTextChangeHandler(value: EditorTextChangeEvent) {

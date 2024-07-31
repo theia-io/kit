@@ -37,7 +37,6 @@ export class PageFarewellComponent implements OnInit {
     this.#store.dispatch(FeatFarewellActions.getFarewells());
   }
 
-
   handleGoogleSignIn() {
     this.#authService.googleSignIn();
   }

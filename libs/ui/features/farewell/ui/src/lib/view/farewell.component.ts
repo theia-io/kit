@@ -14,13 +14,18 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { Profile } from '@kitouch/shared-models';
 import { Store } from '@ngrx/store';
-import { combineLatest, distinctUntilKeyChanged, filter, map } from 'rxjs';
+import { TooltipModule } from 'primeng/tooltip';
+import { combineLatest, distinctUntilKeyChanged, filter, map, tap } from 'rxjs';
 
 @Component({
   standalone: true,
   selector: 'feat-farewell-view',
   templateUrl: './farewell.component.html',
-  imports: [AsyncPipe],
+  imports: [
+    AsyncPipe,
+    //
+    TooltipModule
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent {
@@ -41,6 +46,7 @@ export class FeatFarewellComponent {
   constructor() {
     this.farewell$
       .pipe(
+        tap(v => console.log(v)),
         map(({ profile }) => profile),
         distinctUntilKeyChanged('id'),
         takeUntilDestroyed()

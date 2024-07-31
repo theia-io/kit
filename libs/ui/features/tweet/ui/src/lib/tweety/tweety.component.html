@@ -30,7 +30,7 @@
 
     @if(tweet().type !== tweetTypes.Retweet) {
         <feat-tweet-actions [tweetUrl]="tweetUrl(tweet(), true)" [comments]="(tweetComments$ | async)?.length ?? 0"
-        (comment)="commentOverlayTmpl.toggle($event)" (retweet)="retweetHandler()" (quote)="quoteHandler()"
+        (comment)="commentOverlayTmpl.show($event)" (retweet)="retweetHandler()" (quote)="quoteHandler()"
         [liked]="tweetLiked$ | async" [likes]="tweet().upProfileIds?.length ?? 0" (like)="likeHandler()"
         [bookmarked]="(tweetBookmarked$ | async) ?? false" (bookmark)="bookmarkHandler()" />
 
