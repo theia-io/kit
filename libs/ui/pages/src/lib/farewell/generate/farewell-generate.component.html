@@ -1,7 +1,7 @@
 <div class="flex flex-col justify-center items-center gap-10">
 
     <span class="text-2xl">
-        Add your (not-) Farewell 🗒️ 🫂
+        Create your (not-) Farewell 🗒️ 🫂
     </span>
 
     <div class="w-full">
@@ -29,8 +29,6 @@
 
     </div>
 
-
-
-    <p-button [disabled]="!(textValue().length > 100 && textValue().length < 10000)" (onClick)="saveFarewellHandler()" label="Save farewell"
-        [raised]="true" iconPos="right" />
+    <p-button [disabled]="!(textValue().length >= 100 && textValue().length < 10000)" (onClick)="saveFarewellHandler()"
+        label="Save farewell" [raised]="true" />
 </div>

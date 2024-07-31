@@ -23,6 +23,8 @@ import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
+import { FarewellEffects } from '@kitouch/feat-farewell-effects';
+import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -40,11 +42,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
     // provideRouter(appRoutes, withDebugTracing()),
     provideStore({
+      farewell: featFarewellReducer,
       follow: featFollowReducer,
       kit: accountFeatureReducer,
       tweet: featTweetReducer,
     }),
     provideEffects([
+      FarewellEffects,
       // follow feat effects
       FollowEffects,
       // kit feat effects
