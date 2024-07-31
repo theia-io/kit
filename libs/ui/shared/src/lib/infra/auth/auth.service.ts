@@ -1,5 +1,4 @@
-import { environment } from './../../../../../../../ui/src/environments/environment';
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account, Profile, User } from '@kitouch/shared-models';
 import { Actions, ofType } from '@ngrx/effects';
@@ -13,6 +12,7 @@ import {
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
 import { APP_PATH } from '../../constants';
+import { ENVIRONMENT } from '../environments';
 import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
@@ -20,6 +20,7 @@ import { RouterEventsService } from '../router/router-events.service';
 })
 export class AuthService {
   // angular
+  #environment = inject(ENVIRONMENT);
   #router = inject(Router);
   #actions$ = inject(Actions);
   #store = inject(Store);
@@ -63,7 +64,7 @@ export class AuthService {
   );
 
   constructor() {
-    if (!environment.production) {
+    if (!this.#environment.production) {
       console.log('redirectUrl', this.redirectUrl);
     }
 
@@ -133,7 +134,7 @@ export class AuthService {
    *  2. or Home if not exist
    */
   googleSignIn() {
-    if (!environment.production) {
+    if (!this.#environment.production) {
       console.info('Google signin initiated', this.#realmApp);
     }
 
