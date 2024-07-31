@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
@@ -7,14 +7,14 @@ import { TooltipModule } from 'primeng/tooltip';
   selector: 'sub-navbar',
   templateUrl: './subnav.component.html',
   imports: [
-    CommonModule,
-    TooltipModule
+    RouterModule,
+    //
+    TooltipModule,
   ],
 })
 export class SubnavComponent {
-  @Output()
-  logout = new EventEmitter<void>();
+  generate = input.required<string>();
 
-  @Output() 
-  help = new EventEmitter<void>();
+  logout = output<void>();
+  help = output<void>();
 }

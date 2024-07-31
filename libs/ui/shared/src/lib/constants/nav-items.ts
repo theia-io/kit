@@ -8,6 +8,7 @@ export enum APP_PATH {
   Bookmarks = 'bookmarks',
   Settings = 'settings',
   AboutYourself = 'tell-us-about-yourself',
+  Farewell = 'farewell',
 }
 
 export const OUTLET_DIALOG = 'dialog';

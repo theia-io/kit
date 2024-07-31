@@ -95,6 +95,27 @@ export const appRoutes: Route[] = [
         ],
       },
       {
+        path: APP_PATH.Farewell,
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              pages.then((comp) => comp.FarewellAllComponent),
+          },
+          {
+            path: 'generate',
+            loadComponent: () =>
+              pages.then((comp) => comp.FarewellGenerateComponent),
+          },
+          {
+            path: ':id',
+            loadComponent: () => pages.then((comp) => comp.FarewellComponent),
+          },
+        ],
+      },
+
+      // Outlet
+      {
         path: APP_PATH_DIALOG.Tweet,
         outlet: OUTLET_DIALOG,
         loadComponent: () =>
