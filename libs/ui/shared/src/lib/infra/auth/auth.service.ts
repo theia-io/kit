@@ -60,7 +60,10 @@ export class AuthService {
       }
       return from(this.#refreshUser());
     }),
-    map((user) => !!user)
+    map(
+      (user) => !!user && user.providerType !== 'anon-user'
+      // && user.identities?.some(identity => identity.providerType !== 'anon-user')
+    )
   );
 
   constructor() {
@@ -183,7 +186,9 @@ export class AuthService {
 
   async logout() {
     await this.#realmApp?.currentUser?.logOut();
+
     this.#realmUser$$.next(undefined);
+    this.#anonymousUser$$.next(undefined);
   }
 
   /**
@@ -213,6 +218,16 @@ export class AuthService {
     const { account, user, profiles } = await this.#getAccountUserProfiles(
       realmUser
     );
+
+    /** @TODO @fixme so accounts, users and profiles are not set  */
+    if (
+      (account as any)?.identities?.some(
+        (identity: any) => identity?.provider_type === 'anon-user'
+      )
+    ) {
+      return realmUser;
+    }
+
     this.#account$$.next(account);
     this.#user$$.next(user);
     this.#profiles$$.next(profiles);
