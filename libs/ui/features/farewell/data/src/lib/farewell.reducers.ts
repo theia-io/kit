@@ -13,6 +13,10 @@ const featFarewellInitialState: FeatureFarewellState = {
 
 export const featFarewellReducer = createReducer(
   featFarewellInitialState,
+  on(FeatFarewellActions.getFarewellsSuccess, (state, { farewells }) => ({
+    ...state,
+    farewells,
+  })),
   on(FeatFarewellActions.getFarewellSuccess, (state, { farewell }) => ({
     ...state,
     farewells: mergeArrV2([farewell], state.farewells),

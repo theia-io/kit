@@ -1,7 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import {
-    selectCurrentProfile
-} from '@kitouch/kit-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -18,6 +16,14 @@ export class FarewellEffects {
   #currentProfile = this.#store
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
+
+  getFarewells$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewells),
+      switchMap(() => this.#farewellService.getFarewells()),
+      map((farewells) => FeatFarewellActions.getFarewellsSuccess({ farewells }))
+    )
+  );
 
   createFarewell$ = createEffect(() =>
     this.#actions$.pipe(

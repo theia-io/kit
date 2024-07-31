@@ -3,6 +3,15 @@ import { filter, map, shareReplay, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
 
 export class DataSourceService {
+  #anonymousdb$ = inject(AuthService).anonymousUser$.pipe(
+    map((anonymousUser) =>
+      // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
+      anonymousUser?.mongoClient('mongodb-atlas').db('kitouch')
+    ),
+    filter(Boolean),
+    shareReplay(1)
+  );
+
   #db$ = inject(AuthService).realmUser$.pipe(
     map((currentUser) =>
       // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
@@ -20,6 +29,10 @@ export class DataSourceService {
 
   protected db$() {
     return this.#db$.pipe(take(1));
+  }
+
+  protected anonymousDb$() {
+    return this.#anonymousdb$.pipe(take(1));
   }
 
   protected realmFunctions$() {

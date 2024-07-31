@@ -38,6 +38,10 @@ export const appRoutes: Route[] = [
     loadComponent: () => pages.then((comp) => comp.PageCookiesComponent),
   },
   {
+    path: `${APP_PATH.PublicFarewell}/:id`,
+    loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
+  },
+  {
     path: APP_PATH.AboutYourself,
     canActivate: [onlyForLoggedInGuard],
     loadComponent: () => pages.then((comp) => comp.PageAboutYourselfComponent),
@@ -97,20 +101,20 @@ export const appRoutes: Route[] = [
       {
         path: APP_PATH.Farewell,
         children: [
-          {
-            path: '',
-            loadComponent: () =>
-              pages.then((comp) => comp.FarewellAllComponent),
-          },
+          // {
+          //   path: '',
+          //   loadComponent: () =>
+          //     pages.then((comp) => comp.FarewellAllComponent),
+          // },
           {
             path: 'generate',
             loadComponent: () =>
-              pages.then((comp) => comp.FarewellGenerateComponent),
+              pages.then((comp) => comp.PageFarewellGenerateComponent),
           },
-          {
-            path: ':id',
-            loadComponent: () => pages.then((comp) => comp.FarewellComponent),
-          },
+          // {
+          //   path: ':id',
+          //   loadComponent: () => pages.then((comp) => comp.FarewellComponent),
+          // },
         ],
       },
 

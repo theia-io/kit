@@ -28,6 +28,7 @@ export class AuthService {
   #realmApp: Realm.App | null = null;
   redirectUrl = `${window.location.origin}/redirect`;
 
+  #anonymousUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
   #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
 
   /** @deprecated will become outdated, use Account from store */
@@ -38,6 +39,7 @@ export class AuthService {
   #profiles$$ = new BehaviorSubject<Array<Profile> | undefined>(undefined);
 
   // essential of the store
+  anonymousUser$ = this.#anonymousUser$$.asObservable();
   realmUser$ = this.#realmUser$$.asObservable();
   /** @deprecated get current profile from Store */
   currentProfile$ = this.#profiles$$.asObservable().pipe(
@@ -60,6 +62,8 @@ export class AuthService {
   );
 
   constructor() {
+    this.init();
+
     console.log(this.redirectUrl);
     this.#actions$
       .pipe(
@@ -99,7 +103,7 @@ export class AuthService {
     });
   }
 
-  init() {
+  async init() {
     if (this.#realmApp) {
       console.error('Realm already initialized!');
       return;
@@ -108,6 +112,11 @@ export class AuthService {
     console.info('Initializing Realm...');
 
     this.#realmApp = new Realm.App({ id: 'application-0-gnmmqxd' });
+    const anonymousUser = await this.#realmApp.logIn(
+      Realm.Credentials.anonymous()
+    );
+    this.#anonymousUser$$.next(anonymousUser);
+
     return this.#realmApp;
   }
 
@@ -184,7 +193,7 @@ export class AuthService {
     }
 
     const realmUser = await this.#realmApp?.currentUser;
-    if (!realmUser) {
+    if (!realmUser || realmUser.providerType === 'anon-user') {
       console.error('No User, cannot refresh');
       return null;
     }

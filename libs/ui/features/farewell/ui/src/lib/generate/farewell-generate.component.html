@@ -1,0 +1,34 @@
+<div class="flex flex-col justify-center items-center gap-10">
+
+    <span class="text-2xl">
+        Create your (not-) Farewell 🗒️ 🫂
+    </span>
+
+    <div class="w-full">
+        <!-- <textarea id="farewell-float" [formControl]="farewellControl" rows="15" cols="30"
+            class="p-inputtextarea p-inputtext p-component p-element w-full" pInputTextarea>
+        </textarea> -->
+
+        <p-editor id="farewell-float" placeholder="Add farewell message to your (ex-) colleagues 🔥" [modules]="modules"
+            [style]="{ height: '320px' }" class="w-full" (onTextChange)="onTextChangeHandler($event)">
+            <p-header> </p-header>
+        </p-editor>
+
+        <!-- <label for="farewell-float">Add farewell message to your (ex-) colleagues 🔥</label> -->
+
+        @if(textValue().length < 100) { <strong class="block text-xs text-gray-400">
+            Must be at least 100 characters long. Current length is {{textValue().length}} characters.
+            </strong>
+            }
+
+            @if(textValue().length > 10000) {
+            <strong class="block text-xs text-gray-400">
+                Must be less than 10000 characters long. Current length is {{textValue().length}} characters.
+            </strong>
+            }
+
+    </div>
+
+    <p-button [disabled]="!(textValue().length >= 100 && textValue().length < 10000)" (onClick)="saveFarewellHandler()"
+        label="Save farewell" [raised]="true" />
+</div>
