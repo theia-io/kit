@@ -1,6 +1,7 @@
 @layer tailwind-base, primeng, primeng-theme-lara-light, tailwind-components, tailwind-utilities;
 
 /** @TODO Import it so it being downloaded in parallel - in project.json / index.html */
+
 @import "primeicons/primeicons.css";
 @import "tailwindcss/base" layer(tailwind-base);
 @import "primeng/resources/primeng.css" layer(primeng);
@@ -8,6 +9,9 @@
 @import "tailwindcss/components" layer(tailwind-components);
 @import "tailwindcss/utilities" layer(tailwind-utilities);
 
+// import Quill styles in styles.scss
+@import "quill/dist/quill.core.css";
+@import "quill/dist/quill.snow.css";
 
 /* You can add global styles to this file, and also import other style files */
 

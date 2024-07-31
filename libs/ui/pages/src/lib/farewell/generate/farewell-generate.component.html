@@ -4,28 +4,33 @@
         Add your (not-) Farewell 🗒️ 🫂
     </span>
 
-    <p-floatLabel class="w-full">
-        <textarea id="farewell-float" [formControl]="farewellControl" rows="15" cols="30"
+    <div class="w-full">
+        <!-- <textarea id="farewell-float" [formControl]="farewellControl" rows="15" cols="30"
             class="p-inputtextarea p-inputtext p-component p-element w-full" pInputTextarea>
-        </textarea>
-        <label for="farewell-float">Add farewell message to your (ex-) colleagues 🔥</label>
+        </textarea> -->
 
-        @if(farewellControl.errors?.['minlength']) {
-        <strong class="block text-xs text-gray-400">
-            Must be at least 100 characters long.
-        </strong>
-        }
+        <p-editor id="farewell-float" placeholder="Add farewell message to your (ex-) colleagues 🔥" [modules]="modules"
+            [style]="{ height: '320px' }" class="w-full" (onTextChange)="onTextChangeHandler($event)">
+            <p-header> </p-header>
+        </p-editor>
 
-        @if(farewellControl.errors?.['maxlength']) {
-        <strong class="block text-xs text-gray-400">
-            Must be less than 10000 characters long.
-        </strong>
+        <!-- <label for="farewell-float">Add farewell message to your (ex-) colleagues 🔥</label> -->
 
-        }
-    </p-floatLabel>
+        @if(textValue().length < 100) { <strong class="block text-xs text-gray-400">
+            Must be at least 100 characters long. Current length is {{textValue().length}} characters.
+            </strong>
+            }
+
+            @if(textValue().length > 10000) {
+            <strong class="block text-xs text-gray-400">
+                Must be less than 10000 characters long. Current length is {{textValue().length}} characters.
+            </strong>
+            }
+
+    </div>
 
 
 
-    <p-button [disabled]="!farewellControl.valid" (onClick)="saveFarewellHandler()" label="Save farewell"
+    <p-button [disabled]="!(textValue().length > 100 && textValue().length < 10000)" (onClick)="saveFarewellHandler()" label="Save farewell"
         [raised]="true" iconPos="right" />
 </div>
