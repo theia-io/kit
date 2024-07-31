@@ -24,7 +24,7 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
-import { selectCurrentProfile, selectProfile } from '@kitouch/kit-data';
+import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -119,12 +119,12 @@ export class FeatTweetTweetyComponent implements OnChanges {
     switchMap(([retweet, profile]) =>
       retweet.referenceProfileId === profile.id
         ? of(profile)
-        : this.#store.select(selectProfile(retweet.referenceProfileId!))
+        : this.#store.select(selectProfileById(retweet.referenceProfileId!))
     )
   );
 
   tweetProfile$ = this.#tweet$.pipe(
-    switchMap((tweet) => this.#store.select(selectProfile(tweet.profileId))),
+    switchMap((tweet) => this.#store.select(selectProfileById(tweet.profileId))),
     filter(Boolean)
   );
 

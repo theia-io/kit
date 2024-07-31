@@ -3,6 +3,7 @@ import {
   APP_PATH,
   APP_PATH_DIALOG,
   onlyForLoggedInGuard,
+  onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
   OUTLET_DIALOG,
 } from '@kitouch/ui-shared';
@@ -40,6 +41,7 @@ export const appRoutes: Route[] = [
   {
     path: `${APP_PATH.PublicFarewell}/:id`,
     loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
+    canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard]
   },
   {
     path: APP_PATH.AboutYourself,

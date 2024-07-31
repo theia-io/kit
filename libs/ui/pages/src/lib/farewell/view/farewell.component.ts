@@ -1,14 +1,16 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule, RouterOutlet } from '@angular/router';
 import {
   FeatFarewellActions
 } from '@kitouch/feat-farewell-data';
 import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
-import { profilePicture } from '@kitouch/kit-data';
+import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
+import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { AuthService } from '@kitouch/ui-shared';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { TagModule } from 'primeng/tag';
 import { map } from 'rxjs';
 
 @Component({
@@ -16,8 +18,13 @@ import { map } from 'rxjs';
   templateUrl: './farewell.component.html',
   imports: [
     AsyncPipe,
+    RouterModule,
+    NgOptimizedImage,
+    ///
+    TagModule,
     ///
     FeatFarewellComponent,
+    FeatFollowSuggestionByIdComponent,
   ],
 })
 export class PageFarewellComponent implements OnInit {
@@ -32,6 +39,10 @@ export class PageFarewellComponent implements OnInit {
 
   profile = signal<Profile | undefined>(undefined);
   profilePic = computed(() => profilePicture(this.profile()));
+
+  currentKitProfile$ = this.#store.pipe(
+    select(selectCurrentProfile)
+  );
 
   ngOnInit(): void {
     this.#store.dispatch(FeatFarewellActions.getFarewells());

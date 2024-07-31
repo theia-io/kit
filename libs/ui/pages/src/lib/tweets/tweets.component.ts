@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { profilePicture, selectProfile } from '@kitouch/kit-data';
+import { profilePicture, selectProfileById } from '@kitouch/kit-data';
 import {
   TweetApiActions,
   selectTweetsProfile,
@@ -47,7 +47,7 @@ export class PageTweetsComponent {
 
   #profile$ = this.#profileIdOrAlias$.pipe(
     switchMap((profileIdOrAlias) =>
-      this.#store.select(selectProfile(profileIdOrAlias))
+      this.#store.select(selectProfileById(profileIdOrAlias))
     ),
     filter(Boolean),
     shareReplay(1)

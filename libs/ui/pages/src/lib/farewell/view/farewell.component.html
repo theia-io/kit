@@ -1,3 +1,17 @@
+<div routerLink="/" class="flex items-center hover:cursor-pointer p-4">
+    <img class="inline-block h-10 w-auto rounded-full mt-2" ngSrc="logo-small.jpeg" alt="Kitouch logo" height="40"
+        width="40" />
+
+        <div class="relative">
+            <p-tag severity="info" class="absolute -top-2 -right-12 rotate-12" value="Alpha" [rounded]="true" />
+
+            <p class="ml-2 font-bold">
+                KITouch
+            </p>
+        </div>
+   
+</div>
+
 <div class="flex flex-col items-center justify-center mt-12 mb-12 w-full">
     @if(profile()) {
     <div class="flex items-center justify-center gap-4 mb-12">
@@ -21,6 +35,8 @@
     <feat-farewell-view class="block sm:w-full md:w-5/6 lg:w-3/6 mb-12" [farewellId]="farewellId$ | async"
         (profile)="profile.set($event)" />
 
+    @if(currentKitProfile$ | async; as currentKitProfile) {
+    } @else {
     <button (click)="handleGoogleSignIn()" type="button"
         class="flex justify-center items-center gap-4 login-with-google-btn">
         <img class="inline-block h-6" src="sign-in/g-icon.png" />
@@ -32,4 +48,7 @@
         to keep in touch with {{profile()?.name}}, forever.
     </span>
     }
+    }
+
+
 </div>

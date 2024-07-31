@@ -39,7 +39,7 @@ export const selectProfiles = createSelector(
 
 /** Utilities */
 
-export const selectProfile = (profileIdOrAlias: string) =>
+export const selectProfileById = (profileIdOrAlias: string) =>
   createSelector(
     selectProfiles,
     (profiles: Profile[]) =>

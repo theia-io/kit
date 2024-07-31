@@ -1,3 +1,4 @@
+import { environment } from './../../../../../../../ui/src/environments/environment';
 import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account, Profile, User } from '@kitouch/shared-models';
@@ -50,7 +51,7 @@ export class AuthService {
   /** Realm helpers */
   // helpers, usually can be avoided
   /** check that the user is not logged in nor refreshed page nor having a valid token after getting to an application a while in a future (once refresh token is not valid anymore) */
-  isHardLoggedIn$ = this.realmUser$.pipe(
+  loggedInWithRealmUser$ = this.realmUser$.pipe(
     take(1),
     switchMap((realmUser) => {
       if (realmUser) {
@@ -62,9 +63,10 @@ export class AuthService {
   );
 
   constructor() {
-    this.init();
+    if (!environment.production) {
+      console.log('redirectUrl', this.redirectUrl);
+    }
 
-    console.log(this.redirectUrl);
     this.#actions$
       .pipe(
         ofType(FeatAccountApiActions.deleteSuccess),
@@ -103,21 +105,23 @@ export class AuthService {
     });
   }
 
-  async init() {
+  init() {
     if (this.#realmApp) {
       console.error('Realm already initialized!');
-      return;
+      return this.#realmApp;
     }
 
     console.info('Initializing Realm...');
 
     this.#realmApp = new Realm.App({ id: 'application-0-gnmmqxd' });
-    const anonymousUser = await this.#realmApp.logIn(
-      Realm.Credentials.anonymous()
-    );
-    this.#anonymousUser$$.next(anonymousUser);
-
     return this.#realmApp;
+  }
+
+  async logInAnonymously() {
+    const realmApp = this.#realmApp ?? this.init();
+    const anonymousUser = await realmApp.logIn(Realm.Credentials.anonymous());
+
+    this.#anonymousUser$$.next(anonymousUser);
   }
 
   /**
@@ -129,7 +133,10 @@ export class AuthService {
    *  2. or Home if not exist
    */
   googleSignIn() {
-    console.info('Google signin initiated', this.#realmApp);
+    if (!environment.production) {
+      console.info('Google signin initiated', this.#realmApp);
+    }
+
     if (!this.#realmApp) {
       this.init();
     }
@@ -193,7 +200,7 @@ export class AuthService {
     }
 
     const realmUser = await this.#realmApp?.currentUser;
-    if (!realmUser || realmUser.providerType === 'anon-user') {
+    if (!realmUser) {
       console.error('No User, cannot refresh');
       return null;
     }
@@ -216,6 +223,19 @@ export class AuthService {
     // this does 2 API requests
     // to location and to session (to create a new one token)
     await this.#realmApp?.currentUser?.refreshAccessToken();
+  }
+
+  getLoggedInAnonymousUser$() {
+    return this.anonymousUser$.pipe(
+      take(1),
+      switchMap((anonymousUser) => {
+        if (anonymousUser) {
+          return of(anonymousUser);
+        }
+        return from(this.#refreshUser());
+      }),
+      map((user) => !!user)
+    );
   }
 
   async #getAccountUserProfiles(

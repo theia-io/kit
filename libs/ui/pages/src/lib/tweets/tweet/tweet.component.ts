@@ -8,7 +8,7 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentProfile, selectProfile } from '@kitouch/kit-data';
+import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   TweetApiActions,
@@ -88,7 +88,7 @@ export class PageTweetComponent {
 
   #profile$ = this.#ids$.pipe(
     switchMap(({ profileIdOrAlias }) =>
-      this.#store.select(selectProfile(profileIdOrAlias))
+      this.#store.select(selectProfileById(profileIdOrAlias))
     ),
     filter(Boolean),
     shareReplay(1)
@@ -113,7 +113,7 @@ export class PageTweetComponent {
       if (!comments) return of([]);
 
       const commentProfileObservables = comments.map((comment) =>
-        this.#store.select(selectProfile(comment.profileId!))
+        this.#store.select(selectProfileById(comment.profileId!))
       );
 
       return combineLatest(commentProfileObservables).pipe(

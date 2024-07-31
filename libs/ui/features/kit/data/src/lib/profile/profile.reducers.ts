@@ -6,11 +6,13 @@ import { FeatProfileApiActions } from './profile.actions';
 export interface FeatureProfileState {
   currentProfile?: Profile;
   profiles?: Array<Profile>;
+  allSystemProfiles: Map<Profile['id'], Profile>;
 }
 
 const featProfileInitialState: FeatureProfileState = {
   currentProfile: undefined,
   profiles: undefined,
+  allSystemProfiles: new Map()
 };
 
 const combineProfiles = (

@@ -4,7 +4,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { map } from 'rxjs';
+import { map, of, switchMap } from 'rxjs';
 import { RouterEventsService } from '../router/router-events.service';
 import { AuthService } from './auth.service';
 
@@ -21,7 +21,7 @@ export const onlyForNotLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  return authService.isHardLoggedIn$.pipe(
+  return authService.loggedInWithRealmUser$.pipe(
     map((isLoggedIn: boolean) => {
       if (isLoggedIn) {
         // we might want to get a last valid route in a future?
@@ -46,13 +46,28 @@ export const onlyForLoggedInGuard = (
   const router = inject(Router);
   const authService = inject(AuthService);
 
-  return authService.isHardLoggedIn$.pipe(
+  return authService.loggedInWithRealmUser$.pipe(
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
         return router.createUrlTree(['/sign-in']);
       }
 
       return isLoggedIn;
+    })
+  );
+};
+
+export const onlyForLoggedInOrAnonymouslyLoggedInGuard = () => {
+  const authService = inject(AuthService);
+
+  return authService.loggedInWithRealmUser$.pipe(
+    switchMap(async (isLoggedIn: boolean) => {
+      if (isLoggedIn) {
+        return of(true);
+      }
+
+      await authService.logInAnonymously();
+      return of(true);
     })
   );
 };

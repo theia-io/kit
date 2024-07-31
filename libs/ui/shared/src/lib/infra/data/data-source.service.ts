@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
-import { filter, map, shareReplay, take } from 'rxjs/operators';
+import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
+import { of } from 'rxjs';
 
 export class DataSourceService {
   #anonymousdb$ = inject(AuthService).anonymousUser$.pipe(
@@ -8,7 +9,6 @@ export class DataSourceService {
       // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
       anonymousUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
-    filter(Boolean),
     shareReplay(1)
   );
 
@@ -17,7 +17,6 @@ export class DataSourceService {
       // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
       currentUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
-    filter(Boolean),
     shareReplay(1)
   );
 
@@ -28,7 +27,11 @@ export class DataSourceService {
   );
 
   protected db$() {
-    return this.#db$.pipe(take(1));
+    return this.#db$.pipe(
+      take(1),
+      switchMap((db) => db ? of(db) : this.#anonymousdb$),
+      filter(Boolean)
+    );
   }
 
   protected anonymousDb$() {
