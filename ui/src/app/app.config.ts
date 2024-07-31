@@ -25,6 +25,8 @@ import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { FarewellEffects } from '@kitouch/feat-farewell-effects';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
+import { cookieConfig } from './cookie.config';
+import { provideNgcCookieConsent } from 'ngx-cookieconsent';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -64,6 +66,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools(),
 
     // auth
+    provideNgcCookieConsent(cookieConfig),
     provideHttpClient(),
     // {
     //   provide: APP_INITIALIZER,
