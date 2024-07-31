@@ -8,7 +8,7 @@ export enum APP_PATH {
   Bookmarks = 'bookmarks',
   Settings = 'settings',
   AboutYourself = 'tell-us-about-yourself',
-  PublicFarewell = 'kip-in-touch',
+  PublicFarewell = 'keep-in-touch',
   Farewell = 'farewell',
 }
 
