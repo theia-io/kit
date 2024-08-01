@@ -1,10 +1,8 @@
-import { Component } from "@angular/core";
+import { Component } from '@angular/core';
 
 @Component({
-    standalone: true,
-    selector: 'kit-page-terms-conditions',
-  templateUrl: './terms-conditions.component.html'
+  standalone: true,
+  selector: 'kit-page-terms-conditions',
+  templateUrl: './terms-conditions.component.html',
 })
-export class PageTermsConditionsComponent {
- 
-}
+export class PageTermsConditionsComponent {}

@@ -83,8 +83,8 @@ export class FeatTweetTweetingComponent {
     console.log('reaction handler');
   }
 
-  tweetControlBlur () {
-    if(!this.tweetContentControl.value?.length) {
+  tweetControlBlur() {
+    if (!this.tweetContentControl.value?.length) {
       this.tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
       return;
     }

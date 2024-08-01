@@ -5,10 +5,7 @@ import { RouterModule } from '@angular/router';
 @Component({
   selector: 'layout',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterModule
-  ],
+  imports: [CommonModule, RouterModule],
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

@@ -124,7 +124,9 @@ export class FeatTweetTweetyComponent implements OnChanges {
   );
 
   tweetProfile$ = this.#tweet$.pipe(
-    switchMap((tweet) => this.#store.select(selectProfileById(tweet.profileId))),
+    switchMap((tweet) =>
+      this.#store.select(selectProfileById(tweet.profileId))
+    ),
     filter(Boolean)
   );
 

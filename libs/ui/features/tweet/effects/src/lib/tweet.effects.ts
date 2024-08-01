@@ -179,7 +179,10 @@ export class TweetsEffects {
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweet }, profile]) =>
         this.#tweetApi
-          .retweet(tweet.type === TweetyType.Tweet ? tweet.id : tweet.referenceId!, profile.id)
+          .retweet(
+            tweet.type === TweetyType.Tweet ? tweet.id : tweet.referenceId!,
+            profile.id
+          )
           .pipe(
             map(({ insertedId }) =>
               FeatTweetActions.reTweetSuccess({
@@ -189,7 +192,7 @@ export class TweetsEffects {
                   referenceId: tweet.id,
                   referenceProfileId: tweet.profileId,
                   timestamp: {
-                    createdAt: new Date(Date.now())
+                    createdAt: new Date(Date.now()),
                   },
                   type: TweetyType.Retweet,
                 },

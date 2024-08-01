@@ -1,12 +1,14 @@
 import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  inject,
+} from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { profilePicture, selectProfileById } from '@kitouch/kit-data';
-import {
-  TweetApiActions,
-  selectTweetsProfile,
-} from '@kitouch/feat-tweet-data';
+import { TweetApiActions, selectTweetsProfile } from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
 import { Tweety } from '@kitouch/shared-models';
 import {
@@ -54,7 +56,7 @@ export class PageTweetsComponent {
   );
 
   profile = toSignal(this.#profile$);
-  profilePic = computed(() => profilePicture(this.profile() ?? {}))
+  profilePic = computed(() => profilePicture(this.profile() ?? {}));
 
   tweets$ = this.#profile$.pipe(
     switchMap(({ id }) => this.#store.select(selectTweetsProfile(id))),

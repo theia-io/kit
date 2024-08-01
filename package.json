@@ -8,7 +8,7 @@
     "build": "nx run ui:build --prod",
     "build:affected": "nx affected --base=origin/main -t build",
     "prettier:check": "npx prettier --check .",
-    "prettier:write": "prettier --write --ignore-unknown",
+    "prettier:write": "prettier --write --ignore-unknown .",
     "lint": "nx affected --base=origin/main -t lint",
     "lint:fix": "nx affected:lint --fix",
     "prepare": "husky"

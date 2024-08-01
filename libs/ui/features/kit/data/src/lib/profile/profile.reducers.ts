@@ -12,7 +12,7 @@ export interface FeatureProfileState {
 const featProfileInitialState: FeatureProfileState = {
   currentProfile: undefined,
   profiles: undefined,
-  allSystemProfiles: new Map()
+  allSystemProfiles: new Map(),
 };
 
 const combineProfiles = (

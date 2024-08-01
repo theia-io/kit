@@ -1,5 +1,5 @@
 export interface GroupChat {
-    id: number;
-    name: string;
-    message: string;
+  id: number;
+  name: string;
+  message: string;
 }

@@ -1,56 +1,86 @@
 @if(tweet().type === tweetTypes.Retweet) {
 <span class="block mb-2 text-xs font-medium text-gray-400">
-    <i class="pi pi-replay mr-2"></i>
+  <i class="pi pi-replay mr-2"></i>
 
-    @if(retweetProfile$ | async; as retweetProfile) {
-    <a class="transition  hover:underline hover:font-semibold" [routerLink]="[profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)]">
-        @if(currentProfile()?.id === retweetProfile.id) {
-        You
-        } @else {
-        {{retweetProfile.name}}
-        }
-
-        re-tweeted this.
-    </a>
-    } @else {
-    re-tweet
-    }
+  @if(retweetProfile$ | async; as retweetProfile) {
+  <a
+    class="transition hover:underline hover:font-semibold"
+    [routerLink]="[
+      profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)
+    ]"
+  >
+    @if(currentProfile()?.id === retweetProfile.id) { You } @else {
+    {{ retweetProfile.name }}
+    } re-tweeted this.
+  </a>
+  } @else { re-tweet }
 </span>
 }
 
-<ui-kit-comp-account-tile [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
-    [primarySecondaryText]="tweet().timestamp?.createdAt| date:'MMM d, h:mm a'"
-    [secondaryText]="(tweetProfile$ | async)?.type" [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
-    [link]="profileUrlPath + tweet().profileId" />
+<ui-kit-comp-account-tile
+  [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
+  [primarySecondaryText]="tweet().timestamp?.createdAt | date : 'MMM d, h:mm a'"
+  [secondaryText]="(tweetProfile$ | async)?.type"
+  [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
+  [link]="profileUrlPath + tweet().profileId"
+/>
 
 <div (click)="tweetClickHandler(tweet())" class="pl-16 cursor-pointer">
-    <p class="text-base width-auto font-medium flex-shrink"
-        [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet().content)">
-    </p>
+  <p
+    class="text-base width-auto font-medium flex-shrink"
+    [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet().content)"
+  ></p>
 
-    @if(tweet().type !== tweetTypes.Retweet) {
-        <feat-tweet-actions [tweetUrl]="tweetUrl(tweet(), true)" [comments]="(tweetComments$ | async)?.length ?? 0"
-        (comment)="commentOverlayTmpl.show($event)" (retweet)="retweetHandler()" (quote)="quoteHandler()"
-        [liked]="tweetLiked$ | async" [likes]="tweet().upProfileIds?.length ?? 0" (like)="likeHandler()"
-        [bookmarked]="(tweetBookmarked$ | async) ?? false" (bookmark)="bookmarkHandler()" />
+  @if(tweet().type !== tweetTypes.Retweet) {
+  <feat-tweet-actions
+    [tweetUrl]="tweetUrl(tweet(), true)"
+    [comments]="(tweetComments$ | async)?.length ?? 0"
+    (comment)="commentOverlayTmpl.show($event)"
+    (retweet)="retweetHandler()"
+    (quote)="quoteHandler()"
+    [liked]="tweetLiked$ | async"
+    [likes]="tweet().upProfileIds?.length ?? 0"
+    (like)="likeHandler()"
+    [bookmarked]="(tweetBookmarked$ | async) ?? false"
+    (bookmark)="bookmarkHandler()"
+  />
 
-    <p-overlayPanel (onShow)="commentOverlayVisible.set(true)" (onHide)="commentOverlayVisible.set(false)"
-        #commentOverlayTmpl>
-        <div class="flex flex-col min-h-24">
-            <p-floatLabel>
-                <textarea id="float-input" autofocus [formControl]="commentControl" rows="5" cols="30" pInputTextarea>
-                </textarea>
-                <label for="float-input">Your comment</label>
-            </p-floatLabel>
+  <p-overlayPanel
+    (onShow)="commentOverlayVisible.set(true)"
+    (onHide)="commentOverlayVisible.set(false)"
+    #commentOverlayTmpl
+  >
+    <div class="flex flex-col min-h-24">
+      <p-floatLabel>
+        <textarea
+          id="float-input"
+          autofocus
+          [formControl]="commentControl"
+          rows="5"
+          cols="30"
+          pInputTextarea
+        >
+        </textarea>
+        <label for="float-input">Your comment</label>
+      </p-floatLabel>
 
-            <ui-kit-tweet-button text="Comment" [iconAnimate]="false" [disabled]="!commentControl.valid"
-                [loader]="false" (click)="commentHandler()" />
-        </div>
-    </p-overlayPanel>
-    }
+      <ui-kit-tweet-button
+        text="Comment"
+        [iconAnimate]="false"
+        [disabled]="!commentControl.valid"
+        [loader]="false"
+        (click)="commentHandler()"
+      />
+    </div>
+  </p-overlayPanel>
+  }
 </div>
 
 @if(tweetCanBeDeleted$ | async) {
-<i (click)="$event.stopPropagation(); deleteHandler()" role="button"
-    class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse" style="font-size: 1.5rem;"></i>
+<i
+  (click)="$event.stopPropagation(); deleteHandler()"
+  role="button"
+  class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
+  style="font-size: 1.5rem"
+></i>
 }

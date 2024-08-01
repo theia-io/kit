@@ -41,7 +41,7 @@ export const appRoutes: Route[] = [
   {
     path: `${APP_PATH.PublicFarewell}/:id`,
     loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
-    canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard]
+    canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
   },
   {
     path: APP_PATH.AboutYourself,

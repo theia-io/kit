@@ -31,11 +31,12 @@ export const userReducer = createReducer(
     user: {
       ...(state.user ?? {}),
       experiences:
-        state.user?.experiences?.filter((userExperience) =>
-          !_.isEqual(
-            getExperienceEqualityObject(userExperience),
-            getExperienceEqualityObject(experience)
-          )
+        state.user?.experiences?.filter(
+          (userExperience) =>
+            !_.isEqual(
+              getExperienceEqualityObject(userExperience),
+              getExperienceEqualityObject(experience)
+            )
         ) ?? [],
     } as any,
   }))

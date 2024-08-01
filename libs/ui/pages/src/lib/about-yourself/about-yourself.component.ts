@@ -9,10 +9,7 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import {
-  FeatLegalApiActions,
-  selectCurrentProfile,
-} from '@kitouch/kit-data';
+import { FeatLegalApiActions, selectCurrentProfile } from '@kitouch/kit-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsProfileInformationComponent,

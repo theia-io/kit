@@ -1,8 +1,6 @@
 import { Account } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
-import {
-  FeatAccountApiActions
-} from './account.actions';
+import { FeatAccountApiActions } from './account.actions';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureAccountState {

@@ -29,7 +29,7 @@ export class DataSourceService {
   protected db$() {
     return this.#db$.pipe(
       take(1),
-      switchMap((db) => db ? of(db) : this.#anonymousdb$),
+      switchMap((db) => (db ? of(db) : this.#anonymousdb$)),
       filter(Boolean)
     );
   }

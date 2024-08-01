@@ -31,7 +31,9 @@ export class TweetApiService extends DataSourceService {
   }
 
   newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
-    return this.realmFunctions$().pipe(switchMap((fn) => fn['postTweet'](tweet)));
+    return this.realmFunctions$().pipe(
+      switchMap((fn) => fn['postTweet'](tweet))
+    );
   }
 
   deleteTweets(
@@ -43,7 +45,9 @@ export class TweetApiService extends DataSourceService {
   }
 
   commentTweet(tweet: Partial<Tweety>) {
-    return this.realmFunctions$().pipe(switchMap((fn) => fn['putTweet'](tweet)));
+    return this.realmFunctions$().pipe(
+      switchMap((fn) => fn['putTweet'](tweet))
+    );
   }
 
   deleteComment(
@@ -69,7 +73,9 @@ export class TweetApiService extends DataSourceService {
   }
 
   likeTweet(tweet: Tweety) {
-    return this.realmFunctions$().pipe(switchMap((fn) => fn['putTweet'](tweet)));
+    return this.realmFunctions$().pipe(
+      switchMap((fn) => fn['putTweet'](tweet))
+    );
   }
 
   getBookmarks(profileId: Profile['id']): Observable<Array<Bookmark>> {
@@ -94,16 +100,17 @@ export class TweetApiService extends DataSourceService {
   }
 
   retweet(tweetId: Tweety['id'], profileId: Profile['id']) {
-    return this.db$()
-      .pipe(
-        switchMap((db) => db.collection('retweet').insertOne({
+    return this.db$().pipe(
+      switchMap((db) =>
+        db.collection('retweet').insertOne({
           tweetId: new BSON.ObjectId(tweetId),
           profileId: new BSON.ObjectId(profileId),
           timestamp: {
-            createdAt: (new Date(Date.now())),
-            updatedAt: (new Date(Date.now()))
-          }
-        }))
+            createdAt: new Date(Date.now()),
+            updatedAt: new Date(Date.now()),
+          },
+        })
       )
+    );
   }
 }

@@ -26,13 +26,10 @@
           "ui/src/styles.scss",
           "node_modules/cookieconsent/build/cookieconsent.min.css"
         ],
-        "scripts": [
-          "node_modules/cookieconsent/build/cookieconsent.min.js"
-        ]
+        "scripts": ["node_modules/cookieconsent/build/cookieconsent.min.js"]
       },
       "configurations": {
         "production": {
-
           "fileReplacements": [
             {
               "replace": "ui/src/environments/environment.ts",

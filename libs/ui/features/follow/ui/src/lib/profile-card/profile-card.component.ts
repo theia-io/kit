@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    effect,
-    input,
-    output
+  ChangeDetectionStrategy,
+  Component,
+  computed,
+  effect,
+  input,
+  output,
 } from '@angular/core';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';

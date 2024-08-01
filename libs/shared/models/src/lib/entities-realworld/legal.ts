@@ -1,4 +1,4 @@
-import { CustomerInfo } from "./shared";
+import { CustomerInfo } from './shared';
 
 export enum LegalType {
   Private = 'Private',
@@ -19,13 +19,13 @@ export enum BusinessType {
 export interface Legal extends Realm.Services.MongoDB.Document {
   // id
   id: string;
-  alias: string; // unique to 
-  /** 
-   * @TODO Implement accountId linking - or ids 
-   * when users become an admins to a legal entities 
-   * e.g. those who are currently working there? Or by vote? Or? 
+  alias: string; // unique to
+  /**
+   * @TODO Implement accountId linking - or ids
+   * when users become an admins to a legal entities
+   * e.g. those who are currently working there? Or by vote? Or?
    */
-  // accountId: string; 
+  // accountId: string;
   // business
   type: LegalType;
   businessType: BusinessType;
