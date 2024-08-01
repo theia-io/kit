@@ -1,0 +1,26 @@
+name: PRD Build
+
+on:
+  pull_request:
+    branches: [main] # Or your main branch name
+
+jobs:
+  lint_and_build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper linting and formatting
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20' # Or dependency of the PRD / DEV runner
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build Affected apps
+        run: npm run build:affected
