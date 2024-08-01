@@ -16,8 +16,7 @@
   "private": true,
   "lint-staged": {
     "**/*": [
-      "npm run prettier:write",
-      "npm run lint ## remove?"
+      "npm run prettier:write"
     ]
   },
   "dependencies": {

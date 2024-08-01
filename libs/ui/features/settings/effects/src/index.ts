@@ -1,1 +1,1 @@
-export * from './lib/feat-settings-effects/feat-settings-effects.component';
+export const DUMB_FEAT_SEAT_EFFECTS = 'DUMB_FEAT_SEAT_EFFECTS';

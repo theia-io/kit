@@ -5,9 +5,9 @@ on:
     branches: [main] # Or your main branch name
 
 # Needed for nx-set-shas when run on the main branch
-permissions:
-  actions: read
-  contents: read
+# permissions:
+#   actions: read
+#   contents: read
 
 jobs:
   lint_and_build:
@@ -34,5 +34,5 @@ jobs:
       # - run: npx nx-cloud record -- nx format:check
       # - run: npx nx affected -t lint test build e2e-ci
 
-      - name: Build Affected apps
-        run: npm run build:affected
+      - name: Build KITouch UI PRD app
+        run: npm run build

@@ -1,1 +1,1 @@
-export * from './lib/feat-settings-data/feat-settings-data.component';
+export const DUMB_FEAT_SEAT_DATA = 'DUMB_FEAT_SEAT_DATA';
