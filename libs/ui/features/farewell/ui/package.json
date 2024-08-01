@@ -3,7 +3,16 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.0.0",
-    "@angular/core": "^18.0.0"
+    "@angular/core": "^18.0.0",
+    "@angular/forms": "~18.0.0",
+    "@angular/router": "~18.0.0",
+    "@kitouch/feat-farewell-data": "0.0.1",
+    "@kitouch/ui-shared": "0.0.1",
+    "@ngrx/effects": "18.0.0",
+    "@ngrx/store": "18.0.0",
+    "primeng": "^17.18.1",
+    "rxjs": "~7.8.0",
+    "@kitouch/shared-models": "0.0.1"
   },
   "sideEffects": false
 }

@@ -1,28 +1,55 @@
 <div routerLink="/" class="flex items-center hover:cursor-pointer">
-    <img class="inline-block h-10 w-auto rounded-full mt-2" ngSrc="logo-small.jpeg" alt="Kitouch logo" height="40"
-        width="40" />
+  <img
+    class="inline-block h-10 w-auto rounded-full mt-2"
+    ngSrc="logo-small.jpeg"
+    alt="Kitouch logo"
+    height="40"
+    width="40"
+  />
 
-        <div class="relative">
-            <p-tag severity="info" class="absolute -top-2 -right-12 rotate-12" value="Alpha" [rounded]="true" />
+  <div class="relative">
+    <p-tag
+      severity="info"
+      class="absolute -top-2 -right-12 rotate-12"
+      value="Alpha"
+      [rounded]="true"
+    />
 
-            <p class="ml-2 font-bold">
-                KITouch
-            </p>
-        </div>
-   
+    <p class="ml-2 font-bold">KITouch</p>
+  </div>
 </div>
 
-<p-menu styleClass="border-0 mt-4" [model]="items()" (onFocus)="onFocusHandler($event)">
+<p-menu
+  styleClass="border-0 mt-4"
+  [model]="items()"
+  (onFocus)="onFocusHandler($event)"
+>
 </p-menu>
 
-<ui-kit-tweet-button [iconAnimate]="false" text="Tweet Big." (click)="tweetButtonClick.emit()" class="w-48 mt-4" />
+<ui-kit-tweet-button
+  [iconAnimate]="false"
+  text="Tweet Big."
+  (click)="tweetButtonClick.emit()"
+  class="w-48 mt-4"
+/>
 
 <ui-kit-comp-card class="block mt-12">
-    <a [routerLink]="profileBaseUrl + '/' + profile?.id" routerLinkActive="underline">
-        <ui-kit-comp-account-tile [primaryText]="profile?.name ?? 'N/A'" [picture]="profile?.pictures?.[0]?.url" />
-    </a>
+  <a
+    [routerLink]="profileBaseUrl + '/' + profile?.id"
+    routerLinkActive="underline"
+  >
+    <ui-kit-comp-account-tile
+      [primaryText]="profile?.name ?? 'N/A'"
+      [picture]="profile?.pictures?.[0]?.url"
+    />
+  </a>
 </ui-kit-comp-card>
 
-<app-divider class="block mt-4" />
+<ui-kit-divider class="block mt-4" />
 
-<sub-navbar [generate]="farewellGenerateUrl" (help)="help.emit()" (logout)="logout.emit()" class="block mt-4" />
+<sub-navbar
+  [generate]="farewellGenerateUrl"
+  (help)="help.emit()"
+  (logout)="logout.emit()"
+  class="block mt-4"
+/>

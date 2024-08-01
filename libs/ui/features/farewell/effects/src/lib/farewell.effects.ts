@@ -39,9 +39,7 @@ export class FarewellEffects {
   putFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.putFarewell),
-      switchMap(({ farewell }) =>
-        this.#farewellService.putFarewell(farewell)
-      ),
+      switchMap(({ farewell }) => this.#farewellService.putFarewell(farewell)),
       map((farewell) => FeatFarewellActions.putFarewellSuccess({ farewell }))
     )
   );

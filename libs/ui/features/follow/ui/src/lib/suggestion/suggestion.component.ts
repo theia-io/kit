@@ -1,8 +1,8 @@
 import {
-    ChangeDetectionStrategy,
-    Component,
-    inject,
-    input,
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  input,
 } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { selectProfileById } from '@kitouch/kit-data';

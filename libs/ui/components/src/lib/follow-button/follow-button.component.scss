@@ -1,21 +1,21 @@
 .outline-animation {
-    & svg {
-        position: absolute;
-        left: 0;
-        top: 0;
-        fill: none;
-        stroke: #020617;
-        stroke-width: 5px;
-        stroke-dasharray: 150 480;
-        stroke-dashoffset: 150;
-        transition: 1s ease-in-out;
-    }
+  & svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+    fill: none;
+    stroke: #020617;
+    stroke-width: 5px;
+    stroke-dasharray: 150 480;
+    stroke-dashoffset: 150;
+    transition: 1s ease-in-out;
+  }
 
-    &_following svg {
-        stroke: #64748b;
-    }
+  &_following svg {
+    stroke: #64748b;
+  }
 
-    &:hover svg {
-        stroke-dashoffset: -480;
-    }
+  &:hover svg {
+    stroke-dashoffset: -480;
+  }
 }

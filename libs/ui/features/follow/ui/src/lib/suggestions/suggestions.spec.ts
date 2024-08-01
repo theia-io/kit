@@ -9,7 +9,7 @@ import {
   F,
   G,
   K,
-  L
+  L,
 } from './experience.mocks';
 
 const getExperienceIntersection = (

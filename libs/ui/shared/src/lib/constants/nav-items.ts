@@ -34,13 +34,13 @@ export const NAV_ITEMS: Array<MenuItem> = [
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
   {
-    separator: true
+    separator: true,
   },
   {
     label: 'Settings',
     routerLink: APP_PATH.Settings,
     icon: 'pi pi-cog',
     iconClass: 'text-lg font-semibold',
-    styleClass: 'text-lg font-semibold ml-[-12px]'
+    styleClass: 'text-lg font-semibold ml-[-12px]',
   },
 ];

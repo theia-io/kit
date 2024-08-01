@@ -1,4 +1,3 @@
-
 import { Account } from '../account';
 import { Languages } from '../helpers';
 import { Legal } from './legal';
@@ -26,7 +25,7 @@ export interface User extends Realm.Services.MongoDB.Document {
   // business
   name: string;
   surname: string;
-  experiences: Array<{legalId: Pick<Legal, '_id' | 'alias'>} & Experience>; // ids?
+  experiences: Array<{ legalId: Pick<Legal, '_id' | 'alias'> } & Experience>; // ids?
   // not implemented yet
   middleName: string;
   gender: Gender; // ids?

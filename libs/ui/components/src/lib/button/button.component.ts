@@ -8,7 +8,7 @@ export enum ButtonComponentType {
 
 @Component({
   standalone: true,
-  selector: 'app-button',
+  selector: 'ui-kit-button',
   template: ` <!-- Base -->
     <button
       *ngIf="type === buttonType.Base"

@@ -7,4 +7,4 @@ export * from './lib/mocked-data';
 // services
 export * from './lib/services/quotes.service';
 // utils
-export * from './lib/state'
+export * from './lib/state';

@@ -1,18 +1,26 @@
-<ui-comp-gradient-card>
-    <feat-tweet-tweeting />
-</ui-comp-gradient-card>
+<ui-kit-comp-gradient-card>
+  <feat-tweet-tweeting />
+</ui-kit-comp-gradient-card>
 
 @for (tweet of homeTweets$ | async; track $index) {
-<app-divider class="block my-2" [class.mt-12]="$first" />
+<ui-kit-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-kit-comp-new-ui-item class="p-2" [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
-    <ui-kit-comp-card>
-        <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
-    </ui-kit-comp-card>
+<ui-kit-comp-new-ui-item
+  class="p-2"
+  [newlyAddedItem]="newlyAddedTweets().has(tweet.id)"
+>
+  <ui-kit-comp-card>
+    <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
+  </ui-kit-comp-card>
 </ui-kit-comp-new-ui-item>
 } @empty {
-<ui-kit-tweet-button [disabled]="(reloadTweetsDisabled$ | async) ?? false" [icon]="false" text="Reload Tweets"
-    (click)="reloadTweets()" class="block w-full mt-4 mb-6" />
+<ui-kit-tweet-button
+  [disabled]="(reloadTweetsDisabled$ | async) ?? false"
+  [icon]="false"
+  text="Reload Tweets"
+  (click)="reloadTweets()"
+  class="block w-full mt-4 mb-6"
+/>
 
 @if(followingProfiles() && followingProfiles()!.length > 0) {
 <p>You and profiles you follow has not posted anything yet.</p>
@@ -21,8 +29,10 @@
 <p>Start follow your (ex-) colleagues profiles or post your thoughts here!</p>
 }
 
-<feat-follow-suggestions class="block my-6" [suggestionConfig]="{cards: true, showFollowed: true,}" />
+<feat-follow-suggestions
+  class="block my-6"
+  [suggestionConfig]="{cards: true, showFollowed: true,}"
+/>
 }
-
 
 <ng-template #profile></ng-template>

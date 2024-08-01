@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import {
-    Component,
-    DestroyRef,
-    HostListener,
-    inject,
-    signal,
+  Component,
+  DestroyRef,
+  HostListener,
+  inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';

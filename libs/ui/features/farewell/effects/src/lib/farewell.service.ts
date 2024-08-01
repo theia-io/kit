@@ -9,11 +9,21 @@ export class FarewellService extends DataSourceService {
   getFarewells(): Observable<Array<Farewell>> {
     return this.db$().pipe(
       switchMap((db) => db.collection<Farewell>('farewell').find()),
-      map((farewells) => farewells.map(({_id, ...rest}) => ({...rest, _id: _id.toString()})))
+      map((farewells) =>
+        farewells.map(({ _id, ...rest }) => ({ ...rest, _id: _id.toString() }))
+      )
     );
   }
 
-  createFarewell({profile, title, content}: {profile: Profile, title: string, content: string}): Observable<Farewell> {
+  createFarewell({
+    profile,
+    title,
+    content,
+  }: {
+    profile: Profile;
+    title: string;
+    content: string;
+  }): Observable<Farewell> {
     const farewell: Omit<Farewell, '_id'> = {
       profile,
       title,
@@ -35,17 +45,19 @@ export class FarewellService extends DataSourceService {
     );
   }
 
-  putFarewell({_id, ...rest}: Farewell) {
+  putFarewell({ _id, ...rest }: Farewell) {
     return this.db$().pipe(
-      switchMap((db) => db.collection<Farewell>('farewell').updateOne(
-        { _id: new BSON.ObjectId(_id) },
-        {
-          $set: {
-            ...rest
+      switchMap((db) =>
+        db.collection<Farewell>('farewell').updateOne(
+          { _id: new BSON.ObjectId(_id) },
+          {
+            $set: {
+              ...rest,
+            },
           }
-        }
-    )),
-      map(() => ({...rest, _id}))
+        )
+      ),
+      map(() => ({ ...rest, _id }))
     );
   }
 }

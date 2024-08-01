@@ -1,6 +1,12 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { NgcCookieConsentService, NgcInitializingEvent, NgcInitializationErrorEvent, NgcStatusChangeEvent, NgcNoCookieLawEvent } from 'ngx-cookieconsent';
+import {
+  NgcCookieConsentService,
+  NgcInitializingEvent,
+  NgcInitializationErrorEvent,
+  NgcStatusChangeEvent,
+  NgcNoCookieLawEvent,
+} from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -24,53 +30,58 @@ export class AppComponent implements OnInit, OnDestroy {
   private revokeChoiceSubscription!: Subscription;
   private noCookieLawSubscription!: Subscription;
 
-  constructor(private ccService: NgcCookieConsentService){}
+  constructor(private ccService: NgcCookieConsentService) {}
 
   ngOnInit() {
     // subscribe to cookieconsent observables to react to main events
-    this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(
-      () => {
-        // you can use this.ccService.getConfig() to do stuff...
-      });
+    this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(() => {
+      // you can use this.ccService.getConfig() to do stuff...
+    });
 
-    this.popupCloseSubscription = this.ccService.popupClose$.subscribe(
-      () => {
-        // you can use this.ccService.getConfig() to do stuff...
-      });
+    this.popupCloseSubscription = this.ccService.popupClose$.subscribe(() => {
+      // you can use this.ccService.getConfig() to do stuff...
+    });
 
     this.initializingSubscription = this.ccService.initializing$.subscribe(
       (event: NgcInitializingEvent) => {
         // the cookieconsent is initilializing... Not yet safe to call methods like `NgcCookieConsentService.hasAnswered()`
         console.log(`initializing: ${JSON.stringify(event)}`);
-      });
-    
-    this.initializedSubscription = this.ccService.initialized$.subscribe(
-      () => {
-        // the cookieconsent has been successfully initialized.
-        // It's now safe to use methods on NgcCookieConsentService that require it, like `hasAnswered()` for eg...
-        console.log(`initialized: ${JSON.stringify(event)}`);
-      });
+      }
+    );
 
-    this.initializationErrorSubscription = this.ccService.initializationError$.subscribe(
-      (event: NgcInitializationErrorEvent) => {
-        // the cookieconsent has failed to initialize... 
-        console.log(`initializationError: ${JSON.stringify(event.error?.message)}`);
-      });
+    this.initializedSubscription = this.ccService.initialized$.subscribe(() => {
+      // the cookieconsent has been successfully initialized.
+      // It's now safe to use methods on NgcCookieConsentService that require it, like `hasAnswered()` for eg...
+      console.log(`initialized: ${JSON.stringify(event)}`);
+    });
+
+    this.initializationErrorSubscription =
+      this.ccService.initializationError$.subscribe(
+        (event: NgcInitializationErrorEvent) => {
+          // the cookieconsent has failed to initialize...
+          console.log(
+            `initializationError: ${JSON.stringify(event.error?.message)}`
+          );
+        }
+      );
 
     this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
         // you can use this.ccService.getConfig() to do stuff...
-      });
+      }
+    );
 
     this.revokeChoiceSubscription = this.ccService.revokeChoice$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
-      });
+      }
+    );
 
-      this.noCookieLawSubscription = this.ccService.noCookieLaw$.subscribe(
+    this.noCookieLawSubscription = this.ccService.noCookieLaw$.subscribe(
       (event: NgcNoCookieLawEvent) => {
         // you can use this.ccService.getConfig() to do stuff...
-      });
+      }
+    );
   }
 
   ngOnDestroy() {

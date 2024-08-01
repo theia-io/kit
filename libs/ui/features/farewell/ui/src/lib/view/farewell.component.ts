@@ -4,7 +4,7 @@ import {
   Component,
   inject,
   input,
-  output
+  output,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -24,7 +24,7 @@ import { combineLatest, distinctUntilKeyChanged, filter, map, tap } from 'rxjs';
   imports: [
     AsyncPipe,
     //
-    TooltipModule
+    TooltipModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -46,7 +46,7 @@ export class FeatFarewellComponent {
   constructor() {
     this.farewell$
       .pipe(
-        tap(v => console.log(v)),
+        tap((v) => console.log(v)),
         map(({ profile }) => profile),
         distinctUntilKeyChanged('id'),
         takeUntilDestroyed()

@@ -10,28 +10,26 @@ module.exports = {
   theme: {
     extend: {
       animation: {
-				fadeIn: 'fadeIn .5s ease-in-out',
+        fadeIn: 'fadeIn .5s ease-in-out',
         fadeOut: 'fadeOut .5s ease-in-out',
         wiggle: 'wiggle 1s ease-in-out infinite',
-			},
+      },
 
-			keyframes: {
-				fadeIn: {
-					from: { opacity: 0 },
-					to: { opacity: 1 },
-				},
+      keyframes: {
+        fadeIn: {
+          from: { opacity: 0 },
+          to: { opacity: 1 },
+        },
         fadeOut: {
           from: { opacity: 1 },
-					to: { opacity: 0 },
+          to: { opacity: 0 },
         },
         wiggle: {
           '0%, 100%': { transform: 'rotate(-3deg)' },
           '50%': { transform: 'rotate(3deg)' },
-        }
-			},
+        },
+      },
     },
   },
-  plugins: [
-    require('@tailwindcss/typography')
-  ],
+  plugins: [require('@tailwindcss/typography')],
 };

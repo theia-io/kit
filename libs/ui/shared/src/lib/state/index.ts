@@ -3,6 +3,8 @@ export const FeatureTweetKey = 'feature.tweet';
 
 export const PageHomeKey = 'page.home';
 
+/** @TODO @FIXME move App state to highest level of deps */
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppState {}
 
 // 2*N(0)

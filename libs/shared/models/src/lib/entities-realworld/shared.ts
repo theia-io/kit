@@ -19,9 +19,8 @@ export enum ExperienceType {
 export enum LocationType {
   Office = 'Office',
   Remote = 'Remote',
-  Hybrid = 'Hybrid'
+  Hybrid = 'Hybrid',
 }
-
 
 export interface Experience {
   title: string;

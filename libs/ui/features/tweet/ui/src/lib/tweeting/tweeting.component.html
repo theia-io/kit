@@ -1,28 +1,55 @@
 <div class="flex gap-2">
-    <div class="w-10">
-        @if(profilePic$ | async) {
-        <img class="inline-block h-10 w-10 rounded-full" referrerpolicy="no-referrer" [src]="profilePic$ | async"
-            height="40" width="40" alt="kitouch profile picture" />
-        } @else {
-        <img class="inline-block h-10 w-10 rounded-full" ngSrc="/account/placeholder-small.jpeg" height="40" width="40"
-            alt="kitouch profile picture placeholder" />
-        }
-    </div>
-    <div class="flex-1">
-        <p-floatLabel>
-            <textarea #textControl [formControl]="tweetContentControl" pInputTextarea id="tweet-content" variant="filled"
-                (focus)="tweetContentControlRows = 6" (blur)="tweetControlBlur()"
-                class="w-full font-semibold text-xl" [rows]="tweetContentControlRows" cols="50"></textarea>
-            <label for="tweet-content">Ready to share?</label>
-        </p-floatLabel>
-    </div>
+  <div class="w-10">
+    @if(profilePic$ | async) {
+    <img
+      class="inline-block h-10 w-10 rounded-full"
+      referrerpolicy="no-referrer"
+      [src]="profilePic$ | async"
+      height="40"
+      width="40"
+      alt="kitouch profile picture"
+    />
+    } @else {
+    <img
+      class="inline-block h-10 w-10 rounded-full"
+      ngSrc="/account/placeholder-small.jpeg"
+      height="40"
+      width="40"
+      alt="kitouch profile picture placeholder"
+    />
+    }
+  </div>
+  <div class="flex-1">
+    <p-floatLabel>
+      <textarea
+        #textControl
+        [formControl]="tweetContentControl"
+        pInputTextarea
+        id="tweet-content"
+        variant="filled"
+        (focus)="tweetContentControlRows = 6"
+        (blur)="tweetControlBlur()"
+        class="w-full font-semibold text-xl"
+        [rows]="tweetContentControlRows"
+        cols="50"
+      ></textarea>
+      <label for="tweet-content">Ready to share?</label>
+    </p-floatLabel>
+  </div>
 </div>
 
 <div class="flex justify-end items-center">
-    <feat-tweet-tweeting-actions (imageClick)="imageHandler()" (reactionClick)="reactionHandler()" />
+  <feat-tweet-tweeting-actions
+    (imageClick)="imageHandler()"
+    (reactionClick)="reactionHandler()"
+  />
 
-    <ui-kit-tweet-button [disabled]="!tweetContentControl.valid || tweettingInProgress()"
-        [loader]="tweettingInProgress()" (click)="tweetingHandle()" class="min-w-28 float-right" />
+  <ui-kit-tweet-button
+    [disabled]="!tweetContentControl.valid || tweettingInProgress()"
+    [loader]="tweettingInProgress()"
+    (click)="tweetingHandle()"
+    class="min-w-28 float-right"
+  />
 </div>
 
 <!-- <p-toast #toast (click)="successMessageClickHandler()" (onClose)="successMessageCloseHandler()"

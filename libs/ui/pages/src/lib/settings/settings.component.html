@@ -1,45 +1,75 @@
-<p-messages [value]="[profileMessage()]" showTransitionOptions="250ms" hideTransitionOptions="0ms"
-    [enableService]="false" [closable]="false" />
+<p-messages
+  [value]="[profileMessage()]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false"
+/>
 <ui-kit-comp-new-ui-item [newlyAddedItem]="updatingProfile()">
-    <feat-settings-profile-information [profile]="currentProfile$ | async"
-        (updatingProfile)="updatingProfileHandler()" />
+  <feat-settings-profile-information
+    [profile]="currentProfile$ | async"
+    (updatingProfile)="updatingProfileHandler()"
+  />
 </ui-kit-comp-new-ui-item>
 
-<p-messages [value]="[experienceMessage]" showTransitionOptions="500ms" hideTransitionOptions="0ms"
-    [enableService]="false" [closable]="false" />
-@if((experiences$ | async); as experiences) {
-@if(experiences.length) {
-<div class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="pt-2 pl-4 text-lg font-bold">Your experiences</h2>
-    <p-accordion [activeIndex]="0">
-        @for (experience of experiences; track $index) {
-        <p-accordionTab [header]="experience.title">
-            <div class="relative">
-                <feat-settings-experience-show [showRemove]="true"
-                    [experience]="experience"></feat-settings-experience-show>
-                    <!-- <i (click)="editHandler(experience)" role="button"
+<p-messages
+  [value]="[experienceMessage]"
+  showTransitionOptions="500ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false"
+/>
+@if((experiences$ | async); as experiences) { @if(experiences.length) {
+<div
+  class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+>
+  <h2 class="pt-2 pl-4 text-lg font-bold">Your experiences</h2>
+  <p-accordion [activeIndex]="0">
+    @for (experience of experiences; track $index) {
+    <p-accordionTab [header]="experience.title">
+      <div class="relative">
+        <feat-settings-experience-show
+          [showRemove]="true"
+          [experience]="experience"
+        ></feat-settings-experience-show>
+        <!-- <i (click)="editHandler(experience)" role="button"
                     class="pi pi-file-edit absolute top-2 right-10 hover:animate-pulse"
                     style="font-size: 1.5rem;"></i> -->
-                <i (click)="deleteTweetHandler(experience)" role="button"
-                    class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-                    style="font-size: 1.5rem;"></i>
-            </div>
-        </p-accordionTab>
-        }
-    </p-accordion>
+        <i
+          (click)="deleteTweetHandler(experience)"
+          role="button"
+          class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
+          style="font-size: 1.5rem"
+        ></i>
+      </div>
+    </p-accordionTab>
+    }
+  </p-accordion>
 </div>
-}
-}
+} }
 
-
-<div class="w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700">
-    <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
-    <feat-settings-experience-add class="block p-[18px]" (onSaved)="savedExperienceHandler()" />
+<div
+  class="w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
+>
+  <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
+  <feat-settings-experience-add
+    class="block p-[18px]"
+    (onSaved)="savedExperienceHandler()"
+  />
 </div>
 
-<p-messages [value]="[dangerZoneMessage]" showTransitionOptions="1000ms" hideTransitionOptions="0ms"
-    [enableService]="false" [closable]="false" />
+<p-messages
+  [value]="[dangerZoneMessage]"
+  showTransitionOptions="1000ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false"
+/>
 
 <div>
-    <p-button label="Delete my account" severity="danger" (onClick)="deleteAccountHandler()" />
+  <p-button
+    label="Delete my account"
+    severity="danger"
+    (onClick)="deleteAccountHandler()"
+  />
 </div>

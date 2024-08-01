@@ -1,17 +1,13 @@
 .name {
-    /*   font-family: 'Calligraffitti', cursive; */
-    font-weight: 700;
-    font-size: 90px;
-    text-shadow: -15px 5px 20px #ced0d3;
-    letter-spacing: 0.02em;
-    text-align: center;
-    color: #F9f1cc;
-    text-shadow: 5px 5px 0px #FFB650,
-        10px 10px 0px #FFD662,
-        15px 15px 0px #FF80BF,
-        20px 20px 0px #EF5097,
-        25px 25px 0px #6868AC,
-        30px 30px 0px #90B1E0;
+  /*   font-family: 'Calligraffitti', cursive; */
+  font-weight: 700;
+  font-size: 90px;
+  text-shadow: -15px 5px 20px #ced0d3;
+  letter-spacing: 0.02em;
+  text-align: center;
+  color: #f9f1cc;
+  text-shadow: 5px 5px 0px #ffb650, 10px 10px 0px #ffd662, 15px 15px 0px #ff80bf,
+    20px 20px 0px #ef5097, 25px 25px 0px #6868ac, 30px 30px 0px #90b1e0;
 }
 
 // .wrapper {
@@ -41,25 +37,30 @@
 // }
 
 .wrapper {
-    text-align: center;
+  text-align: center;
 
-    p {
-        font-size: 20px;
-        background: linear-gradient(to right, #095fab 10%, #25abe8 50%, #57d75b 60%);
-        background-size: 200% auto;
-        color: #fff;
-        background-clip: text;
-        text-fill-color: transparent;
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        animation: textclip 15s linear infinite;
-        animation-direction: reverse;
-        display: inline-block;
-    }
+  p {
+    font-size: 20px;
+    background: linear-gradient(
+      to right,
+      #095fab 10%,
+      #25abe8 50%,
+      #57d75b 60%
+    );
+    background-size: 200% auto;
+    color: #fff;
+    background-clip: text;
+    text-fill-color: transparent;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: textclip 15s linear infinite;
+    animation-direction: reverse;
+    display: inline-block;
+  }
 }
 
 @keyframes textclip {
-    to {
-        background-position: 200% center;
-    }
+  to {
+    background-position: 200% center;
+  }
 }

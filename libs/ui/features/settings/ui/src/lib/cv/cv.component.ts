@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'lib-feat-settings-cv',
+  selector: 'feat-settings-cv',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './cv.component.html',
