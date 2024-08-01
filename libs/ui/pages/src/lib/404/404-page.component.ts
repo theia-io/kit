@@ -71,7 +71,12 @@ import { ButtonComponent } from '@kitouch/ui-components';
         </div>
       </div> -->
 
-      <app-button class="mt-12" role="link" routerLink="/" label="Go back home" />
+      <ui-kit-button
+        class="mt-12"
+        role="link"
+        routerLink="/"
+        label="Go back home"
+      />
     </div>
   `,
   imports: [CommonModule, RouterModule, ButtonComponent],

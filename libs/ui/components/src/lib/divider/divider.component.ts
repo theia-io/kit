@@ -10,7 +10,7 @@ export enum DividerType {
 
 @Component({
   standalone: true,
-  selector: 'app-divider',
+  selector: 'ui-kit-divider',
   template: `
     @if (type === dividerTypes.TextInCenter) {
     <span class="flex items-center">

@@ -1,65 +1,104 @@
 @if (tweet()) {
 <ui-kit-comp-card>
-    <feat-tweet-tweety class="block w-full" [tweetId]="tweet()!.id" (tweetDeleted)="tweetDeletedHandler()" />
+  <feat-tweet-tweety
+    class="block w-full"
+    [tweetId]="tweet()!.id"
+    (tweetDeleted)="tweetDeletedHandler()"
+  />
 </ui-kit-comp-card>
 
-<app-divider class="block my-4" />
+<ui-kit-divider class="block my-4" />
 
 <p-floatLabel class="relative">
-    <textarea #textControl [formControl]="commentContentControl" pInputTextarea id="comment-content" variant="filled"
-        (focus)="commentContentControlRows = 4" (blur)="commentControlBlur()"
-        class="relative w-full font-semibold text-xl" [rows]="commentContentControlRows" cols="50">
-    </textarea>
-    <label for="comment-content">Got a reply?</label>
+  <textarea
+    #textControl
+    [formControl]="commentContentControl"
+    pInputTextarea
+    id="comment-content"
+    variant="filled"
+    (focus)="commentContentControlRows = 4"
+    (blur)="commentControlBlur()"
+    class="relative w-full font-semibold text-xl"
+    [rows]="commentContentControlRows"
+    cols="50"
+  >
+  </textarea>
+  <label for="comment-content">Got a reply?</label>
 
-    @if(commentContentControlRows === 2) {
-    <p-button styleClass="absolute top-2/4 translate-y-[-70%] right-2" [disabled]="true" aria-label="comment">
-        <i class="pi pi-send"></i>
-    </p-button>
-    <span class="block mb-4"></span>
+  @if(commentContentControlRows === 2) {
+  <p-button
+    styleClass="absolute top-2/4 translate-y-[-70%] right-2"
+    [disabled]="true"
+    aria-label="comment"
+  >
+    <i class="pi pi-send"></i>
+  </p-button>
+  <span class="block mb-4"></span>
 
-    } @else {
-    <ui-kit-tweet-button class="mb-4" text="Comment" [iconAnimate]="true" [disabled]="!commentContentControl.valid"
-        [loader]="false" (click)="commentHandler()" />
-    }
+  } @else {
+  <ui-kit-tweet-button
+    class="mb-4"
+    text="Comment"
+    [iconAnimate]="true"
+    [disabled]="!commentContentControl.valid"
+    [loader]="false"
+    (click)="commentHandler()"
+  />
+  }
 </p-floatLabel>
 
 @if(tweet()!.comments) {
 
-<p-timeline [value]="(tweetComments$ | async) ?? []" styleClass="w-full md:w-20rem kit-timeline">
-    <ng-template pTemplate="content" let-comment>
-        <div>
-            <p class="text-sm leading-5 font-medium text-gray-400">
-                {{comment.createdAt| date:'MMM d, h:mm a'}}
-            </p>
+<p-timeline
+  [value]="(tweetComments$ | async) ?? []"
+  styleClass="w-full md:w-20rem kit-timeline"
+>
+  <ng-template pTemplate="content" let-comment>
+    <div>
+      <p class="text-sm leading-5 font-medium text-gray-400">
+        {{ comment.createdAt | date : 'MMM d, h:mm a' }}
+      </p>
 
-            {{ comment.content }}
+      {{ comment.content }}
 
-            @if(comment.canBeDeleted) {
-            <svg class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse" role="button"
-                (click)="$event.stopPropagation(); commentDeleteHandler(tweet()!, comment)" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-            </svg>
-            }
-        </div>
-    </ng-template>
+      @if(comment.canBeDeleted) {
+      <svg
+        class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse"
+        role="button"
+        (click)="
+          $event.stopPropagation(); commentDeleteHandler(tweet()!, comment)
+        "
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      >
+        <line x1="18" y1="6" x2="6" y2="18" />
+        <line x1="6" y1="6" x2="18" y2="18" />
+      </svg>
+      }
+    </div>
+  </ng-template>
 
-    <ng-template pTemplate="opposite" let-comment>
-        <ui-kit-comp-account-tile [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
-            [primarySecondaryText]="comment?.denormalization?.profile?.name"
-            [link]="profileUrlPath + comment.profileId" />
-    </ng-template>
+  <ng-template pTemplate="opposite" let-comment>
+    <ui-kit-comp-account-tile
+      [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
+      [primarySecondaryText]="comment?.denormalization?.profile?.name"
+      [link]="profileUrlPath + comment.profileId"
+    />
+  </ng-template>
 </p-timeline>
 } @else {
-    <p> You are the first to comment 😎 </p>
-}
-} @else {
+<p>You are the first to comment 😎</p>
+} } @else {
 
 <p>No tweet</p>
 
 <p>It might have been deleted or never existed</p>
 
-<p>If somebody shared with you this link ask to double check if it is correct.</p>
+<p>
+  If somebody shared with you this link ask to double check if it is correct.
+</p>
 }

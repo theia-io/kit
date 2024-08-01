@@ -50,7 +50,9 @@ export class SearchComponent<T extends string> implements ControlValueAccessor {
       this.onChange(value);
     });
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onChange: any = () => {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-function
   onTouched: any = () => {};
   touched = false;
   disabled = false;

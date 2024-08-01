@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'lib-feat-settings-experience',
+  selector: 'feat-settings-experience',
   standalone: true,
   imports: [CommonModule],
   templateUrl: './experience.component.html',

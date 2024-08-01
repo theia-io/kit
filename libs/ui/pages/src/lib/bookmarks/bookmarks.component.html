@@ -1,43 +1,44 @@
 <style>
-    .font-variation {
-        font-family: 'Gambetta', serif;
-        font-size: large;
-        font-weight:900;
-        color: PaleGoldenRod;
-        letter-spacing: 0px;
-        transition: 700ms ease;
-        font-variation-settings: "wght" 311;
-        margin-bottom: 0.8rem;
-        outline: none;
-        text-align: center;
-    }
+  .font-variation {
+    font-family: 'Gambetta', serif;
+    font-size: large;
+    font-weight: 900;
+    color: PaleGoldenRod;
+    letter-spacing: 0px;
+    transition: 700ms ease;
+    font-variation-settings: 'wght' 311;
+    margin-bottom: 0.8rem;
+    outline: none;
+    text-align: center;
+  }
 
-    .font-variation:hover {
-        font-variation-settings: "wght" 582;
-        letter-spacing: 0.5px;
-    }
+  .font-variation:hover {
+    font-variation-settings: 'wght' 582;
+    letter-spacing: 0.5px;
+  }
 </style>
 
 @if((quote$ | async); as quote) {
 <div
-    class="mb-2 relative bg-gradient-to-r from-[#bdc3c7] to-[#2c3e50] text-white font-extrabold rounded-[10px] transition shadow-lg">
-    <ui-kit-comp-card>
-        <blockquote class="w-full md:h-[10vh] md:max-h-[10vh] lg:h-[20vh] lg:max-h-[20vh] flex items-center justify-center">
-            <div>
-                <p class="font-variation">{{quote.text}}</p>
-                <cite class="float-right"> - {{quote.from}}</cite>
-            </div>
-        </blockquote>
-    </ui-kit-comp-card>
+  class="mb-2 relative bg-gradient-to-r from-[#bdc3c7] to-[#2c3e50] text-white font-extrabold rounded-[10px] transition shadow-lg"
+>
+  <ui-kit-comp-card>
+    <blockquote
+      class="w-full md:h-[10vh] md:max-h-[10vh] lg:h-[20vh] lg:max-h-[20vh] flex items-center justify-center"
+    >
+      <div>
+        <p class="font-variation">{{ quote.text }}</p>
+        <cite class="float-right"> - {{ quote.from }}</cite>
+      </div>
+    </blockquote>
+  </ui-kit-comp-card>
 </div>
-}
-
-@for (tweet of (bookmarkFeedTweets$ | async); track $index) {
-<app-divider class="block my-2" [class.mt-12]="$first" />
+} @for (tweet of (bookmarkFeedTweets$ | async); track $index) {
+<ui-kit-divider class="block my-2" [class.mt-12]="$first" />
 
 <ui-kit-comp-card class="cursor-pointer">
-    <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
+  <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
 </ui-kit-comp-card>
 } @empty {
-<p class="mt-12"> There are no bookmarks yet, start adding one!</p>
+<p class="mt-12">There are no bookmarks yet, start adding one!</p>
 }
