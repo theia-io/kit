@@ -1,7 +1,9 @@
 import { InjectionToken } from '@angular/core';
 
 export interface Environment {
-  production: boolean;
+  development: boolean; // when true then DEV env
+  production: boolean; // when true then PRD env; does not matter if development is `true`
+  realmAppId: string; // Realm Web App ID
 }
 
 /**
