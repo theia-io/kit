@@ -1,0 +1,1346 @@
+[
+  {
+    "_id": {
+      "$oid": "66aa57a1667fa598a87e3e10"
+    },
+    "userId": {
+      "$oid": "66aa57a1667fa598a87e3dff"
+    },
+    "settingsId": {
+      "$oid": "66aa57a1667fa598a87e3e00"
+    },
+    "email": "danbilokha@gmail.com",
+    "type": "normal",
+    "status": "active",
+    "data": {
+      "name": "Danylo B.",
+      "first_name": "Danylo",
+      "last_name": "B.",
+      "email": "danbilokha@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocLBd2cL7O6v4mSHPxyXcHBstBb9mqMtnU1eKJEWMqLntdwaeJrR=s96-c"
+    },
+    "customData": {},
+    "identities": [
+      {
+        "id": "117170524823202982934",
+        "provider_type": "oauth2-google"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa57f9667fa598a88282e6"
+    },
+    "userId": {
+      "$oid": "66aa57f9667fa598a88282db"
+    },
+    "settingsId": {
+      "$oid": "66aa57f9667fa598a88282e0"
+    },
+    "email": "belohadk97@gmail.com",
+    "type": "normal",
+    "status": "active",
+    "data": {
+      "email": "belohadk97@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocKDCqhYZrZ2OenOoRlg8nUVGecxG2IDRSR4sYG4PupRYN_0w5bLcQ=s96-c",
+      "name": "Danylo B.",
+      "first_name": "Danylo",
+      "last_name": "B."
+    },
+    "customData": {},
+    "identities": [
+      {
+        "id": "106859032697255431416",
+        "provider_type": "oauth2-google"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa5a10231f582dc4b4a1e2"
+    },
+    "userId": {
+      "$oid": "66aa5a10231f582dc4b4a1d4"
+    },
+    "settingsId": {
+      "$oid": "66aa5a10231f582dc4b4a1d9"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa5a10231f582dc4b4a1d1-zwmuqyjosarjmjjtfqbbxnuy",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa5b421e9c01876b166295"
+    },
+    "userId": {
+      "$oid": "66aa5b421e9c01876b16611d"
+    },
+    "settingsId": {
+      "$oid": "66aa5b421e9c01876b166163"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa5b421e9c01876b1660ac-ivhzrocqinpcdgvciktdtkkj",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa5d3e1e9c01876b2c8644"
+    },
+    "userId": {
+      "$oid": "66aa5d3e1e9c01876b2c8629"
+    },
+    "settingsId": {
+      "$oid": "66aa5d3e1e9c01876b2c862d"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa5d3e1e9c01876b2c8610-uzwhndxynuzejemsrhkzutqf",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa611b1e9c01876b6581a4"
+    },
+    "userId": {
+      "$oid": "66aa611b1e9c01876b657d52"
+    },
+    "settingsId": {
+      "$oid": "66aa611b1e9c01876b657d73"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa611b1e9c01876b657d10-plxgomosbfjlqpjdryxoiunx",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6149dcb4f2abf18bc8f4"
+    },
+    "userId": {
+      "$oid": "66aa6149dcb4f2abf18bc8cf"
+    },
+    "settingsId": {
+      "$oid": "66aa6149dcb4f2abf18bc8d0"
+    },
+    "email": "kornel.javor@gmail.com",
+    "type": "normal",
+    "status": "active",
+    "data": {
+      "name": "Kornel Javor",
+      "first_name": "Kornel",
+      "last_name": "Javor",
+      "email": "kornel.javor@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocJ74MN9cB2z5c6KUTfZkjqIt4iPMEIK4Et5nDl3zZTTN9ThXAst=s96-c"
+    },
+    "customData": {},
+    "identities": [
+      {
+        "id": "110891900063954187611",
+        "provider_type": "oauth2-google"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6bf1dcb4f2abf10c709f"
+    },
+    "userId": {
+      "$oid": "66aa6bf1dcb4f2abf10c7094"
+    },
+    "settingsId": {
+      "$oid": "66aa6bf1dcb4f2abf10c7095"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6bf1dcb4f2abf10c708c-hpgejidtcygfzefnppgrocgq",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6c2d231f582dc4855774"
+    },
+    "userId": {
+      "$oid": "66aa6c2d231f582dc4855761"
+    },
+    "settingsId": {
+      "$oid": "66aa6c2d231f582dc4855764"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6c2d231f582dc4855760-fdknxsyedcureapfdgugxmxq",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6c80dcb4f2abf10fdbfa"
+    },
+    "userId": {
+      "$oid": "66aa6c80dcb4f2abf10fdbf2"
+    },
+    "settingsId": {
+      "$oid": "66aa6c80dcb4f2abf10fdbf6"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6c80dcb4f2abf10fdbe9-zgteyihkfuludrbrglxctaaq",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6cf11e9c01876bfdba85"
+    },
+    "userId": {
+      "$oid": "66aa6cf11e9c01876bfdba7f"
+    },
+    "settingsId": {
+      "$oid": "66aa6cf11e9c01876bfdba80"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6cf11e9c01876bfdba7e-qtioegsfpanduszagerjjyoe",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6d02dcb4f2abf1148a65"
+    },
+    "userId": {
+      "$oid": "66aa6d02dcb4f2abf1148a60"
+    },
+    "settingsId": {
+      "$oid": "66aa6d02dcb4f2abf1148a61"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6d02dcb4f2abf1148a5f-ebuutrvshykxsgogbszscjuh",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6d82520480f7811afa74"
+    },
+    "userId": {
+      "$oid": "66aa6d81520480f7811af88a"
+    },
+    "settingsId": {
+      "$oid": "66aa6d81520480f7811af8b6"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6d81520480f7811af833-untmihqkmyxlfzrrlpbiwvwg",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6debdcb4f2abf11bbf15"
+    },
+    "userId": {
+      "$oid": "66aa6debdcb4f2abf11bbf13"
+    },
+    "settingsId": {
+      "$oid": "66aa6debdcb4f2abf11bbf14"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6debdcb4f2abf11bbf12-yzsfdbvojdrqkceiqnqjvulf",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6e55dcb4f2abf11e8d49"
+    },
+    "userId": {
+      "$oid": "66aa6e55dcb4f2abf11e8d39"
+    },
+    "settingsId": {
+      "$oid": "66aa6e55dcb4f2abf11e8d3b"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6e55dcb4f2abf11e8d38-axlpkphktmyedfbfsjpcfpev",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6e8fdcb4f2abf122d567"
+    },
+    "userId": {
+      "$oid": "66aa6e8fdcb4f2abf122d55f"
+    },
+    "settingsId": {
+      "$oid": "66aa6e8fdcb4f2abf122d562"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6e8fdcb4f2abf122d55d-jbgtovadfrxmbxrvpkxluigo",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa6f5f667fa598a88d6d22"
+    },
+    "userId": {
+      "$oid": "66aa6f5f667fa598a88d6d19"
+    },
+    "settingsId": {
+      "$oid": "66aa6f5f667fa598a88d6d1a"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa6f5f667fa598a88d6d16-uoneyhnjdfgqyrsuehqtflqi",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa7028667fa598a893dfa3"
+    },
+    "userId": {
+      "$oid": "66aa7028667fa598a893df93"
+    },
+    "settingsId": {
+      "$oid": "66aa7028667fa598a893df94"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa7028667fa598a893df91-bqqpgbvuheofrlklhrtavnxp",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa74a8667fa598a8baed3b"
+    },
+    "userId": {
+      "$oid": "66aa74a8667fa598a8baed11"
+    },
+    "settingsId": {
+      "$oid": "66aa74a8667fa598a8baed13"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa74a8667fa598a8baecf9-sztomnldsnicrwlrtpohnvtv",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa753e667fa598a8c0172e"
+    },
+    "userId": {
+      "$oid": "66aa753e667fa598a8c0172a"
+    },
+    "settingsId": {
+      "$oid": "66aa753e667fa598a8c0172b"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa753e667fa598a8c01729-pbqfjhxbvrxjjbypyaksokoz",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa76bd667fa598a8ce647c"
+    },
+    "userId": {
+      "$oid": "66aa76bc667fa598a8ce637c"
+    },
+    "settingsId": {
+      "$oid": "66aa76bc667fa598a8ce637e"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa76bc667fa598a8ce6378-xnzrggdgiqoqbwewprbhhgzp",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa7a4a667fa598a8f1097c"
+    },
+    "userId": {
+      "$oid": "66aa7a4a667fa598a8f1096e"
+    },
+    "settingsId": {
+      "$oid": "66aa7a4a667fa598a8f10973"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa7a4a667fa598a8f1096a-pzexotvrdyulkdrthhtzrsts",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa889e667fa598a88fa60f"
+    },
+    "userId": {
+      "$oid": "66aa889e667fa598a88fa60d"
+    },
+    "settingsId": {
+      "$oid": "66aa889e667fa598a88fa60e"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa889e667fa598a88fa60c-ghsdkfvjqfqthqzzazceruyj",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa8a727fab2e75a691e018"
+    },
+    "userId": {
+      "$oid": "66aa8a727fab2e75a691e003"
+    },
+    "settingsId": {
+      "$oid": "66aa8a727fab2e75a691e007"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa8a727fab2e75a691e002-ocgbrsjdsccmkihfpbaucycz",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa8c1c667fa598a8aeb2d8"
+    },
+    "userId": {
+      "$oid": "66aa8c1c667fa598a8aeb2c2"
+    },
+    "settingsId": {
+      "$oid": "66aa8c1c667fa598a8aeb2c7"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa8c1c667fa598a8aeb2bc-oynrjpwpblgekwaqivbfonwa",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa8c36231f582dc4bc79b0"
+    },
+    "userId": {
+      "$oid": "66aa8c36231f582dc4bc7999"
+    },
+    "settingsId": {
+      "$oid": "66aa8c36231f582dc4bc799d"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa8c36231f582dc4bc7996-wrknuynqlcujbpidpzbsabpw",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa8ca97fab2e75a69fd325"
+    },
+    "userId": {
+      "$oid": "66aa8ca97fab2e75a69fd314"
+    },
+    "settingsId": {
+      "$oid": "66aa8ca97fab2e75a69fd315"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa8ca97fab2e75a69fd30c-doztmdykopgjvsrcjvxnsnhr",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa8d23dcb4f2abf14a960b"
+    },
+    "userId": {
+      "$oid": "66aa8d23dcb4f2abf14a95fc"
+    },
+    "settingsId": {
+      "$oid": "66aa8d23dcb4f2abf14a95fd"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa8d23dcb4f2abf14a95f5-hvpzcuncaqiwbsdktiudehpd",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa92f6231f582dc4077496"
+    },
+    "userId": {
+      "$oid": "66aa92f6231f582dc407748a"
+    },
+    "settingsId": {
+      "$oid": "66aa92f6231f582dc407748b"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa92f6231f582dc4077475-txmvfkpphdmnpkpgnldklkqh",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa93d5dcb4f2abf1a16fa4"
+    },
+    "userId": {
+      "$oid": "66aa93d5dcb4f2abf1a16f8b"
+    },
+    "settingsId": {
+      "$oid": "66aa93d5dcb4f2abf1a16f8c"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa93d5dcb4f2abf1a16f8a-wkifoujqduxeuluqhlmpwkql",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa940bdcb4f2abf1a499a7"
+    },
+    "userId": {
+      "$oid": "66aa940bdcb4f2abf1a499a0"
+    },
+    "settingsId": {
+      "$oid": "66aa940bdcb4f2abf1a499a6"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa940bdcb4f2abf1a4999e-npfvagxwshcovipbyllwicam",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa953a1e9c01876bb6c96b"
+    },
+    "userId": {
+      "$oid": "66aa953a1e9c01876bb6c969"
+    },
+    "settingsId": {
+      "$oid": "66aa953a1e9c01876bb6c96a"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa953a1e9c01876bb6c968-ncecbyeeswcitzgacuxjpzkm",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa9792231f582dc441cc2c"
+    },
+    "userId": {
+      "$oid": "66aa9792231f582dc441cc23"
+    },
+    "settingsId": {
+      "$oid": "66aa9792231f582dc441cc24"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa9792231f582dc441cc1d-cmlijzekcotbwvxraltzihlc",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa97b0231f582dc4426f5a"
+    },
+    "userId": {
+      "$oid": "66aa97b0231f582dc4426f4b"
+    },
+    "settingsId": {
+      "$oid": "66aa97b0231f582dc4426f4c"
+    },
+    "email": "tikhan111olena@gmail.com",
+    "type": "normal",
+    "status": "active",
+    "data": {
+      "last_name": "Тихан",
+      "email": "tikhan111olena@gmail.com",
+      "picture": "https://lh3.googleusercontent.com/a/ACg8ocLK3Pqwb9wHZalQZVOgDrjlxa-Y9yCXYyqhfsWJJ1H8q5pTbw=s96-c",
+      "name": "Олена Тихан",
+      "first_name": "Олена"
+    },
+    "customData": {},
+    "identities": [
+      {
+        "id": "117032838595993689907",
+        "provider_type": "oauth2-google"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa97cb667fa598a859d06a"
+    },
+    "userId": {
+      "$oid": "66aa97cb667fa598a859d05c"
+    },
+    "settingsId": {
+      "$oid": "66aa97cb667fa598a859d05d"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa97cb667fa598a859d059-lntzkdnkpophmzetszakjepi",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa980d231f582dc446c005"
+    },
+    "userId": {
+      "$oid": "66aa980d231f582dc446bffe"
+    },
+    "settingsId": {
+      "$oid": "66aa980d231f582dc446c000"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa980d231f582dc446bffb-jpcylmyufgmakzkouwklhvwz",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa98c087135e1ffd6094d9"
+    },
+    "userId": {
+      "$oid": "66aa98c087135e1ffd6094d7"
+    },
+    "settingsId": {
+      "$oid": "66aa98c087135e1ffd6094d8"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa98c087135e1ffd6094d6-haqosnijsgnaqquxqvekqtjq",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aa9de0667fa598a88d0d0f"
+    },
+    "userId": {
+      "$oid": "66aa9de0667fa598a88d0cbd"
+    },
+    "settingsId": {
+      "$oid": "66aa9de0667fa598a88d0cbe"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aa9de0667fa598a88d0cb7-gaymyjtymhuvlyrggrczawjr",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aaa0981e9c01876b2c430d"
+    },
+    "userId": {
+      "$oid": "66aaa0981e9c01876b2c42e9"
+    },
+    "settingsId": {
+      "$oid": "66aaa0981e9c01876b2c430a"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aaa0981e9c01876b2c42e8-xrntkbvsdcbazfguoospxzri",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aaa0b4dcb4f2abf12c41d5"
+    },
+    "userId": {
+      "$oid": "66aaa0b4dcb4f2abf12c41be"
+    },
+    "settingsId": {
+      "$oid": "66aaa0b4dcb4f2abf12c41bf"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aaa0b4dcb4f2abf12c41bd-sulgoysgsecfcrdeceijzwnq",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aaa7776131974c841e4bfd"
+    },
+    "userId": {
+      "$oid": "66aaa7776131974c841e4b69"
+    },
+    "settingsId": {
+      "$oid": "66aaa7776131974c841e4bf0"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aaa7776131974c841e4b68-piowiopkvppwijokayllzmnd",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aac5f83d31d5bc12796c67"
+    },
+    "userId": {
+      "$oid": "66aac5f83d31d5bc12796c07"
+    },
+    "settingsId": {
+      "$oid": "66aac5f83d31d5bc12796c62"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aac5f83d31d5bc12796c06-bxvlgdzyzvcvkbvpxymuhqzo",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aac6842301326ce913c706"
+    },
+    "userId": {
+      "$oid": "66aac6842301326ce913c704"
+    },
+    "settingsId": {
+      "$oid": "66aac6842301326ce913c705"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aac6842301326ce913c703-bgizijnlcqwuizxgqjudsykt",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aad0011e9c01876b3eb1cf"
+    },
+    "userId": {
+      "$oid": "66aad0011e9c01876b3eb1b4"
+    },
+    "settingsId": {
+      "$oid": "66aad0011e9c01876b3eb1c5"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aad0011e9c01876b3eb1b3-cykxmpfoyawemfujfjvymgls",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aad0491e9c01876b40bdd6"
+    },
+    "userId": {
+      "$oid": "66aad0491e9c01876b40bdd4"
+    },
+    "settingsId": {
+      "$oid": "66aad0491e9c01876b40bdd5"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aad0491e9c01876b40bdd3-qqjkdqhzitgtvjstbloyiqji",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aadc59dcb4f2abf1bfd432"
+    },
+    "userId": {
+      "$oid": "66aadc59dcb4f2abf1bfd3e4"
+    },
+    "settingsId": {
+      "$oid": "66aadc59dcb4f2abf1bfd42b"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aadc59dcb4f2abf1bfd3e0-xylrnygsgmxcjkluzntrjjxo",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aae0f8231f582dc4269442"
+    },
+    "userId": {
+      "$oid": "66aae0f8231f582dc4266645"
+    },
+    "settingsId": {
+      "$oid": "66aae0f8231f582dc4268ef1"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aae0f8231f582dc426655e-gocxuunwiohluwmzjidratuw",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aae38af81cca9359e2b4d9"
+    },
+    "userId": {
+      "$oid": "66aae38af81cca9359e2aebf"
+    },
+    "settingsId": {
+      "$oid": "66aae38af81cca9359e2aeec"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aae38af81cca9359e2ae6f-ylwdobriffqhsetlwffpatwi",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aaeb7b231f582dc48110ad"
+    },
+    "userId": {
+      "$oid": "66aaeb7b231f582dc4811097"
+    },
+    "settingsId": {
+      "$oid": "66aaeb7b231f582dc4811099"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aaeb7a231f582dc4811094-awlakbjmimicklkepobqpkym",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66aaecd59039fccc0aa756f9"
+    },
+    "userId": {
+      "$oid": "66aaecd49039fccc0aa756b0"
+    },
+    "settingsId": {
+      "$oid": "66aaecd59039fccc0aa756f8"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66aaecd49039fccc0aa756af-rhojtrmgxlrgxnssxcghdaqw",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab05008137cab75644df19"
+    },
+    "userId": {
+      "$oid": "66ab05008137cab75644df15"
+    },
+    "settingsId": {
+      "$oid": "66ab05008137cab75644df16"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab05008137cab75644df14-xurbnnqhtbmkgewgvfkguspu",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab188b1e9c01876b5759d9"
+    },
+    "userId": {
+      "$oid": "66ab188a1e9c01876b57597e"
+    },
+    "settingsId": {
+      "$oid": "66ab188b1e9c01876b5759d4"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab188a1e9c01876b57597d-sthgckgjubzattobnbqgkjgh",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab27d82cd671ef0ae8f5f8"
+    },
+    "userId": {
+      "$oid": "66ab27d82cd671ef0ae8f4dc"
+    },
+    "settingsId": {
+      "$oid": "66ab27d82cd671ef0ae8f5b4"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab27d82cd671ef0ae8f4db-hbeeiuanacdvixoedxvtannp",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab2d141e9c01876b692d02"
+    },
+    "userId": {
+      "$oid": "66ab2d141e9c01876b692c56"
+    },
+    "settingsId": {
+      "$oid": "66ab2d141e9c01876b692c58"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab2d141e9c01876b692c55-gtnlkqthyrttqfgzijkrlfsi",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab42c0f81cca935938c1c4"
+    },
+    "userId": {
+      "$oid": "66ab42bff81cca935938c186"
+    },
+    "settingsId": {
+      "$oid": "66ab42bff81cca935938c187"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab42bff81cca935938c181-uzyvtzzhasfmlxhybsjjelfv",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab6783dcb4f2abf18af068"
+    },
+    "userId": {
+      "$oid": "66ab6783dcb4f2abf18af02e"
+    },
+    "settingsId": {
+      "$oid": "66ab6783dcb4f2abf18af05b"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab6783dcb4f2abf18af02d-rcpddekxwmqbtajesgkusxpz",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab6ae1dcb4f2abf1ad6234"
+    },
+    "userId": {
+      "$oid": "66ab6ae1dcb4f2abf1ad4d1e"
+    },
+    "settingsId": {
+      "$oid": "66ab6ae1dcb4f2abf1ad4d90"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab6ae1dcb4f2abf1ad4c2a-yssedqovjxylbfyftqizcjuj",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab6e4b3da4753881c5c7ce"
+    },
+    "userId": {
+      "$oid": "66ab6e4a3da4753881c5be10"
+    },
+    "settingsId": {
+      "$oid": "66ab6e4b3da4753881c5c6cc"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab6e4a3da4753881c5be0d-benpucyedqwvjoeagjrblgbi",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ab84a6571b421e2f8c2f43"
+    },
+    "userId": {
+      "$oid": "66ab84a5571b421e2f8c2dc8"
+    },
+    "settingsId": {
+      "$oid": "66ab84a6571b421e2f8c2f3f"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66ab84a5571b421e2f8c2dc7-rvecwjyayxfoviqvibrrhgjr",
+        "provider_type": "anon-user"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66abe8e054f1116dc13edcb2"
+    },
+    "userId": {
+      "$oid": "66abe8e054f1116dc13edbff"
+    },
+    "settingsId": {
+      "$oid": "66abe8e054f1116dc13edcb1"
+    },
+    "email": null,
+    "type": "normal",
+    "status": "active",
+    "data": {},
+    "customData": {},
+    "identities": [
+      {
+        "id": "66abe8e054f1116dc13edbfc-jwzrgwyjsnvobvarhpnyjmyz",
+        "provider_type": "anon-user"
+      }
+    ]
+  }
+]

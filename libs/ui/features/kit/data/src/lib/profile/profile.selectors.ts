@@ -8,7 +8,7 @@ import { FeatureProfileState } from './profile.reducers';
 export const profilePicture = (profile: Partial<Profile> | undefined | null) =>
   profile?.pictures?.find((pic) => pic.isPrimary)?.url ??
   profile?.pictures?.[0]?.url ??
-  '/public/john-dou.png';
+  '/john-dou.png';
 
 /**
  * Selectors
