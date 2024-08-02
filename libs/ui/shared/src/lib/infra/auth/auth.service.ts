@@ -122,8 +122,13 @@ export class AuthService {
     }
 
     console.info('Initializing Realm...');
+    if (!this.#environment.realmAppId) {
+      console.error('Realm App Id is not defined for this build.');
+    }
 
-    this.#realmApp = new Realm.App({ id: 'application-0-gnmmqxd' });
+    this.#realmApp = new Realm.App({
+      id: this.#environment.realmAppId ?? 'application-0-gnmmqxd',
+    });
     return this.#realmApp;
   }
 
