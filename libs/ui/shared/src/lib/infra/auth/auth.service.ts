@@ -100,6 +100,11 @@ export class AuthService {
       /** @TODO @FIXME add better logic for default profile once multi-profile feature is implemented */
       const currentProfile = profiles?.[0];
 
+      if (!currentProfile) {
+        console.error('Major error, we are working on it');
+        return;
+      }
+
       this.#store.dispatch(
         FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
       );
@@ -122,8 +127,13 @@ export class AuthService {
     }
 
     console.info('Initializing Realm...');
+    if (!this.#environment.realmAppId) {
+      console.error('Realm App Id is not defined for this build.');
+    }
 
-    this.#realmApp = new Realm.App({ id: 'application-0-gnmmqxd' });
+    this.#realmApp = new Realm.App({
+      id: this.#environment.realmAppId ?? 'application-0-gnmmqxd',
+    });
     return this.#realmApp;
   }
 
