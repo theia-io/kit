@@ -100,6 +100,11 @@ export class AuthService {
       /** @TODO @FIXME add better logic for default profile once multi-profile feature is implemented */
       const currentProfile = profiles?.[0];
 
+      if (!currentProfile) {
+        console.error('Major error, we are working on it');
+        return;
+      }
+
       this.#store.dispatch(
         FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
       );
