@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/features/tweet/effects/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["ui", "feature", "effects"],
+  "tags": ["scope:ui", "feature", "feat-effects"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

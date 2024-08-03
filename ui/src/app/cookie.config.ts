@@ -1,9 +1,8 @@
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
-import { environment } from '../environments/environment';
 
 export const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
-    domain: environment.production ? 'kitouch.io' : 'localhost', // or 'your.domain.com' // it is mandatory to set a domain, for cookies to work properly (see https://goo.gl/S2Hy2A)
+    domain: window.location.origin,
   },
   position: 'bottom',
   theme: 'edgeless',
@@ -26,7 +25,7 @@ export const cookieConfig: NgcCookieConsentConfig = {
     dismiss: 'sure',
     deny: 'Refuse cookies',
     link: 'check it out',
-    href: 'https://kitouch.io/cookie',
+    href: `${window.location.origin}/cookie`,
     policy: 'Cookie Policy',
   },
 };

@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/features/search/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["ui", "features"],
+  "tags": ["scope:ui", "features"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

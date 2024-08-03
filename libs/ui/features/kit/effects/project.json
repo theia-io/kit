@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/features/kit/effects/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["ui", "feature", "feature-effects", "kit"],
+  "tags": ["scope:ui", "feature", "feat-effects"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

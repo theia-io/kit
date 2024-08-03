@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/features/tweet/data/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["ui", "feature", "data"],
+  "tags": ["scope:ui", "feature", "feat-data"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

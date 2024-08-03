@@ -13,8 +13,43 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "*",
-                "onlyDependOnLibsWithTags": ["*"]
+                "sourceTag": "scope:ui",
+                "onlyDependOnLibsWithTags": ["scope:ui", "scope:shared"]
+              },
+              {
+                "sourceTag": "scope:shared",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "components",
+                "onlyDependOnLibsWithTags": ["scope:shared"]
+              },
+              {
+                "sourceTag": "shared",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "components",
+                  "feat-data"
+                ]
+              },
+              {
+                "sourceTag": "feature",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "components",
+                  "shared",
+                  "feature"
+                ]
+              },
+              {
+                "sourceTag": "pages",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "components",
+                  "shared",
+                  "feature",
+                  "pages"
+                ]
               }
             ]
           }
