@@ -46,7 +46,6 @@ export class FeatFarewellComponent {
   constructor() {
     this.farewell$
       .pipe(
-        tap((v) => console.log(v)),
         map(({ profile }) => profile),
         distinctUntilKeyChanged('id'),
         takeUntilDestroyed()

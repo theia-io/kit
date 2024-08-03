@@ -6,7 +6,6 @@ import { of } from 'rxjs';
 export class DataSourceService {
   #anonymousdb$ = inject(AuthService).anonymousUser$.pipe(
     map((anonymousUser) =>
-      // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
       anonymousUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
     shareReplay(1)
@@ -14,7 +13,6 @@ export class DataSourceService {
 
   #db$ = inject(AuthService).realmUser$.pipe(
     map((currentUser) =>
-      // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
       currentUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
     shareReplay(1)
@@ -26,16 +24,18 @@ export class DataSourceService {
     shareReplay(1)
   );
 
+  /** Returns only logged in user Realm SDK DB reference */
   protected db$() {
-    return this.#db$.pipe(
-      take(1),
-      switchMap((db) => (db ? of(db) : this.#anonymousdb$)),
-      filter(Boolean)
-    );
+    return this.#db$.pipe(take(1), filter(Boolean));
   }
 
-  protected anonymousDb$() {
-    return this.#anonymousdb$.pipe(take(1));
+  /** Returns Logged in or fall back to anonymous user Realm SDK DB reference */
+  protected allowAnonymousDb$() {
+    return this.#db$.pipe(
+      switchMap((db) => (db ? of(db) : this.#anonymousdb$)),
+      take(1),
+      filter(Boolean)
+    );
   }
 
   protected realmFunctions$() {
