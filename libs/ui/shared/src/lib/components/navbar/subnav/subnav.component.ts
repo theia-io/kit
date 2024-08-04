@@ -13,7 +13,7 @@ import { TooltipModule } from 'primeng/tooltip';
   ],
 })
 export class SubnavComponent {
-  generate = input.required<string>();
+  farewellUrl = input.required<string>();
 
   logout = output<void>();
   help = output<void>();

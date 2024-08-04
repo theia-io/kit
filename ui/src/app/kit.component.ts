@@ -46,16 +46,6 @@ import { Store } from '@ngrx/store';
       <router-outlet [name]="outletSecondary"></router-outlet>
 
       <div right>
-        <article
-          class="mb-4 flex justify-center align-center gap-1 p-0.5  rounded-xl shadow-xl transition hover:animate-background hover:bg-[length:400%_400%] hover:shadow-sm hover:[animation-duration:_4s]"
-        >
-          <span class="text-xl font-bold mr-2">(ex-)</span>
-          <i class="pi pi-user" style="font-size: 1.5rem"></i>
-          <i class="pi pi-users" style="font-size: 1.5rem"></i>
-          <i class="pi pi-building" style="font-size: 1.5rem"></i>
-          <i class="pi pi-user" style="font-size: 1.5rem"></i>
-          <i class="pi pi-briefcase" style="font-size: 1.5rem"></i>
-        </article>
         <feat-follow-suggestions
           [suggestionConfig]="{
             cards: false,

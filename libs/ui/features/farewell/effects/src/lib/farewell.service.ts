@@ -6,11 +6,26 @@ import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellService extends DataSourceService {
-  getFarewells(): Observable<Array<Farewell>> {
+  getFarewells(profileId: string): Observable<Array<Farewell>> {
     return this.allowAnonymousDb$().pipe(
-      switchMap((db) => db.collection<Farewell>('farewell').find()),
+      switchMap((db) =>
+        db.collection<Farewell>('farewell').find({ 'profile.id': profileId })
+      ),
       map((farewells) =>
         farewells.map(({ _id, ...rest }) => ({ ...rest, _id: _id.toString() }))
+      )
+    );
+  }
+
+  getFarewell(farewellId: string): Observable<Farewell | null> {
+    return this.allowAnonymousDb$().pipe(
+      switchMap((db) =>
+        db
+          .collection<Farewell>('farewell')
+          .findOne({ _id: new BSON.ObjectId(farewellId) })
+      ),
+      map((farewell) =>
+        farewell ? { ...farewell, _id: farewell._id.toString() } : null
       )
     );
   }
