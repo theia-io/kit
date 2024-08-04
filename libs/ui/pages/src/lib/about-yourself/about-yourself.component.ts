@@ -20,7 +20,7 @@ import {
   fadeInUpAnimation,
   NewUIItemComponent,
 } from '@kitouch/ui-components';
-import { TutorialService } from '@kitouch/ui-shared';
+import { TutorialService, UserHintDirective } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { take } from 'rxjs/operators';
@@ -67,6 +67,7 @@ import { take } from 'rxjs/operators';
     FeatSettingsProfileInformationComponent,
     FeatFollowSuggestionsComponent,
     ButtonComponent,
+    UserHintDirective,
   ],
   animations: [fadeInUpAnimation],
 })
