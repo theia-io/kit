@@ -1,4 +1,4 @@
-name: PRD Build
+name: DEV Build
 
 on:
   pull_request:
@@ -10,7 +10,7 @@ on:
 #   contents: read
 
 jobs:
-  lint_and_build:
+  lint_and_build_dev:
     runs-on: ubuntu-latest
 
     steps:
