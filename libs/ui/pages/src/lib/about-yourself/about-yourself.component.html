@@ -25,24 +25,25 @@
     leaveClass="fadeOut"
     class="flex flex-col justify-center items-center h-screen duration-[5000ms]"
   >
-    <span class="text-2xl mb-24">
+    <p class="text-2xl mb-24">
       @if(savedExperience()) { Add
       <span class="font-mono decoration-pink-500 decoration-2 underline"
         >even more</span
       >
       working experience or continue below ⚡🔥 } @else { Add your working
       experience 😎 }
-    </span>
+    </p>
 
     <feat-settings-experience-add
       (onSaving)="savingExperienceHandler()"
       (onSaved)="savedExperienceHandler()"
     />
 
+    <span class="text-2xl mt-12"> or scroll </span>
     <button
-      [@fadeInUp]="savedExperience() ? 'shown' : 'hidden'"
+      [@fadeInUp]
       (click)="scroll(suggestionTmpl)"
-      class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center"
+      class="cursor-pointer p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center"
     >
       <i class="pi pi-arrow-down"></i>
     </button>
@@ -63,12 +64,14 @@
       [suggestionConfig]="{cards: true, showFollowed: true,}"
     />
 
-    <ui-kit-button
-      class="mt-24"
-      role="link"
-      routerLink="/"
-      label="Start using KIT"
-    />
+    <div userHint text="Click to start" side="bottom">
+      <ui-kit-button
+        class="mt-24"
+        role="link"
+        routerLink="/"
+        label="Start using KIT"
+      />
+    </div>
   </div>
 
   <!--

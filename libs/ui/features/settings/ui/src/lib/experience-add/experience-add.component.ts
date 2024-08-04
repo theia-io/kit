@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
-  input,
   OnInit,
   output,
   signal,
@@ -162,6 +161,17 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       .get('country')
       ?.valueChanges.pipe(this.#takeUntilDestroyed)
       .subscribe(() => this.experienceForm.get('city')?.reset());
+
+    this.currentlyWorkingHere.valueChanges
+      .pipe(this.#takeUntilDestroyed)
+      .subscribe((currentlyWorkingHere) => {
+        const endDateControl = this.experienceForm.get('endDate');
+        if (currentlyWorkingHere) {
+          endDateControl?.disable();
+        } else {
+          endDateControl?.enable();
+        }
+      });
   }
 
   setCurrentGeolocation() {

@@ -24,9 +24,21 @@
         ],
         "styles": [
           "ui/src/styles.scss",
-          "node_modules/cookieconsent/build/cookieconsent.min.css"
+          "node_modules/cookieconsent/build/cookieconsent.min.css",
+          {
+            "input": "node_modules/intro.js/introjs.css",
+            "bundleName": "introjs",
+            "inject": false
+          }
         ],
-        "scripts": ["node_modules/cookieconsent/build/cookieconsent.min.js"]
+        "scripts": [
+          "node_modules/cookieconsent/build/cookieconsent.min.js",
+          {
+            "input": "node_modules/intro.js/intro.js",
+            "bundleName": "intro",
+            "inject": false
+          }
+        ]
       },
       "configurations": {
         "production": {

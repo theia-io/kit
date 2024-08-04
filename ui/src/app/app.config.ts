@@ -2,7 +2,10 @@ import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
-import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
+import { featFarewellReducer } from '@kitouch/feat-farewell-data';
+import { FarewellEffects } from '@kitouch/feat-farewell-effects';
+import { featFollowReducer } from '@kitouch/feat-follow-data';
+import { FollowEffects } from '@kitouch/feat-follow-effects';
 import {
   AccountsEffects,
   LegalEffects,
@@ -15,18 +18,20 @@ import {
   CommentsEffects,
   TweetsEffects,
 } from '@kitouch/feat-tweet-effects';
-import { featFollowReducer } from '@kitouch/feat-follow-data';
-import { FollowEffects } from '@kitouch/feat-follow-effects';
+import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import { AuthInterceptor, ENVIRONMENT } from '@kitouch/ui-shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { provideNgcCookieConsent } from 'ngx-cookieconsent';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
-import { FarewellEffects } from '@kitouch/feat-farewell-effects';
-import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import { cookieConfig } from './cookie.config';
-import { provideNgcCookieConsent } from 'ngx-cookieconsent';
+
+// const kitProviders: Provider[] = [];
+// if (environment.environment !== KIT_ENVS.localhost) {
+//   kitProviders.push(provideNgcCookieConsent(cookieConfig));
+// }
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -66,6 +71,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools(),
 
     // auth
+    // ...kitProviders,
     provideNgcCookieConsent(cookieConfig),
     provideHttpClient(),
     // {

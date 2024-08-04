@@ -1,8 +1,13 @@
+import { KIT_ENVS } from '@kitouch/ui-shared';
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
+import { environment } from '../environments/environment';
 
 export const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
-    domain: window.location.origin,
+    domain:
+      environment.environment !== KIT_ENVS.localhost
+        ? window.location.origin
+        : 'localhost',
   },
   position: 'bottom',
   theme: 'edgeless',
