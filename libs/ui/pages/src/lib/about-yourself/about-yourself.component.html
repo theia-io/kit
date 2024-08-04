@@ -25,14 +25,14 @@
     leaveClass="fadeOut"
     class="flex flex-col justify-center items-center h-screen duration-[5000ms]"
   >
-    <span class="text-2xl mb-24">
+    <p class="text-2xl mb-24">
       @if(savedExperience()) { Add
       <span class="font-mono decoration-pink-500 decoration-2 underline"
         >even more</span
       >
       working experience or continue below ⚡🔥 } @else { Add your working
       experience 😎 }
-    </span>
+    </p>
 
     <feat-settings-experience-add
       (onSaving)="savingExperienceHandler()"

@@ -59,6 +59,20 @@ body {
   }
 }
 
+/**
+  USER HINTS
+**/
+.user-hint {
+  position: absolute;
+  font-family: 'Pacifico', cursive;
+  font-weight: 400;
+  font-style: normal;
+
+  p {
+    position: absolute;
+  }
+}
+
 /** CSS bugfixes */
 p-floatLabel .p-float-label p-dropdown input.p-placeholder {
   opacity: 1;
