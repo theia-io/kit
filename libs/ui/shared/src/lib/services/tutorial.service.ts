@@ -2,6 +2,9 @@ import { Injectable } from '@angular/core';
 import introJs from 'intro.js'; // Import introJs
 import { IntroJs } from 'intro.js/src/intro';
 
+const LS_TRUE = 'true';
+const ABOUT_YOURSELF_PAGE_KEY = 'Tutorial:ABOUT_YOURSELF_PAGE_KEY';
+
 /** This service will be:
  * 1. Initializing Tutorial library solution on demand (and hide its implementation so refactoring in the future
  * is limited to updating what's used by it),
@@ -14,8 +17,10 @@ export class TutorialService {
 
   #introJs: IntroJs | null = null;
 
-  async startAboutUsPageTour() {
-    console.log('startAboutUsPageTour started');
+  async showAboutUsPageTourIfNotShown() {
+    if (localStorage.getItem(ABOUT_YOURSELF_PAGE_KEY) === LS_TRUE) {
+      return;
+    }
 
     await this.#init();
 
@@ -31,6 +36,8 @@ export class TutorialService {
         ],
       })
       .start();
+
+    localStorage.setItem(ABOUT_YOURSELF_PAGE_KEY, LS_TRUE);
   }
 
   #init() {
@@ -54,10 +61,10 @@ export class TutorialService {
       let isFound = false;
       const scripts = document.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; ++i) {
-        console.log(
-          "scripts[i].getAttribute('src')",
-          scripts[i].getAttribute('src')
-        );
+        // console.log(
+        //   "scripts[i].getAttribute('src')",
+        //   scripts[i].getAttribute('src')
+        // );
         if (scripts[i].getAttribute('src')?.includes('intro')) {
           isFound = true;
         }
@@ -66,11 +73,11 @@ export class TutorialService {
       if (!isFound) {
         const script = document.createElement('script');
         script.onload = () => {
-          console.log('JS LOADED');
+          //   console.log('JS LOADED');
           res(true);
         };
 
-        console.log('JS LOADING STARTED');
+        // console.log('JS LOADING STARTED');
         script.src = '/intro.js';
         script.type = 'text/javascript';
         script.async = false;
@@ -87,10 +94,10 @@ export class TutorialService {
       let isFound = false;
       const styles = document.getElementsByTagName('link');
       for (let i = 0; i < styles.length; ++i) {
-        console.log(
-          "styles[i].getAttribute('href')",
-          styles[i].getAttribute('href')
-        );
+        // console.log(
+        //   "styles[i].getAttribute('href')",
+        //   styles[i].getAttribute('href')
+        // );
         if (styles[i].getAttribute('href')?.includes('intro')) {
           isFound = true;
         }
@@ -99,11 +106,11 @@ export class TutorialService {
       if (!isFound) {
         const style = document.createElement('link');
         style.onload = () => {
-          console.log('CSS LOADED');
+          //   console.log('CSS LOADED');
           res(true);
         };
 
-        console.log('CSS LOADING STARTED');
+        // console.log('CSS LOADING STARTED');
 
         style.id = 'client-theme';
         style.rel = 'stylesheet';

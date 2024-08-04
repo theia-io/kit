@@ -83,7 +83,7 @@ export class PageAboutYourselfComponent implements OnInit {
     this.#store.dispatch(FeatLegalApiActions.getCompanies());
     this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
 
-    this.#tutorial.startAboutUsPageTour();
+    this.#tutorial.showAboutUsPageTourIfNotShown();
   }
 
   scroll(el: HTMLElement) {
