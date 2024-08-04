@@ -5,6 +5,6 @@ export * from './lib/infra';
 // data
 export * from './lib/mocked-data';
 // services
-export * from './lib/services/quotes.service';
+export * from './lib/services';
 // utils
 export * from './lib/state';

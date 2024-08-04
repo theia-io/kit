@@ -39,10 +39,11 @@
       (onSaved)="savedExperienceHandler()"
     />
 
+    <span class="text-2xl mt-12"> or scroll </span>
     <button
-      [@fadeInUp]="savedExperience() ? 'shown' : 'hidden'"
+      [@fadeInUp]
       (click)="scroll(suggestionTmpl)"
-      class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center"
+      class="cursor-pointer p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center"
     >
       <i class="pi pi-arrow-down"></i>
     </button>
