@@ -13,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FeatProfileApiActions, profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
+import { UserHintDirective } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -31,6 +32,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
     FloatLabelModule,
     InputTextareaModule,
     //
+    UserHintDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

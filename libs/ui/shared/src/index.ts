@@ -1,5 +1,6 @@
 export * from './lib/components';
 export * from './lib/constants';
+export * from './lib/directives';
 // infra
 export * from './lib/infra';
 // data
