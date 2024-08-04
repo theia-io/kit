@@ -13,7 +13,8 @@
     "@ngrx/effects": "18.0.0",
     "@ngrx/store": "18.0.0",
     "@kitouch/kit-data": "0.0.1",
-    "realm-web": "^2.0.1"
+    "realm-web": "^2.0.1",
+    "intro.js": "^7.2.0"
   },
   "sideEffects": false
 }
