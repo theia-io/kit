@@ -44,7 +44,10 @@
       <li>
         <a
           role="button"
-          href="mailto:info@kitouch.io?subject=kitouch support"
+          [href]="
+            'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
+            environment.build
+          "
           target="_blank"
           pTooltip="Write us email to info@kitouch.io"
           class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"

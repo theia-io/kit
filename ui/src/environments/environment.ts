@@ -5,7 +5,7 @@ import { Environment, KIT_ENVS } from '@kitouch/ui-shared';
 console.error('This should has not be called ts-d8123S-Ad');
 
 export const environment: Environment = {
-  build: `${KIT_ENVS.localhost}-${process.env?.['COMMIT_SHA'] ?? 'localhost'}`,
+  build: `${KIT_ENVS.localhost}-${'localhost'}`,
   realmAppId: 'application-0-gwcbmrg',
   environment: KIT_ENVS.localhost,
   production: false,

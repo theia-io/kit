@@ -5,6 +5,9 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 
 import {
+  dbClientAccountAdapter,
+  dbClientProfileAdapter,
+  dbClientUserAdapter,
   FeatAccountApiActions,
   FeatProfileApiActions,
   FeatUserApiActions,
@@ -275,6 +278,10 @@ export class AuthService {
   ): Promise<{ account: Account; user: User; profiles: Array<Profile> }> {
     return await realmUser.functions['getAccountUserProfiles'](
       realmUser.id
-    ).then(({ account, user, profiles }) => ({ account, user, profiles }));
+    ).then(({ account, user, profiles }) => ({
+      account: dbClientAccountAdapter(account),
+      user: dbClientUserAdapter(user),
+      profiles: profiles.map(dbClientProfileAdapter),
+    }));
   }
 }

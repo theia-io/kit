@@ -36,3 +36,5 @@ jobs:
 
       - name: Build KITouch UI PRD app
         run: npm run build
+        env:
+          COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env

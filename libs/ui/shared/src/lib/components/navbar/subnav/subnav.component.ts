@@ -1,6 +1,7 @@
-import { Component, input, output } from '@angular/core';
+import { Component, inject, input, output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TooltipModule } from 'primeng/tooltip';
+import { ENVIRONMENT } from '../../../infra';
 
 @Component({
   standalone: true,
@@ -17,4 +18,6 @@ export class SubnavComponent {
 
   logout = output<void>();
   help = output<void>();
+
+  environment = inject(ENVIRONMENT);
 }
