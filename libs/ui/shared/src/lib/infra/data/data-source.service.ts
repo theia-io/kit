@@ -18,6 +18,7 @@ export class DataSourceService {
     shareReplay(1)
   );
 
+  /** @deprecated Call db$() instead and query DB. */
   #realmFunctions$ = inject(AuthService).realmUser$.pipe(
     map((currentUser) => currentUser?.functions),
     filter(Boolean),
@@ -38,6 +39,7 @@ export class DataSourceService {
     );
   }
 
+  /** @deprecated Use `db$()` or `allowAnonymousDb$()` for query DB. Only calling `genericFunction` API is still allowed  */
   protected realmFunctions$() {
     return this.#realmFunctions$.pipe(take(1));
   }

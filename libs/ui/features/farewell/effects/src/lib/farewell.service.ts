@@ -50,7 +50,7 @@ export class FarewellService extends DataSourceService {
       },
     };
 
-    return this.allowAnonymousDb$().pipe(
+    return this.db$().pipe(
       switchMap((db) =>
         db.collection<Farewell>('farewell').insertOne({
           ...farewell,
