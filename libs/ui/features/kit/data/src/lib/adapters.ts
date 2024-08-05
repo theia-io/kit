@@ -1,4 +1,4 @@
-import { Profile } from '@kitouch/shared-models';
+import { Account, Profile, User } from '@kitouch/shared-models';
 import { dbClientAdapter, DBClientType } from '@kitouch/utils';
 
 export const dbClientProfileAdapter = (
@@ -20,4 +20,22 @@ export const dbClientProfileAdapter = (
   return {
     ...partiallyDBObjectRest,
   } as Profile;
+};
+
+export const dbClientUserAdapter = (dbObject: DBClientType<User>): User => {
+  const { ...partiallyDBObjectRest } = dbClientAdapter(dbObject);
+
+  return {
+    ...partiallyDBObjectRest,
+  };
+};
+
+export const dbClientAccountAdapter = (
+  dbObject: DBClientType<Account>
+): Account => {
+  const { ...partiallyDBObjectRest } = dbClientAdapter(dbObject);
+
+  return {
+    ...partiallyDBObjectRest,
+  };
 };

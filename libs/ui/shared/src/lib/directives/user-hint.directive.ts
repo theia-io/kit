@@ -6,7 +6,6 @@ import {
   HostBinding,
   inject,
   input,
-  OnInit,
 } from '@angular/core';
 
 @Directive({
@@ -15,6 +14,9 @@ import {
 })
 export class UserHintDirective implements AfterContentChecked {
   text = input.required<string>();
+  extraIdent = input<
+    Partial<{ top: number; right: number; bottom: number; left: number }>
+  >({});
   side = input<'top' | 'right' | 'bottom' | 'left'>('right');
   size = input(8);
 
@@ -28,14 +30,11 @@ export class UserHintDirective implements AfterContentChecked {
 
   constructor() {
     effect(() => {
-      console.log('calling generateUserHint!');
       this.#generateUserHint();
     });
   }
 
   ngAfterContentChecked(): void {
-    console.log(this.#hostRef);
-
     const hostEl = this.#hostRef.nativeElement as HTMLElement,
       hostStyles = hostEl.getBoundingClientRect(),
       hostElTag = hostEl.tagName.toLowerCase();
@@ -82,8 +81,6 @@ export class UserHintDirective implements AfterContentChecked {
         slideY = slideY * 2 * -1;
       }
 
-      console.log(slideX, slideY);
-
       charEl.style.transform = `translate(${slideX}px, ${slideY}px) rotate(-${Math.min(
         Math.sqrt(textPartSectionLength) + Math.sqrt(wordSetIdx) * 15,
         90
@@ -103,17 +100,19 @@ export class UserHintDirective implements AfterContentChecked {
 
     hintEl.appendChild(arrowEl);
 
-    console.log('this.#hostStyles', this.#hostStyles);
+    const { top = 0, right = 0, bottom = 0, left = 0 } = this.extraIdent();
 
     switch (this.side()) {
       case 'bottom':
-        hintEl.style.left = '10px';
-        hintEl.style.bottom = `${-50}px`;
+        hintEl.style.left = `${left + 10}px`;
+        hintEl.style.bottom = `-${50 + bottom}px`;
         break;
       case 'right':
       default:
-        hintEl.style.top = `${Math.floor(this.#hostStyles?.height ?? 0) / 4}px`;
-        hintEl.style.right = `-${arrowSize}px`;
+        hintEl.style.top = `${
+          top + Math.floor(this.#hostStyles?.height ?? 0) / 4
+        }px`;
+        hintEl.style.right = `-${right + arrowSize}px`;
 
         break;
     }

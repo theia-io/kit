@@ -41,7 +41,7 @@ export class UserService extends DataSourceService {
           ],
         })
       ),
-      map(() => ({ experiences: [experience] }))
+      map(() => true)
     );
   }
 

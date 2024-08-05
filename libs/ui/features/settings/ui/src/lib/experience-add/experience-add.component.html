@@ -267,16 +267,18 @@
       </p-stepperPanel>
     </p-stepper>
 
-    <p-button
-      class="flex justify-end mt-2"
-      [disabled]="
-        !((allStepsVisited$ | async) === true && experienceForm.valid)
-      "
-      (onClick)="onSaveExperienceClick()"
-      label="Submit"
-      [raised]="true"
-      icon="pi pi-check"
-      iconPos="right"
-    />
+    <div>
+      <p-button
+        class="flex justify-end mt-2"
+        [disabled]="
+          !((allStepsVisited$ | async) === true && experienceForm.valid)
+        "
+        (onClick)="onSaveExperienceClick()"
+        label="Submit"
+        [raised]="true"
+        icon="pi pi-check"
+        iconØos="right"
+      />
+    </div>
   </div>
 </form>

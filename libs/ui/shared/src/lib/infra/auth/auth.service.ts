@@ -273,6 +273,8 @@ export class AuthService {
   async #getAccountUserProfiles(
     realmUser: Realm.User
   ): Promise<{ account: Account; user: User; profiles: Array<Profile> }> {
-    return await realmUser.functions['getAccountUserProfiles'](realmUser.id);
+    return await realmUser.functions['getAccountUserProfiles'](
+      realmUser.id
+    ).then(({ account, user, profiles }) => ({ account, user, profiles }));
   }
 }
