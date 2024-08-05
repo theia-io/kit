@@ -1,9 +1,12 @@
 import { Tweety } from '@kitouch/shared-models';
-import { mergeArr } from '@kitouch/ui-shared';
-import { mongooseEqual } from '@kitouch/utils';
+import { addOrUpdate, mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
-import { FeatTweetActions, TweetApiActions } from './tweet.actions';
+import {
+  FeatReTweetActions,
+  FeatTweetActions,
+  TweetApiActions,
+} from './tweet.actions';
 
 export interface FeatureTweetState {
   tweets: Array<Tweety>;
@@ -17,9 +20,13 @@ export const featTweetTweetsReducer = createReducer(
   featTweetInitialState,
   on(
     TweetApiActions.getSuccess,
+    FeatTweetActions.likeSuccess,
+    FeatTweetActions.commentSuccess,
+    FeatReTweetActions.reTweetSuccess,
+    FeatTweetActions.tweetSuccess,
     ({ tweets: stateTweets, ...restState }, { tweet }) => ({
       ...restState,
-      tweets: [tweet, ...stateTweets],
+      tweets: addOrUpdate(tweet, stateTweets),
     })
   ),
   on(
@@ -31,33 +38,13 @@ export const featTweetTweetsReducer = createReducer(
       tweets: mergeArr(tweets, state.tweets),
     })
   ),
-  on(FeatTweetActions.tweetSuccess, (state, { tweet }) => ({
+  on(FeatTweetActions.deleteSuccess, (state, { tweet }) => ({
     ...state,
-    tweets: [tweet, ...state.tweets],
+    tweets: state.tweets.filter(({ id }) => id !== tweet.id),
   })),
-  on(FeatTweetActions.deleteSuccess, (state, { tweetId }) => ({
+  on(FeatReTweetActions.deleteSuccess, (state, { tweet }) => ({
     ...state,
-    tweets: state.tweets.filter(({ id }) => id !== tweetId),
-  })),
-  on(FeatTweetActions.likeSuccess, (state, { tweet }) => ({
-    ...state,
-    tweets: state.tweets.map((existingTweet) => {
-      if (mongooseEqual(existingTweet, tweet)) {
-        return tweet;
-      }
-
-      return existingTweet;
-    }),
-  })),
-  on(FeatTweetActions.commentSuccess, (state, { tweet }) => ({
-    ...state,
-    tweets: state.tweets.map((existingTweet) => {
-      if (mongooseEqual(existingTweet, tweet)) {
-        return tweet;
-      }
-
-      return existingTweet;
-    }),
+    tweets: state.tweets.filter((retweetTweet) => tweet.id !== retweetTweet.id),
   })),
   on(
     FeatTweetActions.commentDeleteSuccess,
@@ -78,9 +65,5 @@ export const featTweetTweetsReducer = createReducer(
         return stateTweet;
       }),
     })
-  ),
-  on(FeatTweetActions.reTweetSuccess, (state, { tweet }) => ({
-    ...state,
-    tweets: [tweet, ...state.tweets],
-  }))
+  )
 );

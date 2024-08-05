@@ -145,10 +145,10 @@ export class BookmarkEffects {
   deleteBookmarkWhenTweetDeleted$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.deleteSuccess),
-      map(({ tweetId }) =>
+      map(({ tweet: { id } }) =>
         /** @TODO @FIXME has to take into account deleteSuccess batch results  */
         FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved({
-          tweetId,
+          tweetId: id,
         })
       )
     )

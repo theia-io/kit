@@ -259,10 +259,7 @@ export class TweetApiService extends DataSourceService {
     );
   }
 
-  deleteTweet(
-    tweetId: Tweety['id'],
-    profileId: Profile['id']
-  ): Observable<boolean> {
+  deleteTweet(tweet: Tweety): Observable<boolean> {
     // return this.realmFunctions$().pipe(
     //   switchMap((fn) => fn['deleteTweets'](ids))
     // );
@@ -271,13 +268,27 @@ export class TweetApiService extends DataSourceService {
       switchMap((db) =>
         combineLatest([
           db.collection('tweet').deleteOne({
-            _id: new BSON.ObjectId(tweetId),
-            profileId: new BSON.ObjectId(profileId),
+            _id: new BSON.ObjectId(tweet.id),
           }),
-          this.deleteAllTweetBookmarks(tweetId),
+          this.deleteAllTweetBookmarks(tweet.id),
         ])
       ),
       map(([{ deletedCount }]) => deletedCount > 0)
+    );
+  }
+
+  deleteRetweet(retweet: Tweety): Observable<boolean> {
+    // return this.realmFunctions$().pipe(
+    //   switchMap((fn) => fn['deleteTweets'](ids))
+    // );
+
+    return this.db$().pipe(
+      switchMap((db) =>
+        db.collection('retweet').deleteOne({
+          _id: new BSON.ObjectId(retweet.id),
+        })
+      ),
+      map(({ deletedCount }) => deletedCount > 0)
     );
   }
 

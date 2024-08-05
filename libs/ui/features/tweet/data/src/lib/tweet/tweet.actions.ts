@@ -8,21 +8,17 @@ export const FeatTweetActions = createActionGroup({
     TweetSuccess: props<{ uuid: string; tweet: Tweety }>(),
     TweetFailure: props<{ uuid: string; message: string }>(),
     //
-    ReTweet: props<{ tweet: Tweety }>(),
-    ReTweetSuccess: props<{ tweet: Tweety }>(),
-    ReTweetFailure: props<{ message: string }>(),
-    //
     Quote: props<{ tweet: Tweety }>(),
     QuoteSuccess: props<{ tweet: Tweety }>(),
     QuoteFailure: props<{ message: string }>(),
     //
-    Delete: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
+    Delete: props<{ tweet: Tweety }>(),
     /**
      * @TODO @FIXME we need to implement functionality when tweet is deleted
      * by author but somebody else has deleted the tweet?
      */
-    DeleteSuccess: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
-    DeleteFailure: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
+    DeleteSuccess: props<{ tweet: Tweety }>(),
+    DeleteFailure: props<{ message: string }>(),
     //
     Comment: props<{ uuid: string; tweet: Tweety; content: string }>(),
     CommentSuccess: props<{ uuid: string; tweet: Tweety }>(),
@@ -34,6 +30,18 @@ export const FeatTweetActions = createActionGroup({
     Like: props<{ tweet: Tweety }>(),
     LikeSuccess: props<{ tweet: Tweety }>(),
     LikeFailure: props<{ tweet: Tweety }>(),
+  },
+});
+
+export const FeatReTweetActions = createActionGroup({
+  source: 'FeatReTweetActions',
+  events: {
+    ReTweet: props<{ tweet: Tweety }>(),
+    ReTweetSuccess: props<{ tweet: Tweety }>(),
+    ReTweetFailure: props<{ message: string }>(),
+    Delete: props<{ tweet: Tweety }>(),
+    DeleteSuccess: props<{ tweet: Tweety }>(),
+    DeleteFailure: props<{ message: string }>(),
   },
 });
 

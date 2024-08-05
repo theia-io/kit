@@ -18,6 +18,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import {
+  FeatReTweetActions,
   FeatTweetActions,
   FeatTweetBookmarkActions,
   selectIsBookmarked,
@@ -201,15 +202,13 @@ export class FeatTweetTweetyComponent implements OnChanges {
 
   deleteHandler() {
     this.#tweet$
-      .pipe(
-        take(1),
-        withLatestFrom(this.#currentProfile$),
-        takeUntilDestroyed(this.#destroyRef)
-      )
-      .subscribe(([{ id }, profile]) => {
-        this.#store.dispatch(
-          FeatTweetActions.delete({ tweetId: id, profileId: profile.id })
-        );
+      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
+      .subscribe((tweet) => {
+        if (tweet.type === TweetyType.Retweet) {
+          this.#store.dispatch(FeatReTweetActions.delete({ tweet }));
+        } else {
+          this.#store.dispatch(FeatTweetActions.delete({ tweet }));
+        }
         this.tweetDeleted.emit();
       });
   }
@@ -235,7 +234,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
   }
 
   retweetHandler() {
-    this.#store.dispatch(FeatTweetActions.reTweet({ tweet: this.tweet() }));
+    this.#store.dispatch(FeatReTweetActions.reTweet({ tweet: this.tweet() }));
   }
 
   quoteHandler() {

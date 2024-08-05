@@ -7,6 +7,24 @@ export const PageHomeKey = 'page.home';
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface AppState {}
 
+export const addOrUpdate = <T extends { id: string }>(
+  item: T,
+  arrItems: Array<T>
+) => {
+  let updated = false;
+
+  const newArrItems = arrItems.map((arrItem) => {
+    if (arrItem.id === item.id) {
+      updated = true;
+      return item;
+    }
+
+    return arrItem;
+  });
+
+  return updated ? newArrItems : [item, ...arrItems];
+};
+
 // 2*N(0)
 export const mergeArr = <T>(
   ...arrOfArr: Array<Array<T & { id: string }>>

@@ -3,8 +3,9 @@ import { BSON } from 'realm-web';
 
 export type DBClientType<T> = Omit<T, 'id'> &
   Realm.Services.MongoDB.Document &
-  Partial<{ timestamp: { createdAt: unknown; updatedAt: unknown } }>;
-export type ClientType<T> = Omit<T, '_id'> & { id: string };
+  Partial<{ timestamp?: { createdAt?: unknown; updatedAt?: unknown } }>;
+
+export type ClientType<T> = Omit<T, '_id'>; // ID - should come from T itself & { id: string };
 
 export const dbClientAdapter = <T>(
   dbObject: DBClientType<T>
@@ -25,8 +26,8 @@ export const dbClientAdapter = <T>(
   } as ClientType<T>;
 };
 
-export const clientDBAdapter = <T>(
-  dbObject: ClientType<T>
+export const clientDBAdapter = <T extends { id: string }>(
+  dbObject: T
 ): DBClientType<T> => {
   const { id, ...rest } = dbObject;
   return {
