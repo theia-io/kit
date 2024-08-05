@@ -1,28 +1,9 @@
 import { Tweety } from '@kitouch/shared-models';
-import { mongooseEqual } from '@kitouch/utils';
 import { mergeArr } from '@kitouch/ui-shared';
+import { mongooseEqual } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
 import { FeatTweetActions, TweetApiActions } from './tweet.actions';
-
-// 2*N(0)
-const combineV2 = <T>(
-  arr1: Array<T & { id: string }>,
-  arr2: Array<T & { id: string }>
-): Array<T> => {
-  const combined = new Map<string, T>();
-
-  arr1.forEach((item) => {
-    combined.set(item.id, item);
-  });
-
-  // has to be after "current" state since might have better info
-  arr2.forEach((item) => {
-    combined.set(item.id, item);
-  });
-
-  return [...combined.values()];
-};
 
 export interface FeatureTweetState {
   tweets: Array<Tweety>;
@@ -35,8 +16,14 @@ const featTweetInitialState: FeatureTweetState = {
 export const featTweetTweetsReducer = createReducer(
   featTweetInitialState,
   on(
-    TweetApiActions.getAllSuccess,
     TweetApiActions.getSuccess,
+    ({ tweets: stateTweets, ...restState }, { tweet }) => ({
+      ...restState,
+      tweets: [tweet, ...stateTweets],
+    })
+  ),
+  on(
+    TweetApiActions.getAllSuccess,
     TweetApiActions.getTweetsForProfileSuccess,
     TweetApiActions.getTweetsForBookmarkSuccess,
     (state, { tweets }) => ({
@@ -48,11 +35,9 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets: [tweet, ...state.tweets],
   })),
-  on(FeatTweetActions.deleteSuccess, (state, { ids }) => ({
+  on(FeatTweetActions.deleteSuccess, (state, { tweetId }) => ({
     ...state,
-    tweets: state.tweets.filter(
-      ({ id }) => !ids.some(({ tweetId }) => tweetId === id)
-    ),
+    tweets: state.tweets.filter(({ id }) => id !== tweetId),
   })),
   on(FeatTweetActions.likeSuccess, (state, { tweet }) => ({
     ...state,

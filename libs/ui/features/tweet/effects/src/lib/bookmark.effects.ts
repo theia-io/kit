@@ -1,9 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
 } from '@kitouch/feat-tweet-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
@@ -61,7 +61,7 @@ export class BookmarkEffects {
         }))
       ),
       switchMap((tweetGetRequest) =>
-        this.#tweetApi.get(tweetGetRequest).pipe(
+        this.#tweetApi.getMany(tweetGetRequest).pipe(
           map((tweets) =>
             FeatTweetBookmarkActions.getBookmarksFeedSuccess({
               tweets,
@@ -117,13 +117,14 @@ export class BookmarkEffects {
     this.#actions$.pipe(
       ofType(FeatTweetBookmarkActions.removeBookmark),
       withLatestFrom(this.currentProfile$),
-      switchMap(([{ tweetId }, profile]) =>
+      switchMap(([{ tweetId }, { id }]) =>
         this.#tweetApi
-          .deleteBookmark({ profileIdBookmarker: profile.id, tweetId })
+          .deleteBookmark({ profileIdBookmarker: id, tweetId })
           .pipe(
-            map((bookmark) =>
+            map(() =>
               FeatTweetBookmarkActions.removeBookmarkSuccess({
-                bookmark,
+                tweetId,
+                profileId: id,
               })
             ),
             catchError((err) => {
@@ -144,10 +145,10 @@ export class BookmarkEffects {
   deleteBookmarkWhenTweetDeleted$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.deleteSuccess),
-      map(({ ids }) =>
+      map(({ tweetId }) =>
         /** @TODO @FIXME has to take into account deleteSuccess batch results  */
         FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved({
-          tweetId: ids[0].tweetId,
+          tweetId,
         })
       )
     )

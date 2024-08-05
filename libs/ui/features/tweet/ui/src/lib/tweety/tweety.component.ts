@@ -208,9 +208,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
       )
       .subscribe(([{ id }, profile]) => {
         this.#store.dispatch(
-          FeatTweetActions.delete({
-            ids: [{ tweetId: id, profileId: profile.id }],
-          })
+          FeatTweetActions.delete({ tweetId: id, profileId: profile.id })
         );
         this.tweetDeleted.emit();
       });

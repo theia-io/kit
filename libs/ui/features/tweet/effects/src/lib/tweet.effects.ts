@@ -1,15 +1,15 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
   TweetApiActions,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import {
   catchError,
   filter,
@@ -89,30 +89,30 @@ export class TweetsEffects {
     )
   );
 
-  getTweets$ = createEffect(() =>
+  getTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
-      switchMap(({ ids }) =>
-        this.#tweetApi.get(ids).pipe(
-          map((tweets) => TweetApiActions.getSuccess({ tweets })),
+      switchMap(({ tweetId, profileId }) =>
+        this.#tweetApi.get(tweetId, profileId).pipe(
+          map((tweet) => TweetApiActions.getSuccess({ tweet })),
           catchError((err) => {
-            console.error('[TweetsEffects] tweet ERROR', err);
-            return of(TweetApiActions.getFailure({ ids }));
+            console.error('[TweetsEffects] getTweet ERROR', err);
+            return of(TweetApiActions.getFailure({ tweetId, profileId }));
           })
         )
       )
     )
   );
 
-  deleteTweets$ = createEffect(() =>
+  deleteTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.delete),
-      switchMap(({ ids }) =>
-        this.#tweetApi.deleteTweets(ids).pipe(
-          map(() => FeatTweetActions.deleteSuccess({ ids })),
+      switchMap(({ tweetId, profileId }) =>
+        this.#tweetApi.deleteTweet(tweetId, profileId).pipe(
+          map(() => FeatTweetActions.deleteSuccess({ tweetId, profileId })),
           catchError((err) => {
-            console.error('[TweetsEffects] deleteTweets ERROR', err);
-            return of(FeatTweetActions.deleteFailure({ ids }));
+            console.error('[TweetsEffects] deleteTweet ERROR', err);
+            return of(FeatTweetActions.deleteFailure({ tweetId, profileId }));
           })
         )
       )
@@ -159,10 +159,14 @@ export class TweetsEffects {
               : [currentProfile.id, ...(tweet.upProfileIds ?? [])],
           })
           .pipe(
-            map((tweet) =>
-              FeatTweetActions.likeSuccess({
-                tweet,
-              })
+            switchMap((tweet) =>
+              tweet
+                ? of(
+                    FeatTweetActions.likeSuccess({
+                      tweet,
+                    })
+                  )
+                : throwError(() => new Error('Cannot find such tweet to like'))
             ),
             catchError((err) => {
               console.error('[TweetsEffects] likeTweet ERROR', err);

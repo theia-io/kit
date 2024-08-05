@@ -8,7 +8,6 @@ import {
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import {
   FeatTweetActions,
   TweetApiActions,
@@ -18,12 +17,13 @@ import {
   FeatTweetTweetyComponent,
   TWEET_CONTROL_INITIAL_ROWS,
 } from '@kitouch/feat-tweet-ui';
+import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { TweetComment, Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
-  UiKitTweetButtonComponent,
   UiCompCardComponent,
+  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
@@ -37,6 +37,7 @@ import {
   map,
   shareReplay,
   switchMap,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
@@ -160,9 +161,7 @@ export class PageTweetComponent {
     combineLatest([this.#ids$, this.#profile$])
       .pipe(takeUntilDestroyed())
       .subscribe(([{ tweetId }, { id }]) =>
-        this.#store.dispatch(
-          TweetApiActions.get({ ids: [{ tweetId, profileId: id }] })
-        )
+        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId: id }))
       );
   }
 

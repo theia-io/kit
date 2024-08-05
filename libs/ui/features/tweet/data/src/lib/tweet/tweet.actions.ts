@@ -16,19 +16,13 @@ export const FeatTweetActions = createActionGroup({
     QuoteSuccess: props<{ tweet: Tweety }>(),
     QuoteFailure: props<{ message: string }>(),
     //
-    Delete: props<{
-      ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
-    }>(),
+    Delete: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
     /**
      * @TODO @FIXME we need to implement functionality when tweet is deleted
      * by author but somebody else has deleted the tweet?
      */
-    DeleteSuccess: props<{
-      ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
-    }>(),
-    DeleteFailure: props<{
-      ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
-    }>(),
+    DeleteSuccess: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
+    DeleteFailure: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
     //
     Comment: props<{ uuid: string; tweet: Tweety; content: string }>(),
     CommentSuccess: props<{ uuid: string; tweet: Tweety }>(),
@@ -50,13 +44,9 @@ export const TweetApiActions = createActionGroup({
     GetAllSuccess: props<{ tweets: Tweety[] }>(),
     GetAllFailure: emptyProps(),
     //
-    Get: props<{
-      ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
-    }>(),
-    GetSuccess: props<{ tweets: Array<Tweety> }>(),
-    GetFailure: props<{
-      ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>;
-    }>(),
+    Get: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
+    GetSuccess: props<{ tweet: Tweety }>(),
+    GetFailure: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
     //
     //
     GetTweetsForProfile: props<{ profileId: string }>(),
