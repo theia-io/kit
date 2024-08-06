@@ -27,24 +27,6 @@ export class TweetApiService extends DataSourceService {
   ): Observable<Array<Tweety>> {
     const agg = [
       {
-        $match:
-          /**
-           * query: The query in MQL.
-           */
-          {
-            $or: [
-              {
-                profileId: clientDBIdAdapter(profileId),
-              },
-              {
-                profileId: {
-                  $in: followingProfileIds.map(clientDBIdAdapter),
-                },
-              },
-            ],
-          },
-      },
-      {
         $lookup:
           /**
            * from: The target collection.
@@ -59,7 +41,22 @@ export class TweetApiService extends DataSourceService {
             localField: '_id',
             foreignField: 'tweetId',
             as: 'retweetsData',
-            pipeline: [],
+            pipeline: [
+              {
+                $match: {
+                  $or: [
+                    {
+                      profileId: clientDBIdAdapter(profileId),
+                    },
+                    {
+                      profileId: {
+                        $in: followingProfileIds.map(clientDBIdAdapter),
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
           },
       },
       {
@@ -140,6 +137,24 @@ export class TweetApiService extends DataSourceService {
            * replacementDocument: A document or string.
            */
           '$allDocs',
+      },
+      {
+        $match:
+          /**
+           * query: The query in MQL.
+           */
+          {
+            $or: [
+              {
+                profileId: clientDBIdAdapter(profileId),
+              },
+              {
+                profileId: {
+                  $in: followingProfileIds.map(clientDBIdAdapter),
+                },
+              },
+            ],
+          },
       },
       { $sort: { 'timestamp.createdAt': -1 } },
     ];

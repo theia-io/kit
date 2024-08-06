@@ -9,9 +9,29 @@
       profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)
     ]"
   >
-    @if(retweetProfile.id === tweet().profileId) { Tweet owner ({{
-      retweetProfile.name
-    }}) } @else if(currentProfile()?.id === retweetProfile.id) { You } @else {
+    @if(currentProfile()?.id === retweetProfile.id) { You } @else
+    if(retweetProfile.id === tweet().profileId) { Tweet owner (
+    <div class="inline-block min-w-5">
+      <img
+        class="inline-block h-5 w-5 rounded-full"
+        referrerpolicy="no-referrer"
+        [src]="profilePic(retweetProfile)"
+        height="20"
+        width="20"
+        alt="kitouch profile picture"
+      />
+    </div>
+    {{ retweetProfile.name }}) } @else {
+    <div class="inline-block min-w-5">
+      <img
+        class="inline-block h-5 w-5 rounded-full"
+        referrerpolicy="no-referrer"
+        [src]="profilePic(retweetProfile)"
+        height="20"
+        width="20"
+        alt="kitouch profile picture"
+      />
+    </div>
     {{ retweetProfile.name }}
     } re-tweeted this.
   </a>

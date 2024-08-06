@@ -25,7 +25,11 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
-import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import {
+  profilePicture,
+  selectCurrentProfile,
+  selectProfileById,
+} from '@kitouch/kit-data';
 import { Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -47,7 +51,6 @@ import {
   startWith,
   switchMap,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -129,8 +132,7 @@ export class FeatTweetTweetyComponent implements OnChanges {
     switchMap((tweet) =>
       this.#store.select(selectProfileById(tweet.profileId))
     ),
-    filter(Boolean),
-    tap((v) => console.log('tweetProfile', v))
+    filter(Boolean)
   );
 
   // Component logic
@@ -194,6 +196,8 @@ export class FeatTweetTweetyComponent implements OnChanges {
       this.#tweetId$$.next(tweetId.currentValue);
     }
   }
+
+  profilePic = profilePicture;
 
   tweetUrl(tweet: Tweety, absolute?: boolean) {
     return [

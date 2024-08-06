@@ -69,7 +69,7 @@ export class PageSettingsComponent implements OnInit {
 
   experienceMessage: Message = {
     severity: 'contrast',
-    detail: 'Experience section.',
+    detail: 'Experience section',
   };
 
   currentAccount = toSignal(this.#store.select(selectAccount));
