@@ -12,7 +12,8 @@
     "@ngrx/store": "18.0.0",
     "primeng": "^17.18.1",
     "rxjs": "~7.8.0",
-    "@kitouch/shared-models": "0.0.8"
+    "@kitouch/shared-models": "0.0.8",
+    "@kitouch/kit-data": "0.0.8"
   },
   "sideEffects": false
 }

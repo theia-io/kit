@@ -51,29 +51,29 @@
     (profile)="profile.set($event)"
     (farewell)="farewell.set($event)"
   />
-  @if(preview() && farewell()) {
+  @if(preview() && farewell(); as farewell) {
   <div>
-    <p-button
-      (onClick)="copyUrlHandler()"
-      icon="pi pi-copy"
-      label="Copy"
+    <button
+      pButton
+      (click)="copyToClipBoard(farewell.id)"
+      [label]="copied() ? 'Done' : 'Copy'"
       severity="success"
       class="mr-1"
-    />
-    <p-button
-      (onClick)="copyUrlHandler()"
-      icon="pi pi-share-alt"
-      label="Share"
-      severity="contrast"
-      [raised]="true"
-      class="ml-1"
-    />
+    >
+      @if(copied()) {
+      <i class="pi pi-check mr-1"></i>
+      } @else {
+      <i class="pi pi-copy mr-1"></i>
+      }
+    </button>
+
+    <!-- <p-button (onClick)="copyUrlHandler()" icon="pi pi-share-alt" label="Share" severity="contrast" [raised]="true"
+      class="ml-1" /> -->
   </div>
   } @if(currentKitProfile$ | async; as currentKitProfile) { } @else {
   <button
     (click)="handleGoogleSignIn()"
     type="button"
-    Ø
     class="flex justify-center items-center gap-4 login-with-google-btn"
   >
     <img class="inline-block h-6" src="sign-in/g-icon.png" />

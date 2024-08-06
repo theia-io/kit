@@ -1,4 +1,4 @@
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, DOCUMENT, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -7,7 +7,7 @@ import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import { AuthService } from '@kitouch/ui-shared';
+import { APP_PATH, AuthService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -33,6 +33,7 @@ export class PageFarewellComponent {
 
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
+  #document = inject(DOCUMENT);
   #authService = inject(AuthService);
 
   farewellId$ = this.#activatedRouter.params.pipe(
@@ -44,6 +45,8 @@ export class PageFarewellComponent {
   profile = signal<Profile | undefined>(undefined);
   profilePic = computed(() => profilePicture(this.profile()));
 
+  copied = signal(false);
+
   currentKitProfile$ = this.#store.pipe(select(selectCurrentProfile));
 
   constructor() {
@@ -54,9 +57,24 @@ export class PageFarewellComponent {
       );
   }
 
-  copyUrlHandler() {}
-
   handleGoogleSignIn() {
     this.#authService.googleSignIn();
+  }
+
+  copyToClipBoard(farewellId: string) {
+    navigator.clipboard.writeText(this.#url(farewellId));
+    this.copied.set(true);
+    // @TODO add also bubbling text saying that copied
+    setTimeout(() => {
+      this.copied.set(false);
+    }, 5000);
+  }
+
+  #url(farewellId: string) {
+    return [
+      this.#document.location.origin,
+      APP_PATH.PublicFarewell,
+      farewellId,
+    ].join('/');
   }
 }
