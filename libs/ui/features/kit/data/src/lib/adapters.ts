@@ -5,22 +5,19 @@ import { BSON } from 'realm-web';
 export const dbClientProfileAdapter = (
   dbObject: DBClientType<Profile>
 ): Profile => {
-  const { userId, following, followers, ...partiallyDBObjectRest } =
-    dbClientAdapter(dbObject) as any;
-
-  if (following) {
-    partiallyDBObjectRest.following =
-      following?.map((follow: any) => follow.toString()) ?? [];
-  }
-
-  if (followers) {
-    partiallyDBObjectRest.followers =
-      followers?.map((follower: any) => follower.toString()) ?? [];
-  }
+  const dbClientProfile = dbClientAdapter(dbObject);
 
   return {
-    ...partiallyDBObjectRest,
-  } as Profile;
+    ...dbClientProfile,
+    following: dbClientProfile.following?.map(({ id, ...rest }) => ({
+      ...rest,
+      id: id?.toString(),
+    })),
+    followers: dbClientProfile.followers?.map(({ id, ...rest }) => ({
+      ...rest,
+      id: id?.toString(),
+    })),
+  };
 };
 
 export const dbClientUserAdapter = (dbObject: DBClientType<User>): User => {

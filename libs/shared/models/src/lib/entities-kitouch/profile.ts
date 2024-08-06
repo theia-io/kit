@@ -30,6 +30,6 @@ export interface Profile {
   pictures?: Array<Picture>;
   links?: Link[];
   // meta
-  followers?: Array<Profile['id']>;
+  followers?: Array<{ id: Profile['id'] }>;
   following?: Array<{ id: Profile['id'] }>;
 }

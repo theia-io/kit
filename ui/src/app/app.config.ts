@@ -1,11 +1,7 @@
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  provideRouter,
-  withComponentInputBinding,
-  withDebugTracing,
-} from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import { FarewellEffects } from '@kitouch/feat-farewell-effects';
 import { featFollowReducer } from '@kitouch/feat-follow-data';
@@ -52,8 +48,8 @@ export const appConfig: ApplicationConfig = {
     },
 
     // provideRouter(appRoutes),
-    provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),
-    // provideRouter(appRoutes, withComponentInputBinding()),
+    provideRouter(appRoutes, withComponentInputBinding()),
+    // provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),
     provideStore({
       farewell: featFarewellReducer,
       follow: featFollowReducer,
