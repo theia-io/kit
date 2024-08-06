@@ -6,7 +6,7 @@ export const cookieConfig: NgcCookieConsentConfig = {
   cookie: {
     domain:
       environment.environment !== KIT_ENVS.localhost
-        ? window.location.origin
+        ? window.location.host
         : 'localhost',
   },
   position: 'bottom',
