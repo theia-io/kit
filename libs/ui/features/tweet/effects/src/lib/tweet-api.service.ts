@@ -27,134 +27,107 @@ export class TweetApiService extends DataSourceService {
   ): Observable<Array<Tweety>> {
     const agg = [
       {
-        $lookup:
-          /**
-           * from: The target collection.
-           * localField: The local join field.
-           * foreignField: The target join field.
-           * as: The name for the results.
-           * pipeline: Optional pipeline to run on the foreign collection.
-           * let: Optional variables to use in the pipeline field stages.
-           */
-          {
-            from: 'retweet',
-            localField: '_id',
-            foreignField: 'tweetId',
-            as: 'retweetsData',
-            pipeline: [
-              {
-                $match: {
-                  $or: [
-                    {
-                      profileId: clientDBIdAdapter(profileId),
-                    },
-                    {
-                      profileId: {
-                        $in: followingProfileIds.map(clientDBIdAdapter),
-                      },
-                    },
-                  ],
-                },
-              },
-            ],
-          },
-      },
-      {
-        $facet:
-          /**
-           * outputFieldN: The first output field.
-           * stageN: The first aggregation stage.
-           */
-          {
-            original: [
-              {
-                $replaceRoot: {
-                  newRoot: '$$ROOT',
-                },
-              },
-              {
-                $addFields: {
-                  type: 'tweet',
-                },
-              },
-              { $unset: ['retweetsData'] },
-            ],
-            // Keep original document
-            unwound: [
-              {
-                $unwind: '$retweetsData',
-              },
-              {
-                $match: {
-                  'retweetsData._id': {
-                    $exists: true,
+        $lookup: {
+          from: 'retweet',
+          localField: '_id',
+          foreignField: 'tweetId',
+          as: 'retweetsData',
+          pipeline: [
+            {
+              $match: {
+                $or: [
+                  {
+                    profileId: clientDBIdAdapter(profileId),
                   },
-                },
+                  {
+                    profileId: {
+                      $in: followingProfileIds.map(clientDBIdAdapter),
+                    },
+                  },
+                ],
               },
-              {
-                $project: {
-                  _id: '$retweetsData._id',
-                  referenceId: '$retweetsData.tweetId',
-                  referenceProfileId: '$retweetsData.profileId',
-                  timestamp: '$retweetsData.timestamp',
-                  type: 'retweet',
-                  // Get from the original tweet
-                  profileId: '$profileId',
-                  content: '$content',
-                  upProfileIds: '$retweetsData.upProfileIds',
-                },
-              },
-            ], // Unwind the array: [ stageN, ... ]
-          },
-      },
-      {
-        $project:
-          /**
-           * specifications: The fields to
-           *   include or exclude.
-           */
-          {
-            allDocs: {
-              $concatArrays: ['$original', '$unwound'],
             },
-          },
+          ],
+        },
       },
       {
-        $unwind:
-          /**
-           * path: Path to the array field.
-           * includeArrayIndex: Optional name for index.
-           * preserveNullAndEmptyArrays: Optional
-           *   toggle to unwind null and empty values.
-           */
-          {
-            path: '$allDocs',
-          },
-      },
-      {
-        $replaceWith:
-          /**
-           * replacementDocument: A document or string.
-           */
-          '$allDocs',
-      },
-      {
-        $match:
-          /**
-           * query: The query in MQL.
-           */
-          {
-            $or: [
-              {
-                profileId: clientDBIdAdapter(profileId),
+        $facet: {
+          original: [
+            {
+              $replaceRoot: {
+                newRoot: '$$ROOT',
               },
-              {
-                profileId: {
-                  $in: followingProfileIds.map(clientDBIdAdapter),
+            },
+            {
+              $addFields: {
+                type: 'tweet',
+              },
+            },
+          ],
+          unwound: [
+            {
+              $unwind: '$retweetsData',
+            },
+            {
+              $match: {
+                'retweetsData._id': {
+                  $exists: true,
                 },
               },
-            ],
+            },
+            {
+              $project: {
+                _id: '$retweetsData._id',
+                referenceId: '$retweetsData.tweetId',
+                referenceProfileId: '$retweetsData.profileId',
+                timestamp: '$retweetsData.timestamp',
+                type: 'retweet',
+                //
+                // Get from the original tweet
+                profileId: '$profileId',
+                content: '$content',
+                upProfileIds: '$retweetsData.upProfileIds',
+              },
+            },
+          ],
+        },
+      },
+      {
+        $project: {
+          allDocs: {
+            $concatArrays: ['$original', '$unwound'],
           },
+        },
+      },
+      {
+        $unwind: {
+          path: '$allDocs',
+        },
+      },
+      {
+        $replaceWith: '$allDocs',
+      },
+      {
+        $match: {
+          $or: [
+            {
+              profileId: clientDBIdAdapter(profileId),
+            },
+            {
+              profileId: {
+                $in: followingProfileIds.map(clientDBIdAdapter),
+              },
+            },
+            {
+              referenceProfileId: clientDBIdAdapter(profileId),
+            },
+            {
+              referenceProfileId: {
+                $in: followingProfileIds.map(clientDBIdAdapter),
+              },
+            },
+          ],
+        },
       },
       { $sort: { 'timestamp.createdAt': -1 } },
     ];

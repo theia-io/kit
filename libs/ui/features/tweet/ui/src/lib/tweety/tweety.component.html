@@ -1,16 +1,16 @@
-@if(tweet().type === tweetTypes.Retweet) {
+@if(tweet().type === tweetTypes.Retweet && (retweetProfile$ | async); as
+retweetProfile) {
 <span class="block mb-2 text-xs font-medium text-gray-400">
   <i class="pi pi-replay mr-2"></i>
 
-  @if(retweetProfile$ | async; as retweetProfile) {
   <a
     class="transition hover:underline hover:font-semibold"
     [routerLink]="[
       profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)
     ]"
   >
-    @if(currentProfile()?.id === retweetProfile.id) { You } @else
-    if(retweetProfile.id === tweet().profileId) { Tweet owner (
+    @if(currentProfile()?.id === retweetProfile.id) { You re-tweeted this. }
+    @else if(retweetProfile.id === tweet().profileId) { Tweet owner (
     <div class="inline-block min-w-5">
       <img
         class="inline-block h-5 w-5 rounded-full"
@@ -21,7 +21,7 @@
         alt="kitouch profile picture"
       />
     </div>
-    {{ retweetProfile.name }}) } @else {
+    {{ retweetProfile.name }}) re-tweeted the tweet. } @else {
     <div class="inline-block min-w-5">
       <img
         class="inline-block h-5 w-5 rounded-full"
@@ -32,10 +32,8 @@
         alt="kitouch profile picture"
       />
     </div>
-    {{ retweetProfile.name }}
-    } re-tweeted this.
+    {{ retweetProfile.name }} re-tweeted. } Ø
   </a>
-  } @else { re-tweet }
 </span>
 }
 
