@@ -14,20 +14,49 @@
   </ui-kit-comp-card>
 </ui-kit-comp-new-ui-item>
 } @empty {
-<ui-kit-tweet-button
-  [disabled]="(reloadTweetsDisabled$ | async) ?? false"
-  [icon]="false"
-  text="Reload Tweets"
-  (click)="reloadTweets()"
-  class="block w-full mt-4 mb-6"
-/>
 
-@if(followingProfiles() && followingProfiles()!.length > 0) {
-<p>You and profiles you follow has not posted anything yet.</p>
-<p>Be the first one!</p>
-} @else {
-<p>Start follow your (ex-) colleagues profiles or post your thoughts here!</p>
-}
+<div class="w-full flex items-center flex-wrap justify-center gap-10">
+  <div class="grid gap-4 mt-6">
+    <div
+      class="w-20 h-20 mx-auto bg-gray-50 rounded-full shadow-sm justify-center items-center inline-flex"
+    >
+      <img
+        class="max-h-[700px] w-auto float-right"
+        src="feed/empty-state-plant.png"
+      />
+    </div>
+    <div>
+      @if(followingProfiles() && followingProfiles()!.length > 0) {
+      <h2
+        class="text-center text-black text-base font-semibold leading-relaxed pb-1"
+      >
+        You and profiles you follow has not posted anything yet.
+      </h2>
+      <p class="text-center text-black text-sm font-normal leading-snug pb-4">
+        Be the first one!
+      </p>
+      } @else {
+      <h2
+        class="text-center text-black text-base font-semibold leading-relaxed pb-1"
+      >
+        You don't follow any profiles!
+      </h2>
+      <p class="text-center text-black text-sm font-normal leading-snug pb-4">
+        Start follow your (ex-) colleagues profiles or post your thoughts here!
+      </p>
+      }
+    </div>
+    <div>
+      <ui-kit-tweet-button
+        [disabled]="(reloadTweetsDisabled$ | async) ?? false"
+        [icon]="false"
+        text="Reload Tweets"
+        (click)="reloadTweets()"
+        class="block w-full mt-4 mb-6"
+      />
+    </div>
+  </div>
+</div>
 
 <feat-follow-suggestions
   class="block my-6"
