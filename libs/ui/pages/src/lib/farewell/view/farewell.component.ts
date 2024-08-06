@@ -1,6 +1,7 @@
 import { AsyncPipe, NgOptimizedImage } from '@angular/common';
-import { Component, computed, inject, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
@@ -9,7 +10,7 @@ import { Profile } from '@kitouch/shared-models';
 import { AuthService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { TagModule } from 'primeng/tag';
-import { map } from 'rxjs';
+import { distinctUntilChanged, map, shareReplay, tap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -25,14 +26,15 @@ import { map } from 'rxjs';
     FeatFollowSuggestionByIdComponent,
   ],
 })
-export class PageFarewellComponent implements OnInit {
+export class PageFarewellComponent {
   #activatedRouter = inject(ActivatedRoute);
-  #router = inject(Router);
   #store = inject(Store);
   #authService = inject(AuthService);
 
   farewellId$ = this.#activatedRouter.params.pipe(
-    map((params) => params['id'])
+    map((params) => params['id']),
+    shareReplay(),
+    tap((v) => console.log(v))
   );
 
   profile = signal<Profile | undefined>(undefined);
@@ -40,8 +42,12 @@ export class PageFarewellComponent implements OnInit {
 
   currentKitProfile$ = this.#store.pipe(select(selectCurrentProfile));
 
-  ngOnInit(): void {
-    this.#store.dispatch(FeatFarewellActions.getFarewells());
+  constructor() {
+    this.farewellId$
+      .pipe(takeUntilDestroyed(), distinctUntilChanged())
+      .subscribe((id) =>
+        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }))
+      );
   }
 
   handleGoogleSignIn() {

@@ -1,7 +1,8 @@
 import { inject } from '@angular/core';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { DBClientType } from '@kitouch/utils';
 
 export class DataSourceService {
   #anonymousdb$ = inject(AuthService).anonymousUser$.pipe(
@@ -18,8 +19,15 @@ export class DataSourceService {
     shareReplay(1)
   );
 
+  /** @deprecated Call db$() instead and query DB. */
   #realmFunctions$ = inject(AuthService).realmUser$.pipe(
     map((currentUser) => currentUser?.functions),
+    filter(Boolean),
+    shareReplay(1)
+  );
+
+  #genericRealmFunctions$ = inject(AuthService).realmUser$.pipe(
+    map((currentUser) => currentUser?.functions?.['genericRealmFunction']),
     filter(Boolean),
     shareReplay(1)
   );
@@ -38,7 +46,20 @@ export class DataSourceService {
     );
   }
 
+  /** @deprecated Use `db$()` or `allowAnonymousDb$()` for query DB. Only calling `genericFunction` API is still allowed  */
   protected realmFunctions$() {
     return this.#realmFunctions$.pipe(take(1));
+  }
+
+  protected genericRealmFunction$<T, K = DBClientType<T>>(genericRealmArg: {
+    collection: string;
+    executeFn: string;
+    filterOrAggregate: any;
+    query?: any;
+  }): Observable<K> {
+    return this.#genericRealmFunctions$.pipe(
+      take(1),
+      switchMap((genericRealmCb) => genericRealmCb(genericRealmArg))
+    );
   }
 }

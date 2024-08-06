@@ -1,11 +1,11 @@
 {
   "name": "@kitouch/feat-tweet-data",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "peerDependencies": {
-    "@kitouch/shared-models": "0.0.1",
+    "@kitouch/shared-models": "0.0.8",
     "@ngrx/store": "18.0.0",
-    "@kitouch/ui-shared": "0.0.1",
-    "@kitouch/utils": "0.0.1",
+    "@kitouch/ui-shared": "0.0.8",
+    "@kitouch/utils": "0.0.8",
     "lodash": "^4.17.21"
   },
   "sideEffects": false

@@ -29,7 +29,7 @@ export interface TweetComment extends Partial<TimeStamp> {
 }
 
 //
-export interface Tweety extends Realm.Services.MongoDB.Document {
+export interface Tweety {
   // keys
   id: string;
   //

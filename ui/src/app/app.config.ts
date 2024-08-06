@@ -16,6 +16,7 @@ import { featTweetReducer } from '@kitouch/feat-tweet-data';
 import {
   BookmarkEffects,
   CommentsEffects,
+  RetweetEffects,
   TweetsEffects,
 } from '@kitouch/feat-tweet-effects';
 import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
@@ -66,6 +67,7 @@ export const appConfig: ApplicationConfig = {
       // tweet feat effects
       BookmarkEffects,
       CommentsEffects,
+      RetweetEffects,
       TweetsEffects,
     ]),
     provideStoreDevtools(),

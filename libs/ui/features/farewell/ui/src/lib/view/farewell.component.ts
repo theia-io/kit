@@ -53,7 +53,7 @@ export class FeatFarewellComponent {
       .subscribe((profile) => this.profile.emit(profile));
 
     this.farewell$
-      .pipe(distinctUntilKeyChanged('_id'), takeUntilDestroyed())
+      .pipe(distinctUntilKeyChanged('id'), takeUntilDestroyed())
       .subscribe((farewell) =>
         this.#store.dispatch(
           FeatFarewellActions.putFarewell({

@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/feat-settings-effects",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "peerDependencies": {},
   "sideEffects": false
 }

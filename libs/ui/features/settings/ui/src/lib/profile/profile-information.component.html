@@ -69,11 +69,14 @@
     </div>
   </div>
 
-  <div class="relative" userHint text="Information about you">
+  <div
+    class="relative h-full w-full"
+    userHint
+    text="Information about you"
+    [extraIdent]="{ top: 30, right: 30 }"
+  >
     <textarea
-      class="ml-2"
-      rows="5"
-      cols="30"
+      class="h-full w-full"
       pInputTextarea
       formControlName="description"
       placeholder="What's your story?"

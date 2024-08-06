@@ -19,7 +19,7 @@ export class UserService extends DataSourceService {
         realmFunctions['genericRealmFunction']({
           collection: 'user',
           executeFn: 'updateOne',
-          filter: { _id: new BSON.ObjectId(user.id) },
+          filterOrAggregate: { _id: new BSON.ObjectId(user.id) },
           query: [
             {
               $set: {
@@ -41,7 +41,7 @@ export class UserService extends DataSourceService {
           ],
         })
       ),
-      map(() => ({ experiences: [experience] }))
+      map(() => true)
     );
   }
 

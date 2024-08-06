@@ -1,7 +1,7 @@
 import { User } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
-import { FeatUserApiActions } from './user.actions';
 import _ from 'lodash';
+import { FeatUserApiActions } from './user.actions';
 import { getExperienceEqualityObject } from './user.selectors';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
@@ -19,25 +19,29 @@ export const userReducer = createReducer(
     ...state,
     user,
   })),
-  on(FeatUserApiActions.addExperienceSuccess, (state, { experiences }) => ({
+  on(FeatUserApiActions.addExperienceSuccess, (state, { experience }) => ({
     ...state,
-    user: {
-      ...(state.user ?? {}),
-      experiences,
-    } as any,
+    user: state.user
+      ? {
+          ...state.user,
+          experiences: [experience, ...(state.user?.experiences ?? [])],
+        }
+      : undefined,
   })),
   on(FeatUserApiActions.deleteExperienceSuccess, (state, { experience }) => ({
     ...state,
-    user: {
-      ...(state.user ?? {}),
-      experiences:
-        state.user?.experiences?.filter(
-          (userExperience) =>
-            !_.isEqual(
-              getExperienceEqualityObject(userExperience),
-              getExperienceEqualityObject(experience)
-            )
-        ) ?? [],
-    } as any,
+    user: state.user
+      ? {
+          ...(state.user ?? {}),
+          experiences:
+            state.user?.experiences?.filter(
+              (userExperience) =>
+                !_.isEqual(
+                  getExperienceEqualityObject(userExperience),
+                  getExperienceEqualityObject(experience)
+                )
+            ) ?? [],
+        }
+      : undefined,
   }))
 );

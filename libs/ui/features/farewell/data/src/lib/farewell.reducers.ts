@@ -1,5 +1,5 @@
 import { Farewell } from '@kitouch/shared-models';
-import { mergeArrV2 } from '@kitouch/ui-shared';
+import { addOrUpdate, mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFarewellActions } from './farewell.actions';
 
@@ -15,19 +15,14 @@ export const featFarewellReducer = createReducer(
   featFarewellInitialState,
   on(FeatFarewellActions.getFarewellsSuccess, (state, { farewells }) => ({
     ...state,
-    farewells,
+    farewells: mergeArr(farewells, state.farewells),
   })),
-  on(FeatFarewellActions.getFarewellSuccess, (state, { farewell }) => ({
-    ...state,
-    farewells: mergeArrV2([farewell], state.farewells),
-  })),
-  on(FeatFarewellActions.putFarewellSuccess, (state, { farewell }) => ({
-    ...state,
-    farewells: state.farewells.map((stateFarewell) => {
-      if (stateFarewell._id === farewell._id) {
-        return farewell;
-      }
-      return stateFarewell;
-    }),
-  }))
+  on(
+    FeatFarewellActions.putFarewellSuccess,
+    FeatFarewellActions.getFarewellSuccess,
+    (state, { farewell }) => ({
+      ...state,
+      farewells: addOrUpdate(farewell, state.farewells),
+    })
+  )
 );
