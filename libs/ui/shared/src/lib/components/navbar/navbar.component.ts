@@ -25,6 +25,7 @@ import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { APP_PATH } from '../../constants';
 import { SubnavComponent } from './subnav/subnav.component';
+import { InputSwitch } from 'primeng/inputswitch';
 
 @Component({
   standalone: true,
@@ -51,18 +52,11 @@ export class NavBarComponent implements AfterViewInit {
     []
   );
 
-  @Input()
-  profileBaseUrl: string;
+  profileBaseUrl = input.required<string>();
+  profile = input<Profile | undefined | null>(null);
 
-  @Input()
-  profile: Partial<Profile> | undefined | null;
-
-  @Output()
-  logout = new EventEmitter<void>();
-
-  @Output()
-  help = new EventEmitter<void>();
-
+  logout = output();
+  help = output();
   tweetButtonClick = output();
 
   sanitizer: DomSanitizer = inject(DomSanitizer);

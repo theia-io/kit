@@ -47,6 +47,7 @@ import {
   startWith,
   switchMap,
   take,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -128,7 +129,8 @@ export class FeatTweetTweetyComponent implements OnChanges {
     switchMap((tweet) =>
       this.#store.select(selectProfileById(tweet.profileId))
     ),
-    filter(Boolean)
+    filter(Boolean),
+    tap((v) => console.log('tweetProfile', v))
   );
 
   // Component logic
@@ -142,13 +144,20 @@ export class FeatTweetTweetyComponent implements OnChanges {
     )
   );
 
-  tweetCanBeDeleted$ = combineLatest([
-    this.#currentProfile$,
-    this.tweetProfile$,
-  ]).pipe(
+  tweetCanBeDeleted$ = this.#tweet$.pipe(
+    switchMap((tweet) =>
+      combineLatest([
+        this.#currentProfile$,
+        tweet.type === TweetyType.Retweet
+          ? this.retweetProfile$
+          : this.tweetProfile$,
+      ])
+    ),
     map(
-      ([currentProfile, tweetProfile]) =>
-        currentProfile && tweetProfile && currentProfile.id === tweetProfile.id
+      ([currentProfile, tweetOrRetweetProfile]) =>
+        currentProfile &&
+        tweetOrRetweetProfile &&
+        currentProfile.id === tweetOrRetweetProfile.id
     ),
     startWith(false)
   );

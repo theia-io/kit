@@ -14,7 +14,8 @@ import {
   NavBarComponent,
   OUTLET_DIALOG,
 } from '@kitouch/ui-shared';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 
 @Component({
   standalone: true,
@@ -79,7 +80,7 @@ export class KitComponent implements OnInit {
       : { ...navItem }
   );
 
-  $profile = this.#authService.currentProfile$;
+  $profile = this.#store.pipe(select(selectCurrentProfile));
 
   ngOnInit(): void {
     /** Data that will be required across all app */

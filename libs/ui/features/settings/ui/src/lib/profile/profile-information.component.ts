@@ -68,7 +68,10 @@ export class FeatSettingsProfileInformationComponent {
         takeUntilDestroyed()
       )
       .subscribe((updatedProfile) => {
-        this.#saveProfileHandler({ ...this.profile(), ...updatedProfile });
+        this.#saveProfileHandler({
+          ...this.profile(),
+          ...updatedProfile,
+        } as Profile);
       });
 
     effect(() => {
@@ -94,7 +97,7 @@ export class FeatSettingsProfileInformationComponent {
     });
   }
 
-  #saveProfileHandler(profile: Partial<Profile>) {
+  #saveProfileHandler(profile: Profile) {
     this.updatingProfile.emit();
     /** @TODO p2 Add updatingProfile true/false and waiting for an action from Store with ID expected (uuid) */
     this.#store.dispatch(

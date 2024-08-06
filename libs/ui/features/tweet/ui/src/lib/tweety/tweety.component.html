@@ -9,7 +9,9 @@
       profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)
     ]"
   >
-    @if(currentProfile()?.id === retweetProfile.id) { You } @else {
+    @if(retweetProfile.id === tweet().profileId) { Tweet owner ({{
+      retweetProfile.name
+    }}) } @else if(currentProfile()?.id === retweetProfile.id) { You } @else {
     {{ retweetProfile.name }}
     } re-tweeted this.
   </a>

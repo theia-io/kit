@@ -436,7 +436,8 @@ export class TweetApiService extends DataSourceService {
             updatedAt: new Date(Date.now()),
           },
         })
-      )
+      ),
+      map(({ insertedId }) => insertedId.toString())
     );
   }
 

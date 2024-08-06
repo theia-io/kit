@@ -50,7 +50,7 @@ export const featTweetTweetsReducer = createReducer(
   })),
   on(FeatReTweetActions.deleteSuccess, (state, { tweet }) => ({
     ...state,
-    tweets: state.tweets.filter((retweetTweet) => tweet.id !== retweetTweet.id),
+    tweets: state.tweets.filter((stateTweet) => stateTweet.id !== tweet.id),
   })),
   on(
     FeatTweetActions.commentDeleteSuccess,

@@ -83,7 +83,6 @@ export class PageSettingsComponent implements OnInit {
   }
 
   updatingProfileHandler() {
-    console.log('updatingProfileHandler');
     this.updatingProfile.set(true);
 
     setTimeout(() => {

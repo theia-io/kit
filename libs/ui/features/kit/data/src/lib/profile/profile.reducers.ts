@@ -1,6 +1,7 @@
 import { Profile } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
 import { FeatProfileApiActions } from './profile.actions';
+import { addOrUpdate } from '@kitouch/ui-shared';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureProfileState {
@@ -52,6 +53,7 @@ export const profileReducer = createReducer(
   ),
   on(FeatProfileApiActions.updateProfileSuccess, (state, { profile }) => ({
     ...state,
-    currentProfile: { ...state.currentProfile, ...profile } as Profile,
+    currentProfile: { ...state.currentProfile, ...profile },
+    profiles: addOrUpdate(profile, state.profiles ?? []),
   }))
 );

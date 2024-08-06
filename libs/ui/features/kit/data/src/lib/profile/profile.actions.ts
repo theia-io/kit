@@ -9,8 +9,8 @@ export const FeatProfileApiActions = createActionGroup({
     GetFollowingProfiles: props<{ profileIds: Array<Profile['id']> }>(),
     GetFollowingProfilesSuccess: props<{ profiles: Array<Profile> }>(),
     GetFollowingProfilesFailure: emptyProps(),
-    UpdateProfile: props<{ profile: Partial<Profile> }>(),
-    UpdateProfileSuccess: props<{ profile: Partial<Profile> }>(),
+    UpdateProfile: props<{ profile: Profile }>(),
+    UpdateProfileSuccess: props<{ profile: Profile }>(),
     UpdateProfileFailure: props<{ message: string }>(),
   },
 });
