@@ -1,4 +1,4 @@
-import { Tweety } from '@kitouch/shared-models';
+import { Tweety, TweetyType } from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
@@ -38,9 +38,15 @@ export const featTweetTweetsReducer = createReducer(
       tweets: mergeArr(tweets, state.tweets),
     })
   ),
-  on(FeatTweetActions.deleteSuccess, (state, { tweet }) => ({
+  on(FeatTweetActions.deleteSuccess, (state, { tweet: { id } }) => ({
     ...state,
-    tweets: state.tweets.filter(({ id }) => id !== tweet.id),
+    tweets: state.tweets.filter((stateTweet) => {
+      if (stateTweet.type === TweetyType.Retweet) {
+        return stateTweet.referenceId !== id;
+      }
+
+      return stateTweet.id !== id;
+    }),
   })),
   on(FeatReTweetActions.deleteSuccess, (state, { tweet }) => ({
     ...state,
