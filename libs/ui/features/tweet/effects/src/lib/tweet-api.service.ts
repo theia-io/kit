@@ -248,13 +248,8 @@ export class TweetApiService extends DataSourceService {
 
     return this.db$().pipe(
       switchMap((db) => db.collection('tweet').insertOne(newTweet)),
-      map(
-        ({ insertedId }) =>
-          ({
-            ...newTweet,
-            profileId: tweet.profileId,
-            id: insertedId,
-          } as Tweety)
+      map(({ insertedId }) =>
+        dbClientTweetAdapter({ ...newTweet, _id: insertedId } as any)
       )
     );
   }
@@ -270,7 +265,9 @@ export class TweetApiService extends DataSourceService {
           db.collection('tweet').deleteOne({
             _id: new BSON.ObjectId(tweet.id),
           }),
-          this.deleteAllTweetBookmarks(tweet.id),
+          // TODO maybe in a future we would have different logic
+          this.#deleteAllTweetBookmarks(tweet.id),
+          this.#deleteAllRetweet(tweet.id),
         ])
       ),
       map(([{ deletedCount }]) => deletedCount > 0)
@@ -286,6 +283,21 @@ export class TweetApiService extends DataSourceService {
       switchMap((db) =>
         db.collection('retweet').deleteOne({
           _id: new BSON.ObjectId(retweet.id),
+        })
+      ),
+      map(({ deletedCount }) => deletedCount > 0)
+    );
+  }
+
+  #deleteAllRetweet(tweetId: string): Observable<boolean> {
+    // return this.realmFunctions$().pipe(
+    //   switchMap((fn) => fn['deleteTweets'](ids))
+    // );
+
+    return this.db$().pipe(
+      switchMap((db) =>
+        db.collection('retweet').deleteMany({
+          tweetId: new BSON.ObjectId(tweetId),
         })
       ),
       map(({ deletedCount }) => deletedCount > 0)
@@ -402,7 +414,7 @@ export class TweetApiService extends DataSourceService {
     );
   }
 
-  deleteAllTweetBookmarks(tweetId: Tweety['id']): Observable<boolean> {
+  #deleteAllTweetBookmarks(tweetId: Tweety['id']): Observable<boolean> {
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('bookmark').deleteMany({

@@ -110,7 +110,7 @@ export class TweetsEffects {
       ofType(FeatTweetActions.delete),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, profile]) =>
-        tweet.id === profile.id
+        tweet.profileId === profile.id
           ? this.#tweetApi.deleteTweet(tweet).pipe(
               map(() => FeatTweetActions.deleteSuccess({ tweet })),
               catchError((err) => {
