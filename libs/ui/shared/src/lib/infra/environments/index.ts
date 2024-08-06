@@ -7,6 +7,7 @@ export enum KIT_ENVS {
 }
 
 export interface Environment {
+  googleTagConfig: string | null;
   build: string;
   environment: KIT_ENVS; // when true then DEV env
   production: boolean; // when true then PRD env; does not matter if development is `true`

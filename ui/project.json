@@ -42,6 +42,7 @@
       },
       "configurations": {
         "production": {
+          "index": "ui/src/index.prod.html",
           "fileReplacements": [
             {
               "replace": "ui/src/environments/environment.ts",
