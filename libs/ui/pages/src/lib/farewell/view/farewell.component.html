@@ -47,13 +47,33 @@
   <feat-farewell-view
     class="block sm:w-full md:w-5/6 lg:w-3/6 mb-12"
     [farewellId]="farewellId$ | async"
+    [preview]="preview()"
     (profile)="profile.set($event)"
+    (farewell)="farewell.set($event)"
   />
-
-  @if(currentKitProfile$ | async; as currentKitProfile) { } @else {
+  @if(preview() && farewell()) {
+  <div>
+    <p-button
+      (onClick)="copyUrlHandler()"
+      icon="pi pi-copy"
+      label="Copy"
+      severity="success"
+      class="mr-1"
+    />
+    <p-button
+      (onClick)="copyUrlHandler()"
+      icon="pi pi-share-alt"
+      label="Share"
+      severity="contrast"
+      [raised]="true"
+      class="ml-1"
+    />
+  </div>
+  } @if(currentKitProfile$ | async; as currentKitProfile) { } @else {
   <button
     (click)="handleGoogleSignIn()"
     type="button"
+    Ø
     class="flex justify-center items-center gap-4 login-with-google-btn"
   >
     <img class="inline-block h-6" src="sign-in/g-icon.png" />

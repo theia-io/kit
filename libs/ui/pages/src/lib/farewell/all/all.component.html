@@ -2,7 +2,6 @@
   <ng-template pTemplate="header">
     <tr>
       <th>Title</th>
-      <th>Author</th>
       <th>Time</th>
       <th>Viewed</th>
       <th>Link</th>
@@ -11,13 +10,20 @@
   <ng-template pTemplate="body" let-farewell>
     <tr>
       <td>{{ farewell.title }}</td>
-      <td>{{ farewell.profile?.name }}</td>
       <td>{{ farewell.timestamp?.createdAt | date : 'MMM d, h:mm a' }}</td>
       <td>
         <i class="pi pi-eye mr-2"></i>
         {{ farewell.viewed }} times
       </td>
-      <td><a [routerLink]="'/' + farewellUrl + '/' + farewell.id">Open</a></td>
+      <td>
+        <a
+          [routerLink]="[
+            '/' + farewellUrl + '/' + farewell.id,
+            { preview: true }
+          ]"
+          >Open</a
+        >
+      </td>
     </tr>
   </ng-template>
 </p-table>
