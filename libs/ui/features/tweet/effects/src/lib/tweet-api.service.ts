@@ -23,7 +23,7 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 export class TweetApiService extends DataSourceService {
   getFeed(
     profileId: string,
-    followingProfileIds: string[]
+    followingProfileIds?: string[]
   ): Observable<Array<Tweety>> {
     const agg = [
       {
@@ -41,7 +41,7 @@ export class TweetApiService extends DataSourceService {
                   },
                   {
                     profileId: {
-                      $in: followingProfileIds.map(clientDBIdAdapter),
+                      $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
                     },
                   },
                 ],
@@ -115,7 +115,7 @@ export class TweetApiService extends DataSourceService {
             },
             {
               profileId: {
-                $in: followingProfileIds.map(clientDBIdAdapter),
+                $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
               },
             },
             {
@@ -123,7 +123,7 @@ export class TweetApiService extends DataSourceService {
             },
             {
               referenceProfileId: {
-                $in: followingProfileIds.map(clientDBIdAdapter),
+                $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
               },
             },
           ],
@@ -142,43 +142,7 @@ export class TweetApiService extends DataSourceService {
   }
 
   getTweetsForProfile(profileId: string): Observable<Array<Tweety>> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['getTweetsForProfile']({ profileId }))
-    // );
-
-    return this.db$().pipe(
-      switchMap((db) =>
-        Promise.all([
-          db.collection<DBClientType<Profile>>('profile').findOne({
-            profileId: new BSON.ObjectId(profileId),
-          }),
-          db.collection<DBClientType<Tweety>>('tweet').find(
-            {
-              profileId: new BSON.ObjectId(profileId),
-            },
-            {
-              sort: {
-                'timestamp.createdAt': -1,
-              },
-            }
-          ),
-        ])
-      ),
-      map(([profileDb, tweetsDb]): [Profile | null, Array<Tweety>] => [
-        profileDb ? dbClientProfileAdapter(profileDb) : null,
-        tweetsDb.map((tweetDb) => dbClientTweetAdapter(tweetDb)),
-      ]),
-      map(([profile, tweets]) =>
-        profile
-          ? tweets.map((tweet) => ({
-              ...tweet,
-              denormalization: {
-                profile,
-              },
-            }))
-          : tweets
-      )
-    );
+    return this.getFeed(profileId);
   }
 
   get(tweetId: Tweety['id'], profileId: Profile['id']): Observable<Tweety> {

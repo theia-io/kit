@@ -1,7 +1,7 @@
 import { Profile } from '@kitouch/shared-models';
+import { addOrUpdate } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import { FeatProfileApiActions } from './profile.actions';
-import { addOrUpdate } from '@kitouch/ui-shared';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureProfileState {

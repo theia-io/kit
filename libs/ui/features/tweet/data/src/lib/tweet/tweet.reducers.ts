@@ -1,5 +1,5 @@
 import { Tweety, TweetyType } from '@kitouch/shared-models';
-import { addOrUpdate, mergeArr } from '@kitouch/ui-shared';
+import { addOrUpdate, mergeArr } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
 import {
