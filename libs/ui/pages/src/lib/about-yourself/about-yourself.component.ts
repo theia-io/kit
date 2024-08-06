@@ -2,26 +2,25 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   inject,
   OnInit,
   signal,
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { FeatLegalApiActions, selectCurrentProfile } from '@kitouch/kit-data';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsProfileInformationComponent,
 } from '@kitouch/feat-settings-ui';
+import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
+import { FeatLegalApiActions, selectCurrentProfile } from '@kitouch/kit-data';
 import {
   ButtonComponent,
   fadeInUpAnimation,
   NewUIItemComponent,
 } from '@kitouch/ui-components';
-import { FeatFollowActions } from '@kitouch/feat-follow-data';
-import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
-import { Actions } from '@ngrx/effects';
+import { TutorialService, UserHintDirective } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { take } from 'rxjs/operators';
@@ -68,13 +67,13 @@ import { take } from 'rxjs/operators';
     FeatSettingsProfileInformationComponent,
     FeatFollowSuggestionsComponent,
     ButtonComponent,
+    UserHintDirective,
   ],
   animations: [fadeInUpAnimation],
 })
 export class PageAboutYourselfComponent implements OnInit {
-  #destroyRef = inject(DestroyRef);
   #store = inject(Store);
-  #actions = inject(Actions);
+  #tutorial = inject(TutorialService);
 
   currentProfile$ = this.#store.select(selectCurrentProfile).pipe(take(1));
   updatingProfile = signal(false);
@@ -84,6 +83,8 @@ export class PageAboutYourselfComponent implements OnInit {
   ngOnInit(): void {
     this.#store.dispatch(FeatLegalApiActions.getCompanies());
     this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
+
+    this.#tutorial.showAboutUsPageTourIfNotShown();
   }
 
   scroll(el: HTMLElement) {

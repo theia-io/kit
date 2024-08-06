@@ -1,16 +1,11 @@
-import { CommonModule, NgClass } from '@angular/common';
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  EventEmitter,
-  inject,
   input,
-  Input,
   output,
-  Output,
   signal,
 } from '@angular/core';
-import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
@@ -35,7 +30,7 @@ export class FeatTweetActionsComponent {
   liked = input<boolean | null | undefined>(false);
   bookmarked = input(false);
 
-  comment = output<void>();
+  comment = output<Event>();
   retweet = output<void>();
   quote = output<void>();
   like = output<void>();

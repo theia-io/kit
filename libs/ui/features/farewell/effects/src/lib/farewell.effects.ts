@@ -17,10 +17,26 @@ export class FarewellEffects {
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
 
+  getFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewell),
+      switchMap(({ id }) => this.#farewellService.getFarewell(id)),
+      map((farewell) =>
+        farewell
+          ? FeatFarewellActions.getFarewellSuccess({ farewell })
+          : FeatFarewellActions.getFarewellFailure({
+              message: 'Did not find this farewell.',
+            })
+      )
+    )
+  );
+
   getFarewells$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatFarewellActions.getFarewells),
-      switchMap(() => this.#farewellService.getFarewells()),
+      ofType(FeatFarewellActions.getProfileFarewells),
+      switchMap(({ profileId }) =>
+        this.#farewellService.getFarewells(profileId)
+      ),
       map((farewells) => FeatFarewellActions.getFarewellsSuccess({ farewells }))
     )
   );

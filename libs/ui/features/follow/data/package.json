@@ -1,10 +1,10 @@
 {
   "name": "@kitouch/feat-follow-data",
-  "version": "0.0.1",
+  "version": "0.0.8",
   "peerDependencies": {
-    "@kitouch/shared-models": "0.0.1",
+    "@kitouch/shared-models": "0.0.8",
     "@ngrx/store": "18.0.0",
-    "@kitouch/ui-shared": "0.0.1"
+    "@kitouch/ui-shared": "0.0.8"
   },
   "sideEffects": false
 }

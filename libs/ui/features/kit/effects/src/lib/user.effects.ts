@@ -15,8 +15,10 @@ export class UserEffects {
       ofType(FeatUserApiActions.addExperience),
       switchMap(({ experience }) =>
         this.#userService.addUserExperience$(experience).pipe(
-          map(({ experiences }) =>
-            FeatUserApiActions.addExperienceSuccess({ experiences })
+          map(() =>
+            FeatUserApiActions.addExperienceSuccess({
+              experience,
+            })
           ),
           catchError((err) => {
             console.error('[UserEffects] addExperience', err);

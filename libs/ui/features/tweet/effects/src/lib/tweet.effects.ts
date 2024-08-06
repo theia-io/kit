@@ -1,15 +1,16 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
+  FeatReTweetActions,
   FeatTweetActions,
   FeatTweetBookmarkActions,
   TweetApiActions,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import {
   catchError,
   filter,
@@ -25,14 +26,14 @@ export class TweetsEffects {
   #store = inject(Store);
   #tweetApi = inject(TweetApiService);
 
-  currentProfile$ = this.#store
+  #currentProfile$ = this.#store
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
 
   feedTweets$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.getAll),
-      withLatestFrom(this.currentProfile$),
+      withLatestFrom(this.#currentProfile$),
       switchMap(([_, profile]) =>
         this.#tweetApi
           .getFeed(profile.id, profile.following?.map(({ id }) => id) ?? [])
@@ -89,32 +90,43 @@ export class TweetsEffects {
     )
   );
 
-  getTweets$ = createEffect(() =>
+  getTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
-      switchMap(({ ids }) =>
-        this.#tweetApi.get(ids).pipe(
-          map((tweets) => TweetApiActions.getSuccess({ tweets })),
+      switchMap(({ tweetId, profileId }) =>
+        this.#tweetApi.get(tweetId, profileId).pipe(
+          map((tweet) => TweetApiActions.getSuccess({ tweet })),
           catchError((err) => {
-            console.error('[TweetsEffects] tweet ERROR', err);
-            return of(TweetApiActions.getFailure({ ids }));
+            console.error('[TweetsEffects] getTweet ERROR', err);
+            return of(TweetApiActions.getFailure({ tweetId, profileId }));
           })
         )
       )
     )
   );
 
-  deleteTweets$ = createEffect(() =>
+  deleteTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.delete),
-      switchMap(({ ids }) =>
-        this.#tweetApi.deleteTweets(ids).pipe(
-          map(() => FeatTweetActions.deleteSuccess({ ids })),
-          catchError((err) => {
-            console.error('[TweetsEffects] deleteTweets ERROR', err);
-            return of(FeatTweetActions.deleteFailure({ ids }));
-          })
-        )
+      withLatestFrom(this.#currentProfile$),
+      switchMap(([{ tweet }, profile]) =>
+        tweet.id === profile.id
+          ? this.#tweetApi.deleteTweet(tweet).pipe(
+              map(() => FeatTweetActions.deleteSuccess({ tweet })),
+              catchError((err) => {
+                console.error('[TweetsEffects] deleteTweet ERROR', err);
+                return of(
+                  FeatTweetActions.deleteFailure({
+                    message: 'Cannot delete tweet right now.',
+                  })
+                );
+              })
+            )
+          : of(
+              FeatTweetActions.deleteFailure({
+                message: 'You can delete only your own tweets',
+              })
+            )
       )
     )
   );
@@ -122,7 +134,7 @@ export class TweetsEffects {
   createTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.tweet),
-      withLatestFrom(this.currentProfile$),
+      withLatestFrom(this.#currentProfile$),
       switchMap(([{ uuid, content }, profile]) =>
         this.#tweetApi.newTweet({ profileId: profile.id, content }).pipe(
           map((tweet) =>
@@ -149,7 +161,7 @@ export class TweetsEffects {
   likeTweet$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatTweetActions.like),
-      withLatestFrom(this.currentProfile$),
+      withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, currentProfile]) =>
         this.#tweetApi
           .likeTweet({
@@ -159,45 +171,19 @@ export class TweetsEffects {
               : [currentProfile.id, ...(tweet.upProfileIds ?? [])],
           })
           .pipe(
-            map((tweet) =>
-              FeatTweetActions.likeSuccess({
-                tweet,
-              })
+            switchMap((tweet) =>
+              tweet
+                ? of(
+                    FeatTweetActions.likeSuccess({
+                      tweet,
+                    })
+                  )
+                : throwError(() => new Error('Cannot find such tweet to like'))
             ),
             catchError((err) => {
               console.error('[TweetsEffects] likeTweet ERROR', err);
               return of(FeatTweetActions.likeFailure({ tweet }));
             })
-          )
-      )
-    )
-  );
-
-  retweet$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatTweetActions.reTweet),
-      withLatestFrom(this.currentProfile$),
-      switchMap(([{ tweet }, profile]) =>
-        this.#tweetApi
-          .retweet(
-            tweet.type === TweetyType.Tweet ? tweet.id : tweet.referenceId!,
-            profile.id
-          )
-          .pipe(
-            map(({ insertedId }) =>
-              FeatTweetActions.reTweetSuccess({
-                tweet: {
-                  ...tweet,
-                  id: insertedId,
-                  referenceId: tweet.id,
-                  referenceProfileId: tweet.profileId,
-                  timestamp: {
-                    createdAt: new Date(Date.now()),
-                  },
-                  type: TweetyType.Retweet,
-                },
-              })
-            )
           )
       )
     )

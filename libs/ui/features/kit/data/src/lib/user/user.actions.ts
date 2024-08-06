@@ -6,7 +6,7 @@ export const FeatUserApiActions = createActionGroup({
   events: {
     SetUser: props<{ user: User }>(),
     AddExperience: props<{ experience: Experience }>(),
-    AddExperienceSuccess: props<{ experiences: Array<Experience> }>(),
+    AddExperienceSuccess: props<{ experience: Experience }>(),
     AddExperienceFailure: props<{ message: string }>(),
     EditExperience: props<{ experience: Experience }>(),
     DeleteExperience: props<{ experience: Experience }>(),

@@ -82,9 +82,6 @@
                 id="city"
                 formControlName="city"
                 class="w-full"
-                [disabled]="
-                  (experienceForm.get('country')?.value?.length ?? 0) < 2
-                "
               />
               <label for="city">City</label>
 
@@ -170,7 +167,6 @@
                 id="endDate"
                 [showIcon]="true"
                 formControlName="endDate"
-                [disabled]="currentlyWorkingHere.value"
               />
               <label for="endDate">End date</label>
             </p-floatLabel>
@@ -271,16 +267,18 @@
       </p-stepperPanel>
     </p-stepper>
 
-    <p-button
-      class="flex justify-end mt-2"
-      [disabled]="
-        !((allStepsVisited$ | async) === true && experienceForm.valid)
-      "
-      (onClick)="onSaveExperienceClick()"
-      label="Submit"
-      [raised]="true"
-      icon="pi pi-check"
-      iconPos="right"
-    />
+    <div>
+      <p-button
+        class="flex justify-end mt-2"
+        [disabled]="
+          !((allStepsVisited$ | async) === true && experienceForm.valid)
+        "
+        (onClick)="onSaveExperienceClick()"
+        label="Submit"
+        [raised]="true"
+        icon="pi pi-check"
+        iconØos="right"
+      />
+    </div>
   </div>
 </form>

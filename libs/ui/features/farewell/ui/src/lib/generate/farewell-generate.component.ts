@@ -81,7 +81,7 @@ export class FeatFarewellGenerateComponent {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(({ farewell }) =>
-        this.#router.navigateByUrl(`${APP_PATH.PublicFarewell}/${farewell._id}`)
+        this.#router.navigateByUrl(`${APP_PATH.PublicFarewell}/${farewell.id}`)
       );
   }
 }

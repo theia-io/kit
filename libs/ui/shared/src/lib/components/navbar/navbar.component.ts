@@ -22,9 +22,9 @@ import {
 } from '@kitouch/ui-components';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
-import { SubnavComponent } from './subnav/subnav.component';
 import { TagModule } from 'primeng/tag';
 import { APP_PATH } from '../../constants';
+import { SubnavComponent } from './subnav/subnav.component';
 
 @Component({
   standalone: true,
@@ -70,7 +70,7 @@ export class NavBarComponent implements AfterViewInit {
   #elemRef = inject(ElementRef);
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
-  farewellGenerateUrl = `${APP_PATH.Farewell}/generate`;
+  farewellUrl = APP_PATH.Farewell;
 
   ngAfterViewInit(): void {
     const shouldInitiallyFocus = this.items().find(

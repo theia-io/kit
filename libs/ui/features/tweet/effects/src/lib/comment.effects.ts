@@ -3,7 +3,7 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 import {
   catchError,
   filter,
@@ -40,11 +40,17 @@ export class CommentsEffects {
             ],
           })
           .pipe(
-            map((tweet) =>
-              FeatTweetActions.commentSuccess({
-                uuid,
-                tweet: { ...tweet, denormalization: { profile } },
-              })
+            switchMap((tweet) =>
+              tweet
+                ? of(
+                    FeatTweetActions.commentSuccess({
+                      uuid,
+                      tweet: { ...tweet, denormalization: { profile } },
+                    })
+                  )
+                : throwError(
+                    () => new Error('Cannot find such tweet to comment')
+                  )
             ),
             catchError((err) => {
               console.error('[CommentsEffects] commentTweet', err);

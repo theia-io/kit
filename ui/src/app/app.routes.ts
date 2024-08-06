@@ -103,11 +103,11 @@ export const appRoutes: Route[] = [
       {
         path: APP_PATH.Farewell,
         children: [
-          // {
-          //   path: '',
-          //   loadComponent: () =>
-          //     pages.then((comp) => comp.FarewellAllComponent),
-          // },
+          {
+            path: '',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageFarewellAllComponent),
+          },
           {
             path: 'generate',
             loadComponent: () =>

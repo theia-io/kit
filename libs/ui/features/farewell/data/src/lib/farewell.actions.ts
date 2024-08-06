@@ -1,10 +1,10 @@
-import { Farewell } from '@kitouch/shared-models';
-import { createActionGroup, emptyProps, props } from '@ngrx/store';
+import { Farewell, Profile } from '@kitouch/shared-models';
+import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellActions = createActionGroup({
   source: 'FeatFarewellActions',
   events: {
-    GetFarewells: emptyProps(),
+    GetProfileFarewells: props<{ profileId: Profile['id'] }>(),
     GetFarewellsSuccess: props<{ farewells: Array<Farewell> }>(),
     GetFarewellsFailure: props<{ message: string }>(),
     GetFarewell: props<{

@@ -47,10 +47,30 @@
   <feat-farewell-view
     class="block sm:w-full md:w-5/6 lg:w-3/6 mb-12"
     [farewellId]="farewellId$ | async"
+    [preview]="preview()"
     (profile)="profile.set($event)"
+    (farewell)="farewell.set($event)"
   />
+  @if(preview() && farewell(); as farewell) {
+  <div>
+    <button
+      pButton
+      (click)="copyToClipBoard(farewell.id)"
+      [label]="copied() ? 'Done' : 'Copy'"
+      severity="success"
+      class="mr-1"
+    >
+      @if(copied()) {
+      <i class="pi pi-check mr-1"></i>
+      } @else {
+      <i class="pi pi-copy mr-1"></i>
+      }
+    </button>
 
-  @if(currentKitProfile$ | async; as currentKitProfile) { } @else {
+    <!-- <p-button (onClick)="copyUrlHandler()" icon="pi pi-share-alt" label="Share" severity="contrast" [raised]="true"
+      class="ml-1" /> -->
+  </div>
+  } @if(currentKitProfile$ | async; as currentKitProfile) { } @else {
   <button
     (click)="handleGoogleSignIn()"
     type="button"

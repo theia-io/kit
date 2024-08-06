@@ -1,6 +1,5 @@
 import { Link, Picture } from '../helpers';
 /** @FIXME include into TS itself (so not importing) */
-import * as Realm from 'realm';
 
 export enum ProfileType {
   Personal = 'Physical',
@@ -15,7 +14,7 @@ export enum ProfileStatus {
   DELETED = 'deleted',
 }
 
-export interface Profile extends Realm.Services.MongoDB.Document {
+export interface Profile {
   id: string;
   alias?: string;
   userId?: string /** @FIXME @TODO This is Profile depends on an Account and the Account on Profile?  */;
@@ -31,6 +30,6 @@ export interface Profile extends Realm.Services.MongoDB.Document {
   pictures?: Array<Picture>;
   links?: Link[];
   // meta
-  followers?: Array<Profile['id']>;
+  followers?: Array<{ id: Profile['id'] }>;
   following?: Array<{ id: Profile['id'] }>;
 }

@@ -1,12 +1,12 @@
 import { inject } from '@angular/core';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { of } from 'rxjs';
+import { Observable, of } from 'rxjs';
+import { DBClientType } from '@kitouch/utils';
 
 export class DataSourceService {
   #anonymousdb$ = inject(AuthService).anonymousUser$.pipe(
     map((anonymousUser) =>
-      // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
       anonymousUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
     shareReplay(1)
@@ -14,31 +14,52 @@ export class DataSourceService {
 
   #db$ = inject(AuthService).realmUser$.pipe(
     map((currentUser) =>
-      // currentUser?.mongoClient('data-kccpdqv').db('kitouch')
       currentUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
     shareReplay(1)
   );
 
+  /** @deprecated Call db$() instead and query DB. */
   #realmFunctions$ = inject(AuthService).realmUser$.pipe(
     map((currentUser) => currentUser?.functions),
     filter(Boolean),
     shareReplay(1)
   );
 
+  #genericRealmFunctions$ = inject(AuthService).realmUser$.pipe(
+    map((currentUser) => currentUser?.functions?.['genericRealmFunction']),
+    filter(Boolean),
+    shareReplay(1)
+  );
+
+  /** Returns only logged in user Realm SDK DB reference */
   protected db$() {
+    return this.#db$.pipe(take(1), filter(Boolean));
+  }
+
+  /** Returns Logged in or fall back to anonymous user Realm SDK DB reference */
+  protected allowAnonymousDb$() {
     return this.#db$.pipe(
-      take(1),
       switchMap((db) => (db ? of(db) : this.#anonymousdb$)),
+      take(1),
       filter(Boolean)
     );
   }
 
-  protected anonymousDb$() {
-    return this.#anonymousdb$.pipe(take(1));
-  }
-
+  /** @deprecated Use `db$()` or `allowAnonymousDb$()` for query DB. Only calling `genericFunction` API is still allowed  */
   protected realmFunctions$() {
     return this.#realmFunctions$.pipe(take(1));
+  }
+
+  protected genericRealmFunction$<T, K = DBClientType<T>>(genericRealmArg: {
+    collection: string;
+    executeFn: string;
+    filterOrAggregate: any;
+    query?: any;
+  }): Observable<K> {
+    return this.#genericRealmFunctions$.pipe(
+      take(1),
+      switchMap((genericRealmCb) => genericRealmCb(genericRealmArg))
+    );
   }
 }

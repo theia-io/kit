@@ -20,4 +20,4 @@ export const selectFarewellById = (farewellId: string) =>
 export const findFarewellById = (
   farewellId: string,
   farewells: Array<Farewell>
-) => farewells.find((farewell) => farewell._id === farewellId);
+) => farewells.find((farewell) => farewell.id === farewellId);

@@ -1,4 +1,4 @@
-import { Bookmark, Tweety } from '@kitouch/shared-models';
+import { Bookmark, Profile, Tweety } from '@kitouch/shared-models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const FeatTweetBookmarkActions = createActionGroup({
@@ -16,7 +16,10 @@ export const FeatTweetBookmarkActions = createActionGroup({
     BookmarkFailure: props<{ tweetId: Tweety['id']; message: string }>(),
     //
     RemoveBookmark: props<{ tweetId: Tweety['id'] }>(),
-    RemoveBookmarkSuccess: props<{ bookmark: Bookmark }>(),
+    RemoveBookmarkSuccess: props<{
+      tweetId: Tweety['id'];
+      profileId: Profile['id'];
+    }>(),
     RemoveBookmarkFailure: props<{ tweetId: Tweety['id']; message: string }>(),
     RemoveBookmarkAsTweetRemoved: props<{ tweetId: Tweety['id'] }>(),
     //

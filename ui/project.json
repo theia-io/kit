@@ -4,7 +4,7 @@
   "projectType": "application",
   "prefix": "app",
   "sourceRoot": "ui/src",
-  "tags": [],
+  "tags": ["scope:ui"],
   "targets": {
     "build": {
       "executor": "@angular-devkit/build-angular:browser",
@@ -24,12 +24,25 @@
         ],
         "styles": [
           "ui/src/styles.scss",
-          "node_modules/cookieconsent/build/cookieconsent.min.css"
+          "node_modules/cookieconsent/build/cookieconsent.min.css",
+          {
+            "input": "node_modules/intro.js/introjs.css",
+            "bundleName": "introjs",
+            "inject": false
+          }
         ],
-        "scripts": ["node_modules/cookieconsent/build/cookieconsent.min.js"]
+        "scripts": [
+          "node_modules/cookieconsent/build/cookieconsent.min.js",
+          {
+            "input": "node_modules/intro.js/intro.js",
+            "bundleName": "intro",
+            "inject": false
+          }
+        ]
       },
       "configurations": {
         "production": {
+          "index": "ui/src/prod/index.html",
           "fileReplacements": [
             {
               "replace": "ui/src/environments/environment.ts",
@@ -56,7 +69,13 @@
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": true
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "ui/src/environments/environment.ts",
+              "with": "ui/src/environments/environment.dev.ts"
+            }
+          ]
         }
       },
       "defaultConfiguration": "production"
@@ -107,6 +126,7 @@
           "optimization": false,
           "sourceMap": true,
           "extractLicenses": false,
+          "namedChunks": true,
           "vendorChunk": true
         }
       },
