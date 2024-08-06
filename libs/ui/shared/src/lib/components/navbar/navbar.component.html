@@ -1,7 +1,15 @@
+<style>
+  .profile-active {
+    color: #334155;
+    background-color: #e2e8f0;
+    border-radius: 0.25rem; /* 4px */
+  }
+</style>
+
 <div routerLink="/" class="flex items-center hover:cursor-pointer">
   <img
     class="inline-block h-10 w-auto rounded-full mt-2"
-    ngSrc="logo-small.jpeg"
+    [ngSrc]="logoPath()"
     alt="Kitouch logo"
     height="40"
     width="40"
@@ -33,17 +41,17 @@
   class="w-48 mt-4"
 />
 
-<ui-kit-comp-card class="block mt-12">
-  <a
-    [routerLink]="profileBaseUrl() + '/' + profile()?.id"
-    routerLinkActive="underline"
-  >
+<a
+  [routerLink]="profileBaseUrl() + '/' + profile()?.id"
+  routerLinkActive="underline block profile-active"
+>
+  <ui-kit-comp-card class="block mt-12">
     <ui-kit-comp-account-tile
       [primaryText]="profile()?.name ?? 'N/A'"
       [picture]="profile()?.pictures?.[0]?.url"
     />
-  </a>
-</ui-kit-comp-card>
+  </ui-kit-comp-card>
+</a>
 
 <ui-kit-divider class="block mt-4" />
 

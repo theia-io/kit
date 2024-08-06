@@ -1,0 +1,5 @@
+@for (tweet of tweets$ | async; track $index) {
+<ui-kit-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
+  <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
+</ui-kit-comp-card>
+}

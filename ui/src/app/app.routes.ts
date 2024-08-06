@@ -76,7 +76,7 @@ export const appRoutes: Route[] = [
           },
           {
             path: ':profileIdOrAlias',
-            loadComponent: () => pages.then((comp) => comp.PageTweetsComponent),
+            loadChildren: () => pages.then((pages) => pages.PROFILE_ROUTES),
           },
         ],
       },

@@ -3,13 +3,12 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  effect,
   ElementRef,
-  EventEmitter,
-  Input,
-  Output,
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
@@ -25,7 +24,9 @@ import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { APP_PATH } from '../../constants';
 import { SubnavComponent } from './subnav/subnav.component';
-import { InputSwitch } from 'primeng/inputswitch';
+
+const STATIC_MEDIA = 'logo/handshake-s-small.png';
+const DYNAMIC_MEDIA = 'logo/handshake.gif';
 
 @Component({
   standalone: true,
@@ -66,6 +67,18 @@ export class NavBarComponent implements AfterViewInit {
 
   farewellUrl = APP_PATH.Farewell;
 
+  logoPath = signal(STATIC_MEDIA);
+
+  constructor() {
+    effect(() => {
+      if (this.logoPath() === DYNAMIC_MEDIA) {
+        setTimeout(() => {
+          this.logoPath.set(STATIC_MEDIA);
+        }, 20_000);
+      }
+    });
+  }
+
   ngAfterViewInit(): void {
     const shouldInitiallyFocus = this.items().find(
       (item) => item.kitShouldInitiallyBeFocused
@@ -92,6 +105,10 @@ export class NavBarComponent implements AfterViewInit {
           }
         });
     }
+
+    setTimeout(() => {
+      this.logoPath.set(DYNAMIC_MEDIA);
+    }, 1500);
   }
 
   onFocusHandler(event: Event) {

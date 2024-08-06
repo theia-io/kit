@@ -1,4 +1,4 @@
-<div class="flex items-start justify-center">
+<div class="flex">
   <div class="min-w-20">
     <img
       class="inline-block h-20 w-20 rounded-full"
@@ -11,12 +11,12 @@
   </div>
 
   <div class="ml-2">
-    <p class="text-base leading-6 font-medium font-bold">
+    <p class="text-base leading-6 font-bold">
       {{ profile()?.name }}
 
       <span
         *ngIf="profile()?.title"
-        class="text-sm leading-5 font-medium text-gray-400"
+        class="text-sm leading-5 font-bold text-gray-400"
       >
         {{ profile()?.title }}
 
@@ -34,10 +34,5 @@
 </p>
 }
 
-<ui-kit-divider class="block my-2 mt-12" />
-@for (tweet of tweets$ | async; track $index) {
-
-<ui-kit-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
-  <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
-</ui-kit-comp-card>
-}
+<p-tabMenu styleClass="mt-12" [model]="items" />
+<router-outlet></router-outlet>

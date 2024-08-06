@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -7,27 +7,26 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { profilePicture, selectProfileById } from '@kitouch/kit-data';
-import { TweetApiActions, selectTweetsProfile } from '@kitouch/feat-tweet-data';
+import { selectTweetsProfile, TweetApiActions } from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
+import { profilePicture, selectProfileById } from '@kitouch/kit-data';
 import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
-  UiKitTweetButtonComponent,
   UiCompCardComponent,
+  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
-import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
 
 @Component({
   standalone: true,
-  selector: 'kit-page-tweets',
+  selector: 'kit-page-profile-tweets',
   templateUrl: './tweets.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     AsyncPipe,
     //
     UiCompCardComponent,
@@ -37,23 +36,24 @@ import { filter, map, shareReplay, switchMap } from 'rxjs';
     UiKitTweetButtonComponent,
   ],
 })
-export class PageTweetsComponent {
+export class PageProfileTweetsComponent {
   #store = inject(Store);
   #router = inject(Router);
-
   #activatedRouter = inject(ActivatedRoute);
 
-  #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
+  #profileIdOrAlias$ = this.#activatedRouter.parent?.params.pipe(
     map((params) => params['profileIdOrAlias'])
   );
 
-  #profile$ = this.#profileIdOrAlias$.pipe(
-    switchMap((profileIdOrAlias) =>
-      this.#store.select(selectProfileById(profileIdOrAlias))
-    ),
-    filter(Boolean),
-    shareReplay(1)
-  );
+  #profile$ = this.#profileIdOrAlias$
+    ? this.#profileIdOrAlias$.pipe(
+        switchMap((profileIdOrAlias) =>
+          this.#store.select(selectProfileById(profileIdOrAlias))
+        ),
+        filter(Boolean),
+        shareReplay(1)
+      )
+    : throwError(() => 'Cannot continue');
 
   profile = toSignal(this.#profile$);
   profilePic = computed(() => profilePicture(this.profile() ?? {}));
