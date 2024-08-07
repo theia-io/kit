@@ -31,7 +31,7 @@
             ? unFollowProfileHandler(profile())
             : followProfileHandler(profile())
         "
-        class="float-right mr-2 -mb-6"
+        class="float-right mr-2 -mb-6 min-w-32"
         severity="contrast"
       >
         @if(!isFollowing()) { Connect
@@ -43,12 +43,7 @@
           height="20"
         />
         } @else {
-        <img
-          ngSrc="logo/hello.gif"
-          [alt]="'Stop following ' + profile()?.name + ' profile'"
-          width="20"
-          height="20"
-        />
+        <i class="pi pi-user-minus"></i>
         }
       </button>
     </div>
@@ -69,6 +64,16 @@
   {{ profile()?.description }}
 </p>
 }
+
+<div class="mt-4 flex justify-end items-center">
+  @if(profile()?.following?.length) {
+  <p class="text-sm font-bold">
+    <i class="pi pi-users mr-1"></i>
+    {{ profile()?.following?.length }}
+    <span class="text-sm text-gray-400">Following</span>
+  </p>
+  }
+</div>
 
 <p-tabMenu styleClass="mt-4" [model]="items" />
 <router-outlet></router-outlet>

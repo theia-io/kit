@@ -91,8 +91,8 @@ export class NavBarComponent implements AfterViewInit {
     }
 
     setTimeout(() => {
-      this.uxDynamicService.updateLogo('dynamic-handshake');
-    }, 1500);
+      this.uxDynamicService.updateLogo('handshake', 5000);
+    }, 500);
   }
 
   onFocusHandler(event: Event) {

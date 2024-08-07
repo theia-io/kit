@@ -9,8 +9,8 @@ retweetProfile) {
       profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)
     ]"
   >
-    @if(currentProfile()?.id === retweetProfile.id) { You re-tweeted this. }
-    @else if(retweetProfile.id === tweet().profileId) { Tweet owner (
+    @if(currentProfile()?.id === retweetProfile.id) { You re-tweeted } @else
+    if(retweetProfile.id === tweet().profileId) {
     <div class="inline-block min-w-5">
       <img
         class="inline-block h-5 w-5 rounded-full"
@@ -21,7 +21,7 @@ retweetProfile) {
         alt="kitouch profile picture"
       />
     </div>
-    {{ retweetProfile.name }}) re-tweeted the tweet. } @else {
+    {{ retweetProfile.name }} (Tweet owner) re-tweeted } @else {
     <div class="inline-block min-w-5">
       <img
         class="inline-block h-5 w-5 rounded-full"
@@ -32,7 +32,7 @@ retweetProfile) {
         alt="kitouch profile picture"
       />
     </div>
-    {{ retweetProfile.name }} re-tweeted. }
+    {{ retweetProfile.name }} re-tweeted }
   </a>
 </span>
 }

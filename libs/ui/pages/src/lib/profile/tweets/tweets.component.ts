@@ -9,7 +9,11 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { selectTweetsProfile, TweetApiActions } from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
-import { profilePicture, selectProfileById } from '@kitouch/kit-data';
+import {
+  profilePicture,
+  selectCurrentProfile,
+  selectProfileById,
+} from '@kitouch/kit-data';
 import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -17,7 +21,7 @@ import {
   UiCompCardComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
+import { APP_PATH, APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
 
@@ -63,6 +67,12 @@ export class PageProfileTweetsComponent {
     filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
   );
 
+  currentProfile = toSignal(this.#store.select(selectCurrentProfile));
+
+  isCurrentUserProfile = computed(
+    () => this.currentProfile()?.id === this.profile()?.id
+  );
+
   constructor() {
     this.#profile$
       .pipe(takeUntilDestroyed())
@@ -71,6 +81,12 @@ export class PageProfileTweetsComponent {
           TweetApiActions.getTweetsForProfile({ profileId: id })
         )
       );
+  }
+
+  tweetButtonHandler() {
+    this.#router.navigate([
+      { outlets: { [OUTLET_DIALOG]: APP_PATH_DIALOG.Tweet } },
+    ]);
   }
 
   tweetClickHandler(tweet: Tweety) {

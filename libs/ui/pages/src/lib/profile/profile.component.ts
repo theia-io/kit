@@ -15,6 +15,7 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { FollowButtonComponent } from '@kitouch/ui-components';
+import { UXDynamicService } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -41,6 +42,7 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
 export class PageProfileComponent {
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
+  #uxDynamicService = inject(UXDynamicService);
 
   #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
     map((params) => params['profileIdOrAlias'])
@@ -78,6 +80,7 @@ export class PageProfileComponent {
     if (!profile) {
       return;
     }
+
     this.#store
       .select(selectCurrentProfile)
       .pipe(filter(Boolean), take(1))
@@ -94,6 +97,7 @@ export class PageProfileComponent {
           })
         );
       });
+    this.#uxDynamicService.updateLogo('hello', 5000);
   }
 
   unFollowProfileHandler(profile: Profile | undefined) {
@@ -115,5 +119,7 @@ export class PageProfileComponent {
           })
         );
       });
+
+    this.#uxDynamicService.updateLogo('done', 2000);
   }
 }

@@ -13,9 +13,7 @@
 />
 
 @if((experiences$ | async); as experiences) { @if(experiences.length) {
-<div
-  class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
->
+<div class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow">
   <h2 class="pt-2 pl-4 text-lg font-bold">Your experiences</h2>
   <p-accordion [activeIndex]="0">
     @for (experience of experiences; track $index) {
@@ -38,9 +36,7 @@
 </div>
 } }
 
-<div
-  class="w-[full] bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700"
->
+<div class="w-[full] bg-white border border-gray-200 rounded-lg shadow">
   <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
   <feat-settings-experience-add
     class="block p-[18px]"
