@@ -8,6 +8,12 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
+import {
+  FeatSettingsExperienceAddComponent,
+  FeatSettingsExperienceShowComponent,
+  FeatSettingsProfileInformationComponent,
+} from '@kitouch/feat-settings-ui';
 import {
   FeatAccountApiActions,
   FeatLegalApiActions,
@@ -16,14 +22,8 @@ import {
   selectCurrentProfile,
   selectExperiences,
 } from '@kitouch/kit-data';
-import {
-  FeatSettingsExperienceAddComponent,
-  FeatSettingsExperienceShowComponent,
-  FeatSettingsProfileInformationComponent,
-} from '@kitouch/feat-settings-ui';
 import { Experience } from '@kitouch/shared-models';
 import { NewUIItemComponent } from '@kitouch/ui-components';
-import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
 import { Message } from 'primeng/api';
@@ -90,8 +90,16 @@ export class PageSettingsComponent implements OnInit {
     }, 3000);
   }
 
-  deleteTweetHandler(experience: Experience) {
+  editExperienceHandler(experience: Experience) {
+    console.log(experience);
+  }
+
+  deleteExperienceHandler(experience: Experience) {
     this.#store.dispatch(FeatUserApiActions.deleteExperience({ experience }));
+  }
+
+  savedExperienceHandler() {
+    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
   }
 
   deleteAccountHandler() {
@@ -102,13 +110,5 @@ export class PageSettingsComponent implements OnInit {
         FeatAccountApiActions.delete({ account: currentAccount })
       );
     }
-  }
-
-  savedExperienceHandler() {
-    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
-  }
-
-  editHandler(experience: Experience) {
-    console.log(experience);
   }
 }

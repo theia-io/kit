@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { PageProfileExperienceComponent } from './experience.component';
+import { PageProfileExperienceComponent } from './experience/experience.component';
 import { PageProfileTweetsComponent } from './tweets/tweets.component';
 
 export const PROFILE_ROUTES: Routes = [
