@@ -17,6 +17,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class FollowButtonComponent {
   alreadyFollowing = input(false);
+  outlined = input(true);
   connectText = input('Connect');
   stopConnectText = input('Stop seeing');
 

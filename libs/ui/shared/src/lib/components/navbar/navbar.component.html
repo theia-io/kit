@@ -9,7 +9,7 @@
 <div routerLink="/" class="flex items-center hover:cursor-pointer">
   <img
     class="inline-block h-10 w-auto rounded-full mt-2"
-    [ngSrc]="logoPath()"
+    [ngSrc]="uxDynamicService.logoPath()"
     alt="Kitouch logo"
     height="40"
     width="40"
@@ -36,7 +36,7 @@
 
 <ui-kit-tweet-button
   [iconAnimate]="false"
-  text="Tweet Big."
+  text="Tweet"
   (click)="tweetButtonClick.emit()"
   class="w-48 mt-4"
 />

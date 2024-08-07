@@ -50,11 +50,11 @@ export class FeatSettingsProfileInformationComponent {
     ],
     name: [
       '',
-      [Validators.required, Validators.minLength(2), Validators.max(256)],
+      [Validators.required, Validators.minLength(2), Validators.max(64)],
     ],
-    title: ['', [Validators.minLength(2), Validators.max(1024)]],
-    subtitle: ['', [Validators.minLength(2), Validators.max(1024)]],
-    description: ['', [Validators.minLength(2), Validators.max(5096)]],
+    title: ['', [Validators.minLength(2), Validators.max(256)]],
+    subtitle: ['', [Validators.minLength(2), Validators.max(256)]],
+    description: ['', [Validators.minLength(2), Validators.max(1024)]],
   });
 
   disabled = false;
