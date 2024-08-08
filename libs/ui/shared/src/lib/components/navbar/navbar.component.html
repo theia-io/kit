@@ -4,16 +4,14 @@
     [ngSrc]="uxDynamicService.logoPath()"
     alt="Kitouch logo"
     height="40"
-    width="40"
-  />
+    width="40" />
 
   <div class="relative">
     <p-tag
       severity="info"
       class="absolute -top-2 -right-12 rotate-12"
       value="Alpha"
-      [rounded]="true"
-    />
+      [rounded]="true" />
 
     <p class="ml-2 font-bold">KITouch</p>
   </div>
@@ -22,26 +20,21 @@
 <p-menu
   styleClass="border-0 mt-4"
   [model]="items()"
-  (onFocus)="onFocusHandler($event)"
->
-</p-menu>
+  (onFocus)="onFocusHandler($event)"></p-menu>
 
 <ui-kit-tweet-button
   [iconAnimate]="false"
   text="Tweet"
   (click)="tweetButtonClick.emit()"
-  class="w-48 mt-4"
-/>
+  class="w-48 mt-4" />
 
 <a
   [routerLink]="profileBaseUrl() + '/' + profile()?.id"
-  routerLinkActive="underline block primeng-menu__active"
->
+  routerLinkActive="underline block primeng-menu__active">
   <ui-kit-comp-card class="block mt-12">
     <ui-kit-comp-account-tile
       [primaryText]="profile()?.name ?? 'N/A'"
-      [picture]="profile()?.pictures?.[0]?.url"
-    />
+      [picture]="profile()?.pictures?.[0]?.url" />
   </ui-kit-comp-card>
 </a>
 
@@ -51,5 +44,4 @@
   [farewellUrl]="farewellUrl"
   (help)="help.emit()"
   (logout)="logout.emit()"
-  class="block mt-4"
-/>
+  class="block mt-4" />

@@ -6,14 +6,12 @@
       <feat-settings-profile-information
         [profile]="currentProfile$ | async"
         [withHints]="true"
-        (updatingProfile)="updatingProfileHandler()"
-      />
+        (updatingProfile)="updatingProfileHandler()" />
     </ui-kit-comp-new-ui-item>
 
     <button
       (click)="scroll(experienceTmpl)"
-      class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center"
-    >
+      class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">
       <i class="pi pi-arrow-down" style="font-size: 1.5rem"></i>
     </button>
   </div>
@@ -23,28 +21,25 @@
     pAnimateOnScroll
     enterClass="fadeIn"
     leaveClass="fadeOut"
-    class="flex flex-col justify-center items-center h-screen duration-[5000ms]"
-  >
+    class="flex flex-col justify-center items-center h-screen duration-[5000ms]">
     <p class="text-2xl mb-24">
       @if(savedExperience()) { Add
-      <span class="font-mono decoration-pink-500 decoration-2 underline"
-        >even more</span
-      >
+      <span class="font-mono decoration-pink-500 decoration-2 underline">
+        even more
+      </span>
       working experience or continue below ⚡🔥 } @else { Add your working
       experience 😎 }
     </p>
 
     <feat-settings-experience-add
       (onSaving)="savingExperienceHandler()"
-      (onSaved)="savedExperienceHandler()"
-    />
+      (onSaved)="savedExperienceHandler()" />
 
-    <span class="text-2xl mt-12"> or scroll </span>
+    <span class="text-2xl mt-12">or scroll</span>
     <button
       [@fadeInUp]
       (click)="scroll(suggestionTmpl)"
-      class="cursor-pointer p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center"
-    >
+      class="cursor-pointer p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">
       <i class="pi pi-arrow-down"></i>
     </button>
   </div>
@@ -54,23 +49,20 @@
     pAnimateOnScroll
     enterClass="fadeIn"
     leaveClass="fadeOut"
-    class="flex flex-col justify-center h-screen items-center duration-[5000ms]"
-  >
-    <span class="text-2xl mb-24"
-      >Seems you worked same time same company. Choose who to follow</span
-    >
+    class="flex flex-col justify-center h-screen items-center duration-[5000ms]">
+    <span class="text-2xl mb-24">
+      Seems you worked same time same company. Choose who to follow
+    </span>
 
     <feat-follow-suggestions
-      [suggestionConfig]="{cards: true, showFollowed: true,}"
-    />
+      [suggestionConfig]="{cards: true, showFollowed: true,}" />
 
     <div class="mt-2" userHint text="Click to start" side="bottom">
       <ui-kit-button
         class="mt-24"
         role="link"
         routerLink="/"
-        label="Start using KIT"
-      />
+        label="Start using KIT" />
     </div>
   </div>
 

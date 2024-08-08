@@ -6,12 +6,10 @@
       [src]="profilePic()"
       height="40"
       width="40"
-      [alt]="profile()?.name + 'profile picture'"
-    />
+      [alt]="profile()?.name + 'profile picture'" />
 
     <p
-      class="ml-4 -mb-6 overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold"
-    >
+      class="ml-4 -mb-6 overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
       {{ profile()?.name }}
 
       @if(profile()?.title) {
@@ -33,16 +31,14 @@
         "
         class="float-right mr-2 -mb-6"
         [class.min-w-32]="!isFollowing()"
-        severity="contrast"
-      >
+        severity="contrast">
         @if(!isFollowing()) { Connect
         <img
           class="ml-2"
           ngSrc="logo/handshake.gif"
           [alt]="'Follow ' + profile()?.name + ' profile'"
           width="20"
-          height="20"
-        />
+          height="20" />
         } @else {
         <i class="pi pi-user-minus"></i>
         }

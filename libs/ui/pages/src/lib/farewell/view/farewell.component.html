@@ -4,16 +4,14 @@
     ngSrc="logo-small.jpeg"
     alt="Kitouch logo"
     height="40"
-    width="40"
-  />
+    width="40" />
 
   <div class="relative">
     <p-tag
       severity="info"
       class="absolute -top-2 -right-12 rotate-12"
       value="Alpha"
-      [rounded]="true"
-    />
+      [rounded]="true" />
 
     <p class="ml-2 font-bold">KITouch</p>
   </div>
@@ -23,13 +21,11 @@
   @if(profile()) {
   <div class="flex items-center justify-center gap-4 mb-12">
     <div
-      class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
-    >
+      class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
       <img
         class="rounded-md"
         [src]="profilePic()"
-        referrerpolicy="no-referrer"
-      />
+        referrerpolicy="no-referrer" />
     </div>
 
     <div class="ml-4 flex flex-col gap-2">
@@ -49,8 +45,7 @@
     [farewellId]="farewellId$ | async"
     [preview]="preview()"
     (profile)="profile.set($event)"
-    (farewell)="farewell.set($event)"
-  />
+    (farewell)="farewell.set($event)" />
   @if(preview() && farewell(); as farewell) {
   <div>
     <button
@@ -58,8 +53,7 @@
       (click)="copyToClipBoard(farewell.id)"
       [label]="copied() ? 'Done' : 'Copy'"
       severity="success"
-      class="mr-1"
-    >
+      class="mr-1">
       @if(copied()) {
       <i class="pi pi-check mr-1"></i>
       } @else {
@@ -74,8 +68,7 @@
   <button
     (click)="handleGoogleSignIn()"
     type="button"
-    class="flex justify-center items-center gap-4 login-with-google-btn"
-  >
+    class="flex justify-center items-center gap-4 login-with-google-btn">
     <img class="inline-block h-6" src="sign-in/g-icon.png" />
     Sign in with Google
   </button>

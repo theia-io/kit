@@ -4,23 +4,20 @@ retweetProfile) {
   [tweet]="tweet"
   [retweetProfile]="retweetProfile"
   [tweetProfile]="tweetProfile()"
-  [currentProfileId]="currentProfile()?.id"
-/>
+  [currentProfileId]="currentProfile()?.id" />
 } @if(tweetProfile(); as tweetProfile) {
 <ui-kit-comp-account-tile
   [primaryText]="tweetProfile.name"
   [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
   [secondaryText]="tweetProfile.type"
   [picture]="tweetProfile.pictures?.[0]?.url"
-  [link]="profileUrlPath + tweet.profileId"
-/>
+  [link]="profileUrlPath + tweet.profileId" />
 }
 
 <div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
   <p
     class="text-base width-auto font-medium flex-shrink"
-    [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"
-  ></p>
+    [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"></p>
 
   @if(tweet.type !== tweetTypes.Retweet) {
   <feat-tweet-actions
@@ -33,14 +30,12 @@ retweetProfile) {
     [likes]="tweet.upProfileIds?.length ?? 0"
     (like)="likeHandler(tweet)"
     [bookmarked]="tweetBookmarked()"
-    (bookmark)="bookmarkHandler(tweet)"
-  />
+    (bookmark)="bookmarkHandler(tweet)" />
 
   <p-overlayPanel
     (onShow)="commentOverlayVisible.set(true)"
     (onHide)="commentOverlayVisible.set(false)"
-    #commentOverlayTmpl
-  >
+    #commentOverlayTmpl>
     <div class="flex flex-col min-h-24">
       <p-floatLabel>
         <textarea
@@ -49,9 +44,7 @@ retweetProfile) {
           [formControl]="commentControl"
           rows="5"
           cols="30"
-          pInputTextarea
-        >
-        </textarea>
+          pInputTextarea></textarea>
         <label for="float-input">Your comment</label>
       </p-floatLabel>
 
@@ -60,8 +53,7 @@ retweetProfile) {
         [iconAnimate]="false"
         [disabled]="!commentControl.valid"
         [loader]="false"
-        (click)="commentHandler(tweet)"
-      />
+        (click)="commentHandler(tweet)" />
     </div>
   </p-overlayPanel>
   }
@@ -72,6 +64,5 @@ retweetProfile) {
   (click)="$event.stopPropagation(); deleteHandler(tweet)"
   role="button"
   class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-  style="font-size: 1.5rem"
-></i>
+  style="font-size: 1.5rem"></i>
 } }

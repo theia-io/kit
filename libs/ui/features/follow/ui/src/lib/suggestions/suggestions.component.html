@@ -7,8 +7,7 @@
       [primaryText]="profile.name"
       [primarySecondaryText]="profile.title"
       [picture]="profilePicture(profile)"
-      [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)"
-    />
+      [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)" />
 
     <div class="flex mt-1 md:mt-2">
       <ui-kit-follow-button
@@ -18,8 +17,7 @@
           profile.followed
             ? unFollowProfileHandler(profile)
             : followProfileHandler(profile)
-        "
-      />
+        " />
     </div>
   </ui-kit-comp-card>
   }@empty {
@@ -27,8 +25,8 @@
     <span>
       Add your working experience to see who to follow on
       <a class="font-bold underline" [routerLink]="'/' + settingsPageUrl">
-        Settings page.</a
-      >
+        Settings page.
+      </a>
     </span>
   </ui-kit-comp-card>
   }
@@ -41,15 +39,14 @@
     [profile]="profile"
     [followed]="profile.followed"
     (followProfile)="followProfileHandler($event)"
-    (stopFollowProfile)="unFollowProfileHandler($event)"
-  />
+    (stopFollowProfile)="unFollowProfileHandler($event)" />
   } @empty {
   <span>
     We cannot suggest anyone to follow. Add your working experience above. Add
     experience on
     <a class="font-bold underline" [routerLink]="'/' + settingsPageUrl">
-      Settings page.</a
-    >
+      Settings page.
+    </a>
   </span>
   }
 </div>

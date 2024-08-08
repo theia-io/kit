@@ -3,13 +3,11 @@
   showTransitionOptions="250ms"
   hideTransitionOptions="0ms"
   [enableService]="false"
-  [closable]="false"
-/>
+  [closable]="false" />
 <ui-kit-comp-new-ui-item [newlyAddedItem]="updatingProfile()">
   <feat-settings-profile-information
     [profile]="currentProfile$ | async"
-    (updatingProfile)="updatingProfileHandler()"
-  />
+    (updatingProfile)="updatingProfileHandler()" />
 </ui-kit-comp-new-ui-item>
 
 <p-messages
@@ -17,8 +15,7 @@
   showTransitionOptions="500ms"
   hideTransitionOptions="0ms"
   [enableService]="false"
-  [closable]="false"
-/>
+  [closable]="false" />
 @if((experiences$ | async); as experiences) { @if(experiences.length) {
 <div class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow">
   <h2 class="pt-2 pl-4 text-lg font-bold">Your experiences</h2>
@@ -28,8 +25,7 @@
       <div class="relative">
         <feat-settings-experience-show
           [showRemove]="true"
-          [experience]="experience"
-        ></feat-settings-experience-show>
+          [experience]="experience"></feat-settings-experience-show>
         <!-- <i (click)="editHandler(experience)" role="button"
                     class="pi pi-file-edit absolute top-2 right-10 hover:animate-pulse"
                     style="font-size: 1.5rem;"></i> -->
@@ -37,8 +33,7 @@
           (click)="deleteExperienceHandler(experience)"
           role="button"
           class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-          style="font-size: 1.5rem"
-        ></i>
+          style="font-size: 1.5rem"></i>
       </div>
     </p-accordionTab>
     }
@@ -50,8 +45,7 @@
   <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
   <feat-settings-experience-add
     class="block p-[18px]"
-    (onSaved)="savedExperienceHandler()"
-  />
+    (onSaved)="savedExperienceHandler()" />
 </div>
 
 <p-messages
@@ -59,13 +53,11 @@
   showTransitionOptions="1000ms"
   hideTransitionOptions="0ms"
   [enableService]="false"
-  [closable]="false"
-/>
+  [closable]="false" />
 
 <div>
   <p-button
     label="Delete my account"
     severity="danger"
-    (onClick)="deleteAccountHandler()"
-  />
+    (onClick)="deleteAccountHandler()" />
 </div>

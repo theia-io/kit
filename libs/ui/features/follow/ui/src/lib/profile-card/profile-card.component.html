@@ -1,20 +1,18 @@
 <div
-  class="h-full w-[220px] max-w-sm bg-white border border-gray-200 rounded-lg shadow"
->
+  class="h-full w-[220px] max-w-sm bg-white border border-gray-200 rounded-lg shadow">
   <div class="flex flex-col items-center p-10">
     <img
       class="w-24 h-24 mb-3 rounded-full shadow-lg"
       [src]="profilePic()"
       [alt]="profile().name"
-      referrerpolicy="no-referrer"
-    />
+      referrerpolicy="no-referrer" />
     <h5 class="truncate mb-1 text-xl font-medium text-gray-900 dark:text-white">
       {{ profile().name }}
     </h5>
 
-    <span class="truncate text-sm text-gray-500 dark:text-gray-400">{{
-      profile().title
-    }}</span>
+    <span class="truncate text-sm text-gray-500 dark:text-gray-400">
+      {{ profile().title }}
+    </span>
 
     <div class="flex mt-4 md:mt-6">
       <ui-kit-follow-button
@@ -24,8 +22,7 @@
           followed()
             ? stopFollowProfile.emit(this.profile())
             : followProfile.emit(this.profile())
-        "
-      />
+        " />
     </div>
   </div>
 </div>

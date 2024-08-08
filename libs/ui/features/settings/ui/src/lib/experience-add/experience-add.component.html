@@ -8,8 +8,7 @@
               [ngClass]="{
                 'bg-primary border-primary': index <= stepperActive(),
                 'surface-border': index > stepperActive()
-              }"
-            >
+              }">
               <i class="pi pi-user" style="font-size: 1.5rem"></i>
             </span>
           </button>
@@ -22,8 +21,7 @@
                 pInputText
                 id="title"
                 formControlName="title"
-                class="w-full"
-              />
+                class="w-full" />
               <label for="title">Title/Role you had*</label>
             </p-floatLabel>
 
@@ -36,8 +34,7 @@
                 [options]="(suggestedCompanies$ | async) ?? []"
                 emptyFilterMessage="You are the first!"
                 [checkmark]="true"
-                [editable]="true"
-              >
+                [editable]="true">
                 <ng-template pTemplate="emptyfilter">
                   You will be the first from
                   {{ experienceForm.get('company')?.value }}
@@ -61,9 +58,7 @@
                 styleClass="w-full"
                 [showClear]="true"
                 [options]="countries"
-                [checkmark]="true"
-              >
-              </p-dropdown>
+                [checkmark]="true"></p-dropdown>
               <label for="country">Country</label>
 
               @if(geolocationAvailable) {
@@ -71,8 +66,7 @@
                 class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]"
                 role="button"
                 (click)="$event.stopPropagation(); setCurrentGeolocation()"
-                style="font-size: 1.5rem"
-              ></i>
+                style="font-size: 1.5rem"></i>
               }
             </p-floatLabel>
 
@@ -81,8 +75,7 @@
                 pInputText
                 id="city"
                 formControlName="city"
-                class="w-full"
-              />
+                class="w-full" />
               <label for="city">City</label>
 
               @if(geolocationAvailable) {
@@ -90,8 +83,7 @@
                 class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]"
                 role="button"
                 (click)="$event.stopPropagation(); setCurrentGeolocation()"
-                style="font-size: 1.5rem"
-              ></i>
+                style="font-size: 1.5rem"></i>
               }
             </p-floatLabel>
           </div>
@@ -101,8 +93,7 @@
               (onClick)="nextCallback.emit()"
               label="Next"
               icon="pi pi-arrow-right"
-              iconPos="right"
-            />
+              iconPos="right" />
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -114,8 +105,7 @@
               [ngClass]="{
                 'bg-primary border-primary': index <= stepperActive(),
                 'surface-border': index > stepperActive()
-              }"
-            >
+              }">
               <i class="pi pi-briefcase" style="font-size: 1.5rem"></i>
             </span>
           </button>
@@ -123,30 +113,26 @@
         <ng-template
           pTemplate="content"
           let-prevCallback="prevCallback"
-          let-nextCallback="nextCallback"
-        >
+          let-nextCallback="nextCallback">
           <div class="flex flex-col gap-6">
             <p-dropdown
               styleClass="w-full"
               formControlName="type"
               [options]="experienceType"
-              placeholder="Experience type*"
-            />
+              placeholder="Experience type*" />
 
             <p-dropdown
               styleClass="w-full"
               formControlName="locationType"
               [options]="locationType"
-              placeholder="Remote, hybrid or office?*"
-            />
+              placeholder="Remote, hybrid or office?*" />
 
             <p-floatLabel>
               <p-calendar
                 styleClass="w-full"
                 id="startDate"
                 [showIcon]="true"
-                formControlName="startDate"
-              />
+                formControlName="startDate" />
               <label for="startDate">Start date*</label>
             </p-floatLabel>
 
@@ -154,11 +140,10 @@
               <p-inputSwitch
                 id="currentlyWorking"
                 inputId="currentlyWorking"
-                [formControl]="currentlyWorkingHere"
-              />
-              <label class="ml-2" for="currentlyWorking"
-                >Currently working here</label
-              >
+                [formControl]="currentlyWorkingHere" />
+              <label class="ml-2" for="currentlyWorking">
+                Currently working here
+              </label>
             </div>
 
             <p-floatLabel>
@@ -166,8 +151,7 @@
                 styleClass="w-full"
                 id="endDate"
                 [showIcon]="true"
-                formControlName="endDate"
-              />
+                formControlName="endDate" />
               <label for="endDate">End date</label>
             </p-floatLabel>
           </div>
@@ -177,14 +161,12 @@
               (onClick)="prevCallback.emit()"
               label="Back"
               severity="secondary"
-              icon="pi pi-arrow-left"
-            />
+              icon="pi pi-arrow-left" />
             <p-button
               (onClick)="nextCallback.emit()"
               label="Next"
               icon="pi pi-arrow-right"
-              iconPos="right"
-            />
+              iconPos="right" />
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -196,8 +178,7 @@
               [ngClass]="{
                 'bg-primary border-primary': index <= stepperActive(),
                 'surface-border': index > stepperActive()
-              }"
-            >
+              }">
               <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
             </span>
           </button>
@@ -211,9 +192,7 @@
                 rows="5"
                 cols="30"
                 class="p-inputtextarea p-inputtext p-component p-element w-full"
-                pInputTextarea
-              >
-              </textarea>
+                pInputTextarea></textarea>
               <label for="description-float">Tell us about it</label>
             </p-floatLabel>
 
@@ -223,8 +202,7 @@
                 inputStyleClass="w-full"
                 id="skills"
                 formControlName="skills"
-                separator=","
-              />
+                separator="," />
               <label for="skills">Skills</label>
             </p-floatLabel>
 
@@ -260,8 +238,7 @@
               (onClick)="prevCallback.emit()"
               label="Back"
               severity="secondary"
-              icon="pi pi-arrow-left"
-            />
+              icon="pi pi-arrow-left" />
           </div>
         </ng-template>
       </p-stepperPanel>
@@ -277,8 +254,7 @@
         label="Submit"
         [raised]="true"
         icon="pi pi-check"
-        iconØos="right"
-      />
+        iconØos="right" />
     </div>
   </div>
 </form>
