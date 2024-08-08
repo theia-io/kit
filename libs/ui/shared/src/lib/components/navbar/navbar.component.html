@@ -1,49 +1,49 @@
 <div routerLink="/" class="flex items-center hover:cursor-pointer">
   <img
     class="inline-block h-10 w-auto rounded-full mt-2"
-    ngSrc="logo-small.jpeg"
+    [ngSrc]="uxDynamicService.logoPath()"
     alt="Kitouch logo"
     height="40"
-    width="40"
-  />
+    width="40" />
 
   <div class="relative">
     <p-tag
       severity="info"
       class="absolute -top-2 -right-12 rotate-12"
       value="Alpha"
-      [rounded]="true"
-    />
+      [rounded]="true" />
 
-    <p class="ml-2 font-bold">KITouch</p>
+    <p class="ml-2">
+      <strong class="text-xl">K</strong>
+      eep
+      <strong>i</strong>
+      n
+      <strong>t</strong>
+      ouch
+    </p>
   </div>
 </div>
 
 <p-menu
   styleClass="border-0 mt-4"
   [model]="items()"
-  (onFocus)="onFocusHandler($event)"
->
-</p-menu>
+  (onFocus)="onFocusHandler($event)"></p-menu>
 
 <ui-kit-tweet-button
   [iconAnimate]="false"
-  text="Tweet Big."
+  text="Tweet"
   (click)="tweetButtonClick.emit()"
-  class="w-48 mt-4"
-/>
+  class="w-48 mt-4" />
 
-<ui-kit-comp-card class="block mt-12">
-  <a
-    [routerLink]="profileBaseUrl + '/' + profile?.id"
-    routerLinkActive="underline"
-  >
+<a
+  [routerLink]="profileBaseUrl() + '/' + profile()?.id"
+  routerLinkActive="underline block primeng-menu__active">
+  <ui-kit-comp-card class="block mt-12">
     <ui-kit-comp-account-tile
-      [primaryText]="profile?.name ?? 'N/A'"
-      [picture]="profile?.pictures?.[0]?.url"
-    />
-  </a>
-</ui-kit-comp-card>
+      [primaryText]="profile()?.name ?? 'N/A'"
+      [picture]="profile()?.pictures?.[0]?.url" />
+  </ui-kit-comp-card>
+</a>
 
 <ui-kit-divider class="block mt-4" />
 
@@ -51,5 +51,4 @@
   [farewellUrl]="farewellUrl"
   (help)="help.emit()"
   (logout)="logout.emit()"
-  class="block mt-4"
-/>
+  class="block mt-4" />

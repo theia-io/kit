@@ -23,123 +23,111 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
 export class TweetApiService extends DataSourceService {
   getFeed(
     profileId: string,
-    followingProfileIds: string[]
+    followingProfileIds?: string[]
   ): Observable<Array<Tweety>> {
     const agg = [
       {
-        $match:
-          /**
-           * query: The query in MQL.
-           */
-          {
-            $or: [
-              {
-                profileId: clientDBIdAdapter(profileId),
-              },
-              {
-                profileId: {
-                  $in: followingProfileIds.map(clientDBIdAdapter),
-                },
-              },
-            ],
-          },
-      },
-      {
-        $lookup:
-          /**
-           * from: The target collection.
-           * localField: The local join field.
-           * foreignField: The target join field.
-           * as: The name for the results.
-           * pipeline: Optional pipeline to run on the foreign collection.
-           * let: Optional variables to use in the pipeline field stages.
-           */
-          {
-            from: 'retweet',
-            localField: '_id',
-            foreignField: 'tweetId',
-            as: 'retweetsData',
-            pipeline: [],
-          },
-      },
-      {
-        $facet:
-          /**
-           * outputFieldN: The first output field.
-           * stageN: The first aggregation stage.
-           */
-          {
-            original: [
-              {
-                $replaceRoot: {
-                  newRoot: '$$ROOT',
-                },
-              },
-              {
-                $addFields: {
-                  type: 'tweet',
-                },
-              },
-              { $unset: ['retweetsData'] },
-            ],
-            // Keep original document
-            unwound: [
-              {
-                $unwind: '$retweetsData',
-              },
-              {
-                $match: {
-                  'retweetsData._id': {
-                    $exists: true,
+        $lookup: {
+          from: 'retweet',
+          localField: '_id',
+          foreignField: 'tweetId',
+          as: 'retweetsData',
+          pipeline: [
+            {
+              $match: {
+                $or: [
+                  {
+                    profileId: clientDBIdAdapter(profileId),
                   },
-                },
+                  {
+                    profileId: {
+                      $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
+                    },
+                  },
+                ],
               },
-              {
-                $project: {
-                  _id: '$retweetsData._id',
-                  referenceId: '$retweetsData.tweetId',
-                  referenceProfileId: '$retweetsData.profileId',
-                  timestamp: '$retweetsData.timestamp',
-                  type: 'retweet',
-                  // Get from the original tweet
-                  profileId: '$profileId',
-                  content: '$content',
-                  upProfileIds: '$retweetsData.upProfileIds',
-                },
-              },
-            ], // Unwind the array: [ stageN, ... ]
-          },
-      },
-      {
-        $project:
-          /**
-           * specifications: The fields to
-           *   include or exclude.
-           */
-          {
-            allDocs: {
-              $concatArrays: ['$original', '$unwound'],
             },
-          },
+          ],
+        },
       },
       {
-        $unwind:
-          /**
-           * path: Path to the array field.
-           * includeArrayIndex: Optional name for index.
-           * preserveNullAndEmptyArrays: Optional
-           *   toggle to unwind null and empty values.
-           */
-          {
-            path: '$allDocs',
-          },
+        $facet: {
+          original: [
+            {
+              $replaceRoot: {
+                newRoot: '$$ROOT',
+              },
+            },
+            {
+              $addFields: {
+                type: 'tweet',
+              },
+            },
+          ],
+          unwound: [
+            {
+              $unwind: '$retweetsData',
+            },
+            {
+              $match: {
+                'retweetsData._id': {
+                  $exists: true,
+                },
+              },
+            },
+            {
+              $project: {
+                _id: '$retweetsData._id',
+                referenceId: '$retweetsData.tweetId',
+                referenceProfileId: '$retweetsData.profileId',
+                timestamp: '$retweetsData.timestamp',
+                type: 'retweet',
+                //
+                // Get from the original tweet
+                profileId: '$profileId',
+                content: '$content',
+                upProfileIds: '$retweetsData.upProfileIds',
+              },
+            },
+          ],
+        },
       },
       {
-        $replaceWith:
-          /**
-           * replacementDocument: A document or string.
-           */
-          '$allDocs',
+        $project: {
+          allDocs: {
+            $concatArrays: ['$original', '$unwound'],
+          },
+        },
+      },
+      {
+        $unwind: {
+          path: '$allDocs',
+        },
+      },
+      {
+        $replaceWith: '$allDocs',
+      },
+      {
+        $match: {
+          $or: [
+            {
+              profileId: clientDBIdAdapter(profileId),
+            },
+            {
+              profileId: {
+                $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
+              },
+            },
+            {
+              referenceProfileId: clientDBIdAdapter(profileId),
+            },
+            {
+              referenceProfileId: {
+                $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
+              },
+            },
+          ],
+        },
       },
       { $sort: { 'timestamp.createdAt': -1 } },
     ];
@@ -154,43 +142,7 @@ export class TweetApiService extends DataSourceService {
   }
 
   getTweetsForProfile(profileId: string): Observable<Array<Tweety>> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['getTweetsForProfile']({ profileId }))
-    // );
-
-    return this.db$().pipe(
-      switchMap((db) =>
-        Promise.all([
-          db.collection<DBClientType<Profile>>('profile').findOne({
-            profileId: new BSON.ObjectId(profileId),
-          }),
-          db.collection<DBClientType<Tweety>>('tweet').find(
-            {
-              profileId: new BSON.ObjectId(profileId),
-            },
-            {
-              sort: {
-                'timestamp.createdAt': -1,
-              },
-            }
-          ),
-        ])
-      ),
-      map(([profileDb, tweetsDb]): [Profile | null, Array<Tweety>] => [
-        profileDb ? dbClientProfileAdapter(profileDb) : null,
-        tweetsDb.map((tweetDb) => dbClientTweetAdapter(tweetDb)),
-      ]),
-      map(([profile, tweets]) =>
-        profile
-          ? tweets.map((tweet) => ({
-              ...tweet,
-              denormalization: {
-                profile,
-              },
-            }))
-          : tweets
-      )
-    );
+    return this.getFeed(profileId);
   }
 
   get(tweetId: Tweety['id'], profileId: Profile['id']): Observable<Tweety> {
@@ -231,15 +183,12 @@ export class TweetApiService extends DataSourceService {
   }
 
   newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['postTweet'](tweet))
-    // );
-
     const now = new Date();
 
     const newTweet = {
       ...tweet,
       profileId: new BSON.ObjectId(tweet.profileId),
+      type: TweetyType.Tweet,
       timestamp: {
         // @TODO @FIXME Check if this has to be stored as date or as MongoDB Object
         createdAt: now,
@@ -255,10 +204,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   deleteTweet(tweet: Tweety): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteTweets'](ids))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         combineLatest([
@@ -275,10 +220,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   deleteRetweet(retweet: Tweety): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteTweets'](ids))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('retweet').deleteOne({
@@ -290,10 +231,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   #deleteAllRetweet(tweetId: string): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteTweets'](ids))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('retweet').deleteMany({
@@ -305,9 +242,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   likeTweet(tweet: Tweety) {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['putTweet'](tweet))
-    // );
     return this.#updateTweet(tweet);
   }
 
@@ -335,17 +269,10 @@ export class TweetApiService extends DataSourceService {
   }
 
   commentTweet(tweet: Partial<Tweety>) {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['putTweet'](tweet))
-    // );
     return this.#updateTweet(tweet);
   }
 
   getBookmarks(profileId: Profile['id']): Observable<Array<Bookmark>> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['getBookmarks'](profileId))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('bookmark').find(
@@ -364,10 +291,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   bookmark(bookmark: Partial<Bookmark>): Observable<Bookmark> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['postBookmark'](bookmark))
-    // );
-
     const dbBookmark = {
       ...bookmark,
       tweetId: new BSON.ObjectId(bookmark.tweetId),
@@ -399,10 +322,6 @@ export class TweetApiService extends DataSourceService {
     tweetId: Tweety['id'];
     profileIdBookmarker: Profile['id'];
   }): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteBookmark'](bookmark))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('bookmark').deleteOne({
@@ -436,7 +355,8 @@ export class TweetApiService extends DataSourceService {
             updatedAt: new Date(Date.now()),
           },
         })
-      )
+      ),
+      map(({ insertedId }) => insertedId.toString())
     );
   }
 

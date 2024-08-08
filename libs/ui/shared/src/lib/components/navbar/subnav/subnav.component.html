@@ -9,8 +9,9 @@
         <a
           role="button"
           [routerLink]="farewellUrl()"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-        >
+          routerLinkActive="primeng-menu__active"
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
           All
         </a>
       </li>
@@ -19,9 +20,9 @@
         <a
           role="button"
           [routerLink]="farewellUrl() + '/generate'"
+          routerLinkActive="primeng-menu__active"
           pTooltip="Generate Farewell"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-        >
+          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
           Generate
         </a>
       </li>
@@ -50,8 +51,7 @@
           "
           target="_blank"
           pTooltip="Write us email to info@kitouch.io"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-        >
+          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
           Help
         </a>
       </li>
@@ -67,8 +67,7 @@
         <button
           type="submit"
           (click)="logout.emit()"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700"
-        >
+          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
           Logout
         </button>
       </li>

@@ -1,7 +1,7 @@
 import { Bookmark } from '@kitouch/shared-models';
-import { mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import { FeatTweetBookmarkActions } from './bookmark.actions';
+import { mergeArr } from '@kitouch/utils';
 
 export interface FeatureBookmarkState {
   bookmarks: Array<Bookmark>; // possibly in the future not only tweets can be bookmarked

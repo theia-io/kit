@@ -4,7 +4,6 @@
   "peerDependencies": {
     "@kitouch/shared-models": "0.0.8",
     "@ngrx/store": "18.0.0",
-    "@kitouch/ui-shared": "0.0.8",
     "@kitouch/utils": "0.0.8",
     "lodash": "^4.17.21"
   },

@@ -4,6 +4,9 @@ import { createActionGroup, props } from '@ngrx/store';
 export const FeatUserApiActions = createActionGroup({
   source: 'FeatUserApiActions',
   events: {
+    GetUser: props<{ userId: User['id'] }>(),
+    GetUserSuccess: props<{ user: User }>(),
+    GetUserFailure: props<{ message: string }>(),
     SetUser: props<{ user: User }>(),
     AddExperience: props<{ experience: Experience }>(),
     AddExperienceSuccess: props<{ experience: Experience }>(),

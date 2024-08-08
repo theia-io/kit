@@ -4,9 +4,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   ElementRef,
-  EventEmitter,
-  Input,
-  Output,
   inject,
   input,
   output,
@@ -24,6 +21,7 @@ import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
 import { APP_PATH } from '../../constants';
+import { UXDynamicService } from '../../services/ux-dynamic.service';
 import { SubnavComponent } from './subnav/subnav.component';
 
 @Component({
@@ -51,22 +49,15 @@ export class NavBarComponent implements AfterViewInit {
     []
   );
 
-  @Input()
-  profileBaseUrl: string;
+  profileBaseUrl = input.required<string>();
+  profile = input<Profile | undefined | null>(null);
 
-  @Input()
-  profile: Partial<Profile> | undefined | null;
-
-  @Output()
-  logout = new EventEmitter<void>();
-
-  @Output()
-  help = new EventEmitter<void>();
-
+  logout = output();
+  help = output();
   tweetButtonClick = output();
 
+  uxDynamicService = inject(UXDynamicService);
   sanitizer: DomSanitizer = inject(DomSanitizer);
-
   #elemRef = inject(ElementRef);
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
@@ -98,6 +89,10 @@ export class NavBarComponent implements AfterViewInit {
           }
         });
     }
+
+    setTimeout(() => {
+      this.uxDynamicService.updateLogo('handshake', 5000);
+    }, 500);
   }
 
   onFocusHandler(event: Event) {

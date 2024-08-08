@@ -1,6 +1,9 @@
 import { DBClientType } from '@kitouch/utils';
 import { Injectable } from '@angular/core';
-import { dbClientProfileAdapter } from '@kitouch/kit-data';
+import {
+  clientDBProfileAdapter,
+  dbClientProfileAdapter,
+} from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
 import { BSON } from 'realm-web';
@@ -12,10 +15,6 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class ProfileService extends DataSourceService {
   getProfiles(profiles: Array<Profile['id']>): Observable<Array<Profile>> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fns) => fns['getProfiles'](profiles))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('profile').find({
@@ -28,14 +27,14 @@ export class ProfileService extends DataSourceService {
     );
   }
 
-  put(profile: Partial<Profile>): Observable<null> {
+  put(profile: Profile): Observable<null> {
     return this.db$().pipe(
       switchMap((db) =>
         db.collection<DBClientType<Profile>>('profile').updateOne(
           { _id: new BSON.ObjectId(profile.id) },
           {
             $set: {
-              ...profile,
+              ...clientDBProfileAdapter(profile),
             },
           }
         )

@@ -50,11 +50,11 @@ export class FeatSettingsProfileInformationComponent {
     ],
     name: [
       '',
-      [Validators.required, Validators.minLength(2), Validators.max(256)],
+      [Validators.required, Validators.minLength(2), Validators.max(64)],
     ],
-    title: ['', [Validators.minLength(2), Validators.max(1024)]],
-    subtitle: ['', [Validators.minLength(2), Validators.max(1024)]],
-    description: ['', [Validators.minLength(2), Validators.max(5096)]],
+    title: ['', [Validators.minLength(2), Validators.max(256)]],
+    subtitle: ['', [Validators.minLength(2), Validators.max(256)]],
+    description: ['', [Validators.minLength(2), Validators.max(1024)]],
   });
 
   disabled = false;
@@ -68,7 +68,10 @@ export class FeatSettingsProfileInformationComponent {
         takeUntilDestroyed()
       )
       .subscribe((updatedProfile) => {
-        this.#saveProfileHandler({ ...this.profile(), ...updatedProfile });
+        this.#saveProfileHandler({
+          ...this.profile(),
+          ...updatedProfile,
+        } as Profile);
       });
 
     effect(() => {
@@ -94,7 +97,7 @@ export class FeatSettingsProfileInformationComponent {
     });
   }
 
-  #saveProfileHandler(profile: Partial<Profile>) {
+  #saveProfileHandler(profile: Profile) {
     this.updatingProfile.emit();
     /** @TODO p2 Add updatingProfile true/false and waiting for an action from Store with ID expected (uuid) */
     this.#store.dispatch(

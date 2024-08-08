@@ -1,7 +1,7 @@
 import { Profile } from '@kitouch/shared-models';
-import { mergeArr } from '@kitouch/ui-shared';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFollowActions } from './follow.actions';
+import { mergeArr } from '@kitouch/utils';
 
 export interface FeatureFollowState {
   colleaguesProfiles: Array<Profile>;

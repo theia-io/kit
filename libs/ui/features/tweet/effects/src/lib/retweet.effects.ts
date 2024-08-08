@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatReTweetActions } from '@kitouch/feat-tweet-data';
+import { FeatReTweetActions, tweetIsRetweet } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -31,17 +31,18 @@ export class RetweetEffects {
       switchMap(([{ tweet }, profile]) =>
         this.#tweetApi
           .retweet(
-            tweet.type === TweetyType.Tweet ? tweet.id : tweet.referenceId!,
+            tweetIsRetweet(tweet) ? tweet.referenceId : tweet.id,
             profile.id
           )
           .pipe(
-            map(({ insertedId }) =>
+            map((id) =>
               FeatReTweetActions.reTweetSuccess({
                 tweet: {
                   ...tweet,
-                  id: insertedId,
+                  id,
                   referenceId: tweet.id,
-                  referenceProfileId: tweet.profileId,
+                  profileId: tweet.profileId,
+                  referenceProfileId: profile.id,
                   timestamp: {
                     createdAt: new Date(Date.now()),
                   },
@@ -59,7 +60,7 @@ export class RetweetEffects {
       ofType(FeatReTweetActions.delete),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, profile]) =>
-        tweet.profileId === profile.id
+        tweet.referenceProfileId === profile.id
           ? this.#tweetApi.deleteRetweet(tweet).pipe(
               map(() =>
                 FeatReTweetActions.deleteSuccess({
