@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,7 +9,7 @@ import { ButtonModule } from 'primeng/button';
 @Component({
   standalone: true,
   selector: 'ui-kit-follow-button',
-  imports: [CommonModule, ButtonModule],
+  imports: [ButtonModule],
   templateUrl: './follow-button.component.html',
   styleUrls: ['./follow-button.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -24,9 +23,9 @@ export class FollowButtonComponent {
   text = computed(() =>
     this.alreadyFollowing() ? this.stopConnectText() : this.connectText()
   );
-  severity = computed(() =>
-    this.alreadyFollowing() ? 'secondary' : 'contrast'
-  );
+  severity = computed(() => {
+    return this.alreadyFollowing() ? 'secondary' : 'contrast';
+  });
   icon = computed(() =>
     this.alreadyFollowing() ? 'pi-user-minus' : 'pi-user-plus'
   );

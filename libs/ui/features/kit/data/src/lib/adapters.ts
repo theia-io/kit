@@ -1,7 +1,8 @@
 import { Account, Legal, Profile, User } from '@kitouch/shared-models';
-import { dbClientAdapter, DBClientType } from '@kitouch/utils';
+import { clientDBAdapter, dbClientAdapter, DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 
+/** DB => Client */
 export const dbClientProfileAdapter = (
   dbObject: DBClientType<Profile>
 ): Profile => {
@@ -50,5 +51,19 @@ export const dbClientLegalAdapter = (dbObject: DBClientType<Legal>): Legal => {
 
   return {
     ...partiallyDBObjectRest,
+  };
+};
+
+/** Client => DB */
+type DBProfileObjectId = { userId: BSON.ObjectId };
+export const clientDBProfileAdapter = (
+  dbObject: Profile
+): DBClientType<Profile, DBProfileObjectId> => {
+  const { userId } = dbObject;
+  const dbClientProfile = clientDBAdapter<Profile, DBProfileObjectId>(dbObject);
+
+  return {
+    ...dbClientProfile,
+    userId: new BSON.ObjectId(userId),
   };
 };

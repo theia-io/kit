@@ -56,7 +56,7 @@ export class FarewellService extends DataSourceService {
         })
       ),
       map(({ insertedId }) => ({ ...farewell, _id: insertedId })),
-      map((farewell) => dbClientFarewellAdapter(farewell as any))
+      map((farewell) => dbClientFarewellAdapter(farewell))
     );
   }
 

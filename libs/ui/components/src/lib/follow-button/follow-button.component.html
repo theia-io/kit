@@ -1,14 +1,21 @@
+<!-- 
+ Since primeng does not reload its styles on severity change we need to do it manually
+  [class.p-button-contrast]="severity() === 'contrast'"
+  [class.p-button-secondary]="severity() === 'secondary'" 
+-->
+
 <button
   pButton
   class="flex justify-between w-full outline-animation"
   [class.outline-animation_following]="alreadyFollowing()"
+  [class.p-button-contrast]="severity() === 'contrast'"
+  [class.p-button-secondary]="severity() === 'secondary'"
   [severity]="severity()"
   [outlined]="outlined()">
   <svg viewBox="0 0 180 60">
     <polyline points="179,1 179,59 1,59 1,1 179,1" class="bg-line" />
     <polyline points="179,1 179,59 1,59 1,1 179,1" class="hl-line" />
   </svg>
-
   @if(text()){
   <span class="mr-2">{{ text() }}</span>
   }
