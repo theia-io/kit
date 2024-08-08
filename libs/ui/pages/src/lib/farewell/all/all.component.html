@@ -1,3 +1,4 @@
+@if(farewells$ | async; as farewells) { @if(farewells.length) {
 <p-table [value]="(farewells$ | async) ?? []">
   <ng-template pTemplate="header">
     <tr>
@@ -27,3 +28,15 @@
     </tr>
   </ng-template>
 </p-table>
+} @else {
+<div class="mt-4 flex flex-col justify-center items-center">
+  <p>You have not created any farewells yet</p>
+  <p-button
+    class="mt-2"
+    role="link"
+    [routerLink]="farewellGenerate"
+    aria-label="create farewell">
+    Create Farewell
+  </p-button>
+</div>
+} }

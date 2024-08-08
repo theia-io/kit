@@ -2,16 +2,15 @@ import { AsyncPipe, CommonModule, DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
   HostListener,
   ViewChild,
   computed,
-  effect,
   inject,
   input,
   output,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
@@ -38,7 +37,6 @@ import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { v4 as uuidv4 } from 'uuid';
 import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
-import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   standalone: true,

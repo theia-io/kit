@@ -2,16 +2,16 @@
 retweetProfile) {
 <feat-tweet-retweet-header
   [tweet]="tweet"
-  [retweetProfile]="retweetProfile"
-  [tweetProfile]="tweetProfile()"
+  [retweetProfile]="$any(retweetProfile)"
+  [tweetProfile]="$any(tweetProfile())"
   [currentProfileId]="currentProfile()?.id" />
-} @if(tweetProfile(); as tweetProfile) {
+} @if(tweetProfile(); as tProfile) {
 <ui-kit-comp-account-tile
-  [primaryText]="tweetProfile.name"
+  [primaryText]="$any(tProfile).name"
   [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
-  [secondaryText]="tweetProfile.type"
-  [picture]="tweetProfile.pictures?.[0]?.url"
-  [link]="profileUrlPath + tweet.profileId" />
+  [secondaryText]="$any(tProfile).type"
+  [picture]="$any(tProfile).pictures?.[0]?.url"
+  [link]="profileUrlPath + $any(tProfile).id" />
 }
 
 <div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
