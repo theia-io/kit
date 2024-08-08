@@ -1,4 +1,9 @@
-import { Profile, TweetComment, Tweety } from '@kitouch/shared-models';
+import {
+  Profile,
+  ReTweety,
+  TweetComment,
+  Tweety,
+} from '@kitouch/shared-models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
 export const FeatTweetActions = createActionGroup({
@@ -37,10 +42,10 @@ export const FeatReTweetActions = createActionGroup({
   source: 'FeatReTweetActions',
   events: {
     ReTweet: props<{ tweet: Tweety }>(),
-    ReTweetSuccess: props<{ tweet: Tweety }>(),
+    ReTweetSuccess: props<{ tweet: ReTweety }>(),
     ReTweetFailure: props<{ message: string }>(),
-    Delete: props<{ tweet: Tweety }>(),
-    DeleteSuccess: props<{ tweet: Tweety }>(),
+    Delete: props<{ tweet: ReTweety }>(),
+    DeleteSuccess: props<{ tweet: ReTweety }>(),
     DeleteFailure: props<{ message: string }>(),
   },
 });

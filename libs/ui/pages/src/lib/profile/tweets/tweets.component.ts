@@ -22,7 +22,7 @@ import {
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { APP_PATH, APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
 
 @Component({
@@ -63,11 +63,13 @@ export class PageProfileTweetsComponent {
   profilePic = computed(() => profilePicture(this.profile() ?? {}));
 
   tweets$ = this.#profile$.pipe(
-    switchMap(({ id }) => this.#store.select(selectTweetsProfile(id))),
+    switchMap(({ id }) => this.#store.pipe(select(selectTweetsProfile(id)))),
     filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
   );
 
-  currentProfile = toSignal(this.#store.select(selectCurrentProfile));
+  currentProfile = toSignal(
+    this.#store.pipe(select(selectCurrentProfile), filter(Boolean))
+  );
 
   isCurrentUserProfile = computed(
     () => this.currentProfile()?.id === this.profile()?.id

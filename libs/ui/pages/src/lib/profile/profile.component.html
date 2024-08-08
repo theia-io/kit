@@ -31,7 +31,8 @@
             ? unFollowProfileHandler(profile())
             : followProfileHandler(profile())
         "
-        class="float-right mr-2 -mb-6 min-w-32"
+        class="float-right mr-2 -mb-6"
+        [class.min-w-32]="!isFollowing()"
         severity="contrast"
       >
         @if(!isFollowing()) { Connect

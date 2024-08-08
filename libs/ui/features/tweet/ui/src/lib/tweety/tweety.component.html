@@ -1,68 +1,39 @@
-@if(tweet().type === tweetTypes.Retweet && (retweetProfile$ | async); as
+@if(tweet(); as tweet) { @if(tweetIsRetweetFn(tweet) && retweetProfile(); as
 retweetProfile) {
-<span class="block mb-2 text-xs font-medium text-gray-400">
-  <i class="pi pi-replay mr-2"></i>
-
-  <a
-    class="transition hover:underline hover:font-semibold"
-    [routerLink]="[
-      profileUrlPath + (retweetProfile.alias ?? retweetProfile.id)
-    ]"
-  >
-    @if(currentProfile()?.id === retweetProfile.id) { You re-tweeted } @else
-    if(retweetProfile.id === tweet().profileId) {
-    <div class="inline-block min-w-5">
-      <img
-        class="inline-block h-5 w-5 rounded-full"
-        referrerpolicy="no-referrer"
-        [src]="profilePic(retweetProfile)"
-        height="20"
-        width="20"
-        alt="kitouch profile picture"
-      />
-    </div>
-    {{ retweetProfile.name }} (Tweet owner) re-tweeted } @else {
-    <div class="inline-block min-w-5">
-      <img
-        class="inline-block h-5 w-5 rounded-full"
-        referrerpolicy="no-referrer"
-        [src]="profilePic(retweetProfile)"
-        height="20"
-        width="20"
-        alt="kitouch profile picture"
-      />
-    </div>
-    {{ retweetProfile.name }} re-tweeted }
-  </a>
-</span>
+<feat-tweet-retweet-header
+  [tweet]="tweet"
+  [retweetProfile]="retweetProfile"
+  [tweetProfile]="tweetProfile()"
+  [currentProfileId]="currentProfile()?.id"
+/>
+} @if(tweetProfile(); as tweetProfile) {
+<ui-kit-comp-account-tile
+  [primaryText]="tweetProfile.name"
+  [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
+  [secondaryText]="tweetProfile.type"
+  [picture]="tweetProfile.pictures?.[0]?.url"
+  [link]="profileUrlPath + tweet.profileId"
+/>
 }
 
-<ui-kit-comp-account-tile
-  [primaryText]="(tweetProfile$ | async)?.name ?? 'Unknown'"
-  [primarySecondaryText]="tweet().timestamp?.createdAt | date : 'MMM d, h:mm a'"
-  [secondaryText]="(tweetProfile$ | async)?.type"
-  [picture]="(tweetProfile$ | async)?.pictures?.[0]?.url"
-  [link]="profileUrlPath + tweet().profileId"
-/>
-
-<div (click)="tweetClickHandler(tweet())" class="pl-16 cursor-pointer">
+<div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
   <p
     class="text-base width-auto font-medium flex-shrink"
-    [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet().content)"
+    [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"
   ></p>
 
-  @if(tweet().type !== tweetTypes.Retweet) {
+  @if(tweet.type !== tweetTypes.Retweet) {
   <feat-tweet-actions
-    [tweetUrl]="tweetUrl(tweet(), true)"
-    [comments]="(tweetComments$ | async)?.length ?? 0"
+    [tweetUrl]="tweetUrl(tweet, true)"
+    [comments]="tweetComments()?.length ?? 0"
     (comment)="commentOverlayTmpl.show($event)"
-    (retweet)="retweetHandler()"
+    (retweet)="retweetHandler(tweet)"
     (quote)="quoteHandler()"
-    [liked]="tweetLiked$ | async"
-    [likes]="tweet().upProfileIds?.length ?? 0"
-    (like)="likeHandler()"
-    [bookmarked]="(tweetBookmarked$ | async) ?? false"
-    (bookmark)="bookmarkHandler()"
+    [liked]="tweetLiked()"
+    [likes]="tweet.upProfileIds?.length ?? 0"
+    (like)="likeHandler(tweet)"
+    [bookmarked]="tweetBookmarked()"
+    (bookmark)="bookmarkHandler(tweet)"
   />
 
   <p-overlayPanel
@@ -89,18 +60,18 @@ retweetProfile) {
         [iconAnimate]="false"
         [disabled]="!commentControl.valid"
         [loader]="false"
-        (click)="commentHandler()"
+        (click)="commentHandler(tweet)"
       />
     </div>
   </p-overlayPanel>
   }
 </div>
 
-@if(tweetCanBeDeleted$ | async) {
+@if(tweetCanBeDeleted()) {
 <i
-  (click)="$event.stopPropagation(); deleteHandler()"
+  (click)="$event.stopPropagation(); deleteHandler(tweet)"
   role="button"
   class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
   style="font-size: 1.5rem"
 ></i>
-}
+} }

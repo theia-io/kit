@@ -1,4 +1,4 @@
-import { Tweety, TweetyType } from '@kitouch/shared-models';
+import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
@@ -9,7 +9,7 @@ import {
 } from './tweet.actions';
 
 export interface FeatureTweetState {
-  tweets: Array<Tweety>;
+  tweets: Array<Tweety | ReTweety>;
 }
 
 const featTweetInitialState: FeatureTweetState = {
@@ -42,7 +42,7 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets: state.tweets.filter((stateTweet) => {
       if (stateTweet.type === TweetyType.Retweet) {
-        return stateTweet.referenceId !== id;
+        return (stateTweet as ReTweety).referenceId !== id;
       }
 
       return stateTweet.id !== id;

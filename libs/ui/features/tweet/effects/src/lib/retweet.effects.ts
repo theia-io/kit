@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatReTweetActions } from '@kitouch/feat-tweet-data';
+import { FeatReTweetActions, tweetIsRetweet } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -31,7 +31,7 @@ export class RetweetEffects {
       switchMap(([{ tweet }, profile]) =>
         this.#tweetApi
           .retweet(
-            tweet.type === TweetyType.Tweet ? tweet.id : tweet.referenceId!,
+            tweetIsRetweet(tweet) ? tweet.referenceId : tweet.id,
             profile.id
           )
           .pipe(

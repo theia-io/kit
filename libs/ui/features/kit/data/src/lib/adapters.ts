@@ -5,10 +5,11 @@ import { BSON } from 'realm-web';
 export const dbClientProfileAdapter = (
   dbObject: DBClientType<Profile>
 ): Profile => {
-  const dbClientProfile = dbClientAdapter(dbObject);
+  const { userId, ...dbClientProfile } = dbClientAdapter(dbObject);
 
   return {
     ...dbClientProfile,
+    userId: userId?.toString(),
     following: dbClientProfile.following?.map(({ id, ...rest }) => ({
       ...rest,
       id: id?.toString(),
