@@ -21,13 +21,14 @@ export const selectAllTweets = createSelector(
   (state: FeatureTweetState) => state.tweets
 );
 
-export const selectTweetsProfile = (profileId: string) =>
-  createSelector(selectAllTweets, (tweets: Array<Tweety | ReTweety>) =>
-    tweets.filter((tweet) =>
-      tweet.type === TweetyType.Tweet
-        ? tweet.profileId === profileId
-        : (tweet as ReTweety).referenceProfileId === profileId
-    )
+export const selectTweetsProfile = (
+  profileId: string,
+  tweets: Array<Tweety | ReTweety>
+) =>
+  tweets.filter((tweet) =>
+    tweet.type === TweetyType.Tweet
+      ? tweet.profileId === profileId
+      : (tweet as ReTweety).referenceProfileId === profileId
   );
 
 export const selectTweet = (id: string) =>

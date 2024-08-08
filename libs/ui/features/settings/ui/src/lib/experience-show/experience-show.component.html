@@ -22,5 +22,11 @@
     </p>
   </section>
 
-  @if(showRemove()) { }
+  @if(showRemove()) {
+  <i
+    (click)="deleteExperience.emit(experience())"
+    role="button"
+    class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
+    style="font-size: 1.5rem"></i>
+  }
 </div>

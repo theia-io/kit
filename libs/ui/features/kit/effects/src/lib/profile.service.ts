@@ -12,10 +12,6 @@ import { map, switchMap } from 'rxjs/operators';
 })
 export class ProfileService extends DataSourceService {
   getProfiles(profiles: Array<Profile['id']>): Observable<Array<Profile>> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fns) => fns['getProfiles'](profiles))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('profile').find({

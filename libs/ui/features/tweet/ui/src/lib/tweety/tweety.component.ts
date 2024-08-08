@@ -79,7 +79,6 @@ export class FeatTweetTweetyComponent {
   currentProfile = toSignal(this.#store.select(selectCurrentProfile));
 
   tweet = computed(() => {
-    console.log('tweet', this.tweetId());
     return this.#store.selectSignal(selectTweet(this.tweetId() ?? ''))();
   });
 
@@ -94,7 +93,6 @@ export class FeatTweetTweetyComponent {
 
   retweetProfile = computed(() => {
     const tweet = this.tweet();
-    console.log('retweetProfile', tweet, tweet && tweetIsRetweet(tweet));
 
     if (tweet && tweetIsRetweet(tweet)) {
       return this.#store.selectSignal(
@@ -113,7 +111,6 @@ export class FeatTweetTweetyComponent {
     const tweet = this.tweet(),
       profile = this.currentProfile();
 
-    console.log('tweetLiked', tweet, profile);
     if (tweet && profile) {
       return tweetIsLikedByProfile(tweet, profile.id);
     }
@@ -126,13 +123,6 @@ export class FeatTweetTweetyComponent {
       currentProfile = this.currentProfile(),
       tweetProfile = this.tweetProfile(),
       retweetProfile = this.retweetProfile();
-    console.log(
-      'tweetCanBeDeleted',
-      tweet,
-      currentProfile,
-      tweetProfile,
-      retweetProfile
-    );
 
     if (!tweet) {
       return false;
@@ -158,22 +148,6 @@ export class FeatTweetTweetyComponent {
   });
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
-
-  constructor() {
-    effect(() => {
-      console.log(
-        'this.currentProfile(), this.retweetProfile()',
-        this.currentProfile(),
-        this.retweetProfile()
-      );
-    });
-
-    this.#store
-      .select(selectCurrentProfile)
-      .subscribe((selectCurrentProfile) =>
-        console.log('selectCurrentProfile', selectCurrentProfile)
-      );
-  }
 
   @ViewChild('commentOverlayTmpl')
   commentOverlayTmpl: OverlayPanel;

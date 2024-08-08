@@ -1,4 +1,5 @@
 import { User } from '@kitouch/shared-models';
+import { addOrUpdate } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import _ from 'lodash';
 import { FeatUserApiActions } from './user.actions';
@@ -7,10 +8,12 @@ import { getExperienceEqualityObject } from './user.selectors';
 
 export interface FeatureUserState {
   user?: User;
+  users: Array<User>;
 }
 
 const featUserInitialState: FeatureUserState = {
   user: undefined,
+  users: [],
 };
 
 export const userReducer = createReducer(
@@ -43,5 +46,9 @@ export const userReducer = createReducer(
             ) ?? [],
         }
       : undefined,
+  })),
+  on(FeatUserApiActions.getUserSuccess, (state, { user }) => ({
+    ...state,
+    users: addOrUpdate(user, state.users),
   }))
 );

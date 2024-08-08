@@ -20,7 +20,7 @@ import {
   FeatUserApiActions,
   selectAccount,
   selectCurrentProfile,
-  selectExperiences,
+  selectCurrentUserExperiences,
 } from '@kitouch/kit-data';
 import { Experience } from '@kitouch/shared-models';
 import { NewUIItemComponent } from '@kitouch/ui-components';
@@ -65,7 +65,7 @@ export class PageSettingsComponent implements OnInit {
     }
   });
 
-  experiences$ = this.#store.pipe(select(selectExperiences));
+  experiences$ = this.#store.pipe(select(selectCurrentUserExperiences));
 
   experienceMessage: Message = {
     severity: 'contrast',

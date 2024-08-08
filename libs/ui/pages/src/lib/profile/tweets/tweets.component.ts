@@ -7,7 +7,11 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
-import { selectTweetsProfile, TweetApiActions } from '@kitouch/feat-tweet-data';
+import {
+  selectAllTweets,
+  selectTweetsProfile,
+  TweetApiActions,
+} from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
 import {
   profilePicture,
@@ -23,7 +27,14 @@ import {
 } from '@kitouch/ui-components';
 import { APP_PATH, APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
-import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  map,
+  shareReplay,
+  switchMap,
+  throwError,
+} from 'rxjs';
 
 @Component({
   standalone: true,
@@ -57,14 +68,18 @@ export class PageProfileTweetsComponent {
         filter(Boolean),
         shareReplay(1)
       )
-    : throwError(() => 'Cannot continue');
+    : throwError(
+        () =>
+          'Cannot continue without profile id. likely component is user incorrectly'
+      );
 
   profile = toSignal(this.#profile$);
   profilePic = computed(() => profilePicture(this.profile() ?? {}));
 
-  tweets$ = this.#profile$.pipe(
-    switchMap(({ id }) => this.#store.pipe(select(selectTweetsProfile(id))))
-  );
+  tweets$ = combineLatest([
+    this.#profile$,
+    this.#store.select(selectAllTweets),
+  ]).pipe(map(([{ id }, allTweets]) => selectTweetsProfile(id, allTweets)));
 
   currentProfile = toSignal(
     this.#store.pipe(select(selectCurrentProfile), filter(Boolean))

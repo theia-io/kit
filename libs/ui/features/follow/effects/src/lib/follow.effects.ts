@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { selectUser } from '@kitouch/kit-data';
+import { selectCurrentUser } from '@kitouch/kit-data';
 
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -13,7 +13,7 @@ export class FollowEffects {
   #store = inject(Store);
   #followService = inject(FollowService);
 
-  #currentUser = this.#store.select(selectUser).pipe(filter(Boolean));
+  #currentUser = this.#store.select(selectCurrentUser).pipe(filter(Boolean));
 
   getSuggestionColleaguesToFollow$ = createEffect(() =>
     this.#actions$.pipe(
