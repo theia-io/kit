@@ -63,8 +63,7 @@ export class PageProfileTweetsComponent {
   profilePic = computed(() => profilePicture(this.profile() ?? {}));
 
   tweets$ = this.#profile$.pipe(
-    switchMap(({ id }) => this.#store.pipe(select(selectTweetsProfile(id)))),
-    filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
+    switchMap(({ id }) => this.#store.pipe(select(selectTweetsProfile(id))))
   );
 
   currentProfile = toSignal(
