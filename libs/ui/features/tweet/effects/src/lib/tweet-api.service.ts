@@ -183,15 +183,12 @@ export class TweetApiService extends DataSourceService {
   }
 
   newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['postTweet'](tweet))
-    // );
-
     const now = new Date();
 
     const newTweet = {
       ...tweet,
       profileId: new BSON.ObjectId(tweet.profileId),
+      type: TweetyType.Tweet,
       timestamp: {
         // @TODO @FIXME Check if this has to be stored as date or as MongoDB Object
         createdAt: now,
@@ -207,10 +204,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   deleteTweet(tweet: Tweety): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteTweets'](ids))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         combineLatest([
@@ -227,10 +220,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   deleteRetweet(retweet: Tweety): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteTweets'](ids))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('retweet').deleteOne({
@@ -242,10 +231,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   #deleteAllRetweet(tweetId: string): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteTweets'](ids))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('retweet').deleteMany({
@@ -257,9 +242,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   likeTweet(tweet: Tweety) {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['putTweet'](tweet))
-    // );
     return this.#updateTweet(tweet);
   }
 
@@ -287,17 +269,10 @@ export class TweetApiService extends DataSourceService {
   }
 
   commentTweet(tweet: Partial<Tweety>) {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['putTweet'](tweet))
-    // );
     return this.#updateTweet(tweet);
   }
 
   getBookmarks(profileId: Profile['id']): Observable<Array<Bookmark>> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['getBookmarks'](profileId))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('bookmark').find(
@@ -316,10 +291,6 @@ export class TweetApiService extends DataSourceService {
   }
 
   bookmark(bookmark: Partial<Bookmark>): Observable<Bookmark> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['postBookmark'](bookmark))
-    // );
-
     const dbBookmark = {
       ...bookmark,
       tweetId: new BSON.ObjectId(bookmark.tweetId),
@@ -351,10 +322,6 @@ export class TweetApiService extends DataSourceService {
     tweetId: Tweety['id'];
     profileIdBookmarker: Profile['id'];
   }): Observable<boolean> {
-    // return this.realmFunctions$().pipe(
-    //   switchMap((fn) => fn['deleteBookmark'](bookmark))
-    // );
-
     return this.db$().pipe(
       switchMap((db) =>
         db.collection('bookmark').deleteOne({

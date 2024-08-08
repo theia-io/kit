@@ -1,7 +1,7 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import {
   FeatFarewellActions,
   selectFarewells,
@@ -10,6 +10,7 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
+import { ButtonModule } from 'primeng/button';
 
 import { TableModule } from 'primeng/table';
 import { filter } from 'rxjs/operators';
@@ -23,6 +24,7 @@ import { filter } from 'rxjs/operators';
     DatePipe,
     RouterModule,
     //
+    ButtonModule,
     TableModule,
     //
   ],
@@ -31,6 +33,7 @@ export class PageFarewellAllComponent {
   #store = inject(Store);
 
   farewellUrl = APP_PATH.PublicFarewell;
+  farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewells$ = this.#store.pipe(select(selectFarewells));
 
   constructor() {

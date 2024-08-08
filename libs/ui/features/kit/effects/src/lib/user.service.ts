@@ -1,22 +1,28 @@
 import { Injectable, inject } from '@angular/core';
-import { getExperienceEqualityObject, selectUser } from '@kitouch/kit-data';
-import { Experience } from '@kitouch/shared-models';
+import {
+  dbClientUserAdapter,
+  getExperienceEqualityObject,
+  selectCurrentUser,
+} from '@kitouch/kit-data';
+import { Experience, User } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
+import { DBClientType } from '@kitouch/utils';
 import { Store } from '@ngrx/store';
 import { BSON } from 'realm-web';
-import { filter, map, switchMap, withLatestFrom } from 'rxjs';
+import { filter, map, of, switchMap, take, withLatestFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UserService extends DataSourceService {
-  user$ = inject(Store).select(selectUser).pipe(filter(Boolean));
+  currentUser$ = inject(Store).select(selectCurrentUser).pipe(filter(Boolean));
 
   addUserExperience$(experience: Experience) {
-    return this.realmFunctions$().pipe(
-      withLatestFrom(this.user$),
-      switchMap(([realmFunctions, user]) =>
-        realmFunctions['genericRealmFunction']({
+    return this.currentUser$.pipe(
+      take(1),
+      switchMap((user) =>
+        // realmFunctions['genericRealmFunction']
+        this.genericRealmFunction$({
           collection: 'user',
           executeFn: 'updateOne',
           filterOrAggregate: { _id: new BSON.ObjectId(user.id) },
@@ -47,7 +53,7 @@ export class UserService extends DataSourceService {
 
   deleteUserExperience$(experience: Experience) {
     return this.db$().pipe(
-      withLatestFrom(this.user$),
+      withLatestFrom(this.currentUser$),
       switchMap(([db, user]) =>
         db.collection('user').updateOne(
           {
@@ -62,6 +68,17 @@ export class UserService extends DataSourceService {
         )
       ),
       map(() => ({ experience }))
+    );
+  }
+
+  getUser$(userId: string) {
+    return this.db$().pipe(
+      switchMap((db) =>
+        db.collection<DBClientType<User>>('user').findOne({
+          _id: new BSON.ObjectId(userId),
+        })
+      ),
+      map((user) => (user ? dbClientUserAdapter(user) : null))
     );
   }
 }

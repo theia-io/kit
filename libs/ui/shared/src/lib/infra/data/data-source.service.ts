@@ -1,7 +1,7 @@
 import { inject } from '@angular/core';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { Observable, of } from 'rxjs';
+import { Observable, of, throwError } from 'rxjs';
 import { DBClientType } from '@kitouch/utils';
 
 export class DataSourceService {
@@ -12,24 +12,29 @@ export class DataSourceService {
     shareReplay(1)
   );
 
-  #db$ = inject(AuthService).realmUser$.pipe(
+  #realmUser$ = inject(AuthService).realmUser$;
+
+  #db$ = this.#realmUser$.pipe(
     map((currentUser) =>
       currentUser?.mongoClient('mongodb-atlas').db('kitouch')
     ),
     shareReplay(1)
   );
 
-  /** @deprecated Call db$() instead and query DB. */
-  #realmFunctions$ = inject(AuthService).realmUser$.pipe(
-    map((currentUser) => currentUser?.functions),
+  #genericRealmFunctions$ = this.#realmUser$.pipe(
+    map((currentUser) => currentUser?.functions?.['genericRealmFunction']),
     filter(Boolean),
     shareReplay(1)
   );
 
-  #genericRealmFunctions$ = inject(AuthService).realmUser$.pipe(
-    map((currentUser) => currentUser?.functions?.['genericRealmFunction']),
-    filter(Boolean),
-    shareReplay(1)
+  /** try to avoid using this functions as it might increase complexity of production releases */
+  #limitedRealmFunctionsList$ = this.#realmUser$.pipe(
+    map((currentUser) => ({
+      getAccountUserProfiles:
+        currentUser?.functions?.['getAccountUserProfiles'],
+      getSuggestionColleaguesToFollow:
+        currentUser?.functions?.['getSuggestionColleaguesToFollow'],
+    }))
   );
 
   /** Returns only logged in user Realm SDK DB reference */
@@ -46,11 +51,6 @@ export class DataSourceService {
     );
   }
 
-  /** @deprecated Use `db$()` or `allowAnonymousDb$()` for query DB. Only calling `genericFunction` API is still allowed  */
-  protected realmFunctions$() {
-    return this.#realmFunctions$.pipe(take(1));
-  }
-
   protected genericRealmFunction$<T, K = DBClientType<T>>(genericRealmArg: {
     collection: string;
     executeFn: string;
@@ -60,6 +60,25 @@ export class DataSourceService {
     return this.#genericRealmFunctions$.pipe(
       take(1),
       switchMap((genericRealmCb) => genericRealmCb(genericRealmArg))
+    );
+  }
+
+  protected realmFunction$(
+    functionName: 'getAccountUserProfiles' | 'getSuggestionColleaguesToFollow',
+    args: unknown
+  ) {
+    return this.#limitedRealmFunctionsList$.pipe(
+      take(1),
+      switchMap((realmFunctionsList) => {
+        const realmFunction = realmFunctionsList[functionName];
+        if (realmFunction) {
+          return realmFunction(args);
+        }
+
+        return throwError(
+          () => new Error('Such realm function is not supported.')
+        );
+      })
     );
   }
 }

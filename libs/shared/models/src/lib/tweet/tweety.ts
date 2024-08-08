@@ -34,8 +34,7 @@ export interface Tweety {
   id: string;
   //
   profileId: Profile['id'];
-  referenceId?: Tweety['id']; // for retweets, quotes, comments, replies
-  referenceProfileId?: Profile['id'];
+
   // business
   content: string;
   comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;
@@ -49,8 +48,13 @@ export interface Tweety {
     profile: Pick<Profile, 'id' | 'name' | 'type' | 'pictures'>;
   };
   // meta
-  type?: TweetyType;
+  type: TweetyType;
   timestamp?: TimeStamp;
+}
+
+export interface ReTweety extends Tweety {
+  referenceId: Tweety['id']; // for retweets, quotes, comments, replies
+  referenceProfileId: Profile['id'];
 }
 
 export class TweetySchema {}

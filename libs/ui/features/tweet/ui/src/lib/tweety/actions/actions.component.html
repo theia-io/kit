@@ -2,8 +2,7 @@
   <button
     role="button"
     (click)="$event.stopPropagation(); comment.emit($event)"
-    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150"
-  >
+    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
     <i class="pi pi-comments" style="font-size: 1.5rem"></i>
 
     @if(comments() > 0) {
@@ -16,8 +15,7 @@
   <button
     role="button"
     (click)="$event.stopPropagation(); op.toggle($event)"
-    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150"
-  >
+    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
     <svg
       class="h-7 w-6"
       fill="none"
@@ -25,8 +23,7 @@
       stroke-linejoin="round"
       stroke-width="2"
       stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <path d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
     </svg>
 
@@ -42,8 +39,7 @@
         class="block w-full"
         styleClass="w-full"
         (onClick)="retweet.emit(); op.hide()"
-        aria-label="re-tweet"
-      >
+        aria-label="re-tweet">
         Re-tweet
         <i class="pi pi-sync ml-auto" style="font-size: 1rem"></i>
       </p-button>
@@ -58,8 +54,7 @@
   <button
     role="button"
     (click)="$event.stopPropagation(); like.emit()"
-    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150"
-  >
+    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
     <svg
       [ngClass]="{
         'fill-rose-200 hover:fill-rose-700': !liked(),
@@ -70,11 +65,9 @@
       stroke-linejoin="round"
       stroke-width="2"
       stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <path
-        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"
-      ></path>
+        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
     </svg>
 
     @if(likes()) {
@@ -87,13 +80,11 @@
   <button
     role="button"
     (click)="$event.stopPropagation(); copyToClipBoard()"
-    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150"
-  >
+    class="group flex items-center text-gray-500 px-3 py-2 leading-6 font-medium rounded-full hover:font-semibold hover:bg-neutral-200 transition ease-in-out duration-150">
     @if(copied()) {
     <i
       class="pi pi-check"
-      style="font-size: 1.5rem; color: 'var(--primary-color)'"
-    ></i>
+      style="font-size: 1.5rem; color: 'var(--primary-color)'"></i>
     } @else {
     <i class="pi pi-copy" style="font-size: 1.5rem"></i>
     }
@@ -108,8 +99,7 @@
       'text-base hover:text-lg font-medium hover:font-bold text-gray-500 hover:text-cyan-400 hover:bg-neutral-200':
         !bookmarked()
     }"
-    class="group flex items-center rounded-full px-3 py-2 leading-6 font-medium transition ease-in-out duration-150"
-  >
+    class="group flex items-center rounded-full px-3 py-2 leading-6 font-medium transition ease-in-out duration-150">
     <!-- @TODO @FIXME transition -->
     <svg
       class="h-7 w-6 transition ease-in-out duration-150"
@@ -118,11 +108,9 @@
       stroke-linejoin="round"
       stroke-width="2"
       stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
+      viewBox="0 0 24 24">
       <path
-        d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20"
-      ></path>
+        d="M8 4H6a2 2 0 00-2 2v12a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-2m-4-1v8m0 0l3-3m-3 3L9 8m-5 5h2.586a1 1 0 01.707.293l2.414 2.414a1 1 0 00.707.293h3.172a1 1 0 00.707-.293l2.414-2.414a1 1 0 01.707-.293H20"></path>
     </svg>
   </button>
 </div>

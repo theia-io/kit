@@ -11,22 +11,18 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-// import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
-// import { Tweety } from '@kitouch/shared-models';
+import { selectProfilePicture } from '@kitouch/kit-data';
 import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-// import { MessageService } from 'primeng/api';
-// import { ToastModule } from 'primeng/toast';
-import { selectProfilePicture } from '@kitouch/kit-data';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
-import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
 import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
+import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
 
 @Component({
   standalone: true,

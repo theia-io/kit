@@ -1,5 +1,5 @@
 <div class="flex flex-col justify-center items-center gap-10">
-  <span class="text-2xl"> Create your (not-) Farewell 🗒️ 🫂 </span>
+  <span class="text-2xl">Farewell 🗒️ 🫂</span>
 
   <div class="w-full">
     <p-floatLabel class="block mb-2">
@@ -8,8 +8,7 @@
         id="title"
         type="text"
         pInputText
-        [formControl]="farewellTitleControl"
-      />
+        [formControl]="farewellTitleControl" />
       <label for="title">Title</label>
 
       @if(farewellTitleControl.errors?.['minlength']) {
@@ -27,16 +26,15 @@
 
     <p-editor
       id="farewell-float"
-      placeholder="Add farewell message to your (ex-) colleagues 🔥"
+      placeholder="Add farewell to your (ex-) colleagues 🔥"
       [modules]="modules"
       [style]="{ height: '320px' }"
       class="w-full"
-      (onTextChange)="onTextChangeHandler($event)"
-    >
-      <p-header> </p-header>
+      (onTextChange)="onTextChangeHandler($event)">
+      <p-header></p-header>
     </p-editor>
 
-    <!-- <label for="farewell-float">Add farewell message to your (ex-) colleagues 🔥</label> -->
+    <!-- <label for="farewell-float">Add farewell to your (ex-) colleagues 🔥</label> -->
 
     @if(textValue().length < 100) {
     <strong class="block text-xs text-gray-400">
@@ -55,6 +53,5 @@
     [disabled]="!(textValue().length >= 100 && textValue().length < 10000)"
     (onClick)="saveFarewellHandler()"
     label="Save farewell"
-    [raised]="true"
-  />
+    [raised]="true" />
 </div>

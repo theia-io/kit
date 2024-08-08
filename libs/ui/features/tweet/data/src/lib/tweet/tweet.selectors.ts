@@ -1,10 +1,15 @@
-import { Tweety } from '@kitouch/shared-models';
+import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureTweetState } from './tweet.reducers';
 
 /** helper */
-export const tweetIsLikedByProfile = (tweet: Tweety, profileId: string) =>
-  tweet.upProfileIds?.some((upProfileId) => upProfileId === profileId);
+export const tweetIsLikedByProfile = (
+  tweet: Tweety | ReTweety,
+  profileId: string
+) => tweet.upProfileIds?.some((upProfileId) => upProfileId === profileId);
+
+export const tweetIsRetweet = (tweety: Tweety | ReTweety): tweety is ReTweety =>
+  'referenceProfileId' in tweety;
 
 /** selectors */
 export const selectTweetState = (state: {
@@ -16,12 +21,17 @@ export const selectAllTweets = createSelector(
   (state: FeatureTweetState) => state.tweets
 );
 
-export const selectTweetsProfile = (profileId: string) =>
-  createSelector(selectAllTweets, (tweets: Tweety[]) =>
-    tweets.filter((tweet) => tweet.profileId === profileId)
+export const selectTweetsProfile = (
+  profileId: string,
+  tweets: Array<Tweety | ReTweety>
+) =>
+  tweets.filter((tweet) =>
+    tweet.type === TweetyType.Tweet
+      ? tweet.profileId === profileId
+      : (tweet as ReTweety).referenceProfileId === profileId
   );
 
 export const selectTweet = (id: string) =>
-  createSelector(selectAllTweets, (tweets: Tweety[]) =>
+  createSelector(selectAllTweets, (tweets: Array<Tweety | ReTweety>) =>
     tweets.find((tweet) => tweet.id === id)
   );

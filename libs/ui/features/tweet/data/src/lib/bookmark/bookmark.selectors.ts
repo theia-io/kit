@@ -1,4 +1,4 @@
-import { Tweety } from '@kitouch/shared-models';
+import { ReTweety, Tweety } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureBookmarkState } from './bookmark.reducers';
 
@@ -14,7 +14,7 @@ export const selectBookmarks = createSelector(
   (state) => state.bookmarks
 );
 
-export const selectIsBookmarked = ({ id }: Tweety) =>
+export const selectIsBookmarked = ({ id }: Tweety | ReTweety) =>
   createSelector(selectBookmarks, (bookmarks) =>
     bookmarks.some(({ tweetId }) => tweetId === id)
   );

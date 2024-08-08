@@ -75,9 +75,8 @@ export class KitComponent implements OnInit {
       ? {
           ...navItem,
           kitShouldInitiallyBeFocused: true,
-          routerLinkActiveOptions: { exact: true },
         }
-      : { ...navItem }
+      : navItem
   );
 
   $profile = this.#store.pipe(select(selectCurrentProfile));

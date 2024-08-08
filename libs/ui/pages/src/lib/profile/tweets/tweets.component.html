@@ -1,0 +1,18 @@
+@for (tweet of tweets$ | async; track $index) {
+<ui-kit-comp-card (click)="tweetClickHandler(tweet)" class="cursor-pointer">
+  <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
+</ui-kit-comp-card>
+} @empty {
+<div class="mt-4 flex flex-col justify-center items-center">
+  @if(isCurrentUserProfile()) {
+  <p>You have not tweeted anything yet! Try post something</p>
+  <ui-kit-tweet-button
+    [iconAnimate]="true"
+    text="Tweet"
+    (click)="tweetButtonHandler()"
+    class="w-48 mt-4" />
+  } @else {
+  <p>{{ profile()?.name }} has not tweeted anything yet</p>
+  }
+</div>
+}

@@ -8,8 +8,7 @@
           [src]="picture() ?? '/account/placeholder-small.jpeg'"
           height="40"
           width="40"
-          alt="kitouch profile picture"
-        />
+          alt="kitouch profile picture" />
       </div>
     </ng-template>
 
@@ -42,8 +41,7 @@
       </p>
       @if(secondaryText()) {
       <p
-        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150"
-      >
+        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
         {{
           secondaryText()!.length > 64
             ? secondaryText()!.slice(0, 64) + '...'

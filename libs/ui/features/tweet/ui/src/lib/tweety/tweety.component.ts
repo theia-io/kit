@@ -2,18 +2,15 @@ import { AsyncPipe, CommonModule, DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  DestroyRef,
-  EventEmitter,
   HostListener,
-  Input,
-  OnChanges,
-  Output,
-  SimpleChanges,
   ViewChild,
+  computed,
   inject,
+  input,
+  output,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
@@ -24,13 +21,10 @@ import {
   selectIsBookmarked,
   selectTweet,
   tweetIsLikedByProfile,
+  tweetIsRetweet,
 } from '@kitouch/feat-tweet-data';
-import {
-  profilePicture,
-  selectCurrentProfile,
-  selectProfileById,
-} from '@kitouch/kit-data';
-import { Tweety, TweetyType } from '@kitouch/shared-models';
+import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitTweetButtonComponent,
@@ -40,20 +34,8 @@ import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
-import {
-  ReplaySubject,
-  combineLatest,
-  combineLatestWith,
-  filter,
-  map,
-  of,
-  shareReplay,
-  startWith,
-  switchMap,
-  take,
-  withLatestFrom,
-} from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
+import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
 
 @Component({
@@ -73,107 +55,106 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     InputTextareaModule,
     FloatLabelModule,
     //
+    RetweetHeaderComponent,
     AccountTileComponent,
     FeatTweetActionsComponent,
     UiKitTweetButtonComponent,
   ],
 })
-export class FeatTweetTweetyComponent implements OnChanges {
-  @Input({ required: true })
-  tweetId!: Tweety['id'];
-
-  @Output()
-  tweetDeleted = new EventEmitter<void>();
+export class FeatTweetTweetyComponent {
+  tweetId = input<Tweety['id']>();
+  tweetDeleted = output<void>();
 
   // Deps
   #document = inject(DOCUMENT);
-  #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
   //
   domSanitizer = inject(DomSanitizer);
-  // State
-  #tweetId$$ = new ReplaySubject<Tweety['id']>(1);
 
   tweetTypes = TweetyType;
 
-  // #tweet$ = new ReplaySubject<Tweety>(1);
-  #tweet$ = this.#tweetId$$.pipe(
-    switchMap((tweetId) => this.#store.select(selectTweet(tweetId))),
-    filter(Boolean),
-    shareReplay(1)
-  );
-  /** @TODO @FIXME Implement loader while tweet is loading */
-  tweet = toSignal(this.#tweet$, {
-    initialValue: {} as Tweety,
-  }); /** @TODO @FIXME this initial value */
+  currentProfile = toSignal(this.#store.select(selectCurrentProfile));
 
-  #currentProfile$ = this.#store
-    .select(selectCurrentProfile)
-    .pipe(filter(Boolean));
+  tweet = computed(() => {
+    return this.#store.selectSignal(selectTweet(this.tweetId() ?? ''))();
+  });
 
-  currentProfile = toSignal(this.#currentProfile$);
+  tweetProfile = computed(() => {
+    const tweet = this.tweet();
+    return this.#store.selectSignal(
+      selectProfileById(
+        (tweet as ReTweety).referenceProfileId ?? tweet?.profileId
+      )
+    )();
+  });
 
-  retweetProfile$ = combineLatest([
-    this.#tweet$.pipe(
-      filter(Boolean),
-      filter(({ type }) => type === this.tweetTypes.Retweet)
-    ),
-    this.#currentProfile$,
-  ]).pipe(
-    switchMap(([retweet, profile]) =>
-      retweet.referenceProfileId === profile.id
-        ? of(profile)
-        : this.#store.select(selectProfileById(retweet.referenceProfileId!))
-    )
-  );
+  retweetProfile = computed(() => {
+    const tweet = this.tweet();
 
-  tweetProfile$ = this.#tweet$.pipe(
-    switchMap((tweet) =>
-      this.#store.select(selectProfileById(tweet.profileId))
-    ),
-    filter(Boolean)
-  );
+    if (tweet && tweetIsRetweet(tweet)) {
+      return this.#store.selectSignal(
+        selectProfileById((tweet as ReTweety).referenceProfileId)
+      )();
+    }
+    return null;
+  });
 
   // Component logic
-  tweetComments$ = this.#tweet$.pipe(map(({ comments }) => comments));
   commentOverlayVisible = signal(false);
 
-  tweetLiked$ = this.#tweet$.pipe(
-    combineLatestWith(this.#currentProfile$),
-    map(([tweet, currentProfile]) =>
-      tweetIsLikedByProfile(tweet, currentProfile?.id)
-    )
-  );
+  tweetComments = computed(() => this.tweet()?.comments);
 
-  tweetCanBeDeleted$ = this.#tweet$.pipe(
-    switchMap((tweet) =>
-      combineLatest([
-        this.#currentProfile$,
-        tweet.type === TweetyType.Retweet
-          ? this.retweetProfile$
-          : this.tweetProfile$,
-      ])
-    ),
-    map(
-      ([currentProfile, tweetOrRetweetProfile]) =>
+  tweetLiked = computed(() => {
+    const tweet = this.tweet(),
+      profile = this.currentProfile();
+
+    if (tweet && profile) {
+      return tweetIsLikedByProfile(tweet, profile.id);
+    }
+
+    return false;
+  });
+
+  tweetCanBeDeleted = computed(() => {
+    const tweet = this.tweet(),
+      currentProfile = this.currentProfile(),
+      tweetProfile = this.tweetProfile(),
+      retweetProfile = this.retweetProfile();
+
+    if (!tweet) {
+      return false;
+    }
+
+    const profileToVerify =
+      tweet.type === TweetyType.Tweet ? tweetProfile : retweetProfile;
+
+    if (currentProfile && profileToVerify) {
+      return (
         currentProfile &&
-        tweetOrRetweetProfile &&
-        currentProfile.id === tweetOrRetweetProfile.id
-    ),
-    startWith(false)
-  );
+        profileToVerify &&
+        currentProfile.id === profileToVerify.id
+      );
+    }
 
-  tweetBookmarked$ = this.#tweet$.pipe(
-    switchMap((tweet) => this.#store.select(selectIsBookmarked(tweet)))
-  );
+    return false;
+  });
+
+  tweetBookmarked = computed(() => {
+    const tweet = this.tweet();
+    return !!tweet && this.#store.selectSignal(selectIsBookmarked(tweet))();
+  });
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
-  /** Comment section */
+
+  @ViewChild('commentOverlayTmpl')
+  commentOverlayTmpl: OverlayPanel;
+
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
-    if (this.commentOverlayVisible()) {
-      this.commentHandler();
+    const tweet = this.tweet();
+    if (tweet && this.commentOverlayVisible()) {
+      this.commentHandler(tweet);
     }
   }
 
@@ -183,29 +164,17 @@ export class FeatTweetTweetyComponent implements OnChanges {
     Validators.maxLength(1000),
   ]);
 
-  @ViewChild('commentOverlayTmpl')
-  commentOverlayTmpl: OverlayPanel;
+  tweetIsRetweetFn = tweetIsRetweet;
 
-  ngOnChanges(changes: SimpleChanges): void {
-    const tweetId = changes['tweetId'];
-
-    if (
-      !!tweetId.currentValue &&
-      tweetId.currentValue !== tweetId.previousValue
-    ) {
-      this.#tweetId$$.next(tweetId.currentValue);
-    }
-  }
-
-  profilePic = profilePicture;
-
-  tweetUrl(tweet: Tweety, absolute?: boolean) {
+  tweetUrl(tweet: Tweety | ReTweety, absolute?: boolean) {
     return [
       absolute ? this.#document.location.origin : '/',
       APP_PATH.Profile,
       tweet.profileId,
       APP_PATH.Tweet,
-      tweet.type === TweetyType.Retweet ? tweet.referenceId : tweet.id,
+      tweet.type === TweetyType.Retweet
+        ? (tweet as ReTweety).referenceId
+        : tweet.id,
     ].join('/');
   }
 
@@ -213,75 +182,56 @@ export class FeatTweetTweetyComponent implements OnChanges {
     this.#router.navigate([this.tweetUrl(tweet)]);
   }
 
-  deleteHandler() {
-    this.#tweet$
-      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
-      .subscribe((tweet) => {
-        if (tweet.type === TweetyType.Retweet) {
-          this.#store.dispatch(FeatReTweetActions.delete({ tweet }));
-        } else {
-          this.#store.dispatch(FeatTweetActions.delete({ tweet }));
-        }
-        this.tweetDeleted.emit();
-      });
+  deleteHandler(tweet: Tweety | ReTweety) {
+    if (tweetIsRetweet(tweet)) {
+      this.#store.dispatch(FeatReTweetActions.delete({ tweet }));
+    } else {
+      this.#store.dispatch(FeatTweetActions.delete({ tweet }));
+    }
+    this.tweetDeleted.emit();
   }
 
   /** @TODO migrate commentHandler to a specific class and re-use it here and in tweet.component */
-  commentHandler() {
+  commentHandler(tweet: Tweety) {
     if (!this.commentControl.valid) {
       return;
     }
 
-    this.#tweet$
-      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
-      .subscribe((tweet) => {
-        const tweetuuidv4 = uuidv4();
-        const content: string = this.commentControl.value as string;
-        this.#store.dispatch(
-          FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
-        );
+    const tweetuuidv4 = uuidv4();
+    const content: string = this.commentControl.value as string;
+    this.#store.dispatch(
+      FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
+    );
 
-        this.commentControl.reset();
-        this.commentOverlayTmpl.hide();
-      });
+    this.commentControl.reset();
+    this.commentOverlayTmpl.hide();
   }
 
-  retweetHandler() {
-    this.#store.dispatch(FeatReTweetActions.reTweet({ tweet: this.tweet() }));
+  retweetHandler(tweet: Tweety) {
+    this.#store.dispatch(FeatReTweetActions.reTweet({ tweet }));
   }
 
   quoteHandler() {
     // this.#store.dispatch(FeatTweetActions.quote({tweet: this.tweet()}));
   }
 
-  likeHandler() {
-    this.#tweet$
-      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
-      .subscribe((tweet) => {
-        this.#store.dispatch(FeatTweetActions.like({ tweet }));
-      });
+  likeHandler(tweet: Tweety) {
+    this.#store.dispatch(FeatTweetActions.like({ tweet }));
   }
 
-  bookmarkHandler() {
-    this.#tweet$
-      .pipe(
-        take(1),
-        takeUntilDestroyed(this.#destroyRef),
-        withLatestFrom(this.tweetBookmarked$)
-      )
-      .subscribe(([tweet, bookmarked]) => {
-        if (bookmarked) {
-          this.#store.dispatch(
-            FeatTweetBookmarkActions.removeBookmark({ tweetId: tweet.id })
-          );
-        } else {
-          this.#store.dispatch(
-            FeatTweetBookmarkActions.bookmark({
-              tweetId: tweet.id,
-              profileIdTweetyOwner: tweet.profileId,
-            })
-          );
-        }
-      });
+  bookmarkHandler(tweet: Tweety) {
+    const bookmarked = this.tweetBookmarked();
+    if (bookmarked) {
+      this.#store.dispatch(
+        FeatTweetBookmarkActions.removeBookmark({ tweetId: tweet.id })
+      );
+    } else {
+      this.#store.dispatch(
+        FeatTweetBookmarkActions.bookmark({
+          tweetId: tweet.id,
+          profileIdTweetyOwner: tweet.profileId,
+        })
+      );
+    }
   }
 }

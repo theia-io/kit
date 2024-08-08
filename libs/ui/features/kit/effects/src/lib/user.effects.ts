@@ -10,6 +10,33 @@ export class UserEffects {
   #actions$ = inject(Actions);
   #userService = inject(UserService);
 
+  // getUser$ = createEffect(() =>
+  //   this.#actions$.pipe(
+  //     ofType(FeatUserApiActions.getUser),
+  //     switchMap(({ userId }) =>
+  //       this.#userService.getUser$(userId).pipe(
+  //         map((user) =>
+  //           user
+  //             ? FeatUserApiActions.getUserSuccess({
+  //                 user,
+  //               })
+  //             : FeatUserApiActions.getUserFailure({
+  //                 message: 'No such user',
+  //               })
+  //         ),
+  //         catchError((err) => {
+  //           console.error('[UserEffects] getUser', err);
+  //           return of(
+  //             FeatUserApiActions.getUserFailure({
+  //               message: 'It is not you, its us. Cannot get user now.',
+  //             })
+  //           );
+  //         })
+  //       )
+  //     )
+  //   )
+  // );
+
   addExperience$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatUserApiActions.addExperience),
