@@ -27,6 +27,7 @@ import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
+  UiKitDeleteComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
@@ -59,6 +60,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     AccountTileComponent,
     FeatTweetActionsComponent,
     UiKitTweetButtonComponent,
+    UiKitDeleteComponent,
   ],
 })
 export class FeatTweetTweetyComponent {

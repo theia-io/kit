@@ -1,6 +1,5 @@
-@if(farewells$ | async; as farewells) {
 <div class="text-4xl text-center mb-12">Your farewells</div>
-@for (farewell of farewells; track $index) {
+@for (farewell of farewells$ | async; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <feat-farewell-view [farewellId]="farewell.id" [preview]="true" />
 
@@ -14,8 +13,10 @@
       <i class="ml-1 pi pi-arrow-right"></i>
     </a>
   </p>
+
+  <ui-kit-delete (onDelete)="onDeleteHandler(farewell)" />
 </ui-kit-comp-gradient-card>
-} } @else {
+} @empty {
 <div class="mt-4 flex flex-col justify-center items-center">
   <p>You have not created any farewells yet</p>
   <p-button

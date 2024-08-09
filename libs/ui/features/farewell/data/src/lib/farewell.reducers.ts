@@ -25,8 +25,8 @@ export const featFarewellReducer = createReducer(
       farewells: addOrUpdate(farewell, state.farewells),
     })
   ),
-  on(FeatFarewellActions.deleteFarewellSuccess, (state, { farewellId }) => ({
+  on(FeatFarewellActions.deleteFarewellSuccess, (state, { id }) => ({
     ...state,
-    farewells: state.farewells.filter(({ id }) => farewellId !== id),
+    farewells: state.farewells.filter((farewell) => farewell.id !== id),
   }))
 );

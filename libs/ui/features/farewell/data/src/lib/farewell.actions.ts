@@ -22,8 +22,8 @@ export const FeatFarewellActions = createActionGroup({
     PutFarewellSuccess: props<{ farewell: Farewell }>(),
     PutFarewellFailure: props<{ message: string }>(),
 
-    DeleteFarewell: props<{ farewellId: Farewell['id'] }>(),
-    DeleteFarewellSuccess: props<{ farewellId: Farewell['id'] }>(),
+    DeleteFarewell: props<{ id: Farewell['id'] }>(),
+    DeleteFarewellSuccess: props<{ id: Farewell['id'] }>(),
     DeleteFarewellFailure: props<{ message: string }>(),
   },
 });

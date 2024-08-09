@@ -60,9 +60,5 @@ retweetProfile) {
 </div>
 
 @if(tweetCanBeDeleted()) {
-<i
-  (click)="$event.stopPropagation(); deleteHandler(tweet)"
-  role="button"
-  class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-  style="font-size: 1.5rem"></i>
+<ui-kit-delete (onDelete)="deleteHandler(tweet)" />
 } }

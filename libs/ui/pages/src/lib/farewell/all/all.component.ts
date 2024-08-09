@@ -8,10 +8,11 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { Profile } from '@kitouch/shared-models';
+import { Farewell, Profile } from '@kitouch/shared-models';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
+  UiKitDeleteComponent,
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
@@ -33,6 +34,7 @@ import { filter } from 'rxjs/operators';
     FeatFarewellViewComponent,
     DividerComponent,
     UiCompGradientCardComponent,
+    UiKitDeleteComponent,
     //
   ],
 })
@@ -55,5 +57,9 @@ export class PageFarewellAllComponent {
           FeatFarewellActions.getProfileFarewells({ profileId: id })
         )
       );
+  }
+
+  onDeleteHandler({ id }: Farewell) {
+    this.#store.dispatch(FeatFarewellActions.deleteFarewell({ id }));
   }
 }
