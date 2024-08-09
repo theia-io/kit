@@ -2,6 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   inject,
   input,
   output,
@@ -46,6 +47,7 @@ export class FeatFarewellViewComponent {
   profile = output<Profile>();
 
   #store = inject(Store);
+  #destroyRef = inject(DestroyRef);
 
   farewell$ = combineLatest([
     toObservable(this.farewellId).pipe(filter(Boolean)),
@@ -72,7 +74,7 @@ export class FeatFarewellViewComponent {
     of(null)
       .pipe(
         takeUntilDestroyed(),
-        delay(5000),
+        delay(2500),
         withLatestFrom(
           this.farewell$,
           this.#store.pipe(select(selectCurrentProfile))
@@ -95,7 +97,7 @@ export class FeatFarewellViewComponent {
     }
 
     this.farewell$
-      .pipe(takeUntilDestroyed(), distinctUntilKeyChanged('id'))
+      .pipe(takeUntilDestroyed(this.#destroyRef), distinctUntilKeyChanged('id'))
       .subscribe((farewell) =>
         this.#store.dispatch(
           FeatFarewellActions.putFarewell({

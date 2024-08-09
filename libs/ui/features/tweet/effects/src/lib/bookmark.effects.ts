@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
@@ -9,9 +9,11 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  distinctUntilKeyChanged,
   filter,
   map,
   switchMap,
+  take,
   withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
@@ -153,4 +155,11 @@ export class BookmarkEffects {
       )
     )
   );
+
+  constructor() {
+    console.log('BOOKMARK EFEECT');
+    this.currentProfile$
+      .pipe(distinctUntilKeyChanged('id'))
+      .subscribe(() => this.#store.dispatch(FeatTweetBookmarkActions.getAll()));
+  }
 }
