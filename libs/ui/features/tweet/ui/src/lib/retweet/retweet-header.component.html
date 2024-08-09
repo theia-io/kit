@@ -1,40 +1,32 @@
-<span class="block mb-2 text-xs font-medium text-gray-400">
+<div
+  class="mr-10 flex items-center justify-end text-xs font-medium text-gray-400">
   <i class="pi pi-replay mr-2"></i>
 
+  <img
+    class="inline-block h-5 w-5 rounded-full mr-1"
+    referrerpolicy="no-referrer"
+    [src]="profilePic(retweetProfile())"
+    height="20"
+    width="20"
+    alt="kitouch profile picture" />
+
   <a
-    class="transition hover:underline hover:font-semibold"
+    class="mr-1 transition hover:underline"
     [routerLink]="[
       profileUrlPath + (retweetProfile().alias ?? retweetProfile().id)
     ]">
-    @if(currentProfileId() === retweetProfile().id) { You re-tweeted } @else if(
-    retweetProfile().id === tweet().profileId && retweetProfile().id ===
-    tweet().referenceId ) {
-    <div class="inline-block min-w-5">
-      <img
-        class="inline-block h-5 w-5 rounded-full"
-        referrerpolicy="no-referrer"
-        [src]="profilePic(retweetProfile())"
-        height="20"
-        width="20"
-        alt="kitouch profile picture" />
-    </div>
-    {{ retweetProfile().name }} (Tweet owner) re-tweeted } @else {
-    <div class="inline-block min-w-5">
-      <img
-        class="inline-block h-5 w-5 rounded-full"
-        referrerpolicy="no-referrer"
-        [src]="profilePic(retweetProfile())"
-        height="20"
-        width="20"
-        alt="kitouch profile picture" />
-    </div>
-    {{ retweetProfile().name }} re-tweeted }
+    {{ currentProfileId() | retweetWho : retweetProfile() : tweetProfile() }}
   </a>
-  from @if(tweetProfile(); as tweetProfile) {
+
+  re-tweeted
+
   <a
-    class="transition font-semibold hover:underline"
+    class="ml-1 transition hover:underline"
     [routerLink]="[
-      profileUrlPath + (retweetProfile().alias ?? retweetProfile().id)
-    ]"></a>
-  }
-</span>
+      profileUrlPath + (tweetProfile()?.alias ?? tweetProfile()?.id)
+    ]">
+    {{
+      currentProfileId() | retweetFromWhom : retweetProfile() : tweetProfile()
+    }}
+  </a>
+</div>
