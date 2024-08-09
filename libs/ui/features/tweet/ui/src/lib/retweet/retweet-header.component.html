@@ -12,16 +12,18 @@
 
   <a
     class="mr-1 transition hover:underline"
+    (click)="$event.stopImmediatePropagation()"
     [routerLink]="[
       profileUrlPath + (retweetProfile().alias ?? retweetProfile().id)
     ]">
     {{ currentProfileId() | retweetWho : retweetProfile() : tweetProfile() }}
   </a>
 
-  re-tweeted
-
+  re-tweeted @if(currentProfileId() !== tweetProfile()?.id &&
+  retweetProfile().id !== tweetProfile()?.id && tweetProfile()) {
   <a
     class="ml-1 transition hover:underline"
+    (click)="$event.stopImmediatePropagation()"
     [routerLink]="[
       profileUrlPath + (tweetProfile()?.alias ?? tweetProfile()?.id)
     ]">
@@ -29,4 +31,7 @@
       currentProfileId() | retweetFromWhom : retweetProfile() : tweetProfile()
     }}
   </a>
+  } @else {
+  {{ currentProfileId() | retweetFromWhom : retweetProfile() : tweetProfile() }}
+  }
 </div>

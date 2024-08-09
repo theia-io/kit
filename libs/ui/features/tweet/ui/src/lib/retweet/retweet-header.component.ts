@@ -31,15 +31,4 @@ export class RetweetHeaderComponent {
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
 
   profilePic = profilePicture;
-
-  constructor() {
-    effect(() => {
-      console.log(
-        this.currentProfileId(),
-        this.tweet(),
-        this.tweetProfile(),
-        this.retweetProfile()
-      );
-    });
-  }
 }
