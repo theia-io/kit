@@ -23,6 +23,15 @@ export interface Profile {
   name: string;
   type?: ProfileType;
   status?: ProfileStatus;
+  socials?: {
+    linkedin: string;
+    github: string;
+    twitter: string;
+    facebook: string;
+    instagram: string;
+    whatsapp: string;
+    youtube: string;
+  };
   // own
   title?: string;
   subtitle?: string;

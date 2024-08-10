@@ -4,10 +4,24 @@
   hideTransitionOptions="0ms"
   [enableService]="false"
   [closable]="false" />
+
 <ui-kit-comp-new-ui-item [newlyAddedItem]="updatingProfile()">
   <feat-settings-profile-information
     [profile]="currentProfile$ | async"
     (updatingProfile)="updatingProfileHandler()" />
+</ui-kit-comp-new-ui-item>
+
+<p-messages
+  [value]="[socialsMessage()]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false" />
+<ui-kit-comp-new-ui-item [newlyAddedItem]="updatingSocials()">
+  <h2 class="pl-4 text-lg font-bold">Your social networks</h2>
+  <feat-settings-socials
+    [profile]="currentProfile$ | async"
+    (savingSocials)="updatingSocialsHandler()" />
 </ui-kit-comp-new-ui-item>
 
 <p-messages

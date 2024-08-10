@@ -13,7 +13,6 @@ import {
   filter,
   map,
   switchMap,
-  take,
   withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
@@ -157,7 +156,6 @@ export class BookmarkEffects {
   );
 
   constructor() {
-    console.log('BOOKMARK EFEECT');
     this.currentProfile$
       .pipe(distinctUntilKeyChanged('id'))
       .subscribe(() => this.#store.dispatch(FeatTweetBookmarkActions.getAll()));

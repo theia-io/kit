@@ -1,21 +1,4 @@
-<div routerLink="/" class="flex items-center hover:cursor-pointer">
-  <img
-    class="inline-block h-10 w-auto rounded-full mt-2"
-    [ngSrc]="uxDynamicService.logoPath()"
-    alt="Kitouch logo"
-    height="40"
-    width="40" />
-
-  <div class="relative">
-    <p-tag
-      severity="info"
-      class="absolute -top-2 -right-12 rotate-12"
-      value="Alpha"
-      [rounded]="true" />
-
-    <p class="ml-2">Keep in touch</p>
-  </div>
-</div>
+<ui-shared-logo />
 
 <p-menu
   styleClass="border-0 mt-4"

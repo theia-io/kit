@@ -13,6 +13,7 @@ import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsExperienceShowComponent,
   FeatSettingsProfileInformationComponent,
+  FeatSettingsSocialsComponent,
 } from '@kitouch/feat-settings-ui';
 import {
   FeatAccountApiActions,
@@ -29,7 +30,7 @@ import { AccordionModule } from 'primeng/accordion';
 import { Message } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
-import { take } from 'rxjs';
+import { filter, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -45,6 +46,7 @@ import { take } from 'rxjs';
     //
     NewUIItemComponent,
     FeatSettingsProfileInformationComponent,
+    FeatSettingsSocialsComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsExperienceShowComponent,
   ],
@@ -52,7 +54,9 @@ import { take } from 'rxjs';
 export class PageSettingsComponent implements OnInit {
   #store = inject(Store);
 
-  currentProfile$ = this.#store.select(selectCurrentProfile).pipe(take(1));
+  currentProfile$ = this.#store
+    .select(selectCurrentProfile)
+    .pipe(filter(Boolean), take(1));
   updatingProfile = signal(false);
   profileMessage = computed<Message>(() => {
     if (this.updatingProfile()) {
@@ -61,6 +65,18 @@ export class PageSettingsComponent implements OnInit {
       return {
         severity: 'info',
         detail: 'Edit your information and we will save it automatically',
+      };
+    }
+  });
+
+  updatingSocials = signal(false);
+  socialsMessage = computed<Message>(() => {
+    if (this.updatingSocials()) {
+      return { severity: 'success', detail: 'Saving your social networks' };
+    } else {
+      return {
+        severity: 'info',
+        detail: 'Add your social networks and we will save them automatically',
       };
     }
   });
@@ -87,6 +103,14 @@ export class PageSettingsComponent implements OnInit {
 
     setTimeout(() => {
       this.updatingProfile.set(false);
+    }, 3000);
+  }
+
+  updatingSocialsHandler() {
+    this.updatingSocials.set(true);
+
+    setTimeout(() => {
+      this.updatingSocials.set(false);
     }, 3000);
   }
 
