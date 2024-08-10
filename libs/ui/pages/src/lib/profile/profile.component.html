@@ -31,6 +31,7 @@
         "
         class="float-right mr-2 -mb-6"
         [class.min-w-32]="!isFollowing()"
+        [class.min-h-10]="isFollowing()"
         severity="contrast">
         @if(!isFollowing()) { Connect
         <img
