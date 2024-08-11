@@ -75,4 +75,15 @@ export class FarewellService extends DataSourceService {
       map(() => ({ ...rest, id }))
     );
   }
+
+  deleteFarewell(id: Farewell['id']) {
+    return this.db$().pipe(
+      switchMap((db) =>
+        db.collection<DBClientType<Farewell>>('farewell').deleteOne({
+          _id: new BSON.ObjectId(id),
+        })
+      ),
+      map(({ deletedCount }) => deletedCount > 0)
+    );
+  }
 }

@@ -4,7 +4,7 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { filter, map, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { FarewellService } from './farewell.service';
 
 @Injectable()
@@ -57,6 +57,32 @@ export class FarewellEffects {
       ofType(FeatFarewellActions.putFarewell),
       switchMap(({ farewell }) => this.#farewellService.putFarewell(farewell)),
       map((farewell) => FeatFarewellActions.putFarewellSuccess({ farewell }))
+    )
+  );
+
+  deleteFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.deleteFarewell),
+      switchMap(({ id }) =>
+        this.#farewellService.deleteFarewell(id).pipe(
+          map((deleted) =>
+            deleted
+              ? FeatFarewellActions.deleteFarewellSuccess({ id })
+              : FeatFarewellActions.deleteFarewellFailure({
+                  message:
+                    'It seems this farewell cannot be deleted. Please, get in touch with us.',
+                })
+          ),
+          catchError(() =>
+            of(
+              FeatFarewellActions.deleteFarewellFailure({
+                message:
+                  'We were unable to delete farewell. It is not you, its us. Try again later or contact us directly',
+              })
+            )
+          )
+        )
+      )
     )
   );
 }

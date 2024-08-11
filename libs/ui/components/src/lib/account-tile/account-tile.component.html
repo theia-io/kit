@@ -13,7 +13,10 @@
     </ng-template>
 
     @if (link()) {
-    <a [routerLink]="link()" class="hover:animate-pulse">
+    <a
+      (click)="$event.stopImmediatePropagation()"
+      [routerLink]="link()"
+      class="hover:animate-pulse">
       <ng-container *ngTemplateOutlet="picTmp"></ng-container>
     </a>
     } @else {

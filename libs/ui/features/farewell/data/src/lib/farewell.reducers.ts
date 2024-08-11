@@ -1,7 +1,7 @@
 import { Farewell } from '@kitouch/shared-models';
+import { addOrUpdate, mergeArr } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFarewellActions } from './farewell.actions';
-import { mergeArr, addOrUpdate } from '@kitouch/utils';
 
 export interface FeatureFarewellState {
   farewells: Array<Farewell>;
@@ -24,5 +24,9 @@ export const featFarewellReducer = createReducer(
       ...state,
       farewells: addOrUpdate(farewell, state.farewells),
     })
-  )
+  ),
+  on(FeatFarewellActions.deleteFarewellSuccess, (state, { id }) => ({
+    ...state,
+    farewells: state.farewells.filter((farewell) => farewell.id !== id),
+  }))
 );

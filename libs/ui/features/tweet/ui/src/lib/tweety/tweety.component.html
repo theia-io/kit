@@ -1,10 +1,10 @@
 @if(tweet(); as tweet) { @if(tweetIsRetweetFn(tweet) && retweetProfile(); as
 retweetProfile) {
 <feat-tweet-retweet-header
+  [currentProfileId]="currentProfile()?.id"
   [tweet]="tweet"
-  [retweetProfile]="$any(retweetProfile)"
-  [tweetProfile]="$any(tweetProfile())"
-  [currentProfileId]="currentProfile()?.id" />
+  [retweetProfile]="retweetProfile"
+  [tweetProfile]="tweetProfile()" />
 } @if(tweetProfile(); as tProfile) {
 <ui-kit-comp-account-tile
   [primaryText]="$any(tProfile).name"
@@ -60,9 +60,5 @@ retweetProfile) {
 </div>
 
 @if(tweetCanBeDeleted()) {
-<i
-  (click)="$event.stopPropagation(); deleteHandler(tweet)"
-  role="button"
-  class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-  style="font-size: 1.5rem"></i>
+<ui-kit-delete (onDelete)="deleteHandler(tweet)" />
 } }

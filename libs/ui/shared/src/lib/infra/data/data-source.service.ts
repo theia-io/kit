@@ -63,10 +63,10 @@ export class DataSourceService {
     );
   }
 
-  protected realmFunction$(
+  protected realmFunction$<T>(
     functionName: 'getAccountUserProfiles' | 'getSuggestionColleaguesToFollow',
     args: unknown
-  ) {
+  ): Observable<T> {
     return this.#limitedRealmFunctionsList$.pipe(
       take(1),
       switchMap((realmFunctionsList) => {

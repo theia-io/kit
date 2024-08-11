@@ -3,7 +3,6 @@ import {
   dbClientBookmarkAdapter,
   dbClientTweetAdapter,
 } from '@kitouch/feat-tweet-data';
-import { dbClientProfileAdapter } from '@kitouch/kit-data';
 import {
   Bookmark,
   Profile,
@@ -360,13 +359,9 @@ export class TweetApiService extends DataSourceService {
     );
   }
 
-  #updateTweet({
-    id,
-    profileId,
-    type,
-    timestamp,
-    ...tweetRest
-  }: Partial<Tweety>) {
+  #updateTweet(tweet: Partial<Tweety>) {
+    const { id, type, profileId, timestamp, ...tweetRest } = tweet;
+
     return this.db$().pipe(
       switchMap((db) => {
         const collection =

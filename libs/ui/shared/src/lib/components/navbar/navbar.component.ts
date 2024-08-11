@@ -1,4 +1,3 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,7 +8,6 @@ import {
   output,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
 import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -23,6 +21,7 @@ import { TagModule } from 'primeng/tag';
 import { APP_PATH } from '../../constants';
 import { UXDynamicService } from '../../services/ux-dynamic.service';
 import { SubnavComponent } from './subnav/subnav.component';
+import { UiLogoComponent } from '../logo/logo.component';
 
 @Component({
   standalone: true,
@@ -30,13 +29,10 @@ import { SubnavComponent } from './subnav/subnav.component';
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
-    RouterModule,
-    NgOptimizedImage,
-    //
     MenuModule,
     TagModule,
     /** Features */
+    UiLogoComponent,
     UiCompCardComponent,
     DividerComponent,
     AccountTileComponent,

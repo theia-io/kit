@@ -7,7 +7,7 @@ import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import { APP_PATH, AuthService } from '@kitouch/ui-shared';
+import { APP_PATH, AuthService, UiLogoComponent } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -24,6 +24,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     ButtonModule,
     TagModule,
     ///
+    UiLogoComponent,
     FeatFarewellViewComponent,
     FeatFollowSuggestionByIdComponent,
   ],
