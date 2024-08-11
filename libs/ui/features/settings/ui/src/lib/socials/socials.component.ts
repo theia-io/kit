@@ -32,11 +32,6 @@ export const URL_PATTERN =
   '(\\?[;&a-z\\d%_.~+=-]*)?' + // validate query string
   '(\\#[-a-z\\d_]*)?$';
 
-const isValidUrl = (urlString: string) => {
-  const urlPattern = new RegExp(URL_PATTERN, 'i'); // validate fragment locator
-  return !!urlPattern.test(urlString);
-};
-
 @Component({
   standalone: true,
   selector: 'feat-settings-socials',
