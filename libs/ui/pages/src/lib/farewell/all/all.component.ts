@@ -14,7 +14,7 @@ import {
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 
@@ -41,7 +41,7 @@ import { filter } from 'rxjs/operators';
 export class PageFarewellAllComponent {
   #store = inject(Store);
 
-  farewellUrl = APP_PATH.PublicFarewell;
+  farewellUrl = APP_PATH_ALLOW_ANONYMOUS.Farewell;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewells$ = this.#store.pipe(select(selectFarewells));
 

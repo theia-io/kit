@@ -7,7 +7,12 @@ import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import { APP_PATH, AuthService, UiLogoComponent } from '@kitouch/ui-shared';
+import { UIKitLinkUXDirective } from '@kitouch/ui-components';
+import {
+  APP_PATH_ALLOW_ANONYMOUS,
+  AuthService,
+  UiLogoComponent,
+} from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -25,6 +30,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     TagModule,
     ///
     UiLogoComponent,
+    UIKitLinkUXDirective,
     FeatFarewellViewComponent,
     FeatFollowSuggestionByIdComponent,
   ],
@@ -74,7 +80,7 @@ export class PageFarewellComponent {
   #url(farewellId: string) {
     return [
       this.#document.location.origin,
-      APP_PATH.PublicFarewell,
+      APP_PATH_ALLOW_ANONYMOUS.Farewell,
       farewellId,
     ].join('/');
   }

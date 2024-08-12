@@ -1,47 +1,66 @@
 import { Route } from '@angular/router';
 import {
   APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
   APP_PATH_DIALOG,
+  APP_PATH_STATIC_PAGES,
   onlyForLoggedInGuard,
   onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
   OUTLET_DIALOG,
 } from '@kitouch/ui-shared';
 import { KitComponent } from './kit.component';
+import { KitStaticComponent } from './kit-static.component';
 
 const pages = import('@kitouch/pages');
 
 export const appRoutes: Route[] = [
   {
-    path: 'sign-in',
+    path: APP_PATH_STATIC_PAGES.SignIn,
     loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
     canActivate: [onlyForNotLoggedInGuard],
   },
   {
-    path: 'redirect',
+    path: APP_PATH_STATIC_PAGES.Redirect,
     loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
   },
   {
-    path: 'join',
+    path: APP_PATH_STATIC_PAGES.Join,
     loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
   },
+
+  //
   {
-    path: 'terms-and-conditions',
+    // TODO UPDATE PATH URLs
+    path: APP_PATH_STATIC_PAGES.TermsAndConditions,
     loadComponent: () =>
       pages.then((comp) => comp.PageTermsConditionsComponent),
   },
   {
-    path: 'privacy-policy',
+    path: APP_PATH_STATIC_PAGES.PrivacyPolicy,
     loadComponent: () => pages.then((comp) => comp.PagePrivacyPolicyComponent),
   },
   {
-    path: 'cookie',
+    path: APP_PATH_STATIC_PAGES.Cookie,
     loadComponent: () => pages.then((comp) => comp.PageCookiesComponent),
   },
+
   {
-    path: `${APP_PATH.PublicFarewell}/:id`,
+    path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
     loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
     canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
+  },
+
+  {
+    path: 's',
+    component: KitStaticComponent,
+    children: [
+      {
+        path: APP_PATH_STATIC_PAGES.IntroduceKit,
+        loadComponent: () =>
+          pages.then((comp) => comp.KitPagesIntroduceKitComponent),
+      },
+    ],
   },
   {
     path: APP_PATH.AboutYourself,

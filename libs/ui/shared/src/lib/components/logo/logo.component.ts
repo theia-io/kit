@@ -7,10 +7,7 @@ import { UXDynamicService } from '../../services';
 @Component({
   standalone: true,
   selector: 'ui-shared-logo',
-  template: ` <div
-    routerLink="/"
-    class="flex items-center hover:cursor-pointer"
-  >
+  template: ` <a routerLink="/" class="flex items-center hover:cursor-pointer">
     <img
       class="inline-block h-10 w-auto rounded-full mt-2"
       [ngSrc]="uxDynamicService.logoPath()"
@@ -29,7 +26,7 @@ import { UXDynamicService } from '../../services';
 
       <p class="ml-2">{{ logoText() }}</p>
     </div>
-  </div>`,
+  </a>`,
   imports: [
     RouterModule,
     NgOptimizedImage,

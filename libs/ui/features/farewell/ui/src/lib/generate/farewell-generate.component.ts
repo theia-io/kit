@@ -10,7 +10,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
-import { APP_PATH } from '@kitouch/ui-shared';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -81,7 +81,9 @@ export class FeatFarewellGenerateComponent {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(({ farewell }) =>
-        this.#router.navigateByUrl(`${APP_PATH.PublicFarewell}/${farewell.id}`)
+        this.#router.navigateByUrl(
+          `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/${farewell.id}`
+        )
       );
   }
 }

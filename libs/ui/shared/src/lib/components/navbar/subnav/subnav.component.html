@@ -8,10 +8,11 @@
       <li>
         <a
           role="button"
+          uiKitLinkUX
+          class="block w-full"
           [routerLink]="farewellUrl()"
           routerLinkActive="primeng-menu__active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
+          [routerLinkActiveOptions]="{ exact: true }">
           All
         </a>
       </li>
@@ -22,17 +23,11 @@
           [routerLink]="farewellUrl() + '/generate'"
           routerLinkActive="primeng-menu__active"
           pTooltip="Generate Farewell"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
+          uiKitLinkUX
+          class="block w-full">
           Generate
         </a>
       </li>
-
-      <!-- <li>
-                <a role="button" [routerLink]="farewells()" target="_blank" pTooltip="Write us email to info@kitouch.io"
-                    class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
-                    My farewells
-                </a>
-            </li> -->
     </ul>
   </li>
 
@@ -51,7 +46,8 @@
           "
           target="_blank"
           pTooltip="Write us email to info@kitouch.io"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
+          uiKitLinkUX
+          class="block w-full">
           Help
         </a>
       </li>
@@ -67,7 +63,8 @@
         <button
           type="submit"
           (click)="logout.emit()"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
+          uiKitLinkUX
+          class="block w-full">
           Logout
         </button>
       </li>
