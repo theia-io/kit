@@ -1,32 +1,14 @@
+@if(profile(); as profile) {
+<feat-kit-profile-header class="block mt-8" [profile]="profile" />
+}
+
 <div class="flex flex-col items-center justify-center mt-12 mb-12 w-full">
-  @if(profile()) {
-  <div class="flex items-center justify-center gap-4 mb-12">
-    <div
-      class="p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
-      <img
-        class="rounded-md"
-        [src]="profilePic()"
-        referrerpolicy="no-referrer" />
-    </div>
-
-    <div class="ml-4 flex flex-col gap-2">
-      <p class="text-xl">
-        {{ profile()?.name }}
-      </p>
-
-      @if(profile()?.title) {
-      <p>{{ profile()?.title }}</p>
-      }
-    </div>
-  </div>
-  }
-
   <feat-farewell-view
-    class="block sm:w-full md:w-5/6 lg:w-3/6 mb-12"
     [farewellId]="farewellId$ | async"
     [preview]="preview()"
     (profile)="profile.set($event)"
     (farewell)="farewell.set($event)" />
+
   @if(preview() && farewell(); as farewell) {
   <div>
     <button
@@ -34,7 +16,7 @@
       (click)="copyToClipBoard(farewell.id)"
       [label]="copied() ? 'Done' : 'Copy'"
       severity="success"
-      class="mr-1">
+      class="mt-12 mr-1">
       @if(copied()) {
       <i class="pi pi-check mr-1"></i>
       } @else {

@@ -4,6 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
+import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
@@ -25,10 +26,11 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     AsyncPipe,
     RouterModule,
     NgOptimizedImage,
-    ///
+    //
     ButtonModule,
     TagModule,
-    ///
+    //
+    FeatKitProfileHeaderComponent,
     UiLogoComponent,
     UIKitLinkUXDirective,
     FeatFarewellViewComponent,

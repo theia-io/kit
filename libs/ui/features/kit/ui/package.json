@@ -1,6 +1,9 @@
 {
-  "name": "@kitouch/kit-data",
+  "name": "@kitouch/feat-kit-ui",
   "version": "1.0.0-beta",
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@angular/core": "~18.0.0",
+    "@kitouch/shared-models": "1.0.0-beta"
+  },
   "sideEffects": false
 }

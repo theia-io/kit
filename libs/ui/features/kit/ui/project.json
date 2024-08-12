@@ -1,5 +1,5 @@
 {
-  "name": "kit-ui",
+  "name": "feat-kit-ui",
   "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/ui/features/kit/ui/src",
   "prefix": "lib",
