@@ -3,7 +3,8 @@
   "version": "1.0.0-beta",
   "peerDependencies": {
     "@angular/core": "~18.0.0",
-    "@kitouch/shared-models": "1.0.0-beta"
+    "@kitouch/shared-models": "1.0.0-beta",
+    "@kitouch/kit-data": "1.0.0-beta"
   },
   "sideEffects": false
 }
