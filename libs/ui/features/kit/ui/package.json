@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/kit-data",
-  "version": "0.0.8",
+  "version": "1.0.0-beta",
   "peerDependencies": {},
   "sideEffects": false
 }

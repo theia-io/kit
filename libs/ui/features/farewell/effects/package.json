@@ -1,17 +1,17 @@
 {
   "name": "@kitouch/feat-farewell-effects",
-  "version": "0.0.8",
+  "version": "1.0.0-beta",
   "peerDependencies": {
     "@angular/core": "^18.0.0",
-    "@kitouch/kit-data": "0.0.8",
-    "@kitouch/feat-farewell-data": "0.0.8",
+    "@kitouch/kit-data": "1.0.0-beta",
+    "@kitouch/feat-farewell-data": "1.0.0-beta",
     "@ngrx/effects": "18.0.0",
     "@ngrx/store": "18.0.0",
     "rxjs": "~7.8.0",
-    "@kitouch/shared-models": "0.0.8",
-    "@kitouch/ui-shared": "0.0.8",
+    "@kitouch/shared-models": "1.0.0-beta",
+    "@kitouch/ui-shared": "1.0.0-beta",
     "realm-web": "^2.0.1",
-    "@kitouch/utils": "0.0.8"
+    "@kitouch/utils": "1.0.0-beta"
   },
   "sideEffects": false
 }
