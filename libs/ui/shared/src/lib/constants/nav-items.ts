@@ -14,18 +14,18 @@ export enum APP_PATH {
 
 /** For anonymous users also */
 export enum APP_PATH_ALLOW_ANONYMOUS {
-  Farewell = 'keep-in-touch',
+  Farewell = `keep-in-touch`,
 }
 
 /** For everybody (not even required to be logged in *anonymous* user) */
 export enum APP_PATH_STATIC_PAGES {
-  SignIn = 'sign-in',
-  Redirect = 'redirect',
-  Join = 'join',
-  TermsAndConditions = 'terms-and-conditions',
-  PrivacyPolicy = 'privacy-policy',
-  Cookie = 'cookie',
-  IntroduceKit = 'introducing-kit',
+  SignIn = `sign-in`,
+  Redirect = `redirect`,
+  Join = `join`,
+  TermsAndConditions = `terms-and-conditions`,
+  PrivacyPolicy = `privacy-policy`,
+  Cookie = `cookie`,
+  IntroduceKit = `introducing-kit`,
 }
 
 export const OUTLET_DIALOG = 'dialog';

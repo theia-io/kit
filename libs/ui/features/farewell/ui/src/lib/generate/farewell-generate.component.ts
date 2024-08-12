@@ -82,7 +82,7 @@ export class FeatFarewellGenerateComponent {
       )
       .subscribe(({ farewell }) =>
         this.#router.navigateByUrl(
-          `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/${farewell.id}`
+          `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/s/${farewell.id}`
         )
       );
   }

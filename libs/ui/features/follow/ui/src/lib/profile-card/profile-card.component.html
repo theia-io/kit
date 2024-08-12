@@ -10,9 +10,11 @@
       {{ profile().name }}
     </h5>
 
-    <span class="truncate text-sm text-gray-500 dark:text-gray-400">
-      {{ profile().title }}
-    </span>
+    <div class="block w-full">
+      <span class="block truncate text-sm text-gray-500 dark:text-gray-400">
+        {{ profile().title }}
+      </span>
+    </div>
 
     <ui-kit-follow-button
       stopConnectText="Stop"

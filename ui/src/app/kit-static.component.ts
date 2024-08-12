@@ -26,5 +26,5 @@ import { APP_PATH_STATIC_PAGES, UiLogoComponent } from '@kitouch/ui-shared';
   </div>`,
 })
 export class KitStaticComponent {
-  introduceKitUrl = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 }

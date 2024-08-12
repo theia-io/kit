@@ -80,6 +80,7 @@ export class PageFarewellComponent {
   #url(farewellId: string) {
     return [
       this.#document.location.origin,
+      's',
       APP_PATH_ALLOW_ANONYMOUS.Farewell,
       farewellId,
     ].join('/');

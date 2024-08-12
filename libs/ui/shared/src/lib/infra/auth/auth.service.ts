@@ -14,7 +14,7 @@ import {
 } from '@kitouch/kit-data';
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
-import { APP_PATH } from '../../constants';
+import { APP_PATH, APP_PATH_STATIC_PAGES } from '../../constants';
 import { ENVIRONMENT } from '../environments';
 import { RouterEventsService } from '../router/router-events.service';
 
@@ -31,7 +31,7 @@ export class AuthService {
   routerEventsService = inject(RouterEventsService);
   // service
   #realmApp: Realm.App | null = null;
-  redirectUrl = `${window.location.origin}/redirect`;
+  redirectUrl = `${window.location.origin}/s/${APP_PATH_STATIC_PAGES.Redirect}`;
 
   #anonymousUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
   #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
@@ -88,7 +88,7 @@ export class AuthService {
       )
       .subscribe(() => {
         this.#realmUser$$.next(undefined);
-        this.#router.navigateByUrl('/sign-in');
+        this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`);
       });
 
     this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
@@ -176,7 +176,7 @@ export class AuthService {
       })
       .then(({ account, user, profiles }) => {
         if (!account || !user || !profiles) {
-          return this.#router.navigateByUrl('join');
+          return this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
         }
 
         this.#account$$.next(account);
@@ -184,7 +184,7 @@ export class AuthService {
         this.#profiles$$.next(profiles);
 
         if (!user.experiences?.length) {
-          this.#router.navigateByUrl(APP_PATH.AboutYourself);
+          this.#router.navigateByUrl(`/s/${APP_PATH.AboutYourself}`);
           return;
         }
 

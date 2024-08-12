@@ -9,52 +9,53 @@ import {
   onlyForNotLoggedInGuard,
   OUTLET_DIALOG,
 } from '@kitouch/ui-shared';
-import { KitComponent } from './kit.component';
 import { KitStaticComponent } from './kit-static.component';
+import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/pages');
 
 export const appRoutes: Route[] = [
-  {
-    path: APP_PATH_STATIC_PAGES.SignIn,
-    loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
-    canActivate: [onlyForNotLoggedInGuard],
-  },
-  {
-    path: APP_PATH_STATIC_PAGES.Redirect,
-    loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
-  },
-  {
-    path: APP_PATH_STATIC_PAGES.Join,
-    loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
-  },
-
-  //
-  {
-    // TODO UPDATE PATH URLs
-    path: APP_PATH_STATIC_PAGES.TermsAndConditions,
-    loadComponent: () =>
-      pages.then((comp) => comp.PageTermsConditionsComponent),
-  },
-  {
-    path: APP_PATH_STATIC_PAGES.PrivacyPolicy,
-    loadComponent: () => pages.then((comp) => comp.PagePrivacyPolicyComponent),
-  },
-  {
-    path: APP_PATH_STATIC_PAGES.Cookie,
-    loadComponent: () => pages.then((comp) => comp.PageCookiesComponent),
-  },
-
+  /** @TODO @FIXME remove after on 1st September 2024 */
   {
     path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
-    loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
-    canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
+    redirectTo: `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
   },
-
   {
     path: 's',
     component: KitStaticComponent,
     children: [
+      {
+        path: APP_PATH_STATIC_PAGES.SignIn,
+        loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
+        canActivate: [onlyForNotLoggedInGuard],
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.Redirect,
+        loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.Join,
+        loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.TermsAndConditions,
+        loadComponent: () =>
+          pages.then((comp) => comp.PageTermsConditionsComponent),
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.PrivacyPolicy,
+        loadComponent: () =>
+          pages.then((comp) => comp.PagePrivacyPolicyComponent),
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.Cookie,
+        loadComponent: () => pages.then((comp) => comp.PageCookiesComponent),
+      },
+      {
+        path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
+        loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
+        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
+      },
       {
         path: APP_PATH_STATIC_PAGES.IntroduceKit,
         loadComponent: () =>

@@ -41,7 +41,7 @@ import { filter } from 'rxjs/operators';
 export class PageFarewellAllComponent {
   #store = inject(Store);
 
-  farewellUrl = APP_PATH_ALLOW_ANONYMOUS.Farewell;
+  farewellUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewells$ = this.#store.pipe(select(selectFarewells));
 
