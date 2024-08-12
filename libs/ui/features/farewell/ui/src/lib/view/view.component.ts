@@ -15,6 +15,7 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
+import { DeviceService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { TooltipModule } from 'primeng/tooltip';
 import {
@@ -25,6 +26,7 @@ import {
   map,
   of,
   shareReplay,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 
@@ -48,6 +50,8 @@ export class FeatFarewellViewComponent {
 
   #store = inject(Store);
   #destroyRef = inject(DestroyRef);
+
+  device$ = inject(DeviceService).device$;
 
   farewell$ = combineLatest([
     toObservable(this.farewellId).pipe(filter(Boolean)),

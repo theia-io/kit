@@ -12,6 +12,7 @@ import { UIKitLinkUXDirective } from '@kitouch/ui-components';
 import {
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
+  DeviceService,
   UiLogoComponent,
 } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
@@ -44,6 +45,8 @@ export class PageFarewellComponent {
   #store = inject(Store);
   #document = inject(DOCUMENT);
   #authService = inject(AuthService);
+
+  device$ = inject(DeviceService).device$;
 
   farewellId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
