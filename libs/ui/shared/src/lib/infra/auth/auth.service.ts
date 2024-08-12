@@ -184,7 +184,7 @@ export class AuthService {
         this.#profiles$$.next(profiles);
 
         if (!user.experiences?.length) {
-          this.#router.navigateByUrl(`/s/${APP_PATH.AboutYourself}`);
+          this.#router.navigateByUrl(APP_PATH.AboutYourself);
           return;
         }
 

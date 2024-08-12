@@ -13,7 +13,7 @@
     </a>
   </p>
 
-  <ui-kit-delete (onDelete)="onDeleteHandler(farewell)" />
+  <ui-kit-delete (onDelete)="onDeleteHandler(farewell, $event)" />
 </ui-kit-comp-gradient-card>
 } @empty {
 <div class="mt-4 flex flex-col justify-center items-center">
@@ -27,3 +27,6 @@
   </p-button>
 </div>
 }
+
+<p-toast />
+<p-confirmDialog />

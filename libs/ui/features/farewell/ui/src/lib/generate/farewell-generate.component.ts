@@ -81,8 +81,11 @@ export class FeatFarewellGenerateComponent {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(({ farewell }) =>
-        this.#router.navigateByUrl(
-          `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/s/${farewell.id}`
+        this.#router.navigate(
+          ['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, farewell.id],
+          {
+            queryParams: { preview: true },
+          }
         )
       );
   }
