@@ -24,6 +24,7 @@
 <ui-kit-divider class="block mt-4" />
 
 <sub-navbar
+  [introducingKitFarewell]="introducingKitFarewell"
   [farewellUrl]="farewellUrl"
   (help)="help.emit()"
   (logout)="logout.emit()"

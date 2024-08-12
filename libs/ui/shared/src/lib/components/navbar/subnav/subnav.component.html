@@ -7,7 +7,6 @@
     <ul class="mt-2 space-y-1">
       <li>
         <a
-          role="button"
           uiKitLinkUX
           class="block w-full"
           [routerLink]="farewellUrl()"
@@ -19,7 +18,6 @@
 
       <li>
         <a
-          role="button"
           [routerLink]="farewellUrl() + '/generate'"
           routerLinkActive="primeng-menu__active"
           pTooltip="Generate Farewell"
@@ -39,7 +37,6 @@
     <ul class="mt-2 space-y-1">
       <li>
         <a
-          role="button"
           [href]="
             'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
             environment.build
@@ -49,6 +46,14 @@
           uiKitLinkUX
           class="block w-full">
           Help
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="introducingKitFarewell()"
+          uiKitLinkUX
+          class="block w-full">
+          What is KIT?
         </a>
       </li>
     </ul>

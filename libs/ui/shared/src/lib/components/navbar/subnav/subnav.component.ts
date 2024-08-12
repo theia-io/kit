@@ -18,6 +18,7 @@ import { ENVIRONMENT } from '../../../infra';
 })
 export class SubnavComponent {
   farewellUrl = input.required<string>();
+  introducingKitFarewell = input.required<string>();
 
   logout = output<void>();
   help = output<void>();

@@ -51,8 +51,8 @@ export const appConfig: ApplicationConfig = {
       useValue: environment,
     },
 
-    // provideRouter(appRoutes, withComponentInputBinding()),
-    provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),
+    provideRouter(appRoutes, withComponentInputBinding()),
+    // provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),
     provideStore({
       farewell: featFarewellReducer,
       follow: featFollowReducer,
