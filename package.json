@@ -31,6 +31,7 @@
     "@angular/platform-server": "~18.0.0",
     "@angular/router": "~18.0.0",
     "@angular/ssr": "~18.0.0",
+    "@aws-sdk/client-s3": "^3.627.0",
     "@module-federation/node": "~1.0.5",
     "@ngrx/effects": "18.0.0",
     "@ngrx/operators": "^18.0.0",
