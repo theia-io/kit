@@ -1,4 +1,3 @@
-import { DBClientType } from '@kitouch/utils';
 import { Injectable } from '@angular/core';
 import {
   clientDBProfileAdapter,
@@ -6,6 +5,7 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
+import { DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { Observable } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
@@ -42,5 +42,13 @@ export class ProfileService extends DataSourceService {
       map(() => null)
       /** @TODO @FIXME places like this must have error handlings */
     );
+  }
+
+  uploadProfilePicture(key: string, media: Blob) {
+    return this.setBucketItem('kitouch-public-profiles', key, media);
+  }
+
+  getProfilePicture(userId: string) {
+    return this.getBucketItem('kitouch-public-profiles', `${userId}.png`);
   }
 }

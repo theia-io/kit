@@ -1,11 +1,12 @@
+import { HttpClient } from '@angular/common/http';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   NgcCookieConsentService,
-  NgcInitializingEvent,
   NgcInitializationErrorEvent,
-  NgcStatusChangeEvent,
+  NgcInitializingEvent,
   NgcNoCookieLawEvent,
+  NgcStatusChangeEvent,
 } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs';
 
@@ -30,7 +31,10 @@ export class AppComponent implements OnInit, OnDestroy {
   private revokeChoiceSubscription!: Subscription;
   private noCookieLawSubscription!: Subscription;
 
-  constructor(private ccService: NgcCookieConsentService) {}
+  constructor(
+    private ccService: NgcCookieConsentService,
+    private http: HttpClient
+  ) {}
 
   ngOnInit() {
     // subscribe to cookieconsent observables to react to main events

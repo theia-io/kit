@@ -12,5 +12,8 @@ export const FeatProfileApiActions = createActionGroup({
     UpdateProfile: props<{ profile: Profile }>(),
     UpdateProfileSuccess: props<{ profile: Profile }>(),
     UpdateProfileFailure: props<{ message: string }>(),
+    UploadProfilePicture: props<{ id: Profile['id']; pic: Blob }>(),
+    UploadProfilePictureSuccess: props<{ id: Profile['id']; url: string }>(),
+    UploadProfilePictureFailure: props<{ message: string }>(),
   },
 });

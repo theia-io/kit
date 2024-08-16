@@ -57,6 +57,7 @@ export class PageSettingsComponent implements OnInit {
   currentProfile$ = this.#store
     .select(selectCurrentProfile)
     .pipe(filter(Boolean), take(1));
+
   updatingProfile = signal(false);
   profileMessage = computed<Message>(() => {
     if (this.updatingProfile()) {

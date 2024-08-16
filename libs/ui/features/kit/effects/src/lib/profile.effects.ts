@@ -1,12 +1,14 @@
-import { Injectable, inject } from '@angular/core';
-import { FeatProfileApiActions } from '@kitouch/kit-data';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap } from 'rxjs';
-import { ProfileService } from './profile.service';
+import { inject, Injectable } from '@angular/core';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
+import { FeatProfileApiActions, selectCurrentUser } from '@kitouch/kit-data';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
+import { catchError, filter, map, of, switchMap } from 'rxjs';
+import { ProfileService } from './profile.service';
 
 @Injectable()
 export class ProfileEffects {
+  #store = inject(Store);
   #actions$ = inject(Actions);
   #profileService = inject(ProfileService);
 
@@ -47,6 +49,27 @@ export class ProfileEffects {
             return of(
               FeatProfileApiActions.updateProfileFailure({
                 message: 'Error while updating your profile',
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  uploadProfilePic$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatProfileApiActions.uploadProfilePicture),
+      switchMap(({ id, pic }) =>
+        this.#profileService.uploadProfilePicture(id, pic).pipe(
+          map(() =>
+            FeatProfileApiActions.uploadProfilePictureSuccess({ id, url: id })
+          ),
+          catchError((err) => {
+            console.error('[ProfileEffects][uploadProfilePic$]', err);
+            return of(
+              FeatProfileApiActions.uploadProfilePictureFailure({
+                message: 'Cannot upload new profile picture',
               })
             );
           })

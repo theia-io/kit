@@ -1,9 +1,9 @@
 {
   "name": "ui",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "projectType": "application",
   "prefix": "app",
-  "sourceRoot": "ui/src",
+  "sourceRoot": "apps/ui/src",
   "tags": ["scope:ui"],
   "targets": {
     "build": {
@@ -11,19 +11,19 @@
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/ui/browser",
-        "index": "ui/src/index.html",
-        "main": "ui/src/main.ts",
+        "index": "apps/ui/src/index.html",
+        "main": "apps/ui/src/main.ts",
         "polyfills": ["zone.js"],
-        "tsConfig": "ui/tsconfig.app.json",
+        "tsConfig": "apps/ui/tsconfig.app.json",
         "inlineStyleLanguage": "scss",
         "assets": [
           {
             "glob": "**/*",
-            "input": "ui/public"
+            "input": "apps/ui/public"
           }
         ],
         "styles": [
-          "ui/src/styles.scss",
+          "apps/ui/src/styles.scss",
           "node_modules/cookieconsent/build/cookieconsent.min.css",
           {
             "input": "node_modules/intro.js/introjs.css",
@@ -42,11 +42,11 @@
       },
       "configurations": {
         "production": {
-          "index": "ui/src/prod/index.html",
+          "index": "apps/ui/src/prod/index.html",
           "fileReplacements": [
             {
-              "replace": "ui/src/environments/environment.ts",
-              "with": "ui/src/environments/environment.prod.ts"
+              "replace": "apps/ui/src/environments/environment.ts",
+              "with": "apps/ui/src/environments/environment.prod.ts"
             }
           ],
           "budgets": [
@@ -72,8 +72,8 @@
           "namedChunks": true,
           "fileReplacements": [
             {
-              "replace": "ui/src/environments/environment.ts",
-              "with": "ui/src/environments/environment.dev.ts"
+              "replace": "apps/ui/src/environments/environment.ts",
+              "with": "apps/ui/src/environments/environment.dev.ts"
             }
           ]
         }
@@ -105,16 +105,16 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "ui/jest.config.ts"
+        "jestConfig": "apps/ui/jest.config.ts"
       }
     },
     "server": {
       "dependsOn": ["build"],
       "executor": "@angular-devkit/build-angular:server",
       "options": {
-        "outputPath": "dist/ui/server",
-        "main": "ui/server.ts",
-        "tsConfig": "ui/tsconfig.server.json",
+        "outputPath": "dist/apps/ui/server",
+        "main": "apps/ui/server.ts",
+        "tsConfig": "apps/ui/tsconfig.server.json",
         "inlineStyleLanguage": "scss"
       },
       "configurations": {

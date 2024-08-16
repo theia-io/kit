@@ -1,11 +1,7 @@
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import {
-  provideRouter,
-  withComponentInputBinding,
-  withDebugTracing,
-} from '@angular/router';
+import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import { FarewellEffects } from '@kitouch/feat-farewell-effects';
 import { featFollowReducer } from '@kitouch/feat-follow-data';
@@ -24,7 +20,12 @@ import {
   TweetsEffects,
 } from '@kitouch/feat-tweet-effects';
 import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
-import { AuthInterceptor, ENVIRONMENT } from '@kitouch/ui-shared';
+import {
+  AuthInterceptor,
+  Environment,
+  ENVIRONMENT,
+  S3_PROFILE_BUCKET_BASE_URL,
+} from '@kitouch/ui-shared';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -49,6 +50,13 @@ export const appConfig: ApplicationConfig = {
     {
       provide: ENVIRONMENT,
       useValue: environment,
+    },
+    {
+      provide: S3_PROFILE_BUCKET_BASE_URL,
+      useFactory: ({ s3Config: { region, profileBucket } }: Environment) => {
+        return `https://${profileBucket}.s3.${region}.amazonaws.com/`;
+      },
+      deps: [ENVIRONMENT],
     },
 
     provideRouter(appRoutes, withComponentInputBinding()),
