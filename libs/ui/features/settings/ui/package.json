@@ -11,7 +11,8 @@
     "@ngrx/effects": "18.0.0",
     "@ngrx/store": "18.0.0",
     "primeng": "^17.18.1",
-    "rxjs": "~7.8.0"
+    "rxjs": "~7.8.0",
+    "@kitouch/feat-kit-ui": "1.0.0-beta"
   },
   "sideEffects": false
 }

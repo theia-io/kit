@@ -4,7 +4,12 @@
   "peerDependencies": {
     "@angular/core": "~18.0.0",
     "@kitouch/shared-models": "1.0.0-beta",
-    "@kitouch/kit-data": "1.0.0-beta"
+    "@kitouch/kit-data": "1.0.0-beta",
+    "@ngrx/store": "18.0.0",
+    "primeng": "^17.18.1",
+    "@kitouch/ui-shared": "1.0.0-beta",
+    "@ngrx/effects": "18.0.0",
+    "rxjs": "~7.8.0"
   },
   "sideEffects": false
 }

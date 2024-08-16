@@ -15,7 +15,9 @@
     "@kitouch/kit-data": "1.0.0-beta",
     "realm-web": "^2.0.1",
     "intro.js": "^7.2.0",
-    "@kitouch/utils": "1.0.0-beta"
+    "@kitouch/utils": "1.0.0-beta",
+    "@aws-sdk/client-s3": "^3.627.0",
+    "@aws-sdk/credential-providers": "^3.631.0"
   },
   "sideEffects": false
 }
