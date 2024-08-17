@@ -6,6 +6,7 @@ import {
   inject,
   input,
   ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -82,6 +83,15 @@ export class FeatKitProfilePictureUploadableComponent {
       rejectVisible: false,
       closeOnEscape: true,
     });
+
+    // TODO FIXME refactor to remove settimeout but keep UX actions to 1
+    setTimeout(() => {
+      (
+        (this.fileUploadCmp as any).el.nativeElement?.querySelector(
+          '.p-fileupload-choose'
+        ) as HTMLElement | null
+      )?.click();
+    }, 100);
   }
 
   onBasicUploadAuto(event: FileUploadHandlerEvent) {

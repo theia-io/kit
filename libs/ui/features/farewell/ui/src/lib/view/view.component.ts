@@ -26,7 +26,6 @@ import {
   map,
   of,
   shareReplay,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 
@@ -34,6 +33,7 @@ import {
   standalone: true,
   selector: 'feat-farewell-view',
   templateUrl: './view.component.html',
+  styleUrls: ['./view.component.scss'],
   imports: [
     AsyncPipe,
     //

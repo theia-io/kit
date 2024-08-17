@@ -1,28 +1,30 @@
 <div class="flex flex-col justify-center items-center gap-10">
   <span class="text-2xl">Farewell 🗒️ 🫂</span>
 
-  <div class="w-full">
-    <p-floatLabel class="block mb-2">
+  <form class="w-full" [formGroup]="farewellFormGroup">
+    <p-floatLabel class="block">
       <input
         class="w-full"
         id="title"
         type="text"
         pInputText
-        [formControl]="farewellTitleControl" />
+        formControlName="titleControl" />
       <label for="title">Title</label>
-
-      @if(farewellTitleControl.errors?.['minlength']) {
+    </p-floatLabel>
+    <section class="mb-2">
+      @if(!farewellFormGroup.get('titleControl')?.value?.length ||
+      farewellFormGroup.get('titleControl')?.errors?.['minlength']) {
       <strong class="block text-xs text-gray-400">
-        Must be at least 10 characters long. Current length is
-        {{ farewellTitleControl.value?.length }} characters.
+        Must be at least 2 characters long. Currently you got
+        {{ farewellFormGroup.get('titleControl')?.value?.length }}.
       </strong>
-      } @if(farewellTitleControl.errors?.['maxlength']) {
+      } @if(farewellFormGroup.get('titleControl')?.errors?.['maxlength']) {
       <strong class="block text-xs text-gray-400">
-        Must be less than 150 characters long. Current length is
-        {{ farewellTitleControl.value?.length }} characters.
+        Must be less than 128 characters long. Currently you got
+        {{ farewellFormGroup.get('titleControl')?.value?.length }}.
       </strong>
       }
-    </p-floatLabel>
+    </section>
 
     <p-editor
       id="farewell-float"
@@ -30,27 +32,32 @@
       [modules]="modules"
       [style]="{ height: '320px' }"
       class="w-full"
-      (onTextChange)="onTextChangeHandler($event)">
+      (onTextChange)="onTextChangeHandler($event)"
+      formControlName="editorControl">
       <p-header></p-header>
     </p-editor>
 
-    <!-- <label for="farewell-float">Add farewell to your (ex-) colleagues 🔥</label> -->
-
-    @if(textValue().length < 100) {
+    @if(editorTextValue().length < 64) {
     <strong class="block text-xs text-gray-400">
-      Must be at least 100 characters long. Current length is
-      {{ textValue().length }} characters.
+      Must be at least 64 characters long. Current length is
+      {{ editorTextValue().length }} characters.
     </strong>
-    } @if(textValue().length > 10000) {
+    } @if(editorTextValue().length > 8192) {
     <strong class="block text-xs text-gray-400">
-      Must be less than 10000 characters long. Current length is
-      {{ textValue().length }} characters.
+      Must be less than 8192 characters long. Current length is
+      {{ editorTextValue().length }} characters.
     </strong>
     }
-  </div>
+  </form>
 
   <p-button
-    [disabled]="!(textValue().length >= 100 && textValue().length < 10000)"
+    [disabled]="
+      !(
+        farewellFormGroup.valid &&
+        editorTextValue().length >= 64 &&
+        editorTextValue().length <= 8192
+      )
+    "
     (onClick)="saveFarewellHandler()"
     label="Save farewell"
     [raised]="true" />

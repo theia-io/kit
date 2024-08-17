@@ -8,7 +8,7 @@
   <div class="md:w-6/12">
     <div class="text-2xl text-center mb-2">{{ farewell.title }}</div>
 
-    <div [innerHTML]="farewell.content"></div>
+    <div class="innerHtmlOverflow" [innerHTML]="farewell.content"></div>
 
     <div
       pTooltip="Times this page was viewed so far"
@@ -20,8 +20,8 @@
   </div>
 
   <!--right -->
-  <div class="mt-6 md:mt-0 md:w-3/12">
+  <!-- <div class="mt-6 md:mt-0 md:w-3/12">
     <ng-content select="[right]"></ng-content>
-  </div>
+  </div> -->
 </div>
 }

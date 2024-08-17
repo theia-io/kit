@@ -129,14 +129,16 @@ export const appRoutes: Route[] = [
               pages.then((comp) => comp.PageFarewellAllComponent),
           },
           {
+            path: 'edit/:id',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageFarewellEditComponent),
+            canActivate: [],
+          },
+          {
             path: 'generate',
             loadComponent: () =>
               pages.then((comp) => comp.PageFarewellGenerateComponent),
           },
-          // {
-          //   path: ':id',
-          //   loadComponent: () => pages.then((comp) => comp.FarewellComponent),
-          // },
         ],
       },
 

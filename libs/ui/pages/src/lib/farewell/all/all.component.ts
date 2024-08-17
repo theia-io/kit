@@ -51,6 +51,8 @@ export class PageFarewellAllComponent {
 
   farewellUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
+  farewellEdit = `/${APP_PATH.Farewell}/edit`;
+
   farewells$ = this.#store.pipe(select(selectFarewells));
 
   constructor() {

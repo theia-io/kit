@@ -5,9 +5,17 @@
 
   <ui-kit-divider class="block mt-8" />
 
-  <p
-    class="mt-4 text-end leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">
-    <a [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
+  <p class="mt-4 text-end leading-6 text-sm font-medium text-gray-500">
+    <a
+      class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
+      [routerLink]="[farewellEdit + '/' + farewell.id]">
+      Edit
+      <i class="ml-1 pi pi-file-edit"></i>
+    </a>
+
+    <a
+      class="hover:text-gray-900 hover:font-semibold"
+      [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
       Open preview
       <i class="ml-1 pi pi-arrow-right"></i>
     </a>
