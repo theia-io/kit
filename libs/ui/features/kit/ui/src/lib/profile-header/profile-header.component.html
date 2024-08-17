@@ -1,11 +1,10 @@
 <div class="w-full h-40 flex flex-col-reverse rounded-b-lg bg-cyan-200 -mt-6">
   <div class="flex justify-start items-end">
-    <img
-      class="inline-block h-20 w-20 rounded-full -mb-4 -ml-4"
-      referrerpolicy="no-referrer"
+    <p-image
+      styleClass="block h-20 w-20 rounded-full -mb-4 -ml-4"
+      imageClass="rounded-full"
+      [preview]="true"
       [src]="profilePic()"
-      height="40"
-      width="40"
       [alt]="profile().name + 'profile picture'" />
 
     <p

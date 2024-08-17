@@ -31,6 +31,12 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { take } from 'rxjs';
 
+function extractContent(html: string) {
+  var span = document.createElement('span');
+  span.innerHTML = html;
+  return span.textContent || span.innerText;
+}
+
 @Component({
   standalone: true,
   selector: 'feat-farewell-generate',
@@ -85,22 +91,21 @@ export class FeatFarewellGenerateComponent {
   editorTextValue = signal<string>('');
 
   constructor() {
-    this.farewellFormGroup.valueChanges.subscribe((v) =>
-      console.log('Farewell form value', v)
+    effect(
+      () => {
+        const farewellToEdit = this.farewellToEdit();
+
+        if (farewellToEdit) {
+          this.farewellFormGroup.patchValue({
+            titleControl: farewellToEdit.title,
+            editorControl: farewellToEdit.content,
+          });
+          this.editorTextValue.set(extractContent(farewellToEdit.content));
+          this.#cdr.detectChanges();
+        }
+      },
+      { allowSignalWrites: true }
     );
-
-    effect(() => {
-      const farewellToEdit = this.farewellToEdit();
-      console.log('farewellToEdit', this.farewellToEdit());
-
-      if (farewellToEdit) {
-        this.farewellFormGroup.patchValue({
-          titleControl: farewellToEdit.title,
-          editorControl: farewellToEdit.content,
-        });
-        this.#cdr.detectChanges();
-      }
-    });
   }
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {

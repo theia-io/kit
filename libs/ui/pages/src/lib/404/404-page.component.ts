@@ -50,27 +50,6 @@ import { ButtonComponent } from '@kitouch/ui-components';
         </div>
       </div>
 
-      <!-- <div class="flex items-center">
-        <img
-          src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          class="size-20 rounded-lg object-cover"
-        />
-
-        <div class="ml-3">
-          <h3 class="text-lg/tight font-medium text-gray-900">
-            Thank you for using my product!
-          </h3>
-
-          <p class="mt-0.5 text-gray-700">
-            I am working on KIT while have time. It has started so I can not to
-            loose connection with amazing people I was privileged to work
-            together. I would love to see your successes to come and maybe be
-            lucky to work again in the future.
-          </p>
-        </div>
-      </div> -->
-
       <ui-kit-button
         class="mt-12"
         role="link"

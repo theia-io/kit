@@ -1,11 +1,13 @@
 <div
   class="h-full w-[220px] max-w-sm bg-white border border-gray-200 rounded-lg shadow">
   <div class="flex flex-col justify-between items-center p-10 min-h-80">
-    <img
-      class="w-24 h-24 mb-3 rounded-full shadow-lg"
+    <p-image
+      styleClass="w-24 h-24 mb-3 rounded-full shadow-lg"
+      imageClass="rounded-full"
+      [preview]="true"
       [src]="profilePic()"
-      [alt]="profile().name"
-      referrerpolicy="no-referrer" />
+      [alt]="profile().name + 'profile picture'" />
+
     <h5 class="truncate mb-1 text-xl font-medium text-gray-900 dark:text-white">
       {{ profile().name }}
     </h5>
