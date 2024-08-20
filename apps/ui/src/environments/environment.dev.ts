@@ -10,5 +10,6 @@ export const environment: Environment = {
     region: 'eu-north-1',
     identityPoolId: 'eu-north-1:0d7df556-9796-4d53-8387-aed1c71f8aec',
     profileBucket: 'kitouch-public-profiles',
+    farewellBucket: 'kitouch-public-farewell',
   },
 };

@@ -1,10 +1,10 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   clientDBProfileAdapter,
   dbClientProfileAdapter,
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
 import { DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { Observable } from 'rxjs';
@@ -14,6 +14,8 @@ import { map, switchMap } from 'rxjs/operators';
   providedIn: 'root',
 })
 export class ProfileService extends DataSourceService {
+  #env = inject(ENVIRONMENT);
+
   getProfiles(profiles: Array<Profile['id']>): Observable<Array<Profile>> {
     return this.db$().pipe(
       switchMap((db) =>
@@ -45,10 +47,6 @@ export class ProfileService extends DataSourceService {
   }
 
   uploadProfilePicture(key: string, media: Blob) {
-    return this.setBucketItem('kitouch-public-profiles', key, media);
-  }
-
-  getProfilePicture(userId: string) {
-    return this.getBucketItem('kitouch-public-profiles', `${userId}.png`);
+    return this.setBucketItem(this.#env.s3Config.profileBucket, key, media);
   }
 }

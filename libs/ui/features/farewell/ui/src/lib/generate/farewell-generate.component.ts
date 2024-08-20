@@ -22,17 +22,20 @@ import {
   FeatFarewellActions,
   selectFarewellById,
 } from '@kitouch/feat-farewell-data';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
+import { Farewell } from '@kitouch/shared-models';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { EditorModule, EditorTextChangeEvent } from 'primeng/editor';
+import { FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { ToastModule } from 'primeng/toast';
 import { take } from 'rxjs';
 
 function extractContent(html: string) {
-  var span = document.createElement('span');
+  const span = document.createElement('span');
   span.innerHTML = html;
   return span.textContent || span.innerText;
 }
@@ -45,6 +48,8 @@ function extractContent(html: string) {
     CommonModule,
     ReactiveFormsModule,
     //
+    ToastModule,
+    FileUploadModule,
     EditorModule,
     FloatLabelModule,
     InputTextModule,
@@ -113,16 +118,47 @@ export class FeatFarewellGenerateComponent {
   }
 
   saveFarewellHandler() {
-    const { titleControl, editorControl } = this.farewellFormGroup.value;
-    if (!titleControl || !editorControl) {
+    const { titleControl: title, editorControl: content } =
+      this.farewellFormGroup.value;
+    if (!title || !content) {
       console.error('Should not happen. Title or Body of farewell is not set');
       return;
     }
 
+    const farewellToEdit = this.farewellToEdit();
+
+    if (farewellToEdit) {
+      this.#updateFarewell({
+        ...farewellToEdit,
+        title,
+        content,
+      });
+    } else {
+      this.#createFarewell({ title, content });
+    }
+  }
+
+  #updateFarewell(farewell: Farewell) {
+    this.#store.dispatch(
+      FeatFarewellActions.putFarewell({
+        farewell,
+      })
+    );
+
+    this.#actions$
+      .pipe(
+        ofType(FeatFarewellActions.putFarewellSuccess),
+        take(1),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe(() => this.#router.navigateByUrl(APP_PATH.Farewell));
+  }
+
+  #createFarewell({ title, content }: Pick<Farewell, 'title' | 'content'>) {
     this.#store.dispatch(
       FeatFarewellActions.createFarewell({
-        title: titleControl,
-        content: editorControl,
+        title,
+        content,
       })
     );
 

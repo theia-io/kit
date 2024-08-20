@@ -8,7 +8,6 @@ import {
   map,
   shareReplay,
   startWith,
-  tap,
 } from 'rxjs';
 
 export enum DeviceMediaBreakpoint {
@@ -43,10 +42,8 @@ export class DeviceService {
 
   device$ = this.mediaBreakpoint$.asObservable().pipe(
     takeUntilDestroyed(),
-    tap((v) => console.log(v)),
     filter(Boolean),
     map((mediaBreakPoint) => breakPointToDevice[mediaBreakPoint]),
-    tap((v) => console.log(v)),
     shareReplay(1)
   );
 

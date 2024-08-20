@@ -1,13 +1,15 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { dbClientFarewellAdapter } from '@kitouch/feat-farewell-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
 import { DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellService extends DataSourceService {
+  #env = inject(ENVIRONMENT);
+
   getFarewells(profileId: string): Observable<Array<Farewell>> {
     return this.allowAnonymousDb$().pipe(
       switchMap((db) =>
@@ -61,7 +63,7 @@ export class FarewellService extends DataSourceService {
   }
 
   putFarewell({ id, ...rest }: Farewell) {
-    return this.allowAnonymousDb$().pipe(
+    return this.db$().pipe(
       switchMap((db) =>
         db.collection<DBClientType<Farewell>>('farewell').updateOne(
           { _id: new BSON.ObjectId(id) },
@@ -85,5 +87,9 @@ export class FarewellService extends DataSourceService {
       ),
       map(({ deletedCount }) => deletedCount > 0)
     );
+  }
+
+  uploadFarewellPicture(key: string, media: Blob) {
+    return this.setBucketItem(this.#env.s3Config.farewellBucket, key, media);
   }
 }

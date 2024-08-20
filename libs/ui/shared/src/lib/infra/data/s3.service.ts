@@ -7,6 +7,8 @@ export interface S3Config {
   identityPoolId: string;
   //
   profileBucket: string;
+  //
+  farewellBucket: string;
 }
 
 export const S3_PROFILE_BUCKET_BASE_URL: InjectionToken<string> =
