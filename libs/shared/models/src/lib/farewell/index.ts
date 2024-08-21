@@ -2,6 +2,7 @@ import { Profile } from '../entities-kitouch';
 import { TimeStamp } from '../helpers';
 
 export interface FarewellAnalytics {
+  id: string;
   farewellId: string;
   viewed: number;
 }

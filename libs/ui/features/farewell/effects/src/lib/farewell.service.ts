@@ -1,6 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { dbClientFarewellAdapter } from '@kitouch/feat-farewell-data';
-import { Farewell, Profile } from '@kitouch/shared-models';
+import {
+  dbClientFarewellAdapter,
+  dbClientFarewellAnalyticsAdapter,
+} from '@kitouch/feat-farewell-data';
+import { Farewell, FarewellAnalytics, Profile } from '@kitouch/shared-models';
 import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
 import { DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
@@ -91,5 +94,37 @@ export class FarewellService extends DataSourceService {
 
   uploadFarewellPicture(key: string, media: Blob) {
     return this.setBucketItem(this.#env.s3Config.farewellBucket, key, media);
+  }
+
+  getAnalyticsFarewell(farewellId: string) {
+    return this.allowAnonymousDb$().pipe(
+      switchMap((db) =>
+        db
+          .collection<DBClientType<FarewellAnalytics>>('farewell-analytics')
+          .findOne({ farewellId: new BSON.ObjectId(farewellId) })
+      ),
+      map((farewellAnalyticsDb) =>
+        farewellAnalyticsDb
+          ? dbClientFarewellAnalyticsAdapter(farewellAnalyticsDb)
+          : null
+      )
+    );
+  }
+
+  putAnalytics(analytics: FarewellAnalytics) {
+    const { id, farewellId, ...rest } = analytics;
+    return this.allowAnonymousDb$().pipe(
+      switchMap((db) =>
+        db.collection<DBClientType<Farewell>>('farewell-analytics').updateOne(
+          { _id: new BSON.ObjectId(analytics.id) },
+          {
+            $set: {
+              ...rest,
+            },
+          }
+        )
+      ),
+      map(() => analytics)
+    );
   }
 }

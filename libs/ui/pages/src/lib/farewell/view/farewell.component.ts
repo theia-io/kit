@@ -64,9 +64,12 @@ export class PageFarewellComponent {
   constructor() {
     this.farewellId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
-      .subscribe((id) =>
-        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }))
-      );
+      .subscribe((id) => {
+        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }));
+        this.#store.dispatch(
+          FeatFarewellActions.getAnalyticsFarewell({ farewellId: id })
+        );
+      });
   }
 
   handleGoogleSignIn() {

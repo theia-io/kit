@@ -10,7 +10,9 @@ import {
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   FeatFarewellActions,
+  findAnalyticsFarewellById,
   findFarewellById,
+  selectAnalytics,
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
@@ -53,11 +55,24 @@ export class FeatFarewellViewComponent {
 
   device$ = inject(DeviceService).device$;
 
+  #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
+
   farewell$ = combineLatest([
-    toObservable(this.farewellId).pipe(filter(Boolean)),
+    this.#farewellId$,
     this.#store.select(selectFarewells),
   ]).pipe(
     map(([farewellId, farewells]) => findFarewellById(farewellId, farewells)),
+    filter(Boolean),
+    shareReplay()
+  );
+
+  analytic$ = combineLatest([
+    this.#farewellId$,
+    this.#store.select(selectAnalytics),
+  ]).pipe(
+    map(([farewellId, analytics]) =>
+      findAnalyticsFarewellById(farewellId, analytics)
+    ),
     filter(Boolean),
     shareReplay()
   );
@@ -100,12 +115,12 @@ export class FeatFarewellViewComponent {
       return;
     }
 
-    this.farewell$
+    this.analytic$
       .pipe(takeUntilDestroyed(this.#destroyRef), distinctUntilKeyChanged('id'))
-      .subscribe((farewell) =>
+      .subscribe((analytics) =>
         this.#store.dispatch(
-          FeatFarewellActions.putFarewell({
-            farewell: { ...farewell, viewed: farewell.viewed + 1 },
+          FeatFarewellActions.putAnalyticsFarewell({
+            analytics: { ...analytics, viewed: analytics.viewed + 1 },
           })
         )
       );

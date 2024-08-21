@@ -1,4 +1,4 @@
-import { Farewell, Profile } from '@kitouch/shared-models';
+import { Farewell, FarewellAnalytics, Profile } from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellActions = createActionGroup({
@@ -28,5 +28,18 @@ export const FeatFarewellActions = createActionGroup({
     DeleteFarewell: props<{ id: Farewell['id'] }>(),
     DeleteFarewellSuccess: props<{ id: Farewell['id'] }>(),
     DeleteFarewellFailure: props<{ message: string }>(),
+    // Analytics
+    GetAnalyticsFarewell: props<{
+      farewellId: string;
+    }>(),
+    GetAnalyticsFarewellSuccess: props<{ analytics: FarewellAnalytics }>(),
+    GetAnalyticsFarewellFailure: props<{ message: string }>(),
+    PutAnalyticsFarewell: props<{
+      analytics: FarewellAnalytics;
+    }>(),
+    PutAnalyticsFarewellSuccess: props<{
+      analytics: FarewellAnalytics;
+    }>(),
+    PutAnalyticsFarewellFailure: props<{ message: string }>(),
   },
 });

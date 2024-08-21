@@ -1,6 +1,6 @@
+import { Farewell, FarewellAnalytics } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureFarewellState } from './farewell.reducers';
-import { Farewell } from '@kitouch/shared-models';
 
 /** selectors */
 const selectFarewellState = (state: { farewell: FeatureFarewellState }) =>
@@ -9,6 +9,11 @@ const selectFarewellState = (state: { farewell: FeatureFarewellState }) =>
 export const selectFarewells = createSelector(
   selectFarewellState,
   (state) => state.farewells
+);
+
+export const selectAnalytics = createSelector(
+  selectFarewellState,
+  (state) => state.analytics
 );
 
 export const selectFarewellById = (farewellId: string) =>
@@ -21,3 +26,8 @@ export const findFarewellById = (
   farewellId: string,
   farewells: Array<Farewell>
 ) => farewells.find((farewell) => farewell.id === farewellId);
+
+export const findAnalyticsFarewellById = (
+  farewellId: string,
+  analytics: Array<FarewellAnalytics>
+) => analytics.find((analytic) => analytic.farewellId === farewellId);

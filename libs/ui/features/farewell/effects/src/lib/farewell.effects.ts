@@ -85,4 +85,32 @@ export class FarewellEffects {
       )
     )
   );
+
+  getAnalyticsFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getAnalyticsFarewell),
+      switchMap(({ farewellId }) =>
+        this.#farewellService.getAnalyticsFarewell(farewellId)
+      ),
+      map((analytics) =>
+        analytics
+          ? FeatFarewellActions.getAnalyticsFarewellSuccess({ analytics })
+          : FeatFarewellActions.getAnalyticsFarewellFailure({
+              message: 'Analytics for this farewell was not find',
+            })
+      )
+    )
+  );
+
+  putAnalyticsFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.putAnalyticsFarewell),
+      switchMap(({ analytics }) =>
+        this.#farewellService.putAnalytics(analytics)
+      ),
+      map((analytics) =>
+        FeatFarewellActions.putAnalyticsFarewellSuccess({ analytics })
+      )
+    )
+  );
 }
