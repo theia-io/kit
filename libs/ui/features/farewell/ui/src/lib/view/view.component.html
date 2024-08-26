@@ -8,7 +8,9 @@
   <div class="md:w-6/12">
     <div class="text-2xl text-center mb-2">{{ farewell.title }}</div>
 
-    <div class="innerHtmlOverflow" [innerHTML]="farewell.content"></div>
+    <div
+      class="innerHtmlOverflow"
+      [innerHTML]="sanitizer.bypassSecurityTrustHtml(farewell.content)"></div>
 
     @if(farewell.analytics; as analytic) {
     <div

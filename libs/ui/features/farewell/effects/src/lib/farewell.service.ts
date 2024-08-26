@@ -121,6 +121,19 @@ export class FarewellService extends DataSourceService {
     );
   }
 
+  deleteAnalyticsFarewell(farewellId: string) {
+    return this.db$().pipe(
+      switchMap((db) =>
+        db
+          .collection<ClientDBFarewellAnalyticsResponse>('farewell-analytics')
+          .deleteOne({
+            farewellId: new BSON.ObjectId(farewellId),
+          })
+      ),
+      map(({ deletedCount }) => deletedCount > 0)
+    );
+  }
+
   getAnalyticsFarewell(farewellId: string) {
     return this.allowAnonymousDb$().pipe(
       switchMap((db) =>

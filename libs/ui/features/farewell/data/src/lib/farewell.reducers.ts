@@ -3,7 +3,7 @@ import {
   FarewellAnalytics,
   FarewellMedia,
 } from '@kitouch/shared-models';
-import { addOrUpdate, mergeArr } from '@kitouch/utils';
+import { addOrUpdate, mergeArr, remove } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFarewellActions } from './farewell.actions';
 
@@ -35,13 +35,20 @@ export const featFarewellReducer = createReducer(
   ),
   on(FeatFarewellActions.deleteFarewellSuccess, (state, { id }) => ({
     ...state,
-    farewells: state.farewells.filter((farewell) => farewell.id !== id),
+    // farewells: state.farewells.filter((farewell) => farewell.id !== id),
+    farewells: remove(id, state.farewells),
   })),
+  /** Analytics */
   on(
     FeatFarewellActions.getAnalyticsFarewellSuccess,
+    FeatFarewellActions.postAnalyticsFarewellSuccess,
     (state, { analytics }) => ({
       ...state,
       analytics: addOrUpdate(analytics, state.analytics),
     })
-  )
+  ),
+  on(FeatFarewellActions.deleteAnalyticsFarewellSuccess, (state, { id }) => ({
+    ...state,
+    analytics: remove(id, state.analytics),
+  }))
 );

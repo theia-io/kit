@@ -128,8 +128,34 @@ export class FarewellEffects {
           ? FeatFarewellActions.postAnalyticsFarewellSuccess({ analytics })
           : FeatFarewellActions.postAnalyticsFarewellFailure({
               message:
-                'We were not abe to create farewell analytics. Let us know so we can get it fixed for you. Otherwise no analytics will be available for created farewell.',
+                'We were not able to create farewell analytics. Let us know so we can get it fixed for you. Otherwise no analytics will be available for created farewell.',
             })
+      )
+    )
+  );
+
+  deleteFarewellAnalytics$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.deleteFarewellSuccess),
+      switchMap(({ id }) =>
+        this.#farewellService.deleteAnalyticsFarewell(id).pipe(
+          map((deleted) =>
+            deleted
+              ? FeatFarewellActions.deleteAnalyticsFarewellSuccess({ id })
+              : FeatFarewellActions.deleteAnalyticsFarewellFailure({
+                  message:
+                    'Farewell analytics were not deleted. Reach out to support.',
+                })
+          ),
+          catchError((err) =>
+            of(
+              FeatFarewellActions.deleteAnalyticsFarewellFailure({
+                message:
+                  'Network issue, did not delete farewell analytics. Reach out to support.',
+              })
+            )
+          )
+        )
       )
     )
   );

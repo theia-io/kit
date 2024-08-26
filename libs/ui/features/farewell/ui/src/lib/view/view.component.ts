@@ -7,6 +7,7 @@ import {
   output,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import { DomSanitizer } from '@angular/platform-browser';
 import {
   FarewellFullView,
   FeatFarewellActions,
@@ -47,6 +48,7 @@ export class FeatFarewellViewComponent {
   profile = output<Profile>();
 
   #store = inject(Store);
+  sanitizer = inject(DomSanitizer);
   device$ = inject(DeviceService).device$;
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
