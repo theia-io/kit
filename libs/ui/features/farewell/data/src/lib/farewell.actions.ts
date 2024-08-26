@@ -38,6 +38,7 @@ export const FeatFarewellActions = createActionGroup({
     }>(),
     GetAnalyticsFarewellSuccess: props<{ analytics: FarewellAnalytics }>(),
     GetAnalyticsFarewellFailure: props<{ message: string }>(),
+    GetAllAnalyticsSuccess: props<{ analytics: Array<FarewellAnalytics> }>(),
     PostAnalyticsFarewell: props<{
       analytics: Omit<FarewellAnalytics, 'id'>;
     }>(),

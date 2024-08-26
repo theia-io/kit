@@ -134,6 +134,17 @@ export class FarewellService extends DataSourceService {
     );
   }
 
+  getAnalyticsFarewells() {
+    return this.db$().pipe(
+      switchMap((db) =>
+        db
+          .collection<ClientDBFarewellAnalyticsResponse>('farewell-analytics')
+          .find()
+      ),
+      map((analytics) => analytics.map(dbClientFarewellAnalyticsAdapter))
+    );
+  }
+
   getAnalyticsFarewell(farewellId: string) {
     return this.allowAnonymousDb$().pipe(
       switchMap((db) =>

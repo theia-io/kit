@@ -39,6 +39,10 @@ export const featFarewellReducer = createReducer(
     farewells: remove(id, state.farewells),
   })),
   /** Analytics */
+  on(FeatFarewellActions.getAllAnalyticsSuccess, (state, { analytics }) => ({
+    ...state,
+    analytics: mergeArr(analytics, state.analytics),
+  })),
   on(
     FeatFarewellActions.getAnalyticsFarewellSuccess,
     FeatFarewellActions.postAnalyticsFarewellSuccess,

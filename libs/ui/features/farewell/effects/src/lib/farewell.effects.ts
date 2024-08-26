@@ -25,6 +25,16 @@ export class FarewellEffects {
     .select(selectCurrentProfile)
     .pipe(filter(Boolean));
 
+  getFarewells$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getProfileFarewells),
+      switchMap(({ profileId }) =>
+        this.#farewellService.getFarewells(profileId)
+      ),
+      map((farewells) => FeatFarewellActions.getFarewellsSuccess({ farewells }))
+    )
+  );
+
   getFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getFarewell),
@@ -36,16 +46,6 @@ export class FarewellEffects {
               message: 'Did not find this farewell.',
             })
       )
-    )
-  );
-
-  getFarewells$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatFarewellActions.getProfileFarewells),
-      switchMap(({ profileId }) =>
-        this.#farewellService.getFarewells(profileId)
-      ),
-      map((farewells) => FeatFarewellActions.getFarewellsSuccess({ farewells }))
     )
   );
 
@@ -156,6 +156,16 @@ export class FarewellEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  getAnalyticsFarewells$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewellsSuccess),
+      switchMap(() => this.#farewellService.getAnalyticsFarewells()),
+      map((analytics) =>
+        FeatFarewellActions.getAllAnalyticsSuccess({ analytics })
       )
     )
   );
