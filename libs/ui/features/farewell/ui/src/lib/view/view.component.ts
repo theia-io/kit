@@ -11,6 +11,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import {
   FarewellFullView,
   FeatFarewellActions,
+  selectAnalytics,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
@@ -25,6 +26,7 @@ import {
   map,
   of,
   switchMap,
+  take,
   withLatestFrom,
 } from 'rxjs';
 
@@ -73,16 +75,21 @@ export class FeatFarewellViewComponent {
       )
       .subscribe((profile) => this.profile.emit(profile));
 
-    of(null)
+    this.farewell$
       .pipe(
         takeUntilDestroyed(),
+        take(1),
         delay(2500),
-        withLatestFrom(
-          this.farewell$,
-          this.#store.pipe(select(selectCurrentProfile))
-        )
+        switchMap(({ id }) =>
+          this.#store.pipe(
+            select(selectFarewellFullViewById(id)),
+            take(1),
+            filter(Boolean)
+          )
+        ),
+        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
       )
-      .subscribe(([_, farewell, currentProfile]) =>
+      .subscribe(([farewell, currentProfile]) =>
         this.#visitorActions(farewell, currentProfile)
       );
   }

@@ -42,6 +42,7 @@ export const featFarewellReducer = createReducer(
   on(
     FeatFarewellActions.getAnalyticsFarewellSuccess,
     FeatFarewellActions.postAnalyticsFarewellSuccess,
+    FeatFarewellActions.putAnalyticsFarewellSuccess,
     (state, { analytics }) => ({
       ...state,
       analytics: addOrUpdate(analytics, state.analytics),
