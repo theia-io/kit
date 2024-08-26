@@ -50,6 +50,25 @@
     }
   </form>
 
+  <p-fileUpload
+    [customUpload]="true"
+    [multiple]="true"
+    chooseIcon="pi pi-upload"
+    accept="image/*"
+    [fileLimit]="10"
+    maxFileSize="2500000"
+    (uploadHandler)="onBasicUploadAuto($event)">
+    <ng-template pTemplate="content">
+      @if(filesToUpload().length) {
+      <ul>
+        @for (file of filesToUpload(); track $index) {
+        <li>{{ file.name }} - {{ file.size }} bytes</li>
+        }
+      </ul>
+      }
+    </ng-template>
+  </p-fileUpload>
+
   <p-button
     [disabled]="
       !(

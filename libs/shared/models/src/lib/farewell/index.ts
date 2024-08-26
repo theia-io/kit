@@ -1,17 +1,18 @@
 import { Profile } from '../entities-kitouch';
-import { TimeStamp } from '../helpers';
+import { KitTimestamp } from '../helpers';
 
 export interface FarewellAnalytics {
   id: string;
   farewellId: string;
   viewed: number;
+  timestamp: KitTimestamp;
 }
 
 export interface FarewellMedia {
   farewellId: string;
   profileId: string;
   url: string;
-  timestamp: TimeStamp;
+  timestamp: KitTimestamp;
 }
 
 export interface Farewell {
@@ -19,6 +20,5 @@ export interface Farewell {
   profile: Profile;
   title: string;
   content: string;
-  viewed: number;
-  timestamp: TimeStamp;
+  timestamp: KitTimestamp;
 }

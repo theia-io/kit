@@ -10,7 +10,7 @@
 
     <div class="innerHtmlOverflow" [innerHTML]="farewell.content"></div>
 
-    @if(analytic$ | async; as analytic) {
+    @if(farewell.analytics; as analytic) {
     <div
       pTooltip="Times this page was viewed so far"
       tooltipStyleClass="text-xs"

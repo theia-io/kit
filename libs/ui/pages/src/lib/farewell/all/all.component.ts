@@ -72,8 +72,10 @@ export class PageFarewellAllComponent {
   onDeleteHandler(farewell: Farewell, event: Event) {
     this.#confirmationService.confirm({
       target: event.target as EventTarget,
+      // TODO Add functionality to show analytics (and possibly prevent unneeded or unintended deletions)
+      //  `It has ${farewell.viewed} views.`
       message: `
-        Do you want to delete "${farewell.title}"? It has ${farewell.viewed} views.`,
+        Do you want to delete "${farewell.title}"?`,
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass: 'p-button-danger p-button-text',

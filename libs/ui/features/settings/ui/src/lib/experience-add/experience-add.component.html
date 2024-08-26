@@ -205,33 +205,6 @@
                 separator="," />
               <label for="skills">Skills</label>
             </p-floatLabel>
-
-            <!-- <p-floatLabel>
-                            <p-chips id="links" formControlName="links" />
-                            <label for="links">Links</label>
-                        </p-floatLabel>
-
-                        <p-floatLabel>
-                            <p-chips id="media" formControlName="media" />
-                            <label for="media">Media</label>
-                        </p-floatLabel>
-
-                        <p-fileUpload name="demo[]" url="https://www.primefaces.org/cdn/api/upload.php"
-                            (onUpload)="onUpload($any($event))" [multiple]="true" accept="image/*"
-                            maxFileSize="1000000">
-                            <ng-template pTemplate="content">
-                                <ul *ngIf="experienceForm.get('media')?.value?.length">
-                                    <li *ngFor="let file of experienceForm.get('media')?.value">
-                                        {{ file.name }} - {{ file.size }} bytes
-                                    </li>
-                                </ul>
-                            </ng-template>
-                            <ng-template pTemplate="empty">
-                                <div class="flex align-items-center justify-content-center flex-column">
-                                    <p class="mt-4 mb-0">Drag and drop image files to here to upload.</p>
-                                </div>
-                            </ng-template>
-                        </p-fileUpload> -->
           </div>
           <div class="flex pt-4 justify-start">
             <p-button

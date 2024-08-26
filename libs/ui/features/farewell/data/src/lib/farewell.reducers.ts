@@ -1,4 +1,8 @@
-import { Farewell, FarewellAnalytics } from '@kitouch/shared-models';
+import {
+  Farewell,
+  FarewellAnalytics,
+  FarewellMedia,
+} from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFarewellActions } from './farewell.actions';
@@ -6,11 +10,13 @@ import { FeatFarewellActions } from './farewell.actions';
 export interface FeatureFarewellState {
   farewells: Array<Farewell>;
   analytics: Array<FarewellAnalytics>;
+  media: Array<FarewellMedia>;
 }
 
 const featFarewellInitialState: FeatureFarewellState = {
   farewells: [],
   analytics: [],
+  media: [],
 };
 
 export const featFarewellReducer = createReducer(

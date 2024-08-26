@@ -6,7 +6,6 @@ import {
   inject,
   input,
   ViewChild,
-  ViewContainerRef,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {

@@ -14,6 +14,10 @@ export const FeatFarewellActions = createActionGroup({
     GetFarewellSuccess: props<{ farewell: Farewell }>(),
     GetFarewellFailure: props<{ message: string }>(),
     //
+    UploadFarewellMedia: props<{ items: Array<{ key: string; blob: Blob }> }>(),
+    UploadFarewellMediaSuccess: props<{ items: Array<{ key: string }> }>(),
+    UploadFarewellMediaFailure: props<{ message: string }>(),
+    //
     CreateFarewell: props<{
       title: Farewell['title'];
       content: Farewell['content'];
@@ -34,6 +38,11 @@ export const FeatFarewellActions = createActionGroup({
     }>(),
     GetAnalyticsFarewellSuccess: props<{ analytics: FarewellAnalytics }>(),
     GetAnalyticsFarewellFailure: props<{ message: string }>(),
+    PostAnalyticsFarewell: props<{
+      analytics: Omit<FarewellAnalytics, 'id'>;
+    }>(),
+    PostAnalyticsFarewellSuccess: props<{ analytics: FarewellAnalytics }>(),
+    PostAnalyticsFarewellFailure: props<{ message: string }>(),
     PutAnalyticsFarewell: props<{
       analytics: FarewellAnalytics;
     }>(),

@@ -22,17 +22,19 @@ import {
   FeatFarewellActions,
   selectFarewellById,
 } from '@kitouch/feat-farewell-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell } from '@kitouch/shared-models';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { sign } from 'crypto';
 import { ButtonModule } from 'primeng/button';
 import { EditorModule, EditorTextChangeEvent } from 'primeng/editor';
-import { FileUploadModule } from 'primeng/fileupload';
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { take } from 'rxjs';
+import { take, tap } from 'rxjs';
 
 function extractContent(html: string) {
   const span = document.createElement('span');
@@ -70,6 +72,7 @@ export class FeatFarewellGenerateComponent {
     const id = this.farewellIdToEdit();
     return id ? this.#store.selectSignal(selectFarewellById(id))() : undefined;
   });
+  currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
   modules = {
     toolbar: [
@@ -94,6 +97,7 @@ export class FeatFarewellGenerateComponent {
     editorControl: new FormControl<string>('', [Validators.required]),
   });
   editorTextValue = signal<string>('');
+  filesToUpload = signal<Array<File>>([]);
 
   constructor() {
     effect(
@@ -115,6 +119,11 @@ export class FeatFarewellGenerateComponent {
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
     this.editorTextValue.set(textValue);
+  }
+
+  onBasicUploadAuto(event: FileUploadHandlerEvent) {
+    const files = event.files;
+    this.filesToUpload.set(files);
   }
 
   saveFarewellHandler() {
@@ -168,13 +177,23 @@ export class FeatFarewellGenerateComponent {
         take(1),
         takeUntilDestroyed(this.#destroyRef)
       )
-      .subscribe(({ farewell }) =>
-        this.#router.navigate(
-          ['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, farewell.id],
-          {
-            queryParams: { preview: true },
-          }
-        )
-      );
+      .subscribe(({ farewell: { id } }) => {
+        const mediaFiles = this.filesToUpload(),
+          profile = this.currentProfile();
+        if (mediaFiles && profile) {
+          this.#store.dispatch(
+            FeatFarewellActions.uploadFarewellMedia({
+              items: mediaFiles.map((mediaFile) => ({
+                key: `${profile.id}/${id}/${mediaFile.name}`,
+                blob: mediaFile,
+              })),
+            })
+          );
+        }
+
+        this.#router.navigate(['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, id], {
+          queryParams: { preview: true },
+        });
+      });
   }
 }

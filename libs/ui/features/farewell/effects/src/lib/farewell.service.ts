@@ -1,11 +1,15 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  ClientDBFarewellAnalyticsRequest,
+  ClientDBFarewellAnalyticsResponse,
+  ClientDBFarewellRequest,
+  ClientDBFarewellResponse,
   dbClientFarewellAdapter,
   dbClientFarewellAnalyticsAdapter,
 } from '@kitouch/feat-farewell-data';
 import { Farewell, FarewellAnalytics, Profile } from '@kitouch/shared-models';
 import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
-import { DBClientType } from '@kitouch/utils';
+import { clientDBGenerateTimestamp, DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
@@ -14,7 +18,7 @@ export class FarewellService extends DataSourceService {
   #env = inject(ENVIRONMENT);
 
   getFarewells(profileId: string): Observable<Array<Farewell>> {
-    return this.allowAnonymousDb$().pipe(
+    return this.db$().pipe(
       switchMap((db) =>
         db
           .collection<DBClientType<Farewell>>('farewell')
@@ -44,19 +48,16 @@ export class FarewellService extends DataSourceService {
     title: string;
     content: string;
   }): Observable<Farewell> {
-    const farewell: Omit<Farewell, 'id'> = {
+    const farewell: ClientDBFarewellRequest = {
       profile,
       title,
       content,
-      viewed: 0,
-      timestamp: {
-        createdAt: new Date(Date.now()),
-      },
+      ...clientDBGenerateTimestamp(),
     };
 
     return this.db$().pipe(
       switchMap((db) =>
-        db.collection<DBClientType<Farewell>>('farewell').insertOne({
+        db.collection<ClientDBFarewellResponse>('farewell').insertOne({
           ...farewell,
         })
       ),
@@ -94,6 +95,30 @@ export class FarewellService extends DataSourceService {
 
   uploadFarewellPicture(key: string, media: Blob) {
     return this.setBucketItem(this.#env.s3Config.farewellBucket, key, media);
+  }
+
+  postAnalyticsFarewell(farewellId: string) {
+    const farewellAnalytics: ClientDBFarewellAnalyticsRequest = {
+      farewellId: new BSON.ObjectId(farewellId),
+      viewed: 0,
+      ...clientDBGenerateTimestamp(),
+    };
+
+    return this.db$().pipe(
+      switchMap((db) =>
+        db
+          .collection<ClientDBFarewellAnalyticsResponse>('farewell-analytics')
+          .insertOne(farewellAnalytics)
+      ),
+      map(({ insertedId }) =>
+        insertedId
+          ? dbClientFarewellAnalyticsAdapter({
+              ...farewellAnalytics,
+              _id: insertedId,
+            })
+          : null
+      )
+    );
   }
 
   getAnalyticsFarewell(farewellId: string) {

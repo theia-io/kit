@@ -4,7 +4,15 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  filter,
+  forkJoin,
+  map,
+  of,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs';
 import { FarewellService } from './farewell.service';
 
 @Injectable()
@@ -82,6 +90,46 @@ export class FarewellEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  uploadFarewellMedia$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.uploadFarewellMedia),
+      switchMap(({ items }) =>
+        forkJoin([
+          items.map(({ key, blob }) =>
+            this.#farewellService.uploadFarewellPicture(key, blob)
+          ),
+        ]).pipe(
+          map(() => FeatFarewellActions.uploadFarewellMediaSuccess({ items })),
+          catchError(() =>
+            of(
+              FeatFarewellActions.uploadFarewellMediaFailure({
+                message:
+                  'We were unable to upload farewell media. Try adding later.',
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
+  createAnalyticsFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.createFarewellSuccess),
+      switchMap(({ farewell: { id } }) =>
+        this.#farewellService.postAnalyticsFarewell(id)
+      ),
+      map((analytics) =>
+        analytics
+          ? FeatFarewellActions.postAnalyticsFarewellSuccess({ analytics })
+          : FeatFarewellActions.postAnalyticsFarewellFailure({
+              message:
+                'We were not abe to create farewell analytics. Let us know so we can get it fixed for you. Otherwise no analytics will be available for created farewell.',
+            })
       )
     )
   );
