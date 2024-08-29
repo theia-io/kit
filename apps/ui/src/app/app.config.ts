@@ -24,6 +24,7 @@ import {
   AuthInterceptor,
   Environment,
   ENVIRONMENT,
+  S3_FAREWELL_BUCKET_BASE_URL,
   S3_PROFILE_BUCKET_BASE_URL,
 } from '@kitouch/ui-shared';
 import { provideEffects } from '@ngrx/effects';
@@ -54,7 +55,14 @@ export const appConfig: ApplicationConfig = {
     {
       provide: S3_PROFILE_BUCKET_BASE_URL,
       useFactory: ({ s3Config: { region, profileBucket } }: Environment) => {
-        return `https://${profileBucket}.s3.${region}.amazonaws.com/`;
+        return `https://${profileBucket}.s3.${region}.amazonaws.com`;
+      },
+      deps: [ENVIRONMENT],
+    },
+    {
+      provide: S3_FAREWELL_BUCKET_BASE_URL,
+      useFactory: ({ s3Config: { region, farewellBucket } }: Environment) => {
+        return `https://${farewellBucket}.s3.${region}.amazonaws.com`;
       },
       deps: [ENVIRONMENT],
     },

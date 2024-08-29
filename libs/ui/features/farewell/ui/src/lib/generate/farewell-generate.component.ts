@@ -158,7 +158,8 @@ export class FeatFarewellGenerateComponent {
       .pipe(
         ofType(FeatFarewellActions.putFarewellSuccess),
         take(1),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
+        tap(({ farewell: { id } }) => this.#farewellMedia(id))
       )
       .subscribe(() => this.#router.navigateByUrl(APP_PATH.Farewell));
   }
@@ -187,15 +188,17 @@ export class FeatFarewellGenerateComponent {
       });
   }
 
-  #farewellMedia(id: string) {
+  #farewellMedia(farewellId: string) {
     const mediaFiles = this.filesToUpload(),
       profile = this.currentProfile();
 
-    if (mediaFiles?.length && profile) {
+    if (mediaFiles?.length && profile?.id) {
       this.#store.dispatch(
-        FeatFarewellActions.uploadFarewellMedia({
+        FeatFarewellActions.uploadFarewellStorageMedia({
+          farewellId,
+          profileId: profile.id,
           items: mediaFiles.map((mediaFile) => ({
-            key: `${profile.id}/${id}/${mediaFile.name}`,
+            key: `${farewellId}/${profile.id}/${mediaFile.name}`,
             blob: mediaFile,
           })),
         })

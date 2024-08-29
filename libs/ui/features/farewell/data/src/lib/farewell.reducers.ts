@@ -38,6 +38,15 @@ export const featFarewellReducer = createReducer(
     // farewells: state.farewells.filter((farewell) => farewell.id !== id),
     farewells: remove(id, state.farewells),
   })),
+  /** Media */
+  on(
+    FeatFarewellActions.getMediasFarewellSuccess,
+    FeatFarewellActions.postMediasFarewellSuccess,
+    (state, { medias }) => ({
+      ...state,
+      media: mergeArr(medias, state.media),
+    })
+  ),
   /** Analytics */
   on(FeatFarewellActions.getAllAnalyticsSuccess, (state, { analytics }) => ({
     ...state,

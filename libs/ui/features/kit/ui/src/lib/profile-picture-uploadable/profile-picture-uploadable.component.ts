@@ -115,7 +115,10 @@ export class FeatKitProfilePictureUploadableComponent {
             this.#confirmationService.close();
           }),
           tap(({ url }) =>
-            this.confirmNewProfilePic(profile, this.#s3ProfileBaseUrl + url)
+            this.confirmNewProfilePic(
+              profile,
+              `${this.#s3ProfileBaseUrl}/${url}`
+            )
           )
         ),
       this.#actions

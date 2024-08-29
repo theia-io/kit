@@ -1,4 +1,9 @@
-import { Farewell, FarewellAnalytics, Profile } from '@kitouch/shared-models';
+import {
+  Farewell,
+  FarewellAnalytics,
+  FarewellMedia,
+  Profile,
+} from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellActions = createActionGroup({
@@ -13,10 +18,7 @@ export const FeatFarewellActions = createActionGroup({
     }>(),
     GetFarewellSuccess: props<{ farewell: Farewell }>(),
     GetFarewellFailure: props<{ message: string }>(),
-    //
-    UploadFarewellMedia: props<{ items: Array<{ key: string; blob: Blob }> }>(),
-    UploadFarewellMediaSuccess: props<{ items: Array<{ key: string }> }>(),
-    UploadFarewellMediaFailure: props<{ message: string }>(),
+
     //
     CreateFarewell: props<{
       title: Farewell['title'];
@@ -32,7 +34,32 @@ export const FeatFarewellActions = createActionGroup({
     DeleteFarewell: props<{ id: Farewell['id'] }>(),
     DeleteFarewellSuccess: props<{ id: Farewell['id'] }>(),
     DeleteFarewellFailure: props<{ message: string }>(),
-    // Analytics
+    /** Media */
+    GetMediasFarewellSuccess: props<{ medias: Array<FarewellMedia> }>(),
+    GetMediasFarewellFailure: props<{ message: string }>(),
+    UploadFarewellStorageMedia: props<{
+      farewellId: string;
+      profileId: string;
+      items: Array<{ key: string; blob: Blob }>;
+    }>(),
+    UploadFarewellStorageMediaSuccess: props<{
+      farewellId: string;
+      profileId: string;
+      items: Array<{ key: string }>;
+    }>(),
+    UploadFarewellStorageMediaFailure: props<{ message: string }>(),
+    PostMediasFarewellSuccess: props<{
+      medias: Array<FarewellMedia>;
+    }>(),
+    PostMediasFarewellFailure: props<{ message: string }>(),
+    PutMediaFarewell: props<{
+      media: FarewellMedia;
+    }>(),
+    PutMediaFarewellSuccess: props<{
+      media: FarewellMedia;
+    }>(),
+    PutMediaFarewellFailure: props<{ message: string }>(),
+    /** Analytics **/
     GetAnalyticsFarewell: props<{
       farewellId: string;
     }>(),

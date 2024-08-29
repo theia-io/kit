@@ -1,7 +1,9 @@
+import { profilePicture } from './../../../../kit/data/src/lib/profile/profile.selectors';
 import { Injectable, inject } from '@angular/core';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
+import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/ui-shared';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -19,7 +21,9 @@ import { FarewellService } from './farewell.service';
 export class FarewellEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
+
   #farewellService = inject(FarewellService);
+  #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   #currentProfile = this.#store
     .select(selectCurrentProfile)
@@ -94,19 +98,26 @@ export class FarewellEffects {
     )
   );
 
-  uploadFarewellMedia$ = createEffect(() =>
+  /** Media */
+  uploadFarewellStorageMedia$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatFarewellActions.uploadFarewellMedia),
-      switchMap(({ items }) =>
+      ofType(FeatFarewellActions.uploadFarewellStorageMedia),
+      switchMap(({ farewellId, profileId, items }) =>
         forkJoin([
           items.map(({ key, blob }) =>
-            this.#farewellService.uploadFarewellPicture(key, blob)
+            this.#farewellService.uploadFarewellMedia(key, blob)
           ),
         ]).pipe(
-          map(() => FeatFarewellActions.uploadFarewellMediaSuccess({ items })),
+          map(() =>
+            FeatFarewellActions.uploadFarewellStorageMediaSuccess({
+              farewellId,
+              profileId,
+              items,
+            })
+          ),
           catchError(() =>
             of(
-              FeatFarewellActions.uploadFarewellMediaFailure({
+              FeatFarewellActions.uploadFarewellStorageMediaFailure({
                 message:
                   'We were unable to upload farewell media. Try adding later.',
               })
@@ -116,6 +127,79 @@ export class FarewellEffects {
       )
     )
   );
+
+  createMediasFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.uploadFarewellStorageMediaSuccess),
+      switchMap(({ farewellId, profileId, items }) =>
+        this.#farewellService.postMediasFarewell(
+          items.map((item) => ({
+            farewellId,
+            profileId,
+            url: `${this.#s3FarewellBaseUrl}/${item.key}`,
+          }))
+        )
+      ),
+      map((medias) =>
+        medias
+          ? FeatFarewellActions.postMediasFarewellSuccess({ medias })
+          : FeatFarewellActions.postMediasFarewellFailure({
+              message:
+                'We were not able to add uploaded media to your farewell. Try contacting support.',
+            })
+      )
+    )
+  );
+
+  getMediasFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewellSuccess),
+      switchMap(({ farewell: { id } }) =>
+        this.#farewellService.getMediasFarewell(id).pipe(
+          map((medias) =>
+            FeatFarewellActions.getMediasFarewellSuccess({
+              medias: medias ?? [],
+            })
+          ),
+          catchError(() => {
+            console.error('[FarewellEffects][getMediasFarewell] network error');
+            return of(
+              FeatFarewellActions.getMediasFarewellFailure({
+                message: 'Error getting farewell media files. Try later.',
+              })
+            );
+          })
+        )
+      )
+    )
+  );
+
+  // getMediasFarewells$ = createEffect(() =>
+  //   this.#actions$.pipe(
+  //     ofType(FeatFarewellActions.getFarewellsSuccess),
+  //     switchMap(({farewells}) =>
+  //       this.#farewellService.getMediasFarewells(farewells.map(({id}) => id)).pipe(
+  //         map((medias) =>
+  //           FeatFarewellActions.getMediasFarewellSuccess({
+  //             medias: medias ?? [],
+  //           })
+  //         ),
+  //         catchError(() => {
+  //           console.error(
+  //             '[FarewellEffects][getMediasFarewells] network error'
+  //           );
+  //           return of(
+  //             FeatFarewellActions.getMediasFarewellFailure({
+  //               message: 'Error getting farewells media files. Try later.',
+  //             })
+  //           );
+  //         })
+  //       )
+  //     )
+  //   )
+  // );
+
+  /** Analytics */
 
   createAnalyticsFarewell$ = createEffect(() =>
     this.#actions$.pipe(
@@ -163,7 +247,11 @@ export class FarewellEffects {
   getAnalyticsFarewells$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getFarewellsSuccess),
-      switchMap(() => this.#farewellService.getAnalyticsFarewells()),
+      switchMap(({ farewells }) =>
+        this.#farewellService.getAnalyticsFarewells(
+          farewells.map(({ id }) => id)
+        )
+      ),
       map((analytics) =>
         FeatFarewellActions.getAllAnalyticsSuccess({ analytics })
       )

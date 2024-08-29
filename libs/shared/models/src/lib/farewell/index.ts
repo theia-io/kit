@@ -9,6 +9,7 @@ export interface FarewellAnalytics {
 }
 
 export interface FarewellMedia {
+  id: string;
   farewellId: string;
   profileId: string;
   url: string;

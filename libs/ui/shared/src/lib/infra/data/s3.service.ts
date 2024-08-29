@@ -14,6 +14,9 @@ export interface S3Config {
 export const S3_PROFILE_BUCKET_BASE_URL: InjectionToken<string> =
   new InjectionToken('S3_PROFILE_BUCKET_BASE_URL');
 
+export const S3_FAREWELL_BUCKET_BASE_URL: InjectionToken<string> =
+  new InjectionToken('S3_FAREWELL_BUCKET_BASE_URL');
+
 @Injectable({
   providedIn: 'root',
 })

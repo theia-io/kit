@@ -7,7 +7,7 @@ import { createSelector } from '@ngrx/store';
 import { FeatureFarewellState } from './farewell.reducers';
 
 export interface FarewellFullView extends Farewell {
-  media?: FarewellMedia;
+  media?: Array<FarewellMedia>;
   analytics?: FarewellAnalytics;
 }
 
@@ -62,7 +62,7 @@ export const findFarewellById = (
 export const findMediaFarewellById = (
   farewellId: string,
   medias: Array<FarewellMedia>
-) => medias.find((media) => media.farewellId === farewellId);
+) => medias.filter((media) => media.farewellId === farewellId);
 
 export const findAnalyticsFarewellById = (
   farewellId: string,

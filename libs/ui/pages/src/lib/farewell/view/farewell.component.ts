@@ -3,7 +3,10 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
-import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
+import {
+  FeatFarewellViewComponent,
+  FeatFarewellViewV2Component,
+} from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
@@ -34,7 +37,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     FeatKitProfileHeaderComponent,
     UiLogoComponent,
     UIKitLinkUXDirective,
-    FeatFarewellViewComponent,
+    FeatFarewellViewV2Component,
     FeatFollowSuggestionByIdComponent,
   ],
 })

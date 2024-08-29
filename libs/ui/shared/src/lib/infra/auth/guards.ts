@@ -45,6 +45,11 @@ export const onlyForLoggedInGuard = () => {
   );
 };
 
+/**
+ * This function will make sure that there is logged in (Authorized) user
+ * or will log in current session anonymously (this is because this page
+ * need read data from MongoDB)
+ */
 export const onlyForLoggedInOrAnonymouslyLoggedInGuard = () => {
   const authService = inject(AuthService);
 

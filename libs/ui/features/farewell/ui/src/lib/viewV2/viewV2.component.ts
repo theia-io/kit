@@ -31,9 +31,8 @@ import {
 
 @Component({
   standalone: true,
-  selector: 'feat-farewell-view',
-  templateUrl: './view.component.html',
-  styleUrls: ['./view.component.scss'],
+  selector: 'feat-farewell-viewv2',
+  templateUrl: './viewV2.component.html',
   imports: [
     AsyncPipe,
     //
@@ -42,7 +41,7 @@ import {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellViewComponent {
+export class FeatFarewellViewV2Component {
   farewellId = input<string>();
   preview = input(false);
   visible = input<Array<'media' | 'analytics' | 'chat'>>([
