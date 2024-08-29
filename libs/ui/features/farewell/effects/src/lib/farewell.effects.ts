@@ -1,4 +1,3 @@
-import { profilePicture } from './../../../../kit/data/src/lib/profile/profile.selectors';
 import { Injectable, inject } from '@angular/core';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 
