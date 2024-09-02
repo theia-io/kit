@@ -5,4 +5,5 @@ export * from './business-services';
 export * from './data';
 export * from './device/device.service';
 export * from './environments';
+export * from './http';
 export * from './router/router-events.service';

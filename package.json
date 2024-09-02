@@ -50,6 +50,7 @@
     "lodash": "^4.17.21",
     "mongoose": "^8.4.1",
     "ngx-cookieconsent": "^6.0.0",
+    "photoswipe": "^5.4.4",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.1",
     "quill": "^2.0.2",

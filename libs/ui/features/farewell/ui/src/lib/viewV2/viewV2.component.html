@@ -1,9 +1,22 @@
 @if(farewell$ | async; as farewell) {
 <div class="md:flex">
   @if(visible().includes('media')) {
-  <div class="md:block md:w-3/12">
+  <div id="farewell-images" class="md:block md:w-3/12">
     @for (media of farewell.media; track $index) {
-    <p-image [src]="media.url" alt="Image" width="250" />
+    <a
+      class="block w-24 h-24 mb-3"
+      [href]="media.url"
+      data-pswp-width="150"
+      data-pswp-height="150"
+      target="_blank">
+      <img
+        referrerpolicy="no-referrer"
+        class="rounded-full"
+        width="250"
+        height="250"
+        [ngSrc]="media.url"
+        alt="Farewell media" />
+    </a>
     }
   </div>
   }

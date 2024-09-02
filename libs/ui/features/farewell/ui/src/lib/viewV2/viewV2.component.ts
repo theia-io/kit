@@ -1,5 +1,6 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   inject,
@@ -16,7 +17,7 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
-import { DeviceService } from '@kitouch/ui-shared';
+import { DeviceService, PhotoService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { TooltipModule } from 'primeng/tooltip';
 import {
@@ -28,6 +29,7 @@ import {
   take,
   withLatestFrom,
 } from 'rxjs';
+import PhotoSwipe from 'photoswipe';
 
 @Component({
   standalone: true,
@@ -35,13 +37,13 @@ import {
   templateUrl: './viewV2.component.html',
   imports: [
     AsyncPipe,
+    NgOptimizedImage,
     //
-    ImageModule,
     TooltipModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellViewV2Component {
+export class FeatFarewellViewV2Component implements AfterViewInit {
   farewellId = input<string>();
   preview = input(false);
   visible = input<Array<'media' | 'analytics' | 'chat'>>([
@@ -54,6 +56,7 @@ export class FeatFarewellViewV2Component {
 
   #store = inject(Store);
   sanitizer = inject(DomSanitizer);
+  #photoService = inject(PhotoService);
   device$ = inject(DeviceService).device$;
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
@@ -95,6 +98,31 @@ export class FeatFarewellViewV2Component {
       .subscribe(([farewell, currentProfile]) =>
         this.#visitorActions(farewell, currentProfile)
       );
+  }
+
+  ngAfterViewInit() {
+    setTimeout(async () => {
+      await this.#photoService.initializeGallery({
+        gallery: '#farewell-images',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
+    }, 2500);
+
+    // setTimeout(async () => {
+    //   const gallery = await this.#photoService.createGallery({
+    //     gallery: '#farewell-images',
+    //     children: 'a',
+    //     pswpModule: PhotoSwipe,
+    //   });
+
+    //   setTimeout(() => {
+    //     console.log('FeatFarewellViewV2Component init');
+    //     gallery.init();
+    //   }, 1000)
+    // }, 2000)
+
+    // console.log('FeatFarewellViewV2Component',gallery);
   }
 
   #visitorActions(

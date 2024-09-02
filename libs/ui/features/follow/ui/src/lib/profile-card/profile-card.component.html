@@ -1,12 +1,22 @@
 <div
   class="h-full w-[220px] max-w-sm bg-white border border-gray-200 rounded-lg shadow">
   <div class="flex flex-col justify-between items-center p-10 min-h-80">
-    <p-image
-      styleClass="w-24 h-24 mb-3 rounded-full shadow-lg"
-      imageClass="rounded-full"
-      [preview]="true"
-      [src]="profilePic()"
-      [alt]="profile().name + 'profile picture'" />
+    <div id="profile-header">
+      <a
+        class="block w-24 h-24 mb-3"
+        [href]="profilePic()"
+        data-pswp-width="150"
+        data-pswp-height="150"
+        target="_blank">
+        <img
+          referrerpolicy="no-referrer"
+          class="rounded-full"
+          width="96"
+          height="96"
+          [ngSrc]="profilePic()"
+          [alt]="profile().name + 'profile picture'" />
+      </a>
+    </div>
 
     <h5 class="truncate mb-1 text-xl font-medium text-gray-900 dark:text-white">
       {{ profile().name }}

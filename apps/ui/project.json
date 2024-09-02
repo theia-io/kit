@@ -29,6 +29,11 @@
             "input": "node_modules/intro.js/introjs.css",
             "bundleName": "introjs",
             "inject": false
+          },
+          {
+            "input": "node_modules/photoswipe/dist/photoswipe.css",
+            "bundleName": "photoswipe",
+            "inject": false
           }
         ],
         "scripts": [

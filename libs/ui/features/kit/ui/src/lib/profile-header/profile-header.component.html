@@ -1,11 +1,22 @@
 <div class="w-full h-40 flex flex-col-reverse rounded-b-lg bg-cyan-200 -mt-6">
   <div class="flex justify-start items-end">
-    <p-image
-      styleClass="block h-20 w-20 rounded-full -mb-4 -ml-4"
-      imageClass="rounded-full"
-      [preview]="true"
-      [src]="profilePic()"
-      [alt]="profile().name + 'profile picture'" />
+    <div id="profile-header">
+      <!-- TODO Migrate this profile rounded styles to directive -->
+      <a
+        class="block h-20 w-20 -mb-4 -ml-4"
+        [href]="profilePic()"
+        data-pswp-width="100"
+        data-pswp-height="100"
+        target="_blank">
+        <img
+          referrerpolicy="no-referrer"
+          class="rounded-full"
+          width="90"
+          height="80"
+          [ngSrc]="profilePic()"
+          [alt]="profile().name + 'profile picture'" />
+      </a>
+    </div>
 
     <p
       class="ml-4 -mb-6 overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">

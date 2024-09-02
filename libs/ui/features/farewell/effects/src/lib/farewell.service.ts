@@ -130,15 +130,11 @@ export class FarewellService extends DataSourceService {
   getMediasFarewells(farewellIds: Array<string>) {
     return this.allowAnonymousDb$().pipe(
       switchMap((db) =>
-        db
-          .collection<ClientDBFarewellMediaResponse>('farewell-media')
-          .find({
-            farewellId: {
-              $in: farewellIds.map(
-                (farewellId) => new BSON.ObjectId(farewellId)
-              ),
-            },
-          })
+        db.collection<ClientDBFarewellMediaResponse>('farewell-media').find({
+          farewellId: {
+            $in: farewellIds.map((farewellId) => new BSON.ObjectId(farewellId)),
+          },
+        })
       ),
       map((farewellsMediasDb) =>
         farewellsMediasDb
