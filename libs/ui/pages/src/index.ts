@@ -15,6 +15,7 @@ export * from './lib/home/home.component';
 export * from './lib/introduce-kit/introduce-kit.component';
 export * from './lib/messages/messages.component';
 export * from './lib/settings/settings.component';
+export * from './lib/suggestion/suggestion.component';
 export * from './lib/tweet/tweet.component';
 export * from './lib/profile/profile.component';
 export * from './lib/profile/route';

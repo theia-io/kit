@@ -1,15 +1,15 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { APP_PATH_STATIC_PAGES } from '../../constants';
-import { SharedStaticInfoComponent } from '../static-info/static-info.component';
 
 @Component({
-  selector: 'layout',
+  selector: 'shared-static-info',
   standalone: true,
-  imports: [SharedStaticInfoComponent],
-  templateUrl: './layout.component.html',
+  imports: [RouterModule],
+  templateUrl: './static-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent {
+export class SharedStaticInfoComponent {
   termsAndConditionsUrl = `/s/${APP_PATH_STATIC_PAGES.TermsAndConditions}`;
   privacyUrl = `/s/${APP_PATH_STATIC_PAGES.PrivacyPolicy}`;
   cookiesUrl = `/s/${APP_PATH_STATIC_PAGES.Cookie}`;

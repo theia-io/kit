@@ -121,7 +121,13 @@ export const appRoutes: Route[] = [
         ],
       },
       {
+        path: APP_PATH.Suggestion,
+        loadComponent: () => pages.then((comp) => comp.PageSuggestionComponent),
+      },
+      {
         path: APP_PATH.Farewell,
+        canActivate: [],
+        canDeactivate: [],
         children: [
           {
             path: '',

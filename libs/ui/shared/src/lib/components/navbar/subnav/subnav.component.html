@@ -69,14 +69,32 @@
     </strong>
     <ul class="mt-2 space-y-1">
       <li>
+        <a
+          uiKitSmallTextTailwindClasses
+          [isLink]="true"
+          class="block w-full px-4 py-2"
+          [routerLink]="suggestionUrl()"
+          routerLinkActive="primeng-menu__active"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Find colleagues
+        </a>
+      </li>
+      <li>
         <button
-          type="submit"
           (click)="logout.emit()"
           uiKitSmallTextTailwindClasses
           [isLink]="true"
           class="block w-full px-4 py-2">
           Logout
         </button>
+      </li>
+    </ul>
+  </li>
+
+  <li class="mt-12 block md:hidden">
+    <ul class="mt-2 space-y-1">
+      <li>
+        <shared-static-info />
       </li>
     </ul>
   </li>

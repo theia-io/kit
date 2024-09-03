@@ -10,6 +10,7 @@ export enum APP_PATH {
   Settings = 'settings',
   AboutYourself = 'tell-us-about-yourself',
   Farewell = 'farewell',
+  Suggestion = 'suggestion',
 }
 
 /** For anonymous users also */

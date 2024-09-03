@@ -59,6 +59,7 @@ export class NavBarComponent implements AfterViewInit {
 
   farewellUrl = APP_PATH.Farewell;
   introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  suggestionUrl = APP_PATH.Suggestion;
 
   ngAfterViewInit(): void {
     const shouldInitiallyFocus = this.items().find(

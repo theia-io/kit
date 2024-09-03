@@ -1,10 +1,10 @@
 import { CommonModule, DOCUMENT } from '@angular/common';
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { FeatTweetBookmarkActions } from '@kitouch/feat-tweet-data';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 
 import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
   APP_PATH,
   APP_PATH_DIALOG,
@@ -15,7 +15,6 @@ import {
   OUTLET_DIALOG,
 } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 
 @Component({
   standalone: true,
@@ -54,8 +53,8 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
             showRandomOrder: false
           }"
         />
-      </div> </layout
-    >,
+      </div>
+    </layout>
   `,
 })
 export class KitComponent implements OnInit {

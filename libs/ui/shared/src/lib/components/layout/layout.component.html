@@ -1,46 +1,21 @@
 <div
-  class="container flex my-4 min-h-full md:w-full md:p-2 lg:w-11/12 xl:w-9/12 2xl:w-8/12 max-w-screen-lg mx-auto">
+  class="flex gap-4 justify-center min-h-full px-2 md:mx-auto w-full py-4 md:w-11/12 lg:w-9/12 max-w-5xl">
   <!-- left -->
-  <div class="w-3/12 mr-4">
+  <div>
     <ng-content select="[left]"></ng-content>
   </div>
 
   <!--middle-->
-  <div class="w-6/12">
+  <div>
     <ng-content></ng-content>
   </div>
 
   <!--right -->
-  <div class="w-3/12 ml-4">
+  <div class="max-w-64 hidden md:block">
     <ng-content select="[right]"></ng-content>
 
-    <div class="flow-root m-6 inline">
-      <div class="flex-1">
-        <p class="text-sm leading-6 font-medium text-gray-500">
-          <a
-            [routerLink]="termsAndConditionsUrl"
-            class="leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">
-            Terms and Conditions,
-          </a>
-          <a
-            [routerLink]="privacyUrl"
-            class="leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">
-            Privacy Policy
-          </a>
-          and
-          <a
-            [routerLink]="cookiesUrl"
-            class="leading-6 text-sm font-medium text-gray-500 hover:text-gray-900 hover:font-semibold">
-            Cookies
-          </a>
-        </p>
-      </div>
-      <div class="flex-2">
-        <p class="text-sm leading-6 font-medium text-gray-600">
-          © {{ year }} Theia, LLCs ,. All rights reserved.
-        </p>
-        <!-- <p class="text-sm leading-6 font-medium text-gray-600">Kitouch product</p> -->
-      </div>
+    <div class="m-6 inline">
+      <shared-static-info />
     </div>
   </div>
 </div>
