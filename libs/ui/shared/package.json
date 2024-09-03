@@ -17,7 +17,8 @@
     "intro.js": "^7.2.0",
     "@kitouch/utils": "1.0.0-beta",
     "@aws-sdk/client-s3": "^3.627.0",
-    "@aws-sdk/credential-providers": "^3.631.0"
+    "@aws-sdk/credential-providers": "^3.631.0",
+    "photoswipe": "^5.4.4"
   },
   "sideEffects": false
 }

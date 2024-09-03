@@ -24,6 +24,7 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell } from '@kitouch/shared-models';
+import { UploadablePicComponent } from '@kitouch/ui-components';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -49,6 +50,8 @@ function extractContent(html: string) {
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    //
+    UploadablePicComponent,
     //
     ToastModule,
     FileUploadModule,

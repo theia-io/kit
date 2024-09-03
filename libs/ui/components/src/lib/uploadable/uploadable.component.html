@@ -1,0 +1,32 @@
+<div
+  class="relative justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
+  <p-confirmPopup key="upload">
+    <ng-template pTemplate="headless" let-message>
+      <div class="w-full h-full flex items-center justify-center">
+        <p-fileUpload
+          #fileUploadCmp
+          [customUpload]="true"
+          [auto]="true"
+          [multiple]="false"
+          mode="basic"
+          chooseIcon="pi pi-upload"
+          accept="image/*"
+          maxFileSize="1000000"
+          (uploadHandler)="autoUploadCb()($event)"></p-fileUpload>
+      </div>
+    </ng-template>
+  </p-confirmPopup>
+
+  <i
+    role="button"
+    (click)="uploadInstantly($event)"
+    class="pi pi-cloud-upload font-semibold text-2xl text-white cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-60 hover:opacity-100"></i>
+
+  <img
+    class="rounded-md"
+    [ngSrc]="imgConf().src"
+    width="64"
+    height="64"
+    [alt]="imgConf().alt ?? 'Container to instantly upload media'"
+    referrerpolicy="no-referrer" />
+</div>

@@ -50,6 +50,10 @@
     }
   </form>
 
+  <ui-kit-pic-uploadable
+    [imgConf]="{ src: '/farewell/farewell-page-logo-small.jpeg' }"
+    [autoUploadCb]="onBasicUploadAuto"></ui-kit-pic-uploadable>
+
   <p-fileUpload
     [customUpload]="true"
     [multiple]="true"

@@ -9,7 +9,9 @@
     "primeng": "^17.18.1",
     "@kitouch/ui-shared": "1.0.0-beta",
     "@ngrx/effects": "18.0.0",
-    "rxjs": "~7.8.0"
+    "rxjs": "~7.8.0",
+    "photoswipe": "^5.4.4",
+    "@angular/common": "~18.0.0"
   },
   "sideEffects": false
 }
