@@ -29,8 +29,8 @@ import { select, Store } from '@ngrx/store';
   ],
   selector: 'app-kitouch',
   template: `
-    <layout>
-      <navbar
+    <shared-layout>
+      <shared-navbar
         left
         [items]="navBarItems"
         [profileBaseUrl]="profileUrl"
@@ -39,7 +39,7 @@ import { select, Store } from '@ngrx/store';
         (help)="helpHandler()"
         (logout)="logoutHandler()"
         class="block"
-      ></navbar>
+      ></shared-navbar>
 
       <router-outlet></router-outlet>
 
@@ -54,7 +54,7 @@ import { select, Store } from '@ngrx/store';
           }"
         />
       </div>
-    </layout>
+    </shared-layout>
   `,
 })
 export class KitComponent implements OnInit {

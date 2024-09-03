@@ -6,7 +6,7 @@ import { UXDynamicService } from '../../services';
 
 @Component({
   standalone: true,
-  selector: 'ui-shared-logo',
+  selector: 'shared-logo',
   template: ` <a routerLink="/" class="flex items-center hover:cursor-pointer">
     <img
       class="inline-block h-10 w-auto rounded-full mt-2"

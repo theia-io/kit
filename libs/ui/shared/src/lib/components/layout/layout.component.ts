@@ -3,7 +3,7 @@ import { APP_PATH_STATIC_PAGES } from '../../constants';
 import { SharedStaticInfoComponent } from '../static-info/static-info.component';
 
 @Component({
-  selector: 'layout',
+  selector: 'shared-layout',
   standalone: true,
   imports: [SharedStaticInfoComponent],
   templateUrl: './layout.component.html',

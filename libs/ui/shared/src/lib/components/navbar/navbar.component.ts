@@ -25,7 +25,7 @@ import { UiLogoComponent } from '../logo/logo.component';
 
 @Component({
   standalone: true,
-  selector: 'navbar',
+  selector: 'shared-navbar',
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
