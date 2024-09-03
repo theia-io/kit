@@ -50,29 +50,77 @@
     }
   </form>
 
-  <ui-kit-pic-uploadable
-    [imgConf]="{ src: '/farewell/farewell-page-logo-small.jpeg' }"
-    [autoUploadCb]="onBasicUploadAuto"></ui-kit-pic-uploadable>
+  <section class="w-full">
+    <h3 class="font-semibold">Media</h3>
+    <div
+      class="ml-4 flex items-center justify-start"
+      id="uploaded-media-gallery">
+      @for (media of farewellMedias(); track $index) {
+      <div class="relative">
+        <a
+          class="relative block w-24 h-24 mb-3"
+          [href]="media.url"
+          data-pswp-width="150"
+          data-pswp-height="150"
+          target="_blank">
+          <img
+            referrerpolicy="no-referrer"
+            class="rounded-full w-full h-full"
+            width="64"
+            height="64"
+            [ngSrc]="media.url"
+            alt="Farewell media" />
+        </a>
+        <ui-kit-delete
+          yOffset="-top-1"
+          xOffset="-right-3"
+          (onDelete)="deleteFarewellMediaHandler(media)" />
+      </div>
 
-  <p-fileUpload
-    [customUpload]="true"
-    [multiple]="true"
-    [auto]="true"
-    chooseIcon="pi pi-upload"
-    accept="image/*"
-    [fileLimit]="10"
-    maxFileSize="2500000"
-    (uploadHandler)="onBasicUploadAuto($event)">
-    <ng-template pTemplate="content">
-      @if(filesToUpload().length) {
-      <ul>
-        @for (file of filesToUpload(); track $index) {
-        <li>{{ file.name }} - {{ file.size }} bytes</li>
-        }
-      </ul>
       }
-    </ng-template>
-  </p-fileUpload>
+    </div>
+
+    <h3 class="mt-2 font-semibold">New</h3>
+    <div class="ml-4 flex items-center justify-start gap-8">
+      <ui-kit-comp-animate-ping [newlyAddedItem]="true">
+        <ui-kit-pic-uploadable
+          [imgConf]="{ src: '/farewell/farewell-page-logo-small.jpeg' }"
+          [fileUploadConf]="{ multiple: true }"
+          [autoUploadCb]="onBasicUploadAuto.bind(this)"></ui-kit-pic-uploadable>
+      </ui-kit-comp-animate-ping>
+
+      <div
+        class="ml-4 flex gap-2 items-center justify-start"
+        id="new-media-gallery">
+        @for (file of filesToUpload(); track $index) {
+        <div class="relative">
+          <a
+            class="relative block w-16 h-16"
+            [href]="
+              domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file))
+            "
+            data-pswp-width="150"
+            data-pswp-height="150"
+            target="_blank">
+            <img
+              referrerpolicy="no-referrer"
+              class="rounded-full w-full h-full"
+              width="64"
+              height="64"
+              [src]="
+                domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file))
+              "
+              alt="Farewell media" />
+          </a>
+          <ui-kit-delete
+            yOffset="-top-1"
+            xOffset="-right-3"
+            (onDelete)="deleteNewMediaHandler(file)" />
+        </div>
+        }
+      </div>
+    </div>
+  </section>
 
   <p-button
     [disabled]="

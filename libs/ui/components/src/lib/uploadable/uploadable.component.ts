@@ -1,9 +1,11 @@
-import { NgOptimizedImage } from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   input,
+  model,
   ViewChild,
 } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -18,6 +20,7 @@ import {
   selector: 'ui-kit-pic-uploadable',
   standalone: true,
   imports: [
+    NgClass,
     NgOptimizedImage,
     //
     //
@@ -28,11 +31,24 @@ import {
   providers: [ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UploadablePicComponent {
+export class UiKitPicUploadableComponent {
   /** src of image */
   imgConf = input.required<{ src: string; alt?: string }>();
+  iconConf = model<{ ngClass?: Array<string> }>();
+  fileUploadConf = input<Partial<FileUpload>>();
 
+  /** Likely you should make sure correct Context, run `.bind(this)` while providing this value.
+   */
   autoUploadCb = input.required<(event: FileUploadHandlerEvent) => void>();
+
+  autoUploadCbMonkeyPatched = computed(() => {
+    const original = this.autoUploadCb();
+
+    return (event: FileUploadHandlerEvent) => {
+      original(event);
+      this.#confirmationService.close();
+    };
+  });
 
   @ViewChild('fileUploadCmp', { read: FileUpload, static: false })
   fileUploadCmp: FileUpload;

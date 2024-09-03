@@ -15,7 +15,8 @@
     "@kitouch/shared-models": "1.0.0-beta",
     "@kitouch/kit-data": "1.0.0-beta",
     "@angular/platform-browser": "~18.0.0",
-    "photoswipe": "^5.4.4"
+    "photoswipe": "^5.4.4",
+    "@kitouch/ui-components": "1.0.0-beta"
   },
   "sideEffects": false
 }

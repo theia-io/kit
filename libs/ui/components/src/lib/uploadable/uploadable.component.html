@@ -7,12 +7,12 @@
           #fileUploadCmp
           [customUpload]="true"
           [auto]="true"
-          [multiple]="false"
+          [multiple]="fileUploadConf()?.multiple ?? false"
           mode="basic"
           chooseIcon="pi pi-upload"
           accept="image/*"
           maxFileSize="1000000"
-          (uploadHandler)="autoUploadCb()($event)"></p-fileUpload>
+          (uploadHandler)="autoUploadCbMonkeyPatched()($event)"></p-fileUpload>
       </div>
     </ng-template>
   </p-confirmPopup>
@@ -20,7 +20,8 @@
   <i
     role="button"
     (click)="uploadInstantly($event)"
-    class="pi pi-cloud-upload font-semibold text-2xl text-white cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-60 hover:opacity-100"></i>
+    class="pi pi-cloud-upload font-extrabold text-2xl cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-80 hover:opacity-100"
+    [ngClass]="iconConf()?.ngClass"></i>
 
   <img
     class="rounded-md"

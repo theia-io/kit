@@ -11,7 +11,8 @@
     "rxjs": "~7.8.0",
     "@angular/router": "~18.0.0",
     "@kitouch/feat-follow-data": "1.0.0-beta",
-    "@kitouch/ui-shared": "1.0.0-beta"
+    "@kitouch/ui-shared": "1.0.0-beta",
+    "photoswipe": "^5.4.4"
   },
   "sideEffects": false
 }

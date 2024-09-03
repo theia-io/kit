@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   standalone: true,
-  selector: 'ui-kit-comp-new-ui-item',
+  selector: 'ui-kit-comp-animate-ping',
   template: `
     <div class="relative">
       <ng-content />
@@ -20,6 +20,6 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class NewUIItemComponent {
+export class UiKitCompAnimatePingComponent {
   newlyAddedItem = input.required<boolean>();
 }

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -17,18 +17,32 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import {
+  FarewellFullView,
   FeatFarewellActions,
-  selectFarewellById,
+  selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { Farewell } from '@kitouch/shared-models';
-import { UploadablePicComponent } from '@kitouch/ui-components';
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
+import {
+  Farewell,
+  FarewellAnalytics,
+  FarewellMedia,
+} from '@kitouch/shared-models';
+import {
+  UiKitCompAnimatePingComponent,
+  UiKitDeleteComponent,
+  UiKitPicUploadableComponent,
+} from '@kitouch/ui-components';
+import {
+  APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
+  PhotoService,
+} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { sign } from 'crypto';
+import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { EditorModule, EditorTextChangeEvent } from 'primeng/editor';
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
@@ -48,10 +62,12 @@ function extractContent(html: string) {
   selector: 'feat-farewell-generate',
   templateUrl: './farewell-generate.component.html',
   imports: [
-    CommonModule,
+    NgOptimizedImage,
     ReactiveFormsModule,
     //
-    UploadablePicComponent,
+    UiKitCompAnimatePingComponent,
+    UiKitDeleteComponent,
+    UiKitPicUploadableComponent,
     //
     ToastModule,
     FileUploadModule,
@@ -67,13 +83,17 @@ export class FeatFarewellGenerateComponent {
 
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
+  domSanitizer = inject(DomSanitizer);
   #router = inject(Router);
   #store = inject(Store);
+  #photoService = inject(PhotoService);
   #actions$ = inject(Actions);
 
   farewellToEdit = computed(() => {
     const id = this.farewellIdToEdit();
-    return id ? this.#store.selectSignal(selectFarewellById(id))() : undefined;
+    return id
+      ? this.#store.selectSignal(selectFarewellFullViewById(id))()
+      : undefined;
   });
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
@@ -99,8 +119,12 @@ export class FeatFarewellGenerateComponent {
     ]),
     editorControl: new FormControl<string>('', [Validators.required]),
   });
+  farewellAnalytics = signal<FarewellAnalytics | null>(null);
+  farewellMedias = signal<Array<FarewellMedia> | null>(null);
   editorTextValue = signal<string>('');
   filesToUpload = signal<Array<File>>([]);
+
+  URL = URL;
 
   constructor() {
     effect(
@@ -113,15 +137,49 @@ export class FeatFarewellGenerateComponent {
             editorControl: farewellToEdit.content,
           });
           this.editorTextValue.set(extractContent(farewellToEdit.content));
+
+          const { media, analytics } = farewellToEdit;
+          if (media) {
+            this.farewellMedias.set(media);
+          }
+
+          if (analytics) {
+            this.farewellAnalytics.set(analytics);
+          }
+
           this.#cdr.detectChanges();
         }
       },
       { allowSignalWrites: true }
     );
+
+    effect(() => {
+      const farewellMediaUpdated = this.farewellMedias();
+
+      if (farewellMediaUpdated) {
+        setTimeout(() => {
+          this.#initFarewellMediaGallery();
+        }, 1500);
+      }
+    });
   }
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
     this.editorTextValue.set(textValue);
+  }
+
+  deleteFarewellMediaHandler(media: FarewellMedia) {
+    // TODO  verify if this covers all use-cases
+    this.farewellMedias.update(
+      (medias) => medias?.filter(({ id }) => id !== media.id) ?? []
+    );
+  }
+
+  deleteNewMediaHandler(media: File) {
+    // TODO  verify if this covers all use-cases
+    this.filesToUpload.update((files) =>
+      files.filter((files) => files.name !== media.name)
+    );
   }
 
   onBasicUploadAuto(event: FileUploadHandlerEvent) {
@@ -150,7 +208,23 @@ export class FeatFarewellGenerateComponent {
     }
   }
 
-  #updateFarewell(farewell: Farewell) {
+  #initFarewellMediaGallery() {
+    this.#photoService.initializeGallery({
+      gallery: '#uploaded-media-gallery',
+      children: 'a',
+      pswpModule: PhotoSwipe,
+    });
+  }
+
+  #initNewFarewellMediaGallery() {
+    this.#photoService.initializeGallery({
+      gallery: '#new-media-gallery',
+      children: 'a',
+      pswpModule: PhotoSwipe,
+    });
+  }
+
+  #updateFarewell({ media: _, analytics: __, ...farewell }: FarewellFullView) {
     this.#store.dispatch(
       FeatFarewellActions.putFarewell({
         farewell,

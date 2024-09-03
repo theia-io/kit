@@ -24,7 +24,7 @@ import {
   selectCurrentUserExperiences,
 } from '@kitouch/kit-data';
 import { Experience } from '@kitouch/shared-models';
-import { NewUIItemComponent } from '@kitouch/ui-components';
+import { UiKitCompAnimatePingComponent } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
 import { Message } from 'primeng/api';
@@ -44,7 +44,7 @@ import { filter, take } from 'rxjs';
     AccordionModule,
     ButtonModule,
     //
-    NewUIItemComponent,
+    UiKitCompAnimatePingComponent,
     FeatSettingsProfileInformationComponent,
     FeatSettingsSocialsComponent,
     FeatSettingsExperienceAddComponent,
