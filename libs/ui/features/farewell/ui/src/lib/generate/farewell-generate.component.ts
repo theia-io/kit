@@ -34,6 +34,7 @@ import {
   UiKitCompAnimatePingComponent,
   UiKitDeleteComponent,
   UiKitPicUploadableComponent,
+  UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 import {
   APP_PATH,
@@ -68,6 +69,7 @@ function extractContent(html: string) {
     UiKitCompAnimatePingComponent,
     UiKitDeleteComponent,
     UiKitPicUploadableComponent,
+    UIKitSmallerHintTextUXDirective,
     //
     ToastModule,
     FileUploadModule,
@@ -162,6 +164,16 @@ export class FeatFarewellGenerateComponent {
         }, 1500);
       }
     });
+
+    effect(() => {
+      const filesToUpload = this.filesToUpload();
+
+      if (filesToUpload) {
+        setTimeout(() => {
+          this.#initNewFarewellMediaGallery();
+        }, 1500);
+      }
+    });
   }
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
@@ -183,8 +195,13 @@ export class FeatFarewellGenerateComponent {
   }
 
   onBasicUploadAuto(event: FileUploadHandlerEvent) {
-    const files = event.files;
-    this.filesToUpload.set(files);
+    const newFiles = event.files;
+    this.filesToUpload.update((files) => [...files, ...newFiles]);
+  }
+
+  previewFarewellHandler() {
+    // TODO Implement preview
+    console.log('previewFarewellHandler');
   }
 
   saveFarewellHandler() {

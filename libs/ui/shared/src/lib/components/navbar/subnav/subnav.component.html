@@ -7,8 +7,9 @@
     <ul class="mt-2 space-y-1">
       <li>
         <a
-          uiKitLinkUX
-          class="block w-full"
+          uiKitSmallTextTailwindClasses
+          [isLink]="true"
+          class="block w-full px-4 py-2"
           [routerLink]="farewellUrl()"
           routerLinkActive="primeng-menu__active"
           [routerLinkActiveOptions]="{ exact: true }">
@@ -21,8 +22,9 @@
           [routerLink]="farewellUrl() + '/generate'"
           routerLinkActive="primeng-menu__active"
           pTooltip="Generate Farewell"
-          uiKitLinkUX
-          class="block w-full">
+          uiKitSmallTextTailwindClasses
+          [isLink]="true"
+          class="block w-full px-4 py-2">
           Generate
         </a>
       </li>
@@ -43,16 +45,18 @@
           "
           target="_blank"
           pTooltip="Write us email to info@kitouch.io"
-          uiKitLinkUX
-          class="block w-full">
+          uiKitSmallTextTailwindClasses
+          [isLink]="true"
+          class="block w-full px-4 py-2">
           Help
         </a>
       </li>
       <li>
         <a
           [routerLink]="introducingKitFarewell()"
-          uiKitLinkUX
-          class="block w-full">
+          uiKitSmallTextTailwindClasses
+          [isLink]="true"
+          class="block w-full px-4 py-2">
           What is KIT?
         </a>
       </li>
@@ -68,8 +72,9 @@
         <button
           type="submit"
           (click)="logout.emit()"
-          uiKitLinkUX
-          class="block w-full">
+          uiKitSmallTextTailwindClasses
+          [isLink]="true"
+          class="block w-full px-4 py-2">
           Logout
         </button>
       </li>

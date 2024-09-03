@@ -11,7 +11,7 @@ import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import { UIKitLinkUXDirective } from '@kitouch/ui-components';
+import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import {
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
@@ -36,7 +36,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     //
     FeatKitProfileHeaderComponent,
     UiLogoComponent,
-    UIKitLinkUXDirective,
+    UIKitSmallerHintTextUXDirective,
     FeatFarewellViewV2Component,
     FeatFollowSuggestionByIdComponent,
   ],

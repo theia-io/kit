@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UIKitLinkUXDirective } from '@kitouch/ui-components';
+import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import { APP_PATH_STATIC_PAGES, UiLogoComponent } from '@kitouch/ui-shared';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, UiLogoComponent, UIKitLinkUXDirective],
+  imports: [RouterModule, UiLogoComponent, UIKitSmallerHintTextUXDirective],
   selector: 'app-kitouch-static',
   template: ` <div class="p-4">
     <div class="flex items-center">
@@ -16,7 +16,9 @@ import { APP_PATH_STATIC_PAGES, UiLogoComponent } from '@kitouch/ui-shared';
         [routerLink]="introduceKitUrl"
         routerLinkActive="primeng-menu__active"
         pTooltip="Generate Farewell"
-        uiKitLinkUX
+        uiKitSmallTextTailwindClasses
+        [isLink]="true"
+        class="px-4 py-2"
       >
         What is Kit?
       </a>

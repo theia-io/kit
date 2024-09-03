@@ -2,16 +2,16 @@
   <span class="text-2xl">Farewell 🗒️ 🫂</span>
 
   <form class="w-full" [formGroup]="farewellFormGroup">
-    <p-floatLabel class="block">
+    <p-floatLabel class="block text-center">
       <input
-        class="w-full"
+        class="w-full border-none shadow-none text-2xl italic focus:outline-none"
         id="title"
         type="text"
         pInputText
         formControlName="titleControl" />
       <label for="title">Title</label>
     </p-floatLabel>
-    <section class="mb-2">
+    <section class="mb-6">
       @if(!farewellFormGroup.get('titleControl')?.value?.length ||
       farewellFormGroup.get('titleControl')?.errors?.['minlength']) {
       <strong class="block text-xs text-gray-400">
@@ -26,8 +26,15 @@
       }
     </section>
 
+    <p
+      id="farewell-rich-text-editor"
+      uiKitSmallTextTailwindClasses
+      class="px-4 py-2">
+      Rich-text editor. Be yourself.
+    </p>
     <p-editor
       id="farewell-float"
+      aria-describedby="farewell-rich-text-editor"
       placeholder="Add farewell to your (ex-) colleagues 🔥"
       [modules]="modules"
       [style]="{ height: '320px' }"
@@ -51,11 +58,12 @@
   </form>
 
   <section class="w-full">
-    <h3 class="font-semibold">Media</h3>
+    @if(farewellMedias(); as farewellMedias) {
+    <h3 uiKitSmallTextTailwindClasses>Media used in farewell</h3>
     <div
-      class="ml-4 flex items-center justify-start"
+      class="ml-4 flex flex-wrap items-center justify-start"
       id="uploaded-media-gallery">
-      @for (media of farewellMedias(); track $index) {
+      @for (media of farewellMedias; track $index) {
       <div class="relative">
         <a
           class="relative block w-24 h-24 mb-3"
@@ -76,12 +84,12 @@
           xOffset="-right-3"
           (onDelete)="deleteFarewellMediaHandler(media)" />
       </div>
-
       }
     </div>
+    }
 
-    <h3 class="mt-2 font-semibold">New</h3>
-    <div class="ml-4 flex items-center justify-start gap-8">
+    <h3 uiKitSmallTextTailwindClasses>New files</h3>
+    <div class="ml-4 flex items-start justify-start gap-8">
       <ui-kit-comp-animate-ping [newlyAddedItem]="true">
         <ui-kit-pic-uploadable
           [imgConf]="{ src: '/farewell/farewell-page-logo-small.jpeg' }"
@@ -90,7 +98,7 @@
       </ui-kit-comp-animate-ping>
 
       <div
-        class="ml-4 flex gap-2 items-center justify-start"
+        class="ml-4 flex flex-wrap gap-2 items-center justify-start"
         id="new-media-gallery">
         @for (file of filesToUpload(); track $index) {
         <div class="relative">
@@ -122,15 +130,29 @@
     </div>
   </section>
 
-  <p-button
-    [disabled]="
-      !(
-        farewellFormGroup.valid &&
-        editorTextValue().length >= 64 &&
-        editorTextValue().length <= 8192
-      )
-    "
-    (onClick)="saveFarewellHandler()"
-    label="Save farewell"
-    [raised]="true" />
+  <div>
+    <p-button
+      [disabled]="true"
+      class="mr-2"
+      severity="secondary"
+      (onClick)="previewFarewellHandler()"
+      label="Preview"
+      icon="pi pi-eye"
+      iconPos="left"
+      [raised]="true" />
+
+    <p-button
+      [disabled]="
+        !(
+          farewellFormGroup.valid &&
+          editorTextValue().length >= 64 &&
+          editorTextValue().length <= 8192
+        )
+      "
+      (onClick)="saveFarewellHandler()"
+      label="Save"
+      icon="pi pi-thumbs-up-fill"
+      iconPos="right"
+      [raised]="true" />
+  </div>
 </div>

@@ -46,6 +46,9 @@ export class UiKitPicUploadableComponent {
 
     return (event: FileUploadHandlerEvent) => {
       original(event);
+      // TODO handle when closed with esc
+      // primeng does not seem to support this OOTB
+      // https://github.com/primefaces/primeng/blob/master/src/app/components/fileupload/fileupload.ts#L195
       this.#confirmationService.close();
     };
   });
