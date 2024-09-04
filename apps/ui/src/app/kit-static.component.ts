@@ -9,7 +9,7 @@ import { APP_PATH_STATIC_PAGES, UiLogoComponent } from '@kitouch/ui-shared';
   selector: 'app-kitouch-static',
   template: ` <div class="p-4">
     <div class="flex items-center">
-      <shared-logo class="block mr-16" logoText="kit" />
+      <shared-logo class="block mr-16" />
 
       <a
         role="button"

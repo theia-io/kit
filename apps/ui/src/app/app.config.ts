@@ -3,7 +3,10 @@ import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
-import { FarewellEffects } from '@kitouch/feat-farewell-effects';
+import {
+  FarewellEffects,
+  FarewellMediaEffects,
+} from '@kitouch/feat-farewell-effects';
 import { featFollowReducer } from '@kitouch/feat-follow-data';
 import { FollowEffects } from '@kitouch/feat-follow-effects';
 import {
@@ -76,6 +79,7 @@ export const appConfig: ApplicationConfig = {
       tweet: featTweetReducer,
     }),
     provideEffects([
+      FarewellMediaEffects,
       FarewellEffects,
       // follow feat effects
       FollowEffects,

@@ -22,6 +22,7 @@ import { Router } from '@angular/router';
 import {
   FarewellFullView,
   FeatFarewellActions,
+  FeatFarewellMediaActions,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
@@ -181,10 +182,24 @@ export class FeatFarewellGenerateComponent {
   }
 
   deleteFarewellMediaHandler(media: FarewellMedia) {
-    // TODO  verify if this covers all use-cases
     this.farewellMedias.update(
       (medias) => medias?.filter(({ id }) => id !== media.id) ?? []
     );
+
+    // S3
+    this.#store.dispatch(
+      FeatFarewellMediaActions.deleteFarewellStorageMedia({
+        url: media.url,
+      })
+    );
+    // DB
+    this.#store.dispatch(
+      FeatFarewellMediaActions.deleteMediaFarewell({
+        id: media.id,
+      })
+    );
+
+    // TODO add error handling
   }
 
   deleteNewMediaHandler(media: File) {
@@ -288,7 +303,7 @@ export class FeatFarewellGenerateComponent {
 
     if (mediaFiles?.length && profile?.id) {
       this.#store.dispatch(
-        FeatFarewellActions.uploadFarewellStorageMedia({
+        FeatFarewellMediaActions.uploadFarewellStorageMedia({
           farewellId,
           profileId: profile.id,
           items: mediaFiles.map((mediaFile) => ({

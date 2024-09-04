@@ -109,6 +109,10 @@ export class FarewellService extends DataSourceService {
   uploadFarewellMedia(key: string, media: Blob) {
     return this.setBucketItem(this.#env.s3Config.farewellBucket, key, media);
   }
+  /** Media, S3 */
+  deleteFarewellMedia(key: string) {
+    return this.deleteBucketItem(this.#env.s3Config.farewellBucket, key);
+  }
 
   /** Returns medias for single farewell */
   getMediasFarewell(farewellId: string) {
@@ -171,6 +175,19 @@ export class FarewellService extends DataSourceService {
             )
           : null
       )
+    );
+  }
+
+  deleteMediaFarewell(id: string) {
+    return this.db$().pipe(
+      switchMap((db) =>
+        db
+          .collection<ClientDBFarewellMediaResponse>('farewell-media')
+          .deleteOne({
+            _id: new BSON.ObjectId(id),
+          })
+      ),
+      map(({ deletedCount }) => deletedCount > 0)
     );
   }
 

@@ -58,7 +58,7 @@
   </form>
 
   <section class="w-full">
-    @if(farewellMedias(); as farewellMedias) {
+    @if(farewellMedias()?.length && farewellMedias(); as farewellMedias) {
     <h3 uiKitSmallTextTailwindClasses>Media used in farewell</h3>
     <div
       class="ml-4 flex flex-wrap items-center justify-start"

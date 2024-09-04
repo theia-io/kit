@@ -1,5 +1,9 @@
 import { inject } from '@angular/core';
-import { GetObjectCommand, PutObjectCommand } from '@aws-sdk/client-s3';
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+} from '@aws-sdk/client-s3';
 import { DBClientType } from '@kitouch/utils';
 import { from, Observable, of, throwError } from 'rxjs';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
@@ -104,6 +108,17 @@ export class DataSourceService {
           Bucket,
           Key,
           Body,
+        })
+      )
+    );
+  }
+
+  protected deleteBucketItem(Bucket: string, Key: string) {
+    return from(
+      this.#s3Client.send(
+        new DeleteObjectCommand({
+          Bucket,
+          Key,
         })
       )
     );

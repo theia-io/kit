@@ -5,6 +5,7 @@ import {
 } from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr, remove } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
+import { FeatFarewellMediaActions } from './farewell-media.actions';
 import { FeatFarewellActions } from './farewell.actions';
 
 export interface FeatureFarewellState {
@@ -40,13 +41,17 @@ export const featFarewellReducer = createReducer(
   })),
   /** Media */
   on(
-    FeatFarewellActions.getMediasFarewellSuccess,
-    FeatFarewellActions.postMediasFarewellSuccess,
+    FeatFarewellMediaActions.getMediasFarewellSuccess,
+    FeatFarewellMediaActions.postMediasFarewellSuccess,
     (state, { medias }) => ({
       ...state,
       media: mergeArr(medias, state.media),
     })
   ),
+  on(FeatFarewellMediaActions.deleteMediaFarewellSuccess, (state, { id }) => ({
+    ...state,
+    media: remove(id, state.media),
+  })),
   /** Analytics */
   on(FeatFarewellActions.getAllAnalyticsSuccess, (state, { analytics }) => ({
     ...state,

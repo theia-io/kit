@@ -34,31 +34,6 @@ export const FeatFarewellActions = createActionGroup({
     DeleteFarewell: props<{ id: Farewell['id'] }>(),
     DeleteFarewellSuccess: props<{ id: Farewell['id'] }>(),
     DeleteFarewellFailure: props<{ message: string }>(),
-    /** Media */
-    GetMediasFarewellSuccess: props<{ medias: Array<FarewellMedia> }>(),
-    GetMediasFarewellFailure: props<{ message: string }>(),
-    UploadFarewellStorageMedia: props<{
-      farewellId: string;
-      profileId: string;
-      items: Array<{ key: string; blob: Blob }>;
-    }>(),
-    UploadFarewellStorageMediaSuccess: props<{
-      farewellId: string;
-      profileId: string;
-      items: Array<{ key: string }>;
-    }>(),
-    UploadFarewellStorageMediaFailure: props<{ message: string }>(),
-    PostMediasFarewellSuccess: props<{
-      medias: Array<FarewellMedia>;
-    }>(),
-    PostMediasFarewellFailure: props<{ message: string }>(),
-    PutMediaFarewell: props<{
-      media: FarewellMedia;
-    }>(),
-    PutMediaFarewellSuccess: props<{
-      media: FarewellMedia;
-    }>(),
-    PutMediaFarewellFailure: props<{ message: string }>(),
     /** Analytics **/
     GetAnalyticsFarewell: props<{
       farewellId: string;
