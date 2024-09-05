@@ -4,13 +4,16 @@ import {
   APP_PATH_ALLOW_ANONYMOUS,
   APP_PATH_DIALOG,
   APP_PATH_STATIC_PAGES,
+  LayoutService,
   onlyForLoggedInGuard,
   onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
   OUTLET_DIALOG,
+  PanelState,
 } from '@kitouch/ui-shared';
 import { KitStaticComponent } from './kit-static.component';
 import { KitComponent } from './kit.component';
+import { inject } from '@angular/core';
 
 const pages = import('@kitouch/pages');
 
@@ -126,8 +129,12 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH.Farewell,
-        canActivate: [],
-        canDeactivate: [],
+        canActivate: [
+          () => inject(LayoutService).rightPanelState.set(PanelState.Closed),
+        ],
+        canDeactivate: [
+          () => inject(LayoutService).rightPanelState.set(PanelState.Opened),
+        ],
         children: [
           {
             path: '',

@@ -16,7 +16,7 @@ import {
       onDelete.emit($event)
     "
     role="button"
-    class="pi pi-times-circle absolute  hover:animate-pulse"
+    class="pi pi-times-circle absolute z-10 hover:animate-pulse"
     [ngClass]="[xOffset() ?? 'right-2', yOffset() ?? 'top-2']"
     style="font-size: 1.5rem"
   ></i> `,

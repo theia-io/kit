@@ -1,6 +1,7 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { APP_PATH_STATIC_PAGES } from '../../constants';
 import { SharedStaticInfoComponent } from '../static-info/static-info.component';
+import { LayoutService } from './layout.service';
 
 @Component({
   selector: 'shared-layout',
@@ -10,6 +11,8 @@ import { SharedStaticInfoComponent } from '../static-info/static-info.component'
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent {
+  layoutService = inject(LayoutService);
+
   termsAndConditionsUrl = `/s/${APP_PATH_STATIC_PAGES.TermsAndConditions}`;
   privacyUrl = `/s/${APP_PATH_STATIC_PAGES.PrivacyPolicy}`;
   cookiesUrl = `/s/${APP_PATH_STATIC_PAGES.Cookie}`;

@@ -11,6 +11,7 @@ import { UXDynamicService } from '../../services';
     <img
       class="inline-block h-10 w-auto rounded-full mt-2"
       [ngSrc]="uxDynamicService.logoPath()"
+      referrerpolicy="no-referrer"
       alt="Kitouch logo"
       height="40"
       width="40"

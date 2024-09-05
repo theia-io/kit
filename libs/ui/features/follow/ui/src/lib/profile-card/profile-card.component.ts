@@ -36,12 +36,10 @@ export class FeatFollowProfileCardComponent implements AfterViewInit {
   #photoService = inject(PhotoService);
 
   ngAfterViewInit(): void {
-    const gallery = this.#photoService.initializeGallery({
+    this.#photoService.initializeGallery({
       gallery: '#profile-header',
       children: 'a',
       pswpModule: PhotoSwipe,
     });
-
-    console.log('FeatFollowProfileCardComponent', gallery);
   }
 }

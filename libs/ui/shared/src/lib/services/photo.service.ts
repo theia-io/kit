@@ -13,11 +13,8 @@ export class PhotoService {
    */
   @onDemandCSS({ name: 'photoswipe', path: '/photoswipe.css' })
   async initializeGallery(options: Partial<PreparedPhotoSwipeOptions>) {
-    console.log('\n\ninitializeGallery:', options);
     const lightBox = new PhotoSwipeLightbox(options);
     lightBox.init();
-
-    console.log('\n\ninitializeGallery 1:', lightBox);
 
     return lightBox;
   }

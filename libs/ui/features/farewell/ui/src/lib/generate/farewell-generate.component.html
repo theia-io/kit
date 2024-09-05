@@ -1,5 +1,7 @@
 <div class="flex flex-col justify-center items-center gap-10">
-  <span class="text-2xl">Farewell 🗒️ 🫂</span>
+  <span class="text-2xl">
+    {{ farewellToEdit() ? 'Edit ' : 'Create ' }}Farewell 🗒️ 🫂
+  </span>
 
   <form class="w-full" [formGroup]="farewellFormGroup">
     <p-floatLabel class="block text-center">
@@ -59,14 +61,14 @@
 
   <section class="w-full">
     @if(farewellMedias()?.length && farewellMedias(); as farewellMedias) {
-    <h3 uiKitSmallTextTailwindClasses>Media used in farewell</h3>
+    <h3 uiKitSmallTextTailwindClasses>Attached</h3>
     <div
       class="ml-4 flex flex-wrap items-center justify-start"
       id="uploaded-media-gallery">
       @for (media of farewellMedias; track $index) {
-      <div class="relative">
+      <div class="relative rounded-md hover:shadow-xl">
         <a
-          class="relative block w-24 h-24 mb-3"
+          class="relative block w-16 h-16 mr-2"
           [href]="media.url"
           data-pswp-width="150"
           data-pswp-height="150"
@@ -80,15 +82,16 @@
             alt="Farewell media" />
         </a>
         <ui-kit-delete
+          class="block"
           yOffset="-top-1"
-          xOffset="-right-3"
+          xOffset="-right-2"
           (onDelete)="deleteFarewellMediaHandler(media)" />
       </div>
       }
     </div>
     }
 
-    <h3 uiKitSmallTextTailwindClasses>New files</h3>
+    <h3 class="mt-4" uiKitSmallTextTailwindClasses>New files</h3>
     <div class="ml-4 flex items-start justify-start gap-8">
       <ui-kit-comp-animate-ping [newlyAddedItem]="true">
         <ui-kit-pic-uploadable
@@ -101,9 +104,9 @@
         class="ml-4 flex flex-wrap gap-2 items-center justify-start"
         id="new-media-gallery">
         @for (file of filesToUpload(); track $index) {
-        <div class="relative">
+        <div class="relative rounded-md hover:shadow-xl">
           <a
-            class="relative block w-16 h-16"
+            class="relative block w-16 h-16 mr-2"
             [href]="
               domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file))
             "
@@ -122,7 +125,7 @@
           </a>
           <ui-kit-delete
             yOffset="-top-1"
-            xOffset="-right-3"
+            xOffset="-right-2"
             (onDelete)="deleteNewMediaHandler(file)" />
         </div>
         }

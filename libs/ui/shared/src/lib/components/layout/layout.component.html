@@ -11,6 +11,7 @@
   </div>
 
   <!--right -->
+  @if(!layoutService.rightPanelClosed()) {
   <div class="max-w-64 hidden md:block">
     <ng-content select="[right]"></ng-content>
 
@@ -18,4 +19,5 @@
       <shared-static-info />
     </div>
   </div>
+  }
 </div>

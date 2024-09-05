@@ -6,7 +6,7 @@ import {
   FeatFarewellActions,
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
-import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
+import { FeatFarewellPreViewComponent } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
 import {
@@ -36,7 +36,7 @@ import { filter } from 'rxjs/operators';
     ToastModule,
     ConfirmDialogModule,
     //
-    FeatFarewellViewComponent,
+    FeatFarewellPreViewComponent,
     DividerComponent,
     UiCompGradientCardComponent,
     UiKitDeleteComponent,

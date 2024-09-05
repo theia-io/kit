@@ -288,13 +288,16 @@ export class FeatFarewellGenerateComponent {
         takeUntilDestroyed(this.#destroyRef),
         tap(({ farewell: { id } }) => this.#farewellMedia(id))
       )
-      .subscribe(({ farewell: { id } }) => {
-        // FIXME
-        // @FIXME once new farewell is created - analytics and media as likely still being created or uploaded
-        this.#router.navigate(['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, id], {
-          queryParams: { preview: true },
-        });
-      });
+      .subscribe(({ farewell: { id } }) => this.#finallyFarewell(id));
+  }
+
+  #finallyFarewell(farewellId: string) {
+    this.#router.navigate(
+      ['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, farewellId],
+      {
+        queryParams: { preview: true },
+      }
+    );
   }
 
   #farewellMedia(farewellId: string) {

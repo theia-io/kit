@@ -4,7 +4,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import {
-  FeatFarewellViewComponent,
+  FeatFarewellPreViewComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';

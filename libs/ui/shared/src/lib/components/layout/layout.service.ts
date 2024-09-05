@@ -1,6 +1,6 @@
-import { Injectable, signal } from '@angular/core';
+import { computed, Injectable, signal } from '@angular/core';
 
-enum PanelState {
+export enum PanelState {
   Opened = 'opened',
   UserOpened = 'user-opened',
   Closed = 'closed',
@@ -10,4 +10,10 @@ enum PanelState {
 @Injectable({ providedIn: 'root' })
 export class LayoutService {
   rightPanelState = signal<PanelState>(PanelState.Opened);
+
+  rightPanelClosed = computed(
+    () =>
+      this.rightPanelState() === PanelState.Closed ||
+      this.rightPanelState() === PanelState.UserClosed
+  );
 }
