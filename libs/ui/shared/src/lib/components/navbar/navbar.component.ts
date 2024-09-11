@@ -4,24 +4,34 @@ import {
   Component,
   ElementRef,
   inject,
-  input,
-  output,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Profile } from '@kitouch/shared-models';
+import { Router } from '@angular/router';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
   AccountTileComponent,
   DividerComponent,
   UiCompCardComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { MenuItem } from 'primeng/api';
+import { Store } from '@ngrx/store';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
-import { APP_PATH, APP_PATH_STATIC_PAGES } from '../../constants';
+import {
+  APP_PATH,
+  APP_PATH_DIALOG,
+  APP_PATH_STATIC_PAGES,
+  NAV_ITEMS,
+  OUTLET_DIALOG,
+} from '../../constants';
+import { AuthService } from '../../infra';
 import { UXDynamicService } from '../../services/ux-dynamic.service';
-import { SubnavComponent } from './subnav/subnav.component';
 import { UiLogoComponent } from '../logo/logo.component';
+import { NavbarService } from './navbar.service';
+import { SubnavComponent } from './subnav/subnav.component';
+
+const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
 
 @Component({
   standalone: true,
@@ -41,30 +51,65 @@ import { UiLogoComponent } from '../logo/logo.component';
   ],
 })
 export class NavBarComponent implements AfterViewInit {
-  items = input<Array<MenuItem & { kitShouldInitiallyBeFocused?: boolean }>>(
-    []
-  );
-
-  profileBaseUrl = input.required<string>();
-  profile = input<Profile | undefined | null>(null);
-
-  logout = output();
-  help = output();
-  tweetButtonClick = output();
-
-  uxDynamicService = inject(UXDynamicService);
   sanitizer: DomSanitizer = inject(DomSanitizer);
   #elemRef = inject(ElementRef);
+  #router = inject(Router);
+  #store = inject(Store);
+  //
+  #authService = inject(AuthService);
+  #uxDynamicService = inject(UXDynamicService);
+  #navbarService = inject(NavbarService);
+
+  readonly outletSecondary = OUTLET_DIALOG;
+  profileUrl = APP_PATH.Profile;
+  navBarItems = NAV_ITEMS;
+
+  profile = this.#store.selectSignal(selectCurrentProfile);
+
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
   farewellUrl = APP_PATH.Farewell;
   introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   suggestionUrl = APP_PATH.Suggestion;
 
+  constructor() {
+    this.#navbarService.triggerPrimengHighlight$
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => this.#triggerPrimengHighlight());
+  }
+
   ngAfterViewInit(): void {
-    const shouldInitiallyFocus = this.items().find(
-      (item) => item.kitShouldInitiallyBeFocused
+    this.#triggerPrimengHighlight();
+
+    setTimeout(() => {
+      this.#uxDynamicService.updateLogo('handshake', 5000);
+    }, 500);
+  }
+
+  tweetButtonHandler() {
+    this.#router.navigate([
+      { outlets: { [this.outletSecondary]: APP_PATH_DIALOG.Tweet } },
+    ]);
+  }
+
+  async logoutHandler() {
+    await this.#authService.logout();
+    window.location.reload();
+  }
+
+  onFocusHandler(event: Event) {
+    this.#menuItemNativeElemInitiallyFocused?.classList.remove('p-focus');
+  }
+
+  #triggerPrimengHighlight() {
+    const firstLevelRoute = getFirstRoutePath(this.#router.url);
+    const shouldInitiallyFocus = this.navBarItems.find(
+      (navItem) =>
+        navItem.routerLink &&
+        getFirstRoutePath(navItem.routerLink) === firstLevelRoute
     );
+
+    console.log(firstLevelRoute, shouldInitiallyFocus);
 
     // well, obviously this should not focus like this however p-menu
     // does not allow any better way than that
@@ -87,13 +132,5 @@ export class NavBarComponent implements AfterViewInit {
           }
         });
     }
-
-    setTimeout(() => {
-      this.uxDynamicService.updateLogo('handshake', 5000);
-    }, 500);
-  }
-
-  onFocusHandler(event: Event) {
-    this.#menuItemNativeElemInitiallyFocused?.classList.remove('p-focus');
   }
 }

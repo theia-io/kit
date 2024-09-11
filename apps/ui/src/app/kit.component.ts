@@ -1,20 +1,15 @@
-import { CommonModule, DOCUMENT } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 
 import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
-  APP_PATH,
-  APP_PATH_DIALOG,
-  AuthService,
   LayoutComponent,
-  NAV_ITEMS,
   NavBarComponent,
   OUTLET_DIALOG,
 } from '@kitouch/ui-shared';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 
 @Component({
   standalone: true,
@@ -30,16 +25,7 @@ import { select, Store } from '@ngrx/store';
   selector: 'app-kitouch',
   template: `
     <shared-layout>
-      <shared-navbar
-        left
-        [items]="navBarItems"
-        [profileBaseUrl]="profileUrl"
-        [profile]="$profile | async"
-        (tweetButtonClick)="tweetButtonHandler()"
-        (help)="helpHandler()"
-        (logout)="logoutHandler()"
-        class="block"
-      ></shared-navbar>
+      <shared-navbar left class="block"></shared-navbar>
 
       <router-outlet></router-outlet>
 
@@ -58,47 +44,13 @@ import { select, Store } from '@ngrx/store';
   `,
 })
 export class KitComponent implements OnInit {
-  title = 'Kitouch';
-
-  #document = inject(DOCUMENT);
-  #router = inject(Router);
   #store = inject(Store);
-  //
-  #authService = inject(AuthService);
 
   readonly outletSecondary = OUTLET_DIALOG;
-  profileUrl = APP_PATH.Profile;
-  navBarItems = NAV_ITEMS.map((navItem) =>
-    navItem.routerLink ===
-    this.#document.location.pathname?.split('/')?.filter(Boolean)?.[0]
-      ? {
-          ...navItem,
-          kitShouldInitiallyBeFocused: true,
-        }
-      : navItem
-  );
-
-  $profile = this.#store.pipe(select(selectCurrentProfile));
 
   ngOnInit(): void {
     /** Data that will be required across all app */
     // this.#store.dispatch(FeatTweetBookmarkActions.getAll());
     this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
-  }
-
-  tweetButtonHandler() {
-    this.#router.navigate([
-      { outlets: { [this.outletSecondary]: APP_PATH_DIALOG.Tweet } },
-    ]);
-  }
-
-  helpHandler() {
-    /** @TODO @FIXME Implement - read the comment below */
-    console.log('Implement help support handler (with a little popup)');
-  }
-
-  async logoutHandler() {
-    await this.#authService.logout();
-    window.location.reload();
   }
 }

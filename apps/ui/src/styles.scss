@@ -88,3 +88,9 @@ p-floatLabel .p-float-label p-dropdown input.p-placeholder {
 p-image .p-image-preview-indicator {
   border-radius: 9999px;
 }
+
+p-editor .ql-toolbar.ql-snow {
+  border: none;
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+}

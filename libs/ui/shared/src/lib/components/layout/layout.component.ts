@@ -2,11 +2,12 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { APP_PATH_STATIC_PAGES } from '../../constants';
 import { SharedStaticInfoComponent } from '../static-info/static-info.component';
 import { LayoutService } from './layout.service';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'shared-layout',
   standalone: true,
-  imports: [SharedStaticInfoComponent],
+  imports: [NgClass, SharedStaticInfoComponent],
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

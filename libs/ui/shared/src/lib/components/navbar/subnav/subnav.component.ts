@@ -1,8 +1,8 @@
 import { Component, inject, input, output } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import { TooltipModule } from 'primeng/tooltip';
-import { ENVIRONMENT } from '../../../infra';
+import { ENVIRONMENT, RouterEventsService } from '../../../infra';
 import { SharedStaticInfoComponent } from '../../static-info/static-info.component';
 
 @Component({
@@ -24,7 +24,12 @@ export class SubnavComponent {
   suggestionUrl = input.required<string>();
 
   logout = output<void>();
-  help = output<void>();
 
   environment = inject(ENVIRONMENT);
+  routerEventsService = inject(RouterEventsService);
+  #router = inject(Router);
+
+  onGenerateHandler() {
+    this.routerEventsService.saveUrlLatest(this.#router.url);
+  }
 }

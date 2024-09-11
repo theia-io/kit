@@ -1,11 +1,13 @@
 export function onDemandCSS(css: { name: string; path: string }) {
   const { name, path } = css;
+  console.log('onDemandCSS STATIC', name, path);
 
   return <T>(
     target: T,
     propertyName: keyof T,
     descriptor: PropertyDescriptor
   ) => {
+    console.log('onDemandCSS', name, path, target, propertyName);
     // Store Original Method Impleentation
     const originalMethod = descriptor.value;
 

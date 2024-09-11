@@ -6,7 +6,7 @@
   <form class="w-full" [formGroup]="farewellFormGroup">
     <p-floatLabel class="block text-center">
       <input
-        class="w-full border-none shadow-none text-2xl italic focus:outline-none"
+        class="w-full border-none shadow-none text-center text-2xl italic focus:outline-none"
         id="title"
         type="text"
         pInputText
@@ -39,8 +39,12 @@
       aria-describedby="farewell-rich-text-editor"
       placeholder="Add farewell to your (ex-) colleagues 🔥"
       [modules]="modules"
-      [style]="{ height: '320px' }"
-      class="w-full"
+      [style]="{
+        height: '320px',
+        border: 'none',
+        fontFamily: 'var(--font-family)'
+      }"
+      styleClass="w-full"
       (onTextChange)="onTextChangeHandler($event)"
       formControlName="editorControl">
       <p-header></p-header>
@@ -79,6 +83,9 @@
             width="64"
             height="64"
             [ngSrc]="media.url"
+            (load)="
+              $index === farewellMedias.length - 1 && initFarewellMediaGallery()
+            "
             alt="Farewell media" />
         </a>
         <ui-kit-delete
@@ -118,8 +125,12 @@
               class="rounded-full w-full h-full"
               width="64"
               height="64"
-              [src]="
+              [ngSrc]="
                 domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file))
+              "
+              (load)="
+                $index === filesToUpload().length - 1 &&
+                  initNewFarewellMediaGallery()
               "
               alt="Farewell media" />
           </a>

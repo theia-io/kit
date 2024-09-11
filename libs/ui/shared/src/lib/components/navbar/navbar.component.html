@@ -2,17 +2,17 @@
 
 <p-menu
   styleClass="border-0 mt-4"
-  [model]="items()"
+  [model]="navBarItems"
   (onFocus)="onFocusHandler($event)"></p-menu>
 
 <ui-kit-tweet-button
   [iconAnimate]="false"
   text="Tweet"
-  (click)="tweetButtonClick.emit()"
+  (click)="tweetButtonHandler()"
   class="w-48 mt-4" />
 
 <a
-  [routerLink]="profileBaseUrl() + '/' + profile()?.id"
+  [routerLink]="profileUrl + '/' + profile()?.id"
   routerLinkActive="underline block primeng-menu__active">
   <ui-kit-comp-card class="block mt-12">
     <ui-kit-comp-account-tile
@@ -27,6 +27,5 @@
   [introducingKitFarewell]="introducingKitFarewell"
   [farewellUrl]="farewellUrl"
   [suggestionUrl]="suggestionUrl"
-  (help)="help.emit()"
-  (logout)="logout.emit()"
+  (logout)="logoutHandler()"
   class="block mt-4" />

@@ -8,6 +8,7 @@ import {
   effect,
   inject,
   input,
+  NgZone,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
@@ -84,6 +85,7 @@ function extractContent(html: string) {
 export class FeatFarewellGenerateComponent {
   farewellIdToEdit = input<string | null>(null);
 
+  #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
   domSanitizer = inject(DomSanitizer);
@@ -156,25 +158,25 @@ export class FeatFarewellGenerateComponent {
       { allowSignalWrites: true }
     );
 
-    effect(() => {
-      const farewellMediaUpdated = this.farewellMedias();
+    // effect(() => {
+    //   const farewellMediaUpdated = this.farewellMedias();
 
-      if (farewellMediaUpdated) {
-        setTimeout(() => {
-          this.#initFarewellMediaGallery();
-        }, 1500);
-      }
-    });
+    //   if (farewellMediaUpdated && farewellMediaUpdated.length > 0) {
+    //     setTimeout(() => {
+    //       this.#initFarewellMediaGallery();
+    //     }, 1500);
+    //   }
+    // });
 
-    effect(() => {
-      const filesToUpload = this.filesToUpload();
+    // effect(() => {
+    //   const filesToUpload = this.filesToUpload();
 
-      if (filesToUpload) {
-        setTimeout(() => {
-          this.#initNewFarewellMediaGallery();
-        }, 1500);
-      }
-    });
+    //   if (filesToUpload) {
+    //     setTimeout(() => {
+    //       this.#initNewFarewellMediaGallery();
+    //     }, 1500);
+    //   }
+    // });
   }
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
@@ -240,19 +242,23 @@ export class FeatFarewellGenerateComponent {
     }
   }
 
-  #initFarewellMediaGallery() {
-    this.#photoService.initializeGallery({
-      gallery: '#uploaded-media-gallery',
-      children: 'a',
-      pswpModule: PhotoSwipe,
+  initFarewellMediaGallery() {
+    this.#ngZone.runOutsideAngular(() => {
+      this.#photoService.initializeGallery({
+        gallery: '#uploaded-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
     });
   }
 
-  #initNewFarewellMediaGallery() {
-    this.#photoService.initializeGallery({
-      gallery: '#new-media-gallery',
-      children: 'a',
-      pswpModule: PhotoSwipe,
+  initNewFarewellMediaGallery() {
+    this.#ngZone.runOutsideAngular(() => {
+      this.#photoService.initializeGallery({
+        gallery: '#new-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
     });
   }
 

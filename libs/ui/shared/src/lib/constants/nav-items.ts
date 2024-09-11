@@ -38,14 +38,21 @@ export enum APP_PATH_DIALOG {
 export const NAV_ITEMS: Array<MenuItem> = [
   {
     label: 'Home',
-    routerLink: APP_PATH.Home,
+    routerLink: `/${APP_PATH.Home}`,
     icon: 'pi pi-home',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
   {
+    label: 'Farewells',
+    routerLink: `/${APP_PATH.Farewell}`,
+    icon: 'pi pi-send',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+  {
     label: 'Bookmarks',
-    routerLink: APP_PATH.Bookmarks,
+    routerLink: `/${APP_PATH.Bookmarks}`,
     icon: 'pi pi-bookmark',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
@@ -55,7 +62,7 @@ export const NAV_ITEMS: Array<MenuItem> = [
   },
   {
     label: 'Settings',
-    routerLink: APP_PATH.Settings,
+    routerLink: `/${APP_PATH.Settings}`,
     icon: 'pi pi-cog',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',

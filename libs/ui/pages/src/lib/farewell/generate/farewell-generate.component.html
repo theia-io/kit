@@ -1,1 +1,6 @@
-<feat-farewell-generate />
+<p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToLatest()">
+  <ng-template pTemplate="header">
+    <shared-navbar-static [fullBar]="true" />
+  </ng-template>
+  <feat-farewell-generate class="block w-full" />
+</p-sidebar>
