@@ -5,5 +5,6 @@ import { Subject } from 'rxjs';
   providedIn: 'root',
 })
 export class NavbarService {
+  /** @TODO move from primeng menu component and remove this as well as all related code that triggers `triggerPrimengHighlight` */
   triggerPrimengHighlight$ = new Subject<void>();
 }

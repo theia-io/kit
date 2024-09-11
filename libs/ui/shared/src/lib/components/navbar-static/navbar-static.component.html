@@ -1,6 +1,31 @@
 <div class="flex items-center">
   <shared-logo class="block mr-16" />
 
+  @if(fullBar()) { @if ((deviceService.device$ | async) === DeviceTypes.Desktop)
+  { @for (navItem of navBarItems; track $index) {
+  <a
+    role="button"
+    [routerLink]="navItem.routerLink"
+    routerLinkActive="primeng-menu__active"
+    pTooltip="Generate Farewell"
+    uiKitSmallTextTailwindClasses
+    [isLink]="true"
+    class="px-4 py-2">
+    {{ navItem.label }}
+  </a>
+  } } @else {
+  <a
+    role="button"
+    [routerLink]="homeUrl"
+    routerLinkActive="primeng-menu__active"
+    pTooltip="Generate Farewell"
+    uiKitSmallTextTailwindClasses
+    [isLink]="true"
+    class="px-4 py-2">
+    Home
+  </a>
+  } }
+
   <a
     role="button"
     [routerLink]="introduceKitUrl"
@@ -8,7 +33,8 @@
     pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     [isLink]="true"
-    class="px-4 py-2">
+    class="px-4 py-2"
+    [class.ml-2]="fullBar()">
     What is Kit?
   </a>
 </div>

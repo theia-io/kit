@@ -109,8 +109,6 @@ export class NavBarComponent implements AfterViewInit {
         getFirstRoutePath(navItem.routerLink) === firstLevelRoute
     );
 
-    console.log(firstLevelRoute, shouldInitiallyFocus);
-
     // well, obviously this should not focus like this however p-menu
     // does not allow any better way than that
     /** @FIXME (not is scope of fixme ticket) focus initial routing better */

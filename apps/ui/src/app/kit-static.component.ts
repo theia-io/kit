@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { SharedNavBarStaticComponent } from '@kitouch/ui-shared';
+import { Store } from '@ngrx/store';
 
 @Component({
   standalone: true,
@@ -11,8 +13,10 @@ import { SharedNavBarStaticComponent } from '@kitouch/ui-shared';
   ],
   selector: 'app-kitouch-static',
   template: ` <div class="p-4">
-    <shared-navbar-static />
+    <shared-navbar-static [fullBar]="!!currentProfile()" />
     <router-outlet></router-outlet>
   </div>`,
 })
-export class KitStaticComponent {}
+export class KitStaticComponent {
+  currentProfile = inject(Store).selectSignal(selectCurrentProfile);
+}
