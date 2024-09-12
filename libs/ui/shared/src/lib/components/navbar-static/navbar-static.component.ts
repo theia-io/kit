@@ -18,6 +18,7 @@ import { NavbarService } from '../navbar/navbar.service';
     UIKitSmallerHintTextUXDirective,
   ],
   selector: 'shared-navbar-static',
+  styleUrl: './navbar-static.component.scss',
   templateUrl: './navbar-static.component.html',
 })
 export class SharedNavBarStaticComponent implements OnDestroy {

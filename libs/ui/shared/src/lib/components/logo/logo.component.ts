@@ -21,7 +21,7 @@ import { UXDynamicService } from '../../services';
       <p-tag
         severity="info"
         class="absolute -top-2 -right-12 rotate-12"
-        value="Alpha"
+        value="Beta"
         [rounded]="true"
       />
 

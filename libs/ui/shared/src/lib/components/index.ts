@@ -1,3 +1,4 @@
+export * from './animations';
 export * from './layout/layout.component';
 export * from './layout/layout.service';
 export * from './logo/logo.component';

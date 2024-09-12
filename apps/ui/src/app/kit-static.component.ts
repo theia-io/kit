@@ -12,10 +12,17 @@ import { Store } from '@ngrx/store';
     SharedNavBarStaticComponent,
   ],
   selector: 'app-kitouch-static',
-  template: ` <div class="p-4">
-    <shared-navbar-static [fullBar]="!!currentProfile()" />
-    <router-outlet></router-outlet>
-  </div>`,
+  styles: `
+  :host {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; 
+  }
+  `,
+  template: `<shared-navbar-static [fullBar]="!!currentProfile()" />
+    <div class="p-4 flex-grow flex flex-col">
+      <router-outlet></router-outlet>
+    </div>`,
 })
 export class KitStaticComponent {
   currentProfile = inject(Store).selectSignal(selectCurrentProfile);

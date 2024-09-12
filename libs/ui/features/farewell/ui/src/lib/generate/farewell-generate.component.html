@@ -1,22 +1,18 @@
 <div class="flex flex-col justify-center items-center gap-10">
-  <span class="text-2xl">
-    {{ farewellToEdit() ? 'Edit ' : 'Create ' }}Farewell 🗒️ 🫂
-  </span>
-
   <form class="w-full" [formGroup]="farewellFormGroup">
-    <p-floatLabel class="block text-center">
+    <p-floatLabel class="block text-center mt-4">
       <input
         class="w-full border-none shadow-none text-center text-2xl italic focus:outline-none"
         id="title"
         type="text"
         pInputText
         formControlName="titleControl" />
-      <label for="title">Title</label>
+      <label class="w-full text-2xl" for="title">Title</label>
     </p-floatLabel>
     <section class="mb-6">
       @if(!farewellFormGroup.get('titleControl')?.value?.length ||
       farewellFormGroup.get('titleControl')?.errors?.['minlength']) {
-      <strong class="block text-xs text-gray-400">
+      <strong class="block text-xs text-gray-400 float-right">
         Must be at least 2 characters long. Currently you got
         {{ farewellFormGroup.get('titleControl')?.value?.length }}.
       </strong>
@@ -51,12 +47,12 @@
     </p-editor>
 
     @if(editorTextValue().length < 64) {
-    <strong class="block text-xs text-gray-400">
+    <strong class="block text-xs text-gray-400 float-right">
       Must be at least 64 characters long. Current length is
       {{ editorTextValue().length }} characters.
     </strong>
     } @if(editorTextValue().length > 8192) {
-    <strong class="block text-xs text-gray-400">
+    <strong class="block text-xs text-gray-400 float-right">
       Must be less than 8192 characters long. Current length is
       {{ editorTextValue().length }} characters.
     </strong>
