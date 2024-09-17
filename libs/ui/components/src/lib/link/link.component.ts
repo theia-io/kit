@@ -1,7 +1,17 @@
 import { Directive, effect, HostBinding, input } from '@angular/core';
 
+export type KlassOverwrite = {
+  text?: {
+    color?: string;
+    hoverColor?: string;
+  };
+  background?: {
+    hoverColor?: string;
+  };
+};
+
 const LINK_TAILWIND_CLASSES =
-  'rounded-lg text-sm font-medium text-gray-500 [text-align:_inherit]';
+  'duration-100 rounded-lg text-sm font-medium [text-align:_inherit]';
 
 @Directive({
   standalone: true,
@@ -9,6 +19,7 @@ const LINK_TAILWIND_CLASSES =
 })
 export class UIKitSmallerHintTextUXDirective {
   isLink = input(false);
+  klasses = input<KlassOverwrite>();
 
   @HostBinding('class')
   className = LINK_TAILWIND_CLASSES;
@@ -18,7 +29,17 @@ export class UIKitSmallerHintTextUXDirective {
       const isLink = this.isLink();
       if (isLink) {
         // those classes have to be used somewhere so they are not removed from bundle by tailwind postcss bundler
-        this.className = `${LINK_TAILWIND_CLASSES} hover:bg-gray-100 hover:text-gray-700`;
+        const { text, background } = this.klasses() ?? {};
+        const { color: textCover, hoverColor: textHoverColor } = text ?? {};
+        const { hoverColor: backgroundHoverColor } = background ?? {};
+
+        this.className = `
+          ${LINK_TAILWIND_CLASSES} 
+          ${textCover ?? 'text-gray-500'} hover:${
+          textHoverColor ?? 'text-gray-700'
+        }
+          hover:${backgroundHoverColor ?? 'bg-gray-100'}
+        `;
       }
     });
   }

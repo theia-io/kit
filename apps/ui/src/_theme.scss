@@ -1,7 +1,12 @@
 // _theme.scss
 :root {
   // --primary-color: #1976d2;
-  // --secondary-color: #f50057;
+  --secondary-color: #e2e8f0;
+
+  --color-semidark: var(--gray-400);
+  --color-dark: var(--gray-600);
+  --color-darkest: var(--gray-800);
+
   --background-color-secondary: var(--surface-ground);
   --background-color-secondary-hover: var(--surface-hover);
   // --text-color: #212121;

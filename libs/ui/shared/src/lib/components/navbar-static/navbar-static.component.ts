@@ -1,11 +1,14 @@
 import { Component, inject, input, OnDestroy } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
+import {
+  KlassOverwrite,
+  UIKitSmallerHintTextUXDirective,
+} from '@kitouch/ui-components';
 
-import { APP_PATH, APP_PATH_STATIC_PAGES, NAV_ITEMS } from '../../constants';
-import { UiLogoComponent } from '../logo/logo.component';
-import { Device, DeviceService } from '../../infra/device/device.service';
 import { AsyncPipe } from '@angular/common';
+import { APP_PATH, APP_PATH_STATIC_PAGES, NAV_ITEMS } from '../../constants';
+import { Device, DeviceService } from '../../infra/device/device.service';
+import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
 
 @Component({
@@ -32,6 +35,13 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   navBarItems = NAV_ITEMS.filter((navItem) => !navItem.separator);
   homeUrl = `/${APP_PATH.Home}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+
+  getStartedKlassOverwrite: KlassOverwrite = {
+    text: {
+      color: 'text-white',
+      hoverColor: 'text-slate-700',
+    },
+  };
 
   ngOnDestroy(): void {
     if (this.updatePrimengHighlight()) {

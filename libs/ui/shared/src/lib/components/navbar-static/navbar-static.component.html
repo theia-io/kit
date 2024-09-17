@@ -4,9 +4,8 @@
   @if(fullBar()) { @if ((deviceService.device$ | async) === DeviceTypes.Desktop)
   { @for (navItem of navBarItems; track $index) {
   <a
-    role="button"
     [routerLink]="navItem.routerLink"
-    routerLinkActive="primeng-menu__active"
+    routerLinkActive="bg-slate-200 rounded text-gray-900"
     pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     [isLink]="true"
@@ -15,9 +14,8 @@
   </a>
   } } @else {
   <a
-    role="button"
     [routerLink]="homeUrl"
-    routerLinkActive="primeng-menu__active"
+    routerLinkActive="bg-slate-200 rounded text-gray-900"
     pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     [isLink]="true"
@@ -27,9 +25,8 @@
   } }
 
   <a
-    role="button"
     [routerLink]="introduceKitUrl"
-    routerLinkActive="primeng-menu__active"
+    routerLinkActive="bg-slate-200 rounded text-gray-900"
     pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     [isLink]="true"
@@ -37,4 +34,16 @@
     [class.ml-2]="fullBar()">
     What is Kit?
   </a>
+
+  @if(!fullBar()) {
+  <a
+    [routerLink]="homeUrl"
+    pTooltip="Generate Farewell"
+    uiKitSmallTextTailwindClasses
+    [isLink]="true"
+    [klasses]="getStartedKlassOverwrite"
+    class="px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">
+    Get Started
+  </a>
+  }
 </div>

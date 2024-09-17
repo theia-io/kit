@@ -13,7 +13,7 @@
 
 <a
   [routerLink]="profileUrl + '/' + profile()?.id"
-  routerLinkActive="underline block primeng-menu__active">
+  routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
   <ui-kit-comp-card class="block mt-12">
     <ui-kit-comp-account-tile
       [primaryText]="profile()?.name ?? 'N/A'"

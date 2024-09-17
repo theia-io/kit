@@ -1,72 +1,300 @@
-<section>
-  <h2>How effective farewell can really be?</h2>
+<div class="container">
+  <section class="mb-6 flex gap-6">
+    <div class="relative w-1/2 flex flex-col">
+      <h2 class="absolute top-3 right-3 text-white italic text-2xl font-bold">
+        <!-- How effective farewell can really be? -->
+      </h2>
 
-  <p>
-    Farewell messages hold significant value within the workplace for both the
-    departing employee and the remaining team. They can convey gratitude,
-    acknowledge accomplishments, maintain connections, and leave a positive
-    lasting impression.
-  </p>
+      <img class="rounded" src="/introducing/farewell.gif" />
 
-  <h3>Key Benefits</h3>
+      <h3 class="text-white italic text-3xl font-bold">
+        You got something to say
+      </h3>
+    </div>
 
-  <ul>
-    <li>
-      <strong>Show Appreciation:</strong>
-      Express gratitude to colleagues and the company.
-    </li>
-    <li>
-      <strong>Maintain Connections:</strong>
-      Share contact information for future networking.
-    </li>
-    <li>
-      <strong>Knowledge Transfer:</strong>
-      Highlight key projects and responsibilities for a smooth transition.
-    </li>
-    <li>
-      <strong>Boost Morale:</strong>
-      Celebrate contributions and wish the employee well.
-    </li>
-  </ul>
+    <div class="w-1/2">
+      <p>
+        Farewell messages hold significant value within the workplace for both
+        the departing employee and the remaining team. They can convey
+        gratitude, acknowledge accomplishments, maintain connections, and leave
+        a positive lasting impression.
+      </p>
 
-  <h3>Readership and Engagement</h3>
+      <h3>Key Benefits</h3>
 
-  <ul>
-    <li>
-      <strong>High Open and Read Rate:</strong>
-      Colleagues are interested in farewell messages.
-    </li>
-    <li>
-      <strong>Engagement Varies:</strong>
-      Personal touches and positive messages often generate positive responses.
-    </li>
-  </ul>
+      <ul>
+        <li>
+          <strong>Show Appreciation:</strong>
+          Express gratitude to colleagues and the company.
+        </li>
+        <li>
+          <strong>Maintain Connections:</strong>
+          Share contact information for future networking.
+        </li>
+        <li>
+          <strong>Knowledge Transfer:</strong>
+          Highlight key projects and responsibilities for a smooth transition.
+        </li>
+        <li>
+          <strong>Boost Morale:</strong>
+          Celebrate contributions and wish the employee well.
+        </li>
+      </ul>
 
-  <h3>Other Information</h3>
+      <h3>Readership and Engagement</h3>
 
-  <ul>
-    <li>
-      <strong>Format:</strong>
-      Can be formal or informal depending on company culture.
-    </li>
-    <li>
-      <strong>Timing:</strong>
-      A few days before the last day of work is generally appropriate.
-    </li>
-    <li>
-      <strong>Distribution:</strong>
-      Can be sent to the whole company, a team, or individuals.
-    </li>
-    <li>
-      <strong>Social Media:</strong>
-      Farewell messages can also be shared on platforms like LinkedIn.
-    </li>
-  </ul>
+      <ul>
+        <li>
+          <strong>High Open and Read Rate:</strong>
+          Colleagues are interested in farewell messages.
+        </li>
+        <li>
+          <strong>Engagement Varies:</strong>
+          Personal touches and positive messages often generate positive
+          responses.
+        </li>
+      </ul>
 
-  <p>
-    <strong>
-      Overall, farewell emails are a valuable tool for leaving a positive final
-      impression and contributing to a healthy workplace culture.
-    </strong>
-  </p>
-</section>
+      <h3>Other Information</h3>
+
+      <ul>
+        <li>
+          <strong>Format:</strong>
+          Can be formal or informal depending on company culture.
+        </li>
+        <li>
+          <strong>Timing:</strong>
+          A few days before the last day of work is generally appropriate.
+        </li>
+        <li>
+          <strong>Distribution:</strong>
+          Can be sent to the whole company, a team, or individuals.
+        </li>
+        <li>
+          <strong>Social Media:</strong>
+          Farewell messages can also be shared on platforms like LinkedIn.
+        </li>
+      </ul>
+
+      <p>
+        <strong>
+          Overall, farewell emails are a valuable tool for leaving a positive
+          final impression and contributing to a healthy workplace culture.
+        </strong>
+      </p>
+    </div>
+  </section>
+
+  <section class="mb-6 flex gap-6">
+    <div>
+      <p>Readership and Engagement</p>
+
+      <div class="flex">
+        <p-card header="High Open and Read Rate">
+          <p class="m-0">Colleagues are interested in farewell messages.</p>
+        </p-card>
+
+        <p-card header="Engagement Varies">
+          <p class="m-0">
+            Personal touches and positive messages often generate positive
+            responses.
+          </p>
+        </p-card>
+      </div>
+
+      <h3>Other Information</h3>
+
+      <ul>
+        <li>
+          <strong>Format:</strong>
+          Can be formal or informal depending on company culture.
+        </li>
+        <li>
+          <strong>Timing:</strong>
+          A few days before the last day of work is generally appropriate.
+        </li>
+        <li>
+          <strong>Distribution:</strong>
+          Can be sent to the whole company, a team, or individuals.
+        </li>
+        <li>
+          <strong>Social Media:</strong>
+          Farewell messages can also be shared on platforms like LinkedIn.
+        </li>
+      </ul>
+
+      <p>
+        <strong>
+          Overall, farewell emails are a valuable tool for leaving a positive
+          final impression and contributing to a healthy workplace culture.
+        </strong>
+      </p>
+    </div>
+
+    <div class="relative">
+      <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
+        Connected
+      </h2>
+
+      <img class="rounded" src="/introducing/shaking-hands.gif" />
+    </div>
+  </section>
+
+  <div class="mb-6">
+    <ng-container
+      *ngTemplateOutlet="
+        sectionTmpl;
+        context: { $implicit: otherInformation }
+      "></ng-container>
+  </div>
+  <!-- <section class="mb-6 flex gap-6">
+  <div>
+    <p>Other Information</p>
+
+    <div class="flex">
+      <p-card header="Format">
+        <p class="m-0">
+          Can be formal or informal depending on company culture.
+        </p>
+      </p-card>
+
+      <p-card header="Timing">
+        <p class="m-0">
+          A few days before the last day of work is generally appropriate.
+        </p>
+      </p-card>
+
+      <p-card header="Distribution">
+        <p class="m-0">
+          Can be sent to the whole company, a team, or individuals.
+        </p>
+      </p-card>
+
+      <p-card header="Social Media">
+        <p class="m-0">
+          Farewell messages can also be shared on platforms like LinkedIn.
+        </p>
+      </p-card>
+    </div>
+  </div>
+
+  <div class="relative">
+    <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
+      Connected
+    </h2>
+
+    <img class="rounded" src="/introducing/shaking-hands.gif" />
+  </div>
+</section> -->
+
+  <section class="flex gap-6">
+    <div>
+      <p>
+        Farewell messages hold significant value within the workplace for both
+        the departing employee and the remaining team. They can convey
+        gratitude, acknowledge accomplishments, maintain connections, and leave
+        a positive lasting impression.
+      </p>
+
+      <div class="flex">
+        <p-card header="Show Appreciation">
+          <p class="m-0">Express gratitude to colleagues and the company.</p>
+        </p-card>
+
+        <p-card header="Maintain Connections">
+          <p class="m-0">Share contact information for future networking.</p>
+        </p-card>
+
+        <p-card header="Knowledge Transfer">
+          <p class="m-0">
+            Highlight key projects and responsibilities for a smooth transition.
+          </p>
+        </p-card>
+
+        <p-card header="Boost Morale">
+          <p class="m-0">Celebrate contributions and wish the employee well.</p>
+        </p-card>
+
+        <p-card header="Show Appreciation">
+          <p class="m-0">Express gratitude to colleagues and the company.</p>
+        </p-card>
+      </div>
+
+      <h3>Readership and Engagement</h3>
+
+      <ul>
+        <li>
+          <strong>High Open and Read Rate:</strong>
+          Colleagues are interested in farewell messages.
+        </li>
+        <li>
+          <strong>Engagement Varies:</strong>
+          Personal touches and positive messages often generate positive
+          responses.
+        </li>
+      </ul>
+
+      <h3>Other Information</h3>
+
+      <ul>
+        <li>
+          <strong>Format:</strong>
+          Can be formal or informal depending on company culture.
+        </li>
+        <li>
+          <strong>Timing:</strong>
+          A few days before the last day of work is generally appropriate.
+        </li>
+        <li>
+          <strong>Distribution:</strong>
+          Can be sent to the whole company, a team, or individuals.
+        </li>
+        <li>
+          <strong>Social Media:</strong>
+          Farewell messages can also be shared on platforms like LinkedIn.
+        </li>
+      </ul>
+
+      <p>
+        <strong>
+          Overall, farewell emails are a valuable tool for leaving a positive
+          final impression and contributing to a healthy workplace culture.
+        </strong>
+      </p>
+    </div>
+
+    <div class="relative">
+      <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
+        Connected
+      </h2>
+
+      <img class="rounded" src="/introducing/shaking-hands.gif" />
+    </div>
+  </section>
+
+  <ng-template #sectionTmpl let-data>
+    <section class="flex gap-6">
+      <div>
+        <h3 class="font-bold text-2xl">{{ data.title }}</h3>
+
+        <div class="flex gap-2 flex-wrap">
+          @for (card of data.cards; track $index) {
+          <p-card styleClass="p-1" [header]="card.header ?? ''">
+            <p class="m-0">
+              {{ card.text }}
+            </p>
+          </p-card>
+          }
+        </div>
+      </div>
+
+      <div class="relative">
+        <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
+          {{ data.image.title }}
+        </h2>
+
+        <img class="rounded" [src]="data.image.url" />
+      </div>
+    </section>
+  </ng-template>
+</div>

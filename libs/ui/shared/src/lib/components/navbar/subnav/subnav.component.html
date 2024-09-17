@@ -12,7 +12,7 @@
           [isLink]="true"
           class="block w-full px-4 py-2"
           [routerLink]="farewellUrl()"
-          routerLinkActive="primeng-menu__active"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
           <i class="pi pi-send mr-1"></i>
           All
@@ -23,7 +23,7 @@
         <a
           (click)="onGenerateHandler()"
           [routerLink]="farewellUrl() + '/generate'"
-          routerLinkActive="primeng-menu__active"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
           pTooltip="Generate Farewell"
           uiKitSmallTextTailwindClasses
           [isLink]="true"
@@ -78,7 +78,7 @@
           [isLink]="true"
           class="block w-full px-4 py-2"
           [routerLink]="suggestionUrl()"
-          routerLinkActive="primeng-menu__active"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
           Find colleagues
         </a>
