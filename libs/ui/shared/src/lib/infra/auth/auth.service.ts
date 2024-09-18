@@ -61,7 +61,7 @@ export class AuthService {
       if (realmUser) {
         return of(realmUser);
       }
-      return from(this.#refreshUser());
+      return from(this.refreshUser());
     }),
     map(
       (user) => !!user && user.providerType !== 'anon-user'
@@ -219,7 +219,7 @@ export class AuthService {
    * optimized only to execute of all this flow on recently visited or
    * refreshed Web page
    */
-  async #refreshUser() {
+  async refreshUser() {
     if (!this.#realmApp) {
       this.init();
     }
@@ -258,19 +258,6 @@ export class AuthService {
     // this does 2 API requests
     // to location and to session (to create a new one token)
     await this.#realmApp?.currentUser?.refreshAccessToken();
-  }
-
-  getLoggedInAnonymousUser$() {
-    return this.anonymousUser$.pipe(
-      take(1),
-      switchMap((anonymousUser) => {
-        if (anonymousUser) {
-          return of(anonymousUser);
-        }
-        return from(this.#refreshUser());
-      }),
-      map((user) => !!user)
-    );
   }
 
   async #getAccountUserProfiles(

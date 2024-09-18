@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { FeatFarewellGenerateComponent } from '@kitouch/feat-farewell-ui';
+import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import {
   APP_PATH,
   NavbarService,
@@ -17,6 +18,7 @@ import { take } from 'rxjs';
     // ReactiveFormsModule,
     RouterModule,
     //
+    UiKitDeleteComponent,
     SharedNavBarStaticComponent,
     FeatFarewellGenerateComponent,
     //
