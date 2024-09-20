@@ -6,6 +6,7 @@ import {
   filter,
   fromEvent,
   map,
+  Observable,
   shareReplay,
   startWith,
 } from 'rxjs';
@@ -36,11 +37,34 @@ export const breakPointToDevice: { [key in DeviceMediaBreakpoint]: Device } = {
   providedIn: 'root',
 })
 export class DeviceService {
-  mediaBreakpoint$ = new BehaviorSubject<DeviceMediaBreakpoint | undefined>(
-    undefined
+  innerWidth$: Observable<number> = fromEvent(window, 'resize').pipe(
+    takeUntilDestroyed(),
+    debounceTime(1000),
+    map(({ target: { innerWidth } }: any) => innerWidth),
+    startWith(window.innerWidth),
+    shareReplay(1)
   );
 
-  device$ = this.mediaBreakpoint$.asObservable().pipe(
+  mediaBreakpoint$ = this.innerWidth$.pipe(
+    map((width) => {
+      if (width < 576) {
+        return DeviceMediaBreakpoint.xs;
+      } else if (width >= 576 && width < 768) {
+        return DeviceMediaBreakpoint.sm;
+      } else if (width >= 768 && width < 992) {
+        return DeviceMediaBreakpoint.md;
+      } else if (width >= 992 && width < 1200) {
+        return DeviceMediaBreakpoint.lg;
+      } else if (width >= 1200 && width < 1600) {
+        return DeviceMediaBreakpoint.xl;
+      } else {
+        return DeviceMediaBreakpoint.xxl;
+      }
+    }),
+    shareReplay(1)
+  );
+
+  device$ = this.mediaBreakpoint$.pipe(
     takeUntilDestroyed(),
     filter(Boolean),
     map((mediaBreakPoint) => breakPointToDevice[mediaBreakPoint]),
@@ -48,27 +72,6 @@ export class DeviceService {
   );
 
   constructor() {
-    fromEvent(window, 'resize')
-      .pipe(
-        takeUntilDestroyed(),
-        debounceTime(1000),
-        map(({ target: { innerWidth } }: any) => innerWidth),
-        startWith(window.innerWidth)
-      )
-      .subscribe((width) => {
-        if (width < 576) {
-          this.mediaBreakpoint$.next(DeviceMediaBreakpoint.xs);
-        } else if (width >= 576 && width < 768) {
-          this.mediaBreakpoint$.next(DeviceMediaBreakpoint.sm);
-        } else if (width >= 768 && width < 992) {
-          this.mediaBreakpoint$.next(DeviceMediaBreakpoint.md);
-        } else if (width >= 992 && width < 1200) {
-          this.mediaBreakpoint$.next(DeviceMediaBreakpoint.lg);
-        } else if (width >= 1200 && width < 1600) {
-          this.mediaBreakpoint$.next(DeviceMediaBreakpoint.xl);
-        } else {
-          this.mediaBreakpoint$.next(DeviceMediaBreakpoint.xxl);
-        }
-      });
+    this.innerWidth$.subscribe();
   }
 }

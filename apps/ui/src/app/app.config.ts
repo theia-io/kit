@@ -1,7 +1,11 @@
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { provideRouter, withComponentInputBinding } from '@angular/router';
+import {
+  provideRouter,
+  withComponentInputBinding,
+  withInMemoryScrolling,
+} from '@angular/router';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import {
   FarewellEffects,
@@ -70,7 +74,14 @@ export const appConfig: ApplicationConfig = {
       deps: [ENVIRONMENT],
     },
 
-    provideRouter(appRoutes, withComponentInputBinding()),
+    provideRouter(
+      appRoutes,
+      withComponentInputBinding(),
+      withInMemoryScrolling({
+        anchorScrolling: 'enabled',
+        scrollPositionRestoration: 'top',
+      })
+    ),
     // provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),
     provideStore({
       farewell: featFarewellReducer,

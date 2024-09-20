@@ -1,300 +1,269 @@
-<section></section>
+<div class="w-full mt-12 px-2 py-12">
+  <section
+    class="container flex flex-col md:flex-row items-center gap-2 mx-auto">
+    <div class="text-center md:text-left md:w-1/3">
+      <h1
+        class="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl dark:text-white">
+        Your next steps partner
+      </h1>
 
-<section class="mb-6 flex gap-6">
-  <div class="relative w-1/2 flex flex-col">
-    <h2 class="absolute top-3 right-3 text-white italic text-2xl font-bold">
-      <!-- How effective farewell can really be? -->
-    </h2>
+      <p class="mt-2">Stay connected with your colleagues.</p>
 
-    <img class="rounded" src="/introducing/farewell.gif" />
+      <div class="mt-4">
+        <a class="font-bold underline" routerLink="./" fragment="connected">
+          Connected
+        </a>
+        <a class="font-bold underline ml-4" routerLink="./" fragment="farewell">
+          Create farewell
+        </a>
+        <a class="font-bold underline ml-4" routerLink="./" fragment="benefits">
+          Benefits
+        </a>
+      </div>
 
-    <h3 class="text-white italic text-3xl font-bold">
-      You got something to say
-    </h3>
-  </div>
-
-  <div class="w-1/2">
-    <p>
-      Farewell messages hold significant value within the workplace for both the
-      departing employee and the remaining team. They can convey gratitude,
-      acknowledge accomplishments, maintain connections, and leave a positive
-      lasting impression.
-    </p>
-
-    <h3>Key Benefits</h3>
-
-    <ul>
-      <li>
-        <strong>Show Appreciation:</strong>
-        Express gratitude to colleagues and the company.
-      </li>
-      <li>
-        <strong>Maintain Connections:</strong>
-        Share contact information for future networking.
-      </li>
-      <li>
-        <strong>Knowledge Transfer:</strong>
-        Highlight key projects and responsibilities for a smooth transition.
-      </li>
-      <li>
-        <strong>Boost Morale:</strong>
-        Celebrate contributions and wish the employee well.
-      </li>
-    </ul>
-
-    <h3>Readership and Engagement</h3>
-
-    <ul>
-      <li>
-        <strong>High Open and Read Rate:</strong>
-        Colleagues are interested in farewell messages.
-      </li>
-      <li>
-        <strong>Engagement Varies:</strong>
-        Personal touches and positive messages often generate positive
-        responses.
-      </li>
-    </ul>
-
-    <h3>Other Information</h3>
-
-    <ul>
-      <li>
-        <strong>Format:</strong>
-        Can be formal or informal depending on company culture.
-      </li>
-      <li>
-        <strong>Timing:</strong>
-        A few days before the last day of work is generally appropriate.
-      </li>
-      <li>
-        <strong>Distribution:</strong>
-        Can be sent to the whole company, a team, or individuals.
-      </li>
-      <li>
-        <strong>Social Media:</strong>
-        Farewell messages can also be shared on platforms like LinkedIn.
-      </li>
-    </ul>
-
-    <p>
-      <strong>
-        Overall, farewell emails are a valuable tool for leaving a positive
-        final impression and contributing to a healthy workplace culture.
-      </strong>
-    </p>
-  </div>
-</section>
-
-<section class="mb-6 flex gap-6">
-  <div>
-    <p>Readership and Engagement</p>
-
-    <div class="flex">
-      <p-card header="High Open and Read Rate">
-        <p class="m-0">Colleagues are interested in farewell messages.</p>
-      </p-card>
-
-      <p-card header="Engagement Varies">
-        <p class="m-0">
-          Personal touches and positive messages often generate positive
-          responses.
-        </p>
-      </p-card>
+      <a
+        [routerLink]="homeUrl"
+        pTooltip="Generate Farewell"
+        uiKitSmallTextTailwindClasses
+        [isLink]="true"
+        [klasses]="getStartedKlassOverwrite"
+        class="inline-block mt-8 px-10 py-5 ml-auto bg-slate-700 rounded text-gray-900">
+        Get Started
+      </a>
     </div>
 
-    <h3>Other Information</h3>
+    <div
+      class="mt-6 md:mt-0 md:w-2/3 flex flex-col md:flex-row justify-center relative">
+      <img
+        class="md:w-3/4 rounded-xl"
+        src="/introducing/presenting.gif"
+        alt="kit feed and follow colleagues" />
 
-    <ul>
-      <li>
-        <strong>Format:</strong>
-        Can be formal or informal depending on company culture.
-      </li>
-      <li>
-        <strong>Timing:</strong>
-        A few days before the last day of work is generally appropriate.
-      </li>
-      <li>
-        <strong>Distribution:</strong>
-        Can be sent to the whole company, a team, or individuals.
-      </li>
-      <li>
-        <strong>Social Media:</strong>
-        Farewell messages can also be shared on platforms like LinkedIn.
-      </li>
-    </ul>
-
-    <p>
-      <strong>
-        Overall, farewell emails are a valuable tool for leaving a positive
-        final impression and contributing to a healthy workplace culture.
-      </strong>
-    </p>
-  </div>
-
-  <div class="relative">
-    <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
-      Connected
-    </h2>
-
-    <img class="rounded" src="/introducing/shaking-hands.gif" />
-  </div>
-</section>
-
-<div class="mb-6">
-  <ng-container
-    *ngTemplateOutlet="
-      sectionTmpl;
-      context: { $implicit: otherInformation }
-    "></ng-container>
+      <img
+        class="md:absolute md:right-8 md:-bottom-5 md:w-72 rounded-xl"
+        src="/introducing/farewells-screenshot.png"
+        alt="kitouch farewells" />
+    </div>
+  </section>
 </div>
-<!-- <section class="mb-6 flex gap-6">
-  <div>
-    <p>Other Information</p>
 
-    <div class="flex">
-      <p-card header="Format">
+<div class="w-full mt-12 bg-secondary px-2 py-12">
+  <section
+    id="connected"
+    class="container flex flex-col items-center md:items-start mx-auto">
+    <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
+      Connected
+    </h2>
+    <p class="mt-2">Stay connected with your colleagues.</p>
+
+    <div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6">
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <img
+          src="logo/handshake.gif"
+          alt="'Follow profile'"
+          width="24"
+          height="24" />
+
+        <p class="m-0 text-lg font-semibold">Follow</p>
+
+        <p class="m-0">Follow people you know.</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-send" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Tweet</p>
+
         <p class="m-0">
-          Can be formal or informal depending on company culture.
+          Tweet your thoughts, updates and more with KIT platform.
         </p>
       </p-card>
 
-      <p-card header="Timing">
-        <p class="m-0">
-          A few days before the last day of work is generally appropriate.
-        </p>
-      </p-card>
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-comments" style="font-size: 1.5rem"></i>
 
-      <p-card header="Distribution">
-        <p class="m-0">
-          Can be sent to the whole company, a team, or individuals.
-        </p>
-      </p-card>
+        <p class="m-0 text-lg font-semibold">Interact</p>
 
-      <p-card header="Social Media">
         <p class="m-0">
-          Farewell messages can also be shared on platforms like LinkedIn.
+          Leave comments, like and bookmark tweets across the platform.
         </p>
       </p-card>
     </div>
-  </div>
+  </section>
+</div>
 
-  <div class="relative">
-    <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
-      Connected
+<div class="mt-12 w-full px-2 py-12">
+  <section
+    id="farewell"
+    class="container flex flex-col items-center md:items-start mx-auto">
+    <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
+      Create farewell
     </h2>
-
-    <img class="rounded" src="/introducing/shaking-hands.gif" />
-  </div>
-</section> -->
-
-<section class="flex gap-6">
-  <div>
-    <p>
-      Farewell messages hold significant value within the workplace for both the
-      departing employee and the remaining team. They can convey gratitude,
-      acknowledge accomplishments, maintain connections, and leave a positive
-      lasting impression.
+    <p class="mt-2">
+      No more farewell hassle. Create, update and interact at your wish.
     </p>
 
-    <div class="flex">
-      <p-card header="Show Appreciation">
+    <div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6">
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-face-smile" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Better</p>
+
+        <p class="m-0">Create better farewell.</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Flexible</p>
+
+        <p class="m-0">Changed your mind? Update or delete at your wish</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-search" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Analyze</p>
+      </p-card>
+    </div>
+  </section>
+</div>
+
+<div class="mt-12 w-full bg-secondary px-2 py-12">
+  <section
+    id="benefits"
+    class="flex flex-col md:flex-row text-center md:text-left gap-6">
+    <div class="md:w-1/3">
+      <img class="ml-auto rounded" src="/introducing/farewell.gif" />
+    </div>
+
+    <div class="md:w-2/3 z-10 lg:max-w-5xl">
+      <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
+        But Why?
+      </h2>
+      <p class="mt-2">
+        Farewell messages hold significant value within the workplace for both
+        the departing employee and the remaining team. They can convey
+        gratitude, acknowledge accomplishments, maintain connections, and leave
+        a positive lasting impression.
+      </p>
+
+      @if(extraLarge$ | async) {
+      <ng-container
+        *ngTemplateOutlet="
+          butWhyTmpl;
+          context: { $implicit: false }
+        "></ng-container>
+      }
+    </div>
+  </section>
+
+  @if((extraLarge$ | async) !== true) {
+  <ng-container
+    *ngTemplateOutlet="butWhyTmpl; context: { $implicit: true }"></ng-container>
+  }
+</div>
+
+<ng-template #butWhyTmpl let-standalone>
+  <div
+    [ngClass]="{
+    'container mx-auto': standalone,
+    '-ml-20': !standalone,
+  }"
+    class="mt-8 flex flex-wrap gap-1 justify-center md:justify-start lg:grid lg:grid-row-4 lg:grid-cols-4">
+    <div class="row-span-2">
+      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
+        <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Show Appreciation</p>
+
         <p class="m-0">Express gratitude to colleagues and the company.</p>
       </p-card>
+    </div>
 
-      <p-card header="Maintain Connections">
+    <div class="row-span-2">
+      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
+        <img
+          src="logo/handshake.gif"
+          alt="'Follow profile'"
+          width="24"
+          height="24" />
+
+        <p class="m-0 text-lg font-semibold">Keep Connections</p>
+
         <p class="m-0">Share contact information for future networking.</p>
       </p-card>
+    </div>
 
-      <p-card header="Knowledge Transfer">
+    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
+      <i class="pi pi-book"></i>
+      <span class="ml-2 text-md font-semibold">High Read Rate</span>
+    </p-card>
+
+    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
+      <i class="pi pi-eye"></i>
+      <span class="ml-2 text-md font-semibold">Engagement Varies</span>
+    </p-card>
+
+    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
+      <i class="pi pi-wrench"></i>
+      <span class="ml-2 text-md font-semibold">Any Format</span>
+    </p-card>
+
+    <p-card
+      pTooltip="A few days before the last day of work is generally appropriate."
+      styleClass="small-tile-h-22 w-60 hover:shadow-xl"
+      header="">
+      <i class="pi pi-clock"></i>
+      <span class="ml-2 text-md font-semibold">Your own timing</span>
+    </p-card>
+
+    <div class="row-span-2">
+      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
+        <i class="pi pi-database" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Knowledge Transfer</p>
+
         <p class="m-0">
           Highlight key projects and responsibilities for a smooth transition.
         </p>
       </p-card>
+    </div>
 
-      <p-card header="Boost Morale">
+    <div class="row-span-2">
+      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
+        <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Boost Morale</p>
+
         <p class="m-0">Celebrate contributions and wish the employee well.</p>
       </p-card>
-
-      <p-card header="Show Appreciation">
-        <p class="m-0">Express gratitude to colleagues and the company.</p>
-      </p-card>
     </div>
 
-    <h3>Readership and Engagement</h3>
+    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
+      <i class="pi pi-folder-open"></i>
+      <span class="ml-2 text-md font-semibold">High Open</span>
+    </p-card>
 
-    <ul>
-      <li>
-        <strong>High Open and Read Rate:</strong>
-        Colleagues are interested in farewell messages.
-      </li>
-      <li>
-        <strong>Engagement Varies:</strong>
-        Personal touches and positive messages often generate positive
-        responses.
-      </li>
-    </ul>
+    <p-card
+      pTooltip="Can be sent to the whole company, a team, or individuals."
+      styleClass="small-tile-h-22 w-60 hover:shadow-xl"
+      header="">
+      <i class="pi pi-cloud-upload"></i>
+      <span class="ml-2 text-md font-semibold">Distribution</span>
+    </p-card>
 
-    <h3>Other Information</h3>
+    <p-card
+      pTooltip="Farewell messages can also be shared on platforms like LinkedIn."
+      styleClass="small-tile-h-22 w-60 hover:shadow-xl"
+      header="">
+      <i class="pi pi-linkedin"></i>
+      <span class="ml-2 text-md font-semibold">Social Media</span>
+    </p-card>
 
-    <ul>
-      <li>
-        <strong>Format:</strong>
-        Can be formal or informal depending on company culture.
-      </li>
-      <li>
-        <strong>Timing:</strong>
-        A few days before the last day of work is generally appropriate.
-      </li>
-      <li>
-        <strong>Distribution:</strong>
-        Can be sent to the whole company, a team, or individuals.
-      </li>
-      <li>
-        <strong>Social Media:</strong>
-        Farewell messages can also be shared on platforms like LinkedIn.
-      </li>
-    </ul>
-
-    <p>
-      <strong>
-        Overall, farewell emails are a valuable tool for leaving a positive
-        final impression and contributing to a healthy workplace culture.
-      </strong>
-    </p>
+    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
+      <i class="pi pi-microphone"></i>
+      <span class="ml-2 text-md font-semibold">Make your voice heard</span>
+    </p-card>
   </div>
-
-  <div class="relative">
-    <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
-      Connected
-    </h2>
-
-    <img class="rounded" src="/introducing/shaking-hands.gif" />
-  </div>
-</section>
-
-<ng-template #sectionTmpl let-data>
-  <section class="flex gap-6">
-    <div>
-      <h3 class="font-bold text-2xl">{{ data.title }}</h3>
-
-      <div class="flex gap-2 flex-wrap">
-        @for (card of data.cards; track $index) {
-        <p-card styleClass="p-1" [header]="card.header ?? ''">
-          <p class="m-0">
-            {{ card.text }}
-          </p>
-        </p-card>
-        }
-      </div>
-    </div>
-
-    <div class="relative">
-      <h2 class="absolute top-3 right-3 text-white italic text-3xl font-bold">
-        {{ data.image.title }}
-      </h2>
-
-      <img class="rounded" [src]="data.image.url" />
-    </div>
-  </section>
 </ng-template>

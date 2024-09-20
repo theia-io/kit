@@ -2,6 +2,7 @@ import { Directive, effect, HostBinding, input } from '@angular/core';
 
 export type KlassOverwrite = {
   text?: {
+    size?: string;
     color?: string;
     hoverColor?: string;
   };
@@ -11,7 +12,7 @@ export type KlassOverwrite = {
 };
 
 const LINK_TAILWIND_CLASSES =
-  'duration-100 rounded-lg text-sm font-medium [text-align:_inherit]';
+  'duration-100 rounded-lg font-medium [text-align:_inherit]';
 
 @Directive({
   standalone: true,
@@ -30,11 +31,16 @@ export class UIKitSmallerHintTextUXDirective {
       if (isLink) {
         // those classes have to be used somewhere so they are not removed from bundle by tailwind postcss bundler
         const { text, background } = this.klasses() ?? {};
-        const { color: textCover, hoverColor: textHoverColor } = text ?? {};
+        const {
+          size: textSize,
+          color: textCover,
+          hoverColor: textHoverColor,
+        } = text ?? {};
         const { hoverColor: backgroundHoverColor } = background ?? {};
 
         this.className = `
           ${LINK_TAILWIND_CLASSES} 
+          ${textSize ?? 'text-sm'}
           ${textCover ?? 'text-gray-500'} hover:${
           textHoverColor ?? 'text-gray-700'
         }

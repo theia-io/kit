@@ -22,7 +22,7 @@ import { select, Store } from '@ngrx/store';
   }
   `,
   template: `<shared-navbar-static [fullBar]="!!(currentProfile$ | async)" />
-    <div class="p-4 flex-grow flex flex-col">
+    <div class="flex-grow flex flex-col">
       <router-outlet></router-outlet>
     </div>`,
 })
