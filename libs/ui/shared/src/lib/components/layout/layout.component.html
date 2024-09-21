@@ -1,28 +1,25 @@
 <div class="flex gap-4 justify-center min-h-full px-2 w-full py-4">
   <!-- left -->
   <div class="max-w-48">
-    <ng-content select="[left]"></ng-content>
+    <ng-content select="[navbar]"></ng-content>
   </div>
 
   <!--middle-->
   <div
     class="max-w-xs w-full"
-    [ngClass]="
+    [ngClass]="[
       !layoutService.rightPanelClosed()
         ? 'md:max-w-sm lg:max-w-md'
-        : 'md:max-w-lg lg:max-w-2xl'
-    ">
+        : 'md:max-w-lg lg:max-w-2xl',
+      (layoutService.mobileNavbar$ | async) ? 'mb-16' : ''
+    ]">
     <ng-content></ng-content>
   </div>
 
   <!--right -->
   @if(!layoutService.rightPanelClosed()) {
-  <div class="max-w-48 hidden md:block">
+  <div class="max-w-48 hidden lg:block">
     <ng-content select="[right]"></ng-content>
-
-    <div class="m-6 inline">
-      <shared-static-info />
-    </div>
   </div>
   }
 </div>

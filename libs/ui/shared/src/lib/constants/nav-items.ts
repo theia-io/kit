@@ -37,7 +37,7 @@ export enum APP_PATH_DIALOG {
 
 export const NAV_ITEMS: Array<MenuItem> = [
   {
-    label: 'Home',
+    label: 'Feed',
     routerLink: `/${APP_PATH.Home}`,
     icon: 'pi pi-home',
     iconClass: 'text-lg font-semibold',

@@ -5,4 +5,5 @@ export * from './logo/logo.component';
 export * from './navbar/navbar.component';
 export * from './navbar/navbar.service';
 export * from './navbar-static/navbar-static.component';
+export * from './static-info/static-info.component';
 export * from './navbar/subnav/subnav.component';

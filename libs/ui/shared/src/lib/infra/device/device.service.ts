@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  BehaviorSubject,
   debounceTime,
   filter,
   fromEvent,
@@ -47,9 +46,9 @@ export class DeviceService {
 
   mediaBreakpoint$ = this.innerWidth$.pipe(
     map((width) => {
-      if (width < 576) {
+      if (width < 640) {
         return DeviceMediaBreakpoint.xs;
-      } else if (width >= 576 && width < 768) {
+      } else if (width >= 640 && width < 768) {
         return DeviceMediaBreakpoint.sm;
       } else if (width >= 768 && width < 992) {
         return DeviceMediaBreakpoint.md;

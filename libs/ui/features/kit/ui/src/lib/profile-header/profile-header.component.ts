@@ -1,3 +1,4 @@
+import { NgOptimizedImage, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   Component,
@@ -10,7 +11,7 @@ import { Profile } from '@kitouch/shared-models';
 import { PhotoService } from '@kitouch/ui-shared';
 import PhotoSwipe from 'photoswipe';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
-import { NgOptimizedImage } from '@angular/common';
+import { FeatKitProfileBackgroundComponent } from '../profile-background/profile-background.component';
 
 @Component({
   standalone: true,
@@ -19,7 +20,9 @@ import { NgOptimizedImage } from '@angular/common';
   styleUrls: ['./profile-header.component.scss'],
   imports: [
     NgOptimizedImage,
+    NgStyle,
     //
+    FeatKitProfileBackgroundComponent,
     FeatKitProfileSocialsComponent,
   ],
 })
@@ -30,12 +33,16 @@ export class FeatKitProfileHeaderComponent implements AfterViewInit {
   #photoService = inject(PhotoService);
 
   ngAfterViewInit(): void {
-    const gallery = this.#photoService.initializeGallery({
+    this.#photoService.initializeGallery({
       gallery: '#profile-header',
       children: 'a',
       pswpModule: PhotoSwipe,
     });
 
-    console.log('FeatKitProfileHeaderComponent', gallery);
+    this.#photoService.initializeGallery({
+      gallery: '#profile-background',
+      children: 'a',
+      pswpModule: PhotoSwipe,
+    });
   }
 }

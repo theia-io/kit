@@ -18,6 +18,7 @@ import {
 import { Store } from '@ngrx/store';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
 import {
   APP_PATH,
   APP_PATH_DIALOG,
@@ -25,11 +26,13 @@ import {
   NAV_ITEMS,
   OUTLET_DIALOG,
 } from '../../constants';
-import { AuthService } from '../../infra';
+import { AuthService, DeviceMediaBreakpoint, DeviceService } from '../../infra';
 import { UXDynamicService } from '../../services/ux-dynamic.service';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from './navbar.service';
 import { SubnavComponent } from './subnav/subnav.component';
+import { AsyncPipe } from '@angular/common';
+import { LayoutService } from '../layout/layout.service';
 
 const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
 
@@ -39,6 +42,8 @@ const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    AsyncPipe,
+    //
     MenuModule,
     TagModule,
     /** Features */
@@ -59,31 +64,38 @@ export class NavBarComponent implements AfterViewInit {
   #authService = inject(AuthService);
   #uxDynamicService = inject(UXDynamicService);
   #navbarService = inject(NavbarService);
-
-  readonly outletSecondary = OUTLET_DIALOG;
-  profileUrl = APP_PATH.Profile;
-  navBarItems = NAV_ITEMS;
-
-  profile = this.#store.selectSignal(selectCurrentProfile);
+  #layoutService = inject(LayoutService);
 
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
-  farewellUrl = APP_PATH.Farewell;
-  introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
-  suggestionUrl = APP_PATH.Suggestion;
+  readonly outletSecondary = OUTLET_DIALOG;
+  readonly navBarItems = NAV_ITEMS;
+  readonly profileUrl = APP_PATH.Profile;
+  readonly farewellUrl = APP_PATH.Farewell;
+  readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  readonly suggestionUrl = APP_PATH.Suggestion;
+
+  profile = this.#store.selectSignal(selectCurrentProfile);
+
+  mobileNavbar$ = this.#layoutService.mobileNavbar$;
 
   constructor() {
-    this.#navbarService.triggerPrimengHighlight$
-      .pipe(takeUntilDestroyed())
+    this.mobileNavbar$
+      .pipe(
+        filter((mobile) => !mobile),
+        switchMap(() => this.#navbarService.triggerPrimengHighlight$)
+      )
       .subscribe(() => this.#triggerPrimengHighlight());
   }
 
   ngAfterViewInit(): void {
-    this.#triggerPrimengHighlight();
+    this.mobileNavbar$.pipe(filter((mobile) => !mobile)).subscribe(() => {
+      this.#triggerPrimengHighlight();
 
-    setTimeout(() => {
-      this.#uxDynamicService.updateLogo('handshake', 5000);
-    }, 500);
+      setTimeout(() => {
+        this.#uxDynamicService.updateLogo('handshake', 5000);
+      }, 500);
+    });
   }
 
   tweetButtonHandler() {

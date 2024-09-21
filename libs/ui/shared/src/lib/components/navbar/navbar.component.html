@@ -1,3 +1,25 @@
+@if((mobileNavbar$ | async) === true) {
+<div class="fixed z-10 bottom-0 left-0 right-0">
+  <div class="p-2 bg-secondary flex items-center justify-center">
+    <shared-logo class="block mr-auto" />
+
+    @for (item of navBarItems; track $index) { @if(item.routerLink) {
+    <a
+      [routerLink]="item.routerLink"
+      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+      <i
+        [class]="item.icon"
+        class="font-semibold px-4 py-2"
+        style="color: #94a3b8; font-size: 1.5rem"></i>
+    </a>
+    } }
+
+    <button (click)="logoutHandler()" class="ml-auto p-2">
+      <i class="pi pi-sign-out mr-1"></i>
+    </button>
+  </div>
+</div>
+} @else {
 <shared-logo />
 
 <p-menu
@@ -29,3 +51,4 @@
   [suggestionUrl]="suggestionUrl"
   (logout)="logoutHandler()"
   class="block mt-4" />
+}

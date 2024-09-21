@@ -27,6 +27,11 @@ import { filter } from 'rxjs/operators';
   standalone: true,
   selector: 'kit-page-farewell-all',
   templateUrl: './all.component.html',
+  styles: `
+    :host {
+      position: relative;
+    }
+  `,
   imports: [
     AsyncPipe,
     DatePipe,

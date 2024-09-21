@@ -1,4 +1,4 @@
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { APP_BASE_HREF, AsyncPipe, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +15,7 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { FollowButtonComponent } from '@kitouch/ui-components';
-import { UXDynamicService } from '@kitouch/ui-shared';
+import { APP_PATH, UXDynamicService } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -40,6 +40,8 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
   ],
 })
 export class PageProfileComponent {
+  readonly settingsUrl = `/${APP_PATH.Settings}`;
+
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
   #uxDynamicService = inject(UXDynamicService);

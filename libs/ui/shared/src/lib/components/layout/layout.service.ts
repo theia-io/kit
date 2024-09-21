@@ -1,4 +1,7 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { map, shareReplay } from 'rxjs';
+import { DeviceMediaBreakpoint, DeviceService } from '../../infra';
 
 export enum PanelState {
   Opened = 'opened',
@@ -15,5 +18,11 @@ export class LayoutService {
     () =>
       this.rightPanelState() === PanelState.Closed ||
       this.rightPanelState() === PanelState.UserClosed
+  );
+
+  mobileNavbar$ = inject(DeviceService).mediaBreakpoint$.pipe(
+    map((breakpoint) => breakpoint === DeviceMediaBreakpoint.xs),
+    shareReplay(1),
+    takeUntilDestroyed()
   );
 }

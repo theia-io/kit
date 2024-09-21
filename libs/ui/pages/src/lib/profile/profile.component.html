@@ -1,7 +1,7 @@
 @if(profile(); as profile) {
 <feat-kit-profile-header [profile]="profile">
+  @if(!isCurrentUserProfile()) {
   <div class="grow" profileFollowExtension>
-    @if(!isCurrentUserProfile()) {
     <button
       pButton
       (click)="
@@ -24,8 +24,16 @@
       <i class="pi pi-user-minus"></i>
       }
     </button>
-    }
   </div>
+  } @else {
+  <a
+    profileEditExtension
+    [routerLink]="settingsUrl"
+    class="absolute top-4 right-4 border-2 border-white rounded-full flex p-2"
+    severity="contrast">
+    <i class="pi pi-wrench text-xl"></i>
+  </a>
+  }
 </feat-kit-profile-header>
 }
 

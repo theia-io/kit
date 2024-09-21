@@ -8,6 +8,7 @@ import {
   LayoutComponent,
   NavBarComponent,
   OUTLET_DIALOG,
+  SharedStaticInfoComponent,
 } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 
@@ -18,6 +19,7 @@ import { Store } from '@ngrx/store';
     RouterModule,
     //
     /** Features */
+    SharedStaticInfoComponent,
     FeatFollowSuggestionsComponent,
     LayoutComponent,
     NavBarComponent,
@@ -25,7 +27,7 @@ import { Store } from '@ngrx/store';
   selector: 'app-kitouch',
   template: `
     <shared-layout>
-      <shared-navbar left class="block"></shared-navbar>
+      <shared-navbar navbar class="block"></shared-navbar>
 
       <router-outlet></router-outlet>
 
@@ -39,6 +41,10 @@ import { Store } from '@ngrx/store';
             showRandomOrder: false
           }"
         />
+
+        <div class="m-6 inline">
+          <shared-static-info />
+        </div>
       </div>
     </shared-layout>
   `,
