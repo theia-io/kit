@@ -91,9 +91,8 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   selectionChangeHandler(event: EditorSelectionChangeEvent) {
     const { index, length } = (event.range ?? {}) as unknown as Range; // API interface needs override TODO add this to .d.ts file
     if (length > 0) {
-      console.log('selectionChangeHandler', index, this.quill.getBounds(index));
       this.actionsShow.set(true);
-      this.actionsBounds.set(this.quill.getBounds(index));
+      this.actionsBounds.set(this.quill.getBounds(index, length));
     }
   }
 }
