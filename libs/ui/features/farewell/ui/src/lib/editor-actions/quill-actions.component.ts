@@ -3,18 +3,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   HostListener,
   input,
   model,
   signal,
 } from '@angular/core';
-import Quill, { Bounds } from 'quill';
-import { InputTextModule } from 'primeng/inputtext';
-import { sign } from 'crypto';
-import { FormControl, FormsModule, NgModel } from '@angular/forms';
-import { throws } from 'assert';
+import { FormsModule } from '@angular/forms';
 import { safeUrl } from '@kitouch/utils';
+import { InputTextModule } from 'primeng/inputtext';
+import Quill, { Bounds } from 'quill';
 
 const DEFAULT_LINK_PLACEHOLDER = 'Paste a link...';
 
@@ -62,12 +59,6 @@ export class FeatFarewellQuillActionsComponent {
       this.show.set(false);
       return;
     }
-  }
-
-  constructor() {
-    effect(() => {
-      console.log(this.bounds(), this.show());
-    });
   }
 
   linkHandler() {

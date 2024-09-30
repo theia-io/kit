@@ -19,7 +19,8 @@ import {
   EditorTextChangeEvent,
 } from 'primeng/editor';
 import Quill, { Bounds } from 'quill';
-import { FeatFarewellQuillActionsComponent } from '../generate/quill-actions.component';
+import { FeatFarewellQuillActionsComponent } from '../editor-actions/quill-actions.component';
+import { FeatFarewellQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
 
 export interface Range {
   index: number;
@@ -34,6 +35,7 @@ export interface Range {
     ReactiveFormsModule,
     //
     FeatFarewellQuillActionsComponent,
+    FeatFarewellQuillSideActionsComponent,
     //
     EditorModule,
   ],
@@ -52,8 +54,11 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   editorText = output<string>();
 
   quill: Quill;
+
   actionsShow = signal<boolean>(false);
   actionsBounds = signal<Bounds | null>(null);
+  sideActionsShow = signal(false);
+  sideActionsBounds = signal<Bounds | null>(null);
 
   constructor() {
     this.editorControl.valueChanges
@@ -79,9 +84,12 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   quillInit({ editor }: EditorInitEvent) {
-    console.log(editor);
     this.quill = editor;
-    this.editorControl.setValue('dasdasda sdasdasdas dasd asdas');
+    this.editorControl.setValue(`\n\n dasdasda sdasdasdas dasd
+         asdas \n <strong>test bold</strong> \n
+         \n\n <italic>test italic
+         </italic> \n
+          test normal`);
   }
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
@@ -89,10 +97,55 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   selectionChangeHandler(event: EditorSelectionChangeEvent) {
-    const { index, length } = (event.range ?? {}) as unknown as Range; // API interface needs override TODO add this to .d.ts file
+    const range = (event.range ?? {}) as unknown as Range; // API interface needs override TODO add this to .d.ts file
+
+    console.log('\n\nselectionChangeHandler!', range);
+    this.#checkActionShow(range);
+    this.#checkSideActionShow(range);
+  }
+
+  #checkActionShow({ index, length }: Range) {
     if (length > 0) {
       this.actionsShow.set(true);
       this.actionsBounds.set(this.quill.getBounds(index, length));
     }
+  }
+
+  enterHandler() {
+    const selection = this.quill.getSelection();
+    console.log('\n\nenterHandler!', selection);
+
+    if (selection) {
+      this.#checkSideActionShow(selection);
+    }
+  }
+
+  #checkSideActionShow({ index, length }: Range) {
+    if (length !== 0) {
+      this.sideActionsShow.set(false);
+      return;
+    }
+
+    const [_, lineIndex] = this.quill.getLine(index);
+    console.log('getLine', _, lineIndex);
+    if (lineIndex !== 0) {
+      this.sideActionsShow.set(false);
+      return;
+    }
+
+    const delta = this.quill.getContents(index);
+    const firstDeltaInsert = delta.ops[0]?.insert;
+    console.log('getContents', delta, firstDeltaInsert);
+    if (
+      firstDeltaInsert &&
+      typeof firstDeltaInsert === 'string' &&
+      !firstDeltaInsert.startsWith('\n')
+    ) {
+      this.sideActionsShow.set(false);
+      return;
+    }
+
+    this.sideActionsShow.set(true);
+    this.sideActionsBounds.set(this.quill.getBounds(index));
   }
 }

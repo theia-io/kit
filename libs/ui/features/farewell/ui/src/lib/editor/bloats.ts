@@ -1,13 +1,14 @@
 import Quill from 'quill';
+import Block from 'quill/blots/block';
 import Inline from 'quill/blots/inline';
 
 class BoldBlot extends Inline {
-  static override blotName = 'bolda';
+  static override blotName = 'bold';
   static override tagName = 'strong';
 }
 
 class ItalicBlot extends Inline {
-  static override blotName = 'italica';
+  static override blotName = 'italic';
   static override tagName = 'em';
 }
 
@@ -34,8 +35,26 @@ class LinkBlot extends Inline {
   }
 }
 
+class BlockquoteBlot extends Block {
+  static override blotName = 'blockquote';
+  static override tagName = 'blockquote';
+}
+
+class HeaderBlot extends Block {
+  static override blotName = 'header';
+  // Medium only supports two header sizes, so we will only demonstrate two,
+  // but we could easily just add more tags into this array
+  static override tagName = ['H1', 'H2'];
+
+  static override formats(node: HTMLHeadElement) {
+    return HeaderBlot.tagName.indexOf(node.tagName) + 1;
+  }
+}
+
 export const registerKitEditorHandlers = () => {
   Quill.register(BoldBlot);
   Quill.register(ItalicBlot);
   Quill.register(LinkBlot);
+  Quill.register(BlockquoteBlot);
+  Quill.register(HeaderBlot);
 };

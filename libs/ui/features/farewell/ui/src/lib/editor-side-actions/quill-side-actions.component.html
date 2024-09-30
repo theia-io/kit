@@ -1,0 +1,24 @@
+<div
+  class="absolute z-10 -left-[24px] h-[36px]"
+  [ngStyle]="{
+    transform: show() ? 'translateX(0)' : 'translateX(-100000px)',
+    top: (bounds()?.top ?? 0) - (36 / 2) + 2 + 'px',
+  }">
+  <div class="p-1 rounded">
+    <div class="flex items-center justify-between gap-2">
+      <p-toggleButton
+        styleClass="bg-transparent border-none mr-2"
+        [(ngModel)]="opened"
+        onIcon="pi pi-minus-circle"
+        offIcon="pi pi-plus-circle"
+        ariaLabel="View embedded content" />
+
+      @if(opened()) {
+      <button><i class="pi pi-image"></i></button>
+      <button><i class="pi pi-video"></i></button>
+      <button><i class="pi pi-twitter"></i></button>
+      <button><i class="pi pi-minus"></i></button>
+      }
+    </div>
+  </div>
+</div>

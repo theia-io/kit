@@ -1,10 +1,14 @@
 <div class="relative">
+  <feat-farewell-quill-side-actions
+    [show]="sideActionsShow()"
+    [bounds]="sideActionsBounds()"
+    [quill]="quill"></feat-farewell-quill-side-actions>
   <feat-farewell-quill-actions
     [(show)]="actionsShow"
     [bounds]="actionsBounds()"
     [quill]="quill"></feat-farewell-quill-actions>
   <p-editor
-    id="farewell-editor"
+    [formControl]="editorControl"
     aria-describedby="farewell-rich-text-editor"
     placeholder="Add farewell to your (ex-) colleagues 🔥"
     [modules]="{}"
@@ -15,9 +19,9 @@
     }"
     styleClass="w-full custom-toolbar"
     (onInit)="quillInit($event)"
-    (onSelectionChange)="selectionChangeHandler($event)"
     (onTextChange)="onTextChangeHandler($event)"
-    [formControl]="editorControl">
+    (onSelectionChange)="selectionChangeHandler($event)"
+    (keydown.enter)="enterHandler()">
     <p-header></p-header>
   </p-editor>
 </div>

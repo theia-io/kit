@@ -55,7 +55,7 @@ import { take, tap } from 'rxjs';
 
 // import to register custom bloats
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
-import { registerKitEditorHandlers } from './bloats';
+import { registerKitEditorHandlers } from '../editor/bloats';
 
 registerKitEditorHandlers();
 
