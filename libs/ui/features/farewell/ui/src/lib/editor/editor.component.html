@@ -1,0 +1,23 @@
+<div class="relative">
+  <feat-farewell-quill-actions
+    [(show)]="actionsShow"
+    [bounds]="actionsBounds()"
+    [quill]="quill"></feat-farewell-quill-actions>
+  <p-editor
+    id="farewell-editor"
+    aria-describedby="farewell-rich-text-editor"
+    placeholder="Add farewell to your (ex-) colleagues 🔥"
+    [modules]="{}"
+    [style]="{
+      height: '320px',
+      border: 'none',
+      fontFamily: 'var(--font-family)'
+    }"
+    styleClass="w-full custom-toolbar"
+    (onInit)="quillInit($event)"
+    (onSelectionChange)="selectionChangeHandler($event)"
+    (onTextChange)="onTextChangeHandler($event)"
+    [formControl]="editorControl">
+    <p-header></p-header>
+  </p-editor>
+</div>

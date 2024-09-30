@@ -1,0 +1,99 @@
+import {
+  ChangeDetectionStrategy,
+  Component,
+  forwardRef,
+  output,
+  signal,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {
+  ControlValueAccessor,
+  FormControl,
+  NG_VALUE_ACCESSOR,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import {
+  EditorInitEvent,
+  EditorModule,
+  EditorSelectionChangeEvent,
+  EditorTextChangeEvent,
+} from 'primeng/editor';
+import Quill, { Bounds } from 'quill';
+import { FeatFarewellQuillActionsComponent } from '../generate/quill-actions.component';
+
+export interface Range {
+  index: number;
+  length: number;
+}
+
+@Component({
+  standalone: true,
+  selector: 'feat-farewell-editor',
+  templateUrl: './editor.component.html',
+  imports: [
+    ReactiveFormsModule,
+    //
+    FeatFarewellQuillActionsComponent,
+    //
+    EditorModule,
+  ],
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [
+    {
+      provide: NG_VALUE_ACCESSOR,
+      useExisting: forwardRef(() => FeatFarewellEditorComponent),
+      multi: true,
+    },
+  ],
+})
+export class FeatFarewellEditorComponent implements ControlValueAccessor {
+  editorControl = new FormControl('');
+
+  editorText = output<string>();
+
+  quill: Quill;
+  actionsShow = signal<boolean>(false);
+  actionsBounds = signal<Bounds | null>(null);
+
+  constructor() {
+    this.editorControl.valueChanges
+      .pipe(takeUntilDestroyed())
+      .subscribe((v) => this.onChange(v ?? ''));
+  }
+
+  onChange = (value: string) => {};
+  onTouched = () => {};
+
+  writeValue(value: string): void {
+    this.editorControl.setValue(value);
+    // check if this needed
+    //   this.onChange(value);
+  }
+
+  registerOnChange(fn: any): void {
+    this.onChange = fn;
+  }
+
+  registerOnTouched(fn: any): void {
+    this.onTouched = fn;
+  }
+
+  quillInit({ editor }: EditorInitEvent) {
+    console.log(editor);
+    this.quill = editor;
+    this.editorControl.setValue('dasdasda sdasdasdas dasd asdas');
+  }
+
+  onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
+    this.editorText.emit(textValue);
+  }
+
+  selectionChangeHandler(event: EditorSelectionChangeEvent) {
+    const { index, length } = (event.range ?? {}) as unknown as Range; // API interface needs override TODO add this to .d.ts file
+    if (length > 0) {
+      console.log('selectionChangeHandler', index, this.quill.getBounds(index));
+      this.actionsShow.set(true);
+      this.actionsBounds.set(this.quill.getBounds(index));
+    }
+  }
+}

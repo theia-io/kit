@@ -1,7 +1,13 @@
 @if((mobileNavbar$ | async) === true) {
 <div class="fixed z-10 bottom-0 left-0 right-0">
   <div class="p-2 bg-secondary flex items-center justify-center">
-    <shared-logo class="block mr-auto" />
+    <!-- <shared-logo class="block mr-auto" /> -->
+    <a
+      class="mr-auto border-2 border-white rounded-full"
+      [routerLink]="profileUrl + '/' + profile()?.id"
+      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+      <ui-kit-comp-account-tile [picture]="profile()?.pictures?.[0]?.url" />
+    </a>
 
     @for (item of navBarItems; track $index) { @if(item.routerLink) {
     <a

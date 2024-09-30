@@ -24,27 +24,9 @@
       }
     </section>
 
-    <p
-      id="farewell-rich-text-editor"
-      uiKitSmallTextTailwindClasses
-      class="px-4 py-2">
-      Rich-text editor. Be yourself.
-    </p>
-    <p-editor
-      id="farewell-float"
-      aria-describedby="farewell-rich-text-editor"
-      placeholder="Add farewell to your (ex-) colleagues 🔥"
-      [modules]="modules"
-      [style]="{
-        height: '320px',
-        border: 'none',
-        fontFamily: 'var(--font-family)'
-      }"
-      styleClass="w-full"
-      (onTextChange)="onTextChangeHandler($event)"
-      formControlName="editorControl">
-      <p-header></p-header>
-    </p-editor>
+    <feat-farewell-editor
+      formControlName="editorControl"
+      (editorText)="editorTextValue.set($event)"></feat-farewell-editor>
 
     @if(editorTextValue().length < 64) {
     <strong class="block text-xs text-gray-400 float-right">
@@ -140,29 +122,16 @@
     </div>
   </section>
 
-  <div>
-    <p-button
-      [disabled]="true"
-      class="mr-2"
-      severity="secondary"
-      (onClick)="previewFarewellHandler()"
-      label="Preview"
-      icon="pi pi-eye"
-      iconPos="left"
-      [raised]="true" />
-
-    <p-button
-      [disabled]="
-        !(
-          farewellFormGroup.valid &&
-          editorTextValue().length >= 64 &&
-          editorTextValue().length <= 8192
-        )
-      "
-      (onClick)="saveFarewellHandler()"
-      label="Save"
-      icon="pi pi-thumbs-up-fill"
-      iconPos="right"
-      [raised]="true" />
-  </div>
+  <p-button
+    [disabled]="
+      !(
+        farewellFormGroup.valid &&
+        editorTextValue().length >= 64 &&
+        editorTextValue().length <= 8192
+      )
+    "
+    (onClick)="saveFarewellHandler()"
+    severity="success"
+    label="Publish"
+    [raised]="true" />
 </div>

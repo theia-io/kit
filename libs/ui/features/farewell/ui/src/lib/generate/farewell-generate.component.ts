@@ -47,12 +47,17 @@ import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
-import { EditorModule, EditorTextChangeEvent } from 'primeng/editor';
 import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
 import { take, tap } from 'rxjs';
+
+// import to register custom bloats
+import { FeatFarewellEditorComponent } from '../editor/editor.component';
+import { registerKitEditorHandlers } from './bloats';
+
+registerKitEditorHandlers();
 
 function extractContent(html: string) {
   const span = document.createElement('span');
@@ -68,6 +73,7 @@ function extractContent(html: string) {
     NgOptimizedImage,
     ReactiveFormsModule,
     //
+    FeatFarewellEditorComponent,
     UiKitCompAnimatePingComponent,
     UiKitDeleteComponent,
     UiKitPicUploadableComponent,
@@ -75,7 +81,6 @@ function extractContent(html: string) {
     //
     ToastModule,
     FileUploadModule,
-    EditorModule,
     FloatLabelModule,
     InputTextModule,
     ButtonModule,
@@ -157,30 +162,6 @@ export class FeatFarewellGenerateComponent {
       },
       { allowSignalWrites: true }
     );
-
-    // effect(() => {
-    //   const farewellMediaUpdated = this.farewellMedias();
-
-    //   if (farewellMediaUpdated && farewellMediaUpdated.length > 0) {
-    //     setTimeout(() => {
-    //       this.#initFarewellMediaGallery();
-    //     }, 1500);
-    //   }
-    // });
-
-    // effect(() => {
-    //   const filesToUpload = this.filesToUpload();
-
-    //   if (filesToUpload) {
-    //     setTimeout(() => {
-    //       this.#initNewFarewellMediaGallery();
-    //     }, 1500);
-    //   }
-    // });
-  }
-
-  onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
-    this.editorTextValue.set(textValue);
   }
 
   deleteFarewellMediaHandler(media: FarewellMedia) {
@@ -216,11 +197,6 @@ export class FeatFarewellGenerateComponent {
     this.filesToUpload.update((files) => [...files, ...newFiles]);
   }
 
-  previewFarewellHandler() {
-    // TODO Implement preview
-    console.log('previewFarewellHandler');
-  }
-
   saveFarewellHandler() {
     const { titleControl: title, editorControl: content } =
       this.farewellFormGroup.value;
@@ -240,26 +216,6 @@ export class FeatFarewellGenerateComponent {
     } else {
       this.#createFarewell({ title, content });
     }
-  }
-
-  initFarewellMediaGallery() {
-    this.#ngZone.runOutsideAngular(() => {
-      this.#photoService.initializeGallery({
-        gallery: '#uploaded-media-gallery',
-        children: 'a',
-        pswpModule: PhotoSwipe,
-      });
-    });
-  }
-
-  initNewFarewellMediaGallery() {
-    this.#ngZone.runOutsideAngular(() => {
-      this.#photoService.initializeGallery({
-        gallery: '#new-media-gallery',
-        children: 'a',
-        pswpModule: PhotoSwipe,
-      });
-    });
   }
 
   #updateFarewell({ media: _, analytics: __, ...farewell }: FarewellFullView) {
@@ -322,5 +278,25 @@ export class FeatFarewellGenerateComponent {
         })
       );
     }
+  }
+
+  initFarewellMediaGallery() {
+    this.#ngZone.runOutsideAngular(() => {
+      this.#photoService.initializeGallery({
+        gallery: '#uploaded-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
+    });
+  }
+
+  initNewFarewellMediaGallery() {
+    this.#ngZone.runOutsideAngular(() => {
+      this.#photoService.initializeGallery({
+        gallery: '#new-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
+    });
   }
 }

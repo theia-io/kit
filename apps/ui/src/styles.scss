@@ -85,8 +85,14 @@ p-image .p-image-preview-indicator {
   border-radius: 9999px;
 }
 
-p-editor .ql-toolbar.ql-snow {
-  border: none;
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
-    rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+p-editor {
+  .ql-toolbar.ql-snow {
+    border: none;
+    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+      rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
+  }
+
+  .custom-toolbar .ql-toolbar.ql-snow {
+    padding: 0;
+  }
 }

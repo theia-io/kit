@@ -1,7 +1,4 @@
 <p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToLatest()">
-  <!-- <ng-template pTemplate="header">
-    <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
-  </ng-template> -->
   <ng-template pTemplate="headless">
     <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
     <ui-kit-delete
@@ -9,6 +6,6 @@
       yOffset="top-4"
       (onDelete)="redirectToLatest()" />
 
-    <feat-farewell-generate class="block w-full mt-6" />
+    <feat-farewell-generate class="block w-full p-6 overflow-auto" />
   </ng-template>
 </p-sidebar>
