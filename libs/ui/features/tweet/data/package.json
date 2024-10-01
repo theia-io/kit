@@ -3,8 +3,8 @@
   "version": "1.0.0-beta",
   "peerDependencies": {
     "@kitouch/shared-models": "1.0.0-beta",
-    "@ngrx/store": "18.0.0",
     "@kitouch/utils": "1.0.0-beta",
+    "@ngrx/store": "18.0.2",
     "lodash": "^4.17.21"
   },
   "sideEffects": false

@@ -66,7 +66,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
       .subscribe((v) => this.onChange(v ?? ''));
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-empty-function -- Implemented
   onChange = (value: string) => {};
+  // eslint-disable-next-line @typescript-eslint/no-empty-function -- Implemented
   onTouched = () => {};
 
   writeValue(value: string): void {
