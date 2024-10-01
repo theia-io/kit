@@ -42,8 +42,6 @@ class BlockquoteBlot extends Block {
 
 class HeaderBlot extends Block {
   static override blotName = 'header';
-  // Medium only supports two header sizes, so we will only demonstrate two,
-  // but we could easily just add more tags into this array
   static override tagName = ['H1', 'H2'];
 
   static override formats(node: HTMLHeadElement) {

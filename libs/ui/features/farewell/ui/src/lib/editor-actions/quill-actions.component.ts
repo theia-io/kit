@@ -3,10 +3,12 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ElementRef,
   HostListener,
   input,
   model,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { safeUrl } from '@kitouch/utils';
@@ -43,9 +45,18 @@ export class FeatFarewellQuillActionsComponent {
   linkVal = signal<string | null>(null);
   linkPlaceholder = signal(DEFAULT_LINK_PLACEHOLDER);
 
-  @HostListener('keydown.enter')
-  handleEnter() {
-    this.linkHandler();
+  @ViewChild('linkEl', { static: false })
+  set linkEl(linkEl: ElementRef) {
+    const linkInput: HTMLInputElement = linkEl?.nativeElement;
+    // when linkInput is shown
+    if (linkInput) {
+      linkInput.focus();
+    }
+  }
+
+  @HostListener('keydown.enter', ['$event'])
+  handleEnter(event: Event) {
+    this.linkHandler(event);
   }
 
   @HostListener('document:click')
@@ -61,7 +72,15 @@ export class FeatFarewellQuillActionsComponent {
     }
   }
 
-  linkHandler() {
+  onLinkClickHandler(event: Event) {
+    event.stopPropagation();
+    this.isLink.set(true);
+  }
+
+  linkHandler(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+
     const linkVal = this.linkVal();
     if (this.isLink()) {
       if (linkVal && safeUrl(linkVal)) {

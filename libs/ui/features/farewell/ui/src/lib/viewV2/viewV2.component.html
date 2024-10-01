@@ -26,7 +26,7 @@
     <div class="text-2xl text-center mb-2">{{ farewell.title }}</div>
 
     <div
-      class="innerHtmlOverflow"
+      class="innerHtmlOverflow ql-editor"
       [innerHTML]="sanitizer.bypassSecurityTrustHtml(farewell.content)"></div>
 
     @if(visible().includes('analytics') && farewell.analytics; as analytic) {
