@@ -1,0 +1,142 @@
+<div class="container m-auto">
+  <div class="flex flex-col justify-center items-center gap-10">
+    <form class="w-full" [formGroup]="farewellFormGroup">
+      <p-floatLabel class="block text-center mt-4">
+        <input
+          class="w-full border-none shadow-none text-center text-2xl italic focus:outline-none"
+          id="title"
+          type="text"
+          pInputText
+          formControlName="title" />
+        <label class="w-full text-2xl" for="title">Title</label>
+      </p-floatLabel>
+      <section class="mb-6">
+        @if(!farewellFormGroup.get('title')?.value?.length ||
+        farewellFormGroup.get('title')?.errors?.['minlength']) {
+        <strong class="block text-xs text-gray-400 float-right">
+          Must be at least 2 characters long. Currently you got
+          {{ farewellFormGroup.get('title')?.value?.length }}.
+        </strong>
+        } @if(farewellFormGroup.get('title')?.errors?.['maxlength']) {
+        <strong class="block text-xs text-gray-400">
+          Must be less than 128 characters long. Currently you got
+          {{ farewellFormGroup.get('title')?.value?.length }}.
+        </strong>
+        }
+      </section>
+
+      <feat-farewell-editor
+        formControlName="content"
+        (editorText)="editorTextValue.set($event)"></feat-farewell-editor>
+
+      @if(editorTextValue().length < 64) {
+      <strong class="block text-xs text-gray-400 float-right">
+        Must be at least 64 characters long. Current length is
+        {{ editorTextValue().length }} characters.
+      </strong>
+      } @if(editorTextValue().length > 8192) {
+      <strong class="block text-xs text-gray-400 float-right">
+        Must be less than 8192 characters long. Current length is
+        {{ editorTextValue().length }} characters.
+      </strong>
+      }
+    </form>
+
+    <section class="w-full">
+      @if(farewellMedias()?.length && farewellMedias(); as farewellMedias) {
+      <h3 uiKitSmallTextTailwindClasses>Attached</h3>
+      <div
+        class="ml-4 flex flex-wrap items-center justify-start"
+        id="uploaded-media-gallery">
+        @for (media of farewellMedias; track $index) {
+        <div class="relative rounded-md hover:shadow-xl">
+          <a
+            class="relative block w-16 h-16 mr-2"
+            [href]="media.url"
+            data-pswp-width="150"
+            data-pswp-height="150"
+            target="_blank">
+            <img
+              referrerpolicy="no-referrer"
+              class="rounded-full w-full h-full"
+              width="64"
+              height="64"
+              [ngSrc]="media.url"
+              (load)="
+                $index === farewellMedias.length - 1 &&
+                  initFarewellMediaGallery()
+              "
+              alt="Farewell media" />
+          </a>
+          <ui-kit-delete
+            class="block"
+            yOffset="-top-1"
+            xOffset="-right-2"
+            (onDelete)="deleteFarewellMediaHandler(media)" />
+        </div>
+        }
+      </div>
+      }
+
+      <h3 class="mt-4" uiKitSmallTextTailwindClasses>New files</h3>
+      <div class="ml-4 flex items-start justify-start gap-8">
+        <ui-kit-comp-animate-ping [newlyAddedItem]="true">
+          <ui-kit-pic-uploadable
+            [imgConf]="{ src: '/farewell/farewell-page-logo-small.jpeg' }"
+            [fileUploadConf]="{ multiple: true }"
+            [autoUploadCb]="
+              onBasicUploadAuto.bind(this)
+            "></ui-kit-pic-uploadable>
+        </ui-kit-comp-animate-ping>
+
+        <div
+          class="ml-4 flex flex-wrap gap-2 items-center justify-start"
+          id="new-media-gallery">
+          @for (file of filesToUpload(); track $index) {
+          <div class="relative rounded-md hover:shadow-xl">
+            <a
+              class="relative block w-16 h-16 mr-2"
+              [href]="
+                domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file))
+              "
+              data-pswp-width="150"
+              data-pswp-height="150"
+              target="_blank">
+              <img
+                referrerpolicy="no-referrer"
+                class="rounded-full w-full h-full"
+                width="64"
+                height="64"
+                [ngSrc]="
+                  domSanitizer.bypassSecurityTrustUrl(URL.createObjectURL(file))
+                "
+                (load)="
+                  $index === filesToUpload().length - 1 &&
+                    initNewFarewellMediaGallery()
+                "
+                alt="Farewell media" />
+            </a>
+            <ui-kit-delete
+              yOffset="-top-1"
+              xOffset="-right-2"
+              (onDelete)="deleteNewMediaHandler(file)" />
+          </div>
+          }
+        </div>
+      </div>
+    </section>
+
+    <p-button
+      [disabled]="
+        !(
+          farewellFormGroup.valid &&
+          editorTextValue().length >= 64 &&
+          editorTextValue().length <= 8192
+        )
+      "
+      (onClick)="saveFarewellHandler()"
+      severity="success"
+      label="Publish"
+      [raised]="true" />
+  </div>
+</div>

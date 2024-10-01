@@ -1,5 +1,6 @@
-import { NgOptimizedImage } from '@angular/common';
+import { Location, NgOptimizedImage } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
@@ -7,7 +8,7 @@ import {
   DestroyRef,
   effect,
   inject,
-  input,
+  model,
   NgZone,
   signal,
 } from '@angular/core';
@@ -27,22 +28,14 @@ import {
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import {
-  Farewell,
-  FarewellAnalytics,
-  FarewellMedia,
-} from '@kitouch/shared-models';
+import { FarewellAnalytics, FarewellMedia } from '@kitouch/shared-models';
 import {
   UiKitCompAnimatePingComponent,
   UiKitDeleteComponent,
   UiKitPicUploadableComponent,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  PhotoService,
-} from '@kitouch/ui-shared';
+import { APP_PATH, PhotoService } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
@@ -51,12 +44,12 @@ import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { ToastModule } from 'primeng/toast';
-import { take, tap } from 'rxjs';
-
-// import to register custom bloats
-import { FeatFarewellEditorComponent } from '../editor/editor.component';
+import { filter, map, take, tap } from 'rxjs';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
+import { FeatFarewellEditorComponent } from '../editor/editor.component';
+
+// import to register custom bloats
 
 registerKitEditorHandlers();
 registerKitEditorLeafBloatsHandlers();
@@ -69,8 +62,8 @@ function extractContent(html: string) {
 
 @Component({
   standalone: true,
-  selector: 'feat-farewell-generate',
-  templateUrl: './farewell-generate.component.html',
+  selector: 'feat-farewell',
+  templateUrl: './farewell.component.html',
   imports: [
     NgOptimizedImage,
     ReactiveFormsModule,
@@ -89,9 +82,10 @@ function extractContent(html: string) {
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellGenerateComponent {
-  farewellIdToEdit = input<string | null>(null);
+export class FeatFarewellComponent implements AfterViewInit {
+  farewellId = model<string | null>(null);
 
+  #location = inject(Location);
   #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
@@ -101,35 +95,22 @@ export class FeatFarewellGenerateComponent {
   #photoService = inject(PhotoService);
   #actions$ = inject(Actions);
 
-  farewellToEdit = computed(() => {
-    const id = this.farewellIdToEdit();
+  farewell = computed(() => {
+    const id = this.farewellId();
+
     return id
       ? this.#store.selectSignal(selectFarewellFullViewById(id))()
       : undefined;
   });
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
-  modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'], // toggled buttons
-      ['blockquote', 'code-block'],
-      ['link'],
-
-      [{ header: 1 }, { header: 2 }], // custom button values
-      [{ list: 'ordered' }, { list: 'bullet' }, { list: 'check' }],
-      [{ indent: '-1' }, { indent: '+1' }], // outdent/indent
-
-      ['clean'], // remove formatting button
-    ],
-  };
-
   farewellFormGroup = inject(FormBuilder).group({
-    titleControl: new FormControl<string>('', [
+    title: new FormControl<string>('', [
       Validators.required,
       Validators.minLength(2),
       Validators.maxLength(128),
     ]),
-    editorControl: new FormControl<string>('', [Validators.required]),
+    content: new FormControl<string>('', [Validators.required]),
   });
   farewellAnalytics = signal<FarewellAnalytics | null>(null);
   farewellMedias = signal<Array<FarewellMedia> | null>(null);
@@ -139,18 +120,20 @@ export class FeatFarewellGenerateComponent {
   URL = URL;
 
   constructor() {
+    console.log('FAREWELlPAGE COMPONENT');
+
     effect(
       () => {
-        const farewellToEdit = this.farewellToEdit();
+        const farewell = this.farewell();
 
-        if (farewellToEdit) {
+        if (farewell) {
           this.farewellFormGroup.patchValue({
-            titleControl: farewellToEdit.title,
-            editorControl: farewellToEdit.content,
+            title: farewell.title,
+            content: farewell.content,
           });
-          this.editorTextValue.set(extractContent(farewellToEdit.content));
+          this.editorTextValue.set(extractContent(farewell.content));
 
-          const { media, analytics } = farewellToEdit;
+          const { media, analytics } = farewell;
           if (media) {
             this.farewellMedias.set(media);
           }
@@ -164,6 +147,40 @@ export class FeatFarewellGenerateComponent {
       },
       { allowSignalWrites: true }
     );
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.farewellId()) {
+      console.log('FAREWELlPAGE AUTOCREATE');
+      this.farewellFormGroup.valueChanges
+        .pipe(
+          takeUntilDestroyed(this.#destroyRef),
+          tap((v) => console.log('FAREWELlPAGE CREATING FAREWELL 0', v)),
+          filter(({ content, title }) => !!title || !!content),
+          take(1),
+          tap((v) => console.log('FAREWELlPAGE CREATING FAREWELL 1', v))
+        )
+        .subscribe(({ title, content }) =>
+          this.#store.dispatch(
+            FeatFarewellActions.createFarewell({
+              title: title ?? '',
+              content: content ?? '',
+            })
+          )
+        );
+
+      this.#actions$
+        .pipe(
+          ofType(FeatFarewellActions.createFarewellSuccess),
+          takeUntilDestroyed(this.#destroyRef),
+          take(1),
+          map(({ farewell }) => farewell),
+          tap((v) => console.log('FAREWELlPAGE UPDATING URL', v))
+        )
+        .subscribe(({ id }) =>
+          this.#location.replaceState(`/${APP_PATH.Farewell}/edit/${id}`)
+        );
+    }
   }
 
   deleteFarewellMediaHandler(media: FarewellMedia) {
@@ -200,23 +217,18 @@ export class FeatFarewellGenerateComponent {
   }
 
   saveFarewellHandler() {
-    const { titleControl: title, editorControl: content } =
-      this.farewellFormGroup.value;
-    if (!title || !content) {
-      console.error('Should not happen. Title or Body of farewell is not set');
-      return;
-    }
+    const { title, content } = this.farewellFormGroup.value;
 
-    const farewellToEdit = this.farewellToEdit();
+    const farewell = this.farewell();
 
-    if (farewellToEdit) {
+    if (farewell) {
       this.#updateFarewell({
-        ...farewellToEdit,
-        title,
-        content,
+        ...farewell,
+        title: title ?? '',
+        content: content ?? '',
       });
     } else {
-      this.#createFarewell({ title, content });
+      console.error('[saveFarewellHandler] error should not happen');
     }
   }
 
@@ -235,33 +247,6 @@ export class FeatFarewellGenerateComponent {
         tap(({ farewell: { id } }) => this.#farewellMedia(id))
       )
       .subscribe(() => this.#router.navigateByUrl(APP_PATH.Farewell));
-  }
-
-  #createFarewell({ title, content }: Pick<Farewell, 'title' | 'content'>) {
-    this.#store.dispatch(
-      FeatFarewellActions.createFarewell({
-        title,
-        content,
-      })
-    );
-
-    this.#actions$
-      .pipe(
-        ofType(FeatFarewellActions.createFarewellSuccess),
-        take(1),
-        takeUntilDestroyed(this.#destroyRef),
-        tap(({ farewell: { id } }) => this.#farewellMedia(id))
-      )
-      .subscribe(({ farewell: { id } }) => this.#finallyFarewell(id));
-  }
-
-  #finallyFarewell(farewellId: string) {
-    this.#router.navigate(
-      ['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, farewellId],
-      {
-        queryParams: { preview: true },
-      }
-    );
   }
 
   #farewellMedia(farewellId: string) {

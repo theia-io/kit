@@ -1,9 +1,4 @@
-import {
-  Farewell,
-  FarewellAnalytics,
-  FarewellMedia,
-  Profile,
-} from '@kitouch/shared-models';
+import { Farewell, FarewellAnalytics, Profile } from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellActions = createActionGroup({

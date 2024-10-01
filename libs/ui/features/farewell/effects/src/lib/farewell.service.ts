@@ -14,6 +14,7 @@ import {
   Farewell,
   FarewellAnalytics,
   FarewellMedia,
+  FarewellStatus,
   Profile,
 } from '@kitouch/shared-models';
 import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
@@ -64,6 +65,7 @@ export class FarewellService extends DataSourceService {
       profile,
       title,
       content,
+      status: FarewellStatus.Draft,
       ...clientDBGenerateTimestamp(),
     };
 

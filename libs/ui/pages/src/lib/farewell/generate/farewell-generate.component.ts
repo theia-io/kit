@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
-import { FeatFarewellGenerateComponent } from '@kitouch/feat-farewell-ui';
+import { Router } from '@angular/router';
+import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import {
   APP_PATH,
@@ -15,12 +15,10 @@ import { take } from 'rxjs';
   standalone: true,
   templateUrl: './farewell-generate.component.html',
   imports: [
-    // ReactiveFormsModule,
-    RouterModule,
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
-    FeatFarewellGenerateComponent,
+    FeatFarewellComponent,
     //
     SidebarModule,
   ],
@@ -29,6 +27,10 @@ export class PageFarewellGenerateComponent {
   #router = inject(Router);
   #routerEventsService = inject(RouterEventsService);
   #navbarService = inject(NavbarService);
+
+  constructor() {
+    console.log('FAREWELlPAGE GENERATE');
+  }
 
   redirectToLatest() {
     this.#routerEventsService.lastUrlSaved$

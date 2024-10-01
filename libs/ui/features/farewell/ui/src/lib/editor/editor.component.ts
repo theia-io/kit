@@ -87,11 +87,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
   quillInit({ editor }: EditorInitEvent) {
     this.quill = editor;
-    this.editorControl.setValue(`\n\n dasdasda sdasdasdas dasd
-         asdas \n <strong>test bold</strong> \n
-         \n\n <italic>test italic
-         </italic> \n
-          test normal`);
   }
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
@@ -103,7 +98,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   selectionChangeHandler(event: EditorSelectionChangeEvent) {
     const range = (event.range ?? {}) as unknown as Range; // API interface needs override TODO add this to .d.ts file
 
-    console.log('\n\nselectionChangeHandler!', range);
     this.#checkActionShow(range);
     this.#checkSideActionShow(range);
   }
@@ -131,7 +125,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     }
 
     const [_, lineIndex] = this.quill.getLine(index);
-    console.log('getLine', _, lineIndex);
     if (lineIndex !== 0) {
       this.sideActionsShow.set(false);
       return;
@@ -139,7 +132,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
     const delta = this.quill.getContents(index);
     const firstDeltaInsert = delta.ops[0]?.insert;
-    console.log('getContents', delta, firstDeltaInsert);
     if (
       !firstDeltaInsert ||
       !(

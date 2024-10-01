@@ -27,9 +27,19 @@
           pTooltip="Generate Farewell"
           uiKitSmallTextTailwindClasses
           [isLink]="true"
-          class="block w-full px-4 py-2">
+          class="flex items-center w-full px-4 py-2">
           <i class="pi pi-file-edit mr-1"></i>
           Generate
+
+          <p-button
+            class="ml-auto"
+            styleClass="rounded-full p-0"
+            [routerLink]="farewellUrl() + '/generate'"
+            aria-label="create farewell">
+            <i
+              class="pi pi-plus p-1 duration-300 hover:rotate-180"
+              style="font-size: 0.5rem"></i>
+          </p-button>
         </a>
       </li>
     </ul>

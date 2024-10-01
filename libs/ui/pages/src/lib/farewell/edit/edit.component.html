@@ -1,3 +1,14 @@
 @if((farewellCreator$ | async) && (farewell$ | async); as farewell) {
-<feat-farewell-generate [farewellIdToEdit]="farewell.id" />
+<p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToAll()">
+  <ng-template pTemplate="headless">
+    <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
+    <ui-kit-delete
+      xOffset="right-4"
+      yOffset="top-4"
+      (onDelete)="redirectToAll()" />
+    <feat-farewell
+      class="block w-full p-6 overflow-auto"
+      [farewellId]="farewell.id" />
+  </ng-template>
+</p-sidebar>
 } @else { Cannot find such farewell }

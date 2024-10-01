@@ -4,6 +4,7 @@ import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import { TooltipModule } from 'primeng/tooltip';
 import { ENVIRONMENT, RouterEventsService } from '../../../infra';
 import { SharedStaticInfoComponent } from '../../static-info/static-info.component';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
@@ -13,6 +14,7 @@ import { SharedStaticInfoComponent } from '../../static-info/static-info.compone
     RouterModule,
     //
     TooltipModule,
+    ButtonModule,
     //
     SharedStaticInfoComponent,
     UIKitSmallerHintTextUXDirective,

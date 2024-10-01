@@ -1,6 +1,12 @@
 import { Profile } from '../entities-kitouch';
 import { KitTimestamp } from '../helpers';
 
+export enum FarewellStatus {
+  Published = 'published',
+  Draft = 'draft',
+  Removed = 'removed',
+}
+
 export interface FarewellAnalytics {
   id: string;
   farewellId: string;
@@ -22,4 +28,5 @@ export interface Farewell {
   title: string;
   content: string;
   timestamp: KitTimestamp;
+  status: FarewellStatus;
 }
