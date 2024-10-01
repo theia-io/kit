@@ -86,10 +86,6 @@ p-image .p-image-preview-indicator {
 }
 
 p-editor {
-  .ql-editor {
-    line-height: 2;
-  }
-
   .ql-toolbar.ql-snow {
     border: none;
     box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
@@ -98,5 +94,12 @@ p-editor {
 
   .custom-toolbar .ql-toolbar.ql-snow {
     padding: 0;
+  }
+
+  .text-xl .ql-container {
+    font-size: 1.25rem;
+    /* 20px */
+    line-height: 1.75rem;
+    /* 28px */
   }
 }

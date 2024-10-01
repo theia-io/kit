@@ -56,8 +56,10 @@ import { take, tap } from 'rxjs';
 // import to register custom bloats
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
 import { registerKitEditorHandlers } from '../editor/bloats';
+import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 
 registerKitEditorHandlers();
+registerKitEditorLeafBloatsHandlers();
 
 function extractContent(html: string) {
   const span = document.createElement('span');

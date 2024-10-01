@@ -94,6 +94,8 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
   onTextChangeHandler({ textValue }: EditorTextChangeEvent) {
     this.editorText.emit(textValue);
+    this.actionsShow.set(false);
+    this.sideActionsShow.set(false);
   }
 
   selectionChangeHandler(event: EditorSelectionChangeEvent) {
@@ -137,9 +139,11 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     const firstDeltaInsert = delta.ops[0]?.insert;
     console.log('getContents', delta, firstDeltaInsert);
     if (
-      firstDeltaInsert &&
-      typeof firstDeltaInsert === 'string' &&
-      !firstDeltaInsert.startsWith('\n')
+      !firstDeltaInsert ||
+      !(
+        typeof firstDeltaInsert === 'string' &&
+        firstDeltaInsert.startsWith('\n')
+      )
     ) {
       this.sideActionsShow.set(false);
       return;

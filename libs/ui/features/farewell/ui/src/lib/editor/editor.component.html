@@ -1,6 +1,6 @@
 <div class="relative container m-auto">
   <feat-farewell-quill-side-actions
-    [show]="sideActionsShow()"
+    [(show)]="sideActionsShow"
     [bounds]="sideActionsBounds()"
     [quill]="quill"></feat-farewell-quill-side-actions>
   <feat-farewell-quill-actions
@@ -17,7 +17,7 @@
       border: 'none',
       fontFamily: 'var(--font-family)'
     }"
-    styleClass="w-full custom-toolbar"
+    styleClass="w-full custom-toolbar text-xl"
     (onInit)="quillInit($event)"
     (onTextChange)="onTextChangeHandler($event)"
     (onSelectionChange)="selectionChangeHandler($event)"

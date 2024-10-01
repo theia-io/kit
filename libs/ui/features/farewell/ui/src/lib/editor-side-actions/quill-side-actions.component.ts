@@ -31,14 +31,6 @@ export class FeatFarewellQuillSideActionsComponent {
 
   opened = signal(false);
 
-  // @HostListener('document:click')
-  // clickOutside() {
-  //   if (this.show()) {
-  //     this.show.set(false);
-  //     return;
-  //   }
-  // }
-
   constructor() {
     effect(
       () => {
@@ -52,5 +44,17 @@ export class FeatFarewellQuillSideActionsComponent {
         allowSignalWrites: true,
       }
     );
+  }
+
+  dividerHandler() {
+    const quill = this.quill();
+    const range = quill.getSelection(true);
+
+    quill.insertEmbed(range.index, 'divider', true, Quill.sources.USER);
+    quill.insertText(range.index + 1, '\n', Quill.sources.USER);
+
+    quill.setSelection(range.index + 2, Quill.sources.SILENT);
+
+    this.show.set(false);
   }
 }
