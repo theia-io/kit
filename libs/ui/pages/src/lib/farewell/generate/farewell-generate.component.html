@@ -1,1 +1,11 @@
-<feat-farewell-generate />
+<p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToLatest()">
+  <ng-template pTemplate="headless">
+    <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
+    <ui-kit-delete
+      xOffset="right-4"
+      yOffset="top-4"
+      (onDelete)="redirectToLatest()" />
+
+    <feat-farewell-generate class="block w-full p-6 overflow-auto" />
+  </ng-template>
+</p-sidebar>

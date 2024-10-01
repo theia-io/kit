@@ -5,13 +5,13 @@
 @for (tweet of homeTweets$ | async; track $index) {
 <ui-kit-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-kit-comp-new-ui-item
+<ui-kit-comp-animate-ping
   class="p-2"
   [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
   <ui-kit-comp-card>
     <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
   </ui-kit-comp-card>
-</ui-kit-comp-new-ui-item>
+</ui-kit-comp-animate-ping>
 } @empty {
 <ui-kit-tweet-button
   [disabled]="(reloadTweetsDisabled$ | async) ?? false"

@@ -11,7 +11,11 @@ import {
   TweetyType,
 } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
-import { clientDBIdAdapter, DBClientType } from '@kitouch/utils';
+import {
+  clientDBGenerateTimestamp,
+  clientDBIdAdapter,
+  DBClientType,
+} from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
@@ -349,10 +353,7 @@ export class TweetApiService extends DataSourceService {
         db.collection('retweet').insertOne({
           tweetId: new BSON.ObjectId(tweetId),
           profileId: new BSON.ObjectId(profileId),
-          timestamp: {
-            createdAt: new Date(Date.now()),
-            updatedAt: new Date(Date.now()),
-          },
+          ...clientDBGenerateTimestamp(),
         })
       ),
       map(({ insertedId }) => insertedId.toString())

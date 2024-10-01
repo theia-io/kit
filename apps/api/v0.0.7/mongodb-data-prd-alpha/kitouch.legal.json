@@ -1,0 +1,165 @@
+[
+  {
+    "_id": {
+      "$oid": "668fe692a911f5e3e9fd50c1"
+    },
+    "accountId": 12346,
+    "profileId": 67891,
+    "name": "Google",
+    "alias": "Google",
+    "description": "Worked as a software engineer at Google.",
+    "businessType": "Outsource",
+    "sector": "IT",
+    "type": "Employ",
+    "registration": "1234567890",
+    "logo": "https://example.com/google-logo.png",
+    "website": "https://www.google.com/",
+    "customerInfo": {
+      "contact": {
+        "alias": "Jane Doe",
+        "isPrimary": true,
+        "email": "jane.doe@google.com",
+        "phone": "+1 555-123-4567",
+        "fax": "+1 555-123-4568",
+        "address": "1600 Amphitheatre Parkway, Mountain View, CA 94043",
+        "website": "https://www.google.com/"
+      },
+      "birthday": "1990-01-01",
+      "experience": [
+        {
+          "title": "Software Engineer",
+          "description": "Developed and maintained software applications for Google.",
+          "image": "https://example.com/google-office.jpg",
+          "link": "https://www.google.com/careers/"
+        }
+      ],
+      "location": "Mountain View, CA"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "668ffbde6800ca7ac93c763f"
+    },
+    "name": "Jabil",
+    "alias": "Jabil"
+  },
+  {
+    "_id": {
+      "$oid": "66912b98c59a69622df7d79c"
+    },
+    "name": "Neocles",
+    "alias": "Neocles"
+  },
+  {
+    "_id": {
+      "$oid": "66912ff97880952962750901"
+    },
+    "name": "Ciklum",
+    "alias": "Ciklum"
+  },
+  {
+    "_id": {
+      "$oid": "66927270fc44935c1584d4f6"
+    },
+    "name": "EPAM",
+    "alias": "EPAM"
+  },
+  {
+    "_id": {
+      "$oid": "669276fac466eff00c751ed7"
+    },
+    "name": "Luxoft",
+    "alias": "Luxoft"
+  },
+  {
+    "_id": {
+      "$oid": "6692937978809529628535d1"
+    },
+    "name": "TestOverlap",
+    "alias": "TestOverlap"
+  },
+  {
+    "_id": {
+      "$oid": "6692948ac466eff00c3b929f"
+    },
+    "name": "Theia",
+    "alias": "Theia"
+  },
+  {
+    "_id": {
+      "$oid": "669fd8c844a2ec58e24d193e"
+    },
+    "name": "Apple",
+    "alias": "Apple"
+  },
+  {
+    "_id": {
+      "$oid": "669fecc2d337c15448f2c006"
+    },
+    "name": "Facebook",
+    "alias": "Facebook"
+  },
+  {
+    "_id": {
+      "$oid": "66a0009a9da1fcd35c0509ec"
+    },
+    "name": "Ciklum",
+    "alias": "Ciklum"
+  },
+  {
+    "_id": {
+      "$oid": "66a0b861f7ac9bc6ea65213f"
+    },
+    "name": "Backbase",
+    "alias": "Backbase"
+  },
+  {
+    "_id": {
+      "$oid": "66a13cbe6d3f8532351f6fb3"
+    },
+    "name": "Jabil",
+    "alias": "Jabil"
+  },
+  {
+    "_id": {
+      "$oid": "66a13ce56d3f8532352041bc"
+    },
+    "name": "Jabil",
+    "alias": "Jabil"
+  },
+  {
+    "_id": {
+      "$oid": "66a245705665fc170eb0d071"
+    },
+    "name": "EvilCorp",
+    "alias": "EvilCorp"
+  },
+  {
+    "_id": {
+      "$oid": "66a259382433ece3fbe36481"
+    },
+    "name": "EvilCorp",
+    "alias": "EvilCorp"
+  },
+  {
+    "_id": {
+      "$oid": "66a3610a928f1c093acf7c7f"
+    },
+    "name": "RandomCorp",
+    "alias": "RandomCorp"
+  },
+  {
+    "_id": {
+      "$oid": "66a8bde88fbccf29efba2e2f"
+    },
+    "name": "asd",
+    "alias": "asd"
+  },
+  {
+    "_id": {
+      "$oid": "66aa6186231f582dc4166ff2"
+    },
+    "name": "Jabil Inc",
+    "alias": "Jabil Inc"
+  }
+]

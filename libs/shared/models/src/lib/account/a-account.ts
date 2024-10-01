@@ -1,4 +1,4 @@
-import { TimeStamp } from '../helpers';
+import { KitTimestamp } from '../helpers';
 
 export enum AccountStatus {
   ACTIVE = 'active',
@@ -28,7 +28,7 @@ export interface Account {
     subscriptionOns: string[];
   };
   // meta
-  timestamp: TimeStamp;
+  timestamp: KitTimestamp;
   // password?: string;
   // services?: Array<ThirdPartyServices>;
 }

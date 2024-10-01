@@ -3,11 +3,21 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
-import { FeatFarewellViewComponent } from '@kitouch/feat-farewell-ui';
+import {
+  FeatFarewellPreViewComponent,
+  FeatFarewellViewV2Component,
+} from '@kitouch/feat-farewell-ui';
+import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import { APP_PATH, AuthService, UiLogoComponent } from '@kitouch/ui-shared';
+import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
+import {
+  APP_PATH_ALLOW_ANONYMOUS,
+  AuthService,
+  DeviceService,
+  UiLogoComponent,
+} from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
@@ -20,12 +30,14 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     AsyncPipe,
     RouterModule,
     NgOptimizedImage,
-    ///
+    //
     ButtonModule,
     TagModule,
-    ///
+    //
+    FeatKitProfileHeaderComponent,
     UiLogoComponent,
-    FeatFarewellViewComponent,
+    UIKitSmallerHintTextUXDirective,
+    FeatFarewellViewV2Component,
     FeatFollowSuggestionByIdComponent,
   ],
 })
@@ -36,6 +48,8 @@ export class PageFarewellComponent {
   #store = inject(Store);
   #document = inject(DOCUMENT);
   #authService = inject(AuthService);
+
+  device$ = inject(DeviceService).device$;
 
   farewellId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
@@ -53,9 +67,12 @@ export class PageFarewellComponent {
   constructor() {
     this.farewellId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
-      .subscribe((id) =>
-        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }))
-      );
+      .subscribe((id) => {
+        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }));
+        this.#store.dispatch(
+          FeatFarewellActions.getAnalyticsFarewell({ farewellId: id })
+        );
+      });
   }
 
   handleGoogleSignIn() {
@@ -74,7 +91,8 @@ export class PageFarewellComponent {
   #url(farewellId: string) {
     return [
       this.#document.location.origin,
-      APP_PATH.PublicFarewell,
+      's',
+      APP_PATH_ALLOW_ANONYMOUS.Farewell,
       farewellId,
     ].join('/');
   }

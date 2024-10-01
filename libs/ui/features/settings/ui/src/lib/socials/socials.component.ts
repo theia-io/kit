@@ -49,7 +49,7 @@ export const URL_PATTERN =
   ],
 })
 export class FeatSettingsSocialsComponent {
-  profile = input.required<Profile | null>();
+  profile = input.required<Profile>();
   savingSocials = output<void>();
 
   #store = inject(Store);
@@ -71,7 +71,7 @@ export class FeatSettingsSocialsComponent {
     });
 
     effect(() => {
-      const socials = this.profile()?.socials;
+      const socials = this.profile().socials;
       if (socials) {
         this.socialForm.setValue(socials, { emitEvent: false });
         this.#cdr.detectChanges();
@@ -88,7 +88,6 @@ export class FeatSettingsSocialsComponent {
       )
       .subscribe((updatedProfileSocials) => {
         const profile = this.profile();
-        console.log(updatedProfileSocials, profile);
         this.#saveSocialsHandler({
           ...profile,
           socials: {

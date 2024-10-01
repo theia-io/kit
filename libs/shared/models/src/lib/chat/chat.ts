@@ -1,4 +1,4 @@
-import { TimeStamp } from '../helpers';
+import { KitTimestamp } from '../helpers';
 
 export enum ChatStatus {
   ACTIVE = 'ACTIVE',
@@ -29,5 +29,5 @@ export interface Chat {
   password: string;
   type: ChatType;
   status: ChatStatus;
-  timestamp: TimeStamp;
+  timestamp: KitTimestamp;
 }

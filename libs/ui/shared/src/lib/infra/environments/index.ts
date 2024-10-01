@@ -1,4 +1,5 @@
 import { InjectionToken } from '@angular/core';
+import { S3Config } from '../data/s3.service';
 
 export enum KIT_ENVS {
   localhost = 'localhost',
@@ -12,6 +13,8 @@ export interface Environment {
   environment: KIT_ENVS; // when true then DEV env
   production: boolean; // when true then PRD env; does not matter if development is `true`
   realmAppId: string; // Realm Web App ID
+  // S3
+  s3Config: S3Config;
 }
 
 /**

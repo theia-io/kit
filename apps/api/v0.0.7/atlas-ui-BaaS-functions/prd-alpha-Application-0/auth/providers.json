@@ -1,0 +1,53 @@
+{
+  "anon-user": {
+    "name": "anon-user",
+    "type": "anon-user",
+    "disabled": false
+  },
+  "api-key": {
+    "name": "api-key",
+    "type": "api-key",
+    "disabled": true
+  },
+  "oauth2-google": {
+    "name": "oauth2-google",
+    "type": "oauth2-google",
+    "disabled": false,
+    "config": {
+      "clientId": "474795803381-m97qinnq51gthjch65ltqhfb3tceojgi.apps.googleusercontent.com",
+      "openId": false
+    },
+    "secret_config": {
+      "clientSecret": "kit"
+    },
+    "metadata_fields": [
+      {
+        "required": false,
+        "name": "name"
+      },
+      {
+        "required": false,
+        "name": "first_name"
+      },
+      {
+        "required": false,
+        "name": "last_name"
+      },
+      {
+        "required": false,
+        "name": "email"
+      },
+      {
+        "required": false,
+        "name": "picture"
+      }
+    ],
+    "redirect_uris": [
+      "http://localhost:4200/redirect",
+      "http://localhost:4200/redirect",
+      "https://kitouch.io/redirect",
+      "https://www.kitouch.io/redirect",
+      "https://kit-wheat.vercel.app/redirect"
+    ]
+  }
+}

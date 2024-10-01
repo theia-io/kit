@@ -13,7 +13,7 @@
           "error",
           {
             "type": "attribute",
-            "prefix": "ui-kit",
+            "prefix": "uiKit",
             "style": "camelCase"
           }
         ],

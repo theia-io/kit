@@ -18,7 +18,7 @@ import { FeatLegalApiActions, selectCurrentProfile } from '@kitouch/kit-data';
 import {
   ButtonComponent,
   fadeInUpAnimation,
-  NewUIItemComponent,
+  UiKitCompAnimatePingComponent,
 } from '@kitouch/ui-components';
 import { TutorialService, UserHintDirective } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
@@ -62,7 +62,7 @@ import { take } from 'rxjs/operators';
     //
     AnimateOnScrollModule,
     //
-    NewUIItemComponent,
+    UiKitCompAnimatePingComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsProfileInformationComponent,
     FeatFollowSuggestionsComponent,

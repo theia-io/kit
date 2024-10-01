@@ -11,7 +11,12 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { FeatProfileApiActions, profilePicture } from '@kitouch/kit-data';
+import {
+  FeatKitProfileBackgroundComponent,
+  FeatKitProfileBackgroundUploadableComponent,
+  FeatKitProfilePictureUploadableComponent,
+} from '@kitouch/feat-kit-ui';
+import { FeatProfileApiActions, selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -27,6 +32,10 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
     CommonModule,
     ReactiveFormsModule,
     //
+    FeatKitProfileBackgroundComponent,
+    FeatKitProfilePictureUploadableComponent,
+    FeatKitProfileBackgroundUploadableComponent,
+    //
     InputTextModule,
     FloatLabelModule,
     InputTextareaModule,
@@ -35,13 +44,14 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
 })
 export class FeatSettingsProfileInformationComponent {
   #cdr = inject(ChangeDetectorRef);
+
   #store = inject(Store);
 
-  profile = input.required<Profile | null | undefined>();
+  profile = input.required<Profile>();
   withHints = input(false);
   updatingProfile = output<void>();
 
-  profilePic = computed(() => profilePicture(this.profile()));
+  currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
   profileForm = inject(FormBuilder).nonNullable.group({
     alias: [
@@ -58,6 +68,13 @@ export class FeatSettingsProfileInformationComponent {
   });
 
   disabled = false;
+
+  canEditProfile = computed(() => {
+    const currentProfile = this.currentProfile(),
+      profile = this.profile();
+
+    return currentProfile && profile && currentProfile.id === profile.id;
+  });
 
   constructor() {
     this.profileForm.valueChanges

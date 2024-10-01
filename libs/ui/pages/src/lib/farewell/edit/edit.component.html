@@ -1,0 +1,3 @@
+@if((farewellCreator$ | async) && (farewell$ | async); as farewell) {
+<feat-farewell-generate [farewellIdToEdit]="farewell.id" />
+} @else { Cannot find such farewell }

@@ -1,6 +1,6 @@
 import { Account } from '../account/a-account';
 import { Profile } from '../entities-kitouch';
-import { TimeStamp } from '../helpers';
+import { KitTimestamp } from '../helpers';
 
 /** 
  * @TODO @FIXME 
@@ -23,7 +23,7 @@ export enum TweetyType {
   Quote = 'quote',
 }
 
-export interface TweetComment extends Partial<TimeStamp> {
+export interface TweetComment extends Partial<KitTimestamp> {
   profileId: Profile['id'];
   content: string;
 }
@@ -49,7 +49,7 @@ export interface Tweety {
   };
   // meta
   type: TweetyType;
-  timestamp?: TimeStamp;
+  timestamp?: KitTimestamp;
 }
 
 export interface ReTweety extends Tweety {

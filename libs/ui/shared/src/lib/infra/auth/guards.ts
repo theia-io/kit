@@ -2,6 +2,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { map, of, switchMap } from 'rxjs';
 import { AuthService } from './auth.service';
+import { APP_PATH_STATIC_PAGES } from '../../constants';
 
 /**
  * Checks if user is in RxJS (RAM) state. If it is not check
@@ -36,7 +37,7 @@ export const onlyForLoggedInGuard = () => {
   return authService.loggedInWithRealmUser$.pipe(
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
-        return router.createUrlTree(['/sign-in']);
+        return router.createUrlTree([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }
 
       return isLoggedIn;
@@ -44,6 +45,11 @@ export const onlyForLoggedInGuard = () => {
   );
 };
 
+/**
+ * This function will make sure that there is logged in (Authorized) user
+ * or will log in current session anonymously (this is because this page
+ * need read data from MongoDB)
+ */
 export const onlyForLoggedInOrAnonymouslyLoggedInGuard = () => {
   const authService = inject(AuthService);
 

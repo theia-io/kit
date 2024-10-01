@@ -27,7 +27,7 @@ import {
   selectUserExperience,
 } from '@kitouch/kit-data';
 import { Experience } from '@kitouch/shared-models';
-import { NewUIItemComponent } from '@kitouch/ui-components';
+import { UiKitCompAnimatePingComponent } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
@@ -54,7 +54,7 @@ import {
     AccordionModule,
     ButtonModule,
     //
-    NewUIItemComponent,
+    UiKitCompAnimatePingComponent,
     FeatSettingsProfileInformationComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsExperienceShowComponent,

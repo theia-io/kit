@@ -94,10 +94,6 @@ export class TutorialService {
       let isFound = false;
       const styles = document.getElementsByTagName('link');
       for (let i = 0; i < styles.length; ++i) {
-        // console.log(
-        //   "styles[i].getAttribute('href')",
-        //   styles[i].getAttribute('href')
-        // );
         if (styles[i].getAttribute('href')?.includes('intro')) {
           isFound = true;
         }
@@ -106,7 +102,6 @@ export class TutorialService {
       if (!isFound) {
         const style = document.createElement('link');
         style.onload = () => {
-          //   console.log('CSS LOADED');
           res(true);
         };
 

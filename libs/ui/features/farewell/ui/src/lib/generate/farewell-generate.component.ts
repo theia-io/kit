@@ -1,32 +1,88 @@
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
+  input,
+  NgZone,
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
-import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
-import { APP_PATH } from '@kitouch/ui-shared';
+import {
+  FarewellFullView,
+  FeatFarewellActions,
+  FeatFarewellMediaActions,
+  selectFarewellFullViewById,
+} from '@kitouch/feat-farewell-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
+import {
+  Farewell,
+  FarewellAnalytics,
+  FarewellMedia,
+} from '@kitouch/shared-models';
+import {
+  UiKitCompAnimatePingComponent,
+  UiKitDeleteComponent,
+  UiKitPicUploadableComponent,
+  UIKitSmallerHintTextUXDirective,
+} from '@kitouch/ui-components';
+import {
+  APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
+  PhotoService,
+} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
-import { EditorModule, EditorTextChangeEvent } from 'primeng/editor';
+import { FileUploadHandlerEvent, FileUploadModule } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { take } from 'rxjs';
+import { ToastModule } from 'primeng/toast';
+import { take, tap } from 'rxjs';
+
+// import to register custom bloats
+import { FeatFarewellEditorComponent } from '../editor/editor.component';
+import { registerKitEditorHandlers } from '../editor/bloats';
+import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
+
+registerKitEditorHandlers();
+registerKitEditorLeafBloatsHandlers();
+
+function extractContent(html: string) {
+  const span = document.createElement('span');
+  span.innerHTML = html;
+  return span.textContent || span.innerText;
+}
 
 @Component({
   standalone: true,
   selector: 'feat-farewell-generate',
   templateUrl: './farewell-generate.component.html',
   imports: [
+    NgOptimizedImage,
     ReactiveFormsModule,
     //
-    EditorModule,
+    FeatFarewellEditorComponent,
+    UiKitCompAnimatePingComponent,
+    UiKitDeleteComponent,
+    UiKitPicUploadableComponent,
+    UIKitSmallerHintTextUXDirective,
+    //
+    ToastModule,
+    FileUploadModule,
     FloatLabelModule,
     InputTextModule,
     ButtonModule,
@@ -34,10 +90,24 @@ import { take } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellGenerateComponent {
+  farewellIdToEdit = input<string | null>(null);
+
+  #ngZone = inject(NgZone);
+  #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
+  domSanitizer = inject(DomSanitizer);
   #router = inject(Router);
   #store = inject(Store);
+  #photoService = inject(PhotoService);
   #actions$ = inject(Actions);
+
+  farewellToEdit = computed(() => {
+    const id = this.farewellIdToEdit();
+    return id
+      ? this.#store.selectSignal(selectFarewellFullViewById(id))()
+      : undefined;
+  });
+  currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
   modules = {
     toolbar: [
@@ -53,24 +123,125 @@ export class FeatFarewellGenerateComponent {
     ],
   };
 
-  editorText = signal<EditorTextChangeEvent | null>(null);
-  textValue = computed(() => this.editorText()?.textValue ?? '');
+  farewellFormGroup = inject(FormBuilder).group({
+    titleControl: new FormControl<string>('', [
+      Validators.required,
+      Validators.minLength(2),
+      Validators.maxLength(128),
+    ]),
+    editorControl: new FormControl<string>('', [Validators.required]),
+  });
+  farewellAnalytics = signal<FarewellAnalytics | null>(null);
+  farewellMedias = signal<Array<FarewellMedia> | null>(null);
+  editorTextValue = signal<string>('');
+  filesToUpload = signal<Array<File>>([]);
 
-  farewellTitleControl = new FormControl<string>('', [
-    Validators.required,
-    Validators.minLength(10),
-    Validators.maxLength(150),
-  ]);
+  URL = URL;
 
-  onTextChangeHandler(value: EditorTextChangeEvent) {
-    this.editorText.set(value);
+  constructor() {
+    effect(
+      () => {
+        const farewellToEdit = this.farewellToEdit();
+
+        if (farewellToEdit) {
+          this.farewellFormGroup.patchValue({
+            titleControl: farewellToEdit.title,
+            editorControl: farewellToEdit.content,
+          });
+          this.editorTextValue.set(extractContent(farewellToEdit.content));
+
+          const { media, analytics } = farewellToEdit;
+          if (media) {
+            this.farewellMedias.set(media);
+          }
+
+          if (analytics) {
+            this.farewellAnalytics.set(analytics);
+          }
+
+          this.#cdr.detectChanges();
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
+
+  deleteFarewellMediaHandler(media: FarewellMedia) {
+    this.farewellMedias.update(
+      (medias) => medias?.filter(({ id }) => id !== media.id) ?? []
+    );
+
+    // S3
+    this.#store.dispatch(
+      FeatFarewellMediaActions.deleteFarewellStorageMedia({
+        url: media.url,
+      })
+    );
+    // DB
+    this.#store.dispatch(
+      FeatFarewellMediaActions.deleteMediaFarewell({
+        id: media.id,
+      })
+    );
+
+    // TODO add error handling
+  }
+
+  deleteNewMediaHandler(media: File) {
+    // TODO  verify if this covers all use-cases
+    this.filesToUpload.update((files) =>
+      files.filter((files) => files.name !== media.name)
+    );
+  }
+
+  onBasicUploadAuto(event: FileUploadHandlerEvent) {
+    const newFiles = event.files;
+    this.filesToUpload.update((files) => [...files, ...newFiles]);
   }
 
   saveFarewellHandler() {
+    const { titleControl: title, editorControl: content } =
+      this.farewellFormGroup.value;
+    if (!title || !content) {
+      console.error('Should not happen. Title or Body of farewell is not set');
+      return;
+    }
+
+    const farewellToEdit = this.farewellToEdit();
+
+    if (farewellToEdit) {
+      this.#updateFarewell({
+        ...farewellToEdit,
+        title,
+        content,
+      });
+    } else {
+      this.#createFarewell({ title, content });
+    }
+  }
+
+  #updateFarewell({ media: _, analytics: __, ...farewell }: FarewellFullView) {
+    this.#store.dispatch(
+      FeatFarewellActions.putFarewell({
+        farewell,
+      })
+    );
+
+    this.#actions$
+      .pipe(
+        ofType(FeatFarewellActions.putFarewellSuccess),
+        take(1),
+        takeUntilDestroyed(this.#destroyRef),
+        tap(({ farewell: { id } }) => this.#farewellMedia(id))
+      )
+      .subscribe(() => this.#router.navigateByUrl(APP_PATH.Farewell));
+  }
+
+  #createFarewell({ title, content }: Pick<Farewell, 'title' | 'content'>) {
     this.#store.dispatch(
       FeatFarewellActions.createFarewell({
-        title: this.farewellTitleControl.value ?? '',
-        content: this.editorText()?.htmlValue ?? '',
+        title,
+        content,
       })
     );
 
@@ -78,10 +249,56 @@ export class FeatFarewellGenerateComponent {
       .pipe(
         ofType(FeatFarewellActions.createFarewellSuccess),
         take(1),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
+        tap(({ farewell: { id } }) => this.#farewellMedia(id))
       )
-      .subscribe(({ farewell }) =>
-        this.#router.navigateByUrl(`${APP_PATH.PublicFarewell}/${farewell.id}`)
+      .subscribe(({ farewell: { id } }) => this.#finallyFarewell(id));
+  }
+
+  #finallyFarewell(farewellId: string) {
+    this.#router.navigate(
+      ['s', APP_PATH_ALLOW_ANONYMOUS.Farewell, farewellId],
+      {
+        queryParams: { preview: true },
+      }
+    );
+  }
+
+  #farewellMedia(farewellId: string) {
+    const mediaFiles = this.filesToUpload(),
+      profile = this.currentProfile();
+
+    if (mediaFiles?.length && profile?.id) {
+      this.#store.dispatch(
+        FeatFarewellMediaActions.uploadFarewellStorageMedia({
+          farewellId,
+          profileId: profile.id,
+          items: mediaFiles.map((mediaFile) => ({
+            key: `${farewellId}/${profile.id}/${mediaFile.name}`,
+            blob: mediaFile,
+          })),
+        })
       );
+    }
+  }
+
+  initFarewellMediaGallery() {
+    this.#ngZone.runOutsideAngular(() => {
+      this.#photoService.initializeGallery({
+        gallery: '#uploaded-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
+    });
+  }
+
+  initNewFarewellMediaGallery() {
+    this.#ngZone.runOutsideAngular(() => {
+      this.#photoService.initializeGallery({
+        gallery: '#new-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
+    });
   }
 }
