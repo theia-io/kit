@@ -9,8 +9,8 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { FarewellService } from './farewell.service';
 
-const getFullUrl = (s3Url: string, key: string) => `${s3Url}/${key}`;
-const getKeyFromUrl = (url: string, s3Url: string) =>
+export const getFullS3Url = (s3Url: string, key: string) => `${s3Url}/${key}`;
+export const getImageKeyFromS3Url = (url: string, s3Url: string) =>
   url.replace(`${s3Url}/`, '');
 
 @Injectable()
@@ -57,7 +57,7 @@ export class FarewellMediaEffects {
           items.map((item) => ({
             farewellId,
             profileId,
-            url: getFullUrl(this.#s3FarewellBaseUrl, item.key),
+            url: getFullS3Url(this.#s3FarewellBaseUrl, item.key),
           }))
         )
       ),
@@ -77,7 +77,9 @@ export class FarewellMediaEffects {
       ofType(FeatFarewellMediaActions.deleteFarewellStorageMedia),
       switchMap(({ url }) =>
         this.#farewellService
-          .deleteFarewellMedia(getKeyFromUrl(url, this.#s3FarewellBaseUrl))
+          .deleteFarewellMedia(
+            getImageKeyFromS3Url(url, this.#s3FarewellBaseUrl)
+          )
           .pipe(
             map(() =>
               FeatFarewellMediaActions.deleteFarewellStorageMediaSuccess({

@@ -1,11 +1,12 @@
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  ContentChild,
   inject,
   input,
-  model,
+  TemplateRef,
   ViewChild,
 } from '@angular/core';
 import { ConfirmationService } from 'primeng/api';
@@ -15,6 +16,7 @@ import {
   FileUploadHandlerEvent,
   FileUploadModule,
 } from 'primeng/fileupload';
+import { Nullable } from 'primeng/ts-helpers';
 
 @Component({
   selector: 'ui-kit-pic-uploadable',
@@ -22,6 +24,7 @@ import {
   imports: [
     NgClass,
     NgOptimizedImage,
+    NgTemplateOutlet,
     //
     //
     FileUploadModule,
@@ -33,13 +36,13 @@ import {
 })
 export class UiKitPicUploadableComponent {
   /** src of image */
-  imgConf = input.required<{ src: string; alt?: string }>();
-  iconConf = model<{ ngClass?: Array<string> }>();
+  imgConf = input<{ src: string; alt?: string }>();
+  iconConf = input<{ ngClass?: Array<string> }>();
   fileUploadConf = input<Partial<FileUpload>>();
 
   /** Likely you should make sure correct Context, run `.bind(this)` while providing this value.
    */
-  autoUploadCb = input.required<(event: FileUploadHandlerEvent) => void>();
+  autoUploadCb = input.required<(event: FileUploadHandlerEvent) => unknown>();
 
   autoUploadCbMonkeyPatched = computed(() => {
     const original = this.autoUploadCb();
@@ -55,6 +58,10 @@ export class UiKitPicUploadableComponent {
 
   @ViewChild('fileUploadCmp', { read: FileUpload, static: false })
   fileUploadCmp: FileUpload;
+
+  @ContentChild(TemplateRef, { static: true }) customTmpl: Nullable<
+    TemplateRef<any>
+  >;
 
   #confirmationService = inject(ConfirmationService);
 

@@ -28,10 +28,6 @@ export class PageFarewellGenerateComponent {
   #routerEventsService = inject(RouterEventsService);
   #navbarService = inject(NavbarService);
 
-  constructor() {
-    console.log('FAREWELlPAGE GENERATE');
-  }
-
   redirectToLatest() {
     this.#routerEventsService.lastUrlSaved$
       .pipe(take(1))

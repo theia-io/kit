@@ -5,11 +5,14 @@ import {
   effect,
   input,
   model,
+  output,
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { UiKitPicUploadableComponent } from '@kitouch/ui-components';
+import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ToggleButtonModule } from 'primeng/togglebutton';
-import Quill, { Bounds } from 'quill';
+import { Bounds } from 'quill';
 
 @Component({
   standalone: true,
@@ -19,23 +22,26 @@ import Quill, { Bounds } from 'quill';
     NgStyle,
     FormsModule,
     //
+    UiKitPicUploadableComponent,
     //
     ToggleButtonModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellQuillSideActionsComponent {
-  quill = input.required<Quill>();
   bounds = input.required<Bounds | null>();
   show = model.required<boolean>();
 
-  opened = signal(false);
+  opened = signal<boolean>(false);
+  /** same implementation as Angular 18.2.7 (ngModelChange), [Github](https://github.com/angular/angular/blob/9dbe6fc18be700e89f28a023378f4775f3f7c3fe/packages/forms/src/directives/ng_model.ts#L231). Should not there be a better way subscribing on Signal? */
+  sideActionOpened = output<boolean>();
+
+  imageFiles = output<Array<File>>();
+  divider = output<void>();
 
   constructor() {
     effect(
       () => {
-        console.log('SIDE ACTIONS', this.show(), this.bounds());
-
         if (!this.show()) {
           this.opened.set(false);
         }
@@ -44,17 +50,18 @@ export class FeatFarewellQuillSideActionsComponent {
         allowSignalWrites: true,
       }
     );
+
+    effect(() => {
+      this.sideActionOpened.emit(this.opened());
+    });
   }
 
-  dividerHandler() {
-    const quill = this.quill();
-    const range = quill.getSelection(true);
+  onBasicUploadAuto(event: FileUploadHandlerEvent) {
+    const newFiles = event.files;
+    this.imageFiles.emit(newFiles);
+  }
 
-    quill.insertEmbed(range.index, 'divider', true, Quill.sources.USER);
-    quill.insertText(range.index + 1, '\n', Quill.sources.USER);
-
-    quill.setSelection(range.index + 2, Quill.sources.SILENT);
-
-    this.show.set(false);
+  onDivider() {
+    this.divider.emit();
   }
 }

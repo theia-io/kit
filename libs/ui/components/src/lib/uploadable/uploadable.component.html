@@ -1,6 +1,11 @@
 <div
-  class="relative justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
-  <p-confirmPopup key="upload">
+  class="relative"
+  [ngClass]="
+    customTmpl
+      ? ''
+      : 'justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl'
+  ">
+  <p-confirmPopup #popup key="upload" styleClass="invisible">
     <ng-template pTemplate="headless" let-message>
       <div class="w-full h-full flex items-center justify-center">
         <p-fileUpload
@@ -10,13 +15,19 @@
           [multiple]="fileUploadConf()?.multiple ?? false"
           mode="basic"
           chooseIcon="pi pi-upload"
+          styleClass="invisible"
           accept="image/*"
-          maxFileSize="1000000"
+          maxFileSize="5000000"
           (uploadHandler)="autoUploadCbMonkeyPatched()($event)"></p-fileUpload>
       </div>
     </ng-template>
   </p-confirmPopup>
 
+  @if(customTmpl) {
+  <span (click)="uploadInstantly($event)">
+    <ng-container *ngTemplateOutlet="customTmpl"></ng-container>
+  </span>
+  } @else {
   <i
     role="button"
     (click)="uploadInstantly($event)"
@@ -25,9 +36,10 @@
 
   <img
     class="rounded-md"
-    [ngSrc]="imgConf().src"
+    [ngSrc]="imgConf()?.src ?? '/farewell/farewell-page-logo-small.jpeg'"
     width="64"
     height="64"
-    [alt]="imgConf().alt ?? 'Container to instantly upload media'"
+    [alt]="imgConf()?.alt ?? 'Container to instantly upload media'"
     referrerpolicy="no-referrer" />
+  }
 </div>

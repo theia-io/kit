@@ -62,8 +62,6 @@ export class PageFarewellEditComponent {
       .subscribe((id) =>
         this.#store.dispatch(FeatFarewellActions.getFarewell({ id }))
       );
-
-    console.log('FAREWELlPAGE EDIT');
   }
 
   redirectToAll() {
