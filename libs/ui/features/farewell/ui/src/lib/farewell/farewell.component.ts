@@ -28,7 +28,6 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import {
   Farewell,
   FarewellAnalytics,
-  FarewellMedia,
   FarewellStatus,
 } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
@@ -145,23 +144,6 @@ export class FeatFarewellComponent implements AfterViewInit {
       .subscribe(() => this.#updateFarewell());
   }
 
-  deleteFarewellMediaHandler(media: FarewellMedia) {
-    // S3
-    this.#store.dispatch(
-      FeatFarewellMediaActions.deleteFarewellStorageMedia({
-        url: media.url,
-      })
-    );
-    // DB
-    this.#store.dispatch(
-      FeatFarewellMediaActions.deleteMediaFarewell({
-        id: media.id,
-      })
-    );
-
-    // TODO add error handling
-  }
-
   saveImages(): (images: Array<File>) => Observable<Array<string>> {
     const getFarewellId = () => this.farewell()?.id;
     const getProfileId = () => this.currentProfile()?.id;
@@ -192,15 +174,28 @@ export class FeatFarewellComponent implements AfterViewInit {
             })),
           })
         );
-      }, 1000);
+      });
 
       // TODO add error handling
       return this.#actions$.pipe(
         ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
+        take(1),
         map(({ items }) =>
           items.map(({ key }) => getFullS3Url(this.#s3FarewellBaseUrl, key))
         )
       );
+    };
+  }
+
+  deleteImage() {
+    // S3
+    return (url: string) => {
+      this.#store.dispatch(
+        FeatFarewellMediaActions.deleteFarewellStorageMedia({
+          url,
+        })
+      );
+      // TODO add error handling
     };
   }
 

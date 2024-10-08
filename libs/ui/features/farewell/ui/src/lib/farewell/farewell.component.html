@@ -20,6 +20,7 @@
   <feat-farewell-editor
     formControlName="content"
     [imageStorageProvider]="saveImages()"
+    [removeImageCb]="deleteImage()"
     (editorTextChange)="editorTextValue.set($event)"></feat-farewell-editor>
   <section class="relative">
     <strong

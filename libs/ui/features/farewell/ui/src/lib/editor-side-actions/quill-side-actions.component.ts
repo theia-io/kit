@@ -59,9 +59,11 @@ export class FeatFarewellQuillSideActionsComponent {
   onBasicUploadAuto(event: FileUploadHandlerEvent) {
     const newFiles = event.files;
     this.imageFiles.emit(newFiles);
+    this.opened.set(false);
   }
 
   onDivider() {
     this.divider.emit();
+    this.opened.set(false);
   }
 }

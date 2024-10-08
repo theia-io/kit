@@ -101,5 +101,37 @@ p-editor {
     /* 20px */
     line-height: 1.75rem;
     /* 28px */
+
+    img {
+      display: block;
+      margin: 0 auto;
+    }
+  }
+
+  // elements that only self-container
+  .ql-editor {
+    p {
+      margin-top: 8px;
+    }
+
+    & p:has(img),
+    & p:has(hr) {
+      // padding: 8px;
+      /* Prevent interaction */
+      // pointer-events: none;
+      // user-select: none;
+
+      // -moz-user-modify: read-only;
+      // -webkit-user-modify: read-only;
+
+      /* For WebKit browsers (Chrome, Safari) */
+      /* Prevent text selection */
+      /* Add any other styling you need */
+    }
+
+    hr,
+    img {
+      padding: 4px;
+    }
   }
 }

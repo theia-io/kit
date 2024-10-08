@@ -22,10 +22,10 @@ import {
 } from 'primeng/editor';
 import Quill, { Bounds } from 'quill';
 import { Delta } from 'quill/core';
+import { Observable } from 'rxjs';
 import { FeatFarewellQuillActionsComponent } from '../editor-actions/quill-actions.component';
 import { FeatFarewellQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
 import { ImageConfiguration } from './bloats-leaf';
-import { Observable, of } from 'rxjs';
 
 export interface Range {
   index: number;
@@ -63,17 +63,19 @@ export interface Range {
 export class FeatFarewellEditorComponent implements ControlValueAccessor {
   imageStorageProvider =
     input<(images: Array<File>) => Observable<Array<string>>>();
+  removeImageCb = input<(imageSrc: string) => void>();
   editorTextChange = output<string>();
 
-  editorText = signal<string>('');
   editorControl = new FormControl<string>('');
 
   quill = signal<Quill | null>(null);
   /** Extra state to limit number of calls to DOM API. Default is true */
   quillPlaceholderShown = signal(true);
+  quillTextChangeActive = signal(true);
 
   actionsShow = signal<boolean>(false);
   actionsBounds = signal<Bounds | null>(null);
+
   sideActionsShow = signal(false);
   sideActionsBounds = signal<Bounds | null>(null);
   sideActionOpened = signal<boolean>(this.sideActionsShow()); // default value same as initial value `show`
@@ -88,7 +90,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
         this.#limitedQuillPlaceholderVisibility(
           this.sideActionsShow(),
           this.sideActionOpened(),
-          this.editorText(),
+          this.editorControl.value ?? '',
           this.quill(),
           this.quillPlaceholderShown()
         );
@@ -120,21 +122,51 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
   quillInit({ editor }: EditorInitEvent) {
     this.quill.set(editor);
+
+    const removeImageCb = this.removeImageCb();
+    // if (removeImageCb) {
+    //   setTimeout(() => {
+    //     const quillObserver = new MutationObserver(function (e) {
+    //       console.log(e, e[0]);
+    //       // if (e[0].removedNodes) console.log(e);
+
+    //       e.forEach((record) => {
+    //         console.log(record.removedNodes);
+    //         record.removedNodes.forEach((removeNode) => {
+    //           if (
+    //             ((removeNode as any)?.tagName as string)?.toLowerCase() ===
+    //               'img' ||
+    //             (removeNode as HTMLElement).innerHTML?.includes('img')
+    //           ) {
+    //             console.log('REMOVE IMAGE', removeNode.firstChild);
+    //             const imageEl = removeNode.firstChild as HTMLImageElement;
+    //             removeImageCb(imageEl.src);
+    //           }
+    //         });
+    //       });
+    //     });
+
+    //     quillObserver.observe((editor as Quill).root, {
+    //       childList: true,
+    //       subtree: true,
+    //     });
+    //   }, 1000);
+    // }
   }
 
   dividerHandler(quill: Quill) {
+    this.quillTextChangeActive.set(false);
+
     const range = quill.getSelection(true);
-    quill.insertEmbed(range.index, 'divider', true, Quill.sources.USER);
-    quill.insertText(range.index + 1, '\n', Quill.sources.USER);
-    quill.setSelection(range.index + 2, Quill.sources.SILENT);
-    quill.focus();
+    let idx = range.index;
+
+    quill.insertEmbed(idx++, 'divider', false, Quill.sources.USER);
+    quill.insertText(idx++, '\n', Quill.sources.USER);
+    quill.setSelection(idx++, Quill.sources.SILENT);
 
     // this.sideActionsShow.set(false);
-    setTimeout(() => {
-      const newRange = quill.getSelection(true);
-      console.log('newRange', newRange, quill.getBounds(newRange));
-      this.sideActionsBounds.set(quill.getBounds(newRange));
-    });
+    this.quillTextChangeActive.set(true);
+    this.#keepSideActionOpened({ quill, updateBoundOnly: true });
   }
 
   imageFilesHandler(quill: Quill, mediaFiles: Array<File>) {
@@ -142,6 +174,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     if (imageStorageProvider) {
       const imagesStorageProvider$ = imageStorageProvider(mediaFiles); //?? of([URL.createObjectURL(mediaFiles[0])]);
 
+      this.quillTextChangeActive.set(false);
       imagesStorageProvider$.subscribe((urls) => {
         const imageSrc = urls[0];
         const kitQuillImageBloat: ImageConfiguration = {
@@ -151,26 +184,37 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
           width: 300,
           height: 300,
         };
+
         const range = quill.getSelection(true);
+        let idx = range.index;
+
         quill.insertEmbed(
-          range.index,
+          idx++,
           'image',
           kitQuillImageBloat,
           Quill.sources.USER
         );
-        quill.insertText(range.index + 1, '\n', Quill.sources.USER);
-        quill.setSelection(range.index + 2, Quill.sources.SILENT);
-        quill.focus();
+        quill.insertText(idx++, '\n', Quill.sources.USER);
+        quill.setSelection(idx++, Quill.sources.SILENT);
 
-        this.sideActionsShow.set(false);
+        // this.sideActionsShow.set(false);
+        this.#keepSideActionOpened({ quill });
+        this.quillTextChangeActive.set(true);
       });
     } else {
-      console.warn('Image storage provider has not been provided');
+      console.warn(
+        'Image storage provider has not been provided, image is not loaded'
+      );
     }
   }
 
   onTextChangeHandler({ textValue, delta }: EditorTextChangeEvent) {
-    this.editorText.set(textValue);
+    if (!this.quillTextChangeActive()) {
+      console.log('OFF', delta);
+      return;
+    }
+
+    console.log('onTextChangeHandler', delta);
     this.editorTextChange.emit(textValue);
     this.actionsShow.set(false);
 
@@ -181,12 +225,32 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     }
 
     const deltaOps = (delta as unknown as Delta).ops ?? [];
-    const deltaFirstOp = deltaOps[0] ?? {};
+    const [deltaFirstOp = {}, deltaSecOp = {}] = deltaOps ?? [];
 
-    // if the first in delta ops is delete and its larger than 0 - means that row/section deleted completely
+    // when the first in delta ops is delete and its larger than 0 - means that row/section deleted completely
     if (deltaFirstOp.delete ?? 0 > 0) {
-      this.sideActionsShow.set(true);
-      this.sideActionsBounds.set(quill.getBounds(0));
+      this.#keepSideActionOpened({ quill });
+      return;
+    }
+
+    // OR when 2 items retain & deleted then also show
+    if (
+      deltaOps.length === 2 &&
+      typeof deltaFirstOp.retain === 'number' &&
+      deltaFirstOp.retain > 0 &&
+      deltaSecOp.delete &&
+      deltaSecOp.delete > 0
+    ) {
+      const range = quill.getSelection(true);
+      this.#checkSideActionShow(quill, range);
+      return;
+    }
+
+    const deltaLastOp = deltaOps[deltaOps.length - 1];
+    const newLine =
+      typeof deltaLastOp.insert === 'string' && deltaLastOp.insert === '\n';
+    if (newLine) {
+      this.#keepSideActionOpened({ quill });
       return;
     }
 
@@ -195,6 +259,8 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   selectionChangeHandler(event: EditorSelectionChangeEvent) {
+    console.log('selectionChangeHandler', event);
+
     const quill = this.quill();
     if (!quill) {
       console.error('Quill should be initialized by now, report this bug');
@@ -207,21 +273,8 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     this.#checkSideActionShow(quill, range);
   }
 
-  enterHandler() {
-    const quill = this.quill();
-    if (!quill) {
-      console.error('Quill should be initialized by now, report this bug');
-      return;
-    }
-
-    const selection = quill.getSelection();
-
-    if (selection) {
-      this.#checkSideActionShow(quill, selection);
-    }
-  }
-
   #checkActionShow(quill: Quill, { index, length }: Range) {
+    console.log(`checkActionShow index:${index}, length:${length} `);
     if (length > 0) {
       this.actionsShow.set(true);
       this.actionsBounds.set(quill.getBounds(index, length));
@@ -229,6 +282,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   #checkSideActionShow(quill: Quill, { index, length }: Range) {
+    console.log(`checkSideActionShow index:${index}, length:${length} `);
     if (length !== 0) {
       this.sideActionsShow.set(false);
       return;
@@ -243,7 +297,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     const delta = quill.getContents(index);
     const firstDeltaInsert = delta.ops[0]?.insert;
     if (
-      !firstDeltaInsert ||
+      !firstDeltaInsert &&
       !(
         typeof firstDeltaInsert === 'string' &&
         firstDeltaInsert.startsWith('\n')
@@ -262,7 +316,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   #limitedQuillPlaceholderVisibility(
     sideActionShown: boolean,
     sideActionOpened: boolean,
-    editorText: string,
+    editorContent: string,
     quill: Quill | null,
     placeholderAlreadyShown: boolean
   ) {
@@ -276,8 +330,8 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
       return;
     }
 
-    const textLength = editorText.length;
-    if (textLength !== 0) {
+    const textLength = editorContent.length;
+    if (textLength < 4) {
       // we don't need to keep track on other conditions because we can always guarantee correctness of state
       return;
     }
@@ -289,11 +343,41 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
       return;
     }
 
-    if (!sideActionOpened && !placeholderAlreadyShown) {
+    if (!sideActionOpened && !placeholderAlreadyShown && textLength < 4) {
       quill.root.classList.add('ql-blank');
       this.quillPlaceholderShown.set(true);
 
       return;
     }
+  }
+
+  /** This is layer of code to refactor. Since currently there is no way to keep side actions opened hence re-opened it again with timeout! In a correct final version we should get "this ( = Keeping Side Action panel opened.)" functionality with this.sideActionsShow w/o setTimeout */
+  #keepSideActionOpened({
+    quill,
+    updateBoundOnly,
+    autofocus,
+  }: {
+    quill: Quill;
+    updateBoundOnly?: boolean;
+    autofocus?: boolean;
+  }) {
+    const updateBounds = () => {
+      const newRange = quill.getSelection(true);
+      this.sideActionsBounds.set(quill.getBounds(newRange));
+    };
+
+    setTimeout(() => {
+      if (updateBoundOnly) {
+        updateBounds();
+        return;
+      }
+
+      this.sideActionsShow.set(true);
+      updateBounds();
+
+      if (autofocus) {
+        quill.focus();
+      }
+    }, 0);
   }
 }
