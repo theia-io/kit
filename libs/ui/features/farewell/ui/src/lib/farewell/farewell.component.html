@@ -8,6 +8,7 @@
       formControlName="title" />
     <label class="w-full text-4xl" for="title">Title</label>
   </p-floatLabel>
+
   <section class="relative">
     <strong
       uiKitSmallTextTailwindClasses
@@ -18,9 +19,10 @@
   </section>
 
   <feat-farewell-editor
+    class="block mt-4"
     formControlName="content"
     [imageStorageProvider]="saveImages()"
-    [removeImageCb]="deleteImage()"
+    [deleteImage]="deleteImage()"
     (editorTextChange)="editorTextValue.set($event)"></feat-farewell-editor>
   <section class="relative">
     <strong

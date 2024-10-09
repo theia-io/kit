@@ -11,7 +11,7 @@ import {
   NgZone,
   signal,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
@@ -43,11 +43,13 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import {
   debounceTime,
+  delay,
   filter,
   map,
   Observable,
   of,
   shareReplay,
+  skipUntil,
   switchMap,
   take,
 } from 'rxjs';
@@ -100,6 +102,7 @@ export class FeatFarewellComponent implements AfterViewInit {
       ? this.#store.selectSignal(selectFarewellFullViewById(id))()
       : undefined;
   });
+  #farewell = toObservable(this.farewell);
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
   readonly TITLE_MAX_LENGTH = 128;
@@ -140,7 +143,14 @@ export class FeatFarewellComponent implements AfterViewInit {
     }
 
     this.farewellFormGroup.valueChanges
-      .pipe(takeUntilDestroyed(this.#destroyRef), debounceTime(5000))
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        // when its new farewell we don't update until farewell is created
+        skipUntil(
+          this.farewellId() ? of(true) : this.#farewell.pipe(filter(Boolean))
+        ),
+        debounceTime(5000)
+      )
       .subscribe(() => this.#updateFarewell());
   }
 
@@ -164,12 +174,15 @@ export class FeatFarewellComponent implements AfterViewInit {
       }
 
       setTimeout(() => {
+        const now = new Date();
         this.#store.dispatch(
           FeatFarewellMediaActions.uploadFarewellStorageMedia({
             farewellId,
             profileId,
             items: mediaFiles.map((mediaFile) => ({
-              key: `${farewellId}/${profileId}/${mediaFile.name}`,
+              key: `${farewellId}/${profileId}/${now.getTime()}-${
+                mediaFile.name
+              }`,
               blob: mediaFile,
             })),
           })
@@ -180,6 +193,8 @@ export class FeatFarewellComponent implements AfterViewInit {
       return this.#actions$.pipe(
         ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
         take(1),
+        // AWS S3 bucket has eventual consistency so need a time for it to be available
+        delay(1500),
         map(({ items }) =>
           items.map(({ key }) => getFullS3Url(this.#s3FarewellBaseUrl, key))
         )
@@ -260,9 +275,11 @@ export class FeatFarewellComponent implements AfterViewInit {
         take(1),
         map(({ farewell }) => farewell)
       )
-      .subscribe(({ id }) =>
-        this.#location.replaceState(`/${APP_PATH.Farewell}/edit/${id}`)
-      );
+      .subscribe(({ id }) => {
+        this.farewellId.set(id);
+        this.#location.replaceState(`/${APP_PATH.Farewell}/edit/${id}`);
+        return;
+      });
   }
 
   // TODO update also on page reload, close etc

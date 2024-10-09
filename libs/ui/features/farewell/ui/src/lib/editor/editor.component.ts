@@ -26,6 +26,7 @@ import { Observable } from 'rxjs';
 import { FeatFarewellQuillActionsComponent } from '../editor-actions/quill-actions.component';
 import { FeatFarewellQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
 import { ImageConfiguration } from './bloats-leaf';
+import { quillBackspaceImageHandler } from './quill';
 
 export interface Range {
   index: number;
@@ -63,7 +64,7 @@ export interface Range {
 export class FeatFarewellEditorComponent implements ControlValueAccessor {
   imageStorageProvider =
     input<(images: Array<File>) => Observable<Array<string>>>();
-  removeImageCb = input<(imageSrc: string) => void>();
+  deleteImage = input<(imageSrc: string) => void>();
   editorTextChange = output<string>();
 
   editorControl = new FormControl<string>('');
@@ -123,35 +124,45 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   quillInit({ editor }: EditorInitEvent) {
     this.quill.set(editor);
 
-    const removeImageCb = this.removeImageCb();
-    // if (removeImageCb) {
-    //   setTimeout(() => {
-    //     const quillObserver = new MutationObserver(function (e) {
-    //       console.log(e, e[0]);
-    //       // if (e[0].removedNodes) console.log(e);
+    const deleteImageCb = this.deleteImage();
+    if (deleteImageCb) {
+      const testedChromex20Throttle = 1250; // come up with better solution
+      setTimeout(() => {
+        const quillObserver = new MutationObserver((mutationsList) => {
+          mutationsList.forEach((mutation, idx) => {
+            if (
+              mutation.type === 'childList' &&
+              mutation.removedNodes.length > 0
+            ) {
+              mutation.removedNodes.forEach((removedNode) => {
+                // Check if the removed node is an image
 
-    //       e.forEach((record) => {
-    //         console.log(record.removedNodes);
-    //         record.removedNodes.forEach((removeNode) => {
-    //           if (
-    //             ((removeNode as any)?.tagName as string)?.toLowerCase() ===
-    //               'img' ||
-    //             (removeNode as HTMLElement).innerHTML?.includes('img')
-    //           ) {
-    //             console.log('REMOVE IMAGE', removeNode.firstChild);
-    //             const imageEl = removeNode.firstChild as HTMLImageElement;
-    //             removeImageCb(imageEl.src);
-    //           }
-    //         });
-    //       });
-    //     });
+                if (
+                  quillBackspaceImageHandler(
+                    removedNode,
+                    mutationsList[idx + 1]?.addedNodes?.[0]
+                  )
+                ) {
+                  console.log(
+                    'An image was removed:',
+                    removedNode,
+                    mutation,
+                    mutationsList
+                  );
+                  deleteImageCb(removedNode.src);
+                  // Do something with the removed image element
+                }
+              });
+            }
+          });
+        });
 
-    //     quillObserver.observe((editor as Quill).root, {
-    //       childList: true,
-    //       subtree: true,
-    //     });
-    //   }, 1000);
-    // }
+        quillObserver.observe((editor as Quill).root, {
+          childList: true,
+          subtree: true,
+        });
+      }, testedChromex20Throttle);
+    }
   }
 
   dividerHandler(quill: Quill) {
@@ -175,14 +186,18 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
       const imagesStorageProvider$ = imageStorageProvider(mediaFiles); //?? of([URL.createObjectURL(mediaFiles[0])]);
 
       this.quillTextChangeActive.set(false);
+
       imagesStorageProvider$.subscribe((urls) => {
         const imageSrc = urls[0];
+
         const kitQuillImageBloat: ImageConfiguration = {
-          alt: 'Quill Cloud',
-          // url: 'https://quilljs.com/0.20/assets/images/cloud.png'
+          alt: 'KIT kitouch farewell image',
           src: imageSrc,
           width: 300,
           height: 300,
+          loadedCb: () => {
+            this.#keepSideActionOpened({ quill });
+          },
         };
 
         const range = quill.getSelection(true);
@@ -197,8 +212,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
         quill.insertText(idx++, '\n', Quill.sources.USER);
         quill.setSelection(idx++, Quill.sources.SILENT);
 
-        // this.sideActionsShow.set(false);
-        this.#keepSideActionOpened({ quill });
         this.quillTextChangeActive.set(true);
       });
     } else {

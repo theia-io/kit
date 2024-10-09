@@ -29,6 +29,7 @@ export const featFarewellReducer = createReducer(
   on(
     FeatFarewellActions.putFarewellSuccess,
     FeatFarewellActions.getFarewellSuccess,
+    FeatFarewellActions.createFarewellSuccess,
     (state, { farewell }) => ({
       ...state,
       farewells: addOrUpdate(farewell, state.farewells),

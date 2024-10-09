@@ -12,19 +12,6 @@ function onElementRemoved(element: any, callback: any) {
   observer.observe(element);
 }
 
-// class DividerTestBlot extends BlockEmbed {
-//   static override blotName = 'non-editable-paragraph';
-//   static override tagName = 'p';
-
-//   static override create(html: string) {
-//     const node = super.create() as HTMLParagraphElement;
-//     node.setAttribute('contenteditable', 'false');
-//     node.innerHTML = html;
-
-//     return node;
-//   }
-// }
-
 class DividerBlot extends BlockEmbed {
   static override blotName = 'divider';
   static override tagName = 'hr';
@@ -43,29 +30,38 @@ export interface ImageConfiguration {
   src: string | any;
   width: number;
   height: number;
+  loadedCb: () => void;
 }
 
 class ImageBlot extends BlockEmbed {
   static override blotName = 'image';
   static override tagName = 'img';
 
-  static override create({ alt, src }: ImageConfiguration) {
+  static override create({ alt, src, loadedCb }: ImageConfiguration) {
     const node = super.create() as HTMLImageElement;
 
+    node.setAttribute('contenteditable', 'false');
     node.setAttribute('alt', alt);
     node.setAttribute('src', src);
+
+    node.addEventListener('load', () => {
+      if (loadedCb) loadedCb();
+    });
+
     // node.setAttribute('width', `${width}`);
     // node.setAttribute('height', `${height}`);
 
     return node;
   }
 
-  static override value(node: HTMLImageElement): ImageConfiguration {
+  static override value(
+    node: HTMLImageElement
+  ): Omit<ImageConfiguration, 'loadedCb'> {
     return {
       alt: node.getAttribute('alt') ?? '',
       src: node.getAttribute('src') ?? '',
       height: Number(node.getAttribute('height') ?? '150'),
-      width: Number(node.getAttribute('width') ?? 150),
+      width: Number(node.getAttribute('width') ?? '150'),
     };
   }
 }

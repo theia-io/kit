@@ -111,18 +111,18 @@ p-editor {
   // elements that only self-container
   .ql-editor {
     p {
-      margin-top: 8px;
+      margin-bottom: 8px;
     }
 
     & p:has(img),
     & p:has(hr) {
       // padding: 8px;
       /* Prevent interaction */
-      // pointer-events: none;
-      // user-select: none;
+      pointer-events: none;
+      user-select: none;
 
-      // -moz-user-modify: read-only;
-      // -webkit-user-modify: read-only;
+      -moz-user-modify: read-only;
+      -webkit-user-modify: read-only;
 
       /* For WebKit browsers (Chrome, Safari) */
       /* Prevent text selection */
