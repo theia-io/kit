@@ -8,6 +8,7 @@ import {
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
+import { FeatFollowUnfollowProfileComponent } from '@kitouch/follow-ui';
 import {
   FeatProfileApiActions,
   selectCurrentProfile,
@@ -36,6 +37,7 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
     ButtonModule,
     //
     FeatKitProfileHeaderComponent,
+    FeatFollowUnfollowProfileComponent,
     FollowButtonComponent,
   ],
 })

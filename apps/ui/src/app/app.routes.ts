@@ -56,7 +56,8 @@ export const appRoutes: Route[] = [
       },
       {
         path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
-        loadComponent: () => pages.then((comp) => comp.PageFarewellComponent),
+        loadComponent: () =>
+          pages.then((comp) => comp.PageFarewellViewComponent),
         canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
       },
       {

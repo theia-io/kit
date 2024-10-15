@@ -3,12 +3,13 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
-import {
-  FeatFarewellPreViewComponent,
-  FeatFarewellViewV2Component,
-} from '@kitouch/feat-farewell-ui';
+import { FeatFarewellViewV2Component } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
-import { FeatFollowSuggestionByIdComponent } from '@kitouch/follow-ui';
+import {
+  FeatFollowSuggestionByIdComponent,
+  FeatFollowUnfollowProfileComponent,
+  followerHandlerFn,
+} from '@kitouch/follow-ui';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
@@ -18,14 +19,14 @@ import {
   DeviceService,
   UiLogoComponent,
 } from '@kitouch/ui-shared';
-import { select, Store } from '@ngrx/store';
+import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { distinctUntilChanged, map, shareReplay } from 'rxjs';
 
 @Component({
   standalone: true,
-  templateUrl: './farewell.component.html',
+  templateUrl: './view.component.html',
   imports: [
     AsyncPipe,
     RouterModule,
@@ -39,9 +40,10 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     UIKitSmallerHintTextUXDirective,
     FeatFarewellViewV2Component,
     FeatFollowSuggestionByIdComponent,
+    FeatFollowUnfollowProfileComponent,
   ],
 })
-export class PageFarewellComponent {
+export class PageFarewellViewComponent {
   preview = input(false);
 
   #activatedRouter = inject(ActivatedRoute);
@@ -50,6 +52,7 @@ export class PageFarewellComponent {
   #authService = inject(AuthService);
 
   device$ = inject(DeviceService).device$;
+  #followerHandlerFn = followerHandlerFn();
 
   farewellId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
@@ -62,7 +65,13 @@ export class PageFarewellComponent {
 
   copied = signal(false);
 
-  currentKitProfile$ = this.#store.pipe(select(selectCurrentProfile));
+  currentProfile = this.#store.selectSignal(selectCurrentProfile);
+  isFollowing = computed(
+    () =>
+      this.currentProfile()?.following?.some(
+        ({ id }) => id === this.profile()?.id
+      ) ?? false
+  );
 
   constructor() {
     this.farewellId$
@@ -75,8 +84,10 @@ export class PageFarewellComponent {
       });
   }
 
-  handleGoogleSignIn() {
-    this.#authService.googleSignIn();
+  signInAndFollow(profileToFollow: Profile) {
+    this.#authService
+      .googleSignIn()
+      .then(() => this.#followAfterSignIn(profileToFollow));
   }
 
   copyToClipBoard(farewellId: string) {
@@ -95,5 +106,9 @@ export class PageFarewellComponent {
       APP_PATH_ALLOW_ANONYMOUS.Farewell,
       farewellId,
     ].join('/');
+  }
+
+  #followAfterSignIn(profile: Profile) {
+    this.#followerHandlerFn(profile.id, true);
   }
 }

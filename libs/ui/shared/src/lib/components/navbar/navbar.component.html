@@ -35,9 +35,15 @@
 
 <ui-kit-tweet-button
   [iconAnimate]="false"
-  text="Tweet"
+  text="Tweet thoughts!"
   (click)="tweetButtonHandler()"
-  class="w-48 mt-4" />
+  class="w-48 mt-6" />
+<ui-kit-tweet-button
+  icon="pi-file-edit"
+  [iconAnimate]="false"
+  text="Create farewell"
+  (click)="createFarewellHandler()"
+  class="w-48 mt-2" />
 
 <a
   [routerLink]="profileUrl + '/' + profile()?.id"

@@ -31,7 +31,9 @@
 <div class="mt-6 ml-4">
   <p
     class="overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
-    {{ profile().name }}
+    <a class="hover:underline" [routerLink]="profileUrl + '/' + profile().id">
+      {{ profile().name }}
+    </a>
 
     @if(profile().title) {
     <br />

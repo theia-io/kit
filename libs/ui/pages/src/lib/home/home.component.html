@@ -15,7 +15,7 @@
 } @empty {
 <ui-kit-tweet-button
   [disabled]="(reloadTweetsDisabled$ | async) ?? false"
-  [icon]="false"
+  icon=""
   text="Reload Tweets"
   (click)="reloadTweets()"
   class="block w-full mt-4 mb-6" />

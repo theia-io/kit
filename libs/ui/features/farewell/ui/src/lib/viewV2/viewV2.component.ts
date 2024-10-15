@@ -9,7 +9,6 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ImageModule } from 'primeng/image';
 import {
   FarewellFullView,
   FeatFarewellActions,
@@ -19,6 +18,7 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { DeviceService, PhotoService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
+import PhotoSwipe from 'photoswipe';
 import { TooltipModule } from 'primeng/tooltip';
 import {
   delay,
@@ -29,7 +29,6 @@ import {
   take,
   withLatestFrom,
 } from 'rxjs';
-import PhotoSwipe from 'photoswipe';
 
 @Component({
   standalone: true,
@@ -45,11 +44,8 @@ import PhotoSwipe from 'photoswipe';
 })
 export class FeatFarewellViewV2Component implements AfterViewInit {
   farewellId = input<string>();
+  /** Used by creator itself to preview Farewell without analytics */
   preview = input(false);
-  visible = input<Array<'media' | 'analytics' | 'chat'>>([
-    'media',
-    'analytics',
-  ]);
 
   farewell = output<FarewellFullView>();
   profile = output<Profile>();
@@ -60,7 +56,6 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   device$ = inject(DeviceService).device$;
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
-
   farewell$ = this.#farewellId$.pipe(
     switchMap((farewellId) =>
       this.#store.pipe(select(selectFarewellFullViewById(farewellId)))

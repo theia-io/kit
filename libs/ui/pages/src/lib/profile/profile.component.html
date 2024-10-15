@@ -2,28 +2,7 @@
 <feat-kit-profile-header [profile]="profile">
   @if(!isCurrentUserProfile()) {
   <div class="grow" profileFollowExtension>
-    <button
-      pButton
-      (click)="
-        isFollowing()
-          ? unFollowProfileHandler(profile)
-          : followProfileHandler(profile)
-      "
-      class="float-right mr-2 -mb-6"
-      [class.min-w-32]="!isFollowing()"
-      [class.min-h-10]="isFollowing()"
-      severity="contrast">
-      @if(!isFollowing()) { Connect
-      <img
-        class="ml-2"
-        ngSrc="logo/handshake.gif"
-        [alt]="'Follow ' + profile.name + ' profile'"
-        width="20"
-        height="20" />
-      } @else {
-      <i class="pi pi-user-minus"></i>
-      }
-    </button>
+    <feat-follow-unfollow-profile [profileId]="profile.id" />
   </div>
   } @else {
   <a

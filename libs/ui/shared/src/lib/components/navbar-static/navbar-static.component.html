@@ -6,7 +6,6 @@
   <a
     [routerLink]="navItem.routerLink"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
-    pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     class="px-4 py-2">
     {{ navItem.label }}
@@ -15,7 +14,6 @@
   <a
     [routerLink]="homeUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
-    pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     class="px-4 py-2">
     Home
@@ -25,7 +23,6 @@
   <a
     [routerLink]="introduceKitUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
-    pTooltip="Generate Farewell"
     uiKitSmallTextTailwindClasses
     class="px-4 py-2"
     [class.ml-2]="fullBar()">
@@ -35,7 +32,7 @@
   @if(!fullBar()) {
   <a
     [routerLink]="homeUrl"
-    pTooltip="Generate Farewell"
+    Ø
     uiKitSmallTextTailwindClasses
     [klasses]="getStartedKlassOverwrite"
     class="px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">

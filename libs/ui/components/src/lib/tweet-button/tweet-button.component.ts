@@ -29,7 +29,8 @@ import { ButtonModule } from 'primeng/button';
       <i class="pi pi-sync animate-spin" style="font-size: 1rem"></i>
       } @if(icon() && !loader()) {
       <i
-        class="pi pi-send"
+        class="pi"
+        [ngClass]="icon()"
         [class.animate-wiggle]="iconAnimate()"
         style="font-size: 1.5rem"
       ></i>
@@ -43,7 +44,7 @@ export class UiKitTweetButtonComponent {
 
   disabled = input(false);
   loader = input(false);
-  icon = input(true);
+  icon = input('pi-send');
   iconAnimate = input(true);
 
   styleClass = computed(() =>

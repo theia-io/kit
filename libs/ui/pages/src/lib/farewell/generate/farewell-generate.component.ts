@@ -23,6 +23,7 @@ import { take } from 'rxjs';
     SidebarModule,
   ],
 })
+/** @TODO @FIXME Merge PageFarewellGenerateComponent and PageFarewellEditComponent components */
 export class PageFarewellGenerateComponent {
   #router = inject(Router);
   #routerEventsService = inject(RouterEventsService);

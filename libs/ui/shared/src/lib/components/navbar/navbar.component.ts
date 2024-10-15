@@ -104,6 +104,10 @@ export class NavBarComponent implements AfterViewInit {
     ]);
   }
 
+  createFarewellHandler() {
+    this.#router.navigate([APP_PATH.Farewell, 'generate']);
+  }
+
   async logoutHandler() {
     await this.#authService.logout();
     window.location.reload();

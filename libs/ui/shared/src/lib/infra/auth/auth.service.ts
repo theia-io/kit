@@ -14,9 +14,8 @@ import {
 } from '@kitouch/kit-data';
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
-import { APP_PATH, APP_PATH_STATIC_PAGES } from '../../constants';
+import { APP_PATH_STATIC_PAGES } from '../../constants';
 import { ENVIRONMENT } from '../environments';
-import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,8 +26,6 @@ export class AuthService {
   #router = inject(Router);
   #actions$ = inject(Actions);
   #store = inject(Store);
-  // app
-  routerEventsService = inject(RouterEventsService);
   // service
   #realmApp: Realm.App | null = null;
   redirectUrl = `${window.location.origin}/s/${APP_PATH_STATIC_PAGES.Redirect}`;
@@ -137,6 +134,7 @@ export class AuthService {
     this.#realmApp = new Realm.App({
       id: this.#environment.realmAppId ?? 'application-0-gnmmqxd',
     });
+
     return this.#realmApp;
   }
 
@@ -155,21 +153,19 @@ export class AuthService {
    * somebody has sent it to him or he found on the internet, etc. )
    *  2. or Home if not exist
    */
-  googleSignIn() {
+  googleSignIn(cb?: () => void) {
     if (!this.#environment.production) {
       console.info('Google signin initiated', this.#realmApp);
     }
 
-    if (!this.#realmApp) {
-      this.init();
-    }
+    const realmApp = this.#realmApp || this.init();
 
     const credentials = Realm.Credentials.google({
       redirectUrl: this.redirectUrl,
     });
 
-    this.#realmApp
-      ?.logIn(credentials)
+    return realmApp
+      .logIn(credentials)
       .then((realmUser) => {
         this.#realmUser$$.next(realmUser);
         return this.#getAccountUserProfiles(realmUser);
@@ -183,23 +179,16 @@ export class AuthService {
         this.#user$$.next(user);
         this.#profiles$$.next(profiles);
 
-        if (!user.experiences?.length) {
-          this.#router.navigateByUrl(APP_PATH.AboutYourself);
-          return;
-        }
+        // if (!user.experiences?.length) {
+        //   this.#router.navigateByUrl(APP_PATH.AboutYourself);
+        //   return;
+        // }
 
-        /** TODO HERE WE CAN REDIRECT TO FILL IN INFORMATION PAGE */
-        this.routerEventsService.lastUrlBeforeCancelled$
-          .pipe(take(1))
-          .subscribe((urlBeforeSignIn) => {
-            console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
-            this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
-          });
-
-        return;
+        return true;
       })
       .catch((error) => {
         console.error('Error logging  in:', error);
+        return false;
       });
   }
 

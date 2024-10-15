@@ -8,10 +8,11 @@ import {
 } from '@angular/core';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
-import { PhotoService } from '@kitouch/ui-shared';
+import { APP_PATH, PhotoService } from '@kitouch/ui-shared';
 import PhotoSwipe from 'photoswipe';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 import { FeatKitProfileBackgroundComponent } from '../profile-background/profile-background.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   standalone: true,
@@ -21,6 +22,7 @@ import { FeatKitProfileBackgroundComponent } from '../profile-background/profile
   imports: [
     NgOptimizedImage,
     NgStyle,
+    RouterModule,
     //
     FeatKitProfileBackgroundComponent,
     FeatKitProfileSocialsComponent,
@@ -31,6 +33,8 @@ export class FeatKitProfileHeaderComponent implements AfterViewInit {
   profilePic = computed(() => profilePicture(this.profile()));
 
   #photoService = inject(PhotoService);
+
+  readonly profileUrl = `/${APP_PATH.Profile}`;
 
   ngAfterViewInit(): void {
     this.#photoService.initializeGallery({

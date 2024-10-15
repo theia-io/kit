@@ -5,9 +5,15 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { AuthService, slideInOutAnimation } from '@kitouch/ui-shared';
+import { Router } from '@angular/router';
+import {
+  AuthService,
+  RouterEventsService,
+  slideInOutAnimation,
+} from '@kitouch/ui-shared';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { take } from 'rxjs';
 
 const ANIMATION_REPEAT = 10000;
 
@@ -26,12 +32,21 @@ const ANIMATION_REPEAT = 10000;
 })
 export class PageSignInComponent implements OnInit {
   #authService = inject(AuthService);
+  #router = inject(Router);
+  #routerEventsService = inject(RouterEventsService);
 
   kittenVisibleTimeout: NodeJS.Timeout;
   kittenVisible = signal<'in' | 'out'>('out');
 
   handleGoogleSignIn() {
-    this.#authService.googleSignIn();
+    this.#authService.googleSignIn().then(() => {
+      this.#routerEventsService.lastUrlBeforeCancelled$
+        .pipe(take(1))
+        .subscribe((urlBeforeSignIn) => {
+          console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
+          this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
+        });
+    });
   }
 
   ngOnInit(): void {

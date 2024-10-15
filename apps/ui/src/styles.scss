@@ -85,7 +85,12 @@ p-image .p-image-preview-indicator {
   border-radius: 9999px;
 }
 
+.editor-like,
 p-editor {
+  p {
+    min-height: 28px; // quill adds <br /> to the empty p tags so them to look the same we apply this hack
+  }
+
   .ql-toolbar.ql-snow {
     border: none;
     box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
@@ -98,9 +103,7 @@ p-editor {
 
   .text-xl .ql-container {
     font-size: 1.25rem;
-    /* 20px */
     line-height: 1.75rem;
-    /* 28px */
 
     img {
       display: block;
@@ -116,7 +119,6 @@ p-editor {
 
     & p:has(img),
     & p:has(hr) {
-      // padding: 8px;
       /* Prevent interaction */
       pointer-events: none;
       user-select: none;

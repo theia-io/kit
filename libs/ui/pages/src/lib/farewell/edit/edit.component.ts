@@ -30,6 +30,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     SidebarModule,
   ],
 })
+/** @TODO @FIXME Merge PageFarewellGenerateComponent and PageFarewellEditComponent components */
 export class PageFarewellEditComponent {
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);

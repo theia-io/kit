@@ -1,50 +1,28 @@
 @if(farewell$ | async; as farewell) {
-<div class="md:flex">
-  @if(visible().includes('media')) {
-  <div id="farewell-images" class="md:block md:w-3/12">
-    @for (media of farewell.media; track $index) {
-    <a
-      class="block w-24 h-24 mb-3"
-      [href]="media.url"
-      data-pswp-width="150"
-      data-pswp-height="150"
-      target="_blank">
-      <img
-        referrerpolicy="no-referrer"
-        class="rounded-full"
-        width="250"
-        height="250"
-        [ngSrc]="media.url"
-        alt="Farewell media" />
-    </a>
-    }
-  </div>
-  }
+<div class="flex flex-col editor-like">
+  <div class="text-4xl text-center">{{ farewell.title }}</div>
 
-  <!--middle-->
-  <div class="md:w-6/12">
-    <div class="text-2xl text-center mb-2">{{ farewell.title }}</div>
-
+  <div class="mt-2 text-xl p-editor-container">
     <div
-      class="innerHtmlOverflow ql-editor"
-      [innerHTML]="sanitizer.bypassSecurityTrustHtml(farewell.content)"></div>
-
-    @if(visible().includes('analytics') && farewell.analytics; as analytic) {
-    <div
-      pTooltip="Times this page was viewed so far"
-      tooltipStyleClass="text-xs"
-      class="float-right flex items-center mt-1 text-xs font-medium text-gray-400">
-      <i class="pi pi-eye mr-2"></i>
-      Viewed {{ analytic.viewed }} times
+      class="p-editor-content ql-container ql-snow"
+      [style]="{
+        border: 'none',
+        fontFamily: 'var(--font-family)'
+      }">
+      <div
+        class="ql-editor"
+        [innerHTML]="sanitizer.bypassSecurityTrustHtml(farewell.content)"></div>
     </div>
-    }
   </div>
 
-  <!--right -->
-  @if(visible().includes('chat')) {
-  <!-- <div class="mt-6 md:mt-0 md:w-3/12">
-    <ng-content select="[right]"></ng-content>
-  </div> -->
+  @if(farewell.analytics; as analytic) {
+  <div
+    pTooltip="Times this page was viewed so far"
+    tooltipStyleClass="text-xs"
+    class="flex items-center justify-end mt-1 text-xs font-medium text-gray-400">
+    <i class="pi pi-eye mr-2"></i>
+    Viewed {{ analytic.viewed }} times
+  </div>
   }
 </div>
 }
