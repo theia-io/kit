@@ -11,7 +11,6 @@ import {
   OUTLET_DIALOG,
   PanelState,
 } from '@kitouch/ui-shared';
-import { KitStaticComponent } from './kit-static.component';
 import { KitComponent } from './kit.component';
 import { inject } from '@angular/core';
 
@@ -25,7 +24,8 @@ export const appRoutes: Route[] = [
   },
   {
     path: 's',
-    component: KitStaticComponent,
+    loadComponent: () =>
+      import('./kit-static.component').then((comp) => comp.KitStaticComponent),
     children: [
       {
         path: APP_PATH_STATIC_PAGES.SignIn,
