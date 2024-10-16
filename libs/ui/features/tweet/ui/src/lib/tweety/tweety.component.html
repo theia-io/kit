@@ -16,6 +16,7 @@ retweetProfile) {
 
 <div (click)="tweetClickHandler(tweet)" class="pl-16 cursor-pointer">
   <p
+    style="overflow-wrap: break-word"
     class="text-base width-auto font-medium flex-shrink"
     [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"></p>
 
