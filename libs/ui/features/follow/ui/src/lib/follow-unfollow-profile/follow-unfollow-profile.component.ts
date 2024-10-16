@@ -49,6 +49,15 @@ export const followerHandlerFn = () => {
           return;
         }
 
+        if (currentProfile.following?.some(({ id }) => id === profileId)) {
+          console.info(
+            'You already follow this profile',
+            currentProfile.id,
+            profileId
+          );
+          return;
+        }
+
         store.dispatch(
           FeatProfileApiActions.updateProfile({
             profile: {

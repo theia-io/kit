@@ -16,9 +16,13 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { FollowButtonComponent } from '@kitouch/ui-components';
-import { APP_PATH, UXDynamicService } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  Device,
+  DeviceService,
+  UXDynamicService,
+} from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
-import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs';
@@ -47,6 +51,7 @@ export class PageProfileComponent {
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
   #uxDynamicService = inject(UXDynamicService);
+  #deviceService = inject(DeviceService);
 
   #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
     map((params) => params['profileIdOrAlias'])
@@ -73,11 +78,29 @@ export class PageProfileComponent {
       ) ?? false
   );
 
-  tabMenuItems: MenuItem[] = [
-    { label: 'Tweets', icon: 'pi pi-inbox', routerLink: 'tweets' },
-    { label: 'Experience', icon: 'pi pi-briefcase', routerLink: 'experience' },
-    { label: 'Following', icon: 'pi pi-users', routerLink: 'following' },
-  ];
+  tabMenuItems$ = this.#deviceService.device$.pipe(
+    map((device) =>
+      device === Device.Mobile
+        ? [
+            { label: '', icon: 'pi pi-inbox', routerLink: 'tweets' },
+            { label: '', icon: 'pi pi-briefcase', routerLink: 'experience' },
+            { label: '', icon: 'pi pi-users', routerLink: 'following' },
+          ]
+        : [
+            { label: 'Tweets', icon: 'pi pi-inbox', routerLink: 'tweets' },
+            {
+              label: 'Experience',
+              icon: 'pi pi-briefcase',
+              routerLink: 'experience',
+            },
+            {
+              label: 'Following',
+              icon: 'pi pi-users',
+              routerLink: 'following',
+            },
+          ]
+    )
+  );
 
   followProfileHandler(profile: Profile | undefined) {
     if (!profile) {
