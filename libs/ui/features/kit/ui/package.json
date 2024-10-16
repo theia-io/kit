@@ -12,7 +12,8 @@
     "@kitouch/ui-shared": "1.0.0-beta",
     "photoswipe": "^5.4.4",
     "@ngrx/effects": "18.0.2",
-    "rxjs": "~7.8.0"
+    "rxjs": "~7.8.0",
+    "@angular/router": "18.2.6"
   },
   "sideEffects": false
 }

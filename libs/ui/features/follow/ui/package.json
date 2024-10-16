@@ -12,7 +12,8 @@
     "@ngrx/store": "18.0.2",
     "rxjs": "~7.8.0",
     "@angular/router": "18.2.6",
-    "@kitouch/feat-follow-data": "1.0.0-beta"
+    "@kitouch/feat-follow-data": "1.0.0-beta",
+    "primeng": "^17.18.1"
   },
   "sideEffects": false
 }
