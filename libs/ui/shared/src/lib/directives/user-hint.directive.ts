@@ -10,7 +10,7 @@ import {
 
 @Directive({
   standalone: true,
-  selector: '[userHint]',
+  selector: '[sharedUserHint]',
 })
 export class UserHintDirective implements AfterContentChecked {
   text = input.required<string>();
@@ -45,7 +45,7 @@ export class UserHintDirective implements AfterContentChecked {
       )
     ) {
       console.error(
-        '[UserHintDirective] userHint cannot be applied on this tag and has no effect.'
+        '[UserHintDirective] sharedUserHint cannot be applied on this tag and has no effect.'
       );
       return;
     }

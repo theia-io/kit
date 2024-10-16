@@ -1,0 +1,385 @@
+[
+  {
+    "_id": {
+      "$oid": "66adf720240225479b752b70"
+    },
+    "content": "Test",
+    "profileId": {
+      "$oid": "66ad06e4375bdfd36fe842c6"
+    },
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-08-03T09:23:44.177Z"
+      },
+      "updatedAt": {
+        "$date": "2024-08-07T17:54:01.584Z"
+      }
+    },
+    "comments": [],
+    "referenceId": null,
+    "referenceProfileId": null,
+    "upProfileIds": [],
+    "retweetsData": [],
+    "type": "tweet"
+  },
+  {
+    "_id": {
+      "$oid": "66ebf3a2f967fc728e7eb7d3"
+    },
+    "profileId": {
+      "$oid": "66afd4fe04981829118b2365"
+    },
+    "content": "Do you see this?",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-09-19T09:49:21.888Z"
+      },
+      "updatedAt": {
+        "$date": "2024-09-19T10:02:26.700Z"
+      }
+    },
+    "retweetsData": [],
+    "upProfileIds": ["66b4eb8395384d1bcbf5bfd7"]
+  },
+  {
+    "_id": {
+      "$oid": "66ebf3abf967fc728e7f1a4c"
+    },
+    "profileId": {
+      "$oid": "66afd4fe04981829118b2365"
+    },
+    "content": "Hello world",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-09-19T09:49:31.486Z"
+      },
+      "updatedAt": {
+        "$date": "2024-09-19T10:03:26.973Z"
+      }
+    },
+    "retweetsData": [],
+    "upProfileIds": ["66ba0a780e0e429a95f81a67", "66b4eb8395384d1bcbf5bfd7"]
+  },
+  {
+    "_id": {
+      "$oid": "66ebf3cb9556cbe5de091a4f"
+    },
+    "profileId": {
+      "$oid": "66b4eb8395384d1bcbf5bfd7"
+    },
+    "content": "We all are connected. ",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-09-19T09:50:03.135Z"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66ebf3f44c8c8e8e2b1087bf"
+    },
+    "profileId": {
+      "$oid": "66b4eb8395384d1bcbf5bfd7"
+    },
+    "content": "Finally I got to see what's my now (ex-) colleagues reply to my farewell messages",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-09-19T09:50:44.154Z"
+      },
+      "updatedAt": {
+        "$date": "2024-09-19T10:13:42.566Z"
+      }
+    },
+    "denormalization": {
+      "profile": {
+        "name": "Dan",
+        "pictures": [
+          {
+            "url": "https://kitouch-public-profiles.s3.eu-north-1.amazonaws.com/66ba0a780e0e429a95f81a67/giphy.gif",
+            "isPrimary": true
+          }
+        ],
+        "followers": null,
+        "following": [
+          {
+            "id": "66afd4fe04981829118b2365"
+          }
+        ],
+        "alias": "66ba0a780e0e429a95f81a67",
+        "description": "",
+        "subtitle": "",
+        "title": "Software Engineer",
+        "socials": {
+          "linkedin": "",
+          "github": "https://github.com/danemesis",
+          "twitter": "",
+          "facebook": "",
+          "instagram": "",
+          "whatsapp": "",
+          "youtube": ""
+        },
+        "id": "66ba0a780e0e429a95f81a67",
+        "userId": "66ba0a780e0e429a95f81a66"
+      }
+    },
+    "upProfileIds": [
+      "66ba0a780e0e429a95f81a67",
+      "66afd4fe04981829118b2365",
+      "66b4eb8395384d1bcbf5bfd7"
+    ],
+    "retweetsData": [],
+    "comments": [
+      {
+        "profileId": "66ba0a780e0e429a95f81a67",
+        "content": "True indeed\n"
+      },
+      {
+        "profileId": "66afd4fe04981829118b2365",
+        "content": "This is great indeed"
+      }
+    ],
+    "tweets": [
+      {
+        "content": "Finally I got to see what's my now (ex-) colleagues reply to my farewell messages",
+        "type": "tweet",
+        "denormalization": {
+          "profile": {
+            "name": "Dan",
+            "pictures": [
+              {
+                "url": "https://kitouch-public-profiles.s3.eu-north-1.amazonaws.com/66ba0a780e0e429a95f81a67/giphy.gif",
+                "isPrimary": true
+              }
+            ],
+            "followers": null,
+            "following": [
+              {
+                "id": "66afd4fe04981829118b2365"
+              },
+              {
+                "id": "66b4eb8395384d1bcbf5bfd7"
+              }
+            ],
+            "alias": "66ba0a780e0e429a95f81a67",
+            "description": "",
+            "subtitle": "",
+            "title": "Software Engineer",
+            "socials": {
+              "linkedin": "",
+              "github": "https://github.com/danemesis",
+              "twitter": "",
+              "facebook": "",
+              "instagram": "",
+              "whatsapp": "",
+              "youtube": ""
+            },
+            "id": "66ba0a780e0e429a95f81a67",
+            "userId": "66ba0a780e0e429a95f81a66"
+          }
+        },
+        "upProfileIds": [
+          "66afd4fe04981829118b2365",
+          "66ba0a780e0e429a95f81a67",
+          "66b4eb8395384d1bcbf5bfd7"
+        ],
+        "retweetsData": [],
+        "comments": [
+          {
+            "profileId": "66ba0a780e0e429a95f81a67",
+            "content": "Hello everyone!"
+          },
+          {
+            "profileId": "66afd4fe04981829118b2365",
+            "content": "This is great indeed"
+          }
+        ],
+        "timestamp": {
+          "createdAt": "Thu Sep 19 2024 11:50:44 GMT+0200 (Central European Summer Time)",
+          "updatedAt": "Thu Sep 19 2024 12:01:35 GMT+0200 (Central European Summer Time)"
+        },
+        "id": "66ebf3f44c8c8e8e2b1087bf",
+        "profileId": "66b4eb8395384d1bcbf5bfd7"
+      },
+      {
+        "content": "We all are connected. ",
+        "type": "tweet",
+        "retweetsData": [],
+        "timestamp": {
+          "createdAt": "Thu Sep 19 2024 11:50:03 GMT+0200 (Central European Summer Time)",
+          "updatedAt": null
+        },
+        "id": "66ebf3cb9556cbe5de091a4f",
+        "profileId": "66b4eb8395384d1bcbf5bfd7"
+      },
+      {
+        "type": "retweet",
+        "content": "Do you see this?",
+        "timestamp": {
+          "createdAt": "Thu Sep 19 2024 11:49:48 GMT+0200 (Central European Summer Time)",
+          "updatedAt": null
+        },
+        "id": "66ebf3bc429aa4786470e56f",
+        "profileId": "66afd4fe04981829118b2365",
+        "referenceId": "66ebf3a2f967fc728e7eb7d3",
+        "referenceProfileId": "66b4eb8395384d1bcbf5bfd7"
+      },
+      {
+        "type": "retweet",
+        "content": "Finally I got to see what's my now (ex-) colleagues reply to my farewell messages",
+        "timestamp": {
+          "createdAt": "Thu Sep 19 2024 11:53:06 GMT+0200 (Central European Summer Time)",
+          "updatedAt": null
+        },
+        "id": "66ebf4822cf24d44efbd72aa",
+        "profileId": "66b4eb8395384d1bcbf5bfd7",
+        "referenceId": "66ebf3f44c8c8e8e2b1087bf",
+        "referenceProfileId": "66afd4fe04981829118b2365"
+      },
+      {
+        "content": "Hello world",
+        "type": "tweet",
+        "retweetsData": [],
+        "upProfileIds": [
+          "66ba0a780e0e429a95f81a67",
+          "66b4eb8395384d1bcbf5bfd7"
+        ],
+        "timestamp": {
+          "createdAt": "Thu Sep 19 2024 11:49:31 GMT+0200 (Central European Summer Time)",
+          "updatedAt": "Thu Sep 19 2024 11:51:50 GMT+0200 (Central European Summer Time)"
+        },
+        "id": "66ebf3abf967fc728e7f1a4c",
+        "profileId": "66afd4fe04981829118b2365"
+      },
+      {
+        "content": "Do you see this?",
+        "type": "tweet",
+        "retweetsData": [],
+        "upProfileIds": [
+          "66ba0a780e0e429a95f81a67",
+          "66b4eb8395384d1bcbf5bfd7"
+        ],
+        "timestamp": {
+          "createdAt": "Thu Sep 19 2024 11:49:21 GMT+0200 (Central European Summer Time)",
+          "updatedAt": "Thu Sep 19 2024 11:51:51 GMT+0200 (Central European Summer Time)"
+        },
+        "id": "66ebf3a2f967fc728e7eb7d3",
+        "profileId": "66afd4fe04981829118b2365"
+      }
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "66ebf950f967fc728ed7f786"
+    },
+    "profileId": {
+      "$oid": "66ba0a780e0e429a95f81a67"
+    },
+    "content": "Hello everyone",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-09-19T10:13:35.918Z"
+      },
+      "updatedAt": {
+        "$date": "2024-09-20T14:18:46.528Z"
+      }
+    },
+    "denormalization": {
+      "profile": {
+        "name": "Dan",
+        "pictures": [
+          {
+            "url": "https://kitouch-public-profiles.s3.eu-north-1.amazonaws.com/66ba0a780e0e429a95f81a67/giphy.gif",
+            "isPrimary": true
+          }
+        ],
+        "followers": null,
+        "following": [
+          {
+            "id": "66afd4fe04981829118b2365"
+          },
+          {
+            "id": "66b4eb8395384d1bcbf5bfd7"
+          }
+        ],
+        "alias": "66ba0a780e0e429a95f81a67",
+        "description": "",
+        "subtitle": "",
+        "title": "Software Engineer",
+        "socials": {
+          "linkedin": "",
+          "github": "https://github.com/danemesis",
+          "twitter": "",
+          "facebook": "",
+          "instagram": "",
+          "whatsapp": "",
+          "youtube": ""
+        },
+        "id": "66ba0a780e0e429a95f81a67",
+        "userId": "66ba0a780e0e429a95f81a66"
+      }
+    },
+    "retweetsData": [],
+    "upProfileIds": ["66ba0a780e0e429a95f81a67"]
+  },
+  {
+    "_id": {
+      "$oid": "670767df8b612b76704bb9db"
+    },
+    "profileId": {
+      "$oid": "66ba0a780e0e429a95f81a67"
+    },
+    "content": "Test tweet from Farewell page",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-10-10T05:36:31.379Z"
+      }
+    }
+  },
+  {
+    "_id": {
+      "$oid": "670e533e372d656c7c21ff56"
+    },
+    "profileId": {
+      "$oid": "66ba0a780e0e429a95f81a67"
+    },
+    "content": "Can I see profiles people follow?",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-10-15T11:34:21.108Z"
+      },
+      "updatedAt": {
+        "$date": "2024-10-15T11:35:11.975Z"
+      }
+    },
+    "comments": [
+      {
+        "profileId": "66afd4fe04981829118b2365",
+        "content": "Yes you can"
+      }
+    ],
+    "retweetsData": [],
+    "upProfileIds": ["66afd4fe04981829118b2365"]
+  },
+  {
+    "_id": {
+      "$oid": "670e5380823894726b8e0ee8"
+    },
+    "profileId": {
+      "$oid": "66afd4fe04981829118b2365"
+    },
+    "content": "Waiting for a plane to AMS <3",
+    "type": "tweet",
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-10-15T11:35:27.417Z"
+      }
+    }
+  }
+]

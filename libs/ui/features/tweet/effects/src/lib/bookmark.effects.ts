@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   FeatTweetActions,
   FeatTweetBookmarkActions,
@@ -9,6 +9,7 @@ import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import {
   catchError,
+  distinctUntilKeyChanged,
   filter,
   map,
   switchMap,
@@ -153,4 +154,10 @@ export class BookmarkEffects {
       )
     )
   );
+
+  constructor() {
+    this.currentProfile$
+      .pipe(distinctUntilKeyChanged('id'))
+      .subscribe(() => this.#store.dispatch(FeatTweetBookmarkActions.getAll()));
+  }
 }

@@ -1,0 +1,35 @@
+<form class="flex flex-col" [formGroup]="farewellFormGroup">
+  <p-floatLabel class="block mt-4">
+    <input
+      class="w-full border-none shadow-none text-4xl focus:outline-none"
+      id="title"
+      type="text"
+      pInputText
+      formControlName="title" />
+    <label class="w-full text-4xl" for="title">Title</label>
+  </p-floatLabel>
+
+  <section class="relative">
+    <strong
+      uiKitSmallTextTailwindClasses
+      class="absolute right-6 bottom-6 text-xs">
+      {{ farewellFormGroup.get('title')?.value?.length }} /
+      {{ TITLE_MAX_LENGTH }}
+    </strong>
+  </section>
+
+  <feat-farewell-editor
+    class="block mt-4"
+    formControlName="content"
+    [imageStorageProvider]="saveImages()"
+    [deleteImage]="deleteImage()"
+    (editorTextChange)="editorTextValue.set($event)"></feat-farewell-editor>
+  <section class="relative">
+    <strong
+      uiKitSmallTextTailwindClasses
+      class="absolute right-6 bottom-6 text-xs">
+      {{ editorTextValue().length }} /
+      {{ CONTENT_MAX_LENGTH }}
+    </strong>
+  </section>
+</form>

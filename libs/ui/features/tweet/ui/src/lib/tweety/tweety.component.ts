@@ -27,6 +27,7 @@ import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
+  UiKitDeleteComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
@@ -59,6 +60,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     AccountTileComponent,
     FeatTweetActionsComponent,
     UiKitTweetButtonComponent,
+    UiKitDeleteComponent,
   ],
 })
 export class FeatTweetTweetyComponent {
@@ -82,11 +84,10 @@ export class FeatTweetTweetyComponent {
 
   tweetProfile = computed(() => {
     const tweet = this.tweet();
-    return this.#store.selectSignal(
-      selectProfileById(
-        (tweet as ReTweety).referenceProfileId ?? tweet?.profileId
-      )
-    )();
+    if (tweet) {
+      return this.#store.selectSignal(selectProfileById(tweet.profileId))();
+    }
+    return undefined;
   });
 
   retweetProfile = computed(() => {
@@ -97,7 +98,7 @@ export class FeatTweetTweetyComponent {
         selectProfileById((tweet as ReTweety).referenceProfileId)
       )();
     }
-    return null;
+    return undefined;
   });
 
   // Component logic

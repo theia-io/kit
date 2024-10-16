@@ -24,7 +24,7 @@ import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
-  NewUIItemComponent,
+  UiKitCompAnimatePingComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitTweetButtonComponent,
@@ -41,7 +41,7 @@ import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
   imports: [
     AsyncPipe,
     //
-    NewUIItemComponent,
+    UiKitCompAnimatePingComponent,
     UiCompCardComponent,
     UiCompGradientCardComponent,
     AccountTileComponent,

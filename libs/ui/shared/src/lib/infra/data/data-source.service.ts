@@ -1,10 +1,18 @@
 import { inject } from '@angular/core';
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+} from '@aws-sdk/client-s3';
+import { DBClientType } from '@kitouch/utils';
+import { from, Observable, of, throwError } from 'rxjs';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs/operators';
 import { AuthService } from '../auth/auth.service';
-import { Observable, of, throwError } from 'rxjs';
-import { DBClientType } from '@kitouch/utils';
+import { S3Service } from './s3.service';
 
 export class DataSourceService {
+  #s3Client = inject(S3Service).client;
+
   #anonymousdb$ = inject(AuthService).anonymousUser$.pipe(
     map((anonymousUser) =>
       anonymousUser?.mongoClient('mongodb-atlas').db('kitouch')
@@ -63,10 +71,10 @@ export class DataSourceService {
     );
   }
 
-  protected realmFunction$(
+  protected realmFunction$<T>(
     functionName: 'getAccountUserProfiles' | 'getSuggestionColleaguesToFollow',
     args: unknown
-  ) {
+  ): Observable<T> {
     return this.#limitedRealmFunctionsList$.pipe(
       take(1),
       switchMap((realmFunctionsList) => {
@@ -79,6 +87,40 @@ export class DataSourceService {
           () => new Error('Such realm function is not supported.')
         );
       })
+    );
+  }
+
+  protected getBucketItem(Bucket: string, Key: string) {
+    return from(
+      this.#s3Client.send(
+        new GetObjectCommand({
+          Bucket,
+          Key,
+        })
+      )
+    );
+  }
+
+  protected setBucketItem(Bucket: string, Key: string, Body: Blob) {
+    return from(
+      this.#s3Client.send(
+        new PutObjectCommand({
+          Bucket,
+          Key,
+          Body,
+        })
+      )
+    );
+  }
+
+  protected deleteBucketItem(Bucket: string, Key: string) {
+    return from(
+      this.#s3Client.send(
+        new DeleteObjectCommand({
+          Bucket,
+          Key,
+        })
+      )
     );
   }
 }

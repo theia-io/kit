@@ -3,7 +3,6 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
-  effect,
   inject,
 } from '@angular/core';
 import {
@@ -11,7 +10,7 @@ import {
   toObservable,
   toSignal,
 } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import {
   FeatSettingsExperienceAddComponent,
@@ -27,20 +26,12 @@ import {
   selectUserExperience,
 } from '@kitouch/kit-data';
 import { Experience } from '@kitouch/shared-models';
-import { NewUIItemComponent } from '@kitouch/ui-components';
+import { UiKitCompAnimatePingComponent } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
-import {
-  combineLatest,
-  filter,
-  map,
-  shareReplay,
-  switchMap,
-  throwError,
-  withLatestFrom,
-} from 'rxjs';
+import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -54,7 +45,7 @@ import {
     AccordionModule,
     ButtonModule,
     //
-    NewUIItemComponent,
+    UiKitCompAnimatePingComponent,
     FeatSettingsProfileInformationComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsExperienceShowComponent,
@@ -79,7 +70,7 @@ export class PageProfileExperienceComponent {
       )
     : throwError(
         () =>
-          'Cannot continue without profile id. likely component is user incorrectly'
+          'Cannot continue without profile id. likely component is used incorrectly'
       );
 
   profile = toSignal(this.#profile$);

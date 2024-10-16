@@ -1,0 +1,28 @@
+@if(farewell$ | async; as farewell) {
+<div class="flex flex-col editor-like">
+  <div class="text-4xl text-center">{{ farewell.title }}</div>
+
+  <div class="mt-2 text-xl p-editor-container">
+    <div
+      class="p-editor-content ql-container ql-snow"
+      [style]="{
+        border: 'none',
+        fontFamily: 'var(--font-family)'
+      }">
+      <div
+        class="ql-editor"
+        [innerHTML]="sanitizer.bypassSecurityTrustHtml(farewell.content)"></div>
+    </div>
+  </div>
+
+  @if(farewell.analytics; as analytic) {
+  <div
+    pTooltip="Times this page was viewed so far"
+    tooltipStyleClass="text-xs"
+    class="flex items-center justify-end mt-1 text-xs font-medium text-gray-400">
+    <i class="pi pi-eye mr-2"></i>
+    Viewed {{ analytic.viewed }} times
+  </div>
+  }
+</div>
+}

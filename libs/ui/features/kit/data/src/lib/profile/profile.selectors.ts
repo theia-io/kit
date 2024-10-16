@@ -47,6 +47,15 @@ export const selectProfileById = (profileIdOrAlias: string) =>
       profiles.find(({ alias }) => alias === profileIdOrAlias)
   );
 
+export const selectProfilesByIds = (profileIds: Array<Profile['id']>) =>
+  createSelector(selectProfiles, (profiles) => {
+    const profilesMap = new Map(
+      profiles.map((profile) => [profile.id, profile])
+    );
+
+    return profileIds.map((profileId) => profilesMap.get(profileId));
+  });
+
 /** 2N Get following and not following (but suggest) profiles
  * @returns [SuggestedFollowingMap, SuggestedNotFollowingMap]
  *   */

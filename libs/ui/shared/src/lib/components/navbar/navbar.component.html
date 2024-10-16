@@ -1,43 +1,53 @@
-<div routerLink="/" class="flex items-center hover:cursor-pointer">
-  <img
-    class="inline-block h-10 w-auto rounded-full mt-2"
-    [ngSrc]="uxDynamicService.logoPath()"
-    alt="Kitouch logo"
-    height="40"
-    width="40" />
+@if((mobileNavbar$ | async) === true) {
+<div class="fixed z-10 bottom-0 left-0 right-0">
+  <div class="p-2 bg-secondary flex items-center justify-center">
+    <!-- <shared-logo class="block mr-auto" /> -->
+    <a
+      class="mr-auto border-2 border-white rounded-full"
+      [routerLink]="profileUrl + '/' + profile()?.id"
+      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+      <ui-kit-comp-account-tile [picture]="profile()?.pictures?.[0]?.url" />
+    </a>
 
-  <div class="relative">
-    <p-tag
-      severity="info"
-      class="absolute -top-2 -right-12 rotate-12"
-      value="Alpha"
-      [rounded]="true" />
+    @for (item of navBarItems; track $index) { @if(item.routerLink) {
+    <a
+      [routerLink]="item.routerLink"
+      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+      <i
+        [class]="item.icon"
+        class="font-semibold px-4 py-2"
+        style="color: #94a3b8; font-size: 1.5rem"></i>
+    </a>
+    } }
 
-    <p class="ml-2">
-      <strong class="text-xl">K</strong>
-      eep
-      <strong>i</strong>
-      n
-      <strong>t</strong>
-      ouch
-    </p>
+    <button (click)="logoutHandler()" class="ml-auto p-2">
+      <i class="pi pi-sign-out mr-1"></i>
+    </button>
   </div>
 </div>
+} @else {
+<shared-logo />
 
 <p-menu
   styleClass="border-0 mt-4"
-  [model]="items()"
+  [model]="navBarItems"
   (onFocus)="onFocusHandler($event)"></p-menu>
 
 <ui-kit-tweet-button
   [iconAnimate]="false"
-  text="Tweet"
-  (click)="tweetButtonClick.emit()"
-  class="w-48 mt-4" />
+  text="Tweet thoughts!"
+  (click)="tweetButtonHandler()"
+  class="w-48 mt-6" />
+<ui-kit-tweet-button
+  icon="pi-file-edit"
+  [iconAnimate]="false"
+  text="Create farewell"
+  (click)="createFarewellHandler()"
+  class="w-48 mt-2" />
 
 <a
-  [routerLink]="profileBaseUrl() + '/' + profile()?.id"
-  routerLinkActive="underline block primeng-menu__active">
+  [routerLink]="profileUrl + '/' + profile()?.id"
+  routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
   <ui-kit-comp-card class="block mt-12">
     <ui-kit-comp-account-tile
       [primaryText]="profile()?.name ?? 'N/A'"
@@ -47,8 +57,10 @@
 
 <ui-kit-divider class="block mt-4" />
 
-<sub-navbar
+<shared-sub-navbar
+  [introducingKitFarewell]="introducingKitFarewell"
   [farewellUrl]="farewellUrl"
-  (help)="help.emit()"
-  (logout)="logout.emit()"
+  [suggestionUrl]="suggestionUrl"
+  (logout)="logoutHandler()"
   class="block mt-4" />
+}

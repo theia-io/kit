@@ -4,11 +4,28 @@
   hideTransitionOptions="0ms"
   [enableService]="false"
   [closable]="false" />
-<ui-kit-comp-new-ui-item [newlyAddedItem]="updatingProfile()">
+
+@if(currentProfile$ | async; as currentProfile) {
+
+<ui-kit-comp-animate-ping [newlyAddedItem]="updatingProfile()">
   <feat-settings-profile-information
-    [profile]="currentProfile$ | async"
+    [profile]="currentProfile"
     (updatingProfile)="updatingProfileHandler()" />
-</ui-kit-comp-new-ui-item>
+</ui-kit-comp-animate-ping>
+
+<p-messages
+  [value]="[socialsMessage()]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false" />
+<ui-kit-comp-animate-ping [newlyAddedItem]="updatingSocials()">
+  <h2 class="pl-4 text-lg font-bold">Your social networks</h2>
+  <feat-settings-socials
+    [profile]="currentProfile"
+    (savingSocials)="updatingSocialsHandler()" />
+</ui-kit-comp-animate-ping>
+}
 
 <p-messages
   [value]="[experienceMessage]"

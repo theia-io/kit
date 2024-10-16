@@ -1,17 +1,19 @@
 {
   "name": "@kitouch/follow-ui",
-  "version": "0.0.8",
+  "version": "1.0.0-beta",
   "peerDependencies": {
-    "@angular/common": "^18.0.0",
-    "@angular/core": "^18.0.0",
-    "@kitouch/kit-data": "0.0.8",
-    "@kitouch/shared-models": "0.0.8",
-    "@kitouch/ui-components": "0.0.8",
-    "@ngrx/store": "18.0.0",
+    "@angular/common": "18.2.6",
+    "@angular/core": "18.2.6",
+    "@kitouch/kit-data": "1.0.0-beta",
+    "@kitouch/shared-models": "1.0.0-beta",
+    "@kitouch/ui-components": "1.0.0-beta",
+    "@kitouch/ui-shared": "1.0.0-beta",
+    "photoswipe": "^5.4.4",
+    "@ngrx/store": "18.0.2",
     "rxjs": "~7.8.0",
-    "@angular/router": "~18.0.0",
-    "@kitouch/feat-follow-data": "0.0.8",
-    "@kitouch/ui-shared": "0.0.8"
+    "@angular/router": "18.2.6",
+    "@kitouch/feat-follow-data": "1.0.0-beta",
+    "primeng": "^17.18.1"
   },
   "sideEffects": false
 }

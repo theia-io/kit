@@ -1,34 +1,46 @@
-@if(farewells$ | async; as farewells) { @if(farewells.length) {
-<p-table [value]="(farewells$ | async) ?? []">
-  <ng-template pTemplate="header">
-    <tr>
-      <th>Title</th>
-      <th>Time</th>
-      <th>Viewed</th>
-      <th>Link</th>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="body" let-farewell>
-    <tr>
-      <td>{{ farewell.title }}</td>
-      <td>{{ farewell.timestamp?.createdAt | date : 'MMM d, h:mm a' }}</td>
-      <td>
-        <i class="pi pi-eye mr-2"></i>
-        {{ farewell.viewed }} times
-      </td>
-      <td>
-        <a
-          [routerLink]="[
-            '/' + farewellUrl + '/' + farewell.id,
-            { preview: true }
-          ]">
-          Open
-        </a>
-      </td>
-    </tr>
-  </ng-template>
-</p-table>
-} @else {
+<!-- <div class="text-4xl text-center mb-12">Your farewells</div> -->
+<!-- TODO add example on how to create good farewell -->
+
+@for (farewell of farewells$ | async; track $index) {
+<ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
+  <div class="relative block max-h-96 overflow-hidden">
+    <feat-farewell-viewv2 [farewellId]="farewell.id" [preview]="true" />
+    <div class="absolute top-80 h-16 left-0 w-full">
+      <div class="h-full w-full relative flex justify-center items-end pb-2">
+        <div class="absolute top-0 h-full w-full bg-slate-800 blur-xl"></div>
+        <div
+          class="relative z-10 flex items-center justify-center text-cyan-200">
+          <a
+            class="text-8xl hover:text-cyan-100"
+            [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
+            ...
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <ui-kit-divider class="block mt-8" />
+
+  <p class="mt-4 text-end leading-6 text-sm font-medium text-gray-500">
+    <a
+      class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
+      [routerLink]="[farewellEdit + '/' + farewell.id]">
+      Edit
+      <i class="ml-1 pi pi-file-edit"></i>
+    </a>
+
+    <a
+      class="hover:text-gray-900 hover:font-semibold"
+      [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
+      Open preview
+      <i class="ml-1 pi pi-arrow-right"></i>
+    </a>
+  </p>
+
+  <ui-kit-delete (onDelete)="onDeleteHandler(farewell, $event)" />
+</ui-kit-comp-gradient-card>
+} @empty {
 <div class="mt-4 flex flex-col justify-center items-center">
   <p>You have not created any farewells yet</p>
   <p-button
@@ -39,4 +51,17 @@
     Create Farewell
   </p-button>
 </div>
-} }
+}
+
+<p-button
+  class="fixed z-10 bottom-24 right-2 md:absolute md:-bottom-12 md:-right-20"
+  styleClass="rounded-full"
+  [routerLink]="farewellGenerate"
+  aria-label="create farewell">
+  <i
+    class="pi pi-plus p-2 duration-300 hover:rotate-180"
+    style="font-size: 1.5rem"></i>
+</p-button>
+
+<p-toast />
+<p-confirmDialog />

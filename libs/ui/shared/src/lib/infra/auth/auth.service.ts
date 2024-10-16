@@ -14,9 +14,8 @@ import {
 } from '@kitouch/kit-data';
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
-import { APP_PATH } from '../../constants';
+import { APP_PATH_STATIC_PAGES } from '../../constants';
 import { ENVIRONMENT } from '../environments';
-import { RouterEventsService } from '../router/router-events.service';
 
 @Injectable({
   providedIn: 'root',
@@ -27,11 +26,9 @@ export class AuthService {
   #router = inject(Router);
   #actions$ = inject(Actions);
   #store = inject(Store);
-  // app
-  routerEventsService = inject(RouterEventsService);
   // service
   #realmApp: Realm.App | null = null;
-  redirectUrl = `${window.location.origin}/redirect`;
+  redirectUrl = `${window.location.origin}/s/${APP_PATH_STATIC_PAGES.Redirect}`;
 
   #anonymousUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
   #realmUser$$ = new BehaviorSubject<Realm.User | undefined>(undefined);
@@ -61,7 +58,7 @@ export class AuthService {
       if (realmUser) {
         return of(realmUser);
       }
-      return from(this.#refreshUser());
+      return from(this.refreshUser());
     }),
     map(
       (user) => !!user && user.providerType !== 'anon-user'
@@ -88,7 +85,7 @@ export class AuthService {
       )
       .subscribe(() => {
         this.#realmUser$$.next(undefined);
-        this.#router.navigateByUrl('/sign-in');
+        this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`);
       });
 
     this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
@@ -137,6 +134,7 @@ export class AuthService {
     this.#realmApp = new Realm.App({
       id: this.#environment.realmAppId ?? 'application-0-gnmmqxd',
     });
+
     return this.#realmApp;
   }
 
@@ -155,51 +153,42 @@ export class AuthService {
    * somebody has sent it to him or he found on the internet, etc. )
    *  2. or Home if not exist
    */
-  googleSignIn() {
+  googleSignIn(cb?: () => void) {
     if (!this.#environment.production) {
       console.info('Google signin initiated', this.#realmApp);
     }
 
-    if (!this.#realmApp) {
-      this.init();
-    }
+    const realmApp = this.#realmApp || this.init();
 
     const credentials = Realm.Credentials.google({
       redirectUrl: this.redirectUrl,
     });
 
-    this.#realmApp
-      ?.logIn(credentials)
+    return realmApp
+      .logIn(credentials)
       .then((realmUser) => {
         this.#realmUser$$.next(realmUser);
         return this.#getAccountUserProfiles(realmUser);
       })
       .then(({ account, user, profiles }) => {
         if (!account || !user || !profiles) {
-          return this.#router.navigateByUrl('join');
+          return this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
         }
 
         this.#account$$.next(account);
         this.#user$$.next(user);
         this.#profiles$$.next(profiles);
 
-        if (!user.experiences?.length) {
-          this.#router.navigateByUrl(APP_PATH.AboutYourself);
-          return;
-        }
+        // if (!user.experiences?.length) {
+        //   this.#router.navigateByUrl(APP_PATH.AboutYourself);
+        //   return;
+        // }
 
-        /** TODO HERE WE CAN REDIRECT TO FILL IN INFORMATION PAGE */
-        this.routerEventsService.lastUrlBeforeCancelled$
-          .pipe(take(1))
-          .subscribe((urlBeforeSignIn) => {
-            console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
-            this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
-          });
-
-        return;
+        return true;
       })
       .catch((error) => {
         console.error('Error logging  in:', error);
+        return false;
       });
   }
 
@@ -219,7 +208,7 @@ export class AuthService {
    * optimized only to execute of all this flow on recently visited or
    * refreshed Web page
    */
-  async #refreshUser() {
+  async refreshUser() {
     if (!this.#realmApp) {
       this.init();
     }
@@ -258,19 +247,6 @@ export class AuthService {
     // this does 2 API requests
     // to location and to session (to create a new one token)
     await this.#realmApp?.currentUser?.refreshAccessToken();
-  }
-
-  getLoggedInAnonymousUser$() {
-    return this.anonymousUser$.pipe(
-      take(1),
-      switchMap((anonymousUser) => {
-        if (anonymousUser) {
-          return of(anonymousUser);
-        }
-        return from(this.#refreshUser());
-      }),
-      map((user) => !!user)
-    );
   }
 
   async #getAccountUserProfiles(

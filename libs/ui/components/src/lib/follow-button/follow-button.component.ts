@@ -18,7 +18,7 @@ export class FollowButtonComponent {
   alreadyFollowing = input(false);
   outlined = input(true);
   connectText = input('Connect');
-  stopConnectText = input('Stop seeing');
+  stopConnectText = input('Stop following');
 
   text = computed(() =>
     this.alreadyFollowing() ? this.stopConnectText() : this.connectText()

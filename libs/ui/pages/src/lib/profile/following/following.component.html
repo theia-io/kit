@@ -1,0 +1,48 @@
+@if(followingProfiles$ | async; as followingProfiles) {
+<p-messages
+  [value]="[
+    {
+      severity: 'info',
+      detail: 'Profiles ' + profile()?.name + ' follows'
+    }
+  ]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false" />
+
+@for (profile of followingProfiles; track $index) {
+<ui-kit-comp-card class="block w-full">
+  <div class="flex">
+    <ui-kit-comp-account-tile
+      class="grow"
+      [primaryText]="profile.name"
+      [primarySecondaryText]="profile.title"
+      [picture]="profilePicture(profile)"
+      [link]="profileUrlPath + (profile.alias ?? profile.id)" />
+
+    @if(profile.id === currentProfile()?.id) { Follows you } @else {
+    <ui-kit-follow-button
+      class="min-w-[158px]"
+      [alreadyFollowing]="currentProfileFollowingSet().has(profile.id)"
+      (click)="
+        currentProfileFollowingSet().has(profile.id)
+          ? unFollowProfileHandler(profile)
+          : followProfileHandler(profile)
+      " />
+    }
+  </div>
+</ui-kit-comp-card>
+} } @else {
+<p-messages
+  [value]="[
+    {
+      severity: 'info',
+      detail: profile()?.name + ' does not follow anyone yet'
+    }
+  ]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false" />
+}

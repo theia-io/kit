@@ -3,7 +3,6 @@ import {
   dbClientBookmarkAdapter,
   dbClientTweetAdapter,
 } from '@kitouch/feat-tweet-data';
-import { dbClientProfileAdapter } from '@kitouch/kit-data';
 import {
   Bookmark,
   Profile,
@@ -12,7 +11,11 @@ import {
   TweetyType,
 } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
-import { clientDBIdAdapter, DBClientType } from '@kitouch/utils';
+import {
+  clientDBGenerateTimestamp,
+  clientDBIdAdapter,
+  DBClientType,
+} from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { combineLatest, Observable } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
@@ -350,23 +353,16 @@ export class TweetApiService extends DataSourceService {
         db.collection('retweet').insertOne({
           tweetId: new BSON.ObjectId(tweetId),
           profileId: new BSON.ObjectId(profileId),
-          timestamp: {
-            createdAt: new Date(Date.now()),
-            updatedAt: new Date(Date.now()),
-          },
+          ...clientDBGenerateTimestamp(),
         })
       ),
       map(({ insertedId }) => insertedId.toString())
     );
   }
 
-  #updateTweet({
-    id,
-    profileId,
-    type,
-    timestamp,
-    ...tweetRest
-  }: Partial<Tweety>) {
+  #updateTweet(tweet: Partial<Tweety>) {
+    const { id, type, profileId, timestamp, ...tweetRest } = tweet;
+
     return this.db$().pipe(
       switchMap((db) => {
         const collection =

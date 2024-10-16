@@ -1,38 +1,45 @@
 <ul class="flex flex-col space-y-2">
   <li>
-    <strong class="block text-xs font-medium uppercase text-gray-400">
+    <strong
+      class="block text-xs font-extrabold uppercase underline text-gray-400">
       Farewell
     </strong>
 
     <ul class="mt-2 space-y-1">
       <li>
         <a
-          role="button"
+          uiKitSmallTextTailwindClasses
+          class="block w-full px-4 py-2"
           [routerLink]="farewellUrl()"
-          routerLinkActive="primeng-menu__active"
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <i class="pi pi-send mr-1"></i>
           All
         </a>
       </li>
 
       <li>
         <a
-          role="button"
+          (click)="onGenerateHandler()"
           [routerLink]="farewellUrl() + '/generate'"
-          routerLinkActive="primeng-menu__active"
-          pTooltip="Generate Farewell"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
-          Generate
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          pTooltip="Create farewell"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2">
+          <i class="pi pi-file-edit mr-1"></i>
+          Create
+
+          <p-button
+            class="ml-auto"
+            styleClass="rounded-full p-0"
+            [routerLink]="farewellUrl() + '/generate'"
+            aria-label="create farewell">
+            <i
+              class="pi pi-plus p-1 duration-300 hover:rotate-180"
+              style="font-size: 0.5rem"></i>
+          </p-button>
         </a>
       </li>
-
-      <!-- <li>
-                <a role="button" [routerLink]="farewells()" target="_blank" pTooltip="Write us email to info@kitouch.io"
-                    class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
-                    My farewells
-                </a>
-            </li> -->
     </ul>
   </li>
 
@@ -44,15 +51,23 @@
     <ul class="mt-2 space-y-1">
       <li>
         <a
-          role="button"
           [href]="
             'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
             environment.build
           "
           target="_blank"
           pTooltip="Write us email to info@kitouch.io"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
-          Help
+          uiKitSmallTextTailwindClasses
+          class="block w-full px-4 py-2">
+          Email us
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="introducingKitFarewell()"
+          uiKitSmallTextTailwindClasses
+          class="block w-full px-4 py-2">
+          What is KIT?
         </a>
       </li>
     </ul>
@@ -64,12 +79,31 @@
     </strong>
     <ul class="mt-2 space-y-1">
       <li>
+        <a
+          uiKitSmallTextTailwindClasses
+          class="block w-full px-4 py-2"
+          [routerLink]="suggestionUrl()"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Find colleagues
+        </a>
+      </li>
+      <li>
         <button
-          type="submit"
           (click)="logout.emit()"
-          class="block w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-500 [text-align:_inherit] hover:bg-gray-100 hover:text-gray-700">
+          uiKitSmallTextTailwindClasses
+          class="block w-full px-4 py-2">
+          <i class="pi pi-sign-out mr-1"></i>
           Logout
         </button>
+      </li>
+    </ul>
+  </li>
+
+  <li class="mt-12 block lg:hidden">
+    <ul class="mt-2 space-y-1">
+      <li>
+        <shared-static-info />
       </li>
     </ul>
   </li>

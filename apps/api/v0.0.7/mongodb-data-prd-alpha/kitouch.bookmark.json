@@ -1,0 +1,40 @@
+[
+  {
+    "_id": {
+      "$oid": "66aa58421e9c01876bfcaef7"
+    },
+    "profileIdBookmarker": {
+      "$oid": "66aa57a1667fa598a87e3e17"
+    },
+    "profileIdTweetyOwner": {
+      "$oid": "66aa57a1667fa598a87e3e17"
+    },
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-07-31T15:29:06.337Z"
+      }
+    },
+    "tweetId": {
+      "$oid": "66aa5839dcb4f2abf12a916a"
+    }
+  },
+  {
+    "_id": {
+      "$oid": "66aa98981e9c01876be073a6"
+    },
+    "profileIdBookmarker": {
+      "$oid": "66aa57a1667fa598a87e3e17"
+    },
+    "profileIdTweetyOwner": {
+      "$oid": "66aa57a1667fa598a87e3e17"
+    },
+    "timestamp": {
+      "createdAt": {
+        "$date": "2024-07-31T20:03:36.485Z"
+      }
+    },
+    "tweetId": {
+      "$oid": "66aa8f50667fa598a8d8a0d5"
+    }
+  }
+]
