@@ -1,0 +1,47 @@
+@if(profile(); as profile) {
+<feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
+  <div class="ml-auto mr-4 -mb-4" profileFollowExtension>
+    @if(!currentProfile()) {
+    <button
+      (click)="signInAndFollow(profile)"
+      type="button"
+      class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
+      <img class="inline-block h-6" src="sign-in/g-icon.png" />
+      Sign in to follow
+    </button>
+    } @else {
+    <feat-follow-unfollow-profile [profileId]="profile.id" />
+    }
+  </div>
+</feat-kit-profile-header>
+}
+
+<div class="flex flex-col items-center justify-center mt-12 mb-12 w-full">
+  <feat-farewell-viewv2
+    class="block container mx-auto"
+    [farewellId]="farewellId$ | async"
+    [preview]="preview()"
+    (profile)="profile.set($event)"
+    (farewell)="farewell.set($event)"></feat-farewell-viewv2>
+
+  @if(preview() && profile() && currentProfile() && profile()?.id ===
+  currentProfile()?.id && farewell(); as farewell) {
+  <div>
+    <button
+      pButton
+      (click)="copyToClipBoard(farewell.id)"
+      [label]="copied() ? 'Link copied' : 'Copy link'"
+      severity="success"
+      class="mt-12 mr-1">
+      @if(copied()) {
+      <i class="pi pi-check mr-1"></i>
+      } @else {
+      <i class="pi pi-copy mr-1"></i>
+      }
+    </button>
+
+    <!-- <p-button (onClick)="shareHandler()" icon="pi pi-share-alt" label="Share" severity="contrast" [raised]="true"
+      class="ml-1" /> -->
+  </div>
+  }
+</div>

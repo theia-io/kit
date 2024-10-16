@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { PageProfileExperienceComponent } from './experience/experience.component';
+import { PageProfileFollowingComponent } from './following/following.component';
 import { PageProfileTweetsComponent } from './tweets/tweets.component';
 
 export const PROFILE_ROUTES: Routes = [
@@ -15,6 +16,10 @@ export const PROFILE_ROUTES: Routes = [
       {
         path: 'experience',
         component: PageProfileExperienceComponent,
+      },
+      {
+        path: 'following',
+        component: PageProfileFollowingComponent,
       },
       {
         path: '',

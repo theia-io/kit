@@ -1,13 +1,11 @@
 import { Injectable, inject } from '@angular/core';
 import {
-  FeatReTweetActions,
   FeatTweetActions,
   FeatTweetBookmarkActions,
   TweetApiActions,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of, throwError } from 'rxjs';

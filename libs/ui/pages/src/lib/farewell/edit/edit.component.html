@@ -1,0 +1,17 @@
+@if((farewellCreator$ | async) && (farewell$ | async); as farewell) {
+<p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToAll()">
+  <ng-template pTemplate="headless">
+    <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
+      <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
+      <ui-kit-delete
+        xOffset="right-4"
+        yOffset="top-4"
+        (onDelete)="redirectToAll()" />
+
+      <feat-farewell
+        class="block grow container mx-auto p-6"
+        [farewellId]="farewell.id" />
+    </div>
+  </ng-template>
+</p-sidebar>
+} @else { Cannot find such farewell }

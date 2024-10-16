@@ -1,0 +1,77 @@
+<div class="static sm:relative w-full h-40 flex flex-col-reverse -mt-6">
+  <ng-content select="[profileEditExtension]"></ng-content>
+
+  <feat-kit-profile-background
+    class="absolute -z-10 left-0 top-0 w-full h-40"
+    [background]="profile().background" />
+
+  <div class="flex justify-start items-end">
+    <div id="profile-header">
+      <!-- TODO Migrate this profile rounded styles to directive -->
+      <a
+        class="block h-20 w-20 -mb-4 ml-4 border-2 border-white rounded-full"
+        [href]="profilePic()"
+        data-pswp-width="100"
+        data-pswp-height="100"
+        target="_blank">
+        <img
+          referrerpolicy="no-referrer"
+          class="rounded-full"
+          width="90"
+          height="80"
+          [ngSrc]="profilePic()"
+          [alt]="profile().name + 'profile picture'" />
+      </a>
+    </div>
+
+    <ng-content select="[profileFollowExtension]"></ng-content>
+  </div>
+</div>
+
+<div class="mt-6 ml-4">
+  <p
+    class="overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
+    <a class="hover:underline" [routerLink]="profileUrl + profile().id">
+      {{ profile().name }}
+    </a>
+
+    @if(profile().title) {
+    <br />
+    <span class="text-sm leading-5 font-bold text-gray-400">
+      {{ profile().title }}
+    </span>
+    }
+  </p>
+</div>
+
+<div class="mt-2">
+  @if(profile().subtitle) {
+  <p class="subtitle text-sm leading-5 font-bold text-gray-400">
+    {{ profile().subtitle }}
+  </p>
+  }
+</div>
+
+@if(profile().description) {
+<p class="mt-2 description">
+  {{ profile().description }}
+</p>
+}
+
+<div class="mt-4 flex justify-end items-center">
+  <feat-kit-profile-socials
+    class="block mr-auto"
+    [socials]="profile().socials" />
+
+  @if(profile().following?.length) {
+  <p class="text-sm font-bold">
+    <i class="pi pi-users mr-1"></i>
+    {{ profile().following?.length }}
+    <a
+      [routerLink]="profileUrl + profile().id + '/following'"
+      class="text-sm text-gray-400 hover:underline">
+      Following
+    </a>
+  </p>
+  }
+</div>

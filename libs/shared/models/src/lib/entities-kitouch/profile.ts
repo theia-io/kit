@@ -37,6 +37,7 @@ export interface Profile {
   subtitle?: string;
   description?: string;
   pictures?: Array<Picture>;
+  background?: string;
   links?: Link[];
   // meta
   followers?: Array<{ id: Profile['id'] }>;

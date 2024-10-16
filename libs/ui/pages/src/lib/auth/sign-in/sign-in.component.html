@@ -1,39 +1,34 @@
-<div class="w-full h-full flex justify-center items-center bg-[#FCFCFC]">
-  <img
-    class="max-h-[700px] w-auto float-right"
-    src="sign-in/coworking-space/4880332.jpg" />
-
-  <div class="max-w-[500px] flex flex-col justify-center items-center gap-20">
-    <!-- <section class="wrapper">
-            <div class="top">Kitouch - Keep In Touch</div>
-            <div class="bottom" aria-hidden="true">Kitouch - Keep In Touch</div>
-        </section> -->
-
-    <div class="relative">
-      <p-tag
-        icon="pi pi-info-circle"
-        severity="info"
-        class="absolute top-0 right-0 -rotate-12"
-        value="Alpha"
-        [rounded]="true" />
-
-      <div class="name">Kitouch</div>
-    </div>
-
-    <button
-      (click)="handleGoogleSignIn()"
-      type="button"
-      class="flex justify-center items-center gap-4 login-with-google-btn">
-      <img class="inline-block h-6" src="sign-in/g-icon.png" />
-      Sign in with Google
-    </button>
-
-    <blockquote class="wrapper">
-      <p>
-        Keep in Touch. "Reconnect with your former colleagues, share
-        achievements, and discover new opportunities. Your professional network,
-        streamlined"
-      </p>
-    </blockquote>
+<div class="wave-background">
+  <div>
+    <div class="wave"></div>
+    <div class="wave"></div>
+    <div class="wave"></div>
   </div>
+</div>
+
+<div class="flex flex-col">
+  <div
+    class="relative inline-block cursor-pointer"
+    (mouseover)="focusHandler()"
+    (mouseleave)="blurHandler()">
+    <p-tag
+      [@slideInOut]="kittenVisible()"
+      severity="info"
+      class="absolute -top-7 left-14"
+      value="Beta"
+      [rounded]="true" />
+
+    <img
+      [@slideInOut]="kittenVisible()"
+      class="absolute -top-7"
+      src="/logo/cat-tr-removespacebg-small.png" />
+  </div>
+
+  <button
+    (click)="handleGoogleSignIn()"
+    type="button"
+    class="z-10 flex justify-center items-center gap-4 login-with-google-btn">
+    <img class="inline-block h-6" src="sign-in/g-icon.png" />
+    Sign in with Google
+  </button>
 </div>

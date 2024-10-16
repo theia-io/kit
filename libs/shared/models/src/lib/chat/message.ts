@@ -1,4 +1,4 @@
-import { TimeStamp } from '../helpers';
+import { KitTimestamp } from '../helpers';
 
 export interface Attachments {
   type: string;
@@ -17,12 +17,12 @@ export interface Message {
   read: string;
   pinned: boolean;
   // meta
-  timestamp: TimeStamp;
+  timestamp: KitTimestamp;
 }
 
 export interface ScheduledMessage extends Message {
   scheduled: boolean;
-  scheduledTimestamp: TimeStamp;
+  scheduledTimestamp: KitTimestamp;
 }
 
 export interface DraftMessage extends Message {}

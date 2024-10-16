@@ -70,7 +70,7 @@ export class PageProfileTweetsComponent {
       )
     : throwError(
         () =>
-          'Cannot continue without profile id. likely component is user incorrectly'
+          'Cannot continue without profile id. likely component is used incorrectly'
       );
 
   profile = toSignal(this.#profile$);

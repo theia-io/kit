@@ -7,17 +7,22 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
+import { FeatFollowUnfollowProfileComponent } from '@kitouch/follow-ui';
 import {
   FeatProfileApiActions,
-  profilePicture,
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { FollowButtonComponent } from '@kitouch/ui-components';
-import { UXDynamicService } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  Device,
+  DeviceService,
+  UXDynamicService,
+} from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
-import { MenuItem } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { filter, map, shareReplay, switchMap, take } from 'rxjs';
@@ -26,7 +31,6 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
   standalone: true,
   selector: 'kit-page-profile',
   templateUrl: './profile.component.html',
-  styleUrls: ['./profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
@@ -36,13 +40,18 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
     TabMenuModule,
     ButtonModule,
     //
+    FeatKitProfileHeaderComponent,
+    FeatFollowUnfollowProfileComponent,
     FollowButtonComponent,
   ],
 })
 export class PageProfileComponent {
+  readonly settingsUrl = `/${APP_PATH.Settings}`;
+
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
   #uxDynamicService = inject(UXDynamicService);
+  #deviceService = inject(DeviceService);
 
   #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
     map((params) => params['profileIdOrAlias'])
@@ -57,24 +66,41 @@ export class PageProfileComponent {
   );
 
   profile = toSignal(this.#profile$);
-  profilePic = computed(() => profilePicture(this.profile() ?? {}));
-
-  currentProfile = toSignal(this.#store.select(selectCurrentProfile));
+  #currentProfile = toSignal(this.#store.select(selectCurrentProfile));
 
   isCurrentUserProfile = computed(
-    () => this.currentProfile()?.id === this.profile()?.id
+    () => this.#currentProfile()?.id === this.profile()?.id
   );
   isFollowing = computed(
     () =>
-      this.currentProfile()?.following?.some(
+      this.#currentProfile()?.following?.some(
         ({ id }) => id === this.profile()?.id
       ) ?? false
   );
 
-  items: MenuItem[] = [
-    { label: 'Tweets', icon: 'pi pi-inbox', routerLink: 'tweets' },
-    { label: 'Experience', icon: 'pi pi-briefcase', routerLink: 'experience' },
-  ];
+  tabMenuItems$ = this.#deviceService.device$.pipe(
+    map((device) =>
+      device === Device.Mobile
+        ? [
+            { label: '', icon: 'pi pi-inbox', routerLink: 'tweets' },
+            { label: '', icon: 'pi pi-briefcase', routerLink: 'experience' },
+            { label: '', icon: 'pi pi-users', routerLink: 'following' },
+          ]
+        : [
+            { label: 'Tweets', icon: 'pi pi-inbox', routerLink: 'tweets' },
+            {
+              label: 'Experience',
+              icon: 'pi pi-briefcase',
+              routerLink: 'experience',
+            },
+            {
+              label: 'Following',
+              icon: 'pi pi-users',
+              routerLink: 'following',
+            },
+          ]
+    )
+  );
 
   followProfileHandler(profile: Profile | undefined) {
     if (!profile) {

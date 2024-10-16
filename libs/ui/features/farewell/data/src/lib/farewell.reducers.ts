@@ -1,14 +1,23 @@
-import { Farewell } from '@kitouch/shared-models';
-import { addOrUpdate, mergeArr } from '@kitouch/utils';
+import {
+  Farewell,
+  FarewellAnalytics,
+  FarewellMedia,
+} from '@kitouch/shared-models';
+import { addOrUpdate, mergeArr, remove } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
+import { FeatFarewellMediaActions } from './farewell-media.actions';
 import { FeatFarewellActions } from './farewell.actions';
 
 export interface FeatureFarewellState {
   farewells: Array<Farewell>;
+  analytics: Array<FarewellAnalytics>;
+  media: Array<FarewellMedia>;
 }
 
 const featFarewellInitialState: FeatureFarewellState = {
   farewells: [],
+  analytics: [],
+  media: [],
 };
 
 export const featFarewellReducer = createReducer(
@@ -20,6 +29,7 @@ export const featFarewellReducer = createReducer(
   on(
     FeatFarewellActions.putFarewellSuccess,
     FeatFarewellActions.getFarewellSuccess,
+    FeatFarewellActions.createFarewellSuccess,
     (state, { farewell }) => ({
       ...state,
       farewells: addOrUpdate(farewell, state.farewells),
@@ -27,6 +37,38 @@ export const featFarewellReducer = createReducer(
   ),
   on(FeatFarewellActions.deleteFarewellSuccess, (state, { id }) => ({
     ...state,
-    farewells: state.farewells.filter((farewell) => farewell.id !== id),
+    // farewells: state.farewells.filter((farewell) => farewell.id !== id),
+    farewells: remove(id, state.farewells),
+  })),
+  /** Media */
+  on(
+    FeatFarewellMediaActions.getMediasFarewellSuccess,
+    FeatFarewellMediaActions.postMediasFarewellSuccess,
+    (state, { medias }) => ({
+      ...state,
+      media: mergeArr(medias, state.media),
+    })
+  ),
+  on(FeatFarewellMediaActions.deleteMediaFarewellSuccess, (state, { id }) => ({
+    ...state,
+    media: remove(id, state.media),
+  })),
+  /** Analytics */
+  on(FeatFarewellActions.getAllAnalyticsSuccess, (state, { analytics }) => ({
+    ...state,
+    analytics: mergeArr(analytics, state.analytics),
+  })),
+  on(
+    FeatFarewellActions.getAnalyticsFarewellSuccess,
+    FeatFarewellActions.postAnalyticsFarewellSuccess,
+    FeatFarewellActions.putAnalyticsFarewellSuccess,
+    (state, { analytics }) => ({
+      ...state,
+      analytics: addOrUpdate(analytics, state.analytics),
+    })
+  ),
+  on(FeatFarewellActions.deleteAnalyticsFarewellSuccess, (state, { id }) => ({
+    ...state,
+    analytics: remove(id, state.analytics),
   }))
 );

@@ -1,130 +1,20 @@
-<div class="w-full h-40 flex flex-col-reverse rounded-b-lg bg-cyan-200 -mt-6">
-  <div class="flex justify-start items-end">
-    <img
-      class="inline-block h-20 w-20 rounded-full -mb-4 -ml-4"
-      referrerpolicy="no-referrer"
-      [src]="profilePic()"
-      height="40"
-      width="40"
-      [alt]="profile()?.name + 'profile picture'" />
-
-    <p
-      class="ml-4 -mb-6 overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
-      {{ profile()?.name }}
-
-      @if(profile()?.title) {
-      <br />
-      <span class="text-sm leading-5 font-bold text-gray-400">
-        {{ profile()?.title }}
-      </span>
-      }
-    </p>
-
-    @if(!isCurrentUserProfile()) {
-    <div class="grow">
-      <button
-        pButton
-        (click)="
-          isFollowing()
-            ? unFollowProfileHandler(profile())
-            : followProfileHandler(profile())
-        "
-        class="float-right mr-2 -mb-6"
-        [class.min-w-32]="!isFollowing()"
-        [class.min-h-10]="isFollowing()"
-        severity="contrast">
-        @if(!isFollowing()) { Connect
-        <img
-          class="ml-2"
-          ngSrc="logo/handshake.gif"
-          [alt]="'Follow ' + profile()?.name + ' profile'"
-          width="20"
-          height="20" />
-        } @else {
-        <i class="pi pi-user-minus"></i>
-        }
-      </button>
-    </div>
-    }
+@if(profile(); as profile) {
+<feat-kit-profile-header [profile]="profile">
+  @if(!isCurrentUserProfile()) {
+  <div class="grow" profileFollowExtension>
+    <feat-follow-unfollow-profile [profileId]="profile.id" />
   </div>
-</div>
-
-<div class="mt-6">
-  @if(profile()?.subtitle) {
-  <p class="subtitle text-sm leading-5 font-bold text-gray-400">
-    {{ profile()?.subtitle }}
-  </p>
+  } @else {
+  <a
+    profileEditExtension
+    [routerLink]="settingsUrl"
+    class="absolute top-4 right-4 border-2 border-white rounded-full flex p-2"
+    severity="contrast">
+    <i class="pi pi-wrench text-xl"></i>
+  </a>
   }
-</div>
-
-@if(profile()?.description) {
-<p class="mt-2 description">
-  {{ profile()?.description }}
-</p>
+</feat-kit-profile-header>
 }
 
-<div class="mt-4 flex justify-end items-center">
-  <div class="mr-auto">
-    @if(profile()?.socials?.linkedin) {
-    <a
-      class="inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.linkedin"
-      target="_blank">
-      <i class="pi pi-linkedin" style="font-size: 1.25rem"></i>
-    </a>
-    } @if(profile()?.socials?.github) {
-    <a
-      class="ml-1 inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.github"
-      target="_blank">
-      <i class="pi pi-github" style="font-size: 1.25rem"></i>
-    </a>
-    } @if(profile()?.socials?.twitter) {
-    <a
-      class="ml-1 inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.twitter"
-      target="_blank">
-      <i class="pi pi-twitter" style="font-size: 1.25rem"></i>
-    </a>
-    } @if(profile()?.socials?.facebook) {
-    <a
-      class="ml-1 inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.facebook"
-      target="_blank">
-      <i class="pi pi-facebook" style="font-size: 1.25rem"></i>
-    </a>
-    } @if(profile()?.socials?.instagram) {
-    <a
-      class="ml-1 inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.instagram"
-      target="_blank">
-      <i class="pi pi-instagram" style="font-size: 1.25rem"></i>
-    </a>
-    } @if(profile()?.socials?.whatsapp) {
-    <a
-      class="ml-1 inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.whatsapp"
-      target="_blank">
-      <i class="pi pi-whatsapp" style="font-size: 1.25rem"></i>
-    </a>
-    } @if(profile()?.socials?.youtube) {
-    <a
-      class="ml-1 inline-block transition hover:scale-125 hover:shadow-xl"
-      [href]="profile()?.socials?.youtube"
-      target="_blank">
-      <i class="pi pi-youtube" style="font-size: 1.25rem"></i>
-    </a>
-    }
-  </div>
-
-  @if(profile()?.following?.length) {
-  <p class="text-sm font-bold">
-    <i class="pi pi-users mr-1"></i>
-    {{ profile()?.following?.length }}
-    <span class="text-sm text-gray-400">Following</span>
-  </p>
-  }
-</div>
-
-<p-tabMenu styleClass="mt-4" [model]="items" />
+<p-tabMenu styleClass="mt-4" [model]="(tabMenuItems$ | async) ?? []" />
 <router-outlet></router-outlet>

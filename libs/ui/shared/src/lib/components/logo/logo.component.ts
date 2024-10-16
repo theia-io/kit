@@ -1,19 +1,18 @@
-import { NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { TagModule } from 'primeng/tag';
 import { UXDynamicService } from '../../services';
+import { Device, DeviceService } from '../../infra';
 
 @Component({
   standalone: true,
-  selector: 'ui-shared-logo',
-  template: ` <div
-    routerLink="/"
-    class="flex items-center hover:cursor-pointer"
-  >
+  selector: 'shared-logo',
+  template: `<a routerLink="/" class="flex items-center hover:cursor-pointer">
     <img
       class="inline-block h-10 w-auto rounded-full mt-2"
       [ngSrc]="uxDynamicService.logoPath()"
+      referrerpolicy="no-referrer"
       alt="Kitouch logo"
       height="40"
       width="40"
@@ -23,14 +22,17 @@ import { UXDynamicService } from '../../services';
       <p-tag
         severity="info"
         class="absolute -top-2 -right-12 rotate-12"
-        value="Alpha"
+        value="Beta"
         [rounded]="true"
       />
 
+      @if((deviceService.device$ | async) !== devices.Mobile) {
       <p class="ml-2">{{ logoText() }}</p>
+      }
     </div>
-  </div>`,
+  </a>`,
   imports: [
+    AsyncPipe,
     RouterModule,
     NgOptimizedImage,
     //
@@ -41,4 +43,7 @@ export class UiLogoComponent {
   logoText = input('Keep in touch');
 
   uxDynamicService = inject(UXDynamicService);
+  deviceService = inject(DeviceService);
+
+  devices = Device;
 }
