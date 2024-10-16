@@ -31,7 +31,7 @@
 <div class="mt-6 ml-4">
   <p
     class="overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
-    <a class="hover:underline" [routerLink]="profileUrl + '/' + profile().id">
+    <a class="hover:underline" [routerLink]="profileUrl + profile().id">
       {{ profile().name }}
     </a>
 
@@ -67,7 +67,11 @@
   <p class="text-sm font-bold">
     <i class="pi pi-users mr-1"></i>
     {{ profile().following?.length }}
-    <span class="text-sm text-gray-400">Following</span>
+    <a
+      [routerLink]="profileUrl + profile().id + '/following'"
+      class="text-sm text-gray-400 hover:underline">
+      Following
+    </a>
   </p>
   }
 </div>

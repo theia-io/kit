@@ -76,6 +76,7 @@ export class PageProfileComponent {
   tabMenuItems: MenuItem[] = [
     { label: 'Tweets', icon: 'pi pi-inbox', routerLink: 'tweets' },
     { label: 'Experience', icon: 'pi pi-briefcase', routerLink: 'experience' },
+    { label: 'Following', icon: 'pi pi-users', routerLink: 'following' },
   ];
 
   followProfileHandler(profile: Profile | undefined) {

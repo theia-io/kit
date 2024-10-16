@@ -34,7 +34,7 @@ export class FeatKitProfileHeaderComponent implements AfterViewInit {
 
   #photoService = inject(PhotoService);
 
-  readonly profileUrl = `/${APP_PATH.Profile}`;
+  readonly profileUrl = `/${APP_PATH.Profile}/`;
 
   ngAfterViewInit(): void {
     this.#photoService.initializeGallery({

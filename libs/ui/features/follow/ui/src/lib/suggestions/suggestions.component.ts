@@ -8,7 +8,6 @@ import {
 import { RouterModule } from '@angular/router';
 import { selectColleaguesProfilesSuggestions } from '@kitouch/feat-follow-data';
 import {
-  FeatProfileApiActions,
   profilePicture,
   selectCurrentProfile,
   selectFollowingAndNotProfilesMap,
@@ -21,15 +20,8 @@ import {
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
-import {
-  combineLatest,
-  filter,
-  map,
-  Observable,
-  shareReplay,
-  switchMap,
-  take,
-} from 'rxjs';
+import { combineLatest, map, Observable, shareReplay, switchMap } from 'rxjs';
+import { followerHandlerFn } from '../follow-unfollow-profile/follow-unfollow-profile.component';
 import { FeatFollowProfileCardComponent } from '../profile-card/profile-card.component';
 
 interface FeatFollowSuggestionsComponentConfig {
@@ -73,6 +65,7 @@ export class FeatFollowSuggestionsComponent {
   readonly settingsPageUrl = APP_PATH.Settings;
   readonly profileUrlPath = APP_PATH.Profile;
   readonly profilePicture = profilePicture;
+  #followerHandlerFn = followerHandlerFn();
 
   suggestedExColleaguesProfilesConfigured$: Observable<
     FeatFollowSuggestedProfile[]
@@ -125,39 +118,10 @@ export class FeatFollowSuggestionsComponent {
   );
 
   followProfileHandler(profile: Profile) {
-    this.#store
-      .select(selectCurrentProfile)
-      .pipe(filter(Boolean), take(1))
-      .subscribe((currentProfile) => {
-        this.#store.dispatch(
-          FeatProfileApiActions.updateProfile({
-            profile: {
-              ...currentProfile,
-              following: [
-                ...(currentProfile.following ?? []),
-                { id: profile.id },
-              ],
-            },
-          })
-        );
-      });
+    this.#followerHandlerFn(profile.id, true);
   }
 
   unFollowProfileHandler(profile: Profile) {
-    this.#store
-      .select(selectCurrentProfile)
-      .pipe(filter(Boolean), take(1))
-      .subscribe((currentProfile) => {
-        this.#store.dispatch(
-          FeatProfileApiActions.updateProfile({
-            profile: {
-              ...currentProfile,
-              following: currentProfile.following?.filter(
-                ({ id }) => id !== profile.id
-              ),
-            },
-          })
-        );
-      });
+    this.#followerHandlerFn(profile.id, false);
   }
 }

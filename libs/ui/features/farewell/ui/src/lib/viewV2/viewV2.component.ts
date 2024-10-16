@@ -14,7 +14,7 @@ import {
   FeatFarewellActions,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
-import { selectCurrentProfile } from '@kitouch/kit-data';
+import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { DeviceService, PhotoService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
@@ -71,7 +71,11 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
     this.farewell$
       .pipe(
         takeUntilDestroyed(),
-        map(({ profile }) => profile),
+        switchMap(({ profile: farewellSavedProfile }) =>
+          this.#store
+            .select(selectProfileById(farewellSavedProfile.id))
+            .pipe(map((profile) => profile ?? farewellSavedProfile))
+        ),
         distinctUntilKeyChanged('id')
       )
       .subscribe((profile) => this.profile.emit(profile));
