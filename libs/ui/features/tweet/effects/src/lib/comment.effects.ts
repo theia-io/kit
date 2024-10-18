@@ -35,6 +35,7 @@ export class CommentsEffects {
               {
                 profileId: profile.id,
                 content,
+                createdAt: new Date(),
               },
               ...(tweet.comments ?? []),
             ],

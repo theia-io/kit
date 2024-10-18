@@ -50,9 +50,15 @@ export class FeatTweetTweetingComponent {
   // #messageService = inject(MessageService);
   // #snackBar = inject(MatSnackBar);
 
-  @HostListener('window:keydown.enter', ['$event'])
-  keyDownEnterHandler() {
-    this.tweetingHandle();
+  @HostListener('window:keydown', ['$event'])
+  keyDownEnterHandler(event: KeyboardEvent) {
+    if (
+      this.tweetContentControl.valid &&
+      event.key === 'Enter' &&
+      (event.metaKey || event.ctrlKey) // Check for Cmd/Ctrl key
+    ) {
+      this.tweetingHandle();
+    }
   }
 
   @ViewChild('textControl')

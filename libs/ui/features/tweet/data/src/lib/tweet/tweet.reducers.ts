@@ -61,13 +61,13 @@ export const featTweetTweetsReducer = createReducer(
           return {
             ...stateTweet,
             ...tweet,
-            ...state,
             comments: stateTweet.comments?.filter(
               (stateComment) =>
                 !_.isEqual(stateComment, { profileId, content, createdAt })
             ),
           };
         }
+
         return stateTweet;
       }),
     })

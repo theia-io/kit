@@ -37,7 +37,6 @@ import {
   map,
   shareReplay,
   switchMap,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
@@ -146,7 +145,6 @@ export class PageTweetComponent {
       (event.metaKey || event.ctrlKey) // Check for Cmd/Ctrl key
     ) {
       this.commentHandler();
-      // Your Cmd/Ctrl Enter logic here
     }
   }
 

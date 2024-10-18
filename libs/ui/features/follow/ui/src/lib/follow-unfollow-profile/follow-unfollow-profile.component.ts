@@ -49,9 +49,22 @@ export const followerHandlerFn = () => {
           return;
         }
 
-        if (currentProfile.following?.some(({ id }) => id === profileId)) {
+        if (
+          toFollow &&
+          currentProfile.following?.some(({ id }) => id === profileId)
+        ) {
           console.info(
             'You already follow this profile',
+            currentProfile.id,
+            profileId
+          );
+          return;
+        } else if (
+          !toFollow &&
+          !currentProfile.following?.some(({ id }) => id === profileId)
+        ) {
+          console.info(
+            "You don't follow this profile",
             currentProfile.id,
             profileId
           );
