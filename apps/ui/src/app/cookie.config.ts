@@ -30,7 +30,7 @@ export const cookieConfig: NgcCookieConsentConfig = {
     dismiss: 'sure',
     deny: 'Refuse cookies',
     link: 'check it out',
-    href: `${window.location.origin}/cookie`,
+    href: `${window.location.origin}/s/cookie`,
     policy: 'Cookie Policy',
   },
 };

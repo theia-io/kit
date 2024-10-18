@@ -28,7 +28,7 @@
   </div>
 </div>
 
-<div class="mt-6 ml-4">
+<div data-section="personal-information" class="mt-6 ml-4">
   <p
     class="overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
     <a class="hover:underline" [routerLink]="profileUrl + profile().id">
@@ -44,21 +44,19 @@
   </p>
 </div>
 
-<div class="mt-2">
-  @if(profile().subtitle) {
-  <p class="subtitle text-sm leading-5 font-bold text-gray-400">
-    {{ profile().subtitle }}
-  </p>
-  }
-</div>
-
-@if(profile().description) {
-<p class="mt-2 description">
+@if(profile().subtitle) {
+<p
+  data-section="subtitle"
+  class="mt-2 subtitle text-sm leading-5 font-bold text-gray-400">
+  {{ profile().subtitle }}
+</p>
+} @if(profile().description) {
+<p data-section="description" class="mt-2 description">
   {{ profile().description }}
 </p>
 }
 
-<div class="mt-4 flex justify-end items-center">
+<div data-section="socials" class="mt-4 flex justify-end items-center">
   <feat-kit-profile-socials
     class="block mr-auto"
     [socials]="profile().socials" />

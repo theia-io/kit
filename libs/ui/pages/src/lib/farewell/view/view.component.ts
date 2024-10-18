@@ -27,6 +27,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
 @Component({
   standalone: true,
   templateUrl: './view.component.html',
+  styleUrl: './view.component.scss',
   imports: [
     AsyncPipe,
     RouterModule,
