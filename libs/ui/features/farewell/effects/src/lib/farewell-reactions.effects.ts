@@ -5,10 +5,6 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { FarewellReactionsService } from './farewell-reactions.service';
 
-export const getFullS3Url = (s3Url: string, key: string) => `${s3Url}/${key}`;
-export const getImageKeyFromS3Url = (url: string, s3Url: string) =>
-  url.replace(`${s3Url}/`, '');
-
 @Injectable()
 export class FarewellReactionsEffects {
   #actions$ = inject(Actions);

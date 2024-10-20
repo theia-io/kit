@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   ClientDBFarewellAnalyticsRequest,
   ClientDBFarewellAnalyticsResponse,
@@ -13,15 +13,13 @@ import {
   FarewellStatus,
   Profile,
 } from '@kitouch/shared-models';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
+import { DataSourceService } from '@kitouch/ui-shared';
 import { clientDBGenerateTimestamp, DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellService extends DataSourceService {
-  #env = inject(ENVIRONMENT);
-
   getFarewells(profileId: string): Observable<Array<Farewell>> {
     return this.db$().pipe(
       switchMap((db) =>

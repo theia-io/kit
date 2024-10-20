@@ -1,7 +1,6 @@
 import {
   Farewell,
   FarewellAnalytics,
-  FarewellMedia,
   FarewellReaction,
 } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
@@ -47,7 +46,10 @@ export const selectFarewellFullViewById = (farewellId: string) =>
       return farewell
         ? {
             ...farewell,
-            reactions: findMediaFarewellById(farewell.id, reactions),
+            reactions: findFarewellReactionsByFarewellId(
+              farewell.id,
+              reactions
+            ),
             analytics: findAnalyticsFarewellById(farewell.id, analytics),
           }
         : undefined;
@@ -60,10 +62,10 @@ export const findFarewellById = (
   farewells: Array<Farewell>
 ) => farewells.find((farewell) => farewell.id === farewellId);
 
-export const findMediaFarewellById = (
+export const findFarewellReactionsByFarewellId = (
   farewellId: string,
-  medias: Array<FarewellMedia>
-) => medias.filter((media) => media.farewellId === farewellId);
+  reactions: Array<FarewellReaction>
+) => reactions.filter((reaction) => reaction.farewellId === farewellId);
 
 export const findAnalyticsFarewellById = (
   farewellId: string,

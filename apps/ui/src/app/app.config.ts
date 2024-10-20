@@ -9,6 +9,7 @@ import {
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import {
   FarewellEffects,
+  FarewellMediaEffects,
   FarewellReactionsEffects,
 } from '@kitouch/feat-farewell-effects';
 import { featFollowReducer } from '@kitouch/feat-follow-data';
@@ -90,6 +91,8 @@ export const appConfig: ApplicationConfig = {
       tweet: featTweetReducer,
     }),
     provideEffects([
+      // farewell
+      FarewellMediaEffects,
       FarewellReactionsEffects,
       FarewellEffects,
       // follow feat effects

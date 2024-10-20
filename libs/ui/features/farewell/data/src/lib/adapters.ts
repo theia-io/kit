@@ -49,7 +49,7 @@ export const dbClientFarewellReactionAdapter = (
   return {
     ...rest,
     farewellId: farewellId.toString(),
-    profileId: profileId?.toString(),
+    profileId: profileId?.toString() ?? null,
   };
 };
 

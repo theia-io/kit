@@ -18,6 +18,7 @@ export type DBType<T> = Omit<T, 'id'> & Realm.Services.MongoDB.Document['_id'];
 //   T,
 //   'id' | keyof KitTimestampObj
 // >;
+export type ClientDataType<T> = Omit<T, 'id' | keyof KitTimestampObj>;
 export type ClientDBRequestType<T, K = {}> = Omit<T, 'id' | keyof K> &
   K &
   KitTimestampObj;
