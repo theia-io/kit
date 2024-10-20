@@ -5,30 +5,22 @@ import {
   Component,
   inject,
   input,
-  output,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
+import { emoji } from '@kitouch/emoji';
 import {
   FarewellFullView,
   FeatFarewellActions,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
-import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { DeviceService, PhotoService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { TooltipModule } from 'primeng/tooltip';
-import {
-  delay,
-  distinctUntilKeyChanged,
-  filter,
-  map,
-  switchMap,
-  take,
-  withLatestFrom,
-} from 'rxjs';
+import { delay, filter, switchMap, take, withLatestFrom } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -39,16 +31,14 @@ import {
     NgOptimizedImage,
     //
     TooltipModule,
+    //
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellViewV2Component implements AfterViewInit {
-  farewellId = input<string>();
+  farewellId = input.required<string>();
   /** Used by creator itself to preview Farewell without analytics */
   preview = input(false);
-
-  farewell = output<FarewellFullView>();
-  profile = output<Profile>();
 
   #store = inject(Store);
   sanitizer = inject(DomSanitizer);
@@ -64,22 +54,6 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   );
 
   constructor() {
-    this.farewell$
-      .pipe(takeUntilDestroyed(), distinctUntilKeyChanged('id'))
-      .subscribe((farewell) => this.farewell.emit(farewell));
-
-    this.farewell$
-      .pipe(
-        takeUntilDestroyed(),
-        switchMap(({ profile: farewellSavedProfile }) =>
-          this.#store
-            .select(selectProfileById(farewellSavedProfile.id))
-            .pipe(map((profile) => profile ?? farewellSavedProfile))
-        ),
-        distinctUntilKeyChanged('id')
-      )
-      .subscribe((profile) => this.profile.emit(profile));
-
     this.farewell$
       .pipe(
         takeUntilDestroyed(),
@@ -100,6 +74,8 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   }
 
   ngAfterViewInit() {
+    console.log(emoji);
+
     setTimeout(async () => {
       await this.#photoService.initializeGallery({
         gallery: '#farewell-images',

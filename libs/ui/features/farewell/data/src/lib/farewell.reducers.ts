@@ -1,23 +1,23 @@
 import {
   Farewell,
   FarewellAnalytics,
-  FarewellMedia,
+  FarewellReaction,
 } from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr, remove } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
-import { FeatFarewellMediaActions } from './farewell-media.actions';
+import { FeatFarewellReactionActions } from './farewell-reaction.actions';
 import { FeatFarewellActions } from './farewell.actions';
 
 export interface FeatureFarewellState {
   farewells: Array<Farewell>;
   analytics: Array<FarewellAnalytics>;
-  media: Array<FarewellMedia>;
+  reactions: Array<FarewellReaction>;
 }
 
 const featFarewellInitialState: FeatureFarewellState = {
   farewells: [],
   analytics: [],
-  media: [],
+  reactions: [],
 };
 
 export const featFarewellReducer = createReducer(
@@ -40,19 +40,28 @@ export const featFarewellReducer = createReducer(
     // farewells: state.farewells.filter((farewell) => farewell.id !== id),
     farewells: remove(id, state.farewells),
   })),
-  /** Media */
+  /** Reactions */
   on(
-    FeatFarewellMediaActions.getMediasFarewellSuccess,
-    FeatFarewellMediaActions.postMediasFarewellSuccess,
-    (state, { medias }) => ({
+    FeatFarewellReactionActions.getReactionsFarewellSuccess,
+    (state, { reactions }) => ({
       ...state,
-      media: mergeArr(medias, state.media),
+      reactions: mergeArr(reactions, state.reactions),
     })
   ),
-  on(FeatFarewellMediaActions.deleteMediaFarewellSuccess, (state, { id }) => ({
-    ...state,
-    media: remove(id, state.media),
-  })),
+  on(
+    FeatFarewellReactionActions.postReactionFarewellSuccess,
+    (state, { reaction }) => ({
+      ...state,
+      reactions: addOrUpdate(reaction, state.reactions),
+    })
+  ),
+  on(
+    FeatFarewellReactionActions.deleteReactionFarewellSuccess,
+    (state, { id }) => ({
+      ...state,
+      reactions: remove(id, state.reactions),
+    })
+  ),
   /** Analytics */
   on(FeatFarewellActions.getAllAnalyticsSuccess, (state, { analytics }) => ({
     ...state,

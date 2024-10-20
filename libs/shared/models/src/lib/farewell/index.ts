@@ -9,16 +9,17 @@ export enum FarewellStatus {
 
 export interface FarewellAnalytics {
   id: string;
-  farewellId: string;
+  farewellId: Farewell['id'];
   viewed: number;
   timestamp: KitTimestamp;
 }
 
-export interface FarewellMedia {
+export interface FarewellReaction {
   id: string;
-  farewellId: string;
-  profileId: string;
-  url: string;
+  farewellId: Farewell['id'];
+  profileId: Profile['id'] | null;
+  meta: string;
+  content: string;
   timestamp: KitTimestamp;
 }
 

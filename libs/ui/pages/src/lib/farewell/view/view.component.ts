@@ -1,17 +1,27 @@
 import { AsyncPipe, DOCUMENT, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
-import { FeatFarewellViewV2Component } from '@kitouch/feat-farewell-ui';
+import {
+  FeatFarewellActions,
+  selectFarewellFullViewById,
+} from '@kitouch/feat-farewell-data';
+import {
+  FeatFarewellActionsComponent,
+  FeatFarewellViewV2Component,
+} from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import {
   FeatFollowSuggestionByIdComponent,
   FeatFollowUnfollowProfileComponent,
   followerHandlerFn,
 } from '@kitouch/follow-ui';
-import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
-import { Farewell, Profile } from '@kitouch/shared-models';
+import {
+  profilePicture,
+  selectCurrentProfile,
+  selectProfileById,
+} from '@kitouch/kit-data';
+import { Profile } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import {
   APP_PATH_ALLOW_ANONYMOUS,
@@ -19,10 +29,17 @@ import {
   DeviceService,
   UiLogoComponent,
 } from '@kitouch/ui-shared';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
-import { distinctUntilChanged, map, shareReplay } from 'rxjs';
+import {
+  distinctUntilChanged,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  shareReplay,
+  switchMap,
+} from 'rxjs';
 
 @Component({
   standalone: true,
@@ -37,6 +54,7 @@ import { distinctUntilChanged, map, shareReplay } from 'rxjs';
     TagModule,
     //
     FeatKitProfileHeaderComponent,
+    FeatFarewellActionsComponent,
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
     FeatFarewellViewV2Component,
@@ -59,10 +77,23 @@ export class PageFarewellViewComponent {
     map((params) => params['id']),
     shareReplay()
   );
-
-  farewell = signal<Farewell | undefined>(undefined);
-  profile = signal<Profile | undefined>(undefined);
-  profilePic = computed(() => profilePicture(this.profile()));
+  farewell$ = this.farewellId$.pipe(
+    switchMap((farewellId) =>
+      this.#store.pipe(select(selectFarewellFullViewById(farewellId)))
+    ),
+    filter(Boolean)
+  );
+  farewellProfile = toSignal(
+    this.farewell$.pipe(
+      switchMap(({ profile: farewellSavedProfile }) =>
+        this.#store
+          .select(selectProfileById(farewellSavedProfile.id))
+          .pipe(map((profile) => profile ?? farewellSavedProfile))
+      ),
+      distinctUntilKeyChanged('id')
+    )
+  );
+  farewellProfilePic = computed(() => profilePicture(this.farewellProfile()));
 
   copied = signal(false);
 
@@ -70,7 +101,7 @@ export class PageFarewellViewComponent {
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
-        ({ id }) => id === this.profile()?.id
+        ({ id }) => id === this.farewellProfile()?.id
       ) ?? false
   );
 

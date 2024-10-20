@@ -1,10 +1,8 @@
-import { FarewellMedia } from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellMediaActions = createActionGroup({
   source: 'FeatFarewellMediaActions',
   events: {
-    /** S3 */
     UploadFarewellStorageMedia: props<{
       farewellId: string;
       profileId: string;
@@ -23,26 +21,5 @@ export const FeatFarewellMediaActions = createActionGroup({
       url: string;
     }>(),
     DeleteFarewellStorageMediaFailure: props<{ message: string }>(),
-    /** MongoDB */
-    GetMediasFarewellSuccess: props<{ medias: Array<FarewellMedia> }>(),
-    GetMediasFarewellFailure: props<{ message: string }>(),
-    PostMediasFarewellSuccess: props<{
-      medias: Array<FarewellMedia>;
-    }>(),
-    PostMediasFarewellFailure: props<{ message: string }>(),
-    PutMediaFarewell: props<{
-      media: FarewellMedia;
-    }>(),
-    PutMediaFarewellSuccess: props<{
-      media: FarewellMedia;
-    }>(),
-    PutMediaFarewellFailure: props<{ message: string }>(),
-    DeleteMediaFarewell: props<{
-      id: FarewellMedia['id'];
-    }>(),
-    DeleteMediaFarewellSuccess: props<{
-      id: FarewellMedia['id'];
-    }>(),
-    DeleteMediaFarewellFailure: props<{ message: string }>(),
   },
 });

@@ -17,10 +17,11 @@
 
   @if(farewell.analytics; as analytic) {
   <div
-    pTooltip="Times this page was viewed so far"
-    tooltipStyleClass="text-xs"
     class="flex items-center justify-end mt-1 text-xs font-medium text-gray-400">
-    <i class="pi pi-eye mr-2"></i>
+    <i
+      pTooltip="Times this page was viewed so far"
+      tooltipStyleClass="text-xs"
+      class="pi pi-eye mr-2"></i>
     Viewed {{ analytic.viewed }} times
   </div>
   }

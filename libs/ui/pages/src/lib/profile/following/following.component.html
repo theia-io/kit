@@ -21,16 +21,22 @@
       [picture]="profilePicture(profile)"
       [link]="profileUrlPath + (profile.alias ?? profile.id)" />
 
-    @if(profile.id === currentProfile()?.id) { Follows you } @else {
-    <ui-kit-follow-button
-      class="min-w-[158px]"
-      [alreadyFollowing]="currentProfileFollowingSet().has(profile.id)"
-      (click)="
-        currentProfileFollowingSet().has(profile.id)
-          ? unFollowProfileHandler(profile)
-          : followProfileHandler(profile)
-      " />
-    }
+    <div class="min-w-[158px]">
+      @if(profile.id === currentProfile()?.id) {
+      <div class="flex justify-center items-center">
+        Follows you
+        <span class="ml-4 text-xl">🫂</span>
+      </div>
+      } @else {
+      <ui-kit-follow-button
+        [alreadyFollowing]="currentProfileFollowingSet().has(profile.id)"
+        (click)="
+          currentProfileFollowingSet().has(profile.id)
+            ? unFollowProfileHandler(profile)
+            : followProfileHandler(profile)
+        " />
+      }
+    </div>
   </div>
 </ui-kit-comp-card>
 } } @else {

@@ -1,0 +1,19 @@
+{
+  "name": "emoji",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/emoji/src",
+  "projectType": "library",
+  "tags": ["scope:shared"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/shared/emoji",
+        "main": "libs/shared/emoji/src/index.ts",
+        "tsConfig": "libs/shared/emoji/tsconfig.lib.json",
+        "assets": ["libs/shared/emoji/*.md"]
+      }
+    }
+  }
+}
