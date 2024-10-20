@@ -1,9 +1,16 @@
 import {
   Farewell,
   FarewellAnalytics,
-  FarewellMedia,
+  FarewellReaction,
 } from '@kitouch/shared-models';
-import { ClientDBRequestType, dbClientAdapter, DBType } from '@kitouch/utils';
+import {
+  ClientDataType,
+  clientDBGenerateTimestamp,
+  ClientDBRequestType,
+  dbClientAdapter,
+  DbClientResponseType,
+  DBType,
+} from '@kitouch/utils';
 import { BSON } from 'realm-web';
 
 /** Farewell */
@@ -16,23 +23,33 @@ export const dbClientFarewellAdapter = (
   return dbClientAdapter<Farewell>(dbObject);
 };
 
-/** Media */
-export type ClientDBFarewellMediaRequest = ClientDBRequestType<
-  FarewellMedia,
-  { farewellId: BSON.ObjectId; profileId: BSON.ObjectId }
+/** Reaction */
+export type ClientDBFarewellReactionRequest = ClientDBRequestType<
+  FarewellReaction,
+  { farewellId: BSON.ObjectId; profileId: BSON.ObjectId | null }
 >;
-export type ClientDBFarewellMediaResponse =
-  DBType<ClientDBFarewellMediaRequest>;
+export type ClientDBFarewellReactionResponse =
+  DbClientResponseType<ClientDBFarewellReactionRequest>;
 
-export const dbClientFarewellMediaAdapter = (
-  dbObject: ClientDBFarewellMediaResponse
-): FarewellMedia => {
+export const clientDbFarewellReactionAdapter = (
+  reaction: ClientDataType<FarewellReaction>
+): ClientDBFarewellReactionRequest => ({
+  ...reaction,
+  farewellId: new BSON.ObjectId(reaction.farewellId),
+  profileId: reaction.profileId ? new BSON.ObjectId(reaction.profileId) : null,
+  ...clientDBGenerateTimestamp(),
+});
+
+export const dbClientFarewellReactionAdapter = (
+  dbObject: ClientDBFarewellReactionResponse
+): FarewellReaction => {
   const { farewellId, profileId, ...rest } =
-    dbClientAdapter<FarewellMedia>(dbObject);
+    dbClientAdapter<FarewellReaction>(dbObject);
+
   return {
     ...rest,
     farewellId: farewellId.toString(),
-    profileId: profileId.toString(),
+    profileId: profileId?.toString(),
   };
 };
 

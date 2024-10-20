@@ -56,9 +56,11 @@ import {
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
+import Quill from 'quill';
 
 // import to register custom bloats
 
+Quill.debug(false);
 registerKitEditorHandlers();
 registerKitEditorLeafBloatsHandlers();
 

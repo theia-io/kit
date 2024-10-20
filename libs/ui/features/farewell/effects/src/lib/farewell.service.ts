@@ -2,27 +2,19 @@ import { inject, Injectable } from '@angular/core';
 import {
   ClientDBFarewellAnalyticsRequest,
   ClientDBFarewellAnalyticsResponse,
-  ClientDBFarewellMediaRequest,
-  ClientDBFarewellMediaResponse,
   ClientDBFarewellRequest,
   ClientDBFarewellResponse,
   dbClientFarewellAdapter,
   dbClientFarewellAnalyticsAdapter,
-  dbClientFarewellMediaAdapter,
 } from '@kitouch/feat-farewell-data';
 import {
   Farewell,
   FarewellAnalytics,
-  FarewellMedia,
   FarewellStatus,
   Profile,
 } from '@kitouch/shared-models';
 import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
-import {
-  clientDBGenerateTimestamp,
-  ClientDBRequestPartialType,
-  DBClientType,
-} from '@kitouch/utils';
+import { clientDBGenerateTimestamp, DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
@@ -102,92 +94,6 @@ export class FarewellService extends DataSourceService {
         db.collection<DBClientType<Farewell>>('farewell').deleteOne({
           _id: new BSON.ObjectId(id),
         })
-      ),
-      map(({ deletedCount }) => deletedCount > 0)
-    );
-  }
-
-  /** Media, S3 */
-  uploadFarewellMedia(key: string, media: Blob) {
-    return this.setBucketItem(this.#env.s3Config.farewellBucket, key, media);
-  }
-  /** Media, S3 */
-  deleteFarewellMedia(key: string) {
-    return this.deleteBucketItem(this.#env.s3Config.farewellBucket, key);
-  }
-
-  /** Returns medias for single farewell */
-  getMediasFarewell(farewellId: string) {
-    return this.allowAnonymousDb$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellMediaResponse>('farewell-media')
-          .find({ farewellId: new BSON.ObjectId(farewellId) })
-      ),
-      map((farewellMediasDb) =>
-        farewellMediasDb
-          ? farewellMediasDb.map(dbClientFarewellMediaAdapter)
-          : null
-      )
-    );
-  }
-
-  /** Returns medias for multiple farewells */
-  getMediasFarewells(farewellIds: Array<string>) {
-    return this.allowAnonymousDb$().pipe(
-      switchMap((db) =>
-        db.collection<ClientDBFarewellMediaResponse>('farewell-media').find({
-          farewellId: {
-            $in: farewellIds.map((farewellId) => new BSON.ObjectId(farewellId)),
-          },
-        })
-      ),
-      map((farewellsMediasDb) =>
-        farewellsMediasDb
-          ? farewellsMediasDb.map(dbClientFarewellMediaAdapter)
-          : null
-      )
-    );
-  }
-
-  postMediasFarewell(medias: Array<ClientDBRequestPartialType<FarewellMedia>>) {
-    const mediasReq: Array<ClientDBFarewellMediaRequest> = medias.map(
-      ({ farewellId, profileId, url }) => ({
-        farewellId: new BSON.ObjectId(farewellId),
-        profileId: new BSON.ObjectId(profileId),
-        url,
-        ...clientDBGenerateTimestamp(),
-      })
-    );
-
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellMediaResponse>('farewell-media')
-          .insertMany(mediasReq)
-      ),
-      map(({ insertedIds }) =>
-        insertedIds
-          ? mediasReq.map((mediasReq, idx) =>
-              dbClientFarewellMediaAdapter({
-                ...mediasReq,
-                // TODO verify that indexing is correct BEFORE implementing deleting media's
-                _id: insertedIds[idx],
-              })
-            )
-          : null
-      )
-    );
-  }
-
-  deleteMediaFarewell(id: string) {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellMediaResponse>('farewell-media')
-          .deleteOne({
-            _id: new BSON.ObjectId(id),
-          })
       ),
       map(({ deletedCount }) => deletedCount > 0)
     );

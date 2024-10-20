@@ -1,4 +1,4 @@
-@if(profile(); as profile) {
+@if(farewellProfile(); as profile) {
 <feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
   <div class="ml-auto mr-4 -mb-4" profileFollowExtension>
     @if(!currentProfile()) {
@@ -17,15 +17,18 @@
 }
 
 <div class="flex flex-col items-center justify-center mt-12 mb-12 w-full">
+  <div class="mb-4 p-2 border-solid border-2 border-l-0 border-r-0">
+    <feat-farewell-actions [farewellId]="farewellId$ | async" />
+  </div>
+
   <feat-farewell-viewv2
     class="block container mx-auto"
     [farewellId]="farewellId$ | async"
-    [preview]="preview()"
-    (profile)="profile.set($event)"
-    (farewell)="farewell.set($event)"></feat-farewell-viewv2>
+    [preview]="preview()"></feat-farewell-viewv2>
 
-  @if(preview() && profile() && currentProfile() && profile()?.id ===
-  currentProfile()?.id && farewell(); as farewell) {
+  @if(preview() && farewellProfile() && currentProfile() &&
+  farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
+  farewell) {
   <div>
     <button
       pButton

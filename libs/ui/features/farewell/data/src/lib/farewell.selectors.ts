@@ -2,12 +2,13 @@ import {
   Farewell,
   FarewellAnalytics,
   FarewellMedia,
+  FarewellReaction,
 } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureFarewellState } from './farewell.reducers';
 
 export interface FarewellFullView extends Farewell {
-  media?: Array<FarewellMedia>;
+  reactions?: Array<FarewellReaction>;
   analytics?: FarewellAnalytics;
 }
 
@@ -25,9 +26,9 @@ export const selectAnalytics = createSelector(
   (state) => state.analytics
 );
 
-export const selectMedia = createSelector(
+export const selectReactions = createSelector(
   selectFarewellState,
-  (state) => state.media
+  (state) => state.reactions
 );
 
 export const selectFarewellById = (farewellId: string) =>
@@ -39,14 +40,14 @@ export const selectFarewellFullViewById = (farewellId: string) =>
   createSelector(
     selectFarewells,
     selectAnalytics,
-    selectMedia,
-    (farewells, analytics, medias): FarewellFullView | undefined => {
+    selectReactions,
+    (farewells, analytics, reactions): FarewellFullView | undefined => {
       const farewell = findFarewellById(farewellId, farewells);
 
       return farewell
         ? {
             ...farewell,
-            media: findMediaFarewellById(farewell.id, medias),
+            reactions: findMediaFarewellById(farewell.id, reactions),
             analytics: findAnalyticsFarewellById(farewell.id, analytics),
           }
         : undefined;
