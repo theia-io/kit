@@ -18,7 +18,8 @@
     "@ngrx/store": "18.0.2",
     "photoswipe": "^5.4.4",
     "rxjs": "~7.8.0",
-    "@kitouch/feat-farewell-effects": "1.0.0-beta"
+    "@kitouch/feat-farewell-effects": "1.0.0-beta",
+    "@kitouch/emoji": "0.0.1"
   },
   "sideEffects": false
 }
