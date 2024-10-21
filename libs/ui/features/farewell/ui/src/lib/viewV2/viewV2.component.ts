@@ -8,14 +8,13 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
-import { emoji } from '@kitouch/emoji';
 import {
-  FarewellFullView,
   FeatFarewellActions,
-  selectFarewellFullViewById,
+  selectFarewellAnalyticsById,
+  selectFarewellById,
 } from '@kitouch/feat-farewell-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { Profile } from '@kitouch/shared-models';
+import { FarewellAnalytics, Profile } from '@kitouch/shared-models';
 import { DeviceService, PhotoService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
@@ -48,7 +47,13 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
   farewell$ = this.#farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellFullViewById(farewellId)))
+      this.#store.pipe(select(selectFarewellById(farewellId)))
+    ),
+    filter(Boolean)
+  );
+  farewellAnalytics$ = this.#farewellId$.pipe(
+    switchMap((farewellId) =>
+      this.#store.pipe(select(selectFarewellAnalyticsById(farewellId)))
     ),
     filter(Boolean)
   );
@@ -59,23 +64,18 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
         takeUntilDestroyed(),
         take(1),
         delay(2500),
-        switchMap(({ id }) =>
-          this.#store.pipe(
-            select(selectFarewellFullViewById(id)),
-            take(1),
-            filter(Boolean)
-          )
-        ),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
+
+        withLatestFrom(
+          this.farewellAnalytics$,
+          this.#store.pipe(select(selectCurrentProfile))
+        )
       )
-      .subscribe(([farewell, currentProfile]) =>
-        this.#visitorActions(farewell, currentProfile)
+      .subscribe(([farewell, analytics, currentProfile]) =>
+        this.#visitorActions(farewell.profile, analytics, currentProfile)
       );
   }
 
   ngAfterViewInit() {
-    console.log(emoji);
-
     setTimeout(async () => {
       await this.#photoService.initializeGallery({
         gallery: '#farewell-images',
@@ -101,32 +101,27 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   }
 
   #visitorActions(
-    farewell: FarewellFullView,
+    farewellProfile: Profile,
+    analytics: FarewellAnalytics,
     currentProfile: Profile | undefined
   ) {
     if (
       this.preview() &&
       currentProfile &&
-      farewell.profile.id === currentProfile.id
+      farewellProfile.id === currentProfile.id
     ) {
       // Only when it is current profile and its farewell we consider
       // such users real previewers
       return;
     }
 
-    if (farewell.analytics) {
-      this.#store.dispatch(
-        FeatFarewellActions.putAnalyticsFarewell({
-          analytics: {
-            ...farewell.analytics,
-            viewed: farewell.analytics.viewed + 1,
-          },
-        })
-      );
-    } else {
-      console.error(
-        '[ERROR] This should never happen and now has to be fixed manually.'
-      );
-    }
+    this.#store.dispatch(
+      FeatFarewellActions.putAnalyticsFarewell({
+        analytics: {
+          ...analytics,
+          viewed: analytics.viewed + 1,
+        },
+      })
+    );
   }
 }

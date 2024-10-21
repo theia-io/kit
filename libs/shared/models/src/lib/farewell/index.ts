@@ -18,7 +18,7 @@ export interface FarewellReaction {
   id: string;
   farewellId: Farewell['id'];
   profileId: Profile['id'] | null;
-  meta: string;
+  // meta: string;
   content: string;
   timestamp: KitTimestamp;
 }

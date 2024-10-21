@@ -35,6 +35,16 @@ export const selectFarewellById = (farewellId: string) =>
     findFarewellById(farewellId, farewells)
   );
 
+export const selectFarewellAnalyticsById = (farewellId: string) =>
+  createSelector(selectAnalytics, (analytics) =>
+    findAnalyticsFarewellById(farewellId, analytics)
+  );
+
+export const selectFarewellReactionsById = (farewellId: string) =>
+  createSelector(selectReactions, (reactions) =>
+    findFarewellReactionsByFarewellId(farewellId, reactions)
+  );
+
 export const selectFarewellFullViewById = (farewellId: string) =>
   createSelector(
     selectFarewells,

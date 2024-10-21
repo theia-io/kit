@@ -1,0 +1,70 @@
+<div class="flex gap-2 justify-end items-center">
+  <div class="flex gap-2 mr-auto">
+    @for (profileReaction of (farewellProfileReactions$ | async); track $index)
+    {
+    <div class="min-h-10 relative">
+      <p class="absolute top-1 right-0 font-bold text-xs">
+        {{ randomReaction(profileReaction[1]) }} {{ profileReaction[1].length }}
+      </p>
+      <ui-kit-comp-account-tile
+        (click)="op.toggle($event)"
+        [alt]="
+          reactionProfilesMap()?.get(profileReaction[0])?.name +
+          ' profile picture'
+        "
+        [picture]="
+          profilePicture(reactionProfilesMap()?.get(profileReaction[0]))
+        "></ui-kit-comp-account-tile>
+      <p-overlayPanel #op>
+        @if (reactionProfilesMap()?.get(profileReaction[0]); as profile) {
+        <a
+          class="font-bold hover:underline"
+          [routerLink]="profile.alias ?? profile.id">
+          @if(currentProfile()?.id === profile.id) {
+          @if(profileReaction[1].length > 1) { These are your emojis } @else {
+          This is your emoji. } } @else { See {{ profile.name }}'s profile }
+        </a>
+        } @else { Emojis left by anonym users 👤 }
+
+        <div class="flex gap-2 mt-2">
+          @for (reaction of profileReaction[1]; track innerIdx; let innerIdx =
+          $index){
+          <span
+            (click)="removeReactionHandler(reaction)"
+            class="cursor-pointer text-4xl">
+            {{ reaction.content }}
+          </span>
+          }
+        </div>
+      </p-overlayPanel>
+    </div>
+    }
+  </div>
+
+  <div>
+    @if(emojiMap.get('brown_heart'); as heart) {
+    <p-button (onClick)="reactionClickHandler(heart)" [text]="true">
+      {{ heart }}
+    </p-button>
+    } @if(emojiMap.get('clapping_hands'); as clap) {
+    <p-button (onClick)="reactionClickHandler(clap)" [text]="true">
+      {{ clap }}
+    </p-button>
+    } @if(emojiMap.get("face_with_open_mouth"); as surprise) {
+    <p-button (onClick)="reactionClickHandler(surprise)" [text]="true">
+      {{ surprise }}
+    </p-button>
+    }
+
+    <p-button
+      (onClick)="op.toggle($event)"
+      [outlined]="true"
+      styleClass="w-[50px]"
+      icon="pi pi-face-smile" />
+    <p-overlayPanel #op>
+      <emoji-mart
+        title="Kitouch"
+        (emojiClick)="overlayReactionHandler($event)"></emoji-mart>
+    </p-overlayPanel>
+  </div>
+</div>

@@ -4,7 +4,8 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   FeatFarewellActions,
-  selectFarewellFullViewById,
+  FeatFarewellReactionActions,
+  selectFarewellById,
 } from '@kitouch/feat-farewell-data';
 import {
   FeatFarewellActionsComponent,
@@ -79,7 +80,7 @@ export class PageFarewellViewComponent {
   );
   farewell$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellFullViewById(farewellId)))
+      this.#store.pipe(select(selectFarewellById(farewellId)))
     ),
     filter(Boolean)
   );
@@ -112,6 +113,9 @@ export class PageFarewellViewComponent {
         this.#store.dispatch(FeatFarewellActions.getFarewell({ id }));
         this.#store.dispatch(
           FeatFarewellActions.getAnalyticsFarewell({ farewellId: id })
+        );
+        this.#store.dispatch(
+          FeatFarewellReactionActions.getReactionsFarewell({ farewellId: id })
         );
       });
   }

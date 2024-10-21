@@ -5,10 +5,12 @@ export interface Emoji {
   key: string;
 }
 
-const emoji = emojilib;
-console.log('emoji', emoji);
+export const emoji = emojilib;
 
-export { emoji };
+export const emojiNameMap = new Map<string, string>();
+Object.entries(emoji).forEach(([emojiSymbol, names]) =>
+  names.forEach((name) => emojiNameMap.set(name, emojiSymbol))
+);
 
 // export const emojiData = Object.entries(emojilib).map(
 //   ([name, { char: emoji }]) => [name, emoji] as const,

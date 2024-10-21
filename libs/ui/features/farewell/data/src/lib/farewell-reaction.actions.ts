@@ -1,4 +1,5 @@
 import { Farewell, FarewellReaction } from '@kitouch/shared-models';
+import { ClientDataType } from '@kitouch/utils';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellReactionActions = createActionGroup({
@@ -13,7 +14,7 @@ export const FeatFarewellReactionActions = createActionGroup({
     GetReactionsFarewellFailure: props<{ message: string }>(),
     // post
     PostReactionFarewell: props<{
-      reaction: FarewellReaction;
+      reaction: ClientDataType<FarewellReaction>;
     }>(),
     PostReactionFarewellSuccess: props<{
       reaction: FarewellReaction;

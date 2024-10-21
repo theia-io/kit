@@ -19,7 +19,7 @@ export class FarewellReactionsService extends DataSourceService {
       switchMap((db) =>
         db
           .collection<ClientDBFarewellReactionResponse>('farewell-reactions')
-          .find({ farewellId: farewellId })
+          .find({ farewellId: new BSON.ObjectId(farewellId) })
       ),
       map((reactions) => reactions.map(dbClientFarewellReactionAdapter))
     );

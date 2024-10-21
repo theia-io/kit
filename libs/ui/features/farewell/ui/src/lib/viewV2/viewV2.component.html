@@ -15,7 +15,7 @@
     </div>
   </div>
 
-  @if(farewell.analytics; as analytic) {
+  @if(farewellAnalytics$ | async; as analytic) {
   <div
     class="flex items-center justify-end mt-1 text-xs font-medium text-gray-400">
     <i
