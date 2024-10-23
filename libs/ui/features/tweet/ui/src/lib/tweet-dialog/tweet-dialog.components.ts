@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgStyle } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -23,7 +23,7 @@ import { v4 as uuidv4 } from 'uuid';
   selector: 'feat-tweet-dialog',
   templateUrl: './tweet-dialog.components.html',
   imports: [
-    CommonModule,
+    NgStyle,
     ReactiveFormsModule,
     //
     DialogModule,

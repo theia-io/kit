@@ -24,10 +24,8 @@ import { Farewell, FarewellReaction, Profile } from '@kitouch/shared-models';
 import { AccountTileComponent } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
-import { timeStamp } from 'console';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { matchText } from 'quill/modules/clipboard';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 
 @Component({
@@ -64,7 +62,7 @@ export class FeatFarewellActionsComponent {
       this.#store.pipe(select(selectFarewellReactionsById(farewellId)))
     )
   );
-  farewellProfileReactions$ = this.#farewellReactions$.pipe(
+  farewellProfileReactionsMap$ = this.#farewellReactions$.pipe(
     map((reactions) => {
       const farewellProfileReactionsMap = new Map<
         Profile['id'] | null,
@@ -73,6 +71,7 @@ export class FeatFarewellActionsComponent {
 
       reactions.forEach((reaction) => {
         const profileId = reaction.profileId;
+
         const farewellProfileReactions =
           farewellProfileReactionsMap.get(profileId) ?? [];
         farewellProfileReactionsMap.set(profileId, [
@@ -85,8 +84,9 @@ export class FeatFarewellActionsComponent {
     }),
     shareReplay({ refCount: true, bufferSize: 1 })
   );
-  reactionProfilesMap = toSignal(
-    this.farewellProfileReactions$.pipe(
+
+  resolvedReactionProfilesMap = toSignal(
+    this.farewellProfileReactionsMap$.pipe(
       switchMap((farewellProfileReactions) =>
         this.#store.pipe(
           select(
@@ -99,7 +99,7 @@ export class FeatFarewellActionsComponent {
         )
       ),
       map((profiles) => {
-        const reactionProfilesMap = new Map<
+        const resolvedReactionProfilesMap = new Map<
           Profile['id'] | null,
           Profile | null
         >();
@@ -110,11 +110,11 @@ export class FeatFarewellActionsComponent {
             return;
           }
 
-          reactionProfilesMap.set(profile.id, profile);
+          resolvedReactionProfilesMap.set(profile.id, profile);
         });
 
-        reactionProfilesMap.set(null, null);
-        return reactionProfilesMap;
+        resolvedReactionProfilesMap.set(null, null);
+        return resolvedReactionProfilesMap;
       })
     )
   );
@@ -134,6 +134,7 @@ export class FeatFarewellActionsComponent {
         reaction: {
           farewellId: this.farewellId(),
           profileId: this.currentProfile()?.id ?? null,
+          profile: this.currentProfile(),
           content: emoji,
         },
       })

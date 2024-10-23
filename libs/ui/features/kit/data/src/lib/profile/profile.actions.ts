@@ -5,6 +5,7 @@ export const FeatProfileApiActions = createActionGroup({
   source: 'FeatProfileApiActions',
   events: {
     SetCurrentProfile: props<{ profile: Profile }>(),
+    /** @deprecated use FeatProfileActions.addProfiles */
     SetProfiles: props<{ profiles: Array<Profile> }>(),
     GetFollowingProfiles: props<{ profileIds: Array<Profile['id']> }>(),
     GetFollowingProfilesSuccess: props<{ profiles: Array<Profile> }>(),
@@ -18,5 +19,14 @@ export const FeatProfileApiActions = createActionGroup({
     UploadProfileBackground: props<{ id: Profile['id']; pic: Blob }>(),
     UploadProfileBackgroundSuccess: props<{ id: Profile['id']; url: string }>(),
     UploadProfileBackgroundFailure: props<{ message: string }>(),
+  },
+});
+
+export const FeatProfileActions = createActionGroup({
+  source: 'FeatProfileActions',
+  events: {
+    AddProfiles: props<{ profiles: Array<Profile> }>(),
+    /** don't override existing profiles if such exist */
+    AddProfilesSoftly: props<{ profiles: Array<Profile> }>(),
   },
 });

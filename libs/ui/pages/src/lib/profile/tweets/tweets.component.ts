@@ -6,7 +6,7 @@ import {
   inject,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   selectAllTweets,
   selectTweetsProfile,
@@ -18,15 +18,15 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
-import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
   UiCompCardComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH, APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
+import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
+import { ButtonModule } from 'primeng/button';
 import {
   combineLatest,
   filter,
@@ -43,6 +43,8 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    ButtonModule,
+    RouterModule,
     //
     UiCompCardComponent,
     FeatTweetTweetyComponent,
@@ -102,16 +104,6 @@ export class PageProfileTweetsComponent {
   tweetButtonHandler() {
     this.#router.navigate([
       { outlets: { [OUTLET_DIALOG]: APP_PATH_DIALOG.Tweet } },
-    ]);
-  }
-
-  tweetClickHandler(tweet: Tweety) {
-    this.#router.navigate([
-      '/',
-      APP_PATH.Profile,
-      tweet.profileId,
-      APP_PATH.Tweet,
-      tweet.id,
     ]);
   }
 }

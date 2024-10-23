@@ -22,7 +22,7 @@ export const addOrUpdate = <T extends { id: string }>(
   return updated ? newArrItems : [item, ...arrItems];
 };
 
-// 2*N(0)
+/** actual complexity 2N */
 export const mergeArr = <T>(
   ...arrOfArr: Array<Array<T & { id: string }>>
 ): Array<T> => {

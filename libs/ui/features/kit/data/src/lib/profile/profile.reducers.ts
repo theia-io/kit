@@ -1,7 +1,7 @@
 import { Profile } from '@kitouch/shared-models';
-import { addOrUpdate } from '@kitouch/utils';
+import { addOrUpdate, mergeArr } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
-import { FeatProfileApiActions } from './profile.actions';
+import { FeatProfileActions, FeatProfileApiActions } from './profile.actions';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureProfileState {
@@ -16,41 +16,25 @@ const featProfileInitialState: FeatureProfileState = {
   allSystemProfiles: new Map(),
 };
 
-const combineProfiles = (
-  profileArr1: Array<Profile>,
-  profileArr2: Array<Profile>
-): Array<Profile> => {
-  const combinedProfiles = new Map<string, Profile>();
-
-  profileArr1.forEach((profile) => {
-    combinedProfiles.set(profile.id, profile);
-  });
-
-  // has to be after "current" state since might have better info
-  profileArr2.forEach((profile) => {
-    combinedProfiles.set(profile.id, profile);
-  });
-
-  return [...combinedProfiles.values()];
-};
-
 export const profileReducer = createReducer(
   featProfileInitialState,
   on(FeatProfileApiActions.setCurrentProfile, (state, { profile }) => ({
     ...state,
     currentProfile: profile,
   })),
-  on(FeatProfileApiActions.setProfiles, (state, { profiles }) => ({
-    ...state,
-    profiles: combineProfiles(state.profiles || [], profiles),
-  })),
   on(
+    FeatProfileActions.addProfiles,
+    FeatProfileApiActions.setProfiles,
     FeatProfileApiActions.getFollowingProfilesSuccess,
     (state, { profiles }) => ({
       ...state,
-      profiles: combineProfiles(state.profiles || [], profiles),
+      profiles: mergeArr(state.profiles || [], profiles),
     })
   ),
+  on(FeatProfileActions.addProfilesSoftly, (state, { profiles }) => ({
+    ...state,
+    profiles: mergeArr(profiles, state.profiles || []),
+  })),
   on(FeatProfileApiActions.updateProfileSuccess, (state, { profile }) => ({
     ...state,
     currentProfile: { ...state.currentProfile, ...profile },

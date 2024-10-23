@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -5,7 +6,6 @@ import {
   ElementRef,
   inject,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
 import { selectCurrentProfile } from '@kitouch/kit-data';
@@ -18,7 +18,7 @@ import {
 import { Store } from '@ngrx/store';
 import { MenuModule } from 'primeng/menu';
 import { TagModule } from 'primeng/tag';
-import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { filter, switchMap } from 'rxjs';
 import {
   APP_PATH,
   APP_PATH_DIALOG,
@@ -26,13 +26,12 @@ import {
   NAV_ITEMS,
   OUTLET_DIALOG,
 } from '../../constants';
-import { AuthService, DeviceMediaBreakpoint, DeviceService } from '../../infra';
+import { AuthService } from '../../infra';
 import { UXDynamicService } from '../../services/ux-dynamic.service';
+import { LayoutService } from '../layout/layout.service';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from './navbar.service';
 import { SubnavComponent } from './subnav/subnav.component';
-import { AsyncPipe } from '@angular/common';
-import { LayoutService } from '../layout/layout.service';
 
 const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
 

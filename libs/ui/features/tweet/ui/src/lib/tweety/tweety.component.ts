@@ -38,13 +38,15 @@ import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { v4 as uuidv4 } from 'uuid';
 import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
+import { DialogModule } from 'primeng/dialog';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
   selector: 'feat-tweet-tweety',
   templateUrl: './tweety.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  styles: [':host { position: relative; }'],
+  styles: [':host { position: relative; cursor: pointer; }'],
   imports: [
     CommonModule,
     ReactiveFormsModule,
@@ -55,6 +57,8 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     OverlayPanelModule,
     InputTextareaModule,
     FloatLabelModule,
+    DialogModule,
+    ButtonModule,
     //
     RetweetHeaderComponent,
     AccountTileComponent,
@@ -117,6 +121,8 @@ export class FeatTweetTweetyComponent {
     return false;
   });
 
+  tweetDeleteConfirmationVisible = signal(false);
+
   tweetCanBeDeleted = computed(() => {
     const tweet = this.tweet(),
       currentProfile = this.currentProfile(),
@@ -151,6 +157,14 @@ export class FeatTweetTweetyComponent {
   @ViewChild('commentOverlayTmpl')
   commentOverlayTmpl: OverlayPanel;
 
+  @HostListener('click')
+  tweetyClickHandler() {
+    const tweet = this.tweet();
+    if (tweet) {
+      this.tweetClickHandler(tweet);
+    }
+  }
+
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
     const tweet = this.tweet();
@@ -179,7 +193,7 @@ export class FeatTweetTweetyComponent {
     ].join('/');
   }
 
-  tweetClickHandler(tweet: Tweety) {
+  tweetClickHandler(tweet: Tweety | ReTweety) {
     this.#router.navigate([this.tweetUrl(tweet)]);
   }
 

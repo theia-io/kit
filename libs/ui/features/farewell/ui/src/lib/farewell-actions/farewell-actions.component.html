@@ -1,25 +1,27 @@
 <div class="flex gap-2 justify-end items-center">
   <div class="flex gap-2 mr-auto">
-    @for (profileReaction of (farewellProfileReactions$ | async); track $index)
-    {
+    @for (profileReaction of (farewellProfileReactionsMap$ | async); track
+    $index) {
     <div class="min-h-10 relative">
       <p class="absolute top-1 right-0 font-bold text-xs">
         {{ randomReaction(profileReaction[1]) }} {{ profileReaction[1].length }}
       </p>
       <ui-kit-comp-account-tile
+        class="cursor-pointer"
         (click)="op.toggle($event)"
         [alt]="
-          reactionProfilesMap()?.get(profileReaction[0])?.name +
+          resolvedReactionProfilesMap()?.get(profileReaction[0])?.name +
           ' profile picture'
         "
         [picture]="
-          profilePicture(reactionProfilesMap()?.get(profileReaction[0]))
+          profilePicture(resolvedReactionProfilesMap()?.get(profileReaction[0]))
         "></ui-kit-comp-account-tile>
       <p-overlayPanel #op>
-        @if (reactionProfilesMap()?.get(profileReaction[0]); as profile) {
+        @if (resolvedReactionProfilesMap()?.get(profileReaction[0]); as profile)
+        {
         <a
           class="font-bold hover:underline"
-          [routerLink]="profile.alias ?? profile.id">
+          [routerLink]="profileUrlPath + (profile.alias ?? profile.id)">
           @if(currentProfile()?.id === profile.id) {
           @if(profileReaction[1].length > 1) { These are your emojis } @else {
           This is your emoji. } } @else { See {{ profile.name }}'s profile }
