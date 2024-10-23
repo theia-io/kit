@@ -1,6 +1,8 @@
 <p-dialog
   header="Tweet your thoughts!"
   [modal]="true"
+  [draggable]="false"
+  [dismissableMask]="true"
   [(visible)]="visible"
   (onHide)="onDialogFinalizeCb()"
   [style]="{ width: '25rem' }">

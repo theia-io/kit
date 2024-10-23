@@ -5,30 +5,21 @@ import {
   Component,
   inject,
   input,
-  output,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import {
-  FarewellFullView,
   FeatFarewellActions,
-  selectFarewellFullViewById,
+  selectFarewellAnalyticsById,
+  selectFarewellById,
 } from '@kitouch/feat-farewell-data';
-import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
-import { Profile } from '@kitouch/shared-models';
+import { selectCurrentProfile } from '@kitouch/kit-data';
+import { FarewellAnalytics, Profile } from '@kitouch/shared-models';
 import { DeviceService, PhotoService } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { TooltipModule } from 'primeng/tooltip';
-import {
-  delay,
-  distinctUntilKeyChanged,
-  filter,
-  map,
-  switchMap,
-  take,
-  withLatestFrom,
-} from 'rxjs';
+import { delay, filter, switchMap, take, withLatestFrom } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -39,16 +30,14 @@ import {
     NgOptimizedImage,
     //
     TooltipModule,
+    //
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellViewV2Component implements AfterViewInit {
-  farewellId = input<string>();
+  farewellId = input.required<string>();
   /** Used by creator itself to preview Farewell without analytics */
   preview = input(false);
-
-  farewell = output<FarewellFullView>();
-  profile = output<Profile>();
 
   #store = inject(Store);
   sanitizer = inject(DomSanitizer);
@@ -58,44 +47,31 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
   farewell$ = this.#farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellFullViewById(farewellId)))
+      this.#store.pipe(select(selectFarewellById(farewellId)))
+    ),
+    filter(Boolean)
+  );
+  farewellAnalytics$ = this.#farewellId$.pipe(
+    switchMap((farewellId) =>
+      this.#store.pipe(select(selectFarewellAnalyticsById(farewellId)))
     ),
     filter(Boolean)
   );
 
   constructor() {
     this.farewell$
-      .pipe(takeUntilDestroyed(), distinctUntilKeyChanged('id'))
-      .subscribe((farewell) => this.farewell.emit(farewell));
-
-    this.farewell$
-      .pipe(
-        takeUntilDestroyed(),
-        switchMap(({ profile: farewellSavedProfile }) =>
-          this.#store
-            .select(selectProfileById(farewellSavedProfile.id))
-            .pipe(map((profile) => profile ?? farewellSavedProfile))
-        ),
-        distinctUntilKeyChanged('id')
-      )
-      .subscribe((profile) => this.profile.emit(profile));
-
-    this.farewell$
       .pipe(
         takeUntilDestroyed(),
         take(1),
         delay(2500),
-        switchMap(({ id }) =>
-          this.#store.pipe(
-            select(selectFarewellFullViewById(id)),
-            take(1),
-            filter(Boolean)
-          )
-        ),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
+
+        withLatestFrom(
+          this.farewellAnalytics$,
+          this.#store.pipe(select(selectCurrentProfile))
+        )
       )
-      .subscribe(([farewell, currentProfile]) =>
-        this.#visitorActions(farewell, currentProfile)
+      .subscribe(([farewell, analytics, currentProfile]) =>
+        this.#visitorActions(farewell.profile, analytics, currentProfile)
       );
   }
 
@@ -125,32 +101,27 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   }
 
   #visitorActions(
-    farewell: FarewellFullView,
+    farewellProfile: Profile,
+    analytics: FarewellAnalytics,
     currentProfile: Profile | undefined
   ) {
     if (
       this.preview() &&
       currentProfile &&
-      farewell.profile.id === currentProfile.id
+      farewellProfile.id === currentProfile.id
     ) {
       // Only when it is current profile and its farewell we consider
       // such users real previewers
       return;
     }
 
-    if (farewell.analytics) {
-      this.#store.dispatch(
-        FeatFarewellActions.putAnalyticsFarewell({
-          analytics: {
-            ...farewell.analytics,
-            viewed: farewell.analytics.viewed + 1,
-          },
-        })
-      );
-    } else {
-      console.error(
-        '[ERROR] This should never happen and now has to be fixed manually.'
-      );
-    }
+    this.#store.dispatch(
+      FeatFarewellActions.putAnalyticsFarewell({
+        analytics: {
+          ...analytics,
+          viewed: analytics.viewed + 1,
+        },
+      })
+    );
   }
 }

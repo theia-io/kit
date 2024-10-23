@@ -1,13 +1,13 @@
 import {
   Farewell,
   FarewellAnalytics,
-  FarewellMedia,
+  FarewellReaction,
 } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureFarewellState } from './farewell.reducers';
 
 export interface FarewellFullView extends Farewell {
-  media?: Array<FarewellMedia>;
+  reactions?: Array<FarewellReaction>;
   analytics?: FarewellAnalytics;
 }
 
@@ -25,9 +25,9 @@ export const selectAnalytics = createSelector(
   (state) => state.analytics
 );
 
-export const selectMedia = createSelector(
+export const selectReactions = createSelector(
   selectFarewellState,
-  (state) => state.media
+  (state) => state.reactions
 );
 
 export const selectFarewellById = (farewellId: string) =>
@@ -35,18 +35,31 @@ export const selectFarewellById = (farewellId: string) =>
     findFarewellById(farewellId, farewells)
   );
 
+export const selectFarewellAnalyticsById = (farewellId: string) =>
+  createSelector(selectAnalytics, (analytics) =>
+    findAnalyticsFarewellById(farewellId, analytics)
+  );
+
+export const selectFarewellReactionsById = (farewellId: string) =>
+  createSelector(selectReactions, (reactions) =>
+    findFarewellReactionsByFarewellId(farewellId, reactions)
+  );
+
 export const selectFarewellFullViewById = (farewellId: string) =>
   createSelector(
     selectFarewells,
     selectAnalytics,
-    selectMedia,
-    (farewells, analytics, medias): FarewellFullView | undefined => {
+    selectReactions,
+    (farewells, analytics, reactions): FarewellFullView | undefined => {
       const farewell = findFarewellById(farewellId, farewells);
 
       return farewell
         ? {
             ...farewell,
-            media: findMediaFarewellById(farewell.id, medias),
+            reactions: findFarewellReactionsByFarewellId(
+              farewell.id,
+              reactions
+            ),
             analytics: findAnalyticsFarewellById(farewell.id, analytics),
           }
         : undefined;
@@ -59,10 +72,10 @@ export const findFarewellById = (
   farewells: Array<Farewell>
 ) => farewells.find((farewell) => farewell.id === farewellId);
 
-export const findMediaFarewellById = (
+export const findFarewellReactionsByFarewellId = (
   farewellId: string,
-  medias: Array<FarewellMedia>
-) => medias.filter((media) => media.farewellId === farewellId);
+  reactions: Array<FarewellReaction>
+) => reactions.filter((reaction) => reaction.farewellId === farewellId);
 
 export const findAnalyticsFarewellById = (
   farewellId: string,

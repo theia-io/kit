@@ -11,7 +11,8 @@
     "realm-web": "^2.0.1",
     "@ngrx/store": "18.0.2",
     "@kitouch/utils": "1.0.0-beta",
-    "@kitouch/feat-follow-data": "1.0.0-beta"
+    "@kitouch/feat-follow-data": "1.0.0-beta",
+    "@kitouch/feat-farewell-data": "1.0.0-beta"
   },
   "sideEffects": false
 }

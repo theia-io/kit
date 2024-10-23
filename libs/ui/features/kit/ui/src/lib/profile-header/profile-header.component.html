@@ -18,7 +18,7 @@
           referrerpolicy="no-referrer"
           class="rounded-full"
           width="90"
-          height="80"
+          height="90"
           [ngSrc]="profilePic()"
           [alt]="profile().name + 'profile picture'" />
       </a>
@@ -29,8 +29,7 @@
 </div>
 
 <div data-section="personal-information" class="mt-6 ml-4">
-  <p
-    class="overflow-hidden inline-block text-ellipsis whitespace-nowrap font-bold">
+  <p class="overflow-break-word font-bold">
     <a class="hover:underline" [routerLink]="profileUrl + profile().id">
       {{ profile().name }}
     </a>
@@ -47,11 +46,11 @@
 @if(profile().subtitle) {
 <p
   data-section="subtitle"
-  class="mt-2 subtitle text-sm leading-5 font-bold text-gray-400">
+  class="mt-2 subtitle text-sm leading-5 font-bold text-gray-400 overflow-break-word">
   {{ profile().subtitle }}
 </p>
 } @if(profile().description) {
-<p data-section="description" class="mt-2 description">
+<p data-section="description" class="mt-2 description overflow-break-word">
   {{ profile().description }}
 </p>
 }

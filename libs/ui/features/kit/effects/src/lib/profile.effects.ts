@@ -1,6 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+import { FeatFarewellReactionActions } from '@kitouch/feat-farewell-data';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
-import { FeatProfileApiActions } from '@kitouch/kit-data';
+import { FeatProfileActions, FeatProfileApiActions } from '@kitouch/kit-data';
+import { FarewellReaction, Profile } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
@@ -32,9 +34,46 @@ export class ProfileEffects {
   enrichProfilesFromSuggestions$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFollowActions.getSuggestionColleaguesToFollowSuccess),
-      map(({ profiles }) =>
-        FeatProfileApiActions.getFollowingProfilesSuccess({ profiles })
-      )
+      map(({ profiles }) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromFarewellReactions$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellReactionActions.getReactionsFarewellSuccess),
+      map(({ reactions }) => {
+        const profilesMap = new Map<
+          Profile['id'],
+          FarewellReaction & { profile: Profile }
+        >();
+
+        reactions.forEach((reaction) => {
+          const { profile, timestamp } = reaction;
+          if (!profile) {
+            return;
+          }
+
+          const { id } = profile;
+          const savedProfileReaction = profilesMap.get(id);
+          if (!savedProfileReaction) {
+            profilesMap.set(id, { ...reaction, profile });
+            return;
+          }
+
+          // get latest profile (= latest farewell reaction)
+          if (
+            savedProfileReaction.timestamp.createdAt.getTime() -
+              timestamp.createdAt.getTime() <
+            0
+          ) {
+            profilesMap.set(id, { ...reaction, profile });
+            return;
+          }
+        });
+
+        return [...profilesMap.values()].map(({ profile }) => profile);
+      }),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
     )
   );
 

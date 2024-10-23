@@ -14,13 +14,16 @@ export type DBClientType<T, K = {}> = Omit<T, 'id' | keyof T> &
 export type ClientType<T> = Omit<T, '_id'>; // ID - should come from T itself & { id: string };
 export type DBType<T> = Omit<T, 'id'> & Realm.Services.MongoDB.Document['_id'];
 
-export type ClientDBRequestPartialType<T> = Omit<
-  T,
-  'id' | keyof KitTimestampObj
->;
+// export type ClientDBRequestPartialType<T> = Omit<
+//   T,
+//   'id' | keyof KitTimestampObj
+// >;
+export type ClientDataType<T> = Omit<T, 'id' | keyof KitTimestampObj>;
 export type ClientDBRequestType<T, K = {}> = Omit<T, 'id' | keyof K> &
   K &
   KitTimestampObj;
+export type DbClientResponseType<T> = Omit<T, 'id'> &
+  Realm.Services.MongoDB.Document['_id'];
 
 export const clientDBGenerateTimestamp = (): KitTimestampObj => {
   const now = new Date(Date.now());

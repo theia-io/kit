@@ -41,6 +41,7 @@ import { Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import Quill from 'quill';
 import {
   debounceTime,
   delay,
@@ -59,6 +60,7 @@ import { FeatFarewellEditorComponent } from '../editor/editor.component';
 
 // import to register custom bloats
 
+Quill.debug(false);
 registerKitEditorHandlers();
 registerKitEditorLeafBloatsHandlers();
 

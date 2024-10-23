@@ -1,4 +1,4 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -7,7 +7,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   templateUrl: './account-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [CommonModule, RouterModule, NgOptimizedImage],
+  imports: [NgTemplateOutlet, RouterModule, NgOptimizedImage],
 })
 export class AccountTileComponent {
   primaryText = input<string | undefined | null>();
@@ -15,4 +15,5 @@ export class AccountTileComponent {
   secondaryText = input<string | undefined>(undefined);
   picture = input<string | undefined>(undefined);
   link = input<string | undefined>(undefined);
+  alt = input<string>();
 }
