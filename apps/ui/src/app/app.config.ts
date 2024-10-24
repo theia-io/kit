@@ -60,7 +60,7 @@ export const appConfig: ApplicationConfig = {
     // provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
 
-    //
+    // for dynamic dialog service
     importProvidersFrom(DynamicDialogModule),
 
     //
