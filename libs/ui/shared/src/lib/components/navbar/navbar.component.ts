@@ -5,6 +5,7 @@ import {
   Component,
   ElementRef,
   inject,
+  signal,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router } from '@angular/router';
@@ -16,14 +17,17 @@ import {
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
+import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
+import { SidebarModule } from 'primeng/sidebar';
 import { TagModule } from 'primeng/tag';
-import { filter, switchMap } from 'rxjs';
+import { filter, map, shareReplay, startWith, switchMap } from 'rxjs';
 import {
   APP_PATH,
   APP_PATH_DIALOG,
   APP_PATH_STATIC_PAGES,
-  NAV_ITEMS,
+  DESKTOP_NAV_ITEMS,
+  MOBILE_NAV_ITEMS,
   OUTLET_DIALOG,
 } from '../../constants';
 import { AuthService } from '../../infra';
@@ -45,6 +49,8 @@ const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
     //
     MenuModule,
     TagModule,
+    ButtonModule,
+    SidebarModule,
     /** Features */
     UiLogoComponent,
     UiCompCardComponent,
@@ -68,15 +74,24 @@ export class NavBarComponent implements AfterViewInit {
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
   readonly outletSecondary = OUTLET_DIALOG;
-  readonly navBarItems = NAV_ITEMS;
-  readonly profileUrl = APP_PATH.Profile;
+  readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly farewellUrl = APP_PATH.Farewell;
   readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   readonly suggestionUrl = APP_PATH.Suggestion;
 
   profile = this.#store.selectSignal(selectCurrentProfile);
 
+  desktopItems = DESKTOP_NAV_ITEMS;
   mobileNavbar$ = this.#layoutService.mobileNavbar$;
+  sidebarVisible = signal(false);
+  navBarItems$ = this.mobileNavbar$.pipe(
+    map((isMobile) => (isMobile ? MOBILE_NAV_ITEMS : DESKTOP_NAV_ITEMS)),
+    startWith(DESKTOP_NAV_ITEMS),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
+  );
 
   constructor() {
     this.mobileNavbar$
@@ -107,6 +122,15 @@ export class NavBarComponent implements AfterViewInit {
     this.#router.navigate([APP_PATH.Farewell, 'generate']);
   }
 
+  toggleSideBar(openOrClose?: boolean) {
+    if (openOrClose == undefined) {
+      this.sidebarVisible.update((current) => !current);
+      return;
+    }
+
+    this.sidebarVisible.set(openOrClose);
+  }
+
   async logoutHandler() {
     await this.#authService.logout();
     window.location.reload();
@@ -118,7 +142,7 @@ export class NavBarComponent implements AfterViewInit {
 
   #triggerPrimengHighlight() {
     const firstLevelRoute = getFirstRoutePath(this.#router.url);
-    const shouldInitiallyFocus = this.navBarItems.find(
+    const shouldInitiallyFocus = DESKTOP_NAV_ITEMS.find(
       (navItem) =>
         navItem.routerLink &&
         getFirstRoutePath(navItem.routerLink) === firstLevelRoute

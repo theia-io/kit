@@ -43,15 +43,15 @@ export const dbClientAdapter = <T>(
 
   if (timestamp) {
     objRest.timestamp = {
-      createdAt: timestamp.createdAt?.toString(),
-      updatedAt: timestamp.updatedAt?.toString(),
-    } as any;
+      createdAt: timestamp.createdAt,
+      updatedAt: timestamp.updatedAt,
+    };
   }
 
   return {
     ...objRest,
     id: _id.toString(),
-  } as ClientType<T>;
+  };
 };
 
 export const clientDBAdapter = <T extends { id: string }, K = {}>(

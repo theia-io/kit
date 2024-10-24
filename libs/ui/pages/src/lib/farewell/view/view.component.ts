@@ -25,23 +25,26 @@ import {
 import { Profile } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import {
+  APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
   DeviceService,
   UiLogoComponent,
 } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
+import { MenuItem } from 'primeng/api';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import {
+  combineLatest,
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   map,
+  Observable,
   shareReplay,
   switchMap,
 } from 'rxjs';
-
 @Component({
   standalone: true,
   templateUrl: './view.component.html',
@@ -53,6 +56,7 @@ import {
     //
     ButtonModule,
     TagModule,
+    BreadcrumbModule,
     //
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
@@ -90,8 +94,7 @@ export class PageFarewellViewComponent {
         this.#store
           .select(selectProfileById(farewellSavedProfile.id))
           .pipe(map((profile) => profile ?? farewellSavedProfile))
-      ),
-      distinctUntilKeyChanged('id')
+      )
     )
   );
   farewellProfilePic = computed(() => profilePicture(this.farewellProfile()));
@@ -104,6 +107,24 @@ export class PageFarewellViewComponent {
       this.currentProfile()?.following?.some(
         ({ id }) => id === this.farewellProfile()?.id
       ) ?? false
+  );
+
+  breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
+    this.#activatedRouter.url,
+    this.farewell$,
+  ]).pipe(
+    map(([_, farewell]) => [
+      {
+        label: 'Farewells',
+        routerLink: `/${APP_PATH.Farewell}`,
+        icon: 'pi pi-send mr-2',
+        iconClass: 'text-lg font-semibold',
+        styleClass: 'text-lg font-semibold',
+      },
+      {
+        label: farewell.title,
+      },
+    ])
   );
 
   constructor() {

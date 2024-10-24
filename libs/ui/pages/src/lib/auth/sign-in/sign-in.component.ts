@@ -7,11 +7,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  AuthService,
   RouterEventsService,
+  SignInGoogleComponent,
   slideInOutAnimation,
 } from '@kitouch/ui-shared';
-import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { take } from 'rxjs';
 
@@ -24,29 +23,28 @@ const ANIMATION_REPEAT = 10000;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     //
-    ButtonModule,
     TagModule,
     //
+    SignInGoogleComponent,
   ],
   animations: [slideInOutAnimation],
 })
 export class PageSignInComponent implements OnInit {
-  #authService = inject(AuthService);
   #router = inject(Router);
   #routerEventsService = inject(RouterEventsService);
 
   kittenVisibleTimeout: NodeJS.Timeout;
   kittenVisible = signal<'in' | 'out'>('out');
 
-  handleGoogleSignIn() {
-    this.#authService.googleSignIn().then(() => {
+  handleGoogleSignIn(signedIn: boolean) {
+    if (signedIn) {
       this.#routerEventsService.lastUrlBeforeCancelled$
         .pipe(take(1))
         .subscribe((urlBeforeSignIn) => {
           console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
           this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
         });
-    });
+    }
   }
 
   ngOnInit(): void {

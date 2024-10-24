@@ -8,11 +8,15 @@ import {
   NgcNoCookieLawEvent,
   NgcStatusChangeEvent,
 } from 'ngx-cookieconsent';
+// import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { Subscription } from 'rxjs';
 
 @Component({
   standalone: true,
-  imports: [RouterModule],
+  imports: [
+    RouterModule,
+    // DynamicDialogModule
+  ],
   selector: 'app-root',
   templateUrl: './app.component.html',
 })

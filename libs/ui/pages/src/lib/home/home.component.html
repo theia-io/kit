@@ -30,4 +30,12 @@
   [suggestionConfig]="{cards: true, showFollowed: true,}" />
 }
 
-<ng-template #profile></ng-template>
+<p-button
+  class="md:hidden fixed z-10 bottom-24 right-2"
+  styleClass="rounded-full p-2"
+  (onClick)="tweetButtonHandler()"
+  aria-label="create farewell">
+  <i
+    class="pi pi-plus p-2 duration-300 hover:rotate-180"
+    style="font-size: 1.5rem"></i>
+</p-button>

@@ -107,10 +107,9 @@ export class FeatFarewellActionsComponent {
         profiles.forEach((profile) => {
           if (!profile) {
             console.error('Was not able to resolve profile');
-            return;
+          } else {
+            resolvedReactionProfilesMap.set(profile.id, profile);
           }
-
-          resolvedReactionProfilesMap.set(profile.id, profile);
         });
 
         resolvedReactionProfilesMap.set(null, null);

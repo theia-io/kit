@@ -1,36 +1,71 @@
 @if((mobileNavbar$ | async) === true) {
 <div class="fixed z-20 bottom-0 left-0 right-0">
-  <div class="p-2 bg-secondary flex items-center justify-center">
-    <!-- <shared-logo class="block mr-auto" /> -->
-    <a
-      class="mr-auto border-2 border-white rounded-full"
-      [routerLink]="profileUrl + '/' + profile()?.id"
-      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+  <div class="p-2 bg-secondary flex items-center justify-between">
+    <shared-logo class="block min-w-[82px]" />
+
+    <div class="flex">
+      @for (item of (navBarItems$ | async); track $index) { @if(item.routerLink)
+      {
+      <a
+        [routerLink]="item.routerLink"
+        routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+        <i
+          [class]="item.icon"
+          class="font-semibold px-4 py-2"
+          style="color: #94a3b8; font-size: 1.5rem"></i>
+      </a>
+      } }
+    </div>
+
+    <p-button (onClick)="toggleSideBar(true)" [text]="true">
       <ui-kit-comp-account-tile [picture]="profile()?.pictures?.[0]?.url" />
+    </p-button>
+  </div>
+</div>
+
+<p-sidebar
+  [(visible)]="sidebarVisible"
+  id="sidebar"
+  (onHide)="toggleSideBar(false)"
+  appendTo="body"
+  [blockScroll]="true"
+  role="menu">
+  <div class="flex flex-col items-start text-2xl gap-1">
+    <a
+      class="p-2 w-full"
+      (click)="toggleSideBar(false)"
+      [routerLink]="profileUrl + (profile()?.alias ?? profile()?.id)"
+      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+      <i class="pi pi-user mr-1 text-xl"></i>
+      Profile
     </a>
 
-    @for (item of navBarItems; track $index) { @if(item.routerLink) {
+    @for (desktopItem of desktopItems; track $index) {
+    @if(!desktopItem.separator) {
     <a
-      [routerLink]="item.routerLink"
+      class="p-2 w-full"
+      (click)="toggleSideBar(false)"
+      [routerLink]="desktopItem.routerLink"
       routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
-      <i
-        [class]="item.icon"
-        class="font-semibold px-4 py-2"
-        style="color: #94a3b8; font-size: 1.5rem"></i>
+      <i [class]="desktopItem.icon + ' mr-1 text-xl'"></i>
+      {{ desktopItem.label }}
     </a>
     } }
 
-    <button (click)="logoutHandler()" class="ml-auto p-2">
-      <i class="pi pi-sign-out mr-1"></i>
+    <button
+      (click)="toggleSideBar(false); logoutHandler()"
+      class="p-2 w-full text-left">
+      <i class="pi pi-sign-out mr-1 text-xl"></i>
+      Logout
     </button>
   </div>
-</div>
+</p-sidebar>
 } @else {
 <shared-logo />
 
 <p-menu
   styleClass="border-0 mt-4"
-  [model]="navBarItems"
+  [model]="(navBarItems$ | async) ?? []"
   (onFocus)="onFocusHandler($event)"></p-menu>
 
 <ui-kit-tweet-button
