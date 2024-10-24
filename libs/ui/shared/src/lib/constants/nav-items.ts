@@ -35,7 +35,7 @@ export enum APP_PATH_DIALOG {
   Tweet = `tweet`,
 }
 
-export const NAV_ITEMS: Array<MenuItem> = [
+export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
   {
     label: 'Feed',
     routerLink: `/${APP_PATH.Home}`,
@@ -64,6 +64,23 @@ export const NAV_ITEMS: Array<MenuItem> = [
     label: 'Settings',
     routerLink: `/${APP_PATH.Settings}`,
     icon: 'pi pi-cog',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+];
+
+export const MOBILE_NAV_ITEMS: Array<MenuItem> = [
+  {
+    label: 'Feed',
+    routerLink: `/${APP_PATH.Home}`,
+    icon: 'pi pi-home',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+  {
+    label: 'Farewells',
+    routerLink: `/${APP_PATH.Farewell}`,
+    icon: 'pi pi-send',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },

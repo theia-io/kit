@@ -6,7 +6,11 @@ import {
 } from '@kitouch/ui-components';
 
 import { AsyncPipe } from '@angular/common';
-import { APP_PATH, APP_PATH_STATIC_PAGES, NAV_ITEMS } from '../../constants';
+import {
+  APP_PATH,
+  APP_PATH_STATIC_PAGES,
+  DESKTOP_NAV_ITEMS,
+} from '../../constants';
 import { Device, DeviceService } from '../../infra/device/device.service';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
@@ -32,7 +36,7 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   deviceService = inject(DeviceService);
   DeviceTypes = Device;
 
-  navBarItems = NAV_ITEMS.filter((navItem) => !navItem.separator);
+  navBarItems = DESKTOP_NAV_ITEMS.filter((navItem) => !navItem.separator);
   homeUrl = `/${APP_PATH.Home}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 

@@ -30,7 +30,10 @@
 
 <div data-section="personal-information" class="mt-6 ml-4">
   <p class="overflow-break-word font-bold">
-    <a class="hover:underline" [routerLink]="profileUrl + profile().id">
+    <a
+      sharedAuthorizedFeature
+      class="hover:underline"
+      [routerLink]="profileUrl + profile().id">
       {{ profile().name }}
     </a>
 
@@ -61,7 +64,7 @@
     [socials]="profile().socials" />
 
   @if(profile().following?.length) {
-  <p class="text-sm font-bold">
+  <p sharedAuthorizedFeature class="text-sm font-bold">
     <i class="pi pi-users mr-1"></i>
     {{ profile().following?.length }}
     <a

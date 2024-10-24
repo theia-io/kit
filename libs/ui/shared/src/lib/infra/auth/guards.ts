@@ -1,6 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { map, of, switchMap } from 'rxjs';
+import { map, of, switchMap, take } from 'rxjs';
 import { AuthService } from './auth.service';
 import { APP_PATH_STATIC_PAGES } from '../../constants';
 
@@ -14,6 +14,7 @@ export const onlyForNotLoggedInGuard = () => {
   const authService = inject(AuthService);
 
   return authService.loggedInWithRealmUser$.pipe(
+    take(1),
     map((isLoggedIn: boolean) => {
       if (isLoggedIn) {
         // we might want to get a last valid route in a future?
@@ -35,6 +36,7 @@ export const onlyForLoggedInGuard = () => {
   const authService = inject(AuthService);
 
   return authService.loggedInWithRealmUser$.pipe(
+    take(1),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
         return router.createUrlTree([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
@@ -54,6 +56,7 @@ export const onlyForLoggedInOrAnonymouslyLoggedInGuard = () => {
   const authService = inject(AuthService);
 
   return authService.loggedInWithRealmUser$.pipe(
+    take(1),
     switchMap(async (isLoggedIn: boolean) => {
       if (isLoggedIn) {
         return of(true);

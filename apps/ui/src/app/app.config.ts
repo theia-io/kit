@@ -1,5 +1,9 @@
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  ApplicationConfig,
+  importProvidersFrom,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import {
   provideRouter,
@@ -39,6 +43,7 @@ import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideNgcCookieConsent } from 'ngx-cookieconsent';
+import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
@@ -54,6 +59,9 @@ export const appConfig: ApplicationConfig = {
     provideAnimationsAsync(),
     // provideClientHydration(),
     provideZoneChangeDetection({ eventCoalescing: true }),
+
+    // for dynamic dialog service
+    importProvidersFrom(DynamicDialogModule),
 
     //
     {

@@ -9,6 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { Router } from '@angular/router';
 import {
   FeatTweetActions,
   TweetApiActions,
@@ -24,14 +25,19 @@ import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   DividerComponent,
-  UiKitCompAnimatePingComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
+  UiKitCompAnimatePingComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui-shared';
+import {
+  APP_PATH_DIALOG,
+  OUTLET_DIALOG,
+  TWEET_NEW_TWEET_TIMEOUT,
+} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
+import { ButtonModule } from 'primeng/button';
 import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
 
 @Component({
@@ -40,6 +46,7 @@ import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    ButtonModule,
     //
     UiKitCompAnimatePingComponent,
     UiCompCardComponent,
@@ -55,6 +62,7 @@ import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
 export class PageHomeComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
   #store = inject(Store);
+  #router = inject(Router);
   #actions = inject(Actions);
 
   homeTweets$ = this.#store.pipe(
@@ -102,5 +110,11 @@ export class PageHomeComponent implements OnInit {
     this.tweetsLoading.set(true);
     this.#reloadTweetsDisabled$$.next(true);
     this.#store.dispatch(TweetApiActions.getAll());
+  }
+
+  tweetButtonHandler() {
+    this.#router.navigate([
+      { outlets: { [OUTLET_DIALOG]: APP_PATH_DIALOG.Tweet } },
+    ]);
   }
 }

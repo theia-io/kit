@@ -8,7 +8,11 @@ import {
 } from '@angular/core';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
-import { APP_PATH, PhotoService } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  AuthorizedFeatureDirective,
+  PhotoService,
+} from '@kitouch/ui-shared';
 import PhotoSwipe from 'photoswipe';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 import { FeatKitProfileBackgroundComponent } from '../profile-background/profile-background.component';
@@ -26,6 +30,7 @@ import { RouterModule } from '@angular/router';
     //
     FeatKitProfileBackgroundComponent,
     FeatKitProfileSocialsComponent,
+    AuthorizedFeatureDirective,
   ],
 })
 export class FeatKitProfileHeaderComponent implements AfterViewInit {

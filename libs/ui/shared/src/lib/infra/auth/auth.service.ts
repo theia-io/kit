@@ -53,7 +53,6 @@ export class AuthService {
   // helpers, usually can be avoided
   /** check that the user is not logged in nor refreshed page nor having a valid token after getting to an application a while in a future (once refresh token is not valid anymore) */
   loggedInWithRealmUser$ = this.realmUser$.pipe(
-    take(1),
     switchMap((realmUser) => {
       if (realmUser) {
         return of(realmUser);
@@ -153,7 +152,7 @@ export class AuthService {
    * somebody has sent it to him or he found on the internet, etc. )
    *  2. or Home if not exist
    */
-  googleSignIn(cb?: () => void) {
+  googleSignIn() {
     if (!this.#environment.production) {
       console.info('Google signin initiated', this.#realmApp);
     }
