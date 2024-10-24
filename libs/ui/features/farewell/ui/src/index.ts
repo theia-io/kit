@@ -1,3 +1,5 @@
+export * from './lib/analytics/analytics.component';
+export * from './lib/comments/comments.component';
 export * from './lib/farewell/farewell.component';
 export * from './lib/farewell-actions/farewell-actions.component';
 export * from './lib/list/farewell-list.component';

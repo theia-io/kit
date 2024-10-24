@@ -143,12 +143,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
                     mutationsList[idx + 1]?.addedNodes?.[0]
                   )
                 ) {
-                  console.log(
-                    'An image was removed:',
-                    removedNode,
-                    mutation,
-                    mutationsList
-                  );
                   deleteImageCb(removedNode.src);
                   // Do something with the removed image element
                 }
@@ -223,11 +217,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
   onTextChangeHandler({ textValue, delta }: EditorTextChangeEvent) {
     if (!this.quillTextChangeActive()) {
-      console.log('OFF', delta);
       return;
     }
 
-    console.log('onTextChangeHandler', delta);
     this.editorTextChange.emit(textValue);
     this.actionsShow.set(false);
 
@@ -272,8 +264,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   selectionChangeHandler(event: EditorSelectionChangeEvent) {
-    console.log('selectionChangeHandler', event);
-
     const quill = this.quill();
     if (!quill) {
       console.error('Quill should be initialized by now, report this bug');
@@ -287,7 +277,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   #checkActionShow(quill: Quill, { index, length }: Range) {
-    console.log(`checkActionShow index:${index}, length:${length} `);
     if (length > 0) {
       this.actionsShow.set(true);
       this.actionsBounds.set(quill.getBounds(index, length));
@@ -295,7 +284,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   #checkSideActionShow(quill: Quill, { index, length }: Range) {
-    console.log(`checkSideActionShow index:${index}, length:${length} `);
     if (length !== 0) {
       this.sideActionsShow.set(false);
       return;

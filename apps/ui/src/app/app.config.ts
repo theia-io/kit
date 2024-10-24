@@ -12,6 +12,7 @@ import {
 } from '@angular/router';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import {
+  FarewellCommentsEffects,
   FarewellEffects,
   FarewellMediaEffects,
   FarewellReactionsEffects,
@@ -100,6 +101,7 @@ export const appConfig: ApplicationConfig = {
     }),
     provideEffects([
       // farewell
+      FarewellCommentsEffects,
       FarewellMediaEffects,
       FarewellReactionsEffects,
       FarewellEffects,

@@ -1,5 +1,9 @@
 @if((farewellCreator$ | async) && (farewell$ | async); as farewell) {
-<p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToAll()">
+<p-sidebar
+  [blockScroll]="true"
+  [visible]="true"
+  [fullScreen]="true"
+  (onHide)="redirectToAll()">
   <ng-template pTemplate="headless">
     <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
       <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />

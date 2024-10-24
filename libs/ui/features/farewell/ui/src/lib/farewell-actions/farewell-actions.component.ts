@@ -5,6 +5,7 @@ import {
   computed,
   inject,
   input,
+  output,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -13,6 +14,7 @@ import { emojiNameMap } from '@kitouch/emoji';
 import {
   FeatFarewellReactionActions,
   selectFarewellById,
+  selectFarewellCommentsById,
   selectFarewellReactionsById,
 } from '@kitouch/feat-farewell-data';
 import {
@@ -22,7 +24,7 @@ import {
 } from '@kitouch/kit-data';
 import { Farewell, FarewellReaction, Profile } from '@kitouch/shared-models';
 import { AccountTileComponent } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
+import { APP_PATH, AuthorizedFeatureDirective } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
@@ -38,6 +40,7 @@ import { filter, map, shareReplay, switchMap } from 'rxjs';
     RouterModule,
     //
     AccountTileComponent,
+    AuthorizedFeatureDirective,
     //
     PickerComponent,
     ButtonModule,
@@ -48,6 +51,8 @@ import { filter, map, shareReplay, switchMap } from 'rxjs';
 export class FeatFarewellActionsComponent {
   farewellId = input.required<Farewell['id']>();
 
+  commentsClick = output<void>();
+
   #store = inject(Store);
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
@@ -57,12 +62,29 @@ export class FeatFarewellActionsComponent {
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
-  #farewellReactions$ = this.#farewellId$.pipe(
+  farewellCommentsLength = toSignal(
+    this.#farewellId$.pipe(
+      switchMap((farewellId) =>
+        this.#store.pipe(select(selectFarewellCommentsById(farewellId)))
+      ),
+      map((comments) => comments.length)
+    ),
+    { initialValue: 0 }
+  );
+  farewellReactions$ = this.#farewellId$.pipe(
     switchMap((farewellId) =>
       this.#store.pipe(select(selectFarewellReactionsById(farewellId)))
-    )
+    ),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
   );
-  farewellProfileReactionsMap$ = this.#farewellReactions$.pipe(
+  farewellReactionsLength = toSignal(
+    this.farewellReactions$.pipe(map((reactions) => reactions.length)),
+    { initialValue: 0 }
+  );
+  farewellProfileReactionsMap$ = this.farewellReactions$.pipe(
     map((reactions) => {
       const farewellProfileReactionsMap = new Map<
         Profile['id'] | null,

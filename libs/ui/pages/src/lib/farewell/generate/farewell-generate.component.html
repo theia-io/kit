@@ -1,4 +1,8 @@
-<p-sidebar [visible]="true" [fullScreen]="true" (onHide)="redirectToLatest()">
+<p-sidebar
+  [blockScroll]="true"
+  [visible]="true"
+  [fullScreen]="true"
+  (onHide)="redirectToLatest()">
   <ng-template pTemplate="headless">
     <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
     <ui-kit-delete

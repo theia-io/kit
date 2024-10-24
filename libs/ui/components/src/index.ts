@@ -4,6 +4,7 @@ export * from './lib/animation';
 export * from './lib/button/button.component';
 export * from './lib/delete/delete.component';
 export * from './lib/card/card.component';
+export * from './lib/comment-area/comment-area.component';
 export * from './lib/card/gradient-card.component';
 export * from './lib/divider/divider.component';
 export * from './lib/follow-button/follow-button.component';

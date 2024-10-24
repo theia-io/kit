@@ -1,23 +1,27 @@
 import {
   Farewell,
   FarewellAnalytics,
+  FarewellComment,
   FarewellReaction,
 } from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr, remove } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
 import { FeatFarewellReactionActions } from './farewell-reaction.actions';
 import { FeatFarewellActions } from './farewell.actions';
+import { FeatFarewellCommentActions } from './farewell-comment.actions';
 
 export interface FeatureFarewellState {
   farewells: Array<Farewell>;
   analytics: Array<FarewellAnalytics>;
   reactions: Array<FarewellReaction>;
+  comments: Array<FarewellComment>;
 }
 
 const featFarewellInitialState: FeatureFarewellState = {
   farewells: [],
   analytics: [],
   reactions: [],
+  comments: [],
 };
 
 export const featFarewellReducer = createReducer(
@@ -60,6 +64,28 @@ export const featFarewellReducer = createReducer(
     (state, { id }) => ({
       ...state,
       reactions: remove(id, state.reactions),
+    })
+  ),
+  /** Comments */
+  on(
+    FeatFarewellCommentActions.getCommentsFarewellSuccess,
+    (state, { comments }) => ({
+      ...state,
+      comments: mergeArr(comments, state.comments),
+    })
+  ),
+  on(
+    FeatFarewellCommentActions.postCommentFarewellSuccess,
+    (state, { comment }) => ({
+      ...state,
+      comments: addOrUpdate(comment, state.comments),
+    })
+  ),
+  on(
+    FeatFarewellCommentActions.deleteCommentFarewellSuccess,
+    (state, { id }) => ({
+      ...state,
+      comments: remove(id, state.comments),
     })
   ),
   /** Analytics */
