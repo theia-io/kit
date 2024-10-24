@@ -3,6 +3,7 @@
   "version": "1.1.0-beta",
   "license": "MIT",
   "scripts": {
+    "graph": "nx graph",
     "dev": "nx run ui:serve",
     "dev:ssr": "nx run ui:serve-ssr",
     "build:dev": "nx run ui:build --configuration=development",
