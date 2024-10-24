@@ -20,20 +20,43 @@
   [model]="(breadcrumbMenuItems$ | async) ?? []" />
 }
 
-<div class="flex flex-col items-center justify-center mt-6 mb-12 w-full">
-  <div class="w-full mb-4 p-2 border-solid border-2 border-l-0 border-r-0">
-    <feat-farewell-actions [farewellId]="farewellId$ | async" />
+<div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
+  <div class="w-full p-2 border-solid border-2 border-l-0 border-r-0">
+    <feat-farewell-actions
+      [farewellId]="farewellId$ | async"
+      (commentsClick)="commentsSideBarVisibility.set(true)" />
   </div>
 
-  <feat-farewell-viewv2
-    class="block container mx-auto"
-    [farewellId]="farewellId$ | async"
-    [preview]="preview()"></feat-farewell-viewv2>
+  <div class="container mx-auto">
+    <feat-farewell-viewv2 class="grow" [farewellId]="farewellId$ | async" />
+  </div>
+
+  <div class="container mx-auto">
+    <feat-farewell-analytics
+      class="container mx-auto"
+      [farewellId]="farewellId$ | async"
+      [preview]="preview()" />
+  </div>
+
+  <div class="container mx-auto">
+    <feat-farewell-comments
+      class="block max-w-xl mx-auto"
+      [farewellId]="farewellId$ | async" />
+  </div>
+  <p-sidebar
+    [blockScroll]="true"
+    styleClass="min-w-1/2"
+    position="right"
+    [(visible)]="commentsSideBarVisibility">
+    <feat-farewell-comments
+      class="block max-w-xl mx-auto"
+      [farewellId]="farewellId$ | async" />
+  </p-sidebar>
 
   @if(preview() && farewellProfile() && currentProfile() &&
   farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
   farewell) {
-  <div>
+  <div class="mb-8">
     <button
       pButton
       (click)="copyToClipBoard(farewell.id)"

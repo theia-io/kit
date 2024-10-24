@@ -28,6 +28,11 @@ export const appRoutes: Route[] = [
       import('./kit-static.component').then((comp) => comp.KitStaticComponent),
     children: [
       {
+        path: '',
+        pathMatch: 'full',
+        redirectTo: APP_PATH_STATIC_PAGES.IntroduceKit,
+      },
+      {
         path: APP_PATH_STATIC_PAGES.SignIn,
         loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
         canActivate: [onlyForNotLoggedInGuard],

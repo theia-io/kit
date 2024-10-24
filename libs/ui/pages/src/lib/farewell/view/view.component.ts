@@ -4,11 +4,14 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   FeatFarewellActions,
+  FeatFarewellCommentActions,
   FeatFarewellReactionActions,
   selectFarewellById,
 } from '@kitouch/feat-farewell-data';
 import {
   FeatFarewellActionsComponent,
+  FeatFarewellAnalyticsComponent,
+  FeatFarewellCommentsComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
@@ -35,6 +38,7 @@ import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
+import { SidebarModule } from 'primeng/sidebar';
 import { TagModule } from 'primeng/tag';
 import {
   combineLatest,
@@ -57,12 +61,15 @@ import {
     ButtonModule,
     TagModule,
     BreadcrumbModule,
+    SidebarModule,
     //
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
     FeatFarewellViewV2Component,
+    FeatFarewellAnalyticsComponent,
+    FeatFarewellCommentsComponent,
     FeatFollowSuggestionByIdComponent,
     FeatFollowUnfollowProfileComponent,
   ],
@@ -99,8 +106,6 @@ export class PageFarewellViewComponent {
   );
   farewellProfilePic = computed(() => profilePicture(this.farewellProfile()));
 
-  copied = signal(false);
-
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
   isFollowing = computed(
     () =>
@@ -127,6 +132,9 @@ export class PageFarewellViewComponent {
     ])
   );
 
+  copied = signal(false);
+  commentsSideBarVisibility = signal(false);
+
   constructor() {
     this.farewellId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
@@ -137,6 +145,9 @@ export class PageFarewellViewComponent {
         );
         this.#store.dispatch(
           FeatFarewellReactionActions.getReactionsFarewell({ farewellId: id })
+        );
+        this.#store.dispatch(
+          FeatFarewellCommentActions.getCommentsFarewell({ farewellId: id })
         );
       });
   }

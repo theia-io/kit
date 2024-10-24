@@ -1,6 +1,7 @@
 import {
   Farewell,
   FarewellAnalytics,
+  FarewellComment,
   FarewellReaction,
 } from '@kitouch/shared-models';
 import {
@@ -45,6 +46,36 @@ export const dbClientFarewellReactionAdapter = (
 ): FarewellReaction => {
   const { farewellId, profileId, ...rest } =
     dbClientAdapter<FarewellReaction>(dbObject);
+
+  return {
+    ...rest,
+    farewellId: farewellId.toString(),
+    profileId: profileId?.toString() ?? null,
+  };
+};
+
+/** Comments */
+export type ClientDBFarewellCommentRequest = ClientDBRequestType<
+  FarewellComment,
+  { farewellId: BSON.ObjectId; profileId: BSON.ObjectId | null }
+>;
+export type ClientDBFarewellCommentResponse =
+  DbClientResponseType<ClientDBFarewellCommentRequest>;
+
+export const clientDbFarewellCommentAdapter = (
+  reaction: ClientDataType<FarewellComment>
+): ClientDBFarewellCommentRequest => ({
+  ...reaction,
+  farewellId: new BSON.ObjectId(reaction.farewellId),
+  profileId: reaction.profileId ? new BSON.ObjectId(reaction.profileId) : null,
+  ...clientDBGenerateTimestamp(),
+});
+
+export const dbClientFarewellCommentAdapter = (
+  dbObject: ClientDBFarewellCommentResponse
+): FarewellComment => {
+  const { farewellId, profileId, ...rest } =
+    dbClientAdapter<FarewellComment>(dbObject);
 
   return {
     ...rest,

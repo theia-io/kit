@@ -21,12 +21,13 @@
         {
         <a
           class="font-bold hover:underline"
+          sharedAuthorizedFeature
           [routerLink]="profileUrlPath + (profile.alias ?? profile.id)">
           @if(currentProfile()?.id === profile.id) {
           @if(profileReaction[1].length > 1) { These are your emojis } @else {
           This is your emoji. } } @else { See {{ profile.name }}'s profile }
         </a>
-        } @else { Emojis left by anonym users 👤 }
+        } @else { From anonymous users 👤 }
 
         <div class="flex gap-2 mt-2">
           @for (reaction of profileReaction[1]; track innerIdx; let innerIdx =
@@ -44,7 +45,7 @@
   </div>
 
   <div>
-    @if(emojiMap.get('brown_heart'); as heart) {
+    <!-- @if(emojiMap.get('brown_heart'); as heart) {
     <p-button (onClick)="reactionClickHandler(heart)" [text]="true">
       {{ heart }}
     </p-button>
@@ -56,17 +57,28 @@
     <p-button (onClick)="reactionClickHandler(surprise)" [text]="true">
       {{ surprise }}
     </p-button>
-    }
+    } -->
 
     <p-button
+      styleClass="p-0"
       (onClick)="op.toggle($event)"
-      [outlined]="true"
-      styleClass="w-[50px]"
+      [text]="true"
+      [label]="
+        farewellReactionsLength() > 0 ? farewellReactionsLength() + '' : ''
+      "
       icon="pi pi-face-smile" />
     <p-overlayPanel #op>
       <emoji-mart
         title="Kitouch"
         (emojiClick)="overlayReactionHandler($event)"></emoji-mart>
     </p-overlayPanel>
+    <p-button
+      styleClass="p-0 ml-3"
+      (onClick)="commentsClick.emit()"
+      [text]="true"
+      [label]="
+        farewellCommentsLength() > 0 ? farewellCommentsLength() + '' : ''
+      "
+      icon="pi pi-comments" />
   </div>
 </div>

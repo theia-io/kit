@@ -29,6 +29,10 @@ module.exports = {
           '50%': { transform: 'rotate(3deg)' },
         },
       },
+
+      minWidth: {
+        '1/2': '50%',
+      },
     },
   },
   plugins: [require('@tailwindcss/typography')],

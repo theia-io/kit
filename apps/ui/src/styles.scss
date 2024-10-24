@@ -92,6 +92,13 @@ p-image .p-image-preview-indicator {
   border-radius: 9999px;
 }
 
+p-timeline .p-timeline-event {
+  .p-timeline-event-content {
+    flex-grow: 3;
+    padding-bottom: 16px;
+  }
+}
+
 .editor-like,
 p-editor {
   p {

@@ -1,6 +1,7 @@
 import {
   Farewell,
   FarewellAnalytics,
+  FarewellComment,
   FarewellReaction,
 } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
@@ -30,6 +31,11 @@ export const selectReactions = createSelector(
   (state) => state.reactions
 );
 
+export const selectComments = createSelector(
+  selectFarewellState,
+  (state) => state.comments
+);
+
 export const selectFarewellById = (farewellId: string) =>
   createSelector(selectFarewells, (farewells) =>
     findFarewellById(farewellId, farewells)
@@ -43,6 +49,11 @@ export const selectFarewellAnalyticsById = (farewellId: string) =>
 export const selectFarewellReactionsById = (farewellId: string) =>
   createSelector(selectReactions, (reactions) =>
     findFarewellReactionsByFarewellId(farewellId, reactions)
+  );
+
+export const selectFarewellCommentsById = (farewellId: string) =>
+  createSelector(selectComments, (comments) =>
+    findFarewellCommentsByFarewellId(farewellId, comments)
   );
 
 export const selectFarewellFullViewById = (farewellId: string) =>
@@ -76,6 +87,11 @@ export const findFarewellReactionsByFarewellId = (
   farewellId: string,
   reactions: Array<FarewellReaction>
 ) => reactions.filter((reaction) => reaction.farewellId === farewellId);
+
+export const findFarewellCommentsByFarewellId = (
+  farewellId: string,
+  comments: Array<FarewellComment>
+) => comments.filter((comment) => comment.farewellId === farewellId);
 
 export const findAnalyticsFarewellById = (
   farewellId: string,

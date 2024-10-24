@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DOCUMENT, DatePipe } from '@angular/common';
+import { AsyncPipe, DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -32,14 +32,14 @@ import {
 } from '@kitouch/ui-components';
 import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
+import { ButtonModule } from 'primeng/button';
+import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { v4 as uuidv4 } from 'uuid';
 import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
-import { DialogModule } from 'primeng/dialog';
-import { ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
@@ -48,7 +48,6 @@ import { ButtonModule } from 'primeng/button';
   changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [':host { position: relative; cursor: pointer; }'],
   imports: [
-    CommonModule,
     ReactiveFormsModule,
     DatePipe,
     AsyncPipe,

@@ -1,4 +1,4 @@
-import { AsyncPipe, CommonModule, DatePipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -45,19 +45,8 @@ import { v4 as uuidv4 } from 'uuid';
   standalone: true,
   selector: 'kit-page-tweet',
   templateUrl: './tweet.component.html',
-  styles: [
-    `
-      :host ::ng-deep .kit-timeline .p-timeline-event {
-        .p-timeline-event-content {
-          flex-grow: 3;
-          padding-bottom: 16px;
-        }
-      }
-    `,
-  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
     AsyncPipe,
     DatePipe,
     ReactiveFormsModule,
@@ -67,6 +56,7 @@ import { v4 as uuidv4 } from 'uuid';
     TimelineModule,
     ButtonModule,
     //
+    // TODO switch comment area to `UIKitCommentAreaComponent` component
     UiKitTweetButtonComponent,
     AccountTileComponent,
     DividerComponent,

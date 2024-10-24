@@ -30,7 +30,6 @@
     <i class="pi pi-send"></i>
   </p-button>
   <span class="block mb-4"></span>
-
   } @else {
   <ui-kit-tweet-button
     class="mb-4"
@@ -43,7 +42,6 @@
 </p-floatLabel>
 
 @if(tweet()!.comments) {
-
 <p-timeline
   [value]="(tweetComments$ | async) ?? []"
   styleClass="w-full md:w-20rem kit-timeline">

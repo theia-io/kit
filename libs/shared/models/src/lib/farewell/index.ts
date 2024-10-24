@@ -24,6 +24,16 @@ export interface FarewellReaction {
   timestamp: KitTimestamp;
 }
 
+export interface FarewellComment {
+  id: string;
+  farewellId: Farewell['id'];
+  profileId: Profile['id'] | null;
+  profile?: Profile;
+  // meta: string;
+  content: string;
+  timestamp: KitTimestamp;
+}
+
 export interface Farewell {
   id: string;
   profile: Profile;

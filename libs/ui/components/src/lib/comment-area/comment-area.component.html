@@ -1,0 +1,36 @@
+<div class="sm:p-2 md:p-4 rounded transition shadow-xl hover:shadow-2xl">
+  <ng-content select="[profile]" />
+
+  <p-floatLabel class="relative">
+    <textarea
+      #textControl
+      [formControl]="commentContentControl"
+      pInputTextarea
+      id="comment-content"
+      variant="filled"
+      (focus)="commentContentControlRows = 4"
+      (blur)="commentControlBlur()"
+      class="relative w-full font-semibold text-xl border-0 bg-transparent"
+      [rows]="commentContentControlRows"
+      cols="50"></textarea>
+    <label for="comment-content">{{ placeholder() }}</label>
+
+    @if(commentContentControlRows === 2) {
+    <p-button
+      styleClass="absolute top-2/4 translate-y-[-70%] right-2"
+      [disabled]="true"
+      aria-label="comment">
+      <i class="pi pi-send"></i>
+    </p-button>
+    <span class="block mb-4"></span>
+    } @else {
+    <ui-kit-tweet-button
+      class="mb-4"
+      text="Comment"
+      [iconAnimate]="true"
+      [disabled]="!commentContentControl.valid"
+      [loader]="false"
+      (click)="commentHandler()" />
+    }
+  </p-floatLabel>
+</div>
