@@ -1,68 +1,37 @@
-import { AsyncPipe, DatePipe, NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
 import {
   FeatFarewellActions,
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
-import {
-  FeatFarewellAnalyticsComponent,
-  FeatFarewellViewV2Component,
-} from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Farewell, Profile } from '@kitouch/shared-models';
-import {
-  DividerComponent,
-  UiCompGradientCardComponent,
-  UiKitDeleteComponent,
-} from '@kitouch/ui-components';
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
-import { ButtonModule } from 'primeng/button';
-import { ConfirmDialogModule } from 'primeng/confirmdialog';
-import { ToastModule } from 'primeng/toast';
 
 import { filter } from 'rxjs/operators';
 
 @Component({
   standalone: true,
-  selector: 'kit-page-farewell-all',
+  selector: 'kit-page-kudo-boards-all',
   templateUrl: './all.component.html',
   styles: `
     :host {
       position: relative;
     }
   `,
-  imports: [
-    AsyncPipe,
-    DatePipe,
-    RouterModule,
-    //
-    ButtonModule,
-    ToastModule,
-    ConfirmDialogModule,
-    //
-    FeatFarewellViewV2Component,
-    FeatFarewellAnalyticsComponent,
-    DividerComponent,
-    UiCompGradientCardComponent,
-    UiKitDeleteComponent,
-    //
-  ],
-  providers: [ConfirmationService, MessageService],
+  imports: [],
 })
-export class PageFarewellAllComponent {
+export class PageKudoBoardsAllComponent {
   #store = inject(Store);
   #confirmationService = inject(ConfirmationService);
   #messageService = inject(MessageService);
 
-  farewellUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
-  farewellGenerate = `/${APP_PATH.Farewell}/generate`;
-  farewellEdit = `/${APP_PATH.Farewell}/edit`;
+  kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
 
-  farewells$ = this.#store.pipe(select(selectFarewells));
+  myKudos$ = this.#store.pipe(select(selectFarewells));
 
   constructor() {
     this.#store
@@ -71,11 +40,7 @@ export class PageFarewellAllComponent {
         filter((profile): profile is Profile => !!profile?.id),
         takeUntilDestroyed()
       )
-      .subscribe(({ id }) =>
-        this.#store.dispatch(
-          FeatFarewellActions.getProfileFarewells({ profileId: id })
-        )
-      );
+      .subscribe(({ id }) => console.log('id', id));
   }
 
   onDeleteHandler(farewell: Farewell, event: Event) {

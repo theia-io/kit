@@ -66,6 +66,22 @@ export const appRoutes: Route[] = [
         canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
       },
       {
+        path: `${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
+        children: [
+          {
+            path: ':id',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageFarewellViewComponent),
+          },
+          {
+            path: 'generate',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageFarewellViewComponent),
+          }
+        ]
+      },
+      {
         path: APP_PATH_STATIC_PAGES.IntroduceKit,
         loadComponent: () =>
           pages.then((comp) => comp.KitPagesIntroduceKitComponent),

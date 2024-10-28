@@ -1,0 +1,20 @@
+:host ::ng-deep {
+  [data-section='description'].description,
+  [data-section='subtitle'].subtitle {
+    display: none;
+  }
+
+  [data-section='socials'] {
+    display: block;
+    text-align: center;
+
+    feat-kit-profile-socials {
+      display: inline-block;
+      margin-right: 2rem;
+    }
+
+    feat-kit-profile-socials + p {
+      display: inline-block;
+    }
+  }
+}

@@ -16,6 +16,7 @@ export enum APP_PATH {
 /** For anonymous users also */
 export enum APP_PATH_ALLOW_ANONYMOUS {
   Farewell = `keep-in-touch`,
+  KudoBoard = `kudo-board`
 }
 
 /** For everybody (not even required to be logged in *anonymous* user) */
