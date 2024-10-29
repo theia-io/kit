@@ -13,7 +13,9 @@ import {
   catchError,
   filter,
   map,
+  shareReplay,
   switchMap,
+  take,
   withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
@@ -24,15 +26,19 @@ export class TweetsEffects {
   #store = inject(Store);
   #tweetApi = inject(TweetApiService);
 
-  #currentProfile$ = this.#store
-    .select(selectCurrentProfile)
-    .pipe(filter(Boolean));
+  #currentProfile$ = this.#store.select(selectCurrentProfile).pipe(
+    filter(Boolean),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
+  );
 
   feedTweets$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.getAll),
-      withLatestFrom(this.#currentProfile$),
-      switchMap(([_, profile]) =>
+      switchMap(() => this.#currentProfile$.pipe(take(1))),
+      switchMap((profile) =>
         this.#tweetApi
           .getFeed(profile.id, profile.following?.map(({ id }) => id) ?? [])
           .pipe(
