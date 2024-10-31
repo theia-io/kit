@@ -3,7 +3,17 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
-    "@angular/core": "^18.2.0"
+    "@angular/core": "^18.2.0",
+    "@angular/forms": "18.2.6",
+    "@kitouch/data-kudoboard": "0.0.1",
+    "@kitouch/kit-data": "1.0.0-beta",
+    "@kitouch/shared-models": "1.0.0-beta",
+    "@kitouch/ui-components": "1.0.0-beta",
+    "@kitouch/ui-shared": "1.0.0-beta",
+    "@ngrx/effects": "18.0.2",
+    "@ngrx/store": "18.0.2",
+    "primeng": "17.18.10",
+    "rxjs": "~7.8.0"
   },
   "sideEffects": false
 }

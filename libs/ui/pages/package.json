@@ -23,7 +23,9 @@
     "@kitouch/feat-farewell-ui": "1.0.0-beta",
     "@kitouch/feat-kit-ui": "1.0.0-beta",
     "@ngrx/effects": "18.0.2",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "@kitouch/data-kudoboard": "0.0.1",
+    "@kitouch/ui-kudoboard": "0.0.1"
   },
   "sideEffects": false
 }
