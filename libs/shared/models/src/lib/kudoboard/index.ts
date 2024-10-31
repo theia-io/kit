@@ -22,7 +22,7 @@ export interface KudoBoardAnalytics {
 export interface KudoBoardReaction {
   id: string;
   kudoBoardId: KudoBoard['id'];
-  profileId: Profile['id'] | null;
+  profileId?: Profile['id'] | null;
   profile?: Profile;
   // meta: string;
   content: string;
@@ -32,7 +32,7 @@ export interface KudoBoardReaction {
 export interface KudoBoardComment {
   id: string;
   kudoBoardId: KudoBoard['id'];
-  profileId: Profile['id'] | null;
+  profileId?: Profile['id'] | null;
   profile?: Profile;
   // meta: string;
   content: string;
@@ -41,9 +41,11 @@ export interface KudoBoardComment {
 
 export interface KudoBoard {
   id: string;
+  profileId?: Profile['id'] | null;
   profile?: Profile;
   title: string;
-  content: string;
-  timestamp: KitTimestamp;
+  recipient?: string;
+  background?: string;
   status: KudoBoardStatus;
+  timestamp: KitTimestamp;
 }

@@ -16,7 +16,7 @@ export enum APP_PATH {
 /** For anonymous users also */
 export enum APP_PATH_ALLOW_ANONYMOUS {
   Farewell = `keep-in-touch`,
-  KudoBoard = `kudo-board`
+  KudoBoard = `kudo-board`,
 }
 
 /** For everybody (not even required to be logged in *anonymous* user) */
@@ -52,6 +52,13 @@ export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
   {
+    label: 'Kudoboards',
+    routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+    icon: 'pi pi-sparkles',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+  {
     label: 'Bookmarks',
     routerLink: `/${APP_PATH.Bookmarks}`,
     icon: 'pi pi-bookmark',
@@ -75,6 +82,13 @@ export const MOBILE_NAV_ITEMS: Array<MenuItem> = [
     label: 'Feed',
     routerLink: `/${APP_PATH.Home}`,
     icon: 'pi pi-home',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+  {
+    label: 'Kudoboards',
+    routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+    icon: 'pi pi-sparkles',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },

@@ -1,4 +1,3 @@
-@if((farewellCreator$ | async) && (farewell$ | async); as farewell) {
 <p-sidebar
   [blockScroll]="true"
   [visible]="true"
@@ -12,10 +11,7 @@
         yOffset="top-4"
         (onDelete)="redirectToAll()" />
 
-      <feat-farewell
-        class="block grow container mx-auto p-6"
-        [farewellId]="farewell.id" />
+      <feat-kudoboard-edit [id]="kudoBoardId$ | async" />
     </div>
   </ng-template>
 </p-sidebar>
-} @else { Cannot find such farewell }

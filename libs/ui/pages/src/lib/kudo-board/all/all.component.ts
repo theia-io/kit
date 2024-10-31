@@ -1,14 +1,25 @@
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterModule } from '@angular/router';
 import {
-  FeatFarewellActions,
-  selectFarewells,
-} from '@kitouch/feat-farewell-data';
+  selectKudoBoards,
+  FeatKudoBoardActions,
+} from '@kitouch/data-kudoboard';
+
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { Farewell, Profile } from '@kitouch/shared-models';
+import { KudoBoard, Profile } from '@kitouch/shared-models';
+import {
+  DividerComponent,
+  UiCompGradientCardComponent,
+  UiKitDeleteComponent,
+} from '@kitouch/ui-components';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
+import { ButtonModule } from 'primeng/button';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ToastModule } from 'primeng/toast';
 
 import { filter } from 'rxjs/operators';
 
@@ -21,7 +32,21 @@ import { filter } from 'rxjs/operators';
       position: relative;
     }
   `,
-  imports: [],
+  imports: [
+    AsyncPipe,
+    DatePipe,
+    RouterModule,
+    //
+    ButtonModule,
+    ToastModule,
+    ConfirmDialogModule,
+    //
+
+    DividerComponent,
+    UiCompGradientCardComponent,
+    UiKitDeleteComponent,
+  ],
+  providers: [ConfirmationService, MessageService],
 })
 export class PageKudoBoardsAllComponent {
   #store = inject(Store);
@@ -30,8 +55,9 @@ export class PageKudoBoardsAllComponent {
 
   kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
+  kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 
-  myKudos$ = this.#store.pipe(select(selectFarewells));
+  myKudos$ = this.#store.pipe(select(selectKudoBoards));
 
   constructor() {
     this.#store
@@ -40,16 +66,20 @@ export class PageKudoBoardsAllComponent {
         filter((profile): profile is Profile => !!profile?.id),
         takeUntilDestroyed()
       )
-      .subscribe(({ id }) => console.log('id', id));
+      .subscribe(({ id }) =>
+        this.#store.dispatch(
+          FeatKudoBoardActions.getProfileKudoBoards({ profileId: id })
+        )
+      );
   }
 
-  onDeleteHandler(farewell: Farewell, event: Event) {
+  onDeleteHandler(kudoboard: KudoBoard, event: Event) {
     this.#confirmationService.confirm({
       target: event.target as EventTarget,
       // TODO Add functionality to show analytics (and possibly prevent unneeded or unintended deletions)
-      //  `It has ${farewell.viewed} views.`
+      //  `It has ${kudoboard.viewed} views.`
       message: `
-        Do you want to delete "${farewell.title}"?`,
+        Do you want to delete "${kudoboard.title}"?`,
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass: 'p-button-danger p-button-text',
@@ -61,17 +91,17 @@ export class PageKudoBoardsAllComponent {
         this.#messageService.add({
           severity: 'success',
           summary: 'Confirmed',
-          detail: `${farewell.title} is deleted.`,
+          detail: `${kudoboard.title} is deleted.`,
         });
         this.#store.dispatch(
-          FeatFarewellActions.deleteFarewell({ id: farewell.id })
+          FeatKudoBoardActions.deleteKudoBoard({ id: kudoboard.id })
         );
       },
       reject: () => {
         this.#messageService.add({
           severity: 'info',
           summary: 'Was not deleted',
-          detail: `${farewell.title} was not deleted.`,
+          detail: `${kudoboard.title} was not deleted.`,
         });
       },
     });

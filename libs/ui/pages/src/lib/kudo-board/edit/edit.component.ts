@@ -3,18 +3,29 @@ import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
-  FeatFarewellActions,
-  selectFarewellById,
-} from '@kitouch/feat-farewell-data';
-import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
+  FeatKudoBoardActions,
+  selectKudoBoardById,
+} from '@kitouch/data-kudoboard';
+
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
-import { APP_PATH, SharedNavBarStaticComponent } from '@kitouch/ui-shared';
+import { FeatKudoBoardEditComponent } from '@kitouch/ui-kudoboard';
+import {
+  APP_PATH_ALLOW_ANONYMOUS,
+  SharedNavBarStaticComponent,
+} from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { SidebarModule } from 'primeng/sidebar';
 import { combineLatest } from 'rxjs';
 
-import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
+import {
+  filter,
+  map,
+  shareReplay,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -25,7 +36,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
-    FeatFarewellComponent,
+    FeatKudoBoardEditComponent,
     //
     SidebarModule,
   ],
@@ -42,7 +53,7 @@ export class PageKudoBoardEditComponent {
   );
 
   kudoBoard$ = this.kudoBoardId$.pipe(
-    switchMap((id) => this.#store.pipe(select(selectFarewellById(id)))),
+    switchMap((id) => this.#store.pipe(select(selectKudoBoardById(id)))),
     filter(Boolean)
   );
 
@@ -51,20 +62,26 @@ export class PageKudoBoardEditComponent {
     filter(Boolean)
   );
 
-  farewellCreator$ = combineLatest([this.farewell$, this.currentProfile$]).pipe(
-    map(([farewell, profile]) => farewell.profile.id === profile.id),
+  kudoboardCreator$ = combineLatest([
+    this.kudoBoard$,
+    this.currentProfile$,
+  ]).pipe(
+    map(
+      ([kudoboard, profile]) =>
+        (kudoboard.profileId ?? kudoboard.profile?.id) === profile.id
+    ),
     startWith(false)
   );
 
   constructor() {
-    this.farewellId$
+    this.kudoBoardId$
       .pipe(takeUntilDestroyed())
       .subscribe((id) =>
-        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }))
+        this.#store.dispatch(FeatKudoBoardActions.getKudoBoard({ id }))
       );
   }
 
   redirectToAll() {
-    this.#router.navigateByUrl(APP_PATH.Farewell);
+    this.#router.navigateByUrl(APP_PATH_ALLOW_ANONYMOUS.KudoBoard);
   }
 }

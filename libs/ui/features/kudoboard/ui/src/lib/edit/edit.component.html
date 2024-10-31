@@ -1,0 +1,38 @@
+<form class="flex flex-col" [formGroup]="kudoBoardFormGroup">
+  <div>
+    <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
+      @if(kudoBoardFormGroup.get('background')?.value; as background) {
+      <img class="w-full" width="64" height="64" [ngSrc]="background" />
+      }
+    </ui-kit-pic-uploadable>
+
+    <p-floatLabel class="block mt-4">
+      <input
+        class="w-full border-none shadow-none text-4xl focus:outline-none"
+        id="title"
+        type="text"
+        pInputText
+        formControlName="title" />
+      <label class="w-full text-4xl" for="title">Title</label>
+    </p-floatLabel>
+
+    <section class="relative">
+      <strong
+        uiKitSmallTextTailwindClasses
+        class="absolute right-6 bottom-6 text-xs">
+        {{ kudoBoardFormGroup.get('title')?.value?.length }} /
+        {{ titleMaxLength }}
+      </strong>
+    </section>
+  </div>
+
+  <p-floatLabel class="block mt-4">
+    <input
+      class="w-full border-none shadow-none text-4xl focus:outline-none"
+      id="title"
+      type="text"
+      pInputText
+      formControlName="recipient" />
+    <label class="w-full text-4xl" for="title">Recipient</label>
+  </p-floatLabel>
+</form>

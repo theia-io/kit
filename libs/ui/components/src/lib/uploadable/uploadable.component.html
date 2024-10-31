@@ -24,9 +24,9 @@
   </p-confirmPopup>
 
   @if(customTmpl) {
-  <span (click)="uploadInstantly($event)">
+  <div (click)="uploadInstantly($event)">
     <ng-container *ngTemplateOutlet="customTmpl"></ng-container>
-  </span>
+  </div>
   } @else {
   <i
     role="button"

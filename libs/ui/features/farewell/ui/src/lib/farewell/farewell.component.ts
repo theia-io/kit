@@ -88,13 +88,13 @@ function extractContent(html: string) {
 export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
-  #location = inject(Location);
   #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
   #store = inject(Store);
-  #photoService = inject(PhotoService);
   #actions$ = inject(Actions);
+  #location = inject(Location);
+  #photoService = inject(PhotoService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {

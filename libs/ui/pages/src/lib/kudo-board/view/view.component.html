@@ -1,4 +1,4 @@
-@if(farewellProfile(); as profile) {
+@if(kudoboardProfile(); as profile) {
 <feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
   <div class="ml-auto mr-4 -mb-4" profileFollowExtension>
     @if(!currentProfile()) {
@@ -22,45 +22,45 @@
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
   <div class="w-full py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
-    <feat-farewell-actions
+    <!-- <feat-kudoboard-actions
       class="block container mx-auto"
-      [farewellId]="farewellId$ | async"
-      (commentsClick)="commentsSideBarVisibility.set(true)" />
+      [kudoboardId]="kudoboardId$ | async"
+      (commentsClick)="commentsSideBarVisibility.set(true)" /> -->
   </div>
 
   <div class="container mx-auto">
-    <feat-farewell-viewv2 class="grow" [farewellId]="farewellId$ | async" />
+    <!-- <feat-kudoboard-viewv2 class="grow" [kudoboardId]="kudoboardId$ | async" /> -->
   </div>
 
   <div class="container mx-auto">
-    <feat-farewell-analytics
+    <!-- <feat-kudoboard-analytics
       class="container mx-auto"
-      [farewellId]="farewellId$ | async"
-      [preview]="preview()" />
+      [kudoboardId]="kudoboardId$ | async"
+      [preview]="preview()" /> -->
   </div>
 
   <div class="container mx-auto">
-    <feat-farewell-comments
+    <!-- <feat-kudoboard-comments
       class="block max-w-xl mx-auto"
-      [farewellId]="farewellId$ | async" />
+      [kudoboardId]="kudoboardId$ | async" /> -->
   </div>
   <p-sidebar
     [blockScroll]="true"
     styleClass="min-w-1/2"
     position="right"
     [(visible)]="commentsSideBarVisibility">
-    <feat-farewell-comments
+    <!-- <feat-kudoboard-comments
       class="block max-w-xl mx-auto"
-      [farewellId]="farewellId$ | async" />
+      [kudoboardId]="kudoboardId$ | async" /> -->
   </p-sidebar>
 
-  @if(preview() && farewellProfile() && currentProfile() &&
-  farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
-  farewell) {
+  @if(preview() && kudoboardProfile() && currentProfile() &&
+  kudoboardProfile()?.id === currentProfile()?.id && (kudoboard$ | async); as
+  kudoboard) {
   <div class="mb-8">
     <button
       pButton
-      (click)="copyToClipBoard(farewell.id)"
+      (click)="copyToClipBoard(kudoboard.id)"
       [label]="copied() ? 'Link copied' : 'Copy link'"
       severity="success"
       class="mt-12 mr-1">

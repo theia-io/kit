@@ -13,6 +13,7 @@ export * from './lib/about-yourself/about-yourself.component';
 export * from './lib/bookmarks/bookmarks.component';
 export * from './lib/home/home.component';
 export * from './lib/introduce-kit/introduce-kit.component';
+export * from './lib/kudo-board';
 export * from './lib/messages/messages.component';
 export * from './lib/settings/settings.component';
 export * from './lib/suggestion/suggestion.component';

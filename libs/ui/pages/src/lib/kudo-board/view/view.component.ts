@@ -3,17 +3,13 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
-  FeatFarewellActions,
-  FeatFarewellCommentActions,
-  FeatFarewellReactionActions,
-  selectFarewellById,
-} from '@kitouch/feat-farewell-data';
-import {
-  FeatFarewellActionsComponent,
-  FeatFarewellAnalyticsComponent,
-  FeatFarewellCommentsComponent,
-  FeatFarewellViewV2Component,
-} from '@kitouch/feat-farewell-ui';
+  FeatKudoBoardActions,
+  FeatKudoBoardAnalyticsActions,
+  FeatKudoBoardCommentActions,
+  FeatKudoBoardReactionActions,
+  selectKudoBoardById,
+} from '@kitouch/data-kudoboard';
+
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import {
   FeatFollowSuggestionByIdComponent,
@@ -28,7 +24,6 @@ import {
 import { Profile } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import {
-  APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
   DeviceService,
@@ -47,6 +42,7 @@ import {
   map,
   Observable,
   shareReplay,
+  startWith,
   switchMap,
 } from 'rxjs';
 @Component({
@@ -64,17 +60,13 @@ import {
     SidebarModule,
     //
     FeatKitProfileHeaderComponent,
-    FeatFarewellActionsComponent,
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
-    FeatFarewellViewV2Component,
-    FeatFarewellAnalyticsComponent,
-    FeatFarewellCommentsComponent,
     FeatFollowSuggestionByIdComponent,
     FeatFollowUnfollowProfileComponent,
   ],
 })
-export class PageFarewellViewComponent {
+export class PageKudoBoardViewComponent {
   preview = input(false);
 
   #activatedRouter = inject(ActivatedRoute);
@@ -85,49 +77,54 @@ export class PageFarewellViewComponent {
   device$ = inject(DeviceService).device$;
   #followerHandlerFn = followerHandlerFn();
 
-  farewellId$ = this.#activatedRouter.params.pipe(
+  kudoboardId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     shareReplay()
   );
-  farewell$ = this.farewellId$.pipe(
-    switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellById(farewellId)))
+  kudoboard$ = this.kudoboardId$.pipe(
+    switchMap((kudoboardId) =>
+      this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
     ),
     filter(Boolean)
   );
-  farewellProfile = toSignal(
-    this.farewell$.pipe(
-      switchMap(({ profile: farewellSavedProfile }) =>
+  kudoboardProfile = toSignal(
+    this.kudoboard$.pipe(
+      filter(
+        ({ profileId, profile: kudoboardSavedProfile }) =>
+          !!(profileId ?? kudoboardSavedProfile?.id)
+      ),
+      switchMap(({ profileId, profile: kudoboardSavedProfile }) =>
         this.#store
-          .select(selectProfileById(farewellSavedProfile.id))
-          .pipe(map((profile) => profile ?? farewellSavedProfile))
-      )
+          .select(selectProfileById((profileId ?? kudoboardSavedProfile?.id)!))
+          .pipe(map((profile) => profile ?? kudoboardSavedProfile))
+      ),
+      startWith(null)
     )
   );
-  farewellProfilePic = computed(() => profilePicture(this.farewellProfile()));
+  kudoboardProfilePic = computed(() => profilePicture(this.kudoboardProfile()));
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
-        ({ id }) => id === this.farewellProfile()?.id
+        ({ id }) => id === this.kudoboardProfile()?.id
       ) ?? false
   );
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
     this.#activatedRouter.url,
-    this.farewell$,
+    this.kudoboard$,
   ]).pipe(
-    map(([_, farewell]) => [
+    map(([_, kudoboard]) => [
       {
-        label: 'Farewells',
-        routerLink: `/${APP_PATH.Farewell}`,
+        label: 'KudoBoards',
+        routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
         icon: 'pi pi-send mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',
       },
       {
-        label: farewell.title,
+        label: kudoboard.title,
       },
     ])
   );
@@ -136,18 +133,22 @@ export class PageFarewellViewComponent {
   commentsSideBarVisibility = signal(false);
 
   constructor() {
-    this.farewellId$
+    this.kudoboardId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
       .subscribe((id) => {
-        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }));
+        this.#store.dispatch(FeatKudoBoardActions.getKudoBoard({ id }));
         this.#store.dispatch(
-          FeatFarewellActions.getAnalyticsFarewell({ farewellId: id })
+          FeatKudoBoardAnalyticsActions.getAnalyticsKudoBoard({
+            kudoBoardId: id,
+          })
         );
         this.#store.dispatch(
-          FeatFarewellReactionActions.getReactionsFarewell({ farewellId: id })
+          FeatKudoBoardReactionActions.getReactionsKudoBoard({
+            kudoBoardId: id,
+          })
         );
         this.#store.dispatch(
-          FeatFarewellCommentActions.getCommentsFarewell({ farewellId: id })
+          FeatKudoBoardCommentActions.getCommentsKudoBoard({ kudoboardId: id })
         );
       });
   }
@@ -158,8 +159,8 @@ export class PageFarewellViewComponent {
       .then(() => this.#followAfterSignIn(profileToFollow));
   }
 
-  copyToClipBoard(farewellId: string) {
-    navigator.clipboard.writeText(this.#url(farewellId));
+  copyToClipBoard(kudoboardId: string) {
+    navigator.clipboard.writeText(this.#url(kudoboardId));
     this.copied.set(true);
     // @TODO add also bubbling text saying that copied
     setTimeout(() => {
@@ -167,12 +168,12 @@ export class PageFarewellViewComponent {
     }, 5000);
   }
 
-  #url(farewellId: string) {
+  #url(kudoboardId: string) {
     return [
       this.#document.location.origin,
       's',
-      APP_PATH_ALLOW_ANONYMOUS.Farewell,
-      farewellId,
+      APP_PATH_ALLOW_ANONYMOUS.KudoBoard,
+      kudoboardId,
     ].join('/');
   }
 

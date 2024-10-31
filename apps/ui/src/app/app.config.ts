@@ -38,6 +38,7 @@ import {
   Environment,
   ENVIRONMENT,
   S3_FAREWELL_BUCKET_BASE_URL,
+  S3_KUDOBOARD_BUCKET_BASE_URL,
   S3_PROFILE_BUCKET_BASE_URL,
 } from '@kitouch/ui-shared';
 import { provideEffects } from '@ngrx/effects';
@@ -48,6 +49,14 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
+import {
+  KudoBoardAnalyticsEffects,
+  KudoBoardCommentsEffects,
+  KudoBoardEffects,
+  KudoBoardMediaEffects,
+  KudoBoardReactionsEffects,
+} from '@kitouch/effects-kudoboard';
+import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
 
 // const kitProviders: Provider[] = [];
 // if (environment.environment !== KIT_ENVS.localhost) {
@@ -83,6 +92,13 @@ export const appConfig: ApplicationConfig = {
       },
       deps: [ENVIRONMENT],
     },
+    {
+      provide: S3_KUDOBOARD_BUCKET_BASE_URL,
+      useFactory: ({ s3Config: { region, kudoBoardBucket } }: Environment) => {
+        return `https://${kudoBoardBucket}.s3.${region}.amazonaws.com`;
+      },
+      deps: [ENVIRONMENT],
+    },
 
     provideRouter(
       appRoutes,
@@ -98,8 +114,15 @@ export const appConfig: ApplicationConfig = {
       follow: featFollowReducer,
       kit: accountFeatureReducer,
       tweet: featTweetReducer,
+      kudoboard: featKudoBoardReducer,
     }),
     provideEffects([
+      // kudoboard
+      KudoBoardAnalyticsEffects,
+      KudoBoardCommentsEffects,
+      KudoBoardMediaEffects,
+      KudoBoardReactionsEffects,
+      KudoBoardEffects,
       // farewell
       FarewellCommentsEffects,
       FarewellMediaEffects,
