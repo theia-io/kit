@@ -104,6 +104,10 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    this.kudoBoardFormGroup.valueChanges.subscribe((v) =>
+      console.log('KUDOBOARD FORM', v)
+    );
+
     const kudoBoardId = this.id();
     if (!kudoBoardId) {
       this.#autoCreateKudoBoard();

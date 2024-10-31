@@ -1,9 +1,11 @@
 <form class="flex flex-col" [formGroup]="kudoBoardFormGroup">
   <div>
     <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
-      @if(kudoBoardFormGroup.get('background')?.value; as background) {
-      <img class="w-full" width="64" height="64" [ngSrc]="background" />
-      }
+      <!-- @if((kudoBoardFormGroup.get('background')?.value?.length ?? 0) > 24 &&
+      kudoBoardFormGroup.get('background')?.value; as background) { -->
+      <!-- {{background}} -->
+      <!-- <img class="w-full" width="64" height="64" [src]="background" /> -->
+      <!-- } -->
     </ui-kit-pic-uploadable>
 
     <p-floatLabel class="block mt-4">
