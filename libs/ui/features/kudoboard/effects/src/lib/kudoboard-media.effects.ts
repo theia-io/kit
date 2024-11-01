@@ -30,7 +30,9 @@ export class KudoBoardMediaEffects {
             FeatKudoBoardMediaActions.uploadKudoBoardStorageMediaSuccess({
               kudoboardId,
               profileId,
-              items,
+              items: items.map((item) =>
+                getFullS3Url(this.#s3KudoBoardBaseUrl, item.key)
+              ),
             })
           ),
           catchError(() =>

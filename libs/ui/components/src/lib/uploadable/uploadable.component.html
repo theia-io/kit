@@ -1,10 +1,4 @@
-<div
-  class="relative"
-  [ngClass]="
-    customTmpl
-      ? ''
-      : 'justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl'
-  ">
+<div class="relative" [ngClass]="customTmpl ? '' : ''">
   <p-confirmPopup #popup key="upload" styleClass="invisible">
     <ng-template pTemplate="headless" let-message>
       <div class="w-full h-full flex items-center justify-center">
@@ -12,7 +6,7 @@
           #fileUploadCmp
           [customUpload]="true"
           [auto]="true"
-          [multiple]="fileUploadConf()?.multiple ?? false"
+          [multiple]="conf().fileUploadConf?.multiple"
           mode="basic"
           chooseIcon="pi pi-upload"
           styleClass="invisible"
@@ -25,21 +19,32 @@
 
   @if(customTmpl) {
   <div (click)="uploadInstantly($event)">
-    <ng-container *ngTemplateOutlet="customTmpl"></ng-container>
+    <ng-container *ngTemplateOutlet="customTmpl.template"></ng-container>
   </div>
   } @else {
+  <img
+    class="rounded-md"
+    [ngSrc]="
+      defaultTmplConf()?.imageConf?.src ??
+      '/farewell/farewell-page-logo-small.jpeg'
+    "
+    width="64"
+    height="64"
+    [alt]="
+      defaultTmplConf()?.imageConf?.alt ?? 'Container to instantly upload media'
+    "
+    referrerpolicy="no-referrer" />
+
+  } @if(conf().withIcon) {
   <i
     role="button"
     (click)="uploadInstantly($event)"
-    class="pi pi-cloud-upload font-extrabold text-2xl cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-80 hover:opacity-100"
-    [ngClass]="iconConf()?.ngClass"></i>
-
-  <img
-    class="rounded-md"
-    [ngSrc]="imgConf()?.src ?? '/farewell/farewell-page-logo-small.jpeg'"
-    width="64"
-    height="64"
-    [alt]="imgConf()?.alt ?? 'Container to instantly upload media'"
-    referrerpolicy="no-referrer" />
+    class="pi pi-cloud-upload font-extrabold text-2xl cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2"
+    [ngClass]="
+      (customTmpl
+        ? 'p-2 bg-slate-800 rounded-full border-1 border-slate-100 text-slate-100'
+        : 'opacity-80 hover:opacity-100') +
+      (defaultTmplConf()?.iconConf?.ngClass ?? '')
+    "></i>
   }
 </div>

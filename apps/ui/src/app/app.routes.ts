@@ -75,6 +75,11 @@ export const appRoutes: Route[] = [
               pages.then((comp) => comp.PageKudoBoardEditComponent),
           },
           {
+            path: ':id/edit',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageKudoBoardEditComponent),
+          },
+          {
             path: ':id',
             loadComponent: () =>
               pages.then((comp) => comp.PageKudoBoardViewComponent),

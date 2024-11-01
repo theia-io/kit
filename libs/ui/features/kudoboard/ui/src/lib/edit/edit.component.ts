@@ -9,7 +9,7 @@ import {
   inject,
   model,
 } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
@@ -19,28 +19,36 @@ import {
 import {
   FeatKudoBoardActions,
   FeatKudoBoardMediaActions,
+  findKudoBoardById,
   selectKudoBoardById,
+  selectKudoBoards,
 } from '@kitouch/data-kudoboard';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { KudoBoard, KudoBoardStatus } from '@kitouch/shared-models';
 import {
   UiKitPicUploadableComponent,
+  UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import {
+  combineLatest,
   debounceTime,
+  delay,
   filter,
   map,
+  of,
   shareReplay,
+  skipUntil,
   switchMap,
   take,
   takeUntil,
+  withLatestFrom,
 } from 'rxjs';
 
 const TITLE_MAX_LENGTH = 128;
@@ -59,6 +67,7 @@ const TITLE_MAX_LENGTH = 128;
     //
     UIKitSmallerHintTextUXDirective,
     UiKitPicUploadableComponent,
+    UiKitPicUploadableDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -78,7 +87,14 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     takeUntilDestroyed()
   );
 
-  kudoBoard = this.#store.selectSignal(selectKudoBoardById(this.id() ?? '-1'));
+  #kudoBoard$ = combineLatest([
+    toObservable(this.id).pipe(filter(Boolean)),
+    this.#store.pipe(select(selectKudoBoards)),
+  ]).pipe(
+    map(([id, kudoBoards]) => findKudoBoardById(id, kudoBoards)),
+    filter(Boolean),
+    takeUntilDestroyed()
+  );
 
   kudoBoardFormGroup = inject(FormBuilder).nonNullable.group({
     title: new FormControl<string>('', {
@@ -97,7 +113,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     effect(() =>
       console.log(
         `kudoboardId: ${this.id()}, board and profile`,
-        this.kudoBoard(),
         this.currentProfile()
       )
     );
@@ -112,18 +127,32 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     if (!kudoBoardId) {
       this.#autoCreateKudoBoard();
     } else {
-      const kudoBoard = this.kudoBoard();
-
-      if (kudoBoard) {
+      this.#kudoBoard$.pipe(take(1)).subscribe((kudoBoard) => {
         this.kudoBoardFormGroup.patchValue({
           title: kudoBoard.title,
           background: kudoBoard.background,
           recipient: kudoBoard.recipient,
         });
-
         this.#cdr.detectChanges();
-      }
+      });
     }
+
+    this.kudoBoardFormGroup.valueChanges
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        // when its new farewell we don't update until farewell is created
+        skipUntil(this.id() ? of(true) : this.#kudoBoard$),
+        debounceTime(5000),
+        withLatestFrom(this.#kudoBoard$)
+      )
+      .subscribe(([{ title, recipient, background }, kudoBoard]) =>
+        this.#updateKudoBoard({
+          ...kudoBoard,
+          title: title ?? '',
+          recipient,
+          background,
+        })
+      );
   }
 
   autoUploadBackground(event: FileUploadHandlerEvent) {
@@ -132,11 +161,34 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     this.#actions$
       .pipe(
         ofType(FeatKudoBoardMediaActions.uploadKudoBoardStorageMediaSuccess),
-        take(1)
+        take(1),
+        switchMap(({ kudoboardId, items }) =>
+          this.#store.pipe(
+            select(selectKudoBoardById(kudoboardId)),
+            take(1),
+            filter(Boolean),
+            // AWS S3 bucket has eventual consistency so need a time for it to be available
+            delay(2500),
+            map((kudoBoard): [string, KudoBoard] => [items[0], kudoBoard])
+          )
+        )
       )
-      .subscribe(({ kudoboardId, profileId, items }) =>
-        console.log(kudoboardId, profileId, items)
-      );
+      .subscribe(([background, kudoboard]) => {
+        this.kudoBoardFormGroup.patchValue({
+          background,
+        });
+        // to update view
+        this.#cdr.detectChanges();
+        // assuming actions above are success (TODO handle error case)
+        const prevBackground = kudoboard.background;
+        if (prevBackground) {
+          this.#store.dispatch(
+            FeatKudoBoardMediaActions.deleteKudoBoardStorageMedia({
+              url: prevBackground,
+            })
+          );
+        }
+      });
 
     const kudoBoardId = this.id();
     if (kudoBoardId) {
@@ -199,6 +251,14 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         map(({ kudoboard }) => kudoboard)
       )
       .subscribe(({ id }) => this.#updateJustCreatedKudoBoardUrl(id));
+  }
+
+  #updateKudoBoard(kudoboard: KudoBoard) {
+    this.#store.dispatch(
+      FeatKudoBoardActions.putKudoBoard({
+        kudoboard,
+      })
+    );
   }
 
   #uploadBackground(

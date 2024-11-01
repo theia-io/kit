@@ -19,8 +19,9 @@
         <!-- <i class="pi pi-image font-semibold text-xl"></i> -->
         <ui-kit-pic-uploadable
           class="d-block h-5"
+          [conf]="{ withIcon: false }"
           [autoUploadCb]="onBasicUploadAuto.bind(this)">
-          <ng-template>
+          <ng-template uiKitPicUploadableTemplate>
             <i class="pi pi-image font-semibold text-xl"></i>
           </ng-template>
         </ui-kit-pic-uploadable>

@@ -31,43 +31,43 @@ export const selectComments = createSelector(
   (state) => state.comments
 );
 
-export const selectKudoBoardById = (kudoboardId: string) =>
+export const selectKudoBoardById = (kudoboardId: KudoBoard['id']) =>
   createSelector(selectKudoBoards, (kudoBoards) =>
     findKudoBoardById(kudoboardId, kudoBoards)
   );
 
-export const selectKudoBoardAnalyticsById = (kudoboardId: string) =>
+export const selectKudoBoardAnalyticsById = (kudoboardId: KudoBoard['id']) =>
   createSelector(selectAnalytics, (analytics) =>
     findAnalyticsKudoBoardById(kudoboardId, analytics)
   );
 
-export const selectKudoBoardReactionsById = (kudoboardId: string) =>
+export const selectKudoBoardReactionsById = (kudoboardId: KudoBoard['id']) =>
   createSelector(selectReactions, (reactions) =>
     findKudoBoardReactionsByKudoBoardId(kudoboardId, reactions)
   );
 
-export const selectKudoBoardCommentsById = (kudoboardId: string) =>
+export const selectKudoBoardCommentsById = (kudoboardId: KudoBoard['id']) =>
   createSelector(selectComments, (comments) =>
     findKudoBoardCommentsByKudoBoardId(kudoboardId, comments)
   );
 
 /** utils */
 export const findKudoBoardById = (
-  kudoboardId: string,
+  kudoboardId: KudoBoard['id'],
   kudoboards: Array<KudoBoard>
 ) => kudoboards.find((kudoboard) => kudoboard.id === kudoboardId);
 
 export const findKudoBoardReactionsByKudoBoardId = (
-  kudoboardId: string,
+  kudoboardId: KudoBoard['id'],
   reactions: Array<KudoBoardReaction>
 ) => reactions.filter((reaction) => reaction.kudoBoardId === kudoboardId);
 
 export const findKudoBoardCommentsByKudoBoardId = (
-  kudoboardId: string,
+  kudoboardId: KudoBoard['id'],
   comments: Array<KudoBoardComment>
 ) => comments.filter((comment) => comment.kudoBoardId === kudoboardId);
 
 export const findAnalyticsKudoBoardById = (
-  kudoboardId: string,
+  kudoboardId: KudoBoard['id'],
   analytics: Array<KudoBoardAnalytics>
 ) => analytics.find((analytic) => analytic.kudoBoardId === kudoboardId);

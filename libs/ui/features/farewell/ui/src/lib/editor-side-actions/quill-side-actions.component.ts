@@ -9,7 +9,10 @@ import {
   signal,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { UiKitPicUploadableComponent } from '@kitouch/ui-components';
+import {
+  UiKitPicUploadableComponent,
+  UiKitPicUploadableDirective,
+} from '@kitouch/ui-components';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { ToggleButtonModule } from 'primeng/togglebutton';
 import { Bounds } from 'quill';
@@ -23,6 +26,7 @@ import { Bounds } from 'quill';
     FormsModule,
     //
     UiKitPicUploadableComponent,
+    UiKitPicUploadableDirective,
     //
     ToggleButtonModule,
   ],

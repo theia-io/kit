@@ -12,7 +12,7 @@ export const FeatKudoBoardMediaActions = createActionGroup({
     UploadKudoBoardStorageMediaSuccess: props<{
       kudoboardId: KudoBoard['id'];
       profileId: Profile['id'];
-      items: Array<{ key: string }>;
+      items: Array<string>;
     }>(),
     UploadKudoBoardStorageMediaFailure: props<{ message: string }>(),
     //

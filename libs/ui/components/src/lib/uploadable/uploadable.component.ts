@@ -1,9 +1,9 @@
 import { NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
-  ChangeDetectionStrategy,
   Component,
   computed,
   ContentChild,
+  Directive,
   inject,
   input,
   TemplateRef,
@@ -18,6 +18,34 @@ import {
 } from 'primeng/fileupload';
 import { Nullable } from 'primeng/ts-helpers';
 
+@Directive({
+  standalone: true,
+  selector: '[uiKitPicUploadableTemplate]',
+})
+export class UiKitPicUploadableDirective {
+  constructor(public template: TemplateRef<any>) {}
+}
+
+export interface UploadableDefaultImage {
+  src: string;
+  alt: string;
+}
+export interface UploadableDefaultIcon {
+  ngClass: Array<string>;
+}
+
+export interface UploadConf {
+  withIcon: boolean;
+  fileUploadConf: Partial<FileUpload>;
+}
+
+export const UPLOAD_CONF_DEFAULT: UploadConf = {
+  withIcon: true,
+  fileUploadConf: {
+    multiple: false,
+  },
+};
+
 @Component({
   selector: 'ui-kit-pic-uploadable',
   standalone: true,
@@ -26,19 +54,30 @@ import { Nullable } from 'primeng/ts-helpers';
     NgOptimizedImage,
     NgTemplateOutlet,
     //
-    //
     FileUploadModule,
     ConfirmPopupModule,
+    //
   ],
   templateUrl: './uploadable.component.html',
   providers: [ConfirmationService],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiKitPicUploadableComponent {
-  /** src of image */
-  imgConf = input<{ src: string; alt?: string }>();
-  iconConf = input<{ ngClass?: Array<string> }>();
-  fileUploadConf = input<Partial<FileUpload>>();
+  defaultTmplConf = input<{
+    imageConf?: Partial<UploadableDefaultImage>;
+    iconConf?: Partial<UploadableDefaultIcon>;
+  }>();
+
+  conf = input(UPLOAD_CONF_DEFAULT, {
+    transform: (conf: Partial<UploadConf>): Partial<UploadConf> => ({
+      ...UPLOAD_CONF_DEFAULT,
+      ...conf,
+      fileUploadConf: {
+        ...UPLOAD_CONF_DEFAULT?.fileUploadConf,
+        ...conf?.fileUploadConf,
+      },
+    }),
+  });
 
   /** Likely you should make sure correct Context, run `.bind(this)` while providing this value.
    */
@@ -59,9 +98,8 @@ export class UiKitPicUploadableComponent {
   @ViewChild('fileUploadCmp', { read: FileUpload, static: false })
   fileUploadCmp: FileUpload;
 
-  @ContentChild(TemplateRef, { static: true }) customTmpl: Nullable<
-    TemplateRef<any>
-  >;
+  @ContentChild(UiKitPicUploadableDirective)
+  customTmpl: Nullable<UiKitPicUploadableDirective>;
 
   #confirmationService = inject(ConfirmationService);
 
