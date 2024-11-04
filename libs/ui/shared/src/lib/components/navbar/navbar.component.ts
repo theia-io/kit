@@ -124,6 +124,14 @@ export class NavBarComponent implements AfterViewInit {
     this.#router.navigate([APP_PATH.Farewell, 'generate']);
   }
 
+  createKudoBoardHandler() {
+    this.#router.navigate([
+      's',
+      APP_PATH_ALLOW_ANONYMOUS.KudoBoard,
+      'generate',
+    ]);
+  }
+
   toggleSideBar(openOrClose?: boolean) {
     if (openOrClose == undefined) {
       this.sidebarVisible.update((current) => !current);

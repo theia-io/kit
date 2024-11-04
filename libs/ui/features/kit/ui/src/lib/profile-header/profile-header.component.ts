@@ -6,6 +6,7 @@ import {
   inject,
   input,
 } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import {
@@ -14,9 +15,8 @@ import {
   PhotoService,
 } from '@kitouch/ui-shared';
 import PhotoSwipe from 'photoswipe';
-import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 import { FeatKitProfileBackgroundComponent } from '../profile-background/profile-background.component';
-import { RouterModule } from '@angular/router';
+import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 
 @Component({
   standalone: true,

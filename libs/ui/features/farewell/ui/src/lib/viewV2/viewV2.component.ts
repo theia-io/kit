@@ -49,20 +49,5 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
         pswpModule: PhotoSwipe,
       });
     }, 2500);
-
-    // setTimeout(async () => {
-    //   const gallery = await this.#photoService.createGallery({
-    //     gallery: '#farewell-images',
-    //     children: 'a',
-    //     pswpModule: PhotoSwipe,
-    //   });
-
-    //   setTimeout(() => {
-    //     console.log('FeatFarewellViewV2Component init');
-    //     gallery.init();
-    //   }, 1000)
-    // }, 2000)
-
-    // console.log('FeatFarewellViewV2Component',gallery);
   }
 }

@@ -4,8 +4,9 @@
 @for (farewell of farewells$ | async; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <div class="relative block max-h-96 overflow-hidden">
-    <feat-farewell-viewv2 [farewellId]="farewell.id" />
     <feat-farewell-analytics [farewellId]="farewell.id" [preview]="true" />
+    <feat-farewell-viewv2 [farewellId]="farewell.id" />
+
     <div class="absolute top-80 h-16 left-0 w-full">
       <div class="h-full w-full relative flex justify-center items-end pb-2">
         <div class="absolute top-0 h-full w-full bg-slate-800 blur-xl"></div>

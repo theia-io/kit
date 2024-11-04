@@ -1,8 +1,8 @@
-@layer kit-theme, tailwind-base, primeng, primeng-theme-lara-light, tailwind-components, tailwind-utilities;
+@layer tailwind-base, primeng, primeng-theme-lara-light, tailwind-components, tailwind-utilities, icons, kit-theme;
 
 /** @TODO Import it so it being downloaded in parallel - in project.json / index.html */
 
-@import 'primeicons/primeicons.css';
+@import 'primeicons/primeicons.css' layer(icons);
 @import './theme';
 @import 'tailwindcss/base' layer(tailwind-base);
 @import 'primeng/resources/primeng.css' layer(primeng);

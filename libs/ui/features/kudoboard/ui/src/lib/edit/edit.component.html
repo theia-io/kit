@@ -1,17 +1,23 @@
 <form class="flex flex-col" [formGroup]="kudoBoardFormGroup">
   <div>
-    <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
-      @if((kudoBoardFormGroup.get('background')?.value?.length ?? 0) > 24 &&
-      kudoBoardFormGroup.get('background')?.value; as background) {
-      <ng-template uiKitPicUploadableTemplate>
-        <img
-          class="w-full object-cover max-h-[33vh]"
-          width="64"
-          height="64"
-          [src]="background" />
-      </ng-template>
-      }
-    </ui-kit-pic-uploadable>
+    <div class="flex justify-center items-center">
+      <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
+        @if((kudoBoardFormGroup.get('background')?.value?.length ?? 0) > 24 &&
+        kudoBoardFormGroup.get('background')?.value; as background) {
+        <ng-template uiKitPicUploadableTemplate>
+          <img
+            class="w-full object-cover max-h-[33vh]"
+            width="64"
+            height="64"
+            [src]="background" />
+        </ng-template>
+        }
+      </ui-kit-pic-uploadable>
+
+      <ui-kit-color-picker
+        class="block min-w-[64px] min-h-[64px]"
+        (colorAccepted)="updateBackgroundColor($event)" />
+    </div>
 
     <p-floatLabel class="block mt-8">
       <input

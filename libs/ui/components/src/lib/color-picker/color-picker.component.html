@@ -1,0 +1,42 @@
+<div class="relative w-full h-full flex items-center justify-center">
+  <p-button
+    styleClass="z-10 min-w-[64px] min-h-[64px] flex items-center justify-center"
+    (onClick)="colorPickerClickHandler()">
+    <i
+      class="pi pi-cloud-upload font-semibold text-2xl text-white opacity-80 hover:opacity-100"></i>
+  </p-button>
+  <p-colorPicker
+    class="absolute"
+    [(ngModel)]="newColor"
+    (onHide)="onChangeHandler()" />
+</div>
+
+<p-confirmDialog key="confirm">
+  <ng-template pTemplate="message" let-confirmParam>
+    <div class="flex w-full items-center justify-center gap-3">
+      <div class="relative h-8 w-8">
+        <ng-container
+          *ngTemplateOutlet="
+            backgroundTmpl;
+            context: { $implicit: currentColor() }
+          "></ng-container>
+      </div>
+
+      <i class="pi pi-arrow-right" style="font-size: 2rem"></i>
+
+      <div class="relative h-8 w-8">
+        <ng-container
+          *ngTemplateOutlet="
+            backgroundTmpl;
+            context: { $implicit: confirmParam.message }
+          "></ng-container>
+      </div>
+    </div>
+  </ng-template>
+</p-confirmDialog>
+
+<ng-template #backgroundTmpl let-background>
+  <div
+    class="w-full h-full"
+    [ngStyle]="{ 'background-color': background ?? '#94e0ed' }"></div>
+</ng-template>

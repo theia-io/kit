@@ -14,6 +14,7 @@ import {
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
+import { FeatKudoBoardViewComponent } from '@kitouch/ui-kudoboard';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -41,10 +42,10 @@ import { filter } from 'rxjs/operators';
     ToastModule,
     ConfirmDialogModule,
     //
-
     DividerComponent,
     UiCompGradientCardComponent,
     UiKitDeleteComponent,
+    FeatKudoBoardViewComponent,
   ],
   providers: [ConfirmationService, MessageService],
 })

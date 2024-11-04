@@ -4,6 +4,8 @@
 @for (kudoboard of myKudos$ | async; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <div class="relative block max-h-96 overflow-hidden">
+    <feat-kudoboard-view [id]="kudoboard.id" />
+
     <div class="absolute top-80 h-16 left-0 w-full">
       <div class="h-full w-full relative flex justify-center items-end pb-2">
         <div class="absolute top-0 h-full w-full bg-slate-800 blur-xl"></div>
@@ -25,6 +27,13 @@
   <ui-kit-divider class="block mt-8" />
 
   <p class="mt-4 text-end leading-6 text-sm font-medium text-gray-500">
+    <a
+      class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
+      [routerLink]="[kudoBoardPartialUrl + '/' + kudoboard.id + '/edit']">
+      Edit
+      <i class="ml-1 pi pi-file-edit"></i>
+    </a>
+
     <a
       class="hover:text-gray-900 hover:font-semibold"
       [routerLink]="[

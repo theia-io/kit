@@ -15,14 +15,13 @@
 
       @if(opened()) {
       <button
-        class="flex p-2 border rounded-full px-2 duration-150 hover:bg-slate-200">
-        <!-- <i class="pi pi-image font-semibold text-xl"></i> -->
+        class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
         <ui-kit-pic-uploadable
           class="d-block h-5"
           [conf]="{ withIcon: false }"
           [autoUploadCb]="onBasicUploadAuto.bind(this)">
           <ng-template uiKitPicUploadableTemplate>
-            <i class="pi pi-image font-semibold text-xl"></i>
+            <i class="pi pi-image"></i>
           </ng-template>
         </ui-kit-pic-uploadable>
       </button>
@@ -36,8 +35,8 @@
       </button> -->
       <button
         (click)="onDivider()"
-        class="flex p-2 border rounded-full px-2 duration-150 hover:bg-slate-200">
-        <i class="pi pi-ellipsis-h font-semibold text-xl"></i>
+        class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
+        <i class="pi pi-ellipsis-h"></i>
       </button>
       }
     </div>

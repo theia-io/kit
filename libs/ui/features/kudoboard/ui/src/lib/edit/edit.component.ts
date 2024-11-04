@@ -4,11 +4,8 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   DestroyRef,
-  effect,
   inject,
-  Input,
   input,
   model,
   output,
@@ -33,6 +30,7 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { KudoBoard, KudoBoardStatus } from '@kitouch/shared-models';
 import {
+  UiKitColorPickerComponent,
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
@@ -59,18 +57,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 
-@Component({
-  standalone: true,
-  selector: 'feat-kudoboard-wrapper',
-  template: ` <ng-container *ngTemplateOutlet="templateRef"></ng-container> `,
-  imports: [NgTemplateOutlet],
-})
-export class WrapperComponent {
-  @Input() templateRef: TemplateRef<any>;
-}
-
 const TITLE_MAX_LENGTH = 128;
-
 @Component({
   standalone: true,
   selector: 'feat-kudoboard-edit',
@@ -88,6 +75,7 @@ const TITLE_MAX_LENGTH = 128;
     UIKitSmallerHintTextUXDirective,
     UiKitPicUploadableComponent,
     UiKitPicUploadableDirective,
+    UiKitColorPickerComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -100,7 +88,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #location = inject(Location);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
-  #componentFactoryResolver = inject(ComponentFactoryResolver);
   #store = inject(Store);
   #actions$ = inject(Actions);
 
@@ -140,41 +127,13 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<any>;
 
-  constructor() {
-    effect(() =>
-      console.log(
-        `kudoboardId: ${this.id()}, board and profile`,
-        this.currentProfile()
-      )
-    );
-  }
-
   ngAfterViewInit(): void {
+    // non essential task to provide parent status update functionality
     setTimeout(() => {
       if (this.statusTmpl) {
-        console.log(this.statusTmpl);
         this.statusUpdateTmpl.emit(this.statusTmpl);
       }
-    });
-    // setTimeout(() => {
-    //   console.log(this.statusTmplPlaceholder());
-    //   console.log(this.statusTmpl);
-
-    //   // 1. Create a component factory
-    //   const componentFactory = this.#componentFactoryResolver.resolveComponentFactory(WrapperComponent); // Replace with your actual component
-
-    //   // 2. Clear the container (if needed)
-    //   this.statusTmplPlaceholder()?.clear();
-
-    //   // 3. Create the component
-    //   const componentRef = this.statusTmplPlaceholder()?.createComponent(componentFactory);
-
-    //   console.log('componentRef',componentRef);
-    //   // 4. (Optional) Pass data to the component
-    //   if(componentRef) {
-    //     componentRef.instance.templateRef = this.statusTmpl;
-    //   }
-    // });
+    }, 0);
 
     this.kudoBoardFormGroup.valueChanges.subscribe((v) =>
       console.log('KUDOBOARD FORM', v)
@@ -273,9 +232,11 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     }
   }
 
-  updateStatus(currentStatus?: KudoBoardStatus) {
-    console.log('CHILD');
+  updateBackgroundColor(colorHex: string) {
+    console.log('updateBackgroundColor', colorHex);
+  }
 
+  updateStatus(currentStatus?: KudoBoardStatus) {
     if (currentStatus === KudoBoardStatus.Published) {
       this.kudoBoardFormGroup.patchValue({
         status: KudoBoardStatus.Draft,
