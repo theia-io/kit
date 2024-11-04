@@ -1,4 +1,10 @@
-import { Location, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
+import {
+  AsyncPipe,
+  Location,
+  NgClass,
+  NgOptimizedImage,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -30,12 +36,17 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { KudoBoard, KudoBoardStatus } from '@kitouch/shared-models';
 import {
+  UiKitColorDisplayerComponent,
   UiKitColorPickerComponent,
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
+import {
+  APP_PATH_ALLOW_ANONYMOUS,
+  DeviceService,
+  SharedKitUserHintDirective,
+} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -56,17 +67,21 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs';
+import { isHexColor, isValidBucketUrl } from '../config';
 
 const TITLE_MAX_LENGTH = 128;
+
 @Component({
   standalone: true,
   selector: 'feat-kudoboard-edit',
   templateUrl: './edit.component.html',
   imports: [
     //
+    AsyncPipe,
     ReactiveFormsModule,
     NgOptimizedImage,
     NgTemplateOutlet,
+    NgClass,
     //
     FloatLabelModule,
     InputTextModule,
@@ -76,6 +91,8 @@ const TITLE_MAX_LENGTH = 128;
     UiKitPicUploadableComponent,
     UiKitPicUploadableDirective,
     UiKitColorPickerComponent,
+    UiKitColorDisplayerComponent,
+    SharedKitUserHintDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -90,6 +107,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #destroyRef = inject(DestroyRef);
   #store = inject(Store);
   #actions$ = inject(Actions);
+  deviceService = inject(DeviceService);
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
@@ -121,6 +139,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     }),
   });
 
+  isBucketUrl = isValidBucketUrl();
+  isHexColor = isHexColor;
   readonly titleMaxLength = TITLE_MAX_LENGTH;
   readonly kudoBoardStatus = KudoBoardStatus;
 
@@ -191,32 +211,23 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
           )
         )
       )
-      .subscribe(([background, kudoboard]) => {
-        this.kudoBoardFormGroup.patchValue({
-          background,
-        });
-        // to update view
-        this.#cdr.detectChanges();
-        // assuming actions above are success (TODO handle error case)
-        const prevBackground = kudoboard.background;
-        if (prevBackground) {
-          this.#store.dispatch(
-            FeatKudoBoardMediaActions.deleteKudoBoardStorageMedia({
-              url: prevBackground,
-            })
-          );
-        }
-      });
+      .subscribe(([background, kudoboard]) =>
+        this.#updateKudoBoardBackground(background, kudoboard.background)
+      );
 
     const kudoBoardId = this.id();
     if (kudoBoardId) {
-      this.#uploadBackground(kudoBoardId, images, this.currentProfile()?.id);
+      this.#uploadBackgroundMedia(
+        kudoBoardId,
+        images,
+        this.currentProfile()?.id
+      );
     } else {
       this.kudoBoardCreated$
         .pipe(take(1))
         .subscribe(({ kudoboard: { id } }) => {
           this.#updateJustCreatedKudoBoardUrl(id);
-          this.#uploadBackground(id, images, this.currentProfile()?.id);
+          this.#uploadBackgroundMedia(id, images, this.currentProfile()?.id);
         });
 
       this.#store.dispatch(
@@ -234,6 +245,35 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
 
   updateBackgroundColor(colorHex: string) {
     console.log('updateBackgroundColor', colorHex);
+
+    const kudoBoardId = this.id();
+    if (kudoBoardId) {
+      this.#store
+        .pipe(
+          select(selectKudoBoardById(kudoBoardId)),
+          take(1),
+          takeUntilDestroyed(this.#destroyRef)
+        )
+        .subscribe((kudoBoard) =>
+          this.#updateKudoBoardBackground(colorHex, kudoBoard?.background)
+        );
+    } else {
+      this.kudoBoardCreated$.pipe(take(1)).subscribe(({ kudoboard }) => {
+        this.#updateJustCreatedKudoBoardUrl(kudoboard.id);
+        this.#updateKudoBoardBackground(colorHex, kudoboard.background);
+      });
+
+      this.#store.dispatch(
+        FeatKudoBoardActions.createKudoBoard({
+          kudoboard: {
+            title: '',
+            background: '',
+            recipient: '',
+            status: KudoBoardStatus.Draft,
+          },
+        })
+      );
+    }
   }
 
   updateStatus(currentStatus?: KudoBoardStatus) {
@@ -297,7 +337,24 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     );
   }
 
-  #uploadBackground(
+  #updateKudoBoardBackground(background: string, previousBackground?: string) {
+    this.kudoBoardFormGroup.patchValue({
+      background,
+    });
+    // to update view
+    this.#cdr.detectChanges();
+
+    // assuming actions above are success (TODO handle error case; TODO check that this is our bucket)
+    if (previousBackground && this.isBucketUrl(previousBackground)) {
+      this.#store.dispatch(
+        FeatKudoBoardMediaActions.deleteKudoBoardStorageMedia({
+          url: previousBackground,
+        })
+      );
+    }
+  }
+
+  #uploadBackgroundMedia(
     kudoboardId: KudoBoard['id'],
     images: Array<File>,
     profileId?: string

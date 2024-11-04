@@ -12,12 +12,12 @@ import {
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import {
-  FeatKitProfileBackgroundComponent,
   FeatKitProfileBackgroundUploadableComponent,
   FeatKitProfilePictureUploadableComponent,
 } from '@kitouch/feat-kit-ui';
 import { FeatProfileApiActions, selectCurrentProfile } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
+import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -32,7 +32,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
     CommonModule,
     ReactiveFormsModule,
     //
-    FeatKitProfileBackgroundComponent,
+    UiKitColorDisplayerComponent,
     FeatKitProfilePictureUploadableComponent,
     FeatKitProfileBackgroundUploadableComponent,
     //

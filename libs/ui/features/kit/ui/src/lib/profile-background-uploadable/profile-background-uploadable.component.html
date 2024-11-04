@@ -1,50 +1,11 @@
 @if(profile(); as profile) {
-
 <ui-kit-color-picker
   [currentColor]="profile.background"
   (colorAccepted)="colorAcceptedHandler($event, profile)"
   (colorRejected)="colorRejectedHandler()" />
 <div>
-  <feat-kit-profile-background
+  <ui-kit-color-displayer
     class="absolute left-0 top-0 w-full h-40"
-    [background]="profile.background" />
+    [color]="profile.background" />
 </div>
 }
-
-<!-- <div class="relative w-full h-40">
-  <p-toast />
-  <div class="relative w-full h-full flex items-center justify-center">
-    <p-button styleClass="z-10" (onClick)="colorPickerClickHandler()">
-      <i
-        class="pi pi-cloud-upload font-semibold text-2xl text-white opacity-80 hover:opacity-100"></i>
-    </p-button>
-    <p-colorPicker
-      class="absolute"
-      [(ngModel)]="backgroundColor"
-      (onHide)="onChangeHandler(profile())" />
-  </div>
-
-  <p-confirmDialog key="confirm">
-    <ng-template pTemplate="message" let-confirmParam>
-      <div class="flex w-full items-center justify-center gap-3">
-        <div class="relative">
-          <feat-kit-profile-background
-            class="block relative h-8 w-8"
-            [background]="profile()?.background" />
-        </div>
-
-        <i class="pi pi-arrow-right" style="font-size: 2rem"></i>
-
-        <div class="relative">
-          <feat-kit-profile-background
-            class="block relative h-8 w-8"
-            [background]="confirmParam.message" />
-        </div>
-      </div>
-    </ng-template>
-  </p-confirmDialog>
-
-  <feat-kit-profile-background
-    class="absolute left-0 top-0 w-full h-40"
-    [background]="profile()?.background" />
-</div> -->

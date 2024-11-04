@@ -1,6 +1,7 @@
 export * from './lib/account-tile/account-tile.component';
 export * from './lib/animated/animate-ping.component';
 export * from './lib/animation';
+export * from './lib/color-displayer/color-displayer.component';
 export * from './lib/color-picker/color-picker.component';
 export * from './lib/button/button.component';
 export * from './lib/delete/delete.component';

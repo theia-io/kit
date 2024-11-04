@@ -1,25 +1,44 @@
 <form class="flex flex-col" [formGroup]="kudoBoardFormGroup">
   <div>
-    <div class="flex justify-center items-center">
-      <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
-        @if((kudoBoardFormGroup.get('background')?.value?.length ?? 0) > 24 &&
-        kudoBoardFormGroup.get('background')?.value; as background) {
-        <ng-template uiKitPicUploadableTemplate>
-          <img
-            class="w-full object-cover max-h-[33vh]"
-            width="64"
-            height="64"
-            [src]="background" />
-        </ng-template>
-        }
-      </ui-kit-pic-uploadable>
+    @let isMobile = (deviceService.isMobile$ | async); @let background =
+    kudoBoardFormGroup.get('background')?.value;
 
-      <ui-kit-color-picker
+    <div class="flex flex-col md:flex-row gap-2 justify-center items-center">
+      <div
+        sharedUserHint
+        text="Add image"
+        [side]="isMobile ? 'right' : 'left'"
+        [extraIdent]="isMobile ? { top: 5, right: 25 } : { top: 30, left: 65 }">
+        <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
+          @if((background?.length ?? 0) > 24 && isBucketUrl(background)) {
+          <ng-template uiKitPicUploadableTemplate>
+            <img class="w-full object-cover max-h-[33vh]" [src]="background" />
+          </ng-template>
+          }
+        </ui-kit-pic-uploadable>
+      </div>
+
+      <p class="text-xl font-bold italic">OR</p>
+
+      <div
         class="block min-w-[64px] min-h-[64px]"
-        (colorAccepted)="updateBackgroundColor($event)" />
+        [ngClass]="isHexColor(background) ? 'h-32 w-1/3' : ''"
+        sharedUserHint
+        text="... pick a color"
+        side="right"
+        [extraIdent]="{ top: 10, right: 35 }">
+        <ui-kit-color-picker
+          [currentColor]="isHexColor(background) ? background : undefined"
+          (colorAccepted)="updateBackgroundColor($event)" />
+        @if(isHexColor(background)) {
+        <ui-kit-color-displayer
+          class="absolute left-0 top-0 w-full h-full rounded"
+          [color]="background" />
+        }
+      </div>
     </div>
 
-    <p-floatLabel class="block mt-8">
+    <p-floatLabel class="block mt-20">
       <input
         class="w-full border-none shadow-none text-4xl focus:outline-none"
         id="title"

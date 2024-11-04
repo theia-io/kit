@@ -3,11 +3,11 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
 @Component({
   standalone: true,
-  selector: 'feat-kit-profile-background',
-  templateUrl: './profile-background.component.html',
+  selector: 'ui-kit-color-displayer',
+  templateUrl: './color-displayer.component.html',
   imports: [NgStyle],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatKitProfileBackgroundComponent {
-  background = input<string>();
+export class UiKitColorDisplayerComponent {
+  color = input<string>();
 }

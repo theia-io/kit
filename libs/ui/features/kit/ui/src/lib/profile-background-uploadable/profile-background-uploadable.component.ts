@@ -8,14 +8,16 @@ import {
 import { FormsModule } from '@angular/forms';
 import { FeatProfileApiActions, selectProfileById } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
-import { UiKitColorPickerComponent } from '@kitouch/ui-components';
+import {
+  UiKitColorDisplayerComponent,
+  UiKitColorPickerComponent,
+} from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
-import { FeatKitProfileBackgroundComponent } from '../profile-background/profile-background.component';
 
 @Component({
   standalone: true,
@@ -30,8 +32,8 @@ import { FeatKitProfileBackgroundComponent } from '../profile-background/profile
     ConfirmPopupModule,
     ConfirmDialogModule,
     //
-    FeatKitProfileBackgroundComponent,
     UiKitColorPickerComponent,
+    UiKitColorDisplayerComponent,
   ],
   providers: [MessageService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush,

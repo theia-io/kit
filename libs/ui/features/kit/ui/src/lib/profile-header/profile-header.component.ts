@@ -9,13 +9,13 @@ import {
 import { RouterModule } from '@angular/router';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
+import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 import {
   APP_PATH,
   AuthorizedFeatureDirective,
   PhotoService,
 } from '@kitouch/ui-shared';
 import PhotoSwipe from 'photoswipe';
-import { FeatKitProfileBackgroundComponent } from '../profile-background/profile-background.component';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 
 @Component({
@@ -28,7 +28,7 @@ import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socia
     NgStyle,
     RouterModule,
     //
-    FeatKitProfileBackgroundComponent,
+    UiKitColorDisplayerComponent,
     FeatKitProfileSocialsComponent,
     AuthorizedFeatureDirective,
   ],
