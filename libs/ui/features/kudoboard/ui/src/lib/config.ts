@@ -17,8 +17,6 @@ export const isValidBucketUrl = () => {
       return false;
     }
 
-    console.log(str, url);
-
     return url.protocol === 'https:' && url.origin === bucketUrl;
   };
 };

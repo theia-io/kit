@@ -1,20 +1,4 @@
-@if(kudoboardProfile(); as profile) {
-<feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
-  <div class="ml-auto mr-4 -mb-4" profileFollowExtension>
-    @if(!currentProfile()) {
-    <button
-      (click)="signInAndFollow(profile)"
-      type="button"
-      class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
-      <img class="inline-block h-6" src="sign-in/g-icon.png" />
-      Sign in to follow
-    </button>
-    } @else {
-    <feat-follow-unfollow-profile [profileId]="profile.id" />
-    }
-  </div>
-</feat-kit-profile-header>
-} @if(preview()) {
+@if(preview()) {
 <p-breadcrumb
   class="block mt-4 max-w-full"
   [model]="(breadcrumbMenuItems$ | async) ?? []" />
@@ -29,7 +13,7 @@
   </div>
 
   <div class="container mx-auto">
-    <!-- <feat-kudoboard-viewv2 class="grow" [kudoboardId]="kudoboardId$ | async" /> -->
+    <feat-kudoboard-view class="grow" [id]="kudoboardId$ | async" />
   </div>
 
   <div class="container mx-auto">

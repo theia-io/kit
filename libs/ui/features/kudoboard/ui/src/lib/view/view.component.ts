@@ -1,4 +1,4 @@
-import { NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -10,6 +10,7 @@ import { findKudoBoardById, selectKudoBoards } from '@kitouch/data-kudoboard';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { KudoBoard } from '@kitouch/shared-models';
 import {
+  UiKitColorDisplayerComponent,
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
@@ -20,6 +21,7 @@ import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { combineLatest, filter, map } from 'rxjs';
+import { isHexColor, isValidBucketUrl } from '../config';
 
 @Component({
   standalone: true,
@@ -27,15 +29,10 @@ import { combineLatest, filter, map } from 'rxjs';
   templateUrl: './view.component.html',
   imports: [
     //
-    NgOptimizedImage,
+    AsyncPipe,
+    NgClass,
     //
-    FloatLabelModule,
-    InputTextModule,
-    ButtonModule,
-    //
-    UIKitSmallerHintTextUXDirective,
-    UiKitPicUploadableComponent,
-    UiKitPicUploadableDirective,
+    UiKitColorDisplayerComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -47,7 +44,7 @@ export class FeatKudoBoardViewComponent {
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
-  #kudoBoard$ = combineLatest([
+  kudoBoard$ = combineLatest([
     toObservable(this.id).pipe(filter(Boolean)),
     this.#store.pipe(select(selectKudoBoards)),
   ]).pipe(
@@ -55,4 +52,7 @@ export class FeatKudoBoardViewComponent {
     filter(Boolean),
     takeUntilDestroyed()
   );
+
+  isBucketUrl = isValidBucketUrl();
+  isHexColor = isHexColor;
 }

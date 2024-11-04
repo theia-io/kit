@@ -10,12 +10,7 @@ import {
   selectKudoBoardById,
 } from '@kitouch/data-kudoboard';
 
-import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
-import {
-  FeatFollowSuggestionByIdComponent,
-  FeatFollowUnfollowProfileComponent,
-  followerHandlerFn,
-} from '@kitouch/follow-ui';
+import { followerHandlerFn } from '@kitouch/follow-ui';
 import {
   profilePicture,
   selectCurrentProfile,
@@ -23,6 +18,7 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
+import { FeatKudoBoardViewComponent } from '@kitouch/ui-kudoboard';
 import {
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
@@ -59,11 +55,9 @@ import {
     BreadcrumbModule,
     SidebarModule,
     //
-    FeatKitProfileHeaderComponent,
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
-    FeatFollowSuggestionByIdComponent,
-    FeatFollowUnfollowProfileComponent,
+    FeatKudoBoardViewComponent,
   ],
 })
 export class PageKudoBoardViewComponent {
