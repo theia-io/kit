@@ -6,12 +6,19 @@
   <ng-template pTemplate="headless">
     <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
       <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
+
       <ui-kit-delete
         xOffset="right-4"
         yOffset="top-4"
         (onDelete)="redirectToAll()" />
 
-      <feat-kudoboard-edit [id]="kudoBoardId$ | async" />
+      <div class="hidden sm:block absolute top-4 right-16">
+        <ng-container #statusTmplPlaceholder></ng-container>
+      </div>
+
+      <feat-kudoboard-edit
+        [id]="kudoBoardId$ | async"
+        [statusTmplPlaceholder]="statusRef" />
     </div>
   </ng-template>
 </p-sidebar>

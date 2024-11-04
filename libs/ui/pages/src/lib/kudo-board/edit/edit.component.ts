@@ -1,5 +1,5 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -18,14 +18,7 @@ import { select, Store } from '@ngrx/store';
 import { SidebarModule } from 'primeng/sidebar';
 import { combineLatest } from 'rxjs';
 
-import {
-  filter,
-  map,
-  shareReplay,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs/operators';
+import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -72,6 +65,9 @@ export class PageKudoBoardEditComponent {
     ),
     startWith(false)
   );
+
+  @ViewChild('statusTmplPlaceholder', { read: ViewContainerRef })
+  statusRef: ViewContainerRef;
 
   constructor() {
     this.kudoBoardId$

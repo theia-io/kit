@@ -1,13 +1,19 @@
-import { Location, NgOptimizedImage } from '@angular/common';
+import { Location, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ComponentFactoryResolver,
   DestroyRef,
   effect,
   inject,
+  Input,
+  input,
   model,
+  TemplateRef,
+  ViewChild,
+  ViewContainerRef,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -33,6 +39,7 @@ import {
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { ButtonModule } from 'primeng/button';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -51,6 +58,16 @@ import {
   withLatestFrom,
 } from 'rxjs';
 
+@Component({
+  standalone: true,
+  selector: 'feat-kudoboard-wrapper',
+  template: ` <ng-container *ngTemplateOutlet="templateRef"></ng-container> `,
+  imports: [NgTemplateOutlet],
+})
+export class WrapperComponent {
+  @Input() templateRef: TemplateRef<any>;
+}
+
 const TITLE_MAX_LENGTH = 128;
 
 @Component({
@@ -64,6 +81,7 @@ const TITLE_MAX_LENGTH = 128;
     //
     FloatLabelModule,
     InputTextModule,
+    ButtonModule,
     //
     UIKitSmallerHintTextUXDirective,
     UiKitPicUploadableComponent,
@@ -73,10 +91,12 @@ const TITLE_MAX_LENGTH = 128;
 })
 export class FeatKudoBoardEditComponent implements AfterViewInit {
   id = model<KudoBoard['id']>();
+  statusTmplPlaceholder = input<ViewContainerRef>();
 
   #location = inject(Location);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
+  #componentFactoryResolver = inject(ComponentFactoryResolver);
   #store = inject(Store);
   #actions$ = inject(Actions);
 
@@ -105,9 +125,16 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       nonNullable: true,
     }),
     recipient: new FormControl<string>('', { nonNullable: true }),
+    status: new FormControl<KudoBoardStatus>(KudoBoardStatus.Draft, {
+      nonNullable: true,
+    }),
   });
 
   readonly titleMaxLength = TITLE_MAX_LENGTH;
+  readonly kudoBoardStatus = KudoBoardStatus;
+
+  @ViewChild('statusTmpl')
+  statusTmpl: TemplateRef<any>;
 
   constructor() {
     effect(() =>
@@ -119,6 +146,26 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    // setTimeout(() => {
+    //   console.log(this.statusTmplPlaceholder());
+    //   console.log(this.statusTmpl);
+
+    //   // 1. Create a component factory
+    //   const componentFactory = this.#componentFactoryResolver.resolveComponentFactory(WrapperComponent); // Replace with your actual component
+
+    //   // 2. Clear the container (if needed)
+    //   this.statusTmplPlaceholder()?.clear();
+
+    //   // 3. Create the component
+    //   const componentRef = this.statusTmplPlaceholder()?.createComponent(componentFactory);
+
+    //   console.log('componentRef',componentRef);
+    //   // 4. (Optional) Pass data to the component
+    //   if(componentRef) {
+    //     componentRef.instance.templateRef = this.statusTmpl;
+    //   }
+    // });
+
     this.kudoBoardFormGroup.valueChanges.subscribe((v) =>
       console.log('KUDOBOARD FORM', v)
     );
@@ -132,6 +179,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
           title: kudoBoard.title,
           background: kudoBoard.background,
           recipient: kudoBoard.recipient,
+          status: kudoBoard.status,
         });
         this.#cdr.detectChanges();
       });
@@ -145,12 +193,13 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         debounceTime(5000),
         withLatestFrom(this.#kudoBoard$)
       )
-      .subscribe(([{ title, recipient, background }, kudoBoard]) =>
+      .subscribe(([{ title, recipient, background, status }, kudoBoard]) =>
         this.#updateKudoBoard({
           ...kudoBoard,
           title: title ?? '',
           recipient,
           background,
+          status: status ?? KudoBoardStatus.Draft,
         })
       );
   }
@@ -212,6 +261,19 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         })
       );
     }
+  }
+
+  updateStatus(currentStatus?: KudoBoardStatus) {
+    if (currentStatus === KudoBoardStatus.Published) {
+      this.kudoBoardFormGroup.patchValue({
+        status: KudoBoardStatus.Draft,
+      });
+      return;
+    }
+
+    this.kudoBoardFormGroup.patchValue({
+      status: KudoBoardStatus.Published,
+    });
   }
 
   #autoCreateKudoBoard() {

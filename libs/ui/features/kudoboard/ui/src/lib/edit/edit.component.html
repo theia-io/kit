@@ -13,7 +13,7 @@
       }
     </ui-kit-pic-uploadable>
 
-    <p-floatLabel class="block mt-4">
+    <p-floatLabel class="block mt-8">
       <input
         class="w-full border-none shadow-none text-4xl focus:outline-none"
         id="title"
@@ -42,4 +42,17 @@
       formControlName="recipient" />
     <label class="w-full text-4xl" for="title">Recipient</label>
   </p-floatLabel>
+
+  <ng-template #statusTmpl>
+    @let status = kudoBoardFormGroup.get('status')?.value;
+    <p-button
+      (onClick)="updateStatus(status)"
+      [label]="
+        status === kudoBoardStatus.Published ? 'Back to draft' : 'Publish'
+      "
+      [rounded]="true"
+      [severity]="
+        status === kudoBoardStatus.Published ? 'secondary' : 'success'
+      " />
+  </ng-template>
 </form>
