@@ -11,6 +11,7 @@ import {
   Input,
   input,
   model,
+  output,
   TemplateRef,
   ViewChild,
   ViewContainerRef,
@@ -78,6 +79,7 @@ const TITLE_MAX_LENGTH = 128;
     //
     ReactiveFormsModule,
     NgOptimizedImage,
+    NgTemplateOutlet,
     //
     FloatLabelModule,
     InputTextModule,
@@ -92,6 +94,8 @@ const TITLE_MAX_LENGTH = 128;
 export class FeatKudoBoardEditComponent implements AfterViewInit {
   id = model<KudoBoard['id']>();
   statusTmplPlaceholder = input<ViewContainerRef>();
+
+  statusUpdateTmpl = output<TemplateRef<any>>();
 
   #location = inject(Location);
   #cdr = inject(ChangeDetectorRef);
@@ -133,8 +137,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   readonly titleMaxLength = TITLE_MAX_LENGTH;
   readonly kudoBoardStatus = KudoBoardStatus;
 
-  @ViewChild('statusTmpl')
-  statusTmpl: TemplateRef<any>;
+  @ViewChild('statusTmpl', { read: TemplateRef })
+  statusTmpl?: TemplateRef<any>;
 
   constructor() {
     effect(() =>
@@ -146,6 +150,12 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
+    setTimeout(() => {
+      if (this.statusTmpl) {
+        console.log(this.statusTmpl);
+        this.statusUpdateTmpl.emit(this.statusTmpl);
+      }
+    });
     // setTimeout(() => {
     //   console.log(this.statusTmplPlaceholder());
     //   console.log(this.statusTmpl);
@@ -264,16 +274,19 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   updateStatus(currentStatus?: KudoBoardStatus) {
+    console.log('CHILD');
+
     if (currentStatus === KudoBoardStatus.Published) {
       this.kudoBoardFormGroup.patchValue({
         status: KudoBoardStatus.Draft,
       });
-      return;
+    } else {
+      this.kudoBoardFormGroup.patchValue({
+        status: KudoBoardStatus.Published,
+      });
     }
 
-    this.kudoBoardFormGroup.patchValue({
-      status: KudoBoardStatus.Published,
-    });
+    this.#cdr.detectChanges();
   }
 
   #autoCreateKudoBoard() {

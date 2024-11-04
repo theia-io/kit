@@ -13,12 +13,15 @@
         (onDelete)="redirectToAll()" />
 
       <div class="hidden sm:block absolute top-4 right-16">
-        <ng-container #statusTmplPlaceholder></ng-container>
+        @if(statusTmpl) {
+        <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+        }
       </div>
 
       <feat-kudoboard-edit
+        class="block grow container mx-auto p-6"
         [id]="kudoBoardId$ | async"
-        [statusTmplPlaceholder]="statusRef" />
+        (statusUpdateTmpl)="statusTmpl = $event" />
     </div>
   </ng-template>
 </p-sidebar>

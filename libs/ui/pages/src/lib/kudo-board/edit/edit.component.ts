@@ -1,5 +1,5 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject, ViewChild, ViewContainerRef } from '@angular/core';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -26,6 +26,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
   templateUrl: './edit.component.html',
   imports: [
     AsyncPipe,
+    NgTemplateOutlet,
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
@@ -66,8 +67,10 @@ export class PageKudoBoardEditComponent {
     startWith(false)
   );
 
-  @ViewChild('statusTmplPlaceholder', { read: ViewContainerRef })
-  statusRef: ViewContainerRef;
+  // @ViewChild('statusTmplPlaceholder', { read: ViewContainerRef })
+  // statusRef: ViewContainerRef;
+
+  statusTmpl?: TemplateRef<any>;
 
   constructor() {
     this.kudoBoardId$

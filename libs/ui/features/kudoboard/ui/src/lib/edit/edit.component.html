@@ -20,7 +20,7 @@
         type="text"
         pInputText
         formControlName="title" />
-      <label class="w-full text-4xl" for="title">Title</label>
+      <label class="w-full text-4xl" for="title">Kudo Board Title</label>
     </p-floatLabel>
 
     <section class="relative">
@@ -40,7 +40,7 @@
       type="text"
       pInputText
       formControlName="recipient" />
-    <label class="w-full text-4xl" for="title">Recipient</label>
+    <label class="w-full text-4xl" for="title">Kudo Board Recipient</label>
   </p-floatLabel>
 
   <ng-template #statusTmpl>
@@ -55,4 +55,7 @@
         status === kudoBoardStatus.Published ? 'secondary' : 'success'
       " />
   </ng-template>
+  <div class="text-center">
+    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+  </div>
 </form>
