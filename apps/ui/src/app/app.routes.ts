@@ -66,6 +66,27 @@ export const appRoutes: Route[] = [
         canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
       },
       {
+        path: `${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
+        children: [
+          {
+            path: 'generate',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageKudoBoardEditComponent),
+          },
+          {
+            path: ':id/edit',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageKudoBoardEditComponent),
+          },
+          {
+            path: ':id',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageKudoBoardViewComponent),
+          },
+        ],
+      },
+      {
         path: APP_PATH_STATIC_PAGES.IntroduceKit,
         loadComponent: () =>
           pages.then((comp) => comp.KitPagesIntroduceKitComponent),
@@ -159,6 +180,17 @@ export const appRoutes: Route[] = [
               pages.then((comp) => comp.PageFarewellGenerateComponent),
           },
         ],
+      },
+      {
+        path: APP_PATH_ALLOW_ANONYMOUS.KudoBoard,
+        canActivate: [
+          () => inject(LayoutService).rightPanelState.set(PanelState.Closed),
+        ],
+        canDeactivate: [
+          () => inject(LayoutService).rightPanelState.set(PanelState.Opened),
+        ],
+        loadComponent: () =>
+          pages.then((comp) => comp.PageKudoBoardsAllComponent),
       },
 
       // Outlet

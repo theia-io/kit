@@ -45,20 +45,6 @@
   </div>
 
   <div>
-    <!-- @if(emojiMap.get('brown_heart'); as heart) {
-    <p-button (onClick)="reactionClickHandler(heart)" [text]="true">
-      {{ heart }}
-    </p-button>
-    } @if(emojiMap.get('clapping_hands'); as clap) {
-    <p-button (onClick)="reactionClickHandler(clap)" [text]="true">
-      {{ clap }}
-    </p-button>
-    } @if(emojiMap.get("face_with_open_mouth"); as surprise) {
-    <p-button (onClick)="reactionClickHandler(surprise)" [text]="true">
-      {{ surprise }}
-    </p-button>
-    } -->
-
     <p-button
       styleClass="p-0"
       (onClick)="op.toggle($event)"
@@ -80,5 +66,12 @@
         farewellCommentsLength() > 0 ? farewellCommentsLength() + '' : ''
       "
       icon="pi pi-comments" />
+    @if(canEdit()) {
+    <p-button
+      styleClass="p-0 ml-1"
+      (onClick)="redirectToEdit()"
+      [text]="true"
+      icon="pi pi-file-edit" />
+    }
   </div>
 </div>

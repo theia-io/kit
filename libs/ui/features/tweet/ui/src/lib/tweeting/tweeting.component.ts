@@ -14,7 +14,6 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { selectProfilePicture } from '@kitouch/kit-data';
 import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
-import { TWEET_NEW_TWEET_TIMEOUT } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -74,8 +73,6 @@ export class FeatTweetTweetingComponent {
   tweetContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
   // tweet = signal<Tweety | null>(null);
   tweettingInProgress = signal(false);
-
-  readonly newTweetTimeout = TWEET_NEW_TWEET_TIMEOUT;
 
   imageHandler() {
     console.log('image handler');

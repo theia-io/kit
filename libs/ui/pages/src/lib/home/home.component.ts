@@ -24,17 +24,14 @@ import { selectCurrentProfileFollowing } from '@kitouch/kit-data';
 import { Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
+  DEFAULT_ANIMATE_TIMEOUT,
   DividerComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitCompAnimatePingComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH_DIALOG,
-  OUTLET_DIALOG,
-  TWEET_NEW_TWEET_TIMEOUT,
-} from '@kitouch/ui-shared';
+import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -102,7 +99,7 @@ export class PageHomeComponent implements OnInit {
             (tweetsSet) =>
               new Set([...tweetsSet.values()].filter((id) => id !== tweet.id))
           );
-        }, TWEET_NEW_TWEET_TIMEOUT * 2);
+        }, DEFAULT_ANIMATE_TIMEOUT * 2);
       });
   }
 

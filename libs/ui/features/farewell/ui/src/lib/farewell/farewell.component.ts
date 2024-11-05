@@ -1,4 +1,4 @@
-import { Location } from '@angular/common';
+import { Location, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,7 +9,10 @@ import {
   inject,
   model,
   NgZone,
+  output,
   signal,
+  TemplateRef,
+  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -18,6 +21,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   FeatFarewellActions,
   FeatFarewellMediaActions,
@@ -33,14 +37,17 @@ import {
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import {
   APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
   PhotoService,
   S3_FAREWELL_BUCKET_BASE_URL,
 } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
+import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
   debounceTime,
@@ -76,25 +83,31 @@ function extractContent(html: string) {
   templateUrl: './farewell.component.html',
   imports: [
     ReactiveFormsModule,
-    //
-    FeatFarewellEditorComponent,
-    UIKitSmallerHintTextUXDirective,
+    NgTemplateOutlet,
     //
     FloatLabelModule,
     InputTextModule,
+    ButtonModule,
+    TooltipModule,
+    //
+    FeatFarewellEditorComponent,
+    UIKitSmallerHintTextUXDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
-  #location = inject(Location);
+  statusUpdateTmpl = output<TemplateRef<any>>();
+
   #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
+  #router = inject(Router);
   #store = inject(Store);
-  #photoService = inject(PhotoService);
   #actions$ = inject(Actions);
+  #location = inject(Location);
+  #photoService = inject(PhotoService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {
@@ -118,11 +131,26 @@ export class FeatFarewellComponent implements AfterViewInit {
       Validators.required,
       Validators.maxLength(this.CONTENT_MAX_LENGTH),
     ]),
+    status: new FormControl<FarewellStatus>(FarewellStatus.Draft, {
+      nonNullable: true,
+    }),
   });
   farewellAnalytics = signal<FarewellAnalytics | null>(null);
   editorTextValue = signal<string>('');
 
+  farewellStatus = FarewellStatus;
+
+  @ViewChild('statusTmpl', { read: TemplateRef })
+  statusTmpl?: TemplateRef<any>;
+
   ngAfterViewInit(): void {
+    // non essential task to provide parent status update functionality
+    setTimeout(() => {
+      if (this.statusTmpl) {
+        this.statusUpdateTmpl.emit(this.statusTmpl);
+      }
+    }, 0);
+
     if (!this.farewellId()) {
       this.#autoCreateFarewell();
     } else {
@@ -132,6 +160,7 @@ export class FeatFarewellComponent implements AfterViewInit {
         this.farewellFormGroup.patchValue({
           title: farewell.title,
           content: farewell.content,
+          status: farewell.status,
         });
         this.editorTextValue.set(extractContent(farewell.content));
 
@@ -216,6 +245,20 @@ export class FeatFarewellComponent implements AfterViewInit {
     };
   }
 
+  updateStatus(currentStatus?: FarewellStatus) {
+    if (currentStatus === FarewellStatus.Published) {
+      this.farewellFormGroup.patchValue({
+        status: FarewellStatus.Draft,
+      });
+    } else {
+      this.farewellFormGroup.patchValue({
+        status: FarewellStatus.Published,
+      });
+    }
+
+    this.#cdr.detectChanges();
+  }
+
   initFarewellMediaGallery() {
     this.#ngZone.runOutsideAngular(() => {
       this.#photoService.initializeGallery({
@@ -248,6 +291,13 @@ export class FeatFarewellComponent implements AfterViewInit {
     );
   }
 
+  gotoFarewell(farewellId: Farewell['id']) {
+    this.#router.navigate(
+      [`/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/${farewellId}`],
+      { queryParams: { preview: true } }
+    );
+  }
+
   #autoCreateFarewell() {
     const autoCreate$ = this.farewellFormGroup.valueChanges.pipe(
       takeUntilDestroyed(this.#destroyRef),
@@ -260,11 +310,12 @@ export class FeatFarewellComponent implements AfterViewInit {
       })
     );
 
-    autoCreate$.subscribe(({ title, content }) =>
+    autoCreate$.subscribe(({ title, content, status }) =>
       this.#store.dispatch(
         FeatFarewellActions.createFarewell({
           title: title ?? '',
           content: content ?? '',
+          status: status ?? FarewellStatus.Draft,
         })
       )
     );
@@ -286,7 +337,7 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   // TODO update also on page reload, close etc
   #updateFarewell() {
-    const { title, content } = this.farewellFormGroup.value;
+    const { title, content, status } = this.farewellFormGroup.value;
 
     const farewell = this.farewell();
     this.#store.dispatch(
@@ -295,6 +346,7 @@ export class FeatFarewellComponent implements AfterViewInit {
           ...farewell,
           title: title ?? '',
           content: content ?? '',
+          status: status ?? FarewellStatus.Draft,
         } as Farewell,
       })
     );

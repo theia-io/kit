@@ -24,6 +24,7 @@ import { TagModule } from 'primeng/tag';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs';
 import {
   APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
   APP_PATH_DIALOG,
   APP_PATH_STATIC_PAGES,
   DESKTOP_NAV_ITEMS,
@@ -76,6 +77,7 @@ export class NavBarComponent implements AfterViewInit {
   readonly outletSecondary = OUTLET_DIALOG;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly farewellUrl = APP_PATH.Farewell;
+  readonly kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   readonly suggestionUrl = APP_PATH.Suggestion;
 
@@ -120,6 +122,14 @@ export class NavBarComponent implements AfterViewInit {
 
   createFarewellHandler() {
     this.#router.navigate([APP_PATH.Farewell, 'generate']);
+  }
+
+  createKudoBoardHandler() {
+    this.#router.navigate([
+      's',
+      APP_PATH_ALLOW_ANONYMOUS.KudoBoard,
+      'generate',
+    ]);
   }
 
   toggleSideBar(openOrClose?: boolean) {

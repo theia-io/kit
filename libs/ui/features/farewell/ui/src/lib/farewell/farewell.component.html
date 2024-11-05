@@ -32,4 +32,35 @@
       {{ CONTENT_MAX_LENGTH }}
     </strong>
   </section>
+
+  @let status = farewellFormGroup.get('status')?.value;
+
+  <ng-template #statusTmpl>
+    <p-button
+      (onClick)="updateStatus(status)"
+      [label]="
+        status === farewellStatus.Published ? 'Back to draft' : 'Publish'
+      "
+      [rounded]="true"
+      [severity]="
+        status === farewellStatus.Published ? 'secondary' : 'success'
+      " />
+  </ng-template>
+
+  <div class="flex justify-center gap-2">
+    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+    @if(farewellId(); as id) {
+    <div
+      [pTooltip]="
+        status !== farewellStatus.Published ? 'Publish to see farewell' : ''
+      ">
+      <p-button
+        (onClick)="gotoFarewell(id)"
+        label="See farewell"
+        [disabled]="status !== farewellStatus.Published"
+        [rounded]="true"
+        severity="info" />
+    </div>
+    }
+  </div>
 </form>

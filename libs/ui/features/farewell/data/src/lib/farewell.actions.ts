@@ -18,6 +18,7 @@ export const FeatFarewellActions = createActionGroup({
     CreateFarewell: props<{
       title: Farewell['title'];
       content: Farewell['content'];
+      status: Farewell['status'];
     }>(),
     CreateFarewellSuccess: props<{ farewell: Farewell }>(),
     CreateFarewellFailure: props<{ message: string }>(),

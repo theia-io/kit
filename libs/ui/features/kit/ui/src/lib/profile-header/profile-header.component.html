@@ -1,9 +1,9 @@
 <div class="static sm:relative w-full h-40 flex flex-col-reverse -mt-6">
   <ng-content select="[profileEditExtension]"></ng-content>
 
-  <feat-kit-profile-background
+  <ui-kit-color-displayer
     class="absolute -z-10 left-0 top-0 w-full h-40"
-    [background]="profile().background" />
+    [color]="profile().background" />
 
   <div class="flex justify-start items-end">
     <div id="profile-header">

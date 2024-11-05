@@ -12,9 +12,16 @@
         yOffset="top-4"
         (onDelete)="redirectToAll()" />
 
+      <div class="hidden sm:block absolute top-4 right-16">
+        @if(statusTmpl) {
+        <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+        }
+      </div>
+
       <feat-farewell
         class="block grow container mx-auto p-6"
-        [farewellId]="farewell.id" />
+        [farewellId]="farewell.id"
+        (statusUpdateTmpl)="statusTmpl = $event" />
     </div>
   </ng-template>
 </p-sidebar>

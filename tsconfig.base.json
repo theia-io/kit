@@ -18,6 +18,12 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@kitouch/data-kudoboard": [
+        "libs/ui/features/kudoboard/data/src/index.ts"
+      ],
+      "@kitouch/effects-kudoboard": [
+        "libs/ui/features/kudoboard/effects/src/index.ts"
+      ],
       "@kitouch/emoji": ["libs/shared/emoji/src/index.ts"],
       "@kitouch/feat-account-ui": ["libs/ui/features/account/ui/src/index.ts"],
       "@kitouch/feat-farewell-data": [
@@ -60,6 +66,7 @@
       "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],
       "@kitouch/shared-utils": ["libs/shared/utils/index.ts"],
       "@kitouch/ui-components": ["libs/ui/components/src/index.ts"],
+      "@kitouch/ui-kudoboard": ["libs/ui/features/kudoboard/ui/src/index.ts"],
       "@kitouch/ui-shared": ["libs/ui/shared/src/index.ts"],
       "@kitouch/utils": ["libs/shared/utils/src/index.ts"],
       "realm": ["node_modules/realm-web/types/realm"]

@@ -19,7 +19,8 @@
     "@kitouch/utils": "1.0.0-beta",
     "@aws-sdk/credential-providers": "^3.631.0",
     "photoswipe": "^5.4.4",
-    "intro.js": "^7.2.0"
+    "intro.js": "^7.2.0",
+    "masonry-layout": "^4.2.2"
   },
   "sideEffects": false
 }

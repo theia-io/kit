@@ -42,6 +42,7 @@ import { merge, take, tap } from 'rxjs';
   providers: [MessageService, ConfirmationService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
+// TODO refactor to include UiKitPicUploadableComponent
 export class FeatKitProfilePictureUploadableComponent {
   currentProfile = input.required<Profile | null | undefined>();
   profile = input.required<Profile | null | undefined>();

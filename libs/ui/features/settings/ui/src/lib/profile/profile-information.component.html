@@ -6,9 +6,9 @@
     <feat-kit-profile-background-uploadable
       [profileId]="profile().id"></feat-kit-profile-background-uploadable>
     } @else {
-    <feat-kit-profile-background
+    <ui-kit-color-displayer
       class="absolute left-0 top-0 w-full h-40"
-      [background]="profile().background" />
+      [color]="profile().background" />
     }
 
     <feat-kit-profile-picture-uploadable

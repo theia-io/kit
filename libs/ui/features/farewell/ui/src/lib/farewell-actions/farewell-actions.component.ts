@@ -8,7 +8,7 @@ import {
   output,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import { emojiNameMap } from '@kitouch/emoji';
 import {
@@ -28,7 +28,8 @@ import { APP_PATH, AuthorizedFeatureDirective } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { combineLatest, filter, map, shareReplay, switchMap } from 'rxjs';
+import { farewellOwner } from '../common';
 
 @Component({
   standalone: true,
@@ -53,6 +54,7 @@ export class FeatFarewellActionsComponent {
 
   commentsClick = output<void>();
 
+  #router = inject(Router);
   #store = inject(Store);
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
@@ -61,6 +63,13 @@ export class FeatFarewellActionsComponent {
   );
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
+
+  canEdit = computed(() =>
+    farewellOwner({
+      farewell: this.farewell(),
+      currentProfile: this.currentProfile(),
+    })
+  );
 
   farewellCommentsLength = toSignal(
     this.#farewellId$.pipe(
@@ -183,5 +192,11 @@ export class FeatFarewellActionsComponent {
 
     console.error('Cannot remove this reaction from different profile');
     return;
+  }
+
+  redirectToEdit() {
+    this.#router.navigateByUrl(
+      `/${APP_PATH.Farewell}/edit/${this.farewellId()}`
+    );
   }
 }

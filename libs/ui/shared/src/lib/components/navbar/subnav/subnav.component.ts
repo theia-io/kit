@@ -22,6 +22,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class SubnavComponent {
   farewellUrl = input.required<string>();
+  kudoBoardUrl = input.required<string>();
   introducingKitFarewell = input.required<string>();
   suggestionUrl = input.required<string>();
 

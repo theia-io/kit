@@ -1,7 +1,6 @@
 <ul class="flex flex-col space-y-2">
   <li>
-    <strong
-      class="block text-xs font-extrabold uppercase underline text-gray-400">
+    <strong class="block text-xs font-extrabold uppercase text-gray-400">
       Farewell
     </strong>
 
@@ -9,12 +8,12 @@
       <li>
         <a
           uiKitSmallTextTailwindClasses
-          class="block w-full px-4 py-2"
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
           [routerLink]="farewellUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
           <i class="pi pi-send mr-1"></i>
-          All
+          My farewells
         </a>
       </li>
 
@@ -23,17 +22,58 @@
           (click)="onGenerateHandler()"
           [routerLink]="farewellUrl() + '/generate'"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
-          pTooltip="Create farewell"
+          pTooltip="New farewell"
           uiKitSmallTextTailwindClasses
-          class="flex items-center w-full px-4 py-2">
-          <i class="pi pi-file-edit mr-1"></i>
-          Create
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
+          <i class="pi pi-send mr-1 font-semibold"></i>
+          New farewell
 
           <p-button
             class="ml-auto"
             styleClass="rounded-full p-0"
-            [routerLink]="farewellUrl() + '/generate'"
             aria-label="create farewell">
+            <i
+              class="pi pi-plus p-1 duration-300 hover:rotate-180"
+              style="font-size: 0.5rem"></i>
+          </p-button>
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong class="block text-xs font-extrabold uppercase text-gray-400">
+      Kudo Boards
+    </strong>
+
+    <ul class="mt-2 space-y-1">
+      <li>
+        <a
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          [routerLink]="kudoBoardUrl()"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <i class="pi pi-sparkles mr-1"></i>
+          My kudo boards
+        </a>
+      </li>
+
+      <li>
+        <a
+          [routerLink]="'/s/' + kudoBoardUrl() + '/generate'"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          pTooltip="New kudo board"
+          uiKitSmallTextTailwindClasses
+          [routerLinkActiveOptions]="{ exact: true }"
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
+          <i class="pi pi-sparkles mr-1 font-bold"></i>
+          New kudo board
+
+          <p-button
+            class="ml-auto"
+            styleClass="rounded-full p-0"
+            aria-label="create kudo board">
             <i
               class="pi pi-plus p-1 duration-300 hover:rotate-180"
               style="font-size: 0.5rem"></i>
@@ -58,7 +98,7 @@
           target="_blank"
           pTooltip="Write us email to info@kitouch.io"
           uiKitSmallTextTailwindClasses
-          class="block w-full px-4 py-2">
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
           Email us
         </a>
       </li>
@@ -66,7 +106,7 @@
         <a
           [routerLink]="introducingKitFarewell()"
           uiKitSmallTextTailwindClasses
-          class="block w-full px-4 py-2">
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
           What is KIT?
         </a>
       </li>
@@ -81,7 +121,7 @@
       <li>
         <a
           uiKitSmallTextTailwindClasses
-          class="block w-full px-4 py-2"
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
           [routerLink]="suggestionUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
@@ -92,7 +132,7 @@
         <button
           (click)="logout.emit()"
           uiKitSmallTextTailwindClasses
-          class="block w-full px-4 py-2">
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
           <i class="pi pi-sign-out mr-1"></i>
           Logout
         </button>

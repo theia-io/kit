@@ -1,12 +1,14 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 
+export const DEFAULT_ANIMATE_TIMEOUT = 5000;
+
 @Component({
   standalone: true,
   selector: 'ui-kit-comp-animate-ping',
   template: `
     <div class="relative">
       <ng-content />
-      @if(newlyAddedItem()) {
+      @if(animate()) {
       <span class="absolute top-1 right-1 flex h-3 w-3">
         <span
           class="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"
@@ -21,5 +23,5 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiKitCompAnimatePingComponent {
-  newlyAddedItem = input.required<boolean>();
+  animate = input.required<boolean>();
 }

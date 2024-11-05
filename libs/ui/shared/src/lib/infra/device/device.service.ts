@@ -70,6 +70,8 @@ export class DeviceService {
     shareReplay(1)
   );
 
+  isMobile$ = this.device$.pipe(map((device) => device === Device.Mobile));
+
   constructor() {
     this.innerWidth$.subscribe();
   }

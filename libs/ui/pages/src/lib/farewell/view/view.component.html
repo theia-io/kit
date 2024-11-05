@@ -21,8 +21,9 @@
 }
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
-  <div class="w-full p-2 border-solid border-2 border-l-0 border-r-0">
+  <div class="w-full py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-farewell-actions
+      class="block container mx-auto"
       [farewellId]="farewellId$ | async"
       (commentsClick)="commentsSideBarVisibility.set(true)" />
   </div>

@@ -1,0 +1,36 @@
+{
+  "name": "kudoboard-effects",
+  "$schema": "../../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/ui/features/kudoboard/effects/src",
+  "prefix": "lib",
+  "projectType": "library",
+  "tags": ["scope:ui", "feature", "feat-effects"],
+  "targets": {
+    "build": {
+      "executor": "@nx/angular:ng-packagr-lite",
+      "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
+      "options": {
+        "project": "libs/ui/features/kudoboard/effects/ng-package.json"
+      },
+      "configurations": {
+        "production": {
+          "tsConfig": "libs/ui/features/kudoboard/effects/tsconfig.lib.prod.json"
+        },
+        "development": {
+          "tsConfig": "libs/ui/features/kudoboard/effects/tsconfig.lib.json"
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/ui/features/kudoboard/effects/jest.config.ts"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    }
+  }
+}

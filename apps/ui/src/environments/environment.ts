@@ -15,5 +15,6 @@ export const environment: Environment = {
     identityPoolId: 'eu-north-1:0d7df556-9796-4d53-8387-aed1c71f8aec',
     profileBucket: 'kitouch-public-profiles',
     farewellBucket: 'kitouch-public-farewell',
+    kudoBoardBucket: 'kitouch-public-kudoboard',
   },
 };

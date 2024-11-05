@@ -10,6 +10,10 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { ProfileService } from './profile.service';
+import {
+  FeatKudoBoardCommentActions,
+  FeatKudoBoardReactionActions,
+} from '@kitouch/data-kudoboard';
 
 @Injectable()
 export class ProfileEffects {
@@ -49,9 +53,25 @@ export class ProfileEffects {
     )
   );
 
+  enrichProfilesFromKudoBoardReactions$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatKudoBoardReactionActions.getReactionsKudoBoardSuccess),
+      map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
   enrichProfilesFromFarewellComments$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellCommentActions.getCommentsFarewellSuccess),
+      map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromKudoBoardComments$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatKudoBoardCommentActions.getCommentsKudoBoardSuccess),
       map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
       map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
     )

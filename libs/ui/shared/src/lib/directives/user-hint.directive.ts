@@ -8,17 +8,26 @@ import {
   input,
 } from '@angular/core';
 
+const measureText = (() => {
+  const canvas = document.createElement('canvas');
+  const ctx = canvas.getContext('2d');
+
+  return (textStr: string) => {
+    const text = ctx?.measureText(textStr);
+    return text?.width;
+  };
+})();
+
 @Directive({
   standalone: true,
   selector: '[sharedUserHint]',
 })
-export class UserHintDirective implements AfterContentChecked {
+export class SharedKitUserHintDirective implements AfterContentChecked {
   text = input.required<string>();
   extraIdent = input<
     Partial<{ top: number; right: number; bottom: number; left: number }>
   >({});
   side = input<'top' | 'right' | 'bottom' | 'left'>('right');
-  size = input(8);
 
   @HostBinding('class.relative') relativeClass = true;
 
@@ -45,7 +54,7 @@ export class UserHintDirective implements AfterContentChecked {
       )
     ) {
       console.error(
-        '[UserHintDirective] sharedUserHint cannot be applied on this tag and has no effect.'
+        '[SharedKitUserHintDirective] sharedUserHint cannot be applied on this tag and has no effect.'
       );
       return;
     }
@@ -56,7 +65,7 @@ export class UserHintDirective implements AfterContentChecked {
 
   #generateUserHint() {
     if (!this.#hostEl) {
-      console.error('[UserHintDirective] no host element found!');
+      console.error('[SharedKitUserHintDirective] no host element found!');
       return;
     }
 
@@ -68,27 +77,28 @@ export class UserHintDirective implements AfterContentChecked {
 
     // @TODO @FIXME check that this makes sure that tailwind classes gets added (and not
     // because it is referenced somewhere else on the project).
-    let prevX = this.side() === 'right' ? wordsArr[0].length : 50,
+    let prevX = 10,
       wordSetIdx = 0;
+
     for (wordSetIdx; wordSetIdx < wordsArrLength; wordSetIdx++) {
       const textPartSection = wordsArr[wordSetIdx],
         textPartSectionLength = textPartSection.length;
 
-      const charEl = document.createElement('p');
+      const pNativeElement = document.createElement('p');
       const slideX = prevX;
       let slideY = -1 * (wordSetIdx * 10 + 10); //* (wordsArrLength - (wordsArrLength - wordSetIdx));
       if (this.side() === 'bottom') {
         slideY = slideY * 2 * -1;
       }
 
-      charEl.style.transform = `translate(${slideX}px, ${slideY}px) rotate(-${Math.min(
+      pNativeElement.style.transform = `translate(${slideX}px, ${slideY}px) rotate(-${Math.min(
         Math.sqrt(textPartSectionLength) + Math.sqrt(wordSetIdx) * 15,
         90
       )}deg)`;
-      charEl.innerHTML = textPartSection;
+      pNativeElement.innerHTML = textPartSection;
 
-      hintEl.appendChild(charEl);
-      prevX += textPartSectionLength * this.size();
+      hintEl.appendChild(pNativeElement);
+      prevX += (measureText(textPartSection) ?? 0) + 15;
     }
 
     const arrowSize = 40;
@@ -106,6 +116,12 @@ export class UserHintDirective implements AfterContentChecked {
       case 'bottom':
         hintEl.style.left = `${left + 10}px`;
         hintEl.style.bottom = `-${50 + bottom}px`;
+        break;
+      case 'left':
+        hintEl.style.top = `${
+          top + Math.floor(this.#hostStyles?.height ?? 0) / 4
+        }px`;
+        hintEl.style.left = `-${left + arrowSize}px`;
         break;
       case 'right':
       default:

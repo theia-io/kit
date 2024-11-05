@@ -25,9 +25,9 @@ export type ClientDBRequestType<T, K = {}> = Omit<T, 'id' | keyof K> &
 export type DbClientResponseType<T> = Omit<T, 'id'> &
   Realm.Services.MongoDB.Document['_id'];
 
-export const clientDBGenerateTimestamp = (): KitTimestampObj => {
-  const now = new Date(Date.now());
+export const getNow = () => new Date(Date.now());
 
+export const clientDBGenerateTimestamp = (): KitTimestampObj => {
   return {
     timestamp: {
       createdAt: new Date(Date.now()),

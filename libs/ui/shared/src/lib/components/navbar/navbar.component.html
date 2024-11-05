@@ -69,15 +69,22 @@
   (onFocus)="onFocusHandler($event)"></p-menu>
 
 <ui-kit-tweet-button
+  icon="pi-file-edit"
   [iconAnimate]="false"
-  text="Tweet thoughts!"
+  text="Tweet Thoughts!"
   (click)="tweetButtonHandler()"
   class="w-48 mt-6" />
 <ui-kit-tweet-button
-  icon="pi-file-edit"
+  icon="pi-send"
   [iconAnimate]="false"
-  text="Create farewell"
+  text="New Farewell"
   (click)="createFarewellHandler()"
+  class="w-48 mt-2" />
+<ui-kit-tweet-button
+  icon="pi-sparkles"
+  [iconAnimate]="false"
+  text="New KudoBoard"
+  (click)="createKudoBoardHandler()"
   class="w-48 mt-2" />
 
 <a
@@ -94,6 +101,7 @@
 
 <shared-sub-navbar
   [introducingKitFarewell]="introducingKitFarewell"
+  [kudoBoardUrl]="kudoBoardAllUrl"
   [farewellUrl]="farewellUrl"
   [suggestionUrl]="suggestionUrl"
   (logout)="logoutHandler()"
