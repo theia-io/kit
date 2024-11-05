@@ -5,37 +5,39 @@ import {
   computed,
   inject,
   input,
-  output,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
-import { emojiNameMap } from '@kitouch/emoji';
 import {
-  FeatFarewellReactionActions,
-  selectFarewellById,
-  selectFarewellCommentsById,
-  selectFarewellReactionsById,
-} from '@kitouch/feat-farewell-data';
+  FeatKudoBoardReactionActions,
+  selectKudoBoardById,
+  selectKudoBoardReactionsById,
+} from '@kitouch/data-kudoboard';
+import { emojiNameMap } from '@kitouch/emoji';
+
 import {
   profilePicture,
   selectCurrentProfile,
   selectProfilesByIds,
 } from '@kitouch/kit-data';
-import { Farewell, FarewellReaction, Profile } from '@kitouch/shared-models';
+import { KudoBoard, KudoBoardReaction, Profile } from '@kitouch/shared-models';
 import { AccountTileComponent } from '@kitouch/ui-components';
-import { APP_PATH, AuthorizedFeatureDirective } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
+  AuthorizedFeatureDirective,
+} from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { combineLatest, filter, map, shareReplay, switchMap } from 'rxjs';
-import { farewellOwner } from '../common';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { kudoBoardOwner } from '../common';
 
 @Component({
   standalone: true,
-  selector: 'feat-farewell-actions',
-  templateUrl: './farewell-actions.component.html',
-  styleUrl: './farewell-actions.component.scss',
+  selector: 'feat-kudoboard-actions',
+  templateUrl: './actions.component.html',
   imports: [
     AsyncPipe,
     RouterModule,
@@ -49,80 +51,70 @@ import { farewellOwner } from '../common';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellActionsComponent {
-  farewellId = input.required<Farewell['id']>();
-
-  commentsClick = output<void>();
+export class FeatKudoBoardActionsComponent {
+  kudoboardId = input.required<KudoBoard['id']>();
 
   #router = inject(Router);
   #store = inject(Store);
 
-  #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
-  farewell = computed(() =>
-    this.#store.selectSignal(selectFarewellById(this.farewellId()))()
+  #kudoboardId$ = toObservable(this.kudoboardId).pipe(filter(Boolean));
+  kudoboard = computed(() =>
+    this.#store.selectSignal(selectKudoBoardById(this.kudoboardId()))()
   );
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
   canEdit = computed(() =>
-    farewellOwner({
-      farewell: this.farewell(),
+    kudoBoardOwner({
+      kudoboard: this.kudoboard(),
       currentProfile: this.currentProfile(),
     })
   );
 
-  farewellCommentsLength = toSignal(
-    this.#farewellId$.pipe(
-      switchMap((farewellId) =>
-        this.#store.pipe(select(selectFarewellCommentsById(farewellId)))
-      ),
-      map((comments) => comments.length)
-    ),
-    { initialValue: 0 }
-  );
-  farewellReactions$ = this.#farewellId$.pipe(
-    switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellReactionsById(farewellId)))
+  kudoBoardReactions$ = this.#kudoboardId$.pipe(
+    switchMap((kudoboardId) =>
+      this.#store.pipe(select(selectKudoBoardReactionsById(kudoboardId)))
     ),
     shareReplay({
       refCount: true,
       bufferSize: 1,
     })
   );
-  farewellReactionsLength = toSignal(
-    this.farewellReactions$.pipe(map((reactions) => reactions.length)),
+  kudoBoardReactionsLength = toSignal(
+    this.kudoBoardReactions$.pipe(map((reactions) => reactions.length)),
     { initialValue: 0 }
   );
-  farewellProfileReactionsMap$ = this.farewellReactions$.pipe(
+  kudoBoardProfileReactionsMap$ = this.kudoBoardReactions$.pipe(
     map((reactions) => {
-      const farewellProfileReactionsMap = new Map<
+      const kudoBoardProfileReactionsMap = new Map<
         Profile['id'] | null,
-        Array<FarewellReaction>
+        Array<KudoBoardReaction>
       >();
 
       reactions.forEach((reaction) => {
-        const profileId = reaction.profileId;
+        const profileId = reaction.profileId ?? null;
 
-        const farewellProfileReactions =
-          farewellProfileReactionsMap.get(profileId) ?? [];
-        farewellProfileReactionsMap.set(profileId, [
-          ...farewellProfileReactions,
+        const kudoBoardProfileReactions =
+          kudoBoardProfileReactionsMap.get(profileId) ?? [];
+
+        kudoBoardProfileReactionsMap.set(profileId, [
+          ...kudoBoardProfileReactions,
           reaction,
         ]);
       });
 
-      return farewellProfileReactionsMap;
+      return kudoBoardProfileReactionsMap;
     }),
     shareReplay({ refCount: true, bufferSize: 1 })
   );
 
   resolvedReactionProfilesMap = toSignal(
-    this.farewellProfileReactionsMap$.pipe(
-      switchMap((farewellProfileReactions) =>
+    this.kudoBoardProfileReactionsMap$.pipe(
+      switchMap((kudoBoardProfileReactions) =>
         this.#store.pipe(
           select(
             selectProfilesByIds(
-              [...farewellProfileReactions.keys()].filter(
+              [...kudoBoardProfileReactions.keys()].filter(
                 (profileId): profileId is Profile['id'] => !!profileId
               )
             )
@@ -153,16 +145,16 @@ export class FeatFarewellActionsComponent {
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
   readonly emojiMap = emojiNameMap;
 
-  randomReaction(emojiList: Array<FarewellReaction>) {
+  randomReaction(emojiList: Array<KudoBoardReaction>) {
     const length = emojiList.length;
     return emojiList[Math.floor(length * Math.random())].content;
   }
 
   reactionClickHandler(emoji: string) {
     this.#store.dispatch(
-      FeatFarewellReactionActions.postReactionFarewell({
+      FeatKudoBoardReactionActions.postReactionKudoBoard({
         reaction: {
-          farewellId: this.farewellId(),
+          kudoBoardId: this.kudoboardId(),
           profileId: this.currentProfile()?.id ?? null,
           profile: this.currentProfile(),
           content: emoji,
@@ -178,14 +170,16 @@ export class FeatFarewellActionsComponent {
     }
   }
 
-  removeReactionHandler(reaction: FarewellReaction) {
-    const farewellOwner =
-      this.farewell()?.profile?.id === this.currentProfile()?.id;
+  removeReactionHandler(reaction: KudoBoardReaction) {
+    const kudoBoardOwner =
+      this.kudoboard()?.profile?.id === this.currentProfile()?.id;
     const currentReactionOwner =
       this.currentProfile()?.id === reaction.profileId;
-    if (farewellOwner || currentReactionOwner) {
+    if (kudoBoardOwner || currentReactionOwner) {
       this.#store.dispatch(
-        FeatFarewellReactionActions.deleteReactionFarewell({ id: reaction.id })
+        FeatKudoBoardReactionActions.deleteReactionKudoBoard({
+          id: reaction.id,
+        })
       );
       return;
     }
@@ -196,7 +190,7 @@ export class FeatFarewellActionsComponent {
 
   redirectToEdit() {
     this.#router.navigateByUrl(
-      `/${APP_PATH.Farewell}/edit/${this.farewellId()}`
+      `s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${this.kudoboardId()}/edit`
     );
   }
 }

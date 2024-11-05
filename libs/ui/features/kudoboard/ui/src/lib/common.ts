@@ -1,4 +1,5 @@
 import { inject } from '@angular/core';
+import { KudoBoard, Profile } from '@kitouch/shared-models';
 import { S3_KUDOBOARD_BUCKET_BASE_URL } from '@kitouch/ui-shared';
 
 export const isValidBucketUrl = () => {
@@ -27,4 +28,23 @@ export const isHexColor = (hex?: string) => {
   }
 
   return /^#[0-9A-F]{6}$/i.test(hex);
+};
+
+export const kudoBoardOwner = ({
+  kudoboard,
+  currentProfile,
+}: {
+  kudoboard?: KudoBoard;
+  currentProfile?: Profile;
+}) => {
+  if (
+    !kudoboard ||
+    !kudoboard.profileId ||
+    !currentProfile ||
+    kudoboard.profileId !== currentProfile.id
+  ) {
+    return false;
+  }
+
+  return true;
 };

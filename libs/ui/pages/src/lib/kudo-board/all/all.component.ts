@@ -3,8 +3,8 @@ import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
-  selectKudoBoards,
   FeatKudoBoardActions,
+  selectKudoBoards,
 } from '@kitouch/data-kudoboard';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
@@ -14,7 +14,10 @@ import {
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
-import { FeatKudoBoardViewComponent } from '@kitouch/ui-kudoboard';
+import {
+  FeatKudoBoardAnalyticsComponent,
+  FeatKudoBoardViewComponent,
+} from '@kitouch/ui-kudoboard';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -46,6 +49,7 @@ import { filter } from 'rxjs/operators';
     UiCompGradientCardComponent,
     UiKitDeleteComponent,
     FeatKudoBoardViewComponent,
+    FeatKudoBoardAnalyticsComponent,
   ],
   providers: [ConfirmationService, MessageService],
 })

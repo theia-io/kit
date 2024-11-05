@@ -1,6 +1,6 @@
 <div class="flex gap-2 justify-end items-center">
   <div class="flex gap-2 mr-auto">
-    @for (profileReaction of (farewellProfileReactionsMap$ | async); track
+    @for (profileReaction of (kudoBoardProfileReactionsMap$ | async); track
     $index) {
     <div class="min-h-10 relative">
       <p class="absolute top-1 right-0 font-bold text-xs">
@@ -50,7 +50,7 @@
       (onClick)="op.toggle($event)"
       [text]="true"
       [label]="
-        farewellReactionsLength() > 0 ? farewellReactionsLength() + '' : ''
+        kudoBoardReactionsLength() > 0 ? kudoBoardReactionsLength() + '' : ''
       "
       icon="pi pi-face-smile" />
     <p-overlayPanel #op>
@@ -58,14 +58,6 @@
         title="Kitouch"
         (emojiClick)="overlayReactionHandler($event)"></emoji-mart>
     </p-overlayPanel>
-    <p-button
-      styleClass="p-0 ml-3"
-      (onClick)="commentsClick.emit()"
-      [text]="true"
-      [label]="
-        farewellCommentsLength() > 0 ? farewellCommentsLength() + '' : ''
-      "
-      icon="pi pi-comments" />
     @if(canEdit()) {
     <p-button
       styleClass="p-0 ml-1"

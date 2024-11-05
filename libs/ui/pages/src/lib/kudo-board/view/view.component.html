@@ -6,10 +6,9 @@
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
   <div class="w-full py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
-    <!-- <feat-kudoboard-actions
+    <feat-kudoboard-actions
       class="block container mx-auto"
-      [kudoboardId]="kudoboardId$ | async"
-      (commentsClick)="commentsSideBarVisibility.set(true)" /> -->
+      [kudoboardId]="kudoboardId$ | async" />
   </div>
 
   <div class="container mx-auto">
@@ -17,26 +16,17 @@
   </div>
 
   <div class="container mx-auto">
-    <!-- <feat-kudoboard-analytics
+    <feat-kudoboard-analytics
       class="container mx-auto"
       [kudoboardId]="kudoboardId$ | async"
-      [preview]="preview()" /> -->
+      [preview]="preview()" />
   </div>
 
   <div class="container mx-auto">
-    <!-- <feat-kudoboard-comments
+    <feat-kudoboard-comments
       class="block max-w-xl mx-auto"
-      [kudoboardId]="kudoboardId$ | async" /> -->
+      [kudoboardId]="kudoboardId$ | async" />
   </div>
-  <p-sidebar
-    [blockScroll]="true"
-    styleClass="min-w-1/2"
-    position="right"
-    [(visible)]="commentsSideBarVisibility">
-    <!-- <feat-kudoboard-comments
-      class="block max-w-xl mx-auto"
-      [kudoboardId]="kudoboardId$ | async" /> -->
-  </p-sidebar>
 
   @if(preview() && kudoboardProfile() && currentProfile() &&
   kudoboardProfile()?.id === currentProfile()?.id && (kudoboard$ | async); as

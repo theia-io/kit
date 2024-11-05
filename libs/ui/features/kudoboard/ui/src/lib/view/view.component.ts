@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -9,19 +9,11 @@ import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import { findKudoBoardById, selectKudoBoards } from '@kitouch/data-kudoboard';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { KudoBoard } from '@kitouch/shared-models';
-import {
-  UiKitColorDisplayerComponent,
-  UiKitPicUploadableComponent,
-  UiKitPicUploadableDirective,
-  UIKitSmallerHintTextUXDirective,
-} from '@kitouch/ui-components';
+import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 import { Actions } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { ButtonModule } from 'primeng/button';
-import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextModule } from 'primeng/inputtext';
 import { combineLatest, filter, map } from 'rxjs';
-import { isHexColor, isValidBucketUrl } from '../config';
+import { isHexColor, isValidBucketUrl } from '../common';
 
 @Component({
   standalone: true,

@@ -98,6 +98,12 @@ export const featKudoBoardReducer = createReducer(
   ),
   on(
     FeatKudoBoardAnalyticsActions.getAnalyticsKudoBoardSuccess,
+    (state, { analytics }) => ({
+      ...state,
+      analytics: mergeArr(state.analytics, analytics),
+    })
+  ),
+  on(
     FeatKudoBoardAnalyticsActions.postAnalyticsKudoBoardSuccess,
     (state, { analytics }) => ({
       ...state,

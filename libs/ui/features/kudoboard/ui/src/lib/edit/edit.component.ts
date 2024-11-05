@@ -67,7 +67,9 @@ import {
   takeUntil,
   withLatestFrom,
 } from 'rxjs';
-import { isHexColor, isValidBucketUrl } from '../config';
+import { isHexColor, isValidBucketUrl } from '../common';
+import { TooltipModule } from 'primeng/tooltip';
+import { Router } from '@angular/router';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -86,6 +88,7 @@ const TITLE_MAX_LENGTH = 128;
     FloatLabelModule,
     InputTextModule,
     ButtonModule,
+    TooltipModule,
     //
     UIKitSmallerHintTextUXDirective,
     UiKitPicUploadableComponent,
@@ -102,6 +105,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
 
   statusUpdateTmpl = output<TemplateRef<any>>();
 
+  #router = inject(Router);
   #location = inject(Location);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
@@ -154,10 +158,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         this.statusUpdateTmpl.emit(this.statusTmpl);
       }
     }, 0);
-
-    this.kudoBoardFormGroup.valueChanges.subscribe((v) =>
-      console.log('KUDOBOARD FORM', v)
-    );
 
     const kudoBoardId = this.id();
     if (!kudoBoardId) {
@@ -290,6 +290,12 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     this.#cdr.detectChanges();
   }
 
+  gotoBoard(kudoboardId: KudoBoard['id']) {
+    this.#router.navigateByUrl(
+      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}`
+    );
+  }
+
   #autoCreateKudoBoard() {
     const autoCreate$ = this.kudoBoardFormGroup.valueChanges.pipe(
       takeUntilDestroyed(this.#destroyRef),
@@ -376,7 +382,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #updateJustCreatedKudoBoardUrl(id: KudoBoard['id']) {
     this.id.set(id);
     this.#location.replaceState(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}`
+      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`
     );
   }
 }

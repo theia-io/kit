@@ -12,8 +12,6 @@ const measureText = (() => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  console.log('CANVAS CREATED', canvas, ctx);
-
   return (textStr: string) => {
     const text = ctx?.measureText(textStr);
     return text?.width;
@@ -100,11 +98,6 @@ export class SharedKitUserHintDirective implements AfterContentChecked {
       pNativeElement.innerHTML = textPartSection;
 
       hintEl.appendChild(pNativeElement);
-      console.log(
-        `TEXT: ${textPartSection}, LENGTH: ${textPartSectionLength}, in PX: ${measureText(
-          textPartSection
-        )}`
-      );
       prevX += (measureText(textPartSection) ?? 0) + 15;
     }
 

@@ -1,0 +1,50 @@
+<ui-kit-comment-area
+  [placeholder]="placeholder()"
+  (comment)="commentHandler($event)">
+  @if(currentProfile(); as currentProfile) {
+
+  <div profile class="mb-4">
+    <ui-kit-comp-account-tile
+      sharedAuthorizedFeature
+      [primaryText]="currentProfile.name"
+      [picture]="currentProfilePic()"
+      [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
+  </div>
+  }
+</ui-kit-comment-area>
+
+<ui-kit-divider class="block my-9" />
+
+@for (comment of (kudoboardComments$ | async); track $index) {
+<div
+  [class.mb-9]="!$last"
+  class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl">
+  <div profile class="mb-4">
+    <ui-kit-comp-account-tile
+      sharedAuthorizedFeature
+      [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
+      [primarySecondaryText]="
+        comment.timestamp.updatedAt ?? comment.timestamp.createdAt
+          | date : 'MMM d, h:mm a'
+      "
+      [picture]="profilePictureFn(comment.profile)"
+      [link]="
+        comment.profileId
+          ? profileUrl +
+            (comment.profile?.alias ?? comment.profile?.id ?? comment.profileId)
+          : undefined
+      " />
+  </div>
+
+  <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
+
+  @if(currentProfile()?.id && (currentProfile()?.id === kudoboardProfile()?.id
+  || currentProfile()?.id === comment.profileId)) {
+  <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
+  }
+</div>
+} @empty {
+<p class="text-center italic text-gray-500">
+  There are currently no kudos. Be the first.
+</p>
+}

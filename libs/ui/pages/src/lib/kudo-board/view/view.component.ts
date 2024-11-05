@@ -18,7 +18,12 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
-import { FeatKudoBoardViewComponent } from '@kitouch/ui-kudoboard';
+import {
+  FeatKudoBoardActionsComponent,
+  FeatKudoBoardAnalyticsComponent,
+  FeatKudoBoardCommentsComponent,
+  FeatKudoBoardViewComponent,
+} from '@kitouch/ui-kudoboard';
 import {
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
@@ -53,11 +58,13 @@ import {
     ButtonModule,
     TagModule,
     BreadcrumbModule,
-    SidebarModule,
     //
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
+    FeatKudoBoardActionsComponent,
     FeatKudoBoardViewComponent,
+    FeatKudoBoardAnalyticsComponent,
+    FeatKudoBoardCommentsComponent,
   ],
 })
 export class PageKudoBoardViewComponent {

@@ -67,9 +67,6 @@ export class PageKudoBoardEditComponent {
     startWith(false)
   );
 
-  // @ViewChild('statusTmplPlaceholder', { read: ViewContainerRef })
-  // statusRef: ViewContainerRef;
-
   statusTmpl?: TemplateRef<any>;
 
   constructor() {

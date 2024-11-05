@@ -39,11 +39,11 @@ export class KudoBoardAnalyticsService extends DataSourceService {
       switchMap((db) =>
         db
           .collection<DBClientType<KudoBoardAnalytics>>('kudoboard-analytics')
-          .findOne({ kudoBoardId: new BSON.ObjectId(kudoBoardId) })
+          .find({ kudoBoardId: new BSON.ObjectId(kudoBoardId) })
       ),
       map((kudoboardAnalyticsDb) =>
         kudoboardAnalyticsDb
-          ? dbClientKudoBoardAnalyticsAdapter(kudoboardAnalyticsDb)
+          ? kudoboardAnalyticsDb.map(dbClientKudoBoardAnalyticsAdapter)
           : null
       )
     );

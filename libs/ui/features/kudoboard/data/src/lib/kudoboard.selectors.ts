@@ -70,4 +70,4 @@ export const findKudoBoardCommentsByKudoBoardId = (
 export const findAnalyticsKudoBoardById = (
   kudoboardId: KudoBoard['id'],
   analytics: Array<KudoBoardAnalytics>
-) => analytics.find((analytic) => analytic.kudoBoardId === kudoboardId);
+) => analytics.filter((analytic) => analytic.kudoBoardId === kudoboardId);

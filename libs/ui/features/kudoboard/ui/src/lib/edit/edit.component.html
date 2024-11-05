@@ -68,8 +68,9 @@
     <label class="w-full text-4xl" for="title">Kudo Board Recipient</label>
   </p-floatLabel>
 
+  @let status = kudoBoardFormGroup.get('status')?.value;
+
   <ng-template #statusTmpl>
-    @let status = kudoBoardFormGroup.get('status')?.value;
     <p-button
       (onClick)="updateStatus(status)"
       [label]="
@@ -80,7 +81,21 @@
         status === kudoBoardStatus.Published ? 'secondary' : 'success'
       " />
   </ng-template>
-  <div class="text-center">
+
+  <div class="flex justify-center gap-2">
     <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+    @if(id(); as id) {
+    <div
+      [pTooltip]="
+        status !== kudoBoardStatus.Published ? 'Publish to see kudo board' : ''
+      ">
+      <p-button
+        (onClick)="gotoBoard(id)"
+        label="See Kudo"
+        [disabled]="status !== kudoBoardStatus.Published"
+        [rounded]="true"
+        severity="info" />
+    </div>
+    }
   </div>
 </form>

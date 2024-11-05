@@ -1,4 +1,5 @@
 import { KudoBoard, KudoBoardAnalytics } from '@kitouch/shared-models';
+import { ClientDataType } from '@kitouch/utils';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatKudoBoardAnalyticsActions = createActionGroup({
@@ -7,13 +8,15 @@ export const FeatKudoBoardAnalyticsActions = createActionGroup({
     GetAnalyticsKudoBoard: props<{
       kudoBoardId: KudoBoard['id'];
     }>(),
-    GetAnalyticsKudoBoardSuccess: props<{ analytics: KudoBoardAnalytics }>(),
+    GetAnalyticsKudoBoardSuccess: props<{
+      analytics: Array<KudoBoardAnalytics>;
+    }>(),
     GetAnalyticsKudoBoardFailure: props<{ message: string }>(),
     //
     GetAllAnalyticsSuccess: props<{ analytics: Array<KudoBoardAnalytics> }>(),
     //
     PostAnalyticsKudoBoard: props<{
-      analytics: Omit<KudoBoardAnalytics, 'id'>;
+      analytics: ClientDataType<KudoBoardAnalytics>;
     }>(),
     PostAnalyticsKudoBoardSuccess: props<{ analytics: KudoBoardAnalytics }>(),
     PostAnalyticsKudoBoardFailure: props<{ message: string }>(),
