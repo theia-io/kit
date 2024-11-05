@@ -16,7 +16,8 @@
     "rxjs": "~7.8.0",
     "@angular/router": "18.2.6",
     "@ctrl/ngx-emoji-mart": "^9.2.0",
-    "@kitouch/emoji": "0.0.1"
+    "@kitouch/emoji": "0.0.1",
+    "masonry-layout": "^4.2.2"
   },
   "sideEffects": false
 }
