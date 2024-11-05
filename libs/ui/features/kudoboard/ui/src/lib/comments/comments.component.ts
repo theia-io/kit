@@ -1,17 +1,26 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
+  ElementRef,
   inject,
   input,
+  signal,
+  ViewChild,
 } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
+  FeatKudoBoardCommentActions,
   selectKudoBoardById,
   selectKudoBoardCommentsById,
-  FeatKudoBoardCommentActions,
 } from '@kitouch/data-kudoboard';
 
 import {
@@ -19,20 +28,38 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { KudoBoardComment } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
+  DEFAULT_ANIMATE_TIMEOUT,
   DividerComponent,
   UIKitCommentAreaComponent,
+  UiKitCompAnimatePingComponent,
   UiKitDeleteComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH, AuthorizedFeatureDirective } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  AuthorizedFeatureDirective,
+  MasonryService,
+} from '@kitouch/ui-shared';
+import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import Masonry from 'masonry-layout';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
-import { filter, map, of, switchMap } from 'rxjs';
+import {
+  delay,
+  filter,
+  map,
+  of,
+  shareReplay,
+  skip,
+  switchMap,
+  take,
+} from 'rxjs';
 
 @Component({
   standalone: true,
@@ -49,6 +76,7 @@ import { filter, map, of, switchMap } from 'rxjs';
     TimelineModule,
     ButtonModule,
     //
+    UiKitCompAnimatePingComponent,
     UIKitCommentAreaComponent,
     UiKitTweetButtonComponent,
     AccountTileComponent,
@@ -59,10 +87,19 @@ import { filter, map, of, switchMap } from 'rxjs';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatKudoBoardCommentsComponent {
+export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   kudoboardId = input.required<string>();
 
+  #destroyRef = inject(DestroyRef);
+  #actions = inject(Actions);
   #store = inject(Store);
+  #masonryService = inject(MasonryService);
+
+  #createdComment$ = this.#actions.pipe(
+    ofType(FeatKudoBoardCommentActions.postCommentKudoBoardSuccess),
+    takeUntilDestroyed()
+  );
+
   kudoboardId$ = toObservable(this.kudoboardId);
 
   kudoboard$ = this.kudoboardId$.pipe(
@@ -97,6 +134,16 @@ export class FeatKudoBoardCommentsComponent {
     )
   );
 
+  #masonryReadyTrigger$ = this.kudoboardComments$.pipe(
+    takeUntilDestroyed(this.#destroyRef),
+    filter((comments) => comments && comments.length > 0),
+    delay(0),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
+  );
+
   placeholder = computed(() => {
     const profileName = this.kudoboardProfile()?.name;
 
@@ -116,6 +163,51 @@ export class FeatKudoBoardCommentsComponent {
   );
 
   profileUrl = `/${APP_PATH.Profile}/`;
+
+  @ViewChild('commentsTmpl')
+  commentsTmpl: ElementRef;
+  #masonry?: Masonry;
+  animatedCommentsSet = signal<Set<KudoBoardComment['id']>>(new Set());
+
+  ngAfterViewInit(): void {
+    const masonryWrapper = this.commentsTmpl.nativeElement;
+
+    this.#masonryReadyTrigger$.pipe(take(1)).subscribe(() => {
+      if (masonryWrapper) {
+        this.#masonryService
+          .initializeMasonry(masonryWrapper, {
+            itemSelector: '.masonry-item',
+          })
+          .then((masonry) => (this.#masonry = masonry));
+      }
+    });
+    this.#masonryReadyTrigger$.pipe(skip(1)).subscribe(() => {
+      if (
+        this.#masonry &&
+        this.#masonry.reloadItems &&
+        this.#masonry.layout &&
+        this.#masonry.getItemElements &&
+        this.#masonry.prepended
+      ) {
+        this.#masonry.reloadItems();
+        // const allItems = this.#masonry.getItemElements();
+        this.#masonry.layout();
+      }
+    });
+
+    this.#createdComment$.subscribe(({ comment }) => {
+      this.animatedCommentsSet.update(
+        (existingSet) => new Set([...existingSet.values(), comment.id])
+      );
+
+      setTimeout(() => {
+        this.animatedCommentsSet.update(
+          (existingSet) =>
+            new Set([...existingSet.values()].filter((id) => id !== comment.id))
+        );
+      }, DEFAULT_ANIMATE_TIMEOUT);
+    });
+  }
 
   commentHandler(content: string) {
     const currentProfile = this.currentProfile();

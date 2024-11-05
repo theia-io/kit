@@ -5,7 +5,7 @@
 @for (tweet of homeTweets$ | async; track $index) {
 <ui-kit-divider class="block my-2" [class.mt-12]="$first" />
 
-<ui-kit-comp-animate-ping [newlyAddedItem]="newlyAddedTweets().has(tweet.id)">
+<ui-kit-comp-animate-ping [animate]="newlyAddedTweets().has(tweet.id)">
   <ui-kit-comp-card class="p-2">
     <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
   </ui-kit-comp-card>

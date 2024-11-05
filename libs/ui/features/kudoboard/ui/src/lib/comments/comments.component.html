@@ -1,4 +1,5 @@
 <ui-kit-comment-area
+  class="block max-w-xl mx-auto"
   [placeholder]="placeholder()"
   (comment)="commentHandler($event)">
   @if(currentProfile(); as currentProfile) {
@@ -15,36 +16,41 @@
 
 <ui-kit-divider class="block my-9" />
 
-@for (comment of (kudoboardComments$ | async); track $index) {
-<div
-  [class.mb-9]="!$last"
-  class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl">
-  <div profile class="mb-4">
-    <ui-kit-comp-account-tile
-      sharedAuthorizedFeature
-      [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
-      [primarySecondaryText]="
-        comment.timestamp.updatedAt ?? comment.timestamp.createdAt
-          | date : 'MMM d, h:mm a'
-      "
-      [picture]="profilePictureFn(comment.profile)"
-      [link]="
-        comment.profileId
-          ? profileUrl +
-            (comment.profile?.alias ?? comment.profile?.id ?? comment.profileId)
-          : undefined
-      " />
+<div #commentsTmpl class="masonry mx-auto">
+  @for (comment of (kudoboardComments$ | async); track $index) {
+  <div
+    class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl masonry-item">
+    <ui-kit-comp-animate-ping [animate]="animatedCommentsSet().has(comment.id)">
+      <div profile class="mb-4">
+        <ui-kit-comp-account-tile
+          sharedAuthorizedFeature
+          [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
+          [primarySecondaryText]="
+            comment.timestamp.updatedAt ?? comment.timestamp.createdAt
+              | date : 'MMM d, h:mm a'
+          "
+          [picture]="profilePictureFn(comment.profile)"
+          [link]="
+            comment.profileId
+              ? profileUrl +
+                (comment.profile?.alias ??
+                  comment.profile?.id ??
+                  comment.profileId)
+              : undefined
+          " />
+      </div>
+
+      <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
+
+      @if(currentProfile()?.id && (currentProfile()?.id ===
+      kudoboardProfile()?.id || currentProfile()?.id === comment.profileId)) {
+      <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
+      }
+    </ui-kit-comp-animate-ping>
   </div>
-
-  <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
-
-  @if(currentProfile()?.id && (currentProfile()?.id === kudoboardProfile()?.id
-  || currentProfile()?.id === comment.profileId)) {
-  <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
+  } @empty {
+  <p class="text-center italic text-gray-500">
+    There are currently no kudos. Be the first.
+  </p>
   }
 </div>
-} @empty {
-<p class="text-center italic text-gray-500">
-  There are currently no kudos. Be the first.
-</p>
-}

@@ -23,9 +23,7 @@
   </div>
 
   <div class="container mx-auto">
-    <feat-kudoboard-comments
-      class="block max-w-xl mx-auto"
-      [kudoboardId]="kudoboardId$ | async" />
+    <feat-kudoboard-comments [kudoboardId]="kudoboardId$ | async" />
   </div>
 
   @if(preview() && kudoboardProfile() && currentProfile() &&
@@ -44,9 +42,6 @@
       <i class="pi pi-copy mr-1"></i>
       }
     </button>
-
-    <!-- <p-button (onClick)="shareHandler()" icon="pi pi-share-alt" label="Share" severity="contrast" [raised]="true"
-      class="ml-1" /> -->
   </div>
   }
 </div>

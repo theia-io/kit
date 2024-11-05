@@ -65,6 +65,28 @@ body {
   }
 }
 
+.masonry-item {
+  width: 200px;
+  margin: 6px;
+}
+
+@media (min-width: 768px) {
+  .masonry-item {
+    width: 250px;
+  }
+}
+@media (min-width: 1024px) {
+  .masonry-item {
+    width: 350px;
+    margin: 8px;
+  }
+}
+@media (min-width: 1536px) {
+  .masonry-item {
+    width: 400px;
+  }
+}
+
 .overflow-break-word {
   overflow-wrap: break-word;
 }
