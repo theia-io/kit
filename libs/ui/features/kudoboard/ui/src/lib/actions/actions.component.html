@@ -58,7 +58,16 @@
         title="Kitouch"
         (emojiClick)="overlayReactionHandler($event)"></emoji-mart>
     </p-overlayPanel>
-    @if(canEdit()) {
+    @if(!kudoboard()?.profileId) {
+    <p-button
+      sharedAuthorizedFeature
+      pTooltip="Claim Kudoboard to always have it at hand and be its admin"
+      styleClass="py-0 ml-1"
+      (onClick)="claimKudoBoard()"
+      severity="success"
+      label="Claim"
+      icon="pi pi-save" />
+    } @if(canEdit()) {
     <p-button
       styleClass="p-0 ml-1"
       (onClick)="redirectToEdit()"

@@ -1,4 +1,5 @@
-import { Component, inject } from '@angular/core';
+import { NgTemplateOutlet } from '@angular/common';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
@@ -15,6 +16,7 @@ import { take } from 'rxjs';
   standalone: true,
   templateUrl: './farewell-generate.component.html',
   imports: [
+    NgTemplateOutlet,
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
@@ -28,6 +30,8 @@ export class PageFarewellGenerateComponent {
   #router = inject(Router);
   #routerEventsService = inject(RouterEventsService);
   #navbarService = inject(NavbarService);
+
+  statusTmpl?: TemplateRef<any>;
 
   redirectToLatest() {
     this.#routerEventsService.lastUrlSaved$

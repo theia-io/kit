@@ -24,7 +24,7 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 
-import { filter } from 'rxjs/operators';
+import { filter, map, tap } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -62,7 +62,18 @@ export class PageFarewellAllComponent {
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewellEdit = `/${APP_PATH.Farewell}/edit`;
 
-  farewells$ = this.#store.pipe(select(selectFarewells));
+  farewells$ = this.#store.pipe(
+    select(selectFarewells),
+    map((farewells) =>
+      farewells
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.timestamp.createdAt.toString()).getTime() -
+            new Date(a.timestamp.createdAt.toString()).getTime()
+        )
+    )
+  );
 
   constructor() {
     this.#store

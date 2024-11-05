@@ -1,5 +1,5 @@
-import { AsyncPipe } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
+import { Component, inject, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -22,6 +22,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
   templateUrl: './edit.component.html',
   imports: [
     AsyncPipe,
+    NgTemplateOutlet,
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
@@ -56,6 +57,8 @@ export class PageFarewellEditComponent {
     map(([farewell, profile]) => farewell.profile.id === profile.id),
     startWith(false)
   );
+
+  statusTmpl?: TemplateRef<any>;
 
   constructor() {
     this.farewellId$

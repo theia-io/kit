@@ -101,7 +101,6 @@ const TITLE_MAX_LENGTH = 128;
 })
 export class FeatKudoBoardEditComponent implements AfterViewInit {
   id = model<KudoBoard['id']>();
-  statusTmplPlaceholder = input<ViewContainerRef>();
 
   statusUpdateTmpl = output<TemplateRef<any>>();
 
@@ -244,8 +243,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   updateBackgroundColor(colorHex: string) {
-    console.log('updateBackgroundColor', colorHex);
-
     const kudoBoardId = this.id();
     if (kudoBoardId) {
       this.#store

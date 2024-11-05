@@ -10,6 +10,14 @@
       yOffset="top-4"
       (onDelete)="redirectToLatest()" />
 
-    <feat-farewell class="block grow container mx-auto p-6" />
+    <div class="hidden sm:block absolute top-4 right-16">
+      @if(statusTmpl) {
+      <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+      }
+    </div>
+
+    <feat-farewell
+      class="block grow container mx-auto p-6"
+      (statusUpdateTmpl)="statusTmpl = $event" />
   </ng-template>
 </p-sidebar>

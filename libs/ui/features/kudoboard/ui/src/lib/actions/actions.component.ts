@@ -3,13 +3,19 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  DestroyRef,
   inject,
   input,
 } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 import { PickerComponent } from '@ctrl/ngx-emoji-mart';
 import {
+  FeatKudoBoardActions,
   FeatKudoBoardReactionActions,
   selectKudoBoardById,
   selectKudoBoardReactionsById,
@@ -31,6 +37,7 @@ import {
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TooltipModule } from 'primeng/tooltip';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { kudoBoardOwner } from '../common';
 
@@ -42,18 +49,20 @@ import { kudoBoardOwner } from '../common';
     AsyncPipe,
     RouterModule,
     //
-    AccountTileComponent,
-    AuthorizedFeatureDirective,
-    //
     PickerComponent,
     ButtonModule,
     OverlayPanelModule,
+    TooltipModule,
+    //
+    AccountTileComponent,
+    AuthorizedFeatureDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatKudoBoardActionsComponent {
   kudoboardId = input.required<KudoBoard['id']>();
 
+  #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
 
@@ -192,5 +201,32 @@ export class FeatKudoBoardActionsComponent {
     this.#router.navigateByUrl(
       `s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${this.kudoboardId()}/edit`
     );
+  }
+
+  claimKudoBoard() {
+    console.log('claimKudoBoard');
+    const kudoBoard = this.kudoboard();
+    if (!kudoBoard) {
+      console.log('[FeatKudoBoardActionsComponent][claimKudoBoard]', kudoBoard);
+      return;
+    }
+
+    this.#store
+      .pipe(
+        select(selectCurrentProfile),
+        takeUntilDestroyed(this.#destroyRef),
+        filter(Boolean)
+      )
+      .subscribe((currentProfile) =>
+        this.#store.dispatch(
+          FeatKudoBoardActions.putKudoBoard({
+            kudoboard: {
+              ...kudoBoard,
+              profileId: currentProfile.id,
+              profile: currentProfile,
+            },
+          })
+        )
+      );
   }
 }

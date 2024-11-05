@@ -25,7 +25,7 @@ import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
 
-import { filter } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -62,7 +62,18 @@ export class PageKudoBoardsAllComponent {
   kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
   kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 
-  myKudos$ = this.#store.pipe(select(selectKudoBoards));
+  myKudos$ = this.#store.pipe(
+    select(selectKudoBoards),
+    map((kudoboards) =>
+      kudoboards
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.timestamp?.createdAt?.toString()).getTime() -
+            new Date(a.timestamp?.createdAt?.toString()).getTime()
+        )
+    )
+  );
 
   constructor() {
     this.#store
