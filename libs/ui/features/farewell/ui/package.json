@@ -21,7 +21,8 @@
     "@kitouch/feat-farewell-effects": "1.0.0-beta",
     "@kitouch/emoji": "0.0.1",
     "@angular/router": "18.2.6",
-    "@ctrl/ngx-emoji-mart": "^9.2.0"
+    "@ctrl/ngx-emoji-mart": "^9.2.0",
+    "@kitouch/ui-kudoboard": "0.0.1"
   },
   "sideEffects": false
 }
