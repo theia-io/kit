@@ -68,10 +68,11 @@ export const featFarewellReducer = createReducer(
   ),
   /** Comments */
   on(
+    FeatFarewellCommentActions.batchCommentsFarewellSuccess,
     FeatFarewellCommentActions.getCommentsFarewellSuccess,
     (state, { comments }) => ({
       ...state,
-      comments: mergeArr(comments, state.comments),
+      comments: mergeArr(state.comments, comments),
     })
   ),
   on(

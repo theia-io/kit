@@ -1,4 +1,5 @@
 import { Farewell, FarewellAnalytics, Profile } from '@kitouch/shared-models';
+import { ClientDataType } from '@kitouch/utils';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellActions = createActionGroup({
@@ -15,11 +16,7 @@ export const FeatFarewellActions = createActionGroup({
     GetFarewellFailure: props<{ message: string }>(),
 
     //
-    CreateFarewell: props<{
-      title: Farewell['title'];
-      content: Farewell['content'];
-      status: Farewell['status'];
-    }>(),
+    CreateFarewell: props<ClientDataType<Farewell>>(),
     CreateFarewellSuccess: props<{ farewell: Farewell }>(),
     CreateFarewellFailure: props<{ message: string }>(),
     //

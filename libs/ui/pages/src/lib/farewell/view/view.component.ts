@@ -25,15 +25,20 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
-import { Profile } from '@kitouch/shared-models';
-import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
+import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
+import {
+  UiKitPageOverlayComponent,
+  UIKitSmallerHintTextUXDirective,
+} from '@kitouch/ui-components';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
   DeviceService,
+  objectLoadingState$,
   UiLogoComponent,
 } from '@kitouch/ui-shared';
+import { ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -63,6 +68,7 @@ import {
     BreadcrumbModule,
     SidebarModule,
     //
+    UiKitPageOverlayComponent,
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
     UiLogoComponent,
@@ -89,12 +95,14 @@ export class PageFarewellViewComponent {
     map((params) => params['id']),
     shareReplay()
   );
+
   farewell$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
       this.#store.pipe(select(selectFarewellById(farewellId)))
     ),
     filter(Boolean)
   );
+
   farewellProfile = toSignal(
     this.farewell$.pipe(
       switchMap(({ profile: farewellSavedProfile }) =>
@@ -104,9 +112,39 @@ export class PageFarewellViewComponent {
       )
     )
   );
+
   farewellProfilePic = computed(() => profilePicture(this.farewellProfile()));
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
+
+  farewellLoadingState = toSignal(
+    objectLoadingState$<Farewell>({
+      loadingAction$: (actions) =>
+        actions.pipe(ofType(FeatFarewellActions.getFarewell)),
+      loadedAction$: (actions) =>
+        actions.pipe(ofType(FeatFarewellActions.getFarewellSuccess)),
+      loadingErrorAction$: (actions) =>
+        actions.pipe(ofType(FeatFarewellActions.getFarewellFailure)),
+    })
+  );
+
+  kudoBoardOverlayText$ = this.farewell$.pipe(
+    map(({ status, profile }) => {
+      const profileContact = profile?.name
+        ? `Contact owner: ${profile.name}`
+        : '';
+      if (status === FarewellStatus.Draft) {
+        return `This Farewell is still in Draft. ${profileContact}`;
+      }
+
+      if (status === FarewellStatus.Removed) {
+        return `This farewell is removed. ${profileContact}`;
+      }
+
+      return '';
+    })
+  );
+
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
@@ -134,6 +172,7 @@ export class PageFarewellViewComponent {
 
   copied = signal(false);
   commentsSideBarVisibility = signal(false);
+  farewellStatus = FarewellStatus;
 
   constructor() {
     this.farewellId$

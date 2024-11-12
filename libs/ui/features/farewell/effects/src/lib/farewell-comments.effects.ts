@@ -54,6 +54,28 @@ export class FarewellCommentsEffects {
     )
   );
 
+  createBatchCommentsFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellCommentActions.batchCommentsFarewell),
+      switchMap(({ comments }) =>
+        this.#farewellCommentService.batchFarewellComments(comments).pipe(
+          map((comments) =>
+            FeatFarewellCommentActions.batchCommentsFarewellSuccess({
+              comments,
+            })
+          ),
+          catchError((err) =>
+            of(
+              FeatFarewellCommentActions.batchCommentsFarewellFailure({
+                message: `We were not able to add comments to farewell. Try contacting support: ${err.message}`,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
+
   deleteFarewellComment$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellCommentActions.deleteCommentFarewell),

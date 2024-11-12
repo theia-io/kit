@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -6,24 +6,19 @@ import {
   FeatKudoBoardActions,
   selectKudoBoards,
 } from '@kitouch/data-kudoboard';
+import { FeatFarewellAllGridItemComponent } from '@kitouch/feat-farewell-ui';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { KudoBoard, Profile } from '@kitouch/shared-models';
-import {
-  DividerComponent,
-  UiCompGradientCardComponent,
-  UiKitDeleteComponent,
-} from '@kitouch/ui-components';
-import {
-  FeatKudoBoardAnalyticsComponent,
-  FeatKudoBoardViewComponent,
-} from '@kitouch/ui-kudoboard';
+import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
+import { DividerComponent, UiKitDeleteComponent } from '@kitouch/ui-components';
+import { FeatKudoBoardAnalyticsComponent } from '@kitouch/ui-kudoboard';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { combineLatest } from 'rxjs';
 
 import { filter, map } from 'rxjs/operators';
 
@@ -38,18 +33,16 @@ import { filter, map } from 'rxjs/operators';
   `,
   imports: [
     AsyncPipe,
-    DatePipe,
     RouterModule,
     //
     ButtonModule,
     ToastModule,
     ConfirmDialogModule,
     //
-    DividerComponent,
-    UiCompGradientCardComponent,
-    UiKitDeleteComponent,
-    FeatKudoBoardViewComponent,
     FeatKudoBoardAnalyticsComponent,
+    DividerComponent,
+    FeatFarewellAllGridItemComponent,
+    UiKitDeleteComponent,
   ],
   providers: [ConfirmationService, MessageService],
 })
@@ -58,12 +51,22 @@ export class PageKudoBoardsAllComponent {
   #confirmationService = inject(ConfirmationService);
   #messageService = inject(MessageService);
 
-  kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
-  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
-  kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  #currentProfile$ = this.#store.pipe(
+    select(selectCurrentProfile),
+    filter((profile): profile is Profile => !!profile?.id),
+    takeUntilDestroyed()
+  );
 
-  myKudos$ = this.#store.pipe(
-    select(selectKudoBoards),
+  myKudos$ = combineLatest([
+    this.#store.pipe(select(selectKudoBoards)),
+    this.#currentProfile$,
+  ]).pipe(
+    map(([kudos, currentProfile]) =>
+      kudos.filter(
+        ({ profileId, profile }) =>
+          (profileId ?? profile?.id ?? null) === currentProfile.id
+      )
+    ),
     map((kudoboards) =>
       kudoboards
         .slice()
@@ -75,18 +78,16 @@ export class PageKudoBoardsAllComponent {
     )
   );
 
+  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
+  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly kudoBoardStatus = KudoBoardStatus;
+
   constructor() {
-    this.#store
-      .pipe(
-        select(selectCurrentProfile),
-        filter((profile): profile is Profile => !!profile?.id),
-        takeUntilDestroyed()
+    this.#currentProfile$.subscribe(({ id }) =>
+      this.#store.dispatch(
+        FeatKudoBoardActions.getProfileKudoBoards({ profileId: id })
       )
-      .subscribe(({ id }) =>
-        this.#store.dispatch(
-          FeatKudoBoardActions.getProfileKudoBoards({ profileId: id })
-        )
-      );
+    );
   }
 
   onDeleteHandler(kudoboard: KudoBoard, event: Event) {

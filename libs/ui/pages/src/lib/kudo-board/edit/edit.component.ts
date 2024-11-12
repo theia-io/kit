@@ -67,7 +67,7 @@ export class PageKudoBoardEditComponent {
     startWith(false)
   );
 
-  statusTmpl?: TemplateRef<any>;
+  statusTmpl?: TemplateRef<unknown>;
 
   constructor() {
     this.kudoBoardId$

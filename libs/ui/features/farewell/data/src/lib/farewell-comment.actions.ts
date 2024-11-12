@@ -20,6 +20,14 @@ export const FeatFarewellCommentActions = createActionGroup({
       comment: FarewellComment;
     }>(),
     PostCommentFarewellFailure: props<{ message: string }>(),
+    // batch
+    BatchCommentsFarewell: props<{
+      comments: Array<ClientDataType<FarewellComment>>;
+    }>(),
+    BatchCommentsFarewellSuccess: props<{
+      comments: Array<FarewellComment>;
+    }>(),
+    BatchCommentsFarewellFailure: props<{ message: string }>(),
     // delete
     DeleteCommentFarewell: props<{
       id: FarewellComment['id'];

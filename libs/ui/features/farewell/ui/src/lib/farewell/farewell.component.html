@@ -1,4 +1,29 @@
 <form class="flex flex-col" [formGroup]="farewellFormGroup">
+  @let linkedKudoBoard = linkedKudoBoard$ | async; @if(linkedKudoBoard &&
+  linkedKudoBoard.id) {
+  <div class="flex items-center gap-4 mb-12">
+    <div>
+      <i class="pi pi-link font-semibold text-4xl"></i>
+    </div>
+
+    <feat-farewell-all-grid-item
+      [kudoboard]="linkedKudoBoard"
+      [routerLink]="[
+        kudoBoardPartialUrl + '/' + linkedKudoBoard.id,
+        { preview: true }
+      ]"
+      class="block cursor-pointer" />
+
+    @if(linkedKudoBoard.profile; as profile) {
+    <ui-kit-comp-account-tile
+      primaryText="Collected"
+      primarySecondaryText="for you"
+      [picture]="profilePictureFn(profile)"
+      [link]="profileUrl + (profile.alias ?? profile.id)" />
+    }
+  </div>
+  }
+
   <p-floatLabel class="block mt-4">
     <input
       class="w-full border-none shadow-none text-4xl focus:outline-none"
@@ -35,31 +60,51 @@
 
   @let status = farewellFormGroup.get('status')?.value;
 
-  <ng-template #statusTmpl>
-    <p-button
-      (onClick)="updateStatus(status)"
-      [label]="
-        status === farewellStatus.Published ? 'Back to draft' : 'Publish'
-      "
+  <ng-template #statusTmpl let-bigButton>
+    @if(status === farewellStatus.Published) {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
       [rounded]="true"
-      [severity]="
-        status === farewellStatus.Published ? 'secondary' : 'success'
-      " />
+      severity="warning">
+      <span class="text-xs font-semibold">Back to draft</span>
+    </button>
+    } @else {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
+      [rounded]="true"
+      severity="success">
+      <span class="text-xs font-semibold">Publish</span>
+    </button>
+    }
   </ng-template>
 
   <div class="flex justify-center gap-2">
-    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="
+        statusTmpl;
+        context: { $implicit: true }
+      "></ng-container>
+
     @if(farewellId(); as id) {
     <div
       [pTooltip]="
-        status !== farewellStatus.Published ? 'Publish to see farewell' : ''
+        status !== farewellStatus.Published
+          ? 'Publish farewell so everyone can see'
+          : ''
       ">
-      <p-button
-        (onClick)="gotoFarewell(id)"
-        label="See farewell"
-        [disabled]="status !== farewellStatus.Published"
+      <button
+        pButton
+        class="relative"
+        (click)="gotoFarewell(id, $event)"
+        icon="pi pi-eye"
         [rounded]="true"
-        severity="info" />
+        severity="info">
+        <span class="ml-1 text-xs">See farewell</span>
+      </button>
     </div>
     }
   </div>

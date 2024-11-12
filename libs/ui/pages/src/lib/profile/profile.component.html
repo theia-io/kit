@@ -1,12 +1,12 @@
 @if(profile(); as profile) {
 <feat-kit-profile-header [profile]="profile">
   @if(!isCurrentUserProfile()) {
-  <div class="grow" profileFollowExtension>
+  <div class="grow" profileExtensionTwo>
     <feat-follow-unfollow-profile [profileId]="profile.id" />
   </div>
   } @else {
   <a
-    profileEditExtension
+    profileExtensionOne
     [routerLink]="settingsUrl"
     class="absolute top-4 right-4 border-2 border-white rounded-full flex p-2"
     severity="contrast">

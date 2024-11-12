@@ -41,7 +41,9 @@ import {
 import {
   APP_PATH,
   AuthorizedFeatureDirective,
+  DeviceService,
   MasonryService,
+  SharedKitUserHintDirective,
 } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -57,6 +59,7 @@ import {
   of,
   shareReplay,
   skip,
+  startWith,
   switchMap,
   take,
 } from 'rxjs';
@@ -83,16 +86,19 @@ import {
     AuthorizedFeatureDirective,
     DividerComponent,
     UiKitDeleteComponent,
+    SharedKitUserHintDirective,
     //
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   kudoboardId = input.required<string>();
+  canComment = input(false);
 
   #destroyRef = inject(DestroyRef);
   #actions = inject(Actions);
   #store = inject(Store);
+  #deviceService = inject(DeviceService);
   #masonryService = inject(MasonryService);
 
   #createdComment$ = this.#actions.pipe(
@@ -111,10 +117,10 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   kudoboardProfile = toSignal(
     this.kudoboard$.pipe(
       filter(Boolean),
-      switchMap(({ profile }) =>
-        profile
+      switchMap(({ profileId, profile }) =>
+        profileId || profile
           ? this.#store.pipe(
-              select(selectProfileById(profile.id)),
+              select(selectProfileById(profileId ?? profile?.id ?? '')),
               map((resolvedProfile) => resolvedProfile ?? profile)
             )
           : of(undefined)
@@ -134,6 +140,8 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
     )
   );
 
+  $hintHidden = this.#deviceService.isMobile$.pipe(startWith(true));
+
   #masonryReadyTrigger$ = this.kudoboardComments$.pipe(
     takeUntilDestroyed(this.#destroyRef),
     filter((comments) => comments && comments.length > 0),
@@ -145,14 +153,6 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   );
 
   placeholder = computed(() => {
-    const profileName = this.kudoboardProfile()?.name;
-
-    if (profileName) {
-      return (
-        'Support ' + this.kudoboardProfile()?.name + ' or leave your thoughts'
-      );
-    }
-
     return 'Add your kudo!';
   });
 

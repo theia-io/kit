@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  FeatFarewellActions,
   FeatFarewellCommentActions,
   FeatFarewellReactionActions,
 } from '@kitouch/feat-farewell-data';
@@ -49,6 +50,14 @@ export class ProfileEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellReactionActions.getReactionsFarewellSuccess),
       map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewellSuccess),
+      map(({ farewell }) => getRecentUniqueProfilesFromT([farewell])),
       map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
     )
   );

@@ -10,7 +10,6 @@ import { findKudoBoardById, selectKudoBoards } from '@kitouch/data-kudoboard';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { KudoBoard } from '@kitouch/shared-models';
 import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
-import { Actions } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { combineLatest, filter, map } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
@@ -32,7 +31,6 @@ export class FeatKudoBoardViewComponent {
   id = model<KudoBoard['id']>();
 
   #store = inject(Store);
-  #actions$ = inject(Actions);
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 

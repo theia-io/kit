@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -23,8 +23,9 @@ import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { combineLatest } from 'rxjs';
 
-import { filter, map, tap } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 
 @Component({
   standalone: true,
@@ -62,8 +63,19 @@ export class PageFarewellAllComponent {
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewellEdit = `/${APP_PATH.Farewell}/edit`;
 
-  farewells$ = this.#store.pipe(
-    select(selectFarewells),
+  #currentProfile$ = this.#store.pipe(
+    select(selectCurrentProfile),
+    filter((profile): profile is Profile => !!profile?.id),
+    takeUntilDestroyed()
+  );
+
+  farewells$ = combineLatest([
+    this.#store.pipe(select(selectFarewells)),
+    this.#currentProfile$,
+  ]).pipe(
+    map(([farewells, currentProfile]) =>
+      farewells.filter(({ profile }) => profile.id === currentProfile.id)
+    ),
     map((farewells) =>
       farewells
         .slice()
@@ -76,17 +88,11 @@ export class PageFarewellAllComponent {
   );
 
   constructor() {
-    this.#store
-      .pipe(
-        select(selectCurrentProfile),
-        filter((profile): profile is Profile => !!profile?.id),
-        takeUntilDestroyed()
+    this.#currentProfile$.subscribe(({ id }) =>
+      this.#store.dispatch(
+        FeatFarewellActions.getProfileFarewells({ profileId: id })
       )
-      .subscribe(({ id }) =>
-        this.#store.dispatch(
-          FeatFarewellActions.getProfileFarewells({ profileId: id })
-        )
-      );
+    );
   }
 
   onDeleteHandler(farewell: Farewell, event: Event) {

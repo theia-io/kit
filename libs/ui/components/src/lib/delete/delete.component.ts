@@ -26,5 +26,6 @@ import {
 export class UiKitDeleteComponent {
   xOffset = input<string>();
   yOffset = input<string>();
+
   onDelete = output<Event>();
 }

@@ -11,13 +11,13 @@ import {
   ChangeDetectorRef,
   Component,
   DestroyRef,
+  HostListener,
   inject,
-  input,
   model,
+  OnDestroy,
   output,
   TemplateRef,
   ViewChild,
-  ViewContainerRef,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
 import {
@@ -26,6 +26,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
+import { Router } from '@angular/router';
 import {
   FeatKudoBoardActions,
   FeatKudoBoardMediaActions,
@@ -53,23 +54,25 @@ import { ButtonModule } from 'primeng/button';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { InputTextareaModule } from 'primeng/inputtextarea';
+import { TooltipModule } from 'primeng/tooltip';
 import {
   combineLatest,
   debounceTime,
   delay,
   filter,
   map,
+  merge,
   of,
   shareReplay,
   skipUntil,
+  Subject,
   switchMap,
   take,
   takeUntil,
   withLatestFrom,
 } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
-import { TooltipModule } from 'primeng/tooltip';
-import { Router } from '@angular/router';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -87,6 +90,7 @@ const TITLE_MAX_LENGTH = 128;
     //
     FloatLabelModule,
     InputTextModule,
+    InputTextareaModule,
     ButtonModule,
     TooltipModule,
     //
@@ -99,10 +103,12 @@ const TITLE_MAX_LENGTH = 128;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatKudoBoardEditComponent implements AfterViewInit {
+export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   id = model<KudoBoard['id']>();
 
-  statusUpdateTmpl = output<TemplateRef<any>>();
+  statusKudoTmpl = output<TemplateRef<unknown>>();
+  previewKudoTmpl = output<TemplateRef<unknown>>();
+  asUserKudoTmpl = output<TemplateRef<unknown>>();
 
   #router = inject(Router);
   #location = inject(Location);
@@ -111,6 +117,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #store = inject(Store);
   #actions$ = inject(Actions);
   deviceService = inject(DeviceService);
+
+  #beforeUnloadTrigger$$ = new Subject<void>();
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
@@ -125,7 +133,11 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   ]).pipe(
     map(([id, kudoBoards]) => findKudoBoardById(id, kudoBoards)),
     filter(Boolean),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
   );
 
   kudoBoardFormGroup = inject(FormBuilder).nonNullable.group({
@@ -137,6 +149,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       nonNullable: true,
     }),
     recipient: new FormControl<string>('', { nonNullable: true }),
+    content: new FormControl<string>('', { nonNullable: true }),
     status: new FormControl<KudoBoardStatus>(KudoBoardStatus.Draft, {
       nonNullable: true,
     }),
@@ -148,13 +161,28 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   readonly kudoBoardStatus = KudoBoardStatus;
 
   @ViewChild('statusTmpl', { read: TemplateRef })
-  statusTmpl?: TemplateRef<any>;
+  statusTmpl?: TemplateRef<unknown>;
+  @ViewChild('previewTmpl', { read: TemplateRef })
+  previewTmpl?: TemplateRef<unknown>;
+  @ViewChild('asUserTmpl', { read: TemplateRef })
+  asUserTmpl?: TemplateRef<unknown>;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler() {
+    this.#beforeUnloadTrigger$$.next();
+  }
 
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
     setTimeout(() => {
       if (this.statusTmpl) {
-        this.statusUpdateTmpl.emit(this.statusTmpl);
+        this.statusKudoTmpl.emit(this.statusTmpl);
+      }
+      if (this.previewTmpl) {
+        this.previewKudoTmpl.emit(this.previewTmpl);
+      }
+      if (this.asUserTmpl) {
+        this.asUserKudoTmpl.emit(this.asUserTmpl);
       }
     }, 0);
 
@@ -167,29 +195,40 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
           title: kudoBoard.title,
           background: kudoBoard.background,
           recipient: kudoBoard.recipient,
+          content: kudoBoard.content,
           status: kudoBoard.status,
         });
         this.#cdr.detectChanges();
       });
     }
 
-    this.kudoBoardFormGroup.valueChanges
+    merge(
+      this.kudoBoardFormGroup.valueChanges.pipe(debounceTime(5000)),
+      this.#beforeUnloadTrigger$$
+        .asObservable()
+        .pipe(map(() => this.kudoBoardFormGroup.value))
+    )
       .pipe(
         takeUntilDestroyed(this.#destroyRef),
         // when its new farewell we don't update until farewell is created
         skipUntil(this.id() ? of(true) : this.#kudoBoard$),
-        debounceTime(5000),
         withLatestFrom(this.#kudoBoard$)
       )
-      .subscribe(([{ title, recipient, background, status }, kudoBoard]) =>
-        this.#updateKudoBoard({
-          ...kudoBoard,
-          title: title ?? '',
-          recipient,
-          background,
-          status: status ?? KudoBoardStatus.Draft,
-        })
+      .subscribe(
+        ([{ title, recipient, background, content, status }, kudoBoard]) =>
+          this.#updateKudoBoard({
+            ...kudoBoard,
+            title: title ?? '',
+            recipient,
+            content,
+            background,
+            status: status ?? KudoBoardStatus.Draft,
+          })
       );
+  }
+
+  ngOnDestroy(): void {
+    this.#beforeUnloadTrigger$$.next();
   }
 
   autoUploadBackground(event: FileUploadHandlerEvent) {
@@ -283,13 +322,16 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         status: KudoBoardStatus.Published,
       });
     }
-
-    this.#cdr.detectChanges();
   }
 
-  gotoBoard(kudoboardId: KudoBoard['id']) {
+  gotoBoard(kudoboardId: KudoBoard['id'], preview: boolean, event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+
     this.#router.navigateByUrl(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}`
+      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}${
+        preview ? '?preview=true' : ''
+      }`
     );
   }
 
@@ -300,8 +342,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       take(1),
       debounceTime(2500),
       filter(
-        ({ recipient, background, title }) =>
-          !!title || !!background || !!recipient
+        ({ recipient, background, title, status }) =>
+          !!title || !!background || !!recipient || !!status
       ),
       shareReplay({
         refCount: true,
@@ -309,14 +351,14 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       })
     );
 
-    autoCreate$.subscribe(({ recipient, background, title }) =>
+    autoCreate$.subscribe(({ recipient, background, title, status }) =>
       this.#store.dispatch(
         FeatKudoBoardActions.createKudoBoard({
           kudoboard: {
             title: title ?? '',
             background,
             recipient,
-            status: KudoBoardStatus.Draft,
+            status: status ?? KudoBoardStatus.Draft,
           },
         })
       )

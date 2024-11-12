@@ -1,56 +1,60 @@
 <!-- <div class="text-4xl text-center mb-12">Your kudoboards</div> -->
 <!-- TODO add example on how to create good kudoboard -->
-
 @for (kudoboard of myKudos$ | async; track $index) {
-<ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
-  <div class="relative block max-h-96 overflow-hidden">
+<feat-farewell-all-grid-item
+  class="block"
+  [class.mt-12]="!$first"
+  [kudoboard]="kudoboard">
+  <div extensionBlockOne>
     <feat-kudoboard-analytics
-      class="container mx-auto mb-1"
+      class="container mx-auto block mb-2"
       [kudoboardId]="kudoboard.id"
       [preview]="true" />
-    <feat-kudoboard-view [id]="kudoboard.id" />
+  </div>
+  <div extensionBlockTwo>
+    <ui-kit-divider class="block mt-8" />
 
-    <div class="absolute top-80 h-16 left-0 w-full">
-      <div class="h-full w-full relative flex justify-center items-end pb-2">
-        <div class="absolute top-0 h-full w-full bg-slate-800 blur-xl"></div>
-        <div
-          class="relative z-10 flex items-center justify-center text-cyan-200">
-          <a
-            class="text-8xl hover:text-cyan-100"
-            [routerLink]="[
-              kudoBoardPartialUrl + '/' + kudoboard.id,
-              { preview: true }
-            ]">
-            ...
-          </a>
-        </div>
+    <div class="flex items-center mt-4">
+      <button
+        pButton
+        class="py-0 px-2"
+        [disabled]="true"
+        [rounded]="true"
+        [severity]="
+          kudoboard.status === kudoBoardStatus.Published ? 'success' : 'warning'
+        ">
+        <span class="text-xs font-semibold">
+          {{
+            kudoboard.status === kudoBoardStatus.Published
+              ? 'Published'
+              : 'Draft'
+          }}
+        </span>
+      </button>
+
+      <div class="ml-auto leading-6 text-sm font-medium text-gray-500">
+        <a
+          class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
+          [routerLink]="[kudoBoardPartialUrl + '/' + kudoboard.id + '/edit']">
+          Edit
+          <i class="ml-1 pi pi-file-edit"></i>
+        </a>
+
+        <a
+          class="hover:text-gray-900 hover:font-semibold"
+          [routerLink]="[
+            kudoBoardPartialUrl + '/' + kudoboard.id,
+            { preview: true }
+          ]">
+          Open
+          <i class="ml-1 pi pi-arrow-right"></i>
+        </a>
       </div>
     </div>
+
+    <ui-kit-delete (onDelete)="onDeleteHandler(kudoboard, $event)" />
   </div>
-
-  <ui-kit-divider class="block mt-8" />
-
-  <p class="mt-4 text-end leading-6 text-sm font-medium text-gray-500">
-    <a
-      class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
-      [routerLink]="[kudoBoardPartialUrl + '/' + kudoboard.id + '/edit']">
-      Edit
-      <i class="ml-1 pi pi-file-edit"></i>
-    </a>
-
-    <a
-      class="hover:text-gray-900 hover:font-semibold"
-      [routerLink]="[
-        kudoBoardPartialUrl + '/' + kudoboard.id,
-        { preview: true }
-      ]">
-      Open
-      <i class="ml-1 pi pi-arrow-right"></i>
-    </a>
-  </p>
-
-  <ui-kit-delete (onDelete)="onDeleteHandler(kudoboard, $event)" />
-</ui-kit-comp-gradient-card>
+</feat-farewell-all-grid-item>
 } @empty {
 <div class="mt-4 flex flex-col justify-center items-center">
   <p>You have not created any kudoboards yet</p>
@@ -67,6 +71,7 @@
 <p-button
   class="fixed z-10 bottom-24 right-2 md:bottom-8 md:right-40"
   styleClass="rounded-full p-2"
+  role="link"
   [routerLink]="kudoBoardGenerateUrl"
   aria-label="create kudoboard">
   <i

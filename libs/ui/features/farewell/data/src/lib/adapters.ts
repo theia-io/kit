@@ -15,13 +15,32 @@ import {
 import { BSON } from 'realm-web';
 
 /** Farewell */
-export type ClientDBFarewellRequest = ClientDBRequestType<Farewell>;
+export type ClientDBFarewellRequest = ClientDBRequestType<
+  Farewell,
+  { kudoBoardId: BSON.ObjectId | null; profileId: BSON.ObjectId | null }
+>;
 export type ClientDBFarewellResponse = DBType<ClientDBFarewellRequest>;
+
+export const clientDbFarewellAdapter = (
+  dbObject: ClientDataType<Farewell>
+): ClientDBFarewellRequest => ({
+  ...dbObject,
+  kudoBoardId: dbObject.kudoBoardId
+    ? new BSON.ObjectId(dbObject.kudoBoardId)
+    : null,
+  profileId: dbObject.profileId ? new BSON.ObjectId(dbObject.profileId) : null,
+  ...clientDBGenerateTimestamp(),
+});
 
 export const dbClientFarewellAdapter = (
   dbObject: ClientDBFarewellResponse
 ): Farewell => {
-  return dbClientAdapter<Farewell>(dbObject);
+  const sysFarewell = dbClientAdapter<Farewell>(dbObject);
+  return {
+    ...sysFarewell,
+    kudoBoardId: sysFarewell.kudoBoardId?.toString() ?? '',
+    profileId: sysFarewell.profileId?.toString() ?? '',
+  };
 };
 
 /** Reaction */

@@ -4,7 +4,7 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, filter, map, of, switchMap } from 'rxjs';
 import { FarewellService } from './farewell.service';
 
 @Injectable()
@@ -45,9 +45,8 @@ export class FarewellEffects {
   createFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.createFarewell),
-      withLatestFrom(this.#currentProfile),
-      switchMap(([{ title, content }, profile]) =>
-        this.#farewellService.createFarewell({ profile, title, content })
+      switchMap(({ type: _, ...rest }) =>
+        this.#farewellService.createFarewell({ ...rest })
       ),
       map((farewell) => FeatFarewellActions.createFarewellSuccess({ farewell }))
     )

@@ -1,6 +1,6 @@
 @if(farewellProfile(); as profile) {
 <feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
-  <div class="ml-auto mr-4 -mb-4" profileFollowExtension>
+  <div class="ml-auto mr-4 -mb-4" profileExtensionTwo>
     @if(!currentProfile()) {
     <button
       (click)="signInAndFollow(profile)"
@@ -14,14 +14,31 @@
     }
   </div>
 </feat-kit-profile-header>
-} @if(preview()) {
+} @let farewell = farewell$ | async;
+
+<!-- Breadcrumb menu -->
+@if(preview()) {
 <p-breadcrumb
   class="block mt-4 max-w-full"
   [model]="(breadcrumbMenuItems$ | async) ?? []" />
 }
 
+<!-- Overlay for draft -->
+@if(!preview() && farewellLoadingState()?.loaded) {
+<ui-kit-page-overlay
+  [show]="farewell?.status !== farewellStatus.Published"
+  [text]="(kudoBoardOverlayText$ | async) ?? ''">
+  @if(farewellProfile(); as profile) {
+  <feat-kit-profile-header
+    class="block relative p-2 bg-white"
+    [profile]="profile"></feat-kit-profile-header>
+  }
+</ui-kit-page-overlay>
+}
+
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
-  <div class="w-full py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
+  <div
+    class="container shadow-sm mx-auto py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-farewell-actions
       class="block container mx-auto"
       [farewellId]="farewellId$ | async"

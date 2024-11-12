@@ -38,14 +38,14 @@
       </div>
     </div>
 
-    <p-floatLabel class="block mt-20">
+    <p-floatLabel class="block mt-20 px-4 py-8 shadow-md">
       <input
         class="w-full border-none shadow-none text-4xl focus:outline-none"
         id="title"
         type="text"
         pInputText
         formControlName="title" />
-      <label class="w-full text-4xl" for="title">Kudo Board Title</label>
+      <label class="w-full text-4xl" for="title">Title</label>
     </p-floatLabel>
 
     <section class="relative">
@@ -58,44 +58,102 @@
     </section>
   </div>
 
-  <p-floatLabel class="block mt-4">
+  <p-floatLabel class="block mt-4 px-4 py-8 shadow-md">
     <input
       class="w-full border-none shadow-none text-4xl focus:outline-none"
       id="title"
       type="text"
       pInputText
       formControlName="recipient" />
-    <label class="w-full text-4xl" for="title">Kudo Board Recipient</label>
+    <label class="w-full text-4xl" for="title">Who is this for 🤔</label>
+  </p-floatLabel>
+
+  <p-floatLabel class="block mt-4 px-4 py-8 shadow-md">
+    <textarea
+      class="w-full min-h-40 border-none shadow-none text-4xl focus:outline-none"
+      id="content"
+      type="text"
+      pInputTextarea
+      formControlName="content"></textarea>
+    <label class="w-full text-4xl" for="content">Message 💬</label>
   </p-floatLabel>
 
   @let status = kudoBoardFormGroup.get('status')?.value;
 
-  <ng-template #statusTmpl>
-    <p-button
-      (onClick)="updateStatus(status)"
-      [label]="
-        status === kudoBoardStatus.Published ? 'Back to draft' : 'Publish'
-      "
+  <ng-template #statusTmpl let-bigButton let-withHint="withHint">
+    @if(status === kudoBoardStatus.Published) {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
       [rounded]="true"
-      [severity]="
-        status === kudoBoardStatus.Published ? 'secondary' : 'success'
-      " />
+      severity="warning">
+      <span class="text-xs font-semibold">Back to draft</span>
+    </button>
+    } @else {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
+      [rounded]="true"
+      severity="success">
+      <span class="text-xs font-semibold">Publish</span>
+    </button>
+    } @if(withHint) {
+    <div
+      sharedUserHint
+      [text]="
+        status === kudoBoardStatus.Published
+          ? 'Set as Draft'
+          : 'Click to Publish'
+      "></div>
+    }
   </ng-template>
 
-  <div class="flex justify-center gap-2">
-    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+  <ng-template #previewTmpl>
     @if(id(); as id) {
     <div
       [pTooltip]="
-        status !== kudoBoardStatus.Published ? 'Publish to see kudo board' : ''
+        status !== kudoBoardStatus.Published ? 'Publish kudo board' : ''
       ">
-      <p-button
-        (onClick)="gotoBoard(id)"
-        label="See Kudo"
-        [disabled]="status !== kudoBoardStatus.Published"
+      <button
+        pButton
+        class="relative"
+        (click)="gotoBoard(id, true, $event)"
+        icon="pi pi-eye"
         [rounded]="true"
-        severity="info" />
+        severity="info">
+        <span class="ml-1 text-xs">Admin preview</span>
+      </button>
     </div>
     }
+  </ng-template>
+  <ng-template #asUserTmpl>
+    @if(id(); as id) {
+    <div pTooltip="Collect kudos for recipient">
+      <button
+        pButton
+        class="relative"
+        (click)="gotoBoard(id, false, $event)"
+        icon="pi pi-user"
+        [rounded]="true"
+        severity="secondary">
+        <span class="ml-1 text-xs">See as everyone else</span>
+      </button>
+    </div>
+    }
+  </ng-template>
+
+  <div class="flex justify-center gap-2 mt-6">
+    <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
+    <ng-container *ngTemplateOutlet="asUserTmpl"></ng-container>
+  </div>
+
+  <div class="flex justify-center gap-2 mt-12">
+    <ng-container
+      *ngTemplateOutlet="
+        statusTmpl;
+        context: { $implicit: true, withHint: true }
+      "></ng-container>
   </div>
 </form>

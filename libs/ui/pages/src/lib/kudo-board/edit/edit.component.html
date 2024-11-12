@@ -12,16 +12,18 @@
         yOffset="top-4"
         (onDelete)="redirectToAll()" />
 
-      <div class="hidden sm:block absolute top-4 right-16">
-        @if(statusTmpl) {
-        <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
-        }
+      <div class="hidden sm:block absolute top-8 right-24">
+        <div class="flex justify-center gap-2">
+          @if(statusTmpl) {
+          <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+          }
+        </div>
       </div>
 
       <feat-kudoboard-edit
         class="block grow container mx-auto p-6"
         [id]="kudoBoardId$ | async"
-        (statusUpdateTmpl)="statusTmpl = $event" />
+        (statusKudoTmpl)="statusTmpl = $event" />
     </div>
   </ng-template>
 </p-sidebar>

@@ -1,20 +1,35 @@
-<ui-kit-comment-area
+@let kudoboardOwner = kudoboardProfile(); @let recipient = (kudoboard$ |
+async)?.recipient; @if(canComment()) {
+<div
   class="block max-w-xl mx-auto"
-  [placeholder]="placeholder()"
-  (comment)="commentHandler($event)">
-  @if(currentProfile(); as currentProfile) {
+  sharedUserHint
+  [enabled]="!(($hintHidden | async) === true)"
+  [text]="
+    (kudoboardOwner?.name ?? 'someone') +
+    ' collects your thoughts for ' +
+    ((recipient?.length ?? 0) > 0 ? recipient : 'someone')
+  "
+  nextLineText="Add them for this occasion ✨"
+  side="right"
+  [extraIdent]="{ top: 10, right: 35 }">
+  <ui-kit-comment-area
+    [placeholder]="placeholder()"
+    (comment)="commentHandler($event)">
+    @if(currentProfile(); as currentProfile) {
 
-  <div profile class="mb-4">
-    <ui-kit-comp-account-tile
-      sharedAuthorizedFeature
-      [primaryText]="currentProfile.name"
-      [picture]="currentProfilePic()"
-      [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
-  </div>
-  }
-</ui-kit-comment-area>
+    <div profile class="mb-4">
+      <ui-kit-comp-account-tile
+        sharedAuthorizedFeature
+        [primaryText]="currentProfile.name"
+        [picture]="currentProfilePic()"
+        [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
+    </div>
+    }
+  </ui-kit-comment-area>
+</div>
 
 <ui-kit-divider class="block my-9" />
+}
 
 <div #commentsTmpl class="masonry mx-auto">
   @for (comment of (kudoboardComments$ | async); track $index) {
@@ -42,15 +57,15 @@
 
       <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
 
-      @if(currentProfile()?.id && (currentProfile()?.id ===
-      kudoboardProfile()?.id || currentProfile()?.id === comment.profileId)) {
+      @if(currentProfile()?.id && (currentProfile()?.id === kudoboardOwner?.id
+      || currentProfile()?.id === comment.profileId)) {
       <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
       }
     </ui-kit-comp-animate-ping>
   </div>
   } @empty {
   <p class="text-center italic text-gray-500">
-    There are currently no kudos. Be the first.
+    There are no comments. {{ canComment() ? 'Be the first.' : '' }}
   </p>
   }
 </div>

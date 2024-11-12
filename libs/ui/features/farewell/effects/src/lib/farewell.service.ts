@@ -1,20 +1,19 @@
 import { Injectable } from '@angular/core';
 import {
+  clientDbFarewellAdapter,
   ClientDBFarewellAnalyticsRequest,
   ClientDBFarewellAnalyticsResponse,
-  ClientDBFarewellRequest,
   ClientDBFarewellResponse,
   dbClientFarewellAdapter,
   dbClientFarewellAnalyticsAdapter,
 } from '@kitouch/feat-farewell-data';
-import {
-  Farewell,
-  FarewellAnalytics,
-  FarewellStatus,
-  Profile,
-} from '@kitouch/shared-models';
+import { Farewell, FarewellAnalytics } from '@kitouch/shared-models';
 import { DataSourceService } from '@kitouch/ui-shared';
-import { clientDBGenerateTimestamp, DBClientType } from '@kitouch/utils';
+import {
+  ClientDataType,
+  clientDBGenerateTimestamp,
+  DBClientType,
+} from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
@@ -42,22 +41,10 @@ export class FarewellService extends DataSourceService {
     );
   }
 
-  createFarewell({
-    profile,
-    title,
-    content,
-  }: {
-    profile: Profile;
-    title: string;
-    content: string;
-  }): Observable<Farewell> {
-    const farewell: ClientDBFarewellRequest = {
-      profile,
-      title,
-      content,
-      status: FarewellStatus.Draft,
-      ...clientDBGenerateTimestamp(),
-    };
+  createFarewell(
+    clientDbFarewell: ClientDataType<Farewell>
+  ): Observable<Farewell> {
+    const farewell = clientDbFarewellAdapter(clientDbFarewell);
 
     return this.db$().pipe(
       switchMap((db) =>

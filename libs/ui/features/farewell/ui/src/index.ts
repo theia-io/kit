@@ -1,3 +1,4 @@
+export * from './lib/all-grid-item/all-grid-item.component';
 export * from './lib/analytics/analytics.component';
 export * from './lib/comments/comments.component';
 export * from './lib/farewell/farewell.component';

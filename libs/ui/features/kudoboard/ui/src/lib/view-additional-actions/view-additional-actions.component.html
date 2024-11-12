@@ -1,0 +1,33 @@
+<div class="mb-8 flex justify-center">
+  <button
+    pButton
+    (click)="copyToClipBoard(id(), true)"
+    severity="success"
+    class="mt-12 mr-1">
+    @if(copiedRecipient()) {
+    <i class="pi pi-check"></i>
+    } @else {
+    <i class="pi pi-link"></i>
+    }
+
+    <span class="ml-1 text-xs font-semibold">
+      {{ copiedRecipient() ? '❤️🫂 Link copied' : 'Gift link ❤️🫂' }}
+    </span>
+  </button>
+
+  <button
+    pButton
+    (click)="copyToClipBoard(id(), false)"
+    severity="secondary"
+    class="mt-12 mr-1">
+    @if(copied()) {
+    <i class="pi pi-check"></i>
+    } @else {
+    <i class="pi pi-link"></i>
+    }
+
+    <span class="ml-1 text-xs font-semibold">
+      {{ copied() ? '✨ Link copied' : 'Collect Kudos with other ✨✨' }}
+    </span>
+  </button>
+</div>
