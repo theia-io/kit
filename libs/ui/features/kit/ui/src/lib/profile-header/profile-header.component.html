@@ -1,11 +1,11 @@
 <div class="static sm:relative w-full h-40 flex flex-col-reverse -mt-6">
-  <ng-content select="[profileEditExtension]"></ng-content>
+  <ng-content select="[profileExtensionOne]"></ng-content>
 
   <ui-kit-color-displayer
-    class="absolute -z-10 left-0 top-0 w-full h-40"
+    class="absolute left-0 top-0 w-full h-40"
     [color]="profile().background" />
 
-  <div class="flex justify-start items-end">
+  <div class="z-10 flex justify-start items-end">
     <div id="profile-header">
       <!-- TODO Migrate this profile rounded styles to directive -->
       <a
@@ -24,7 +24,7 @@
       </a>
     </div>
 
-    <ng-content select="[profileFollowExtension]"></ng-content>
+    <ng-content select="[profileExtensionTwo]"></ng-content>
   </div>
 </div>
 

@@ -1,27 +1,66 @@
 @if(farewellProfile(); as profile) {
 <feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
-  <div class="ml-auto mr-4 -mb-4" profileFollowExtension>
-    @if(!currentProfile()) {
-    <button
-      (click)="signInAndFollow(profile)"
-      type="button"
-      class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
-      <img class="inline-block h-6" src="sign-in/g-icon.png" />
-      Sign in to follow
-    </button>
-    } @else {
-    <feat-follow-unfollow-profile [profileId]="profile.id" />
+  <div
+    profileExtensionTwo
+    class="ml-auto mr-4 -mb-4 flex items-end gap-1 sm:gap-2 md:gap-12">
+    @let linkedKudoBoard = linkedKudoBoard$ | async; @if(linkedKudoBoard &&
+    linkedKudoBoard.id) {
+    <div class="hidden sm:flex items-center gap-4 mr-auto">
+      <div>
+        <i class="pi pi-link font-semibold text-4xl"></i>
+      </div>
+
+      <a
+        [href]="kudoBoardPartialUrl + '/' + linkedKudoBoard.id + '?view=true'"
+        target="_blank">
+        <feat-farewell-all-grid-item
+          [kudoboard]="linkedKudoBoard"
+          [smaller]="true"
+          class="block cursor-pointer" />
+      </a>
+    </div>
     }
+
+    <div class="">
+      @if(!currentProfile()) {
+      <button
+        (click)="signInAndFollow(profile)"
+        type="button"
+        class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
+        <img class="inline-block h-6" src="sign-in/g-icon.png" />
+        Sign in to follow
+      </button>
+      } @else {
+      <feat-follow-unfollow-profile [profileId]="profile.id" />
+      }
+    </div>
   </div>
 </feat-kit-profile-header>
-} @if(preview()) {
+} @let farewell = farewell$ | async;
+
+<!-- Breadcrumb menu -->
+@if(preview()) {
 <p-breadcrumb
   class="block mt-4 max-w-full"
   [model]="(breadcrumbMenuItems$ | async) ?? []" />
 }
 
+<!-- Overlay for draft -->
+@if(!preview() && farewellLoadingState()?.loaded) {
+<ui-kit-page-overlay
+  [show]="farewell?.status !== farewellStatus.Published"
+  [text]="(kudoBoardOverlayText$ | async) ?? ''">
+  @if(farewellProfile(); as profile) {
+  <feat-kit-profile-header
+    class="block relative p-2 bg-white"
+    [profile]="profile"></feat-kit-profile-header>
+  }
+</ui-kit-page-overlay>
+}
+
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
-  <div class="w-full py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
+  <div
+    class="container shadow-sm mx-auto py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-farewell-actions
       class="block container mx-auto"
       [farewellId]="farewellId$ | async"
@@ -58,21 +97,7 @@
   farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
   farewell) {
   <div class="mb-8">
-    <button
-      pButton
-      (click)="copyToClipBoard(farewell.id)"
-      [label]="copied() ? 'Link copied' : 'Copy link'"
-      severity="success"
-      class="mt-12 mr-1">
-      @if(copied()) {
-      <i class="pi pi-check mr-1"></i>
-      } @else {
-      <i class="pi pi-copy mr-1"></i>
-      }
-    </button>
-
-    <!-- <p-button (onClick)="shareHandler()" icon="pi pi-share-alt" label="Share" severity="contrast" [raised]="true"
-      class="ml-1" /> -->
+    <feat-farewell-share [id]="farewell.id" />
   </div>
   }
 </div>

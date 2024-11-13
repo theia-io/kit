@@ -44,9 +44,9 @@
     }
   </div>
 
-  <div>
+  <div class="flex items-center gap-1">
     <p-button
-      styleClass="p-0"
+      styleClass="p-1"
       (onClick)="op.toggle($event)"
       [text]="true"
       [label]="
@@ -58,21 +58,86 @@
         title="Kitouch"
         (emojiClick)="overlayReactionHandler($event)"></emoji-mart>
     </p-overlayPanel>
-    @if(!kudoboard()?.profileId) {
+
     <p-button
-      sharedAuthorizedFeature
-      pTooltip="Claim Kudoboard to always have it at hand and be its admin"
-      styleClass="py-0 ml-1"
-      (onClick)="claimKudoBoard()"
-      severity="success"
-      label="Claim"
-      icon="pi pi-save" />
-    } @if(canEdit()) {
-    <p-button
-      styleClass="p-0 ml-1"
-      (onClick)="redirectToEdit()"
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
       [text]="true"
-      icon="pi pi-file-edit" />
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-kudoboard-view-additional-actions [id]="kudoboardId()" />
+    </p-overlayPanel>
+
+    <!-- Create Response (farewell) for this -->
+    @if(kudoboard(); as kudoBoard) {
+    <div sharedAuthorizedFeature pTooltip="You can create statement on this">
+      <button
+        pButton
+        class="relative"
+        (click)="createKudoBoardResponse(kudoBoard)"
+        icon="pi pi-send"
+        [rounded]="true"
+        severity="info">
+        <span class="ml-1 text-xs">Respond to this.</span>
+      </button>
+    </div>
+    } @let myFarewellsKudoResponses = (myFarewellsKudoResponses$ | async);
+    @if(myFarewellsKudoResponses && myFarewellsKudoResponses.length > 0) {
+    <button
+      pButton
+      class="relative text-xs"
+      severity="secondary"
+      (click)="responsesTmpl.toggle($event)"
+      [rounded]="true">
+      <span>My responses</span>
+      <i class="ml-1 pi pi-caret-down"></i>
+    </button>
+    <p-overlayPanel #responsesTmpl>
+      <ul>
+        @for (response of myFarewellsKudoResponses; track $index) {
+        <li
+          [class.mt-4]="!$first"
+          [routerLink]="farewellViewUrlPath + response.id">
+          <p>
+            <span class="font-semibold">{{ $index + 1 }}.</span>
+            {{ response.title }},
+          </p>
+          <p class="text-sm text-gray-400">
+            {{ response.timestamp.createdAt | date }}
+          </p>
+        </li>
+        }
+      </ul>
+    </p-overlayPanel>
+    }
+
+    <!-- If there is no admin/owner for this Kudo -->
+    @if(!kudoboard()?.profileId) {
+    <ui-kit-comp-animate-ping [animate]="true">
+      <p-button
+        sharedAuthorizedFeature
+        pTooltip="Claim Kudoboard to always have it at hand and be its admin"
+        styleClass="p-1"
+        [text]="true"
+        (onClick)="claimKudoBoard()"
+        label="Claim"
+        icon="pi pi-save" />
+    </ui-kit-comp-animate-ping>
+    }
+
+    <!-- Admin owner menu -->
+    @if(canEdit()) {
+    <div
+      pTooltip="Admin view only visible to you"
+      class="ml-1 p-1 flex items-center gap-2 shadow-md text-sm text-gray-500">
+      <i class="pi pi-wrench"></i>
+      <p-button
+        styleClass="p-0"
+        (onClick)="redirectToEdit()"
+        [text]="true"
+        label="Edit"
+        icon="pi pi-file-edit" />
+    </div>
     }
   </div>
 </div>

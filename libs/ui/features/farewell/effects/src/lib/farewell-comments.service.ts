@@ -28,16 +28,39 @@ export class FarewellCommentsService extends DataSourceService {
   postFarewellComment(
     reactionData: ClientDataType<FarewellComment>
   ): Observable<FarewellComment> {
-    const reactionRequest = clientDbFarewellCommentAdapter(reactionData);
+    const commentRequest = clientDbFarewellCommentAdapter(reactionData);
 
     return this.db$().pipe(
       switchMap((db) =>
         db
           .collection<ClientDBFarewellCommentResponse>('farewell-comments')
-          .insertOne(reactionRequest)
+          .insertOne(commentRequest)
       ),
-      map(({ insertedId }) => ({ ...reactionRequest, _id: insertedId })),
+      map(({ insertedId }) => ({ ...commentRequest, _id: insertedId })),
       map((FarewellComment) => dbClientFarewellCommentAdapter(FarewellComment))
+    );
+  }
+
+  batchFarewellComments(
+    comments: Array<ClientDataType<FarewellComment>>
+  ): Observable<Array<FarewellComment>> {
+    const commentsRequest = comments.map(clientDbFarewellCommentAdapter);
+
+    return this.db$().pipe(
+      switchMap((db) =>
+        db
+          .collection<ClientDBFarewellCommentResponse>('farewell-comments')
+          .insertMany(commentsRequest)
+      ),
+      map(({ insertedIds }) =>
+        insertedIds.map((insertedId, idx) => ({
+          ...commentsRequest[idx],
+          _id: insertedId,
+        }))
+      ),
+      map((farewellComments) =>
+        farewellComments.map(dbClientFarewellCommentAdapter)
+      )
     );
   }
 

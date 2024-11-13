@@ -8,6 +8,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   provideRouter,
   withComponentInputBinding,
+  withDebugTracing,
   withInMemoryScrolling,
 } from '@angular/router';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
@@ -102,6 +103,7 @@ export const appConfig: ApplicationConfig = {
 
     provideRouter(
       appRoutes,
+      // withDebugTracing(),
       withComponentInputBinding(),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',

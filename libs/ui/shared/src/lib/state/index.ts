@@ -1,3 +1,5 @@
+export * from './object-loading.state';
+
 /** @todo @FIXME implement in the future */
 export const FeatureTweetKey = 'feature.tweet';
 

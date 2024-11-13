@@ -35,6 +35,7 @@ import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socia
 })
 export class FeatKitProfileHeaderComponent implements AfterViewInit {
   profile = input.required<Profile>();
+
   profilePic = computed(() => profilePicture(this.profile()));
 
   #photoService = inject(PhotoService);

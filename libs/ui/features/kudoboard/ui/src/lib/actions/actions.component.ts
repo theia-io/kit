@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,28 +18,47 @@ import {
   FeatKudoBoardActions,
   FeatKudoBoardReactionActions,
   selectKudoBoardById,
+  selectKudoBoardCommentsById,
   selectKudoBoardReactionsById,
 } from '@kitouch/data-kudoboard';
 import { emojiNameMap } from '@kitouch/emoji';
 
 import {
+  FeatFarewellActions,
+  FeatFarewellCommentActions,
+  findProfileFarewells,
+  selectFarewellCommentsById,
+  selectFarewells,
+} from '@kitouch/feat-farewell-data';
+import {
   profilePicture,
   selectCurrentProfile,
   selectProfilesByIds,
 } from '@kitouch/kit-data';
-import { KudoBoard, KudoBoardReaction, Profile } from '@kitouch/shared-models';
-import { AccountTileComponent } from '@kitouch/ui-components';
+import {
+  FarewellStatus,
+  KudoBoard,
+  KudoBoardComment,
+  KudoBoardReaction,
+  Profile,
+} from '@kitouch/shared-models';
+import {
+  AccountTileComponent,
+  UiKitCompAnimatePingComponent,
+} from '@kitouch/ui-components';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   AuthorizedFeatureDirective,
 } from '@kitouch/ui-shared';
+import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
-import { filter, map, shareReplay, switchMap } from 'rxjs';
+import { combineLatest, filter, map, shareReplay, switchMap, take } from 'rxjs';
 import { kudoBoardOwner } from '../common';
+import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
 
 @Component({
   standalone: true,
@@ -47,6 +66,7 @@ import { kudoBoardOwner } from '../common';
   templateUrl: './actions.component.html',
   imports: [
     AsyncPipe,
+    DatePipe,
     RouterModule,
     //
     PickerComponent,
@@ -56,6 +76,8 @@ import { kudoBoardOwner } from '../common';
     //
     AccountTileComponent,
     AuthorizedFeatureDirective,
+    UiKitCompAnimatePingComponent,
+    FeatKudoBoardViewAdditionalActionsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -64,14 +86,19 @@ export class FeatKudoBoardActionsComponent {
 
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
+  #actions = inject(Actions);
   #store = inject(Store);
 
   #kudoboardId$ = toObservable(this.kudoboardId).pipe(filter(Boolean));
+  #kudoboard$ = this.#kudoboardId$.pipe(
+    switchMap((id) => this.#store.pipe(select(selectKudoBoardById(id))))
+  );
   kudoboard = computed(() =>
     this.#store.selectSignal(selectKudoBoardById(this.kudoboardId()))()
   );
 
-  currentProfile = this.#store.selectSignal(selectCurrentProfile);
+  #currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
+  currentProfile = toSignal(this.#currentProfile$);
 
   canEdit = computed(() =>
     kudoBoardOwner({
@@ -150,8 +177,31 @@ export class FeatKudoBoardActionsComponent {
     )
   );
 
+  #myFarewells$ = combineLatest([
+    this.#store.pipe(select(selectFarewells), filter(Boolean)),
+    this.#currentProfile$.pipe(filter(Boolean)),
+  ]).pipe(
+    map(([farewells, currentProfile]) =>
+      findProfileFarewells(currentProfile.id, farewells)
+    )
+  );
+
+  myFarewellsKudoResponses$ = combineLatest([
+    this.#myFarewells$,
+    this.#kudoboard$,
+  ]).pipe(
+    map(([myFarewells, kudoBoard]) =>
+      myFarewells.filter(
+        (myFarewell) => myFarewell.kudoBoardId === kudoBoard?.id
+      )
+    )
+  );
+
   readonly profilePicture = profilePicture;
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
+  readonly farewellUrlPath = `/${APP_PATH.Farewell}/`;
+  readonly farewellViewUrlPath = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/`;
+
   readonly emojiMap = emojiNameMap;
 
   randomReaction(emojiList: Array<KudoBoardReaction>) {
@@ -203,8 +253,74 @@ export class FeatKudoBoardActionsComponent {
     );
   }
 
+  createKudoBoardResponse(kudoBoard: KudoBoard) {
+    const farewellCreated$ = this.#actions.pipe(
+      ofType(FeatFarewellActions.createFarewellSuccess),
+      takeUntilDestroyed(this.#destroyRef),
+      map(({ farewell }) => farewell),
+      take(1),
+      shareReplay({
+        refCount: true,
+        bufferSize: 1,
+      })
+    );
+
+    farewellCreated$.subscribe(({ id }) =>
+      this.#router.navigateByUrl(`${this.farewellUrlPath}edit/${id}`)
+    );
+
+    farewellCreated$
+      .pipe(
+        switchMap(({ id }) =>
+          this.#store.pipe(
+            select(selectKudoBoardCommentsById(kudoBoard.id)),
+            map((kudoBoardComments): [string, Array<KudoBoardComment>] => [
+              id,
+              kudoBoardComments,
+            ])
+          )
+        )
+      )
+      .subscribe(([farewellId, kudoBoardComments]) => {
+        if (kudoBoardComments.length > 0) {
+          this.#store.dispatch(
+            FeatFarewellCommentActions.batchCommentsFarewell({
+              comments: kudoBoardComments.map(
+                ({ profile, profileId, content }) => ({
+                  farewellId,
+                  profileId,
+                  profile,
+                  content,
+                })
+              ),
+            })
+          );
+        }
+      });
+
+    this.#store
+      .pipe(
+        select(selectCurrentProfile),
+        filter(Boolean),
+        take(1),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe((profile) => {
+        this.#store.dispatch(
+          FeatFarewellActions.createFarewell({
+            title: '',
+            content: '',
+            profileId: profile.id,
+            profile,
+            kudoBoardId: kudoBoard.id,
+            kudoBoard,
+            status: FarewellStatus.Draft,
+          })
+        );
+      });
+  }
+
   claimKudoBoard() {
-    console.log('claimKudoBoard');
     const kudoBoard = this.kudoboard();
     if (!kudoBoard) {
       console.log('[FeatKudoBoardActionsComponent][claimKudoBoard]', kudoBoard);

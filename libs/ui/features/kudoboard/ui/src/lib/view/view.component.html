@@ -17,8 +17,12 @@
     </div>
   </div>
 
-  <div class="text-2xl text-center">
-    {{ kudoBoard.recipient }}
+  @if(!(smaller() && !!background) && kudoBoard.recipient) {
+  <div class="mt-4 text-2xl text-center">{{ kudoBoard.recipient }},</div>
+  } @if(!(smaller() && !!background)) {
+  <div class="mt-1 text-xl text-center">
+    {{ kudoBoard.content }}
   </div>
+  }
 </div>
 }

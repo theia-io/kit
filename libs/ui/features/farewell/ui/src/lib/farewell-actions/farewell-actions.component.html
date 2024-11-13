@@ -44,34 +44,51 @@
     }
   </div>
 
-  <div>
+  <div class="flex items-center gap-1">
     <p-button
-      styleClass="p-0"
+      styleClass="p-1"
       (onClick)="op.toggle($event)"
       [text]="true"
       [label]="
         farewellReactionsLength() > 0 ? farewellReactionsLength() + '' : ''
       "
       icon="pi pi-face-smile" />
+
     <p-overlayPanel #op>
       <emoji-mart
         title="Kitouch"
         (emojiClick)="overlayReactionHandler($event)"></emoji-mart>
     </p-overlayPanel>
     <p-button
-      styleClass="p-0 ml-3"
+      styleClass="p-1"
       (onClick)="commentsClick.emit()"
       [text]="true"
       [label]="
         farewellCommentsLength() > 0 ? farewellCommentsLength() + '' : ''
       "
       icon="pi pi-comments" />
-    @if(canEdit()) {
+
     <p-button
-      styleClass="p-0 ml-1"
-      (onClick)="redirectToEdit()"
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
       [text]="true"
-      icon="pi pi-file-edit" />
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-farewell-share [id]="farewellId()" />
+    </p-overlayPanel>
+
+    <!-- Admin owner menu -->
+    @if(canEdit()) {
+    <div
+      pTooltip="Admin view only visible to you"
+      class="ml-1 p-1 flex items-center gap-2 shadow-md text-sm text-gray-500">
+      <i class="pi pi-wrench"></i>
+      <p-button
+        styleClass="p-0"
+        (onClick)="redirectToEdit()"
+        [text]="true"
+        icon="pi pi-file-edit" />
+    </div>
     }
   </div>
 </div>

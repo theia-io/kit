@@ -13,7 +13,7 @@ export const FeatKudoBoardActions = createActionGroup({
       id: string;
     }>(),
     GetKudoBoardSuccess: props<{ kudoboard: KudoBoard }>(),
-    GetKudoBoardFailure: props<{ message: string }>(),
+    GetKudoBoardFailure: props<{ id: string; message: string }>(),
 
     //
     CreateKudoBoard: props<{ kudoboard: ClientDataType<KudoBoard> }>(),

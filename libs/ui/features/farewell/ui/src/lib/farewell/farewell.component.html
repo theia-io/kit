@@ -1,5 +1,36 @@
 <form class="flex flex-col" [formGroup]="farewellFormGroup">
-  <p-floatLabel class="block mt-4">
+  @let linkedKudoBoard = linkedKudoBoard$ | async; @if(linkedKudoBoard &&
+  linkedKudoBoard.id) {
+  <div class="flex items-center gap-4">
+    <div>
+      <i class="pi pi-link font-semibold text-4xl"></i>
+    </div>
+
+    <feat-farewell-all-grid-item
+      [kudoboard]="linkedKudoBoard"
+      [routerLink]="[
+        kudoBoardPartialUrl + '/' + linkedKudoBoard.id,
+        { preview: true }
+      ]"
+      class="block cursor-pointer" />
+
+    @if(linkedKudoBoard.profile; as profile) {
+    <ui-kit-comp-account-tile
+      [primaryText]="linkedKudoBoard.profile.name"
+      [primarySecondaryText]="
+        linkedKudoBoard.timestamp.createdAt ??
+          linkedKudoBoard.timestamp.updatedAt | date
+      "
+      secondaryText="Collected this for you"
+      [picture]="profilePictureFn(profile)"
+      [link]="profileUrl + (profile.alias ?? profile.id)" />
+    }
+  </div>
+
+  <ui-kit-divider class="block my-12" />
+  }
+
+  <p-floatLabel class="block">
     <input
       class="w-full border-none shadow-none text-4xl focus:outline-none"
       id="title"
@@ -33,34 +64,87 @@
     </strong>
   </section>
 
-  @let status = farewellFormGroup.get('status')?.value;
+  @let status = farewellFormGroup.get('status')?.value; @let id = farewellId();
 
-  <ng-template #statusTmpl>
-    <p-button
-      (onClick)="updateStatus(status)"
-      [label]="
-        status === farewellStatus.Published ? 'Back to draft' : 'Publish'
-      "
+  <ng-template #statusTmpl let-bigButton>
+    @if(status === farewellStatus.Published) {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
       [rounded]="true"
-      [severity]="
-        status === farewellStatus.Published ? 'secondary' : 'success'
-      " />
+      severity="warning">
+      <span class="text-xs font-semibold">Back to draft</span>
+    </button>
+    } @else {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
+      [rounded]="true"
+      severity="success">
+      <span class="text-xs font-semibold">Publish</span>
+    </button>
+    }
+  </ng-template>
+
+  <ng-template #shareTmpl let-simple>
+    @if(id) { @if(simple) {
+    <feat-farewell-share [id]="id" />
+    } @else {
+    <p-button
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
+      [text]="true"
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-farewell-share [id]="id" />
+    </p-overlayPanel>
+    } }
   </ng-template>
 
   <div class="flex justify-center gap-2">
-    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
-    @if(farewellId(); as id) {
+    <ng-container
+      *ngTemplateOutlet="
+        statusTmpl;
+        context: { $implicit: true }
+      "></ng-container>
+
+    @if(id) {
     <div
       [pTooltip]="
-        status !== farewellStatus.Published ? 'Publish to see farewell' : ''
+        status !== farewellStatus.Published
+          ? 'Publish farewell so everyone can see'
+          : ''
       ">
-      <p-button
-        (onClick)="gotoFarewell(id)"
-        label="See farewell"
-        [disabled]="status !== farewellStatus.Published"
+      <button
+        pButton
+        class="relative"
+        (click)="gotoFarewell(id, $event)"
+        icon="pi pi-eye"
         [rounded]="true"
-        severity="info" />
+        severity="info">
+        <span class="ml-1 text-xs">See farewell</span>
+      </button>
     </div>
     }
+
+    <ng-container
+      *ngTemplateOutlet="
+        shareTmpl;
+        context: { $implicit: true }
+      "></ng-container>
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-12">
+    <button
+      pButton
+      (click)="gotoAll($event)"
+      [rounded]="true"
+      styleClass="p-1"
+      severity="success"
+      icon="pi pi-sparkles">
+      <span class="ml-1 text-xs">Done</span>
+    </button>
   </div>
 </form>

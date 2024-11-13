@@ -3,6 +3,7 @@ import { KitTimestamp } from '../helpers';
 
 export enum KudoBoardStatus {
   Published = 'published',
+  // CollectingResponses = 'collecting responses',
   Draft = 'draft',
   Removed = 'removed',
 }
@@ -44,6 +45,7 @@ export interface KudoBoard {
   profileId?: Profile['id'] | null;
   profile?: Profile;
   title: string;
+  content?: string;
   recipient?: string;
   background?: string;
   status: KudoBoardStatus;

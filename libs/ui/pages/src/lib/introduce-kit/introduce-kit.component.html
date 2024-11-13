@@ -13,11 +13,14 @@
         <a class="font-bold underline" routerLink="./" fragment="connected">
           Connected
         </a>
-        <a class="font-bold underline ml-4" routerLink="./" fragment="farewell">
-          Create farewell
+        <a
+          class="font-bold underline ml-4"
+          routerLink="./"
+          fragment="kudoboard">
+          KudoBoard ✨
         </a>
-        <a class="font-bold underline ml-4" routerLink="./" fragment="benefits">
-          Benefits
+        <a class="font-bold underline ml-4" routerLink="./" fragment="farewell">
+          Farewell 🗒️
         </a>
       </div>
 
@@ -97,11 +100,102 @@
 
 <div class="mt-12 w-full px-2 py-12">
   <section
+    id="kudoboard"
+    class="container flex flex-col items-center md:items-start mx-auto">
+    <div class="flex gap-6 justify-between items-center">
+      <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
+        KudoBoards ✨
+      </h2>
+
+      <div
+        sharedUserHint
+        [enabled]="!(($hintHidden | async) === true)"
+        text="No registration"
+        nextLineText="Free"
+        side="right"
+        [extraIdent]="{ top: -10, right: 35 }">
+        <a
+          [routerLink]="kudoBoardGenerateUrl"
+          uiKitSmallTextTailwindClasses
+          [klasses]="getStartedKlassOverwrite"
+          class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900">
+          Create KudoBoard
+        </a>
+      </div>
+    </div>
+    <p class="mt-2">
+      Say Kudo to your colleagues, friends or family! Manage at ease
+    </p>
+
+    <div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6">
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-users" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Collaborate</p>
+
+        <p class="m-0">Add comments from everyone.</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Flexible</p>
+
+        <p class="m-0">Changed your mind? Update or delete at your wish</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-wave-pulse" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Powerful</p>
+
+        <p class="m-0">Publish, keep drafts</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-wrench" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">You are in control</p>
+
+        <p class="m-0">Kudoboard owners can delete any kudos</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-search" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Analyze</p>
+      </p-card>
+    </div>
+  </section>
+</div>
+
+<div class="mt-12 w-full px-2 py-12">
+  <section
     id="farewell"
     class="container flex flex-col items-center md:items-start mx-auto">
-    <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-      Create farewell
-    </h2>
+    <div class="flex gap-6 justify-between items-center">
+      <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
+        Farewell 🗒️
+      </h2>
+
+      <div
+        sharedAuthorizedFeature
+        sharedUserHint
+        [enabled]="!(($hintHidden | async) === true)"
+        text="One click to register"
+        nextLineText="Free"
+        side="right"
+        [extraIdent]="{ top: -10, right: 35 }">
+        <a
+          [routerLink]="farewellGenerateUrl"
+          uiKitSmallTextTailwindClasses
+          [klasses]="getStartedKlassOverwrite"
+          class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900">
+          Create Farewell
+        </a>
+      </div>
+    </div>
+
     <p class="mt-2">
       No more farewell hassle. Create, update and interact at your wish.
     </p>
@@ -112,7 +206,9 @@
 
         <p class="m-0 text-lg font-semibold">Better</p>
 
-        <p class="m-0">Create better farewell.</p>
+        <p class="m-0">
+          Create better farewell. Share memorable moments. Manage with media.
+        </p>
       </p-card>
 
       <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
@@ -121,6 +217,22 @@
         <p class="m-0 text-lg font-semibold">Flexible</p>
 
         <p class="m-0">Changed your mind? Update or delete at your wish</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-wave-pulse" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">Powerful</p>
+
+        <p class="m-0">Publish, keep drafts</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <i class="pi pi-wrench" style="font-size: 1.5rem"></i>
+
+        <p class="m-0 text-lg font-semibold">You are in control</p>
+
+        <p class="m-0">Farewell owners can delete any farewell comments</p>
       </p-card>
 
       <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">

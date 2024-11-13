@@ -4,8 +4,17 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatKudoBoardActions } from '@kitouch/data-kudoboard';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { KudoBoardService } from './kudoboard.service';
+import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 
 @Injectable()
 export class KudoBoardEffects {
@@ -31,14 +40,35 @@ export class KudoBoardEffects {
   getKudoBoard$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatKudoBoardActions.getKudoBoard),
-      switchMap(({ id }) => this.#kudoboardService.getKudoBoard(id)),
-      map((kudoboard) =>
-        kudoboard
-          ? FeatKudoBoardActions.getKudoBoardSuccess({ kudoboard })
-          : FeatKudoBoardActions.getKudoBoardFailure({
-              message: 'Did not find this kudoboard.',
-            })
+      switchMap(({ id }) =>
+        this.#kudoboardService.getKudoBoard(id).pipe(
+          map((kudoboard) =>
+            kudoboard
+              ? FeatKudoBoardActions.getKudoBoardSuccess({ kudoboard })
+              : FeatKudoBoardActions.getKudoBoardFailure({
+                  id,
+                  message: 'Did not find this kudoboard.',
+                })
+          ),
+          catchError((err) =>
+            of(
+              FeatKudoBoardActions.getKudoBoardFailure({
+                id,
+                message: `There hsa been an error. It is us. Try later, ${err.message}`,
+              })
+            )
+          )
+        )
       )
+    )
+  );
+
+  getFarewellKudo$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewellSuccess),
+      map(({ farewell: { kudoBoardId } }) => kudoBoardId),
+      filter((kudoBoardId): kudoBoardId is string => !!kudoBoardId),
+      map((id) => FeatKudoBoardActions.getKudoBoard({ id }))
     )
   );
 
@@ -62,6 +92,7 @@ export class KudoBoardEffects {
   putKudoBoard$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatKudoBoardActions.putKudoBoard),
+      tap((v) => console.log('TEST UPDATINNG', v)),
       switchMap(({ kudoboard }) =>
         this.#kudoboardService.putKudoBoard(kudoboard).pipe(
           map((kudoboard) =>

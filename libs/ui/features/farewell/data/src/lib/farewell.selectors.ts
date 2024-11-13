@@ -3,6 +3,7 @@ import {
   FarewellAnalytics,
   FarewellComment,
   FarewellReaction,
+  Profile,
 } from '@kitouch/shared-models';
 import { createSelector } from '@ngrx/store';
 import { FeatureFarewellState } from './farewell.reducers';
@@ -82,6 +83,14 @@ export const findFarewellById = (
   farewellId: string,
   farewells: Array<Farewell>
 ) => farewells.find((farewell) => farewell.id === farewellId);
+
+export const findProfileFarewells = (
+  profileId: Profile['id'],
+  farewells: Array<Farewell>
+) =>
+  farewells.filter(
+    (farewell) => (farewell.profileId ?? farewell.profile.id) === profileId
+  );
 
 export const findFarewellReactionsByFarewellId = (
   farewellId: string,

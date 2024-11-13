@@ -1,4 +1,10 @@
-import { Location, NgTemplateOutlet } from '@angular/common';
+import {
+  AsyncPipe,
+  DatePipe,
+  Location,
+  NgClass,
+  NgTemplateOutlet,
+} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -14,27 +20,35 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   FeatFarewellActions,
   FeatFarewellMediaActions,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
 import { getFullS3Url } from '@kitouch/feat-farewell-effects';
-import { selectCurrentProfile } from '@kitouch/kit-data';
+import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import {
   Farewell,
   FarewellAnalytics,
   FarewellStatus,
 } from '@kitouch/shared-models';
-import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
+import {
+  AccountTileComponent,
+  DividerComponent,
+  UIKitSmallerHintTextUXDirective,
+} from '@kitouch/ui-components';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
@@ -42,11 +56,12 @@ import {
   S3_FAREWELL_BUCKET_BASE_URL,
 } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
@@ -60,10 +75,13 @@ import {
   skipUntil,
   switchMap,
   take,
+  withLatestFrom,
 } from 'rxjs';
+import { FeatFarewellAllGridItemComponent } from '../all-grid-item/all-grid-item.component';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
+import { FeatFarewellShareComponent } from '../share/share.component';
 
 // import to register custom bloats
 
@@ -82,23 +100,33 @@ function extractContent(html: string) {
   selector: 'feat-farewell',
   templateUrl: './farewell.component.html',
   imports: [
+    AsyncPipe,
+    DatePipe,
+    RouterModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
+    NgClass,
     //
     FloatLabelModule,
     InputTextModule,
     ButtonModule,
     TooltipModule,
+    OverlayPanelModule,
     //
+    FeatFarewellAllGridItemComponent,
     FeatFarewellEditorComponent,
     UIKitSmallerHintTextUXDirective,
+    AccountTileComponent,
+    DividerComponent,
+    FeatFarewellShareComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
-  statusUpdateTmpl = output<TemplateRef<any>>();
+  statusKudoTmpl = output<TemplateRef<any>>();
+  shareKudoTmpl = output<TemplateRef<unknown>>();
 
   #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
@@ -117,8 +145,14 @@ export class FeatFarewellComponent implements AfterViewInit {
       ? this.#store.selectSignal(selectFarewellFullViewById(id))()
       : undefined;
   });
-  #farewell = toObservable(this.farewell);
-  currentProfile = this.#store.selectSignal(selectCurrentProfile);
+  #farewell$ = toObservable(this.farewell);
+  #currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
+  currentProfile = toSignal(this.#currentProfile$);
+
+  linkedKudoBoard$ = this.#farewell$.pipe(
+    map((farewell) => farewell?.kudoBoard),
+    filter(Boolean)
+  );
 
   readonly TITLE_MAX_LENGTH = 128;
   readonly CONTENT_MAX_LENGTH = 8_092;
@@ -138,16 +172,24 @@ export class FeatFarewellComponent implements AfterViewInit {
   farewellAnalytics = signal<FarewellAnalytics | null>(null);
   editorTextValue = signal<string>('');
 
-  farewellStatus = FarewellStatus;
+  readonly farewellStatus = FarewellStatus;
+  readonly profileUrl = `/${APP_PATH.Profile}/`;
+  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  profilePictureFn = profilePicture;
 
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<any>;
+  @ViewChild('shareTmpl', { read: TemplateRef })
+  shareTmpl?: TemplateRef<any>;
 
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
     setTimeout(() => {
       if (this.statusTmpl) {
-        this.statusUpdateTmpl.emit(this.statusTmpl);
+        this.statusKudoTmpl.emit(this.statusTmpl);
+      }
+      if (this.shareTmpl) {
+        this.shareKudoTmpl.emit(this.shareTmpl);
       }
     }, 0);
 
@@ -178,7 +220,7 @@ export class FeatFarewellComponent implements AfterViewInit {
         takeUntilDestroyed(this.#destroyRef),
         // when its new farewell we don't update until farewell is created
         skipUntil(
-          this.farewellId() ? of(true) : this.#farewell.pipe(filter(Boolean))
+          this.farewellId() ? of(true) : this.#farewell$.pipe(filter(Boolean))
         ),
         debounceTime(5000)
       )
@@ -291,11 +333,19 @@ export class FeatFarewellComponent implements AfterViewInit {
     );
   }
 
-  gotoFarewell(farewellId: Farewell['id']) {
+  gotoFarewell(farewellId: Farewell['id'], event: Event) {
+    event.preventDefault();
+
     this.#router.navigate(
       [`/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/${farewellId}`],
       { queryParams: { preview: true } }
     );
+  }
+
+  gotoAll(event: Event) {
+    event.preventDefault();
+
+    this.#router.navigateByUrl(`/${APP_PATH.Farewell}`);
   }
 
   #autoCreateFarewell() {
@@ -310,15 +360,19 @@ export class FeatFarewellComponent implements AfterViewInit {
       })
     );
 
-    autoCreate$.subscribe(({ title, content, status }) =>
-      this.#store.dispatch(
-        FeatFarewellActions.createFarewell({
-          title: title ?? '',
-          content: content ?? '',
-          status: status ?? FarewellStatus.Draft,
-        })
-      )
-    );
+    autoCreate$
+      .pipe(withLatestFrom(this.#currentProfile$.pipe(filter(Boolean))))
+      .subscribe(([{ title, content, status }, profile]) =>
+        this.#store.dispatch(
+          FeatFarewellActions.createFarewell({
+            title: title ?? '',
+            content: content ?? '',
+            profileId: profile.id,
+            profile: profile,
+            status: status ?? FarewellStatus.Draft,
+          })
+        )
+      );
 
     autoCreate$
       .pipe(

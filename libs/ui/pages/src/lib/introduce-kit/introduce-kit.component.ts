@@ -5,10 +5,16 @@ import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import { APP_PATH, DeviceService } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
+  AuthorizedFeatureDirective,
+  DeviceService,
+  SharedKitUserHintDirective,
+} from '@kitouch/ui-shared';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
-import { map } from 'rxjs';
+import { map, startWith } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -25,14 +31,22 @@ import { map } from 'rxjs';
     TooltipModule,
     //
     UIKitSmallerHintTextUXDirective,
+    SharedKitUserHintDirective,
+    AuthorizedFeatureDirective,
   ],
 })
 export class KitPagesIntroduceKitComponent {
-  extraLarge$ = inject(DeviceService).innerWidth$.pipe(
+  #deviceService = inject(DeviceService);
+
+  extraLarge$ = this.#deviceService.innerWidth$.pipe(
     map((width) => width >= 1320)
   );
 
+  $hintHidden = this.#deviceService.isMobile$.pipe(startWith(true));
+
   homeUrl = `/${APP_PATH.Home}`;
+  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
+  farewellGenerateUrl = `/${APP_PATH.Farewell}/generate`;
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {

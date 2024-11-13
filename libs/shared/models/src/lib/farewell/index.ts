@@ -1,5 +1,6 @@
 import { Profile } from '../entities-kitouch';
 import { KitTimestamp } from '../helpers';
+import { KudoBoard } from '../kudoboard';
 
 export enum FarewellStatus {
   Published = 'published',
@@ -27,7 +28,7 @@ export interface FarewellReaction {
 export interface FarewellComment {
   id: string;
   farewellId: Farewell['id'];
-  profileId: Profile['id'] | null;
+  profileId?: Profile['id'] | null;
   profile?: Profile;
   // meta: string;
   content: string;
@@ -36,6 +37,9 @@ export interface FarewellComment {
 
 export interface Farewell {
   id: string;
+  kudoBoardId?: KudoBoard['id'];
+  kudoBoard?: KudoBoard;
+  profileId?: Profile['id'];
   profile: Profile;
   title: string;
   content: string;

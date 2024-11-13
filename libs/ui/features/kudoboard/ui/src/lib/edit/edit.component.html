@@ -38,14 +38,14 @@
       </div>
     </div>
 
-    <p-floatLabel class="block mt-20">
+    <p-floatLabel class="block mt-20 px-4 py-8 shadow-md">
       <input
         class="w-full border-none shadow-none text-4xl focus:outline-none"
         id="title"
         type="text"
         pInputText
         formControlName="title" />
-      <label class="w-full text-4xl" for="title">Kudo Board Title</label>
+      <label class="w-full text-4xl" for="title">Title</label>
     </p-floatLabel>
 
     <section class="relative">
@@ -58,44 +58,136 @@
     </section>
   </div>
 
-  <p-floatLabel class="block mt-4">
+  <p-floatLabel class="block mt-4 px-4 py-8 shadow-md">
     <input
       class="w-full border-none shadow-none text-4xl focus:outline-none"
       id="title"
       type="text"
       pInputText
       formControlName="recipient" />
-    <label class="w-full text-4xl" for="title">Kudo Board Recipient</label>
+    <label class="w-full text-4xl" for="title">Who is this for 🤔</label>
   </p-floatLabel>
 
-  @let status = kudoBoardFormGroup.get('status')?.value;
+  <p-floatLabel class="block mt-4 px-4 py-8 shadow-md">
+    <textarea
+      class="w-full min-h-40 border-none shadow-none text-4xl focus:outline-none"
+      id="content"
+      type="text"
+      pInputTextarea
+      formControlName="content"></textarea>
+    <label class="w-full text-4xl" for="content">Message 💬</label>
+  </p-floatLabel>
 
-  <ng-template #statusTmpl>
-    <p-button
-      (onClick)="updateStatus(status)"
-      [label]="
-        status === kudoBoardStatus.Published ? 'Back to draft' : 'Publish'
-      "
+  @let kudoBoardId = id(); @let status =
+  kudoBoardFormGroup.get('status')?.value;
+
+  <ng-template #statusTmpl let-bigButton let-withHint="withHint">
+    @if(withHint) {
+    <p>Update status:</p>
+    } @if(status === kudoBoardStatus.Published) {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
       [rounded]="true"
-      [severity]="
-        status === kudoBoardStatus.Published ? 'secondary' : 'success'
-      " />
+      severity="warning">
+      <span class="text-xs font-semibold">Back to draft</span>
+    </button>
+    } @else {
+    <button
+      pButton
+      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
+      (click)="updateStatus(status)"
+      [rounded]="true"
+      severity="success">
+      <span class="text-xs font-semibold">Publish</span>
+    </button>
+    } @if(withHint) {
+    <div
+      sharedUserHint
+      [text]="
+        status === kudoBoardStatus.Published
+          ? 'Set as Draft'
+          : 'Click to Publish'
+      "></div>
+    }
   </ng-template>
 
-  <div class="flex justify-center gap-2">
-    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
-    @if(id(); as id) {
+  <ng-template #previewTmpl>
+    @if(kudoBoardId) {
     <div
       [pTooltip]="
-        status !== kudoBoardStatus.Published ? 'Publish to see kudo board' : ''
+        status !== kudoBoardStatus.Published ? 'Publish kudo board' : ''
       ">
-      <p-button
-        (onClick)="gotoBoard(id)"
-        label="See Kudo"
-        [disabled]="status !== kudoBoardStatus.Published"
+      <button
+        pButton
+        class="relative"
+        (click)="gotoBoard(kudoBoardId, true, $event)"
+        icon="pi pi-eye"
         [rounded]="true"
-        severity="info" />
+        severity="info">
+        <span class="ml-1 text-xs">Admin preview</span>
+      </button>
     </div>
     }
+  </ng-template>
+  <ng-template #asUserTmpl>
+    @if(kudoBoardId) {
+    <div pTooltip="Collect kudos for recipient">
+      <button
+        pButton
+        class="relative"
+        (click)="gotoBoard(kudoBoardId, false, $event)"
+        icon="pi pi-user"
+        [rounded]="true"
+        severity="secondary">
+        <span class="ml-1 text-xs">See as everyone else</span>
+      </button>
+    </div>
+    }
+  </ng-template>
+  <ng-template #shareTmpl let-simple>
+    @if(kudoBoardId) { @if(simple) {
+    <feat-kudoboard-view-additional-actions [id]="kudoBoardId" />
+    } @else {
+    <p-button
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
+      [text]="true"
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-kudoboard-view-additional-actions [id]="kudoBoardId" />
+    </p-overlayPanel>
+    } }
+  </ng-template>
+
+  <div class="flex justify-center gap-2 mt-6">
+    <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
+    <ng-container *ngTemplateOutlet="asUserTmpl"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="
+        shareTmpl;
+        context: { $implicit: true }
+      "></ng-container>
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-12">
+    <ng-container
+      *ngTemplateOutlet="
+        statusTmpl;
+        context: { $implicit: true, withHint: true }
+      "></ng-container>
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-12">
+    <button
+      pButton
+      (click)="gotoAll($event)"
+      [rounded]="true"
+      styleClass="p-1"
+      severity="success"
+      icon="pi pi-sparkles">
+      <span class="ml-1 text-xs">Done</span>
+    </button>
   </div>
 </form>

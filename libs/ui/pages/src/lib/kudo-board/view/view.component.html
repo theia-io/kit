@@ -1,11 +1,35 @@
+<!-- Breadcrumb menu -->
 @if(preview()) {
 <p-breadcrumb
   class="block mt-4 max-w-full"
   [model]="(breadcrumbMenuItems$ | async) ?? []" />
+} @let kudoboard = (kudoboard$ | async);
+
+<!-- Overlay for draft -->
+@if(!preview() && kudoboardLoadingState()?.loaded) {
+<ui-kit-page-overlay
+  [show]="kudoboard?.status !== kudoBoardStatus.Published"
+  [text]="(kudoBoardOverlayText$ | async) ?? ''">
+  @if(kudoboardProfile(); as profile) {
+  <feat-kit-profile-header
+    class="block relative p-2 bg-white"
+    [profile]="profile"></feat-kit-profile-header>
+  }
+</ui-kit-page-overlay>
 }
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
-  <div class="w-full py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
+  @if(kudoboardProfile(); as profile) {
+  <ui-kit-comp-account-tile
+    sharedAuthorizedFeature
+    [primaryText]="kudoBoardProfileTexts().primaryText"
+    [secondaryText]="kudoBoardProfileTexts().secondaryText"
+    [picture]="kudoboardProfilePic()"
+    [link]="profileUrl + (profile.alias ?? profile.id)" />
+  }
+
+  <div
+    class="container shadow-sm mx-auto py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-kudoboard-actions
       class="block container mx-auto"
       [kudoboardId]="kudoboardId$ | async" />
@@ -22,26 +46,19 @@
       [preview]="preview()" />
   </div>
 
+  <!-- Comments if collecting -->
   <div class="container mx-auto">
-    <feat-kudoboard-comments [kudoboardId]="kudoboardId$ | async" />
+    <feat-kudoboard-comments
+      [kudoboardId]="kudoboardId$ | async"
+      [canComment]="!view()" />
   </div>
 
-  @if(preview() && kudoboardProfile() && currentProfile() &&
-  kudoboardProfile()?.id === currentProfile()?.id && (kudoboard$ | async); as
-  kudoboard) {
-  <div class="mb-8">
-    <button
-      pButton
-      (click)="copyToClipBoard(kudoboard.id)"
-      [label]="copied() ? 'Link copied' : 'Copy link'"
-      severity="success"
-      class="mt-12 mr-1">
-      @if(copied()) {
-      <i class="pi pi-check mr-1"></i>
-      } @else {
-      <i class="pi pi-copy mr-1"></i>
-      }
-    </button>
-  </div>
+  <!-- Additional CTA actions -->
+  @if(!view() && kudoboard) {
+  <feat-kudoboard-view-additional-actions
+    class="block mb-8"
+    [id]="kudoboard.id" />
   }
+
+  <p-toast />
 </div>
