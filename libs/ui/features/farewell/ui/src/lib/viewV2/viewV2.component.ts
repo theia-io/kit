@@ -1,4 +1,4 @@
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -20,7 +20,6 @@ import { filter, switchMap } from 'rxjs';
   templateUrl: './viewV2.component.html',
   imports: [
     AsyncPipe,
-    NgOptimizedImage,
     //
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

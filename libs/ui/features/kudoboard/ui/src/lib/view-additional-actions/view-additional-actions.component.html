@@ -1,9 +1,9 @@
-<div class="mb-8 flex justify-center">
+<div class="flex justify-center">
   <button
     pButton
     (click)="copyToClipBoard(id(), true)"
     severity="success"
-    class="mt-12 mr-1">
+    class="mr-1">
     @if(copiedRecipient()) {
     <i class="pi pi-check"></i>
     } @else {
@@ -15,11 +15,7 @@
     </span>
   </button>
 
-  <button
-    pButton
-    (click)="copyToClipBoard(id(), false)"
-    severity="secondary"
-    class="mt-12 mr-1">
+  <button pButton (click)="copyToClipBoard(id(), false)" severity="secondary">
     @if(copied()) {
     <i class="pi pi-check"></i>
     } @else {

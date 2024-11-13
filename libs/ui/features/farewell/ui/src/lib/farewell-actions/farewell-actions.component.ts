@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,6 +6,7 @@ import {
   inject,
   input,
   output,
+  signal,
 } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
@@ -24,12 +25,17 @@ import {
 } from '@kitouch/kit-data';
 import { Farewell, FarewellReaction, Profile } from '@kitouch/shared-models';
 import { AccountTileComponent } from '@kitouch/ui-components';
-import { APP_PATH, AuthorizedFeatureDirective } from '@kitouch/ui-shared';
+import {
+  APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
+  AuthorizedFeatureDirective,
+} from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
-import { combineLatest, filter, map, shareReplay, switchMap } from 'rxjs';
+import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { farewellOwner } from '../common';
+import { FeatFarewellShareComponent } from '../share/share.component';
 
 @Component({
   standalone: true,
@@ -42,6 +48,7 @@ import { farewellOwner } from '../common';
     //
     AccountTileComponent,
     AuthorizedFeatureDirective,
+    FeatFarewellShareComponent,
     //
     PickerComponent,
     ButtonModule,
@@ -54,6 +61,7 @@ export class FeatFarewellActionsComponent {
 
   commentsClick = output<void>();
 
+  #document = inject(DOCUMENT);
   #router = inject(Router);
   #store = inject(Store);
 
@@ -149,6 +157,8 @@ export class FeatFarewellActionsComponent {
     )
   );
 
+  linkCopied = signal(false);
+
   readonly profilePicture = profilePicture;
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
   readonly emojiMap = emojiNameMap;
@@ -194,9 +204,28 @@ export class FeatFarewellActionsComponent {
     return;
   }
 
+  copyToClipBoard(kudoboardId: string) {
+    navigator.clipboard.writeText(this.#url(kudoboardId));
+
+    this.linkCopied.set(true);
+    // @TODO add also bubbling text saying that copied
+    setTimeout(() => {
+      this.linkCopied.set(false);
+    }, 5000);
+  }
+
   redirectToEdit() {
     this.#router.navigateByUrl(
       `/${APP_PATH.Farewell}/edit/${this.farewellId()}`
     );
+  }
+
+  #url(farewellId: string) {
+    return [
+      this.#document.location.origin,
+      's',
+      APP_PATH_ALLOW_ANONYMOUS.Farewell,
+      farewellId,
+    ].join('/');
   }
 }

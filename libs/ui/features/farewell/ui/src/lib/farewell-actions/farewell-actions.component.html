@@ -53,6 +53,7 @@
         farewellReactionsLength() > 0 ? farewellReactionsLength() + '' : ''
       "
       icon="pi pi-face-smile" />
+
     <p-overlayPanel #op>
       <emoji-mart
         title="Kitouch"
@@ -66,6 +67,17 @@
         farewellCommentsLength() > 0 ? farewellCommentsLength() + '' : ''
       "
       icon="pi pi-comments" />
+
+    <p-button
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
+      [text]="true"
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-farewell-share [id]="farewellId()" />
+    </p-overlayPanel>
+
+    <!-- Admin owner menu -->
     @if(canEdit()) {
     <div
       pTooltip="Admin view only visible to you"

@@ -1,5 +1,6 @@
 import {
   AsyncPipe,
+  DatePipe,
   Location,
   NgClass,
   NgTemplateOutlet,
@@ -45,6 +46,7 @@ import {
 } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
+  DividerComponent,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 import {
@@ -97,6 +99,7 @@ function extractContent(html: string) {
   templateUrl: './farewell.component.html',
   imports: [
     AsyncPipe,
+    DatePipe,
     RouterModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
@@ -111,6 +114,7 @@ function extractContent(html: string) {
     FeatFarewellEditorComponent,
     UIKitSmallerHintTextUXDirective,
     AccountTileComponent,
+    DividerComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

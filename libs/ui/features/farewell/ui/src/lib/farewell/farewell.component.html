@@ -1,7 +1,7 @@
 <form class="flex flex-col" [formGroup]="farewellFormGroup">
   @let linkedKudoBoard = linkedKudoBoard$ | async; @if(linkedKudoBoard &&
   linkedKudoBoard.id) {
-  <div class="flex items-center gap-4 mb-12">
+  <div class="flex items-center gap-4">
     <div>
       <i class="pi pi-link font-semibold text-4xl"></i>
     </div>
@@ -16,15 +16,21 @@
 
     @if(linkedKudoBoard.profile; as profile) {
     <ui-kit-comp-account-tile
-      primaryText="Collected"
-      primarySecondaryText="for you"
+      [primaryText]="linkedKudoBoard.profile.name"
+      [primarySecondaryText]="
+        linkedKudoBoard.timestamp.createdAt ??
+          linkedKudoBoard.timestamp.updatedAt | date
+      "
+      secondaryText="Collected this for you"
       [picture]="profilePictureFn(profile)"
       [link]="profileUrl + (profile.alias ?? profile.id)" />
     }
   </div>
+
+  <ui-kit-divider class="block my-12" />
   }
 
-  <p-floatLabel class="block mt-4">
+  <p-floatLabel class="block">
     <input
       class="w-full border-none shadow-none text-4xl focus:outline-none"
       id="title"

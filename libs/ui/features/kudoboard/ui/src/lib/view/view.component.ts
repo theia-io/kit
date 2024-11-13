@@ -3,6 +3,7 @@ import {
   ChangeDetectionStrategy,
   Component,
   inject,
+  input,
   model,
 } from '@angular/core';
 import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
@@ -29,6 +30,7 @@ import { isHexColor, isValidBucketUrl } from '../common';
 })
 export class FeatKudoBoardViewComponent {
   id = model<KudoBoard['id']>();
+  smaller = input(false);
 
   #store = inject(Store);
 

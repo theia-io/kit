@@ -26,22 +26,42 @@
   </div>
 
   <ui-kit-divider class="block mt-8" />
+  <div class="flex gap-2 items-center mt-4">
+    <button
+      pButton
+      class="py-0 px-2"
+      [disabled]="true"
+      [rounded]="true"
+      [severity]="
+        farewell.status === farewellStatus.Published ? 'success' : 'warning'
+      ">
+      <span class="text-xs font-semibold">
+        {{
+          farewell.status === farewellStatus.Published ? 'Published' : 'Draft'
+        }}
+      </span>
+    </button>
 
-  <p class="mt-4 text-end leading-6 text-sm font-medium text-gray-500">
-    <a
-      class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
-      [routerLink]="[farewellEdit + '/' + farewell.id]">
-      Edit
-      <i class="ml-1 pi pi-file-edit"></i>
-    </a>
+    <p class="text-sm text-gray-500">
+      {{ farewell.timestamp.createdAt | date }}
+    </p>
 
-    <a
-      class="hover:text-gray-900 hover:font-semibold"
-      [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
-      Open preview
-      <i class="ml-1 pi pi-arrow-right"></i>
-    </a>
-  </p>
+    <div class="ml-auto text-sm text-gray-500">
+      <a
+        class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
+        [routerLink]="[farewellEdit + '/' + farewell.id]">
+        Edit
+        <i class="ml-1 pi pi-file-edit"></i>
+      </a>
+
+      <a
+        class="hover:text-gray-900 hover:font-semibold"
+        [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
+        Open preview
+        <i class="ml-1 pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
 
   <ui-kit-delete (onDelete)="onDeleteHandler(farewell, $event)" />
 </ui-kit-comp-gradient-card>

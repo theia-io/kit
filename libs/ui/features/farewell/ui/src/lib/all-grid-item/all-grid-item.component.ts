@@ -19,6 +19,7 @@ import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 })
 export class FeatFarewellAllGridItemComponent {
   kudoboard = input.required<KudoBoard>();
+  smaller = input<boolean>(false);
 
   readonly kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;

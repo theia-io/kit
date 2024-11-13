@@ -1,4 +1,9 @@
-import { AsyncPipe, DOCUMENT, NgOptimizedImage } from '@angular/common';
+import {
+  AsyncPipe,
+  DatePipe,
+  DOCUMENT,
+  NgOptimizedImage,
+} from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -10,6 +15,7 @@ import {
 } from '@kitouch/feat-farewell-data';
 import {
   FeatFarewellActionsComponent,
+  FeatFarewellAllGridItemComponent,
   FeatFarewellAnalyticsComponent,
   FeatFarewellCommentsComponent,
   FeatFarewellViewV2Component,
@@ -59,6 +65,7 @@ import {
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
   imports: [
+    DatePipe,
     AsyncPipe,
     RouterModule,
     NgOptimizedImage,
@@ -71,6 +78,7 @@ import {
     UiKitPageOverlayComponent,
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
+    FeatFarewellAllGridItemComponent,
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
     FeatFarewellViewV2Component,
@@ -113,7 +121,10 @@ export class PageFarewellViewComponent {
     )
   );
 
-  farewellProfilePic = computed(() => profilePicture(this.farewellProfile()));
+  profilePictureFn = profilePicture;
+  farewellProfilePic = computed(() =>
+    this.profilePictureFn(this.farewellProfile())
+  );
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
 
@@ -152,6 +163,11 @@ export class PageFarewellViewComponent {
       ) ?? false
   );
 
+  linkedKudoBoard$ = this.farewell$.pipe(
+    map((farewell) => farewell?.kudoBoard),
+    filter(Boolean)
+  );
+
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
     this.#activatedRouter.url,
     this.farewell$,
@@ -173,6 +189,8 @@ export class PageFarewellViewComponent {
   copied = signal(false);
   commentsSideBarVisibility = signal(false);
   farewellStatus = FarewellStatus;
+  readonly profileUrl = `/${APP_PATH.Profile}/`;
+  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 
   constructor() {
     this.farewellId$

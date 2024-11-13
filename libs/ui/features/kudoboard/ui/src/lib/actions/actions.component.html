@@ -65,9 +65,7 @@
       [text]="true"
       icon="pi pi-share-alt" />
     <p-overlayPanel #shareOverlayTmpl>
-      <feat-kudoboard-view-additional-actions
-        class="block mb-8"
-        [id]="kudoboardId()" />
+      <feat-kudoboard-view-additional-actions [id]="kudoboardId()" />
     </p-overlayPanel>
 
     <!-- Create Response (farewell) for this -->
@@ -113,7 +111,7 @@
     </p-overlayPanel>
     }
 
-    <!-- If there is no admin for this Kudo -->
+    <!-- If there is no admin/owner for this Kudo -->
     @if(!kudoboard()?.profileId) {
     <ui-kit-comp-animate-ping [animate]="true">
       <p-button

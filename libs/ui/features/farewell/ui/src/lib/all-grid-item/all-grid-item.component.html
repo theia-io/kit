@@ -2,7 +2,7 @@
   <div class="relative block max-h-96 overflow-hidden">
     <ng-content select="[extensionBlockOne]"></ng-content>
 
-    <feat-kudoboard-view [id]="kudoboard().id" />
+    <feat-kudoboard-view [id]="kudoboard().id" [smaller]="smaller()" />
 
     <div class="absolute top-80 h-16 left-0 w-full">
       <div class="h-full w-full relative flex justify-center items-end pb-2">

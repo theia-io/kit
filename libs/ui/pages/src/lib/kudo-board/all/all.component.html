@@ -32,7 +32,11 @@
         </span>
       </button>
 
-      <div class="ml-auto leading-6 text-sm font-medium text-gray-500">
+      <p class="text-sm text-gray-500">
+        {{ kudoboard.timestamp.createdAt | date }}
+      </p>
+
+      <div class="ml-auto text-sm text-gray-500">
         <a
           class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
           [routerLink]="[kudoBoardPartialUrl + '/' + kudoboard.id + '/edit']">

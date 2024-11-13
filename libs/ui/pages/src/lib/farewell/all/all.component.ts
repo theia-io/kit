@@ -11,7 +11,7 @@ import {
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { Farewell, Profile } from '@kitouch/shared-models';
+import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
@@ -86,6 +86,8 @@ export class PageFarewellAllComponent {
         )
     )
   );
+
+  farewellStatus = FarewellStatus;
 
   constructor() {
     this.#currentProfile$.subscribe(({ id }) =>
