@@ -43,7 +43,7 @@ import {
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import { FeatKudoBoardViewAdditionalActionsComponent } from '@kitouch/ui-kudoboard';
+import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
