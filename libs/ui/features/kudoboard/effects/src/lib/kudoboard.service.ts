@@ -55,6 +55,7 @@ export class KudoBoardService extends DataSourceService {
       ...rest,
       profileId: profileId ? new BSON.ObjectId(profileId) : null,
       timestamp: {
+        createdAt: timestamp.createdAt,
         updatedAt: getNow(),
       },
     };
@@ -70,7 +71,6 @@ export class KudoBoardService extends DataSourceService {
       ),
       map(() => ({
         ...withUpdatedTime,
-        timestamp: { ...timestamp, ...withUpdatedTime.timestamp },
         profileId,
         id,
       }))

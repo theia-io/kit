@@ -71,10 +71,11 @@ export class PageKudoBoardsAllComponent {
     map((kudoboards) =>
       kudoboards
         .slice()
-        .sort(
-          (a, b) =>
-            new Date(b.timestamp?.createdAt?.toString()).getTime() -
-            new Date(a.timestamp?.createdAt?.toString()).getTime()
+        .sort((a, b) =>
+          new Date(b.timestamp?.createdAt?.toString()).getTime() >
+          new Date(a.timestamp?.createdAt?.toString()).getTime()
+            ? 1
+            : -1
         )
     )
   );

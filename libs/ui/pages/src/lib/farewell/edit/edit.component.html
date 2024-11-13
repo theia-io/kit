@@ -14,16 +14,23 @@
 
       <div class="hidden sm:block absolute top-8 right-24">
         <div class="flex justify-center gap-2">
-          @if(statusTmpl) {
+          @if(shareTmpl) {
+          <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
+          } @if(statusTmpl) {
           <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
           }
         </div>
       </div>
 
+      <p-breadcrumb
+        class="block mt-4 max-w-full"
+        [model]="(breadcrumbMenuItems$ | async) ?? []" />
+
       <feat-farewell
         class="block grow container mx-auto p-6"
         [farewellId]="farewell.id"
-        (statusKudoTmpl)="statusTmpl = $event" />
+        (statusKudoTmpl)="statusTmpl = $event"
+        (shareKudoTmpl)="shareTmpl = $event" />
     </div>
   </ng-template>
 </p-sidebar>

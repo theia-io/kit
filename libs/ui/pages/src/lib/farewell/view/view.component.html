@@ -97,21 +97,7 @@
   farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
   farewell) {
   <div class="mb-8">
-    <button
-      pButton
-      (click)="copyToClipBoard(farewell.id)"
-      [label]="copied() ? 'Link copied' : 'Copy link'"
-      severity="success"
-      class="mt-12 mr-1">
-      @if(copied()) {
-      <i class="pi pi-check mr-1"></i>
-      } @else {
-      <i class="pi pi-copy mr-1"></i>
-      }
-    </button>
-
-    <!-- <p-button (onClick)="shareHandler()" icon="pi pi-share-alt" label="Share" severity="contrast" [raised]="true"
-      class="ml-1" /> -->
+    <feat-farewell-share [id]="farewell.id" />
   </div>
   }
 </div>

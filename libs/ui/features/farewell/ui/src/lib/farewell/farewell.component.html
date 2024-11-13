@@ -64,7 +64,7 @@
     </strong>
   </section>
 
-  @let status = farewellFormGroup.get('status')?.value;
+  @let status = farewellFormGroup.get('status')?.value; @let id = farewellId();
 
   <ng-template #statusTmpl let-bigButton>
     @if(status === farewellStatus.Published) {
@@ -88,6 +88,21 @@
     }
   </ng-template>
 
+  <ng-template #shareTmpl let-simple>
+    @if(id) { @if(simple) {
+    <feat-farewell-share [id]="id" />
+    } @else {
+    <p-button
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
+      [text]="true"
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-farewell-share [id]="id" />
+    </p-overlayPanel>
+    } }
+  </ng-template>
+
   <div class="flex justify-center gap-2">
     <ng-container
       *ngTemplateOutlet="
@@ -95,7 +110,7 @@
         context: { $implicit: true }
       "></ng-container>
 
-    @if(farewellId(); as id) {
+    @if(id) {
     <div
       [pTooltip]="
         status !== farewellStatus.Published
@@ -113,5 +128,23 @@
       </button>
     </div>
     }
+
+    <ng-container
+      *ngTemplateOutlet="
+        shareTmpl;
+        context: { $implicit: true }
+      "></ng-container>
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-12">
+    <button
+      pButton
+      (click)="gotoAll($event)"
+      [rounded]="true"
+      styleClass="p-1"
+      severity="success"
+      icon="pi pi-sparkles">
+      <span class="ml-1 text-xs">Done</span>
+    </button>
   </div>
 </form>

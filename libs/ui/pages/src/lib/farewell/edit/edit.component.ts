@@ -11,8 +11,10 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import { APP_PATH, SharedNavBarStaticComponent } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
+import { MenuItem } from 'primeng/api';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { SidebarModule } from 'primeng/sidebar';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -29,6 +31,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     FeatFarewellComponent,
     //
     SidebarModule,
+    BreadcrumbModule,
   ],
 })
 /** @TODO @FIXME Merge PageFarewellGenerateComponent and PageFarewellEditComponent components */
@@ -58,7 +61,26 @@ export class PageFarewellEditComponent {
     startWith(false)
   );
 
+  breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
+    this.#activatedRouter.url,
+    this.farewell$,
+  ]).pipe(
+    map(([_, farewell]) => [
+      {
+        label: 'All Farewells',
+        routerLink: `/${APP_PATH.Farewell}`,
+        icon: 'pi pi-send mr-2',
+        iconClass: 'text-lg font-semibold',
+        styleClass: 'text-lg font-semibold',
+      },
+      {
+        label: farewell.title,
+      },
+    ])
+  );
+
   statusTmpl?: TemplateRef<any>;
+  shareTmpl?: TemplateRef<unknown>;
 
   constructor() {
     this.farewellId$

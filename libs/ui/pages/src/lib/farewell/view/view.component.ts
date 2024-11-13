@@ -18,6 +18,7 @@ import {
   FeatFarewellAllGridItemComponent,
   FeatFarewellAnalyticsComponent,
   FeatFarewellCommentsComponent,
+  FeatFarewellShareComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
@@ -86,6 +87,7 @@ import {
     FeatFarewellCommentsComponent,
     FeatFollowSuggestionByIdComponent,
     FeatFollowUnfollowProfileComponent,
+    FeatFarewellShareComponent,
   ],
 })
 export class PageFarewellViewComponent {
@@ -174,7 +176,7 @@ export class PageFarewellViewComponent {
   ]).pipe(
     map(([_, farewell]) => [
       {
-        label: 'Farewells',
+        label: 'All Farewells',
         routerLink: `/${APP_PATH.Farewell}`,
         icon: 'pi pi-send mr-2',
         iconClass: 'text-lg font-semibold',
@@ -186,7 +188,6 @@ export class PageFarewellViewComponent {
     ])
   );
 
-  copied = signal(false);
   commentsSideBarVisibility = signal(false);
   farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
@@ -213,24 +214,6 @@ export class PageFarewellViewComponent {
     this.#authService
       .googleSignIn()
       .then(() => this.#followAfterSignIn(profileToFollow));
-  }
-
-  copyToClipBoard(farewellId: string) {
-    navigator.clipboard.writeText(this.#url(farewellId));
-    this.copied.set(true);
-    // @TODO add also bubbling text saying that copied
-    setTimeout(() => {
-      this.copied.set(false);
-    }, 5000);
-  }
-
-  #url(farewellId: string) {
-    return [
-      this.#document.location.origin,
-      's',
-      APP_PATH_ALLOW_ANONYMOUS.Farewell,
-      farewellId,
-    ].join('/');
   }
 
   #followAfterSignIn(profile: Profile) {

@@ -61,6 +61,7 @@ import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
@@ -76,10 +77,11 @@ import {
   take,
   withLatestFrom,
 } from 'rxjs';
+import { FeatFarewellAllGridItemComponent } from '../all-grid-item/all-grid-item.component';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
-import { FeatFarewellAllGridItemComponent } from '../all-grid-item/all-grid-item.component';
+import { FeatFarewellShareComponent } from '../share/share.component';
 
 // import to register custom bloats
 
@@ -109,12 +111,14 @@ function extractContent(html: string) {
     InputTextModule,
     ButtonModule,
     TooltipModule,
+    OverlayPanelModule,
     //
     FeatFarewellAllGridItemComponent,
     FeatFarewellEditorComponent,
     UIKitSmallerHintTextUXDirective,
     AccountTileComponent,
     DividerComponent,
+    FeatFarewellShareComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -122,6 +126,7 @@ export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
   statusKudoTmpl = output<TemplateRef<any>>();
+  shareKudoTmpl = output<TemplateRef<unknown>>();
 
   #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
@@ -174,12 +179,17 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<any>;
+  @ViewChild('shareTmpl', { read: TemplateRef })
+  shareTmpl?: TemplateRef<any>;
 
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
     setTimeout(() => {
       if (this.statusTmpl) {
         this.statusKudoTmpl.emit(this.statusTmpl);
+      }
+      if (this.shareTmpl) {
+        this.shareKudoTmpl.emit(this.shareTmpl);
       }
     }, 0);
 
@@ -330,6 +340,12 @@ export class FeatFarewellComponent implements AfterViewInit {
       [`/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/${farewellId}`],
       { queryParams: { preview: true } }
     );
+  }
+
+  gotoAll(event: Event) {
+    event.preventDefault();
+
+    this.#router.navigateByUrl(`/${APP_PATH.Farewell}`);
   }
 
   #autoCreateFarewell() {

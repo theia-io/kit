@@ -43,7 +43,9 @@ import {
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
+import { FeatKudoBoardViewAdditionalActionsComponent } from '@kitouch/ui-kudoboard';
 import {
+  APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   DeviceService,
   SharedKitUserHintDirective,
@@ -55,6 +57,7 @@ import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
+import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import {
   combineLatest,
@@ -93,6 +96,7 @@ const TITLE_MAX_LENGTH = 128;
     InputTextareaModule,
     ButtonModule,
     TooltipModule,
+    OverlayPanelModule,
     //
     UIKitSmallerHintTextUXDirective,
     UiKitPicUploadableComponent,
@@ -100,6 +104,7 @@ const TITLE_MAX_LENGTH = 128;
     UiKitColorPickerComponent,
     UiKitColorDisplayerComponent,
     SharedKitUserHintDirective,
+    FeatKudoBoardViewAdditionalActionsComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -109,6 +114,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   statusKudoTmpl = output<TemplateRef<unknown>>();
   previewKudoTmpl = output<TemplateRef<unknown>>();
   asUserKudoTmpl = output<TemplateRef<unknown>>();
+  shareKudoTmpl = output<TemplateRef<unknown>>();
 
   #router = inject(Router);
   #location = inject(Location);
@@ -166,6 +172,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   previewTmpl?: TemplateRef<unknown>;
   @ViewChild('asUserTmpl', { read: TemplateRef })
   asUserTmpl?: TemplateRef<unknown>;
+  @ViewChild('shareTmpl', { read: TemplateRef })
+  shareTmpl?: TemplateRef<unknown>;
 
   @HostListener('window:beforeunload', ['$event'])
   beforeunloadHandler() {
@@ -183,6 +191,9 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
       }
       if (this.asUserTmpl) {
         this.asUserKudoTmpl.emit(this.asUserTmpl);
+      }
+      if (this.shareTmpl) {
+        this.shareKudoTmpl.emit(this.shareTmpl);
       }
     }, 0);
 
@@ -322,6 +333,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
         status: KudoBoardStatus.Published,
       });
     }
+
+    this.#cdr.detectChanges();
   }
 
   gotoBoard(kudoboardId: KudoBoard['id'], preview: boolean, event: Event) {
@@ -333,6 +346,13 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
         preview ? '?preview=true' : ''
       }`
     );
+  }
+
+  gotoAll(event: Event) {
+    event.stopPropagation();
+    event.preventDefault();
+
+    this.#router.navigateByUrl(`/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
   }
 
   #autoCreateKudoBoard() {
@@ -375,6 +395,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   }
 
   #updateKudoBoard(kudoboard: KudoBoard) {
+    console.log('UPDARING KUDO, VALUE', kudoboard);
     this.#store.dispatch(
       FeatKudoBoardActions.putKudoBoard({
         kudoboard,

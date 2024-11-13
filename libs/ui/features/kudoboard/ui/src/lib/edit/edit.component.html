@@ -78,10 +78,13 @@
     <label class="w-full text-4xl" for="content">Message 💬</label>
   </p-floatLabel>
 
-  @let status = kudoBoardFormGroup.get('status')?.value;
+  @let kudoBoardId = id(); @let status =
+  kudoBoardFormGroup.get('status')?.value;
 
   <ng-template #statusTmpl let-bigButton let-withHint="withHint">
-    @if(status === kudoBoardStatus.Published) {
+    @if(withHint) {
+    <p>Update status:</p>
+    } @if(status === kudoBoardStatus.Published) {
     <button
       pButton
       [ngClass]="[bigButton ? '' : 'py-0 px-2']"
@@ -111,7 +114,7 @@
   </ng-template>
 
   <ng-template #previewTmpl>
-    @if(id(); as id) {
+    @if(kudoBoardId) {
     <div
       [pTooltip]="
         status !== kudoBoardStatus.Published ? 'Publish kudo board' : ''
@@ -119,7 +122,7 @@
       <button
         pButton
         class="relative"
-        (click)="gotoBoard(id, true, $event)"
+        (click)="gotoBoard(kudoBoardId, true, $event)"
         icon="pi pi-eye"
         [rounded]="true"
         severity="info">
@@ -129,12 +132,12 @@
     }
   </ng-template>
   <ng-template #asUserTmpl>
-    @if(id(); as id) {
+    @if(kudoBoardId) {
     <div pTooltip="Collect kudos for recipient">
       <button
         pButton
         class="relative"
-        (click)="gotoBoard(id, false, $event)"
+        (click)="gotoBoard(kudoBoardId, false, $event)"
         icon="pi pi-user"
         [rounded]="true"
         severity="secondary">
@@ -143,17 +146,48 @@
     </div>
     }
   </ng-template>
+  <ng-template #shareTmpl let-simple>
+    @if(kudoBoardId) { @if(simple) {
+    <feat-kudoboard-view-additional-actions [id]="kudoBoardId" />
+    } @else {
+    <p-button
+      styleClass="p-1"
+      (onClick)="shareOverlayTmpl.toggle($event)"
+      [text]="true"
+      icon="pi pi-share-alt" />
+    <p-overlayPanel #shareOverlayTmpl>
+      <feat-kudoboard-view-additional-actions [id]="kudoBoardId" />
+    </p-overlayPanel>
+    } }
+  </ng-template>
 
   <div class="flex justify-center gap-2 mt-6">
     <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
     <ng-container *ngTemplateOutlet="asUserTmpl"></ng-container>
+    <ng-container
+      *ngTemplateOutlet="
+        shareTmpl;
+        context: { $implicit: true }
+      "></ng-container>
   </div>
 
-  <div class="flex justify-center gap-2 mt-12">
+  <div class="flex justify-center items-center gap-2 mt-12">
     <ng-container
       *ngTemplateOutlet="
         statusTmpl;
         context: { $implicit: true, withHint: true }
       "></ng-container>
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-12">
+    <button
+      pButton
+      (click)="gotoAll($event)"
+      [rounded]="true"
+      styleClass="p-1"
+      severity="success"
+      icon="pi pi-sparkles">
+      <span class="ml-1 text-xs">Done</span>
+    </button>
   </div>
 </form>

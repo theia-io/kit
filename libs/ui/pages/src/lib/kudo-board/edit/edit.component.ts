@@ -15,8 +15,10 @@ import {
   SharedNavBarStaticComponent,
 } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
+import { MenuItem } from 'primeng/api';
+import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { SidebarModule } from 'primeng/sidebar';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -33,6 +35,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     FeatKudoBoardEditComponent,
     //
     SidebarModule,
+    BreadcrumbModule,
   ],
 })
 export class PageKudoBoardEditComponent {
@@ -67,7 +70,26 @@ export class PageKudoBoardEditComponent {
     startWith(false)
   );
 
+  breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
+    this.#activatedRouter.url,
+    this.kudoBoard$,
+  ]).pipe(
+    map(([_, kudoboard]) => [
+      {
+        label: 'All KudoBoards',
+        routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+        icon: 'pi pi-send mr-2',
+        iconClass: 'text-lg font-semibold',
+        styleClass: 'text-lg font-semibold',
+      },
+      {
+        label: kudoboard.title,
+      },
+    ])
+  );
+
   statusTmpl?: TemplateRef<unknown>;
+  shareTmpl?: TemplateRef<unknown>;
 
   constructor() {
     this.kudoBoardId$
