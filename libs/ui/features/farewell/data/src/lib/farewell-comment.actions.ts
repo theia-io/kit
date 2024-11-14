@@ -36,5 +36,24 @@ export const FeatFarewellCommentActions = createActionGroup({
       id: FarewellComment['id'];
     }>(),
     DeleteCommentFarewellFailure: props<{ message: string }>(),
+    // Comment
+    UploadFarewellCommentStorageMedia: props<{
+      farewellId: string;
+      profileId: string;
+      items: Array<{ key: string; blob: Blob }>;
+    }>(),
+    UploadFarewellCommentStorageMediaSuccess: props<{
+      farewellId: string;
+      profileId: string;
+      items: Array<{ key: string }>;
+    }>(),
+    UploadFarewellCommentStorageMediaFailure: props<{ message: string }>(),
+    DeleteFarewellCommentStorageMedia: props<{
+      url: string;
+    }>(),
+    DeleteFarewellCommentStorageMediaSuccess: props<{
+      url: string;
+    }>(),
+    DeleteFarewellCommentStorageMediaFailure: props<{ message: string }>(),
   },
 });

@@ -22,15 +22,40 @@
       aria-label="comment">
       <i class="pi pi-send"></i>
     </p-button>
-    <span class="block mb-4"></span>
-    } @else {
-    <ui-kit-tweet-button
-      class="mb-4"
-      text="Comment"
-      [iconAnimate]="true"
-      [disabled]="!commentContentControl.valid"
-      [loader]="false"
-      (click)="commentHandler()" />
     }
   </p-floatLabel>
+
+  @if(maxMediaFiles() > 0) {
+  <div class="flex gap-2 items-center">
+    <ui-kit-pic-uploadable (files)="filesHandler($event)" />
+
+    <div id="uploaded-comment-media-gallery">
+      @for (media of uploadedMedias(); track $index) {
+      <a
+        class="block w-16 h-16 mb-3"
+        [href]="media"
+        data-pswp-width="64"
+        data-pswp-height="64"
+        target="_blank">
+        <img
+          referrerpolicy="no-referrer"
+          class="rounded-full"
+          width="64"
+          height="64"
+          [ngSrc]="media"
+          alt="Media to the comment" />
+      </a>
+      <!-- <img [ngSrc]="media" width="64" height="64" alt="Media to the comment" /> -->
+      }
+    </div>
+  </div>
+  } @if(commentContentControlRows !== 2) {
+  <ui-kit-tweet-button
+    class="my-2"
+    text="Comment"
+    [iconAnimate]="true"
+    [disabled]="!commentContentControl.valid"
+    [loader]="false"
+    (click)="commentHandler()" />
+  }
 </div>

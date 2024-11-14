@@ -1,19 +1,32 @@
-import { AsyncPipe } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   HostListener,
+  inject,
   input,
+  NgZone,
   output,
+  signal,
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
+import { Observable } from 'rxjs';
 import { UiKitTweetButtonComponent } from '../tweet-button/tweet-button.component';
+import { UiKitPicUploadableComponent } from '../uploadable/uploadable.component';
+import { PhotoService } from '@kitouch/ui-shared';
+import PhotoSwipe from 'photoswipe';
 
 const CONTROL_INITIAL_ROWS = 2;
+
+export interface AddComment {
+  content: string;
+  medias: Array<string>;
+}
 
 @Component({
   standalone: true,
@@ -21,8 +34,8 @@ const CONTROL_INITIAL_ROWS = 2;
   templateUrl: './comment-area.component.html',
   imports: [
     //
-    AsyncPipe,
     ReactiveFormsModule,
+    NgOptimizedImage,
     //
     FloatLabelModule,
     InputTextareaModule,
@@ -30,14 +43,22 @@ const CONTROL_INITIAL_ROWS = 2;
     ButtonModule,
     //
     UiKitTweetButtonComponent,
+    UiKitPicUploadableComponent,
     //
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UIKitCommentAreaComponent {
+export class UIKitCommentAreaComponent implements AfterViewInit {
   placeholder = input<string>('Got a reply?');
 
-  comment = output<string>();
+  maxMediaFiles = input<number>(0);
+  uploadMediaFilesCb =
+    input<(files: Array<File>) => Observable<Array<string>>>();
+  deleteMediaFilesCb = input<(imageUrl: string) => void>();
+
+  comment = output<AddComment>();
+
+  #photoService = inject(PhotoService);
 
   @HostListener('window:keydown', ['$event'])
   keyDownEnterHandler(event: KeyboardEvent) {
@@ -57,6 +78,18 @@ export class UIKitCommentAreaComponent {
   ]);
   commentContentControlRows = CONTROL_INITIAL_ROWS;
 
+  uploadedMedias = signal<Array<string>>([]);
+
+  ngAfterViewInit(): void {
+    if (this.maxMediaFiles() > 0) {
+      this.#photoService.initializeGallery({
+        gallery: '#uploaded-comment-media-gallery',
+        children: 'a',
+        pswpModule: PhotoSwipe,
+      });
+    }
+  }
+
   commentHandler() {
     const content = this.commentContentControl.value,
       valid = this.commentContentControl.valid;
@@ -67,10 +100,23 @@ export class UIKitCommentAreaComponent {
       return;
     }
 
-    this.comment.emit(content);
-
+    this.comment.emit({ content, medias: this.uploadedMedias() });
+    this.uploadedMedias.set([]);
     this.commentContentControl.reset();
-    // this.commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
+  }
+
+  filesHandler(files: Array<File>) {
+    const uploadFn = this.uploadMediaFilesCb();
+    if (!uploadFn) {
+      console.error(
+        '[UIKitCommentAreaComponent] upload function was not provided'
+      );
+      return;
+    }
+
+    uploadFn(files).subscribe((mediaUrls) => {
+      this.uploadedMedias.update((medias) => [...mediaUrls, ...medias]);
+    });
   }
 
   commentControlBlur() {

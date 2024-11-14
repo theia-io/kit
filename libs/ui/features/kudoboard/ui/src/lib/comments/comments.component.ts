@@ -31,6 +31,7 @@ import {
 import { KudoBoardComment } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
+  AddComment,
   DEFAULT_ANIMATE_TIMEOUT,
   DividerComponent,
   UIKitCommentAreaComponent,
@@ -209,7 +210,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
     });
   }
 
-  commentHandler(content: string) {
+  commentHandler({ content }: AddComment) {
     const currentProfile = this.currentProfile();
 
     this.#store.dispatch(

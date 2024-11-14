@@ -14,7 +14,6 @@ import {
   DestroyRef,
   inject,
   model,
-  NgZone,
   output,
   signal,
   TemplateRef,
@@ -52,12 +51,11 @@ import {
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
-  PhotoService,
   S3_FAREWELL_BUCKET_BASE_URL,
+  SharedKitUserHintDirective,
 } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -118,6 +116,7 @@ function extractContent(html: string) {
     UIKitSmallerHintTextUXDirective,
     AccountTileComponent,
     DividerComponent,
+    SharedKitUserHintDirective,
     FeatFarewellShareComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -128,14 +127,12 @@ export class FeatFarewellComponent implements AfterViewInit {
   statusKudoTmpl = output<TemplateRef<any>>();
   shareKudoTmpl = output<TemplateRef<unknown>>();
 
-  #ngZone = inject(NgZone);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
   #actions$ = inject(Actions);
   #location = inject(Location);
-  #photoService = inject(PhotoService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {
@@ -299,26 +296,6 @@ export class FeatFarewellComponent implements AfterViewInit {
     }
 
     this.#cdr.detectChanges();
-  }
-
-  initFarewellMediaGallery() {
-    this.#ngZone.runOutsideAngular(() => {
-      this.#photoService.initializeGallery({
-        gallery: '#uploaded-media-gallery',
-        children: 'a',
-        pswpModule: PhotoSwipe,
-      });
-    });
-  }
-
-  initNewFarewellMediaGallery() {
-    this.#ngZone.runOutsideAngular(() => {
-      this.#photoService.initializeGallery({
-        gallery: '#new-media-gallery',
-        children: 'a',
-        pswpModule: PhotoSwipe,
-      });
-    });
   }
 
   updateFarewellStatus(status: FarewellStatus) {

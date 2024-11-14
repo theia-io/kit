@@ -1,5 +1,8 @@
 <ui-kit-comment-area
   [placeholder]="placeholder()"
+  [maxMediaFiles]="5"
+  [uploadMediaFilesCb]="uploadCommentMediaFiles()"
+  [deleteMediaFilesCb]="deleteCommentMedia()"
   (comment)="commentHandler($event)">
   @if(currentProfile(); as currentProfile) {
   <div profile class="mb-4">
@@ -36,6 +39,25 @@
   </div>
 
   <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
+
+  <div id="uploaded-comment-media-gallery">
+    @for (media of comment.medias; track $index) {
+    <a
+      class="block h-16 mb-3"
+      [href]="media"
+      data-pswp-width="64"
+      data-pswp-height="64"
+      data-cropped="true"
+      target="_blank">
+      <img
+        referrerpolicy="no-referrer"
+        class="rounded-full h-full"
+        [src]="media"
+        alt="Media to the comment" />
+    </a>
+    <!-- <img [ngSrc]="media" width="64" height="64" alt="Media to the comment" /> -->
+    }
+  </div>
 
   @if(currentProfile()?.id && (currentProfile()?.id === farewellProfile()?.id ||
   currentProfile()?.id === comment.profileId)) {

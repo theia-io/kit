@@ -87,7 +87,8 @@
     [blockScroll]="true"
     styleClass="min-w-1/2"
     position="right"
-    [(visible)]="commentsSideBarVisibility">
+    [visible]="true">
+    <!-- [(visible)]="commentsSideBarVisibility"> -->
     <feat-farewell-comments
       class="block max-w-xl mx-auto"
       [farewellId]="farewellId$ | async" />

@@ -32,6 +32,7 @@ export interface FarewellComment {
   profile?: Profile;
   // meta: string;
   content: string;
+  medias?: Array<string>;
   timestamp: KitTimestamp;
 }
 

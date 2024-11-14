@@ -1,17 +1,19 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import {
   clientDbFarewellCommentAdapter,
   ClientDBFarewellCommentResponse,
   dbClientFarewellCommentAdapter,
 } from '@kitouch/feat-farewell-data';
 import { Farewell, FarewellComment } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
 import { ClientDataType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellCommentsService extends DataSourceService {
+  #env = inject(ENVIRONMENT);
+
   getFarewellComments(
     farewellId: Farewell['id']
   ): Observable<Array<FarewellComment>> {
@@ -75,5 +77,13 @@ export class FarewellCommentsService extends DataSourceService {
       ),
       map(({ deletedCount }) => deletedCount > 0)
     );
+  }
+
+  uploadFarewellCommentMedia(key: string, media: Blob) {
+    return this.setBucketItem(this.#env.s3Config.farewellBucket, key, media);
+  }
+  /** Media, S3 */
+  deleteFarewellCommentMedia(key: string) {
+    return this.deleteBucketItem(this.#env.s3Config.farewellBucket, key);
   }
 }
