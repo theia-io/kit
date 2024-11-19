@@ -18,6 +18,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@kitouch/be-media": ["libs/api/media/src/index.ts"],
       "@kitouch/data-kudoboard": [
         "libs/ui/features/kudoboard/data/src/index.ts"
       ],
