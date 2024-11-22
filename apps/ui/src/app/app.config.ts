@@ -8,9 +8,16 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   provideRouter,
   withComponentInputBinding,
-  withDebugTracing,
   withInMemoryScrolling,
 } from '@angular/router';
+import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
+import {
+  KudoBoardAnalyticsEffects,
+  KudoBoardCommentsEffects,
+  KudoBoardEffects,
+  KudoBoardMediaEffects,
+  KudoBoardReactionsEffects,
+} from '@kitouch/effects-kudoboard';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import {
   FarewellCommentsEffects,
@@ -50,14 +57,6 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
-import {
-  KudoBoardAnalyticsEffects,
-  KudoBoardCommentsEffects,
-  KudoBoardEffects,
-  KudoBoardMediaEffects,
-  KudoBoardReactionsEffects,
-} from '@kitouch/effects-kudoboard';
-import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
 
 // const kitProviders: Provider[] = [];
 // if (environment.environment !== KIT_ENVS.localhost) {

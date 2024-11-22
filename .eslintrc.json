@@ -13,40 +13,47 @@
             "allow": [],
             "depConstraints": [
               {
-                "sourceTag": "scope:api",
-                "onlyDependOnLibsWithTags": [
-                  "scope:api",
-                  "scope:shared",
-                  "scope:api-shared",
-                  "models"
-                ]
-              },
-              {
-                "sourceTag": "scope:ui",
-                "onlyDependOnLibsWithTags": ["scope:ui", "scope:shared"]
-              },
-              {
                 "sourceTag": "scope:shared",
                 "onlyDependOnLibsWithTags": ["scope:shared"]
               },
               {
-                "sourceTag": "components",
-                "onlyDependOnLibsWithTags": ["scope:shared"]
+                "sourceTag": "scope:api-shared",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:api-shared"]
               },
               {
-                "sourceTag": "shared",
+                "sourceTag": "scope:api",
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
-                  "components",
-                  "feat-data"
+                  "scope:api-shared",
+                  "scope:api"
+                ]
+              },
+              {
+                "sourceTag": "scope:ui",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "scope:ui",
+                  "scope:ui-shared"
+                ]
+              },
+              {
+                "sourceTag": "scope:ui-shared",
+                "onlyDependOnLibsWithTags": ["scope:shared", "scope:ui-shared"]
+              },
+              {
+                "sourceTag": "components",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "scope:ui-shared",
+                  "components"
                 ]
               },
               {
                 "sourceTag": "feature",
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
+                  "scope:ui-shared",
                   "components",
-                  "shared",
                   "feature"
                 ]
               },
@@ -54,8 +61,8 @@
                 "sourceTag": "pages",
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
+                  "scope:ui-shared",
                   "components",
-                  "shared",
                   "feature",
                   "pages"
                 ]
