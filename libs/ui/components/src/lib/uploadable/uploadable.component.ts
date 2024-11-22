@@ -44,6 +44,7 @@ export const UPLOAD_CONF_DEFAULT: UploadConf = {
   withIcon: true,
   fileUploadConf: {
     multiple: false,
+    fileLimit: 1,
   },
 };
 

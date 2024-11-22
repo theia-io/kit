@@ -1,4 +1,9 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import {
+  AsyncPipe,
+  DatePipe,
+  NgOptimizedImage,
+  NgStyle,
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -23,6 +28,7 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   AddComment,
@@ -64,6 +70,8 @@ import {
     DatePipe,
     AsyncPipe,
     ReactiveFormsModule,
+    NgStyle,
+    NgOptimizedImage,
     //
     FloatLabelModule,
     InputTextareaModule,
@@ -149,7 +157,6 @@ export class FeatFarewellCommentsComponent {
         delay(100)
       )
       .subscribe(() => {
-        console.log('INITIALIZING photoswipe');
         this.#photoService.initializeGallery({
           gallery: '#uploaded-comment-media-gallery',
           children: 'a',
@@ -160,7 +167,7 @@ export class FeatFarewellCommentsComponent {
 
   uploadCommentMediaFiles(): (
     images: Array<File>
-  ) => Observable<Array<string>> {
+  ) => Observable<Array<ContractUploadedMedia>> {
     const getFarewellId = () => this.farewellId();
     const getProfileId = () => this.currentProfile()?.id;
 
@@ -204,7 +211,13 @@ export class FeatFarewellCommentsComponent {
         // AWS S3 bucket has eventual consistency so need a time for it to be available
         delay(1500),
         map(({ items }) =>
-          items.map(({ key }) => getFullS3Url(this.#s3FarewellBaseUrl, key))
+          items.map((item) => ({
+            ...item,
+            url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
+            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
+              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
+            ),
+          }))
         )
       );
     };
@@ -242,5 +255,13 @@ export class FeatFarewellCommentsComponent {
         id: commentId,
       })
     );
+  }
+
+  mediaType(mediaUrl: string) {
+    return mediaUrl.split('.').reverse()[0];
+  }
+
+  mediaWidthRatio(height: number, width: number) {
+    return width / height;
   }
 }

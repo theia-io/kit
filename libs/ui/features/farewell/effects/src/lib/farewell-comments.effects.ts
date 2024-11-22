@@ -6,7 +6,7 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/ui-shared';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { catchError, forkJoin, map, mergeMap, of, switchMap } from 'rxjs';
 import { FarewellCommentsService } from './farewell-comments.service';
 import { getImageKeyFromS3Url } from './farewell-media.effects';
 
@@ -107,18 +107,19 @@ export class FarewellCommentsEffects {
   uploadFarewellStorageMedia$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellCommentActions.uploadFarewellCommentStorageMedia),
+
       switchMap(({ farewellId, profileId, items }) =>
-        forkJoin([
+        forkJoin(
           items.map(({ key, blob }) =>
             this.#farewellCommentService.uploadFarewellCommentMedia(key, blob)
-          ),
-        ]).pipe(
-          map(() =>
+          )
+        ).pipe(
+          map((res) =>
             FeatFarewellCommentActions.uploadFarewellCommentStorageMediaSuccess(
               {
                 farewellId,
                 profileId,
-                items,
+                items: res,
               }
             )
           ),
@@ -140,7 +141,7 @@ export class FarewellCommentsEffects {
   deleteFarewellStorageMedia$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellCommentActions.deleteFarewellCommentStorageMedia),
-      switchMap(({ url }) =>
+      mergeMap(({ url }) =>
         this.#farewellCommentService
           .deleteFarewellCommentMedia(
             getImageKeyFromS3Url(url, this.#s3FarewellBaseUrl)

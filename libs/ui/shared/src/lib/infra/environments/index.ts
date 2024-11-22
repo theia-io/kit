@@ -8,6 +8,10 @@ export enum KIT_ENVS {
 }
 
 export interface Environment {
+  api: {
+    root: string;
+    media: string;
+  };
   googleTagConfig: string | null;
   build: string;
   environment: KIT_ENVS; // when true then DEV env

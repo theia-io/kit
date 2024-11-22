@@ -66,6 +66,7 @@ import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     //
     provideAnimationsAsync(),
     // provideClientHydration(),

@@ -5,6 +5,10 @@ import { Environment, KIT_ENVS } from '@kitouch/ui-shared';
 console.error('This should has not be called ts-d8123S-Ad');
 
 export const environment: Environment = {
+  api: {
+    root: '/api',
+    media: '/media',
+  },
   googleTagConfig: null,
   build: `${KIT_ENVS.localhost}-${'localhost'}`,
   realmAppId: 'application-0-gwcbmrg',

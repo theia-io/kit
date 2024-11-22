@@ -1,5 +1,5 @@
 const { composePlugins, withNx } = require('@nx/webpack');
-const { nodeExternals } = require('webpack-node-externals');
+const nodeExternals = require('webpack-node-externals');
 const { RunScriptWebpackPlugin } = require('run-script-webpack-plugin');
 const webpack = require('webpack');
 

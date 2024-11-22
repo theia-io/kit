@@ -1,0 +1,27 @@
+{
+  "name": "infra",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/infra/src",
+  "projectType": "library",
+  "tags": ["scope:api", "scope:api-shared"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/infra",
+        "tsConfig": "libs/api/infra/tsconfig.lib.json",
+        "packageJson": "libs/api/infra/package.json",
+        "main": "libs/api/infra/src/index.ts",
+        "assets": ["libs/api/infra/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/infra/jest.config.ts"
+      }
+    }
+  }
+}

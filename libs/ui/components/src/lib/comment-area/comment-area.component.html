@@ -27,25 +27,46 @@
 
   @if(maxMediaFiles() > 0) {
   <div class="flex gap-2 items-center">
-    <ui-kit-pic-uploadable (files)="filesHandler($event)" />
+    <ui-kit-pic-uploadable
+      [conf]="{ fileUploadConf: { multiple: true } }"
+      (files)="filesHandler($event)" />
 
-    <div id="uploaded-comment-media-gallery">
-      @for (media of uploadedMedias(); track $index) {
+    <div
+      id="uploaded-comment-media-gallery"
+      class="flex gap-2 items-center flex-nowrap overflow-x-auto">
+      @for (media of uploadedMedias(); track media.url) {
       <a
-        class="block w-16 h-16 mb-3"
-        [href]="media"
-        data-pswp-width="64"
-        data-pswp-height="64"
+        class="block relative h-16"
+        [href]="media.optimizedUrls[0]"
+        [attr.data-pswp-width]="media.width"
+        [attr.data-pswp-height]="media.height"
+        [ngStyle]="{
+          'height.px': 64,
+          'min-width.px':
+            64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+        }"
         target="_blank">
-        <img
-          referrerpolicy="no-referrer"
-          class="rounded-full"
-          width="64"
-          height="64"
-          [ngSrc]="media"
-          alt="Media to the comment" />
+        <picture>
+          @for (url of media.optimizedUrls; track url) {
+          <source [srcset]="url" [type]="'image/' + mediaType(url)" />
+          }
+          <img
+            referrerpolicy="no-referrer"
+            class="rounded"
+            [width]="64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)"
+            height="64"
+            [ngSrc]="media.url"
+            alt="Media to the comment" />
+        </picture>
+        @if(deleteMediaFilesCb()) {
+        <ui-kit-delete
+          [background]="true"
+          xOffset="-right-1"
+          yOffset="top-0"
+          (onDelete)="deleteHandler(media)" />
+
+        }
       </a>
-      <!-- <img [ngSrc]="media" width="64" height="64" alt="Media to the comment" /> -->
       }
     </div>
   </div>

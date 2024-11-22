@@ -1,4 +1,8 @@
-import { Farewell, FarewellComment } from '@kitouch/shared-models';
+import {
+  ContractUploadedMedia,
+  Farewell,
+  FarewellComment,
+} from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
 import { createActionGroup, props } from '@ngrx/store';
 
@@ -45,7 +49,7 @@ export const FeatFarewellCommentActions = createActionGroup({
     UploadFarewellCommentStorageMediaSuccess: props<{
       farewellId: string;
       profileId: string;
-      items: Array<{ key: string }>;
+      items: Array<ContractUploadedMedia>;
     }>(),
     UploadFarewellCommentStorageMediaFailure: props<{ message: string }>(),
     DeleteFarewellCommentStorageMedia: props<{

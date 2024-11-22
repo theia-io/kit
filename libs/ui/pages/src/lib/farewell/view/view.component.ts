@@ -1,9 +1,4 @@
-import {
-  AsyncPipe,
-  DatePipe,
-  DOCUMENT,
-  NgOptimizedImage,
-} from '@angular/common';
+import { AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -23,7 +18,6 @@ import {
 } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import {
-  FeatFollowSuggestionByIdComponent,
   FeatFollowUnfollowProfileComponent,
   followerHandlerFn,
 } from '@kitouch/follow-ui';
@@ -33,17 +27,13 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
-import {
-  UiKitPageOverlayComponent,
-  UIKitSmallerHintTextUXDirective,
-} from '@kitouch/ui-components';
+import { UiKitPageOverlayComponent } from '@kitouch/ui-components';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   AuthService,
   DeviceService,
   objectLoadingState$,
-  UiLogoComponent,
 } from '@kitouch/ui-shared';
 import { ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -80,12 +70,9 @@ import {
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
     FeatFarewellAllGridItemComponent,
-    UiLogoComponent,
-    UIKitSmallerHintTextUXDirective,
     FeatFarewellViewV2Component,
     FeatFarewellAnalyticsComponent,
     FeatFarewellCommentsComponent,
-    FeatFollowSuggestionByIdComponent,
     FeatFollowUnfollowProfileComponent,
     FeatFarewellShareComponent,
   ],
@@ -95,7 +82,6 @@ export class PageFarewellViewComponent {
 
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
-  #document = inject(DOCUMENT);
   #authService = inject(AuthService);
 
   device$ = inject(DeviceService).device$;
