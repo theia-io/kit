@@ -1,5 +1,7 @@
 @let kudoboardOwner = kudoboardProfile(); @let recipient = (kudoboard$ |
-async)?.recipient; @if(canComment()) {
+async)?.recipient;
+<!-- Comment -->
+@if(canComment()) {
 <div
   class="block max-w-xl mx-auto"
   sharedUserHint
@@ -32,7 +34,7 @@ async)?.recipient; @if(canComment()) {
 }
 
 <div #commentsTmpl class="masonry mx-auto">
-  @for (comment of (kudoboardComments$ | async); track $index) {
+  @for (comment of (kudoboardComments$ | async); track comment.id) {
   <div
     class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl masonry-item">
     <ui-kit-comp-animate-ping [animate]="animatedCommentsSet().has(comment.id)">
@@ -56,6 +58,40 @@ async)?.recipient; @if(canComment()) {
       </div>
 
       <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
+
+      <div
+        id="uploaded-comment-media-gallery"
+        class="flex gap-2 items-center flex-nowrap overflow-x-auto">
+        @for (media of comment.medias; track media.url) {
+        <a
+          class="block h-16"
+          [href]="media.optimizedUrls[0]"
+          [attr.data-pswp-width]="media.width"
+          [attr.data-pswp-height]="media.height"
+          [ngStyle]="{
+            'height.px': 64,
+            'min-width.px':
+              64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+          }"
+          target="_blank">
+          <picture>
+            @for (url of media.optimizedUrls; track url) {
+            <source [srcset]="url" [type]="'image/' + mediaType(url)" />
+            }
+            <img
+              referrerpolicy="no-referrer"
+              class="rounded"
+              [width]="
+                64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+              "
+              height="64"
+              [ngSrc]="media.url"
+              alt="Media to the comment" />
+          </picture>
+        </a>
+        <!-- <img [ngSrc]="media" width="64" height="64" alt="Media to the comment" /> -->
+        }
+      </div>
 
       @if(currentProfile()?.id && (currentProfile()?.id === kudoboardOwner?.id
       || currentProfile()?.id === comment.profileId)) {

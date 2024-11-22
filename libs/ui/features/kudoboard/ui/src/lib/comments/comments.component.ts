@@ -1,4 +1,9 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import {
+  AsyncPipe,
+  DatePipe,
+  NgOptimizedImage,
+  NgStyle,
+} from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -37,7 +42,6 @@ import {
   UIKitCommentAreaComponent,
   UiKitCompAnimatePingComponent,
   UiKitDeleteComponent,
-  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import {
   APP_PATH,
@@ -74,6 +78,8 @@ import {
     DatePipe,
     AsyncPipe,
     ReactiveFormsModule,
+    NgOptimizedImage,
+    NgStyle,
     //
     FloatLabelModule,
     InputTextareaModule,
@@ -82,7 +88,6 @@ import {
     //
     UiKitCompAnimatePingComponent,
     UIKitCommentAreaComponent,
-    UiKitTweetButtonComponent,
     AccountTileComponent,
     AuthorizedFeatureDirective,
     DividerComponent,
@@ -182,6 +187,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
           .then((masonry) => (this.#masonry = masonry));
       }
     });
+
     this.#masonryReadyTrigger$.pipe(skip(1)).subscribe(() => {
       if (
         this.#masonry &&
@@ -191,7 +197,6 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
         this.#masonry.prepended
       ) {
         this.#masonry.reloadItems();
-        // const allItems = this.#masonry.getItemElements();
         this.#masonry.layout();
       }
     });
@@ -231,5 +236,13 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
         id: commentId,
       })
     );
+  }
+
+  mediaType(mediaUrl: string) {
+    return mediaUrl.split('.').reverse()[0];
+  }
+
+  mediaWidthRatio(height: number, width: number) {
+    return width / height;
   }
 }

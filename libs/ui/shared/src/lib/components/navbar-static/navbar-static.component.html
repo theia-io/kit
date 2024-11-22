@@ -1,8 +1,10 @@
 <div class="p-4 flex items-center nav-shadow">
   <shared-logo class="block mr-16" />
 
-  @if(fullBar()) { @if ((deviceService.device$ | async) === DeviceTypes.Desktop)
-  { @for (navItem of navBarItems; track $index) {
+  @if(fullBar()) {
+  <!-- Desktop -->
+  @if ((deviceService.device$ | async) === DeviceTypes.Desktop) { @for (navItem
+  of navBarItems; track $index) {
   <a
     [routerLink]="navItem.routerLink"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
@@ -10,7 +12,9 @@
     class="px-4 py-2">
     {{ navItem.label }}
   </a>
-  } } @else {
+  } }
+  <!-- Mobile  -->
+  @else {
   <a
     [routerLink]="homeUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
@@ -32,7 +36,6 @@
   @if(!fullBar()) {
   <a
     [routerLink]="homeUrl"
-    Ø
     uiKitSmallTextTailwindClasses
     [klasses]="getStartedKlassOverwrite"
     class="px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">

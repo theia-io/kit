@@ -35,7 +35,6 @@ import {
   DividerComponent,
   UIKitCommentAreaComponent,
   UiKitDeleteComponent,
-  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import {
   APP_PATH,
@@ -79,7 +78,6 @@ import {
     ButtonModule,
     //
     UIKitCommentAreaComponent,
-    UiKitTweetButtonComponent,
     AccountTileComponent,
     AuthorizedFeatureDirective,
     DividerComponent,

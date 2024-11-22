@@ -36,7 +36,13 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   deviceService = inject(DeviceService);
   DeviceTypes = Device;
 
-  navBarItems = DESKTOP_NAV_ITEMS.filter((navItem) => !navItem.separator);
+  navBarItems = DESKTOP_NAV_ITEMS.filter(
+    (navItem) =>
+      !navItem.separator &&
+      ![`/${APP_PATH.Settings}`, `/${APP_PATH.Bookmarks}`].includes(
+        navItem.routerLink
+      )
+  );
   homeUrl = `/${APP_PATH.Home}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 
