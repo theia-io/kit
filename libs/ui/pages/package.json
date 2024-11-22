@@ -11,7 +11,6 @@
     "@kitouch/feat-settings-ui": "1.0.0-beta",
     "@kitouch/follow-ui": "1.0.0-beta",
     "@kitouch/kit-data": "1.0.0-beta",
-    "@kitouch/ui-shared": "1.0.0-beta",
     "@ngrx/store": "18.0.2",
     "primeng": "^17.18.1",
     "rxjs": "~7.8.0",

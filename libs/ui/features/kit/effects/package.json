@@ -7,7 +7,6 @@
     "@ngrx/effects": "18.0.2",
     "rxjs": "~7.8.0",
     "@kitouch/shared-models": "1.0.0-beta",
-    "@kitouch/ui-shared": "1.0.0-beta",
     "realm-web": "^2.0.1",
     "@ngrx/store": "18.0.2",
     "@kitouch/utils": "1.0.0-beta",

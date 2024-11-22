@@ -7,7 +7,10 @@
     "@angular/router": "18.2.6",
     "@angular/animations": "18.2.6",
     "primeng": "^17.18.1",
-    "@angular/forms": "18.2.6"
+    "@angular/forms": "18.2.6",
+    "@kitouch/shared-models": "1.0.0-beta",
+    "photoswipe": "^5.4.4",
+    "rxjs": "~7.8.0"
   },
   "sideEffects": false
 }

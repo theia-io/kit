@@ -9,7 +9,6 @@
     "@kitouch/kit-data": "1.0.0-beta",
     "@kitouch/shared-models": "1.0.0-beta",
     "@kitouch/ui-components": "1.0.0-beta",
-    "@kitouch/ui-shared": "1.0.0-beta",
     "@ngrx/effects": "18.0.2",
     "@ngrx/store": "18.0.2",
     "primeng": "17.18.10",
