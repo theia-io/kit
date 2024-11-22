@@ -1,23 +1,23 @@
 {
-  "name": "shared-components",
+  "name": "containers",
   "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/ui/shared/components/src",
+  "sourceRoot": "libs/ui/shared/containers/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["scope:ui\"", "\"scope:ui-shared\"", "\"scope:ui-shared-components"],
+  "tags": ["scope:ui", "scope:ui-shared"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/ui/shared/components/ng-package.json"
+        "project": "libs/ui/shared/containers/ng-package.json"
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/ui/shared/components/tsconfig.lib.prod.json"
+          "tsConfig": "libs/ui/shared/containers/tsconfig.lib.prod.json"
         },
         "development": {
-          "tsConfig": "libs/ui/shared/components/tsconfig.lib.json"
+          "tsConfig": "libs/ui/shared/containers/tsconfig.lib.json"
         }
       },
       "defaultConfiguration": "production"
@@ -26,7 +26,7 @@
       "executor": "@nx/jest:jest",
       "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
       "options": {
-        "jestConfig": "libs/ui/shared/components/jest.config.ts"
+        "jestConfig": "libs/ui/shared/containers/jest.config.ts"
       }
     },
     "lint": {

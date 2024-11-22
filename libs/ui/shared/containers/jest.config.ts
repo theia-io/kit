@@ -1,8 +1,8 @@
 export default {
-  displayName: 'shared-components',
+  displayName: 'containers',
   preset: '../../../../jest.preset.js',
   setupFilesAfterEnv: ['<rootDir>/src/test-setup.ts'],
-  coverageDirectory: '../../../../coverage/libs/ui/shared/components',
+  coverageDirectory: '../../../../coverage/libs/ui/shared/containers',
   transform: {
     '^.+\\.(ts|mjs|js|html)$': [
       'jest-preset-angular',
