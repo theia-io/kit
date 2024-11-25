@@ -17,7 +17,11 @@
     "@ctrl/ngx-emoji-mart": "^9.2.0",
     "@kitouch/emoji": "0.0.1",
     "masonry-layout": "^4.2.2",
-    "@kitouch/feat-farewell-data": "1.0.0-beta"
+    "@kitouch/feat-farewell-data": "1.0.0-beta",
+    "@kitouch/containers": "0.0.1",
+    "@kitouch/shared-constants": "0.0.1",
+    "@kitouch/shared-infra": "0.0.1",
+    "@kitouch/shared-services": "0.0.1"
   },
   "sideEffects": false
 }

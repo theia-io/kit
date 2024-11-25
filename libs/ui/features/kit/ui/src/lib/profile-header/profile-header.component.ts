@@ -10,11 +10,10 @@ import { RouterModule } from '@angular/router';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  AuthorizedFeatureDirective,
-  PhotoService,
-} from '@kitouch/ui-shared';
+
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import { APP_PATH } from '@kitouch/shared-constants';
+import { PhotoService } from '@kitouch/shared-services';
 import PhotoSwipe from 'photoswipe';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 

@@ -12,7 +12,9 @@
     "primeng": "^17.18.1",
     "rxjs": "~7.8.0",
     "@kitouch/feat-kit-ui": "1.0.0-beta",
-    "@kitouch/ui-components": "1.0.0-beta"
+    "@kitouch/ui-components": "1.0.0-beta",
+    "@kitouch/shared-infra": "0.0.1",
+    "@kitouch/shared-services": "0.0.1"
   },
   "sideEffects": false
 }

@@ -10,7 +10,8 @@
     "@kitouch/shared-models": "1.0.0-beta",
     "@kitouch/utils": "1.0.0-beta",
     "realm-web": "^2.0.1",
-    "@angular/common": "18.2.6"
+    "@angular/common": "18.2.6",
+    "@kitouch/shared-infra": "0.0.1"
   },
   "sideEffects": false
 }

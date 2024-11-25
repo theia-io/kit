@@ -4,12 +4,12 @@ import {
   ClientDBKudoBoardResponse,
   dbClientKudoBoardAdapter,
 } from '@kitouch/data-kudoboard';
+import { DataSourceService } from '@kitouch/shared-infra';
 
 import { KudoBoard } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import { ClientDataType, DBClientType, getNow } from '@kitouch/utils';
 import { BSON } from 'realm-web';
-import { map, Observable, switchMap, tap } from 'rxjs';
+import { map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class KudoBoardService extends DataSourceService {

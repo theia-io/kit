@@ -11,16 +11,16 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContractUploadedMedia, FarewellComment } from '@kitouch/shared-models';
-import { PhotoService } from '@kitouch/ui-shared';
+import { PhotoService } from '@kitouch/shared-services';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
 import { Observable } from 'rxjs';
+import { UiKitDeleteComponent } from '../delete/delete.component';
 import { UiKitTweetButtonComponent } from '../tweet-button/tweet-button.component';
 import { UiKitPicUploadableComponent } from '../uploadable/uploadable.component';
-import { UiKitDeleteComponent } from '../delete/delete.component';
 
 const CONTROL_INITIAL_ROWS = 2;
 

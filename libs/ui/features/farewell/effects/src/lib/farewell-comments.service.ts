@@ -5,12 +5,12 @@ import {
   ClientDBFarewellCommentResponse,
   dbClientFarewellCommentAdapter,
 } from '@kitouch/feat-farewell-data';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
 import {
   ContractUploadedMedia,
   Farewell,
   FarewellComment,
 } from '@kitouch/shared-models';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
 import { ClientDataType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { from, map, Observable, switchMap } from 'rxjs';

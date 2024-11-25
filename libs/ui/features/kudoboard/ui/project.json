@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/features/kudoboard/ui/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["scope:ui", "feature", "feat-ui"],
+  "tags": ["feature"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

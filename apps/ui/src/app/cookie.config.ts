@@ -1,4 +1,4 @@
-import { KIT_ENVS } from '@kitouch/ui-shared';
+import { KIT_ENVS } from '@kitouch/shared-infra';
 import { NgcCookieConsentConfig } from 'ngx-cookieconsent';
 import { environment } from '../environments/environment';
 

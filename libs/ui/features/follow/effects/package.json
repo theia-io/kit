@@ -9,7 +9,8 @@
     "@ngrx/store": "18.0.2",
     "rxjs": "~7.8.0",
     "@kitouch/shared-models": "1.0.0-beta",
-    "@kitouch/utils": "1.0.0-beta"
+    "@kitouch/utils": "1.0.0-beta",
+    "@kitouch/shared-infra": "0.0.1"
   },
   "sideEffects": false
 }

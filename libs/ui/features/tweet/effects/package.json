@@ -10,7 +10,8 @@
     "rxjs": "~7.8.0",
     "@kitouch/shared-models": "1.0.0-beta",
     "@kitouch/utils": "1.0.0-beta",
-    "realm-web": "^2.0.1"
+    "realm-web": "^2.0.1",
+    "@kitouch/shared-infra": "0.0.1"
   },
   "sideEffects": false
 }

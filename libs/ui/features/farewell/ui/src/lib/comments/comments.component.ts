@@ -17,6 +17,7 @@ import {
   toSignal,
 } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
 import {
   FeatFarewellCommentActions,
   selectFarewellById,
@@ -28,7 +29,10 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
+import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
+import { PhotoService } from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -36,12 +40,6 @@ import {
   UIKitCommentAreaComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  AuthorizedFeatureDirective,
-  PhotoService,
-  S3_FAREWELL_BUCKET_BASE_URL,
-} from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';

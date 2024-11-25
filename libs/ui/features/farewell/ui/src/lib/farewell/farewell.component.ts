@@ -48,12 +48,10 @@ import {
   DividerComponent,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  S3_FAREWELL_BUCKET_BASE_URL,
-  SharedKitUserHintDirective,
-} from '@kitouch/ui-shared';
+
+import { SharedKitUserHintDirective } from '@kitouch/containers';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';

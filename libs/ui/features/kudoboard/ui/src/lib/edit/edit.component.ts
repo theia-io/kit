@@ -42,11 +42,10 @@ import {
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH_ALLOW_ANONYMOUS,
-  DeviceService,
-  SharedKitUserHintDirective,
-} from '@kitouch/ui-shared';
+
+import { SharedKitUserHintDirective } from '@kitouch/containers';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { DeviceService } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';

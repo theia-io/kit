@@ -4,9 +4,9 @@ import {
   ClientDBKudoBoardAnalyticsResponse,
   dbClientKudoBoardAnalyticsAdapter,
 } from '@kitouch/data-kudoboard';
+import { DataSourceService } from '@kitouch/shared-infra';
 
 import { KudoBoard, KudoBoardAnalytics } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import {
   ClientDataType,
   clientDBGenerateTimestamp,

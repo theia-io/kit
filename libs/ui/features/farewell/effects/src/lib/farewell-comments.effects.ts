@@ -1,10 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 
-import {
-  FeatFarewellCommentActions,
-  FeatFarewellMediaActions,
-} from '@kitouch/feat-farewell-data';
-import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/ui-shared';
+import { FeatFarewellCommentActions } from '@kitouch/feat-farewell-data';
+import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, forkJoin, map, mergeMap, of, switchMap } from 'rxjs';
 import { FarewellCommentsService } from './farewell-comments.service';

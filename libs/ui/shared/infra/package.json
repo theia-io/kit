@@ -3,7 +3,18 @@
   "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^18.2.0",
-    "@angular/core": "^18.2.0"
+    "@angular/core": "^18.2.0",
+    "@angular/router": "18.2.6",
+    "rxjs": "~7.8.0",
+    "@kitouch/shared-models": "1.0.0-beta",
+    "@ngrx/effects": "18.0.2",
+    "@ngrx/store": "18.0.2",
+    "@kitouch/kit-data": "1.0.0-beta",
+    "realm-web": "^2.0.1",
+    "@aws-sdk/client-s3": "^3.627.0",
+    "@kitouch/utils": "1.0.0-beta",
+    "@aws-sdk/credential-providers": "^3.631.0",
+    "@kitouch/shared-constants": "0.0.1"
   },
   "sideEffects": false
 }

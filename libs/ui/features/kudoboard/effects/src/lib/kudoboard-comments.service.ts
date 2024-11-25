@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import {
+  clientDbKudoBoardCommentAdapter,
   ClientDBKudoBoardCommentResponse,
   dbClientKudoBoardCommentAdapter,
-  clientDbKudoBoardCommentAdapter,
 } from '@kitouch/data-kudoboard';
+import { DataSourceService } from '@kitouch/shared-infra';
 import { KudoBoard, KudoBoardComment } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import { ClientDataType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';

@@ -7,10 +7,10 @@ import {
 } from '@angular/core';
 import { Router } from '@angular/router';
 import {
-  RouterEventsService,
   SignInGoogleComponent,
   slideInOutAnimation,
-} from '@kitouch/ui-shared';
+} from '@kitouch/containers';
+import { RouterEventsService } from '@kitouch/shared-infra';
 import { TagModule } from 'primeng/tag';
 import { take } from 'rxjs';
 

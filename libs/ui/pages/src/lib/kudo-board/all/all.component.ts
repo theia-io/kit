@@ -9,10 +9,10 @@ import {
 import { FeatFarewellAllGridItemComponent } from '@kitouch/feat-farewell-ui';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
 import { DividerComponent, UiKitDeleteComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardAnalyticsComponent } from '@kitouch/ui-kudoboard';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';

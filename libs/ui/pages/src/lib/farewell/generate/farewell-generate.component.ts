@@ -1,14 +1,14 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, inject, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
-import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
-import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import {
-  APP_PATH,
-  NavbarService,
-  RouterEventsService,
   SharedNavBarStaticComponent,
-} from '@kitouch/ui-shared';
+  NavbarService,
+} from '@kitouch/containers';
+import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
+import { APP_PATH } from '@kitouch/shared-constants';
+import { RouterEventsService } from '@kitouch/shared-infra';
+import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import { SidebarModule } from 'primeng/sidebar';
 import { take } from 'rxjs';
 

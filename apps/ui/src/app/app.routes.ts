@@ -1,18 +1,19 @@
+import { inject } from '@angular/core';
 import { Route } from '@angular/router';
+import { LayoutService, PanelState } from '@kitouch/containers';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   APP_PATH_DIALOG,
   APP_PATH_STATIC_PAGES,
-  LayoutService,
+  OUTLET_DIALOG,
+} from '@kitouch/shared-constants';
+import {
   onlyForLoggedInGuard,
   onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
-  OUTLET_DIALOG,
-  PanelState,
-} from '@kitouch/ui-shared';
+} from '@kitouch/shared-infra';
 import { KitComponent } from './kit.component';
-import { inject } from '@angular/core';
 
 const pages = import('@kitouch/pages');
 

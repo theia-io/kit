@@ -1,4 +1,4 @@
-import { Environment, KIT_ENVS } from '@kitouch/ui-shared';
+import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
 
 export const environment: Environment = {
   api: {

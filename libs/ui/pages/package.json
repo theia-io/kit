@@ -24,7 +24,11 @@
     "@ngrx/effects": "18.0.2",
     "uuid": "^10.0.0",
     "@kitouch/data-kudoboard": "0.0.1",
-    "@kitouch/ui-kudoboard": "0.0.1"
+    "@kitouch/ui-kudoboard": "0.0.1",
+    "@kitouch/containers": "0.0.1",
+    "@kitouch/shared-services": "0.0.1",
+    "@kitouch/shared-infra": "0.0.1",
+    "@kitouch/shared-constants": "0.0.1"
   },
   "sideEffects": false
 }

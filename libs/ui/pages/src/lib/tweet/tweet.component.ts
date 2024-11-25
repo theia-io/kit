@@ -18,6 +18,7 @@ import {
   TWEET_CONTROL_INITIAL_ROWS,
 } from '@kitouch/feat-tweet-ui';
 import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { TweetComment, Tweety } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
@@ -25,7 +26,6 @@ import {
   UiCompCardComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';

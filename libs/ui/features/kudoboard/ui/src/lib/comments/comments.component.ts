@@ -23,6 +23,10 @@ import {
 } from '@angular/core/rxjs-interop';
 import { ReactiveFormsModule } from '@angular/forms';
 import {
+  AuthorizedFeatureDirective,
+  SharedKitUserHintDirective,
+} from '@kitouch/containers';
+import {
   FeatKudoBoardCommentActions,
   selectKudoBoardById,
   selectKudoBoardCommentsById,
@@ -33,7 +37,10 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
+import { DeviceService } from '@kitouch/shared-infra';
 import { KudoBoardComment } from '@kitouch/shared-models';
+import { MasonryService } from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -43,13 +50,7 @@ import {
   UiKitCompAnimatePingComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  AuthorizedFeatureDirective,
-  DeviceService,
-  MasonryService,
-  SharedKitUserHintDirective,
-} from '@kitouch/ui-shared';
+
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import Masonry from 'masonry-layout';

@@ -14,13 +14,13 @@ import {
   selectProfileById,
   selectProfilesByIds,
 } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   FollowButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { MessagesModule } from 'primeng/messages';
 import { filter, map, shareReplay, switchMap, take, throwError } from 'rxjs';

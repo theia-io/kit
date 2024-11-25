@@ -11,13 +11,13 @@ import {
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';

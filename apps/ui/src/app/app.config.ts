@@ -29,6 +29,7 @@ import { featFollowReducer } from '@kitouch/feat-follow-data';
 import { FollowEffects } from '@kitouch/feat-follow-effects';
 import {
   AccountsEffects,
+  AuthEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
@@ -43,12 +44,12 @@ import {
 import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
   AuthInterceptor,
-  Environment,
   ENVIRONMENT,
+  Environment,
   S3_FAREWELL_BUCKET_BASE_URL,
   S3_KUDOBOARD_BUCKET_BASE_URL,
   S3_PROFILE_BUCKET_BASE_URL,
-} from '@kitouch/ui-shared';
+} from '@kitouch/shared-infra';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -133,6 +134,7 @@ export const appConfig: ApplicationConfig = {
       // follow feat effects
       FollowEffects,
       // kit feat effects
+      AuthEffects,
       AccountsEffects,
       LegalEffects,
       ProfileEffects,

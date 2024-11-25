@@ -4,12 +4,12 @@ import {
   getExperienceEqualityObject,
   selectCurrentUser,
 } from '@kitouch/kit-data';
+import { DataSourceService } from '@kitouch/shared-infra';
 import { Experience, User } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import { DBClientType } from '@kitouch/utils';
 import { Store } from '@ngrx/store';
 import { BSON } from 'realm-web';
-import { filter, map, of, switchMap, take, withLatestFrom } from 'rxjs';
+import { filter, map, switchMap, take, withLatestFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

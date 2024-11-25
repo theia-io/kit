@@ -1,17 +1,9 @@
 import { Injectable, inject } from '@angular/core';
 
 import { FeatFarewellMediaActions } from '@kitouch/feat-farewell-data';
-import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/ui-shared';
+import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  concatMap,
-  forkJoin,
-  map,
-  mergeMap,
-  of,
-  switchMap,
-} from 'rxjs';
+import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { FarewellMediaService } from './farewell-media.service';
 
 export const getFullS3Url = (s3Url: string, key: string) => `${s3Url}/${key}`;

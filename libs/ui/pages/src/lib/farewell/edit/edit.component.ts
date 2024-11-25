@@ -2,14 +2,15 @@ import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, inject, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
+import { SharedNavBarStaticComponent } from '@kitouch/containers';
 import {
   FeatFarewellActions,
   selectFarewellById,
 } from '@kitouch/feat-farewell-data';
 import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
-import { APP_PATH, SharedNavBarStaticComponent } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';

@@ -18,13 +18,12 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/shared-constants';
 import {
-  AccountTileComponent,
   DividerComponent,
   UiCompCardComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import {
@@ -48,7 +47,6 @@ import {
     //
     UiCompCardComponent,
     FeatTweetTweetyComponent,
-    AccountTileComponent,
     DividerComponent,
     UiKitTweetButtonComponent,
   ],

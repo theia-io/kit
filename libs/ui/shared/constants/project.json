@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/shared/constants/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["scope:ui", "scope:ui-shared"],
+  "tags": ["scope:ui-shared"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

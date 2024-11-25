@@ -1,4 +1,4 @@
-import { AsyncPipe, DOCUMENT, DatePipe } from '@angular/common';
+import { DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -24,13 +24,13 @@ import {
   tweetIsRetweet,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitDeleteComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -50,7 +50,6 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
   imports: [
     ReactiveFormsModule,
     DatePipe,
-    AsyncPipe,
     RouterModule,
     //
     OverlayPanelModule,

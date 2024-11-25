@@ -1,6 +1,7 @@
-import { Environment, KIT_ENVS } from '@kitouch/ui-shared';
-
 // In theory this should never be used due to project's JSON configuration.
+
+import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
+
 /** @TODO verify this is correct */
 console.error('This should has not be called ts-d8123S-Ad');
 

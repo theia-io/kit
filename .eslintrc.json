@@ -33,15 +33,22 @@
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
                   "scope:ui",
-                  "scope:ui-shared"
+                  "scope:ui-shared",
+                  "components",
+                  "feature",
+                  "pages"
+                ]
+              },
+              {
+                "sourceTag": "components",
+                "onlyDependOnLibsWithTags": [
+                  "scope:shared",
+                  "scope:ui-services",
+                  "components"
                 ]
               },
               {
                 "sourceTag": "scope:ui-shared",
-                "onlyDependOnLibsWithTags": ["scope:shared", "scope:ui-shared"]
-              },
-              {
-                "sourceTag": "components",
                 "onlyDependOnLibsWithTags": [
                   "scope:shared",
                   "scope:ui-shared",

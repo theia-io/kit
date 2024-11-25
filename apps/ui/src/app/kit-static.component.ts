@@ -1,8 +1,9 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { SharedNavBarStaticComponent } from '@kitouch/containers';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { AuthService, SharedNavBarStaticComponent } from '@kitouch/ui-shared';
+import { AuthService } from '@kitouch/shared-infra';
 import { select, Store } from '@ngrx/store';
 
 @Component({

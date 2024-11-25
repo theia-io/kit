@@ -25,11 +25,9 @@ import {
 } from '@kitouch/kit-data';
 import { Farewell, FarewellReaction, Profile } from '@kitouch/shared-models';
 import { AccountTileComponent } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  AuthorizedFeatureDirective,
-} from '@kitouch/ui-shared';
+
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';

@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -26,15 +26,12 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { AuthService, DeviceService } from '@kitouch/shared-infra';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
+import { objectLoadingState$ } from '@kitouch/shared-services';
 import { UiKitPageOverlayComponent } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  AuthService,
-  DeviceService,
-  objectLoadingState$,
-} from '@kitouch/ui-shared';
+
 import { ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
@@ -56,10 +53,8 @@ import {
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
   imports: [
-    DatePipe,
     AsyncPipe,
     RouterModule,
-    NgOptimizedImage,
     //
     ButtonModule,
     TagModule,

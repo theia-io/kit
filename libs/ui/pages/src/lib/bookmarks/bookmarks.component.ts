@@ -8,13 +8,9 @@ import {
 } from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
 import { Bookmark, Tweety } from '@kitouch/shared-models';
-import {
-  AccountTileComponent,
-  DividerComponent,
-  UiKitTweetButtonComponent,
-  UiCompCardComponent,
-} from '@kitouch/ui-components';
-import { QuotesService } from '@kitouch/ui-shared';
+import { QuotesService } from '@kitouch/shared-services';
+import { DividerComponent, UiCompCardComponent } from '@kitouch/ui-components';
+
 import { Store } from '@ngrx/store';
 import { combineLatest, interval, merge, of } from 'rxjs';
 import { filter, map, switchMap, take } from 'rxjs/operators';
@@ -30,9 +26,7 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
     //
     UiCompCardComponent,
     FeatTweetTweetyComponent,
-    AccountTileComponent,
     DividerComponent,
-    UiKitTweetButtonComponent,
   ],
 })
 export class PageBookmarksComponent {

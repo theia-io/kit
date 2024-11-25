@@ -1,13 +1,8 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  effect,
-  input,
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { profilePicture } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { Profile, ReTweety } from '@kitouch/shared-models';
-import { APP_PATH } from '@kitouch/ui-shared';
 import { RetweetFromWhomPipe, RetweetWhoPipe } from './retweet.pipe';
 
 @Component({

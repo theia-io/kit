@@ -2,16 +2,16 @@ import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
+  AuthorizedFeatureDirective,
+  SharedKitUserHintDirective,
+} from '@kitouch/containers';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { DeviceService } from '@kitouch/shared-infra';
+import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  AuthorizedFeatureDirective,
-  DeviceService,
-  SharedKitUserHintDirective,
-} from '@kitouch/ui-shared';
+
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { map, startWith } from 'rxjs';

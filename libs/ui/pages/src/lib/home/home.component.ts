@@ -21,9 +21,9 @@ import {
 } from '@kitouch/feat-tweet-ui';
 import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import { selectCurrentProfileFollowing } from '@kitouch/kit-data';
+import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/shared-constants';
 import { Tweety } from '@kitouch/shared-models';
 import {
-  AccountTileComponent,
   DEFAULT_ANIMATE_TIMEOUT,
   DividerComponent,
   UiCompCardComponent,
@@ -31,7 +31,6 @@ import {
   UiKitCompAnimatePingComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -48,7 +47,6 @@ import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
     UiKitCompAnimatePingComponent,
     UiCompCardComponent,
     UiCompGradientCardComponent,
-    AccountTileComponent,
     DividerComponent,
     FeatFollowSuggestionsComponent,
     FeatTweetTweetingComponent,
