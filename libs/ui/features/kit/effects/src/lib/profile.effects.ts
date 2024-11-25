@@ -1,20 +1,26 @@
 import { inject, Injectable } from '@angular/core';
 import {
+  FeatKudoBoardCommentActions,
+  FeatKudoBoardReactionActions,
+} from '@kitouch/data-kudoboard';
+import {
   FeatFarewellActions,
   FeatFarewellCommentActions,
   FeatFarewellReactionActions,
 } from '@kitouch/feat-farewell-data';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
-import { FeatProfileActions, FeatProfileApiActions } from '@kitouch/kit-data';
+import {
+  FeatProfileActions,
+  FeatProfileApiActions,
+  noopAction,
+  selectProfileById,
+} from '@kitouch/kit-data';
 import { KitTimestamp, Profile } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap, take } from 'rxjs';
 import { ProfileService } from './profile.service';
-import {
-  FeatKudoBoardCommentActions,
-  FeatKudoBoardReactionActions,
-} from '@kitouch/data-kudoboard';
+import { TweetApiActions } from '@kitouch/feat-tweet-data';
+import { select, Store } from '@ngrx/store';
 
 @Injectable()
 export class ProfileEffects {
@@ -24,21 +30,40 @@ export class ProfileEffects {
 
   profilesFollowing$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatProfileApiActions.getFollowingProfiles),
+      ofType(FeatProfileApiActions.getProfiles),
       switchMap(({ profileIds }) =>
         this.#profileService.getProfiles(profileIds).pipe(
           map((profiles) =>
-            FeatProfileApiActions.getFollowingProfilesSuccess({ profiles })
+            FeatProfileApiActions.getProfilesSuccess({ profiles })
           ),
           catchError((err) => {
             console.error('[ProfileEffects] profilesFollowing', err);
-            return of(FeatProfileApiActions.getFollowingProfilesFailure());
+            return of(FeatProfileApiActions.getProfilesFailure());
           })
         )
       )
     )
   );
 
+  // ensure profiles are resolved through the app
+  tweetProfileExist$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(TweetApiActions.get),
+      switchMap(({ profileId }) =>
+        this.#store.pipe(
+          select(selectProfileById(profileId)),
+          take(1),
+          map((profile) =>
+            profile
+              ? noopAction()
+              : FeatProfileApiActions.getProfiles({ profileIds: [profileId] })
+          )
+        )
+      )
+    )
+  );
+
+  // enriching profiles from different responses through the app
   enrichProfilesFromSuggestions$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFollowActions.getSuggestionColleaguesToFollowSuccess),
@@ -86,6 +111,7 @@ export class ProfileEffects {
     )
   );
 
+  // CRUD
   updateProfile$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.updateProfile),

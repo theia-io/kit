@@ -17,10 +17,7 @@
     @if(linkedKudoBoard.profile; as profile) {
     <ui-kit-comp-account-tile
       [primaryText]="linkedKudoBoard.profile.name"
-      [primarySecondaryText]="
-        linkedKudoBoard.timestamp.createdAt ??
-          linkedKudoBoard.timestamp.updatedAt | date
-      "
+      [primarySecondaryText]="linkedKudoBoard.timestamp.createdAt | date"
       secondaryText="Collected this for you"
       [picture]="profilePictureFn(profile)"
       [link]="profileUrl + (profile.alias ?? profile.id)" />

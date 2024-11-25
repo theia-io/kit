@@ -56,14 +56,14 @@ export class PageProfileTweetsComponent {
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
 
-  #profileIdOrAlias$ = this.#activatedRouter.parent?.params.pipe(
-    map((params) => params['profileIdOrAlias'])
+  #profileId$ = this.#activatedRouter.parent?.params.pipe(
+    map((params) => params['profileId'])
   );
 
-  #profile$ = this.#profileIdOrAlias$
-    ? this.#profileIdOrAlias$.pipe(
-        switchMap((profileIdOrAlias) =>
-          this.#store.select(selectProfileById(profileIdOrAlias))
+  #profile$ = this.#profileId$
+    ? this.#profileId$.pipe(
+        switchMap((profileId) =>
+          this.#store.select(selectProfileById(profileId))
         ),
         filter(Boolean),
         shareReplay(1)

@@ -7,11 +7,11 @@ retweetProfile) {
   [tweetProfile]="tweetProfile()" />
 } @if(tweetProfile(); as tProfile) {
 <ui-kit-comp-account-tile
-  [primaryText]="$any(tProfile).name"
+  [primaryText]="tProfile.name"
   [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
-  [secondaryText]="$any(tProfile).type"
-  [picture]="$any(tProfile).pictures?.[0]?.url"
-  [link]="profileUrlPath + $any(tProfile).id" />
+  [secondaryText]="tProfile.type"
+  [picture]="tProfile.pictures?.[0]?.url"
+  [link]="profileUrlPath + tProfile.id" />
 }
 
 <div class="pt-1 pl-6">

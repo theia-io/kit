@@ -114,7 +114,7 @@ export class AuthEffects {
         }[] => !!followingProfilesIds && followingProfilesIds.length > 0
       ),
       map((followingProfilesIds) => {
-        return FeatProfileApiActions.getFollowingProfiles({
+        return FeatProfileApiActions.getProfiles({
           profileIds: followingProfilesIds.map(({ id }) => id),
         });
       })

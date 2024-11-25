@@ -47,14 +47,12 @@ export class PageProfileComponent {
   #uxDynamicService = inject(UXDynamicService);
   #deviceService = inject(DeviceService);
 
-  #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
-    map((params) => params['profileIdOrAlias'])
+  #profileId$ = this.#activatedRouter.params.pipe(
+    map((params) => params['profileId'])
   );
 
-  #profile$ = this.#profileIdOrAlias$.pipe(
-    switchMap((profileIdOrAlias) =>
-      this.#store.select(selectProfileById(profileIdOrAlias))
-    ),
+  #profile$ = this.#profileId$.pipe(
+    switchMap((profileId) => this.#store.select(selectProfileById(profileId))),
     filter(Boolean),
     shareReplay(1)
   );

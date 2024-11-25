@@ -99,7 +99,7 @@ export class AuthService {
     //   const followingProfilesIds = currentProfile.following?.map((id) => id);
     //   if (followingProfilesIds?.length) {
     //     this.#store.dispatch(
-    //       FeatProfileApiActions.getFollowingProfiles({
+    //       FeatProfileApiActions.getProfiles({
     //         profileIds: followingProfilesIds.map(({ id }) => id),
     //       })
     //     );

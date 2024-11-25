@@ -72,16 +72,8 @@ export class PageTweetComponent {
   #ids$ = this.#activatedRouter.params.pipe(
     map((params) => ({
       tweetId: params['id'],
-      profileIdOrAlias: params['profileIdOrAlias'],
+      profileId: params['profileId'],
     }))
-  );
-
-  #profile$ = this.#ids$.pipe(
-    switchMap(({ profileIdOrAlias }) =>
-      this.#store.select(selectProfileById(profileIdOrAlias))
-    ),
-    filter(Boolean),
-    shareReplay(1)
   );
 
   #currentProfile$ = this.#store
@@ -146,10 +138,10 @@ export class PageTweetComponent {
   commentContentControlRows = TWEET_CONTROL_INITIAL_ROWS;
 
   constructor() {
-    combineLatest([this.#ids$, this.#profile$])
+    this.#ids$
       .pipe(takeUntilDestroyed())
-      .subscribe(([{ tweetId }, { id }]) =>
-        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId: id }))
+      .subscribe(({ tweetId, profileId }) =>
+        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId }))
       );
   }
 
