@@ -5,6 +5,7 @@ export const FeatProfileApiActions = createActionGroup({
   source: 'FeatProfileApiActions',
   events: {
     SetCurrentProfile: props<{ profile: Profile }>(),
+    SetCurrentProfileError: props<{ message: string }>(),
     /** @deprecated use FeatProfileActions.addProfiles */
     SetProfiles: props<{ profiles: Array<Profile> }>(),
     GetFollowingProfiles: props<{ profileIds: Array<Profile['id']> }>(),

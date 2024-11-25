@@ -1,17 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Account, Profile, User } from '@kitouch/shared-models';
-import { Actions, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 
-import {
-  dbClientAccountAdapter,
-  dbClientProfileAdapter,
-  dbClientUserAdapter,
-  FeatAccountApiActions,
-  FeatProfileApiActions,
-  FeatUserApiActions,
-} from '@kitouch/kit-data';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import * as Realm from 'realm-web';
 import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
@@ -24,8 +14,6 @@ export class AuthService {
   // angular
   #environment = inject(ENVIRONMENT);
   #router = inject(Router);
-  #actions$ = inject(Actions);
-  #store = inject(Store);
   // service
   #realmApp: Realm.App | null = null;
   redirectUrl = `${window.location.origin}/s/${APP_PATH_STATIC_PAGES.Redirect}`;
@@ -70,53 +58,54 @@ export class AuthService {
       console.log('redirectUrl', this.redirectUrl);
     }
 
-    this.#actions$
-      .pipe(
-        ofType(FeatAccountApiActions.deleteSuccess),
-        switchMap(() =>
-          this.realmUser$.pipe(
-            filter(Boolean),
-            filter(() => !!this.#realmApp),
-            take(1)
-          )
-        ),
-        switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
-      )
-      .subscribe(() => {
-        this.#realmUser$$.next(undefined);
-        this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`);
-      });
+    // this.#actions$
+    //   .pipe(
+    //     ofType(FeatAccountApiActions.deleteSuccess),
+    //     switchMap(() =>
+    //       this.realmUser$.pipe(
+    //         filter(Boolean),
+    //         filter(() => !!this.#realmApp),
+    //         take(1)
+    //       )
+    //     ),
+    //     switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
+    //   )
+    //   .subscribe(() => {
+    //     this.#realmUser$$.next(undefined);
+    //     this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`);
+    //   });
 
-    this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
-      this.#store.dispatch(FeatAccountApiActions.setAccount({ account }));
-    });
+    // this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
+    //   this.#store.dispatch(FeatAccountApiActions.setAccount({ account }));
+    // });
 
-    this.#user$$.pipe(filter(Boolean)).subscribe((user) => {
-      this.#store.dispatch(FeatUserApiActions.setUser({ user }));
-    });
+    // this.#user$$.pipe(filter(Boolean)).subscribe((user) => {
+    //   this.#store.dispatch(FeatUserApiActions.setUser({ user }));
+    // });
 
-    this.#profiles$$.pipe(filter(Boolean)).subscribe((profiles) => {
-      /** @TODO @FIXME add better logic for default profile once multi-profile feature is implemented */
-      const currentProfile = profiles?.[0];
+    // this.#profiles$$.pipe(filter(Boolean)).subscribe((profiles) => {
+    //   /** @TODO @FIXME add better logic for default profile once multi-profile feature is implemented */
+    //   const currentProfile = profiles?.[0];
 
-      if (!currentProfile) {
-        console.error('Major error, we are working on it');
-        return;
-      }
+    //   if (!currentProfile) {
+    //     console.error('Major error, we are working on it');
+    //     return;
+    //   }
 
-      this.#store.dispatch(
-        FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
-      );
-      const followingProfilesIds = currentProfile.following?.map((id) => id);
-      if (followingProfilesIds?.length) {
-        this.#store.dispatch(
-          FeatProfileApiActions.getFollowingProfiles({
-            profileIds: followingProfilesIds.map(({ id }) => id),
-          })
-        );
-      }
-      this.#store.dispatch(FeatProfileApiActions.setProfiles({ profiles }));
-    });
+    //   this.#store.dispatch(
+    //     FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
+    //   );
+
+    //   const followingProfilesIds = currentProfile.following?.map((id) => id);
+    //   if (followingProfilesIds?.length) {
+    //     this.#store.dispatch(
+    //       FeatProfileApiActions.getFollowingProfiles({
+    //         profileIds: followingProfilesIds.map(({ id }) => id),
+    //       })
+    //     );
+    //   }
+    //   this.#store.dispatch(FeatProfileApiActions.setProfiles({ profiles }));
+    // });
   }
 
   init() {
@@ -135,6 +124,20 @@ export class AuthService {
     });
 
     return this.#realmApp;
+  }
+
+  deleteRealmUser() {
+    this.realmUser$
+      .pipe(
+        filter(Boolean),
+        filter(() => !!this.#realmApp),
+        take(1),
+        switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
+      )
+      .subscribe(() => {
+        this.#realmUser$$.next(undefined);
+        this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`);
+      });
   }
 
   async logInAnonymously() {
@@ -163,32 +166,35 @@ export class AuthService {
       redirectUrl: this.redirectUrl,
     });
 
-    return realmApp
-      .logIn(credentials)
-      .then((realmUser) => {
-        this.#realmUser$$.next(realmUser);
-        return this.#getAccountUserProfiles(realmUser);
-      })
-      .then(({ account, user, profiles }) => {
-        if (!account || !user || !profiles) {
-          return this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
-        }
+    return (
+      realmApp
+        .logIn(credentials)
+        .then((realmUser) => {
+          this.#realmUser$$.next(realmUser);
+          return true;
+          // return this.#getAccountUserProfiles(realmUser);
+        })
+        // .then(({ account, user, profiles }) => {
+        //   if (!account || !user || !profiles) {
+        //     return this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
+        //   }
 
-        this.#account$$.next(account);
-        this.#user$$.next(user);
-        this.#profiles$$.next(profiles);
+        //   this.#account$$.next(account);
+        //   this.#user$$.next(user);
+        //   this.#profiles$$.next(profiles);
 
-        // if (!user.experiences?.length) {
-        //   this.#router.navigateByUrl(APP_PATH.AboutYourself);
-        //   return;
-        // }
+        //   // if (!user.experiences?.length) {
+        //   //   this.#router.navigateByUrl(APP_PATH.AboutYourself);
+        //   //   return;
+        //   // }
 
-        return true;
-      })
-      .catch((error) => {
-        console.error('Error logging  in:', error);
-        return false;
-      });
+        //   return true;
+        // })
+        .catch((error) => {
+          console.error('Error logging  in:', error);
+          return false;
+        })
+    );
   }
 
   async logout() {
@@ -222,22 +228,22 @@ export class AuthService {
     // await this.#refreshAccessToken();
 
     this.#realmUser$$.next(realmUser);
-    const { account, user, profiles } = await this.#getAccountUserProfiles(
-      realmUser
-    );
+    // const { account, user, profiles } = await this.#getAccountUserProfiles(
+    //   realmUser
+    // );
 
     /** @TODO @fixme so accounts, users and profiles are not set  */
-    if (
-      (account as any)?.identities?.some(
-        (identity: any) => identity?.provider_type === 'anon-user'
-      )
-    ) {
-      return realmUser;
-    }
+    // if (
+    //   (account as any)?.identities?.some(
+    //     (identity: any) => identity?.provider_type === 'anon-user'
+    //   )
+    // ) {
+    //   return realmUser;
+    // }
 
-    this.#account$$.next(account);
-    this.#user$$.next(user);
-    this.#profiles$$.next(profiles);
+    // this.#account$$.next(account);
+    // this.#user$$.next(user);
+    // this.#profiles$$.next(profiles);
 
     return realmUser;
   }
@@ -248,15 +254,15 @@ export class AuthService {
     await this.#realmApp?.currentUser?.refreshAccessToken();
   }
 
-  async #getAccountUserProfiles(
-    realmUser: Realm.User
-  ): Promise<{ account: Account; user: User; profiles: Array<Profile> }> {
-    return await realmUser.functions['getAccountUserProfiles'](
-      realmUser.id
-    ).then(({ account, user, profiles }) => ({
-      account: dbClientAccountAdapter(account),
-      user: dbClientUserAdapter(user),
-      profiles: profiles.map(dbClientProfileAdapter),
-    }));
-  }
+  // async #getAccountUserProfiles(
+  //   realmUser: Realm.User
+  // ): Promise<{ account: Account; user: User; profiles: Array<Profile> }> {
+  //   return await realmUser.functions['getAccountUserProfiles'](
+  //     realmUser.id
+  //   ).then(({ account, user, profiles }) => ({
+  //     account: dbClientAccountAdapter(account),
+  //     user: dbClientUserAdapter(user),
+  //     profiles: profiles.map(dbClientProfileAdapter),
+  //   }));
+  // }
 }

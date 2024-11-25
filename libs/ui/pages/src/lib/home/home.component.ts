@@ -20,7 +20,10 @@ import {
   FeatTweetTweetyComponent,
 } from '@kitouch/feat-tweet-ui';
 import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
-import { selectCurrentProfileFollowing } from '@kitouch/kit-data';
+import {
+  selectCurrentProfile,
+  selectCurrentProfileFollowing,
+} from '@kitouch/kit-data';
 import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/shared-constants';
 import { Tweety } from '@kitouch/shared-models';
 import {
@@ -34,7 +37,16 @@ import {
 import { Actions, ofType } from '@ngrx/effects';
 import { Store, select } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
-import { BehaviorSubject, map, merge, switchMap, tap, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  distinctUntilKeyChanged,
+  filter,
+  map,
+  merge,
+  switchMap,
+  tap,
+  timer,
+} from 'rxjs';
 
 @Component({
   standalone: true,
@@ -68,6 +80,17 @@ export class PageHomeComponent implements OnInit {
     this.#store.pipe(select(selectCurrentProfileFollowing))
   );
 
+  constructor() {
+    this.#store
+      .pipe(
+        select(selectCurrentProfile),
+        filter(Boolean),
+        distinctUntilKeyChanged('id'),
+        takeUntilDestroyed()
+      )
+      .subscribe(() => this.#store.dispatch(TweetApiActions.getAll()));
+  }
+
   tweetsLoading = signal(true);
   #reloadTweetsDisabled$$ = new BehaviorSubject<boolean>(false);
   reloadTweetsDisabled$ = merge(
@@ -80,8 +103,6 @@ export class PageHomeComponent implements OnInit {
   newlyAddedTweets = signal<Set<Tweety['id']>>(new Set());
 
   ngOnInit(): void {
-    this.#store.dispatch(TweetApiActions.getAll());
-
     this.#actions
       .pipe(
         ofType(FeatTweetActions.tweetSuccess),
