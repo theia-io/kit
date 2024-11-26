@@ -28,8 +28,12 @@
   @if(maxMediaFiles() > 0) {
   <div class="flex gap-2 items-center">
     <ui-kit-pic-uploadable
-      [conf]="{ fileUploadConf: { multiple: true } }"
+      [conf]="{ fileUploadConf: { multiple: maxMediaFiles() !== 1 } }"
       (files)="filesHandler($event)" />
+
+    @if(uploadingMedia()){
+    <ui-kit-spinner />
+    }
 
     <div
       id="uploaded-comment-media-gallery"
@@ -61,10 +65,9 @@
         @if(deleteMediaFilesCb()) {
         <ui-kit-delete
           [background]="true"
-          xOffset="-right-1"
+          xOffset="right-0"
           yOffset="top-0"
           (onDelete)="deleteHandler(media)" />
-
         }
       </a>
       }
@@ -73,7 +76,7 @@
   } @if(commentContentControlRows !== 2) {
   <ui-kit-tweet-button
     class="my-2"
-    text="Comment"
+    [text]="actionBtnText()"
     [iconAnimate]="true"
     [disabled]="!commentContentControl.valid"
     [loader]="false"

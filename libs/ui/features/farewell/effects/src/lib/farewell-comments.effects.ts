@@ -1,14 +1,33 @@
 import { Injectable, inject } from '@angular/core';
 
-import { FeatFarewellCommentActions } from '@kitouch/feat-farewell-data';
+import {
+  FeatFarewellCommentActions,
+  selectFarewellById,
+  selectFarewellCommentById,
+  selectFarewellCommentsById,
+} from '@kitouch/feat-farewell-data';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, forkJoin, map, mergeMap, of, switchMap } from 'rxjs';
+import {
+  catchError,
+  filter,
+  forkJoin,
+  map,
+  mergeMap,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+} from 'rxjs';
 import { FarewellCommentsService } from './farewell-comments.service';
 import { getImageKeyFromS3Url } from './farewell-media.effects';
+import { select, Store } from '@ngrx/store';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
 
 @Injectable()
 export class FarewellCommentsEffects {
+  #store$ = inject(Store);
   #actions$ = inject(Actions);
   #farewellCommentService = inject(FarewellCommentsService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
@@ -104,7 +123,6 @@ export class FarewellCommentsEffects {
   uploadFarewellStorageMedia$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellCommentActions.uploadFarewellCommentStorageMedia),
-
       switchMap(({ farewellId, profileId, items }) =>
         forkJoin(
           items.map(({ key, blob }) =>
@@ -135,7 +153,7 @@ export class FarewellCommentsEffects {
     )
   );
 
-  deleteFarewellStorageMedia$ = createEffect(() =>
+  deleteFarewellCommentStorageMedia$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellCommentActions.deleteFarewellCommentStorageMedia),
       mergeMap(({ url }) =>
@@ -165,4 +183,42 @@ export class FarewellCommentsEffects {
       )
     )
   );
+
+  constructor() {
+    this.#actions$
+      .pipe(
+        takeUntilDestroyed(),
+        ofType(FeatFarewellCommentActions.deleteCommentFarewell),
+        switchMap(({ id }) =>
+          this.#store$.pipe(
+            select(selectFarewellCommentById(id)),
+            take(1),
+            filter(Boolean)
+          )
+        ),
+        switchMap((comment) =>
+          this.#actions$.pipe(
+            ofType(FeatFarewellCommentActions.deleteCommentFarewellSuccess),
+            filter(({ id }) => id === comment.id),
+            take(1),
+            map(() => comment.medias),
+            filter(
+              (medias): medias is Array<ContractUploadedMedia> =>
+                !!medias && medias.length > 0
+            )
+          )
+        )
+      )
+      .subscribe((medias) => {
+        medias.forEach((media) => {
+          [media.url].concat(media.optimizedUrls).forEach((url) =>
+            this.#store$.dispatch(
+              FeatFarewellCommentActions.deleteFarewellCommentStorageMedia({
+                url,
+              })
+            )
+          );
+        });
+      });
+  }
 }

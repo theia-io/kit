@@ -12,5 +12,6 @@ export * from './lib/divider/divider.component';
 export * from './lib/follow-button/follow-button.component';
 export * from './lib/link/link.component';
 export * from './lib/overlay/overlay.component';
+export * from './lib/spinner/spinner.component';
 export * from './lib/tweet-button/tweet-button.component';
 export * from './lib/uploadable/uploadable.component';

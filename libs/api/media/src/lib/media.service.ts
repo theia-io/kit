@@ -1,6 +1,5 @@
 import { S3ApiService } from '@kitouch/s3';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
-import { thru } from 'lodash';
 import sharp from 'sharp';
 
 @Injectable()

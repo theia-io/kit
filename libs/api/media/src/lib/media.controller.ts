@@ -5,7 +5,6 @@ import {
   Controller,
   Delete,
   InternalServerErrorException,
-  Param,
   Post,
   Query,
   UseInterceptors,
@@ -18,8 +17,29 @@ export class MediaController {
   constructor(private mediaService: MediaService) {}
 
   @Post('kudoboard')
+  @UseInterceptors(new RawBodyInterceptor())
   async saveKudoboardMedia(@Query('name') name: string, @Body() media: Buffer) {
-    console.log(name, media);
+    const dimensions = this.#getDimensions(media);
+    const { url, optimizedUrls } = await this.mediaService.upload({
+      bucket: 'kitouch-public-kudoboard',
+      file: media,
+      filePath: name,
+      fileType: dimensions.type ?? name.split('.').reverse()[0],
+    });
+
+    const { height, width } = dimensions;
+    return {
+      height,
+      width,
+      url,
+      optimizedUrls,
+    };
+  }
+
+  @Delete('kudoboard')
+  async deleteKudoBoardMedia(@Query('name') url: string): Promise<boolean> {
+    await this.mediaService.delete('kitouch-public-kudoboard', url);
+    return true;
   }
 
   @Post('farewell')

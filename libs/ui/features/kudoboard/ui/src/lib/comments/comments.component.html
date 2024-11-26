@@ -16,9 +16,13 @@ async)?.recipient;
   [extraIdent]="{ top: 10, right: 35 }">
   <ui-kit-comment-area
     [placeholder]="placeholder()"
+    actionBtnText="Post"
+    [validators]="[commentValidator()]"
+    [maxMediaFiles]="1"
+    [uploadMediaFilesCb]="uploadCommentMediaFiles()"
+    [deleteMediaFilesCb]="deleteCommentMedia()"
     (comment)="commentHandler($event)">
     @if(currentProfile(); as currentProfile) {
-
     <div profile class="mb-4">
       <ui-kit-comp-account-tile
         sharedAuthorizedFeature
@@ -57,21 +61,18 @@ async)?.recipient;
           " />
       </div>
 
-      <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
-
+      @if(comment.medias && comment.medias.length > 0) {
       <div
-        id="uploaded-comment-media-gallery"
-        class="flex gap-2 items-center flex-nowrap overflow-x-auto">
+        id="kudo-posts-media-gallery"
+        class="flex gap-2 items-center flex-nowrap overflow-x-auto mb-3">
         @for (media of comment.medias; track media.url) {
         <a
-          class="block h-16"
+          class="block max-w-[350px]"
           [href]="media.optimizedUrls[0]"
           [attr.data-pswp-width]="media.width"
           [attr.data-pswp-height]="media.height"
           [ngStyle]="{
-            'height.px': 64,
-            'min-width.px':
-              64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+            'max-width.px': mediaWidth(media.width)
           }"
           target="_blank">
           <picture>
@@ -81,16 +82,20 @@ async)?.recipient;
             <img
               referrerpolicy="no-referrer"
               class="rounded"
-              [width]="
-                64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+              [width]="mediaWidth(media.width)"
+              [height]="
+                ((media.height ?? 100) / (media.width ?? 100)) *
+                mediaWidth(media.width)
               "
-              height="64"
               [ngSrc]="media.url"
               alt="Media to the comment" />
           </picture>
         </a>
         }
       </div>
+      }
+
+      <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
 
       @if(currentProfile()?.id && (currentProfile()?.id === kudoboardOwner?.id
       || currentProfile()?.id === comment.profileId)) {

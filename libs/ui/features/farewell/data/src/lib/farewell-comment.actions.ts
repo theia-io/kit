@@ -40,7 +40,7 @@ export const FeatFarewellCommentActions = createActionGroup({
       id: FarewellComment['id'];
     }>(),
     DeleteCommentFarewellFailure: props<{ message: string }>(),
-    // Comment
+    // MEDIA
     UploadFarewellCommentStorageMedia: props<{
       farewellId: string;
       profileId: string;

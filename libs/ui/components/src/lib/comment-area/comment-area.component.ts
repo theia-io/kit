@@ -2,7 +2,9 @@ import { NgOptimizedImage, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
+  effect,
   HostListener,
   inject,
   input,
@@ -21,6 +23,7 @@ import { Observable } from 'rxjs';
 import { UiKitDeleteComponent } from '../delete/delete.component';
 import { UiKitTweetButtonComponent } from '../tweet-button/tweet-button.component';
 import { UiKitPicUploadableComponent } from '../uploadable/uploadable.component';
+import { UiKitSpinnerComponent } from '../spinner/spinner.component';
 
 const CONTROL_INITIAL_ROWS = 2;
 
@@ -47,13 +50,19 @@ export interface AddComment {
     UiKitTweetButtonComponent,
     UiKitPicUploadableComponent,
     UiKitDeleteComponent,
+    UiKitSpinnerComponent,
     //
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UIKitCommentAreaComponent implements AfterViewInit {
   placeholder = input<string>('Got a reply?');
-
+  actionBtnText = input('Comment');
+  validators = input([
+    Validators.required,
+    Validators.minLength(2),
+    Validators.maxLength(1000),
+  ]);
   maxMediaFiles = input<number>(0);
   uploadMediaFilesCb =
     input<(files: Array<File>) => Observable<Array<ContractUploadedMedia>>>();
@@ -74,14 +83,22 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
     }
   }
 
-  commentContentControl = new FormControl<string>('', [
-    Validators.required,
-    Validators.minLength(2),
-    Validators.maxLength(1000),
-  ]);
+  commentContentControl = new FormControl<string>('');
   commentContentControlRows = CONTROL_INITIAL_ROWS;
 
+  // TODO make media part of commentContentControl (Form), so validation can take into account control and media added as one entity
   uploadedMedias = signal<NonNullable<FarewellComment['medias']>>([]);
+
+  uploadingMedia = signal(false);
+
+  constructor() {
+    effect(() => {
+      this.commentContentControl.setValidators(
+        this.validators().map((validator) => validator.bind(this))
+      );
+      this.commentContentControl.updateValueAndValidity();
+    });
+  }
 
   ngAfterViewInit(): void {
     if (this.maxMediaFiles() > 0) {
@@ -96,16 +113,21 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
   commentHandler() {
     const content = this.commentContentControl.value,
       valid = this.commentContentControl.valid;
-    if (!valid || !content) {
+
+    if (!valid) {
       console.warn(
         `[UIKitCommentAreaComponent] content: ${content}, validity: ${valid}.`
       );
       return;
     }
 
-    this.comment.emit({ content, medias: this.uploadedMedias() });
+    this.comment.emit({
+      content: content ?? '',
+      medias: this.uploadedMedias(),
+    });
     this.uploadedMedias.set([]);
     this.commentContentControl.reset();
+    this.commentControlBlur();
   }
 
   filesHandler(files: Array<File>) {
@@ -117,7 +139,11 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
       return;
     }
 
+    this.uploadingMedia.set(true);
+
     uploadFn(files).subscribe((mediaUrls) => {
+      this.uploadingMedia.set(false);
+      this.commentContentControlRows = 4;
       this.uploadedMedias.update((medias) => [...medias, ...mediaUrls]);
     });
   }
@@ -138,10 +164,15 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
     this.uploadedMedias.update((existingMedias) =>
       existingMedias.filter((existingMedia) => existingMedia.url !== media.url)
     );
+
+    this.commentControlBlur();
   }
 
   commentControlBlur() {
-    if (!this.commentContentControl.value?.length) {
+    if (
+      !this.commentContentControl.value?.length &&
+      this.uploadedMedias().length === 0
+    ) {
       this.commentContentControlRows = CONTROL_INITIAL_ROWS;
       return;
     }

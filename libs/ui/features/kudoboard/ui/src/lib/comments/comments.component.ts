@@ -21,7 +21,11 @@ import {
   toObservable,
   toSignal,
 } from '@angular/core/rxjs-interop';
-import { ReactiveFormsModule } from '@angular/forms';
+import {
+  AbstractControl,
+  ReactiveFormsModule,
+  ValidationErrors,
+} from '@angular/forms';
 import {
   AuthorizedFeatureDirective,
   SharedKitUserHintDirective,
@@ -31,6 +35,7 @@ import {
   selectKudoBoardById,
   selectKudoBoardCommentsById,
 } from '@kitouch/data-kudoboard';
+import { getFullS3Url } from '@kitouch/effects-kudoboard';
 
 import {
   profilePicture,
@@ -38,9 +43,15 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { DeviceService } from '@kitouch/shared-infra';
-import { KudoBoardComment } from '@kitouch/shared-models';
-import { MasonryService } from '@kitouch/shared-services';
+import {
+  DeviceService,
+  S3_KUDOBOARD_BUCKET_BASE_URL,
+} from '@kitouch/shared-infra';
+import {
+  ContractUploadedMedia,
+  KudoBoardComment,
+} from '@kitouch/shared-models';
+import { MasonryService, PhotoService } from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -54,6 +65,7 @@ import {
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import Masonry from 'masonry-layout';
+import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -62,6 +74,7 @@ import {
   delay,
   filter,
   map,
+  Observable,
   of,
   shareReplay,
   skip,
@@ -103,12 +116,14 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   canComment = input(false);
 
   #destroyRef = inject(DestroyRef);
-  #actions = inject(Actions);
+  #actions$ = inject(Actions);
   #store = inject(Store);
+  #photoService = inject(PhotoService);
   #deviceService = inject(DeviceService);
   #masonryService = inject(MasonryService);
+  #s3KudoBoardBaseUrl = inject(S3_KUDOBOARD_BUCKET_BASE_URL);
 
-  #createdComment$ = this.#actions.pipe(
+  #createdComment$ = this.#actions$.pipe(
     ofType(FeatKudoBoardCommentActions.postCommentKudoBoardSuccess),
     takeUntilDestroyed()
   );
@@ -214,9 +229,114 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
         );
       }, DEFAULT_ANIMATE_TIMEOUT);
     });
+
+    this.kudoboardComments$
+      .pipe(takeUntilDestroyed(this.#destroyRef), delay(1000))
+      .subscribe(() =>
+        this.#photoService.initializeGallery({
+          gallery: '#kudo-posts-media-gallery',
+          children: 'a',
+          pswpModule: PhotoSwipe,
+        })
+      );
   }
 
-  commentHandler({ content }: AddComment) {
+  commentValidator() {
+    return function (
+      this: UIKitCommentAreaComponent,
+      control: AbstractControl
+    ): ValidationErrors | null {
+      const value = control.value,
+        uploadedMedias = this.uploadedMedias();
+
+      const valueLength = value?.length;
+      const lengthValidity = valueLength >= 2 && valueLength <= 1000;
+
+      if (uploadedMedias.length > 0 && (!valueLength || valueLength <= 1000)) {
+        return null;
+      }
+
+      if (lengthValidity) {
+        return null;
+      }
+
+      return {
+        error:
+          'Field is required and hsa to be at least 2 and no more than 1000',
+      };
+    };
+  }
+
+  uploadCommentMediaFiles(): (
+    images: Array<File>
+  ) => Observable<Array<ContractUploadedMedia>> {
+    const getKudoBoardId = () => this.kudoboardId();
+    const getProfileId = () => this.currentProfile()?.id;
+
+    return (images: Array<File>) => {
+      const profileId = getProfileId() ?? 'anonymous',
+        kudoBoardId = getKudoBoardId();
+
+      const mediaFiles = images;
+
+      if (!kudoBoardId) {
+        console.error(
+          '[saveImages] cannot upload images by unknown profile and KudoBoard',
+          profileId,
+          kudoBoardId
+        );
+        return of([]);
+      }
+
+      setTimeout(() => {
+        const now = new Date();
+        this.#store.dispatch(
+          FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMedia({
+            kudoBoardId,
+            profileId,
+            items: mediaFiles.map((mediaFile) => ({
+              key: `${kudoBoardId}/comments/${profileId}/${now.getTime()}-${
+                mediaFile.name
+              }`,
+              blob: mediaFile,
+            })),
+          })
+        );
+      });
+
+      // TODO add error handling
+      return this.#actions$.pipe(
+        ofType(
+          FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess
+        ),
+        take(1),
+        // AWS S3 bucket has eventual consistency so need a time for it to be available
+        delay(1500),
+        map(({ items }) =>
+          items.map((item) => ({
+            ...item,
+            url: getFullS3Url(this.#s3KudoBoardBaseUrl, item.url),
+            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
+              getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl)
+            ),
+          }))
+        )
+      );
+    };
+  }
+
+  deleteCommentMedia() {
+    return (url: string) => {
+      this.#store.dispatch(
+        FeatKudoBoardCommentActions.deleteKudoBoardCommentStorageMedia({
+          url,
+        })
+      );
+      // TODO add error handling
+    };
+  }
+
+  commentHandler({ content, medias }: AddComment) {
     const currentProfile = this.currentProfile();
 
     this.#store.dispatch(
@@ -225,6 +345,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
           kudoBoardId: this.kudoboardId(),
           profileId: currentProfile?.id ?? null,
           profile: currentProfile,
+          medias,
           content,
         },
       })
@@ -237,6 +358,10 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
         id: commentId,
       })
     );
+  }
+
+  mediaWidth(width = 350) {
+    return Math.min(width, 350);
   }
 
   mediaType(mediaUrl: string) {
