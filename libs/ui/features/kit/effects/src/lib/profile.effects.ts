@@ -14,12 +14,25 @@ import {
   FeatProfileApiActions,
   noopAction,
   selectProfileById,
+  selectProfilesByIds,
 } from '@kitouch/kit-data';
 import { KitTimestamp, Profile } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, of, switchMap, take } from 'rxjs';
+import {
+  bufferTime,
+  catchError,
+  filter,
+  map,
+  merge,
+  of,
+  switchMap,
+  take,
+} from 'rxjs';
 import { ProfileService } from './profile.service';
-import { TweetApiActions } from '@kitouch/feat-tweet-data';
+import {
+  FeatBookmarksActions,
+  TweetApiActions,
+} from '@kitouch/feat-tweet-data';
 import { select, Store } from '@ngrx/store';
 
 @Injectable()
@@ -27,6 +40,31 @@ export class ProfileEffects {
   #store = inject(Store);
   #actions$ = inject(Actions);
   #profileService = inject(ProfileService);
+
+  #profilesForTweet$ = this.#actions$.pipe(
+    ofType(TweetApiActions.get),
+    map(({ profileId }) => profileId),
+    bufferTime(1000),
+    filter((profileIds) => profileIds.length > 0),
+    switchMap((uniqueProfileIds) =>
+      this.#getUnresolvedProfileIds(uniqueProfileIds)
+    ),
+    filter((uniqueProfileIds) => uniqueProfileIds.length > 0)
+  );
+
+  #profilesForBookmarks$ = this.#actions$.pipe(
+    ofType(FeatBookmarksActions.getBookmarksFeed),
+    map(({ bookmarks }) =>
+      bookmarks.map(({ profileIdTweetyOwner }) => profileIdTweetyOwner)
+    ),
+    bufferTime(1000),
+    map((profileIds) => [...new Set(profileIds.flat())]),
+    filter((profileIds) => profileIds.length > 0),
+    switchMap((uniqueProfileIds) =>
+      this.#getUnresolvedProfileIds(uniqueProfileIds)
+    ),
+    filter((uniqueProfileIds) => uniqueProfileIds.length > 0)
+  );
 
   profilesFollowing$ = createEffect(() =>
     this.#actions$.pipe(
@@ -45,21 +83,10 @@ export class ProfileEffects {
     )
   );
 
-  // ensure profiles are resolved through the app
-  tweetProfileExist$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(TweetApiActions.get),
-      switchMap(({ profileId }) =>
-        this.#store.pipe(
-          select(selectProfileById(profileId)),
-          take(1),
-          map((profile) =>
-            profile
-              ? noopAction()
-              : FeatProfileApiActions.getProfiles({ profileIds: [profileId] })
-          )
-        )
-      )
+  // ensure profiles are resolved through the app for tweet
+  resolveProfiles$ = createEffect(() =>
+    merge(this.#profilesForBookmarks$, this.#profilesForTweet$).pipe(
+      map((profileIds) => FeatProfileApiActions.getProfiles({ profileIds }))
     )
   );
 
@@ -175,6 +202,21 @@ export class ProfileEffects {
       )
     )
   );
+
+  #getUnresolvedProfileIds(profileIds: Array<string>) {
+    return this.#store.pipe(
+      select(selectProfilesByIds(profileIds)),
+      map((resolvedProfiles) => {
+        const resolvedProfilesSet = new Set(
+          resolvedProfiles.filter((v) => !!v).map(({ id }) => id)
+        );
+        return profileIds.filter(
+          (profileId) => !resolvedProfilesSet.has(profileId)
+        );
+      }),
+      take(1)
+    );
+  }
 }
 
 // TODO test this
