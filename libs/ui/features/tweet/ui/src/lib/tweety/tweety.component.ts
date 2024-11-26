@@ -29,6 +29,7 @@ import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitDeleteComponent,
+  UiKitSpinnerComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
@@ -63,6 +64,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     FeatTweetActionsComponent,
     UiKitTweetButtonComponent,
     UiKitDeleteComponent,
+    UiKitSpinnerComponent,
   ],
 })
 export class FeatTweetTweetyComponent {

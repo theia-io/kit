@@ -1,17 +1,22 @@
-@if(tweet(); as tweet) { @if(tweetIsRetweetFn(tweet) && retweetProfile(); as
-retweetProfile) {
+@if(tweet(); as tweet) {
+<!-- Retweet header -->
+@if(tweetIsRetweetFn(tweet) && retweetProfile(); as retweetProfile) {
 <feat-tweet-retweet-header
   [currentProfileId]="currentProfile()?.id"
   [tweet]="tweet"
   [retweetProfile]="retweetProfile"
   [tweetProfile]="tweetProfile()" />
-} @if(tweetProfile(); as tProfile) {
+}
+<!-- Tweet profile -->
+@if(tweetProfile(); as tProfile) {
 <ui-kit-comp-account-tile
   [primaryText]="tProfile.name"
   [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
   [secondaryText]="tProfile.type"
   [picture]="tProfile.pictures?.[0]?.url"
   [link]="profileUrlPath + tProfile.id" />
+} @else {
+<ui-kit-spinner size="h-10 w-10" />
 }
 
 <div class="pt-1 pl-6">
