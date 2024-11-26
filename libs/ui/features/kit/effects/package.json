@@ -13,7 +13,10 @@
     "@kitouch/feat-follow-data": "1.0.0-beta",
     "@kitouch/feat-farewell-data": "1.0.0-beta",
     "@kitouch/data-kudoboard": "0.0.1",
-    "@kitouch/shared-infra": "0.0.1"
+    "@kitouch/shared-infra": "0.0.1",
+    "@angular/router": "18.2.6",
+    "@kitouch/shared-constants": "0.0.1",
+    "@kitouch/feat-tweet-data": "1.0.0-beta"
   },
   "sideEffects": false
 }
