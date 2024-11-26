@@ -2,7 +2,7 @@ import { AsyncPipe, CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
-  FeatTweetBookmarkActions,
+  FeatBookmarksActions,
   selectAllTweets,
   selectBookmarks,
 } from '@kitouch/feat-tweet-data';
@@ -70,7 +70,7 @@ export class PageBookmarksComponent {
       )
       .subscribe((bookmarks) => {
         this.#store.dispatch(
-          FeatTweetBookmarkActions.getBookmarksFeed({ bookmarks })
+          FeatBookmarksActions.getBookmarksFeed({ bookmarks })
         );
       });
   }

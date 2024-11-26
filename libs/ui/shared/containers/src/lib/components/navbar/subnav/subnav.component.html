@@ -107,7 +107,7 @@
           [routerLink]="introducingKitFarewell()"
           uiKitSmallTextTailwindClasses
           class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
-          What is KIT?
+          How it works? 🤔
         </a>
       </li>
     </ul>
@@ -118,7 +118,8 @@
       Profile
     </strong>
     <ul class="mt-2 space-y-1">
-      <li>
+      <!-- TODO Implement better suggestion mechanism -->
+      <!-- <li>
         <a
           uiKitSmallTextTailwindClasses
           class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
@@ -127,7 +128,7 @@
           [routerLinkActiveOptions]="{ exact: true }">
           Find colleagues
         </a>
-      </li>
+      </li> -->
       <li>
         <button
           (click)="logout.emit()"

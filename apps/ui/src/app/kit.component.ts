@@ -1,4 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
   LayoutComponent,
@@ -11,7 +12,8 @@ import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { OUTLET_DIALOG } from '@kitouch/shared-constants';
 
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
+import { filter, distinctUntilKeyChanged } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -48,16 +50,25 @@ import { Store } from '@ngrx/store';
     </shared-layout>
   `,
 })
-export class KitComponent implements OnInit {
+export class KitComponent {
   #store = inject(Store);
 
   profile = this.#store.selectSignal(selectCurrentProfile);
 
   readonly outletSecondary = OUTLET_DIALOG;
 
-  ngOnInit(): void {
-    /** Data that will be required across all app */
-    // this.#store.dispatch(FeatTweetBookmarkActions.getAll());
-    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
+  constructor() {
+    this.#store
+      .pipe(
+        select(selectCurrentProfile),
+        filter(Boolean),
+        distinctUntilKeyChanged('id'),
+        takeUntilDestroyed()
+      )
+      .subscribe(() =>
+        this.#store.dispatch(
+          FeatFollowActions.getSuggestionColleaguesToFollow()
+        )
+      );
   }
 }

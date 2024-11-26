@@ -1,6 +1,6 @@
 import { Bookmark } from '@kitouch/shared-models';
 import { createReducer, on } from '@ngrx/store';
-import { FeatTweetBookmarkActions } from './bookmark.actions';
+import { FeatBookmarksActions } from './bookmark.actions';
 import { mergeArr } from '@kitouch/utils';
 
 export interface FeatureBookmarkState {
@@ -16,17 +16,17 @@ const featBookmarkInitialState: FeatureBookmarkState = {
 
 export const featTweetBookmarkReducer = createReducer(
   featBookmarkInitialState,
-  on(FeatTweetBookmarkActions.getAllSuccess, (state, { bookmarks }) => ({
+  on(FeatBookmarksActions.getAllSuccess, (state, { bookmarks }) => ({
     ...state,
     bookmarks,
   })),
-  on(FeatTweetBookmarkActions.bookmarkSuccess, (state, { bookmark }) => ({
+  on(FeatBookmarksActions.bookmarkSuccess, (state, { bookmark }) => ({
     ...state,
     bookmarks: mergeArr([bookmark], state.bookmarks),
     // tweets: mergeArr(state.tweets, )
   })),
   on(
-    FeatTweetBookmarkActions.removeBookmarkSuccess,
+    FeatBookmarksActions.removeBookmarkSuccess,
     (state, { tweetId, profileId }) => ({
       ...state,
       bookmarks: state.bookmarks.filter(
@@ -37,7 +37,7 @@ export const featTweetBookmarkReducer = createReducer(
     })
   ),
   on(
-    FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved,
+    FeatBookmarksActions.removeBookmarkAsTweetRemoved,
     (state, { tweetId }) => ({
       ...state,
       bookmarks: state.bookmarks.filter(

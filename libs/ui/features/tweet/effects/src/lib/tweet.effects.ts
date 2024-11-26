@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import {
   FeatTweetActions,
-  FeatTweetBookmarkActions,
+  FeatBookmarksActions,
   TweetApiActions,
   tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
@@ -68,7 +68,7 @@ export class TweetsEffects {
 
   bookmarkFeedSuccess$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatTweetBookmarkActions.getBookmarksFeedSuccess),
+      ofType(FeatBookmarksActions.getBookmarksFeedSuccess),
       map(({ tweets }) =>
         TweetApiActions.getTweetsForBookmarkSuccess({ tweets })
       )

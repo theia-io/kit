@@ -17,7 +17,7 @@ import { Router, RouterModule } from '@angular/router';
 import {
   FeatReTweetActions,
   FeatTweetActions,
-  FeatTweetBookmarkActions,
+  FeatBookmarksActions,
   selectIsBookmarked,
   selectTweet,
   tweetIsLikedByProfile,
@@ -236,11 +236,11 @@ export class FeatTweetTweetyComponent {
     const bookmarked = this.tweetBookmarked();
     if (bookmarked) {
       this.#store.dispatch(
-        FeatTweetBookmarkActions.removeBookmark({ tweetId: tweet.id })
+        FeatBookmarksActions.removeBookmark({ tweetId: tweet.id })
       );
     } else {
       this.#store.dispatch(
-        FeatTweetBookmarkActions.bookmark({
+        FeatBookmarksActions.bookmark({
           tweetId: tweet.id,
           profileIdTweetyOwner: tweet.profileId,
         })

@@ -52,7 +52,7 @@ export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
   {
-    label: 'Kudoboards',
+    label: 'Kudo boards',
     routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
     icon: 'pi pi-sparkles',
     iconClass: 'text-lg font-semibold',
