@@ -1,6 +1,6 @@
 import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
   FeatFarewellActions,
@@ -13,11 +13,13 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
+import { objectLoadingState$ } from '@kitouch/shared-services';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
+import { ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -88,6 +90,17 @@ export class PageFarewellAllComponent {
   );
 
   farewellStatus = FarewellStatus;
+
+  // farewellsLoadingState = toSignal(
+  //   objectLoadingState$<Farewell>({
+  //     loadingAction$: (actions) =>
+  //       actions.pipe(ofType(FeatFarewellActions.getProfileFarewells)),
+  //     loadedAction$: (actions) =>
+  //       actions.pipe(ofType(FeatFarewellActions.getFarewellsSuccess)),
+  //     loadingErrorAction$: (actions) =>
+  //       actions.pipe(ofType(FeatFarewellActions.getFarewellsFailure)),
+  //   })
+  // );
 
   constructor() {
     this.#currentProfile$.subscribe(({ id }) =>

@@ -17,9 +17,20 @@ export class FarewellEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getProfileFarewells),
       switchMap(({ profileId }) =>
-        this.#farewellService.getFarewells(profileId)
-      ),
-      map((farewells) => FeatFarewellActions.getFarewellsSuccess({ farewells }))
+        this.#farewellService.getFarewells(profileId).pipe(
+          map((farewells) =>
+            FeatFarewellActions.getFarewellsSuccess({ farewells })
+          ),
+          catchError(() =>
+            of(
+              FeatFarewellActions.getFarewellsFailure({
+                message:
+                  'It is not you, it is us. Cannot load profile farewells, try again later.',
+              })
+            )
+          )
+        )
+      )
     )
   );
 
