@@ -5,11 +5,12 @@
   "scripts": {
     "graph": "nx graph",
     "dev": "nx run ui:serve",
-    "dev:api-hmr": "nx run api:serve --configuration=hmr",
     "dev:ssr": "nx run ui:serve-ssr",
+    "dev:api-hmr": "nx run api:serve --configuration=hmr",
     "build:dev": "nx run ui:build --configuration=development",
     "build": "nx run ui:build --prod",
     "build:affected": "nx affected --base=origin/main -t build",
+    "build:api": "nx run api:build --configuration=production",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "prettier --write --ignore-unknown .",
     "lint": "nx affected --base=origin/main -t lint",
