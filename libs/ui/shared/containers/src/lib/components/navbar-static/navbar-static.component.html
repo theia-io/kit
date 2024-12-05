@@ -4,7 +4,7 @@
   <!-- Logged in user -->
   @if(userLoggedIn()) {
   <!-- Desktop -->
-  @if ((deviceService.device$ | async) === DeviceTypes.Desktop) { @for (navItem
+  @if ((deviceService.device$ | async) === deviceTypes.Desktop) { @for (navItem
   of navBarItems; track $index) {
   <a
     [routerLink]="navItem.routerLink"
@@ -34,13 +34,75 @@
     Sign in
   </a>
 
-  <!-- <a
-    [routerLink]="introduceKitUrl"
-    routerLinkActive="bg-slate-200 rounded text-gray-900"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2">
-    Solutions, Features
-  </a> -->
+  } @if((deviceService.device$ | async) !== deviceTypes.Mobile) {
+  <p-button
+    [text]="true"
+    (onClick)="handleFeaturesClick($event)"
+    class="px-4 py-2"
+    [styleClass]="
+      (featuresOpened() ? 'text-gray-900' : 'text-gray-500') +
+      ' duration-100 rounded-lg font-medium [text-align:_inherit] text-sm hover:text-gray-700'
+    ">
+    Features
+    <i
+      class="pi text-xs ml-1"
+      [ngClass]="[featuresOpened() ? 'pi-chevron-up' : 'pi-chevron-down']"></i>
+  </p-button>
+  <p-overlayPanel
+    #op
+    (onHide)="featuresOpened.set(false)"
+    (onShow)="featuresOpened.set(true)">
+    <ul>
+      <li>
+        <a
+          [routerLink]="featuresConnectedUrl"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          uiKitSmallTextTailwindClasses
+          class="block px-4 py-2">
+          Connected
+
+          <br />
+          <span
+            uiKitSmallTextTailwindClasses
+            [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
+            Stay connected with your colleagues.
+          </span>
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="loginUrl"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          uiKitSmallTextTailwindClasses
+          class="block px-4 py-2">
+          Kudo boards
+
+          <br />
+          <span
+            uiKitSmallTextTailwindClasses
+            [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
+            Say Kudo to your colleagues, friends or family! Manage at ease
+          </span>
+        </a>
+      </li>
+      <li>
+        <a
+          [routerLink]="loginUrl"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          uiKitSmallTextTailwindClasses
+          class="block px-4 py-2">
+          Farewell
+
+          <br />
+          <span
+            uiKitSmallTextTailwindClasses
+            [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
+            No more farewell hassle. Manage at your time.
+          </span>
+        </a>
+      </li>
+    </ul>
+  </p-overlayPanel>
   }
 
   <a

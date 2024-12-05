@@ -5,7 +5,11 @@ import {
   AuthorizedFeatureDirective,
   SharedKitUserHintDirective,
 } from '@kitouch/containers';
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import {
+  APP_PATH,
+  APP_PATH_ALLOW_ANONYMOUS,
+  APP_PATH_STATIC_PAGES,
+} from '@kitouch/shared-constants';
 import { DeviceService } from '@kitouch/shared-infra';
 import {
   KlassOverwrite,
@@ -15,6 +19,7 @@ import {
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { map, startWith } from 'rxjs';
+import { PagesFeatureConnectedBenefitsComponent } from '../features/connected/benefits.component';
 
 @Component({
   standalone: true,
@@ -30,6 +35,7 @@ import { map, startWith } from 'rxjs';
     CardModule,
     TooltipModule,
     //
+    PagesFeatureConnectedBenefitsComponent,
     UIKitSmallerHintTextUXDirective,
     SharedKitUserHintDirective,
     AuthorizedFeatureDirective,

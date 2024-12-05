@@ -1,0 +1,19 @@
+<div class="text-center">
+  <p class="font-bold">
+    {{ name() }}
+  </p>
+
+  <p class="mt-12 text-6xl font-semibold">
+    {{ title() }}.
+
+    <span class="text-amber-700">{{ name() }}.</span>
+  </p>
+
+  <a
+    [routerLink]="homeUrl"
+    uiKitSmallTextTailwindClasses
+    [klasses]="getStartedKlassOverwrite"
+    class="inline-block mt-12 px-10 py-5 ml-auto bg-slate-700 rounded text-gray-900">
+    Get Started
+  </a>
+</div>

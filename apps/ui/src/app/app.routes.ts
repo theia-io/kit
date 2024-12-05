@@ -34,6 +34,17 @@ export const appRoutes: Route[] = [
         redirectTo: APP_PATH_STATIC_PAGES.IntroduceKit,
       },
       {
+        path: APP_PATH_STATIC_PAGES.Features,
+        loadComponent: () => pages.then((comp) => comp.PagesFeatureComponent),
+        children: [
+          {
+            path: APP_PATH_STATIC_PAGES.FeaturesConnected,
+            loadComponent: () =>
+              pages.then((comp) => comp.PagesFeatureConnectedComponent),
+          },
+        ],
+      },
+      {
         path: APP_PATH_STATIC_PAGES.SignIn,
         loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
         canActivate: [onlyForNotLoggedInGuard],

@@ -1,11 +1,18 @@
-import { Component, inject, input, OnDestroy } from '@angular/core';
+import { AsyncPipe, NgClass } from '@angular/common';
+import {
+  Component,
+  inject,
+  input,
+  OnDestroy,
+  signal,
+  ViewChild,
+} from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-
-import { AsyncPipe } from '@angular/common';
+import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 
 import {
   APP_PATH,
@@ -15,12 +22,16 @@ import {
 import { Device, DeviceService } from '@kitouch/shared-infra';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
+import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
   imports: [
     RouterModule,
     AsyncPipe,
+    NgClass,
+    OverlayPanelModule,
+    ButtonModule,
     //
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
@@ -37,7 +48,9 @@ export class SharedNavBarStaticComponent implements OnDestroy {
 
   #navbarService = inject(NavbarService);
   deviceService = inject(DeviceService);
-  DeviceTypes = Device;
+
+  @ViewChild(OverlayPanel)
+  opEl: OverlayPanel;
 
   navBarItems = DESKTOP_NAV_ITEMS.filter(
     (navItem) =>
@@ -46,9 +59,13 @@ export class SharedNavBarStaticComponent implements OnDestroy {
         navItem.routerLink
       )
   );
+  featuresOpened = signal(false);
+
+  deviceTypes = Device;
   homeUrl = `/${APP_PATH.Home}`;
   loginUrl = `/s/${APP_PATH_STATIC_PAGES.SignIn}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  featuresConnectedUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {
@@ -60,6 +77,15 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   ngOnDestroy(): void {
     if (this._sysUpdatePrimengHighlight()) {
       this.#navbarService.triggerPrimengHighlight$.next();
+    }
+  }
+
+  handleFeaturesClick(event: Event) {
+    const opened = this.featuresOpened();
+    if (opened) {
+      this.opEl.hide();
+    } else {
+      this.opEl.show(event);
     }
   }
 }
