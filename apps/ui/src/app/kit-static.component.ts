@@ -1,7 +1,10 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { SharedNavBarStaticComponent } from '@kitouch/containers';
+import {
+  SharedNavBarStaticComponent,
+  SharedStaticInfoComponent,
+} from '@kitouch/containers';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { AuthService } from '@kitouch/shared-infra';
 import { select, Store } from '@ngrx/store';
@@ -13,6 +16,7 @@ import { select, Store } from '@ngrx/store';
     RouterModule,
     //
     SharedNavBarStaticComponent,
+    SharedStaticInfoComponent,
   ],
   selector: 'app-kitouch-static',
   styles: `
@@ -22,12 +26,18 @@ import { select, Store } from '@ngrx/store';
     min-height: 100vh; 
   }
   `,
-  template: `<shared-navbar-static
-      [userLoggedIn]="!!(currentProfile$ | async)"
-    />
+  template: `
+    <shared-navbar-static [userLoggedIn]="!!(currentProfile$ | async)" />
     <div class="flex-grow flex flex-col">
       <router-outlet></router-outlet>
-    </div>`,
+    </div>
+    <div class="w-full bg-secondary">
+      <shared-static-info
+        [slim]="true"
+        class="container flex items-center justify-end gap-4 mx-auto"
+      />
+    </div>
+  `,
 })
 export class KitStaticComponent {
   currentProfile$ = inject(Store).pipe(select(selectCurrentProfile));

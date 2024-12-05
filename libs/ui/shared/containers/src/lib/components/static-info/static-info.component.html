@@ -1,4 +1,4 @@
-<div class="flex-1">
+<div [class.flex-1]="!slim()">
   <p class="text-sm leading-6 font-medium text-gray-500">
     <a
       [routerLink]="termsAndConditionsUrl"
@@ -18,11 +18,10 @@
     </a>
   </p>
 </div>
-<div class="flex-2 mt-2">
+<div [ngClass]="[!slim() ? 'flex-2 mt-2' : '']">
   <p class="text-sm leading-6 font-medium text-gray-600">
-    © {{ year }} Theia B.V.
+    © {{ year }} Theia B.V. @if(!slim()) {
     <br />
-    All rights reserved.
+    } All rights reserved.
   </p>
-  <!-- <p class="text-sm leading-6 font-medium text-gray-600">Kitouch product</p> -->
 </div>

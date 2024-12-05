@@ -5,7 +5,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   template: `
     <div class="flex flex-col w-full bg-secondary">
-      <div class="container mx-auto"><router-outlet /></div>
+      <div class="container mx-auto py-4"><router-outlet /></div>
     </div>
   `,
   styles: [
