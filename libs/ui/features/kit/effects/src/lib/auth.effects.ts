@@ -19,7 +19,7 @@ export class AuthEffects {
   #authService = inject(AuthService);
   #authDataService = inject(AuthDataService);
 
-  #loggedInWithRealm$ = this.#authService.realmUser$.pipe(
+  #loggedInWithRealm$ = this.#authService.realmLoggedUser$.pipe(
     filter(Boolean),
     switchMap((realmUser) =>
       this.#authDataService.getAccountUserProfiles(realmUser)

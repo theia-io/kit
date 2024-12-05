@@ -5,7 +5,6 @@
   "scripts": {
     "graph": "nx graph",
     "dev": "nx run ui:serve",
-    "dev:ssr": "nx run ui:serve-ssr",
     "dev:api-hmr": "nx run api:serve --configuration=hmr",
     "build:dev": "nx run ui:build --configuration=development",
     "build": "nx run ui:build --prod",

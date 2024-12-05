@@ -30,8 +30,10 @@ import { NavbarService } from '../navbar/navbar.service';
   templateUrl: './navbar-static.component.html',
 })
 export class SharedNavBarStaticComponent implements OnDestroy {
-  fullBar = input(false);
-  updatePrimengHighlight = input(false);
+  userLoggedIn = input.required<boolean>();
+  hideLogin = input(false);
+  /** This is system variable and can be considered to be removed */
+  _sysUpdatePrimengHighlight = input(false);
 
   #navbarService = inject(NavbarService);
   deviceService = inject(DeviceService);
@@ -45,6 +47,7 @@ export class SharedNavBarStaticComponent implements OnDestroy {
       )
   );
   homeUrl = `/${APP_PATH.Home}`;
+  loginUrl = `/s/${APP_PATH_STATIC_PAGES.SignIn}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 
   getStartedKlassOverwrite: KlassOverwrite = {
@@ -55,7 +58,7 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   };
 
   ngOnDestroy(): void {
-    if (this.updatePrimengHighlight()) {
+    if (this._sysUpdatePrimengHighlight()) {
       this.#navbarService.triggerPrimengHighlight$.next();
     }
   }

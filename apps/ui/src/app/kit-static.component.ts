@@ -22,7 +22,9 @@ import { select, Store } from '@ngrx/store';
     min-height: 100vh; 
   }
   `,
-  template: `<shared-navbar-static [fullBar]="!!(currentProfile$ | async)" />
+  template: `<shared-navbar-static
+      [userLoggedIn]="!!(currentProfile$ | async)"
+    />
     <div class="flex-grow flex flex-col">
       <router-outlet></router-outlet>
     </div>`,

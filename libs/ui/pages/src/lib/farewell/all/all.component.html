@@ -1,5 +1,4 @@
-<!-- <div class="text-4xl text-center mb-12">Your farewells</div> -->
-<!-- TODO add example on how to create good farewell -->
+<feat-farewell-intro class="block mb-6 mx-12" />
 
 @for (farewell of farewells$ | async; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">

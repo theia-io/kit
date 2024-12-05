@@ -82,9 +82,7 @@
   kudoBoardFormGroup.get('status')?.value;
 
   <ng-template #statusTmpl let-bigButton let-withHint="withHint">
-    @if(withHint) {
-    <p>Update status:</p>
-    } @if(status === kudoBoardStatus.Published) {
+    @if(status === kudoBoardStatus.Published) {
     <button
       pButton
       [ngClass]="[bigButton ? '' : 'py-0 px-2']"

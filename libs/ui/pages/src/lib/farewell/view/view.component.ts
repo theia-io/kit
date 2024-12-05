@@ -38,7 +38,6 @@ import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
-import { TagModule } from 'primeng/tag';
 import {
   combineLatest,
   distinctUntilChanged,
@@ -57,7 +56,6 @@ import {
     RouterModule,
     //
     ButtonModule,
-    TagModule,
     BreadcrumbModule,
     SidebarModule,
     //

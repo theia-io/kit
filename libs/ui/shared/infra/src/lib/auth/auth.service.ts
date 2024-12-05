@@ -4,7 +4,16 @@ import { Account, Profile, User } from '@kitouch/shared-models';
 
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import * as Realm from 'realm-web';
-import { BehaviorSubject, filter, from, map, of, switchMap, take } from 'rxjs';
+import {
+  BehaviorSubject,
+  filter,
+  from,
+  map,
+  of,
+  shareReplay,
+  switchMap,
+  take,
+} from 'rxjs';
 import { ENVIRONMENT } from '../environments';
 
 @Injectable({
@@ -31,6 +40,13 @@ export class AuthService {
   // essential of the store
   anonymousUser$ = this.#anonymousUser$$.asObservable();
   realmUser$ = this.#realmUser$$.asObservable();
+  realmLoggedUser$ = this.realmUser$.pipe(
+    filter((user) => !!user && user.providerType !== 'anon-user'),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
+  );
   /** @deprecated get current profile from Store */
   currentProfile$ = this.#profiles$$.asObservable().pipe(
     map((profiles) => profiles?.[0]),
@@ -50,7 +66,11 @@ export class AuthService {
     map(
       (user) => !!user && user.providerType !== 'anon-user'
       // && user.identities?.some(identity => identity.providerType !== 'anon-user')
-    )
+    ),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
   );
 
   constructor() {

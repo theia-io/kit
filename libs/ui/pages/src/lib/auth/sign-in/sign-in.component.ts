@@ -5,12 +5,16 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   SignInGoogleComponent,
   slideInOutAnimation,
 } from '@kitouch/containers';
+import { FeatFarewellIntoComponent } from '@kitouch/feat-farewell-ui';
+import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { RouterEventsService } from '@kitouch/shared-infra';
+import { UiCompGradientCardComponent } from '@kitouch/ui-components';
+import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
 import { take } from 'rxjs';
 
@@ -22,10 +26,14 @@ const ANIMATION_REPEAT = 10000;
   styleUrls: ['./sign-in.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
+    RouterModule,
     //
     TagModule,
     //
     SignInGoogleComponent,
+    UiCompGradientCardComponent,
+    FeatFarewellIntoComponent,
+    FeatKudoBoardIntoComponent,
   ],
   animations: [slideInOutAnimation],
 })
@@ -35,6 +43,8 @@ export class PageSignInComponent implements OnInit {
 
   kittenVisibleTimeout: NodeJS.Timeout;
   kittenVisible = signal<'in' | 'out'>('out');
+
+  readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 
   handleGoogleSignIn(signedIn: boolean) {
     if (signedIn) {

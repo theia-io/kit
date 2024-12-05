@@ -12,6 +12,6 @@ COPY . .
 
 RUN npm run build:api
 
-EXPOSE 3000 
+EXPOSE 80 
 
 CMD ["node", "dist/apps/api/main.js"] 

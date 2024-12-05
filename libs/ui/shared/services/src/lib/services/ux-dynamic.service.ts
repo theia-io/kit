@@ -1,6 +1,6 @@
 import { Injectable, signal } from '@angular/core';
 
-const STATIC_MEDIA = 'logo/handshake-s-small.png';
+const STATIC_MEDIA = 'logo/lorenz-system-small.png';
 type LogoMedia = 'static' | 'handshake' | 'hello' | 'ok' | 'done';
 
 @Injectable({

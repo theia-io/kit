@@ -1,7 +1,8 @@
 <div class="p-4 flex items-center nav-shadow">
-  <shared-logo class="block mr-16" />
+  <shared-logo class="block mr-4" />
 
-  @if(fullBar()) {
+  <!-- Logged in user -->
+  @if(userLoggedIn()) {
   <!-- Desktop -->
   @if ((deviceService.device$ | async) === DeviceTypes.Desktop) { @for (navItem
   of navBarItems; track $index) {
@@ -20,20 +21,38 @@
     routerLinkActive="bg-slate-200 rounded text-gray-900"
     uiKitSmallTextTailwindClasses
     class="px-4 py-2">
-    Home
+    Feed
   </a>
   } }
+  <!-- Not logged in user -->
+  @else if(!hideLogin()) {
+  <a
+    [routerLink]="loginUrl"
+    routerLinkActive="bg-slate-200 rounded text-gray-900"
+    uiKitSmallTextTailwindClasses
+    class="px-4 py-2">
+    Sign in
+  </a>
+
+  <!-- <a
+    [routerLink]="introduceKitUrl"
+    routerLinkActive="bg-slate-200 rounded text-gray-900"
+    uiKitSmallTextTailwindClasses
+    class="px-4 py-2">
+    Solutions, Features
+  </a> -->
+  }
 
   <a
     [routerLink]="introduceKitUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
     uiKitSmallTextTailwindClasses
     class="px-4 py-2"
-    [class.ml-2]="fullBar()">
+    [class.ml-4]="userLoggedIn()">
     How it works? 🤔
   </a>
 
-  @if(!fullBar()) {
+  @if(!userLoggedIn() && !hideLogin()) {
   <a
     [routerLink]="homeUrl"
     uiKitSmallTextTailwindClasses

@@ -64,9 +64,7 @@
   @let status = farewellFormGroup.get('status')?.value; @let id = farewellId();
 
   <ng-template #statusTmpl let-bigButton let-withHint="withHint">
-    @if(withHint) {
-    <p>Update status:</p>
-    } @if(status === farewellStatus.Published) {
+    @if(status === farewellStatus.Published) {
     <button
       pButton
       [ngClass]="[bigButton ? '' : 'py-0 px-2']"

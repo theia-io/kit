@@ -14,7 +14,6 @@ import { Router } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
 import { SidebarModule } from 'primeng/sidebar';
-import { TagModule } from 'primeng/tag';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs';
 
 import {
@@ -51,7 +50,6 @@ const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
     AsyncPipe,
     //
     MenuModule,
-    TagModule,
     ButtonModule,
     SidebarModule,
     /** Features */

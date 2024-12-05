@@ -4,7 +4,9 @@
   [fullScreen]="true"
   (onHide)="redirectToLatest()">
   <ng-template pTemplate="headless">
-    <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
+    <shared-navbar-static
+      [userLoggedIn]="!!currentProfile()"
+      [_sysUpdatePrimengHighlight]="true" />
     <ui-kit-delete
       xOffset="right-4"
       yOffset="top-4"

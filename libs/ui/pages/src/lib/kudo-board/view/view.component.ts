@@ -35,7 +35,6 @@ import { select, Store } from '@ngrx/store';
 import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
 
 import { AuthorizedFeatureDirective } from '@kitouch/containers';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
@@ -74,7 +73,6 @@ import {
     RouterModule,
     //
     ButtonModule,
-    TagModule,
     BreadcrumbModule,
     ToastModule,
     //
