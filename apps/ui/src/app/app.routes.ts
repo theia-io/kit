@@ -42,6 +42,16 @@ export const appRoutes: Route[] = [
             loadComponent: () =>
               pages.then((comp) => comp.PagesFeatureConnectedComponent),
           },
+          {
+            path: APP_PATH_STATIC_PAGES.FeaturesFarewell,
+            loadComponent: () =>
+              pages.then((comp) => comp.PagesFeatureFarewellComponent),
+          },
+          {
+            path: APP_PATH_STATIC_PAGES.FeaturesKudoboard,
+            loadComponent: () =>
+              pages.then((comp) => comp.PagesFeatureKudoBoardComponent),
+          },
         ],
       },
       {

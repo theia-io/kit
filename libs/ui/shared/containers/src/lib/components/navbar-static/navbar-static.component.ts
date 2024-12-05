@@ -20,9 +20,9 @@ import {
   DESKTOP_NAV_ITEMS,
 } from '@kitouch/shared-constants';
 import { Device, DeviceService } from '@kitouch/shared-infra';
+import { ButtonModule } from 'primeng/button';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
-import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
   standalone: true,
@@ -66,6 +66,8 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   loginUrl = `/s/${APP_PATH_STATIC_PAGES.SignIn}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   featuresConnectedUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
+  featuresKudoboardUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesKudoboard}`;
+  featuresFarewellUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {

@@ -1,7 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
-import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
 import { CardModule } from 'primeng/card';
 
 @Component({
@@ -9,16 +8,7 @@ import { CardModule } from 'primeng/card';
   selector: 'kit-page-feature-connected-page-benefits',
   template: `
     <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-      Connected @if(showLink()) {
-      <a
-        [routerLink]="featuresConnectedUrl"
-        routerLinkActive="bg-slate-200 rounded text-gray-900"
-        uiKitSmallTextTailwindClasses
-        class="px-4 py-2"
-      >
-        More...
-      </a>
-      }
+      <a [routerLink]="featuresConnectedUrl"> Connected </a>
     </h2>
     <p class="mt-2">Stay connected with your colleagues.</p>
 
@@ -61,12 +51,8 @@ import { CardModule } from 'primeng/card';
     RouterModule,
     //
     CardModule,
-    //
-    UIKitSmallerHintTextUXDirective,
   ],
 })
 export class PagesFeatureConnectedBenefitsComponent {
-  showLink = input(false);
-
   featuresConnectedUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
 }

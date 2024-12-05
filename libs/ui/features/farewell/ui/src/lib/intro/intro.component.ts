@@ -25,7 +25,7 @@ import { ButtonModule } from 'primeng/button';
 export class FeatFarewellIntoComponent {
   withHint = input(false);
 
-  introduceKit = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  featuresFarewellUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
 
   watchVideo() {

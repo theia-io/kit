@@ -1,15 +1,7 @@
 import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  AuthorizedFeatureDirective,
-  SharedKitUserHintDirective,
-} from '@kitouch/containers';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  APP_PATH_STATIC_PAGES,
-} from '@kitouch/shared-constants';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { DeviceService } from '@kitouch/shared-infra';
 import {
   KlassOverwrite,
@@ -18,8 +10,10 @@ import {
 
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
-import { map, startWith } from 'rxjs';
+import { map } from 'rxjs';
 import { PagesFeatureConnectedBenefitsComponent } from '../features/connected/benefits.component';
+import { PagesFeatureFarewellBenefitsComponent } from '../features/farewell/benefits.component';
+import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/benefits.component';
 
 @Component({
   standalone: true,
@@ -36,23 +30,15 @@ import { PagesFeatureConnectedBenefitsComponent } from '../features/connected/be
     TooltipModule,
     //
     PagesFeatureConnectedBenefitsComponent,
+    PagesFeatureFarewellBenefitsComponent,
+    PagesFeatureKudoBoardBenefitsComponent,
     UIKitSmallerHintTextUXDirective,
-    SharedKitUserHintDirective,
-    AuthorizedFeatureDirective,
   ],
 })
 export class KitPagesIntroduceKitComponent {
-  #deviceService = inject(DeviceService);
-
-  extraLarge$ = this.#deviceService.innerWidth$.pipe(
+  extraLarge$ = inject(DeviceService).innerWidth$.pipe(
     map((width) => width >= 1320)
   );
-
-  $hintHidden = this.#deviceService.isMobile$.pipe(startWith(true));
-
-  homeUrl = `/${APP_PATH.Home}`;
-  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
-  farewellGenerateUrl = `/${APP_PATH.Farewell}/generate`;
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {
@@ -61,6 +47,8 @@ export class KitPagesIntroduceKitComponent {
       hoverColor: 'text-slate-700',
     },
   };
+
+  homeUrl = `/${APP_PATH.Home}`;
 
   otherInformation = {
     title: 'How, When, Who, Where?',
