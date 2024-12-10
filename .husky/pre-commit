@@ -1,1 +1,6 @@
+#!/bin/sh
+
+node tools/update-version.js
+git add . # Stage the changes
+
 npx lint-staged

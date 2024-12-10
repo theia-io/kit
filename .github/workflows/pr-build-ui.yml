@@ -45,12 +45,12 @@ jobs:
           git config user.email "danbilokha@gmail.com"
           git config user.name "danemesis"
 
-      - name: Update version and push
-        run: |
-          node tools/update-version.js 
-          git add .
-          git commit -m "chore: bump (ui) version" 
-          git push origin HEAD
+      # - name: Update version and push
+      #   run: |
+      #     node tools/update-version.js
+      #     git add .
+      #     git commit -m "chore: bump (ui) version"
+      #     git push origin HEAD
 
       - name: Build KITouch UI PRD app
         run: npm run build:ui
