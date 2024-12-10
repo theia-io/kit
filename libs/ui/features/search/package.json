@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/search",
-  "version": "1.0.0-beta",
+  "version": "2.0.0-0",
   "peerDependencies": {
     "rxjs": "~7.8.0",
     "@angular/common": "18.2.6",
