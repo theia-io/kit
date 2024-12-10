@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/data-kudoboard",
-  "version": "1.0.0-0",
+  "version": "2.0.0-0",
   "peerDependencies": {
     "@kitouch/shared-models": "1.0.0-beta",
     "@kitouch/utils": "1.0.0-beta",
