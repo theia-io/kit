@@ -10,6 +10,10 @@ on:
 #   actions: read
 #   contents: read
 
+env:
+  AWS_REGION: 'eu-north-1' # Replace with your AWS region
+  ECR_REPOSITORY: 'kit/api' # Replace with your ECR repository name
+
 jobs:
   build_api:
     runs-on: ubuntu-latest
@@ -26,15 +30,29 @@ jobs:
         with:
           node-version: 20
           cache: 'npm'
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Build, tag, and push image to Amazon ECR
+        id: build-image
+        uses: aws-actions/amazon-ecr-login@v1
+        with:
+          push: true
+          # Optional: Build args if you need to pass arguments to your Docker build
+          build-args: |
+            MY_BUILD_ARG=value1,value2
+          tag: latest # Tag the image with 'latest'
+
       # This line enables distribution
       # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
       # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
 
-      - name: Remove
-        run: npm ci
-
       - name: Install dependencies
         run: npm ci
+        with:
+          cache: 'npm'
 
       # - uses: nrwl/nx-set-shas@v4
 
