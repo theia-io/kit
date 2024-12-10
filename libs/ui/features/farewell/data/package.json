@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/feat-farewell-data",
-  "version": "4.0.0-0",
+  "version": "5.0.0-0",
   "peerDependencies": {
     "@kitouch/shared-models": "1.0.0-beta",
     "@kitouch/utils": "1.0.0-beta",
