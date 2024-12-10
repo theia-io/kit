@@ -1,4 +1,4 @@
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,14 +14,10 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
+import { Device, DeviceService } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
-import { FollowButtonComponent } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  Device,
-  DeviceService,
-  UXDynamicService,
-} from '@kitouch/ui-shared';
+import { UXDynamicService } from '@kitouch/shared-services';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
@@ -35,14 +31,12 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
   imports: [
     AsyncPipe,
     RouterModule,
-    NgOptimizedImage,
     //
     TabMenuModule,
     ButtonModule,
     //
     FeatKitProfileHeaderComponent,
     FeatFollowUnfollowProfileComponent,
-    FollowButtonComponent,
   ],
 })
 export class PageProfileComponent {
@@ -53,14 +47,12 @@ export class PageProfileComponent {
   #uxDynamicService = inject(UXDynamicService);
   #deviceService = inject(DeviceService);
 
-  #profileIdOrAlias$ = this.#activatedRouter.params.pipe(
-    map((params) => params['profileIdOrAlias'])
+  #profileId$ = this.#activatedRouter.params.pipe(
+    map((params) => params['profileId'])
   );
 
-  #profile$ = this.#profileIdOrAlias$.pipe(
-    switchMap((profileIdOrAlias) =>
-      this.#store.select(selectProfileById(profileIdOrAlias))
-    ),
+  #profile$ = this.#profileId$.pipe(
+    switchMap((profileId) => this.#store.select(selectProfileById(profileId))),
     filter(Boolean),
     shareReplay(1)
   );

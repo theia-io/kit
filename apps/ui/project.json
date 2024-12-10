@@ -74,13 +74,7 @@
           "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
-          "namedChunks": true,
-          "fileReplacements": [
-            {
-              "replace": "apps/ui/src/environments/environment.ts",
-              "with": "apps/ui/src/environments/environment.dev.ts"
-            }
-          ]
+          "namedChunks": true
         }
       },
       "defaultConfiguration": "production"
@@ -92,6 +86,7 @@
           "buildTarget": "ui:build:production"
         },
         "development": {
+          "proxyConfig": "apps/ui/proxy.local.js",
           "buildTarget": "ui:build:development"
         }
       },

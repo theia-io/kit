@@ -13,8 +13,8 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
+import { UXDynamicService } from '@kitouch/shared-services';
 import { FollowButtonComponent } from '@kitouch/ui-components';
-import { UXDynamicService } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { filter, take } from 'rxjs';

@@ -11,6 +11,10 @@
     feat-kit-profile-socials {
       display: inline-block;
       margin-right: 2rem;
+
+      i.pi {
+        font-size: 2rem;
+      }
     }
 
     feat-kit-profile-socials + p {

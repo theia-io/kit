@@ -2,6 +2,9 @@ import { NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
+/**
+ * TODO find usage of this component and when profile is not resolved add placeholder and make that such use-cases when profiles are not resolved are triggered to be resolved. Add for similar components
+ */
 @Component({
   selector: 'ui-kit-comp-account-tile',
   standalone: true,

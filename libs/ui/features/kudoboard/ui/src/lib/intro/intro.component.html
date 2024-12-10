@@ -1,0 +1,37 @@
+<div class="grid grid-rows-1 grid-cols-2 gap-4">
+  <div class="h-full w-full">
+    <img
+      class="ml-auto max-h-40 rounded"
+      src="/features/kudoboard.png"
+      alt="Kitouch farewell" />
+  </div>
+  <div class="flex flex-col">
+    <p-button
+      styleClass="mt-auto w-48"
+      [outlined]="true"
+      severity="contrast"
+      (onClick)="watchVideo()">
+      Watch video
+      <i class="pi pi-video ml-auto" style="font-size: 1.5rem"></i>
+    </p-button>
+    <ui-kit-tweet-button
+      [routerLink]="featuresKudoBoardUrl"
+      icon="pi-question-circle"
+      severity="secondary"
+      text="Read more"
+      class="mt-2 w-48" />
+    <div
+      sharedUserHint
+      [enabled]="withHint()"
+      text="No registration"
+      side="right"
+      [extraIdent]="{ top: 30, right: 25 }">
+      <ui-kit-tweet-button
+        [routerLink]="kudoBoardGenerateUrl"
+        icon="pi-sparkles"
+        [iconAnimate]="false"
+        text="New Kudoboard"
+        class="mt-6 w-48" />
+    </div>
+  </div>
+</div>

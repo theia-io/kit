@@ -3,8 +3,8 @@ import {
   clientDBProfileAdapter,
   dbClientProfileAdapter,
 } from '@kitouch/kit-data';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
 import { DBClientType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { Observable } from 'rxjs';

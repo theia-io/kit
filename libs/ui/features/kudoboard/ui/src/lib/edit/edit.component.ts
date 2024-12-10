@@ -2,7 +2,6 @@ import {
   AsyncPipe,
   Location,
   NgClass,
-  NgOptimizedImage,
   NgTemplateOutlet,
 } from '@angular/common';
 import {
@@ -43,13 +42,10 @@ import {
   UiKitPicUploadableDirective,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
-import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  DeviceService,
-  SharedKitUserHintDirective,
-} from '@kitouch/ui-shared';
+
+import { SharedKitUserHintDirective } from '@kitouch/containers';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { DeviceService } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -76,6 +72,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
+import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -87,7 +84,6 @@ const TITLE_MAX_LENGTH = 128;
     //
     AsyncPipe,
     ReactiveFormsModule,
-    NgOptimizedImage,
     NgTemplateOutlet,
     NgClass,
     //

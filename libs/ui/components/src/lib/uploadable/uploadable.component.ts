@@ -6,6 +6,7 @@ import {
   Directive,
   inject,
   input,
+  output,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -43,6 +44,7 @@ export const UPLOAD_CONF_DEFAULT: UploadConf = {
   withIcon: true,
   fileUploadConf: {
     multiple: false,
+    fileLimit: 1,
   },
 };
 
@@ -81,13 +83,20 @@ export class UiKitPicUploadableComponent {
 
   /** Likely you should make sure correct Context, run `.bind(this)` while providing this value.
    */
-  autoUploadCb = input.required<(event: FileUploadHandlerEvent) => unknown>();
+  /** @deprecated use files instead */
+  autoUploadCb = input<(event: FileUploadHandlerEvent) => unknown>();
+
+  files = output<Array<File>>();
 
   autoUploadCbMonkeyPatched = computed(() => {
     const original = this.autoUploadCb();
 
     return (event: FileUploadHandlerEvent) => {
-      original(event);
+      if (original) {
+        original(event);
+      }
+      this.files.emit(event.files);
+
       // TODO handle when closed with esc
       // primeng does not seem to support this OOTB
       // https://github.com/primefaces/primeng/blob/master/src/app/components/fileupload/fileupload.ts#L195

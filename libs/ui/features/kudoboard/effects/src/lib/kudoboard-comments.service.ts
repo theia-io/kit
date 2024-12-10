@@ -1,17 +1,25 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import {
+  clientDbKudoBoardCommentAdapter,
   ClientDBKudoBoardCommentResponse,
   dbClientKudoBoardCommentAdapter,
-  clientDbKudoBoardCommentAdapter,
 } from '@kitouch/data-kudoboard';
-import { KudoBoard, KudoBoardComment } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
+import {
+  ContractUploadedMedia,
+  KudoBoard,
+  KudoBoardComment,
+} from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
-import { map, Observable, switchMap } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class KudoBoardCommentsService extends DataSourceService {
+  #env = inject(ENVIRONMENT);
+  #http = inject(HttpClient);
+
   getKudoBoardComments(
     kudoBoardId: KudoBoard['id']
   ): Observable<Array<KudoBoardComment>> {
@@ -54,5 +62,34 @@ export class KudoBoardCommentsService extends DataSourceService {
       ),
       map(({ deletedCount }) => deletedCount > 0)
     );
+  }
+
+  uploadKudoBoardCommentMedia(key: string, blob: Blob) {
+    const { root, media } = this.#env.api;
+
+    return from(blob.arrayBuffer()).pipe(
+      switchMap((fileArrayBuffer) =>
+        this.#http.post<ContractUploadedMedia>(
+          `${root}${media}/kudoboard`,
+          fileArrayBuffer,
+          {
+            headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
+            params: {
+              name: key,
+            },
+          }
+        )
+      )
+    );
+  }
+
+  /** Media, S3 */
+  deleteKudoBoardCommentMedia(key: string) {
+    const { root, media } = this.#env.api;
+    return this.#http.delete(`${root}${media}/kudoboard`, {
+      params: {
+        name: key,
+      },
+    });
   }
 }

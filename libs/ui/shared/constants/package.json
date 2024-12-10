@@ -1,0 +1,8 @@
+{
+  "name": "@kitouch/shared-constants",
+  "version": "4.0.0-0",
+  "peerDependencies": {
+    "primeng": "17.18.10"
+  },
+  "sideEffects": false
+}

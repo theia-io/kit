@@ -6,7 +6,7 @@ import {
   input,
   output,
 } from '@angular/core';
-import { ButtonModule } from 'primeng/button';
+import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'ui-kit-tweet-button',
@@ -19,6 +19,7 @@ import { ButtonModule } from 'primeng/button';
   `,
   template: `
     <p-button
+      [severity]="severity()"
       [styleClass]="'w-full flex ' + styleClass()"
       [disabled]="disabled()"
       (onClick)="onClickEvent.emit($event)"
@@ -41,6 +42,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class UiKitTweetButtonComponent {
   text = input('Tweet');
+  severity = input<Button['severity']>('primary');
 
   disabled = input(false);
   loader = input(false);

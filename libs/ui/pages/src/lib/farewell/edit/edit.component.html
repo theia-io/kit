@@ -6,13 +6,15 @@
   (onHide)="redirectToAll()">
   <ng-template pTemplate="headless">
     <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
-      <shared-navbar-static [fullBar]="true" [updatePrimengHighlight]="true" />
+      <shared-navbar-static
+        [userLoggedIn]="!!(currentProfile$ | async)"
+        [_sysUpdatePrimengHighlight]="true" />
       <ui-kit-delete
         xOffset="right-4"
         yOffset="top-4"
         (onDelete)="redirectToAll()" />
 
-      <div class="hidden sm:block absolute top-8 right-24">
+      <div class="hidden sm:block absolute top-5 right-24">
         <div class="flex justify-center gap-2">
           @if(shareTmpl) {
           <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>

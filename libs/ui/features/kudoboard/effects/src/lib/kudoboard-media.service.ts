@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/ui-shared';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
 
 @Injectable({ providedIn: 'root' })
 export class KudoBoardMediaService extends DataSourceService {

@@ -8,9 +8,16 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   provideRouter,
   withComponentInputBinding,
-  withDebugTracing,
   withInMemoryScrolling,
 } from '@angular/router';
+import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
+import {
+  KudoBoardAnalyticsEffects,
+  KudoBoardCommentsEffects,
+  KudoBoardEffects,
+  KudoBoardMediaEffects,
+  KudoBoardReactionsEffects,
+} from '@kitouch/effects-kudoboard';
 import { featFarewellReducer } from '@kitouch/feat-farewell-data';
 import {
   FarewellCommentsEffects,
@@ -22,6 +29,7 @@ import { featFollowReducer } from '@kitouch/feat-follow-data';
 import { FollowEffects } from '@kitouch/feat-follow-effects';
 import {
   AccountsEffects,
+  AuthEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
@@ -36,12 +44,12 @@ import {
 import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
   AuthInterceptor,
-  Environment,
   ENVIRONMENT,
+  Environment,
   S3_FAREWELL_BUCKET_BASE_URL,
   S3_KUDOBOARD_BUCKET_BASE_URL,
   S3_PROFILE_BUCKET_BASE_URL,
-} from '@kitouch/ui-shared';
+} from '@kitouch/shared-infra';
 import { provideEffects } from '@ngrx/effects';
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
@@ -50,14 +58,6 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
-import {
-  KudoBoardAnalyticsEffects,
-  KudoBoardCommentsEffects,
-  KudoBoardEffects,
-  KudoBoardMediaEffects,
-  KudoBoardReactionsEffects,
-} from '@kitouch/effects-kudoboard';
-import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
 
 // const kitProviders: Provider[] = [];
 // if (environment.environment !== KIT_ENVS.localhost) {
@@ -66,6 +66,7 @@ import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
 
 export const appConfig: ApplicationConfig = {
   providers: [
+    provideHttpClient(),
     //
     provideAnimationsAsync(),
     // provideClientHydration(),
@@ -133,6 +134,7 @@ export const appConfig: ApplicationConfig = {
       // follow feat effects
       FollowEffects,
       // kit feat effects
+      AuthEffects,
       AccountsEffects,
       LegalEffects,
       ProfileEffects,

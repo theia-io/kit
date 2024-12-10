@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import {
   FeatTweetActions,
-  FeatTweetBookmarkActions,
+  FeatBookmarksActions,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -29,19 +29,19 @@ export class BookmarkEffects {
 
   getBookmarks$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatTweetBookmarkActions.getAll),
+      ofType(FeatBookmarksActions.getAll),
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
         this.#tweetApi.getBookmarks(profile.id).pipe(
           map((bookmarks) =>
-            FeatTweetBookmarkActions.getAllSuccess({
+            FeatBookmarksActions.getAllSuccess({
               bookmarks,
             })
           ),
           catchError((err) => {
             console.error('[BookmarkEffects] getBookmarks', err);
             return of(
-              FeatTweetBookmarkActions.getAllFailure({
+              FeatBookmarksActions.getAllFailure({
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
               })
@@ -54,7 +54,7 @@ export class BookmarkEffects {
 
   getBookmarksFeed$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatTweetBookmarkActions.getBookmarksFeed),
+      ofType(FeatBookmarksActions.getBookmarksFeed),
       map(({ bookmarks }) =>
         bookmarks.map((bookmark) => ({
           tweetId: bookmark.tweetId,
@@ -64,14 +64,14 @@ export class BookmarkEffects {
       switchMap((tweetGetRequest) =>
         this.#tweetApi.getMany(tweetGetRequest).pipe(
           map((tweets) =>
-            FeatTweetBookmarkActions.getBookmarksFeedSuccess({
+            FeatBookmarksActions.getBookmarksFeedSuccess({
               tweets,
             })
           ),
           catchError((err) => {
             console.error('[BookmarkEffects] getBookmarksFeed', err);
             return of(
-              FeatTweetBookmarkActions.getBookmarksFeedFailure({
+              FeatBookmarksActions.getBookmarksFeedFailure({
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
               })
@@ -84,7 +84,7 @@ export class BookmarkEffects {
 
   bookmark$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatTweetBookmarkActions.bookmark),
+      ofType(FeatBookmarksActions.bookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId, profileIdTweetyOwner }, profile]) =>
         this.#tweetApi
@@ -95,14 +95,14 @@ export class BookmarkEffects {
           })
           .pipe(
             map((bookmark) =>
-              FeatTweetBookmarkActions.bookmarkSuccess({
+              FeatBookmarksActions.bookmarkSuccess({
                 bookmark,
               })
             ),
             catchError((err) => {
               console.error('[BookmarkEffects] bookmark', err);
               return of(
-                FeatTweetBookmarkActions.bookmarkFailure({
+                FeatBookmarksActions.bookmarkFailure({
                   tweetId,
                   message:
                     'Sorry, error. We will take a look at it and meanwhile try later',
@@ -116,14 +116,14 @@ export class BookmarkEffects {
 
   deleteBookmark$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatTweetBookmarkActions.removeBookmark),
+      ofType(FeatBookmarksActions.removeBookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId }, { id }]) =>
         this.#tweetApi
           .deleteBookmark({ profileIdBookmarker: id, tweetId })
           .pipe(
             map(() =>
-              FeatTweetBookmarkActions.removeBookmarkSuccess({
+              FeatBookmarksActions.removeBookmarkSuccess({
                 tweetId,
                 profileId: id,
               })
@@ -131,7 +131,7 @@ export class BookmarkEffects {
             catchError((err) => {
               console.error('[BookmarkEffects] deleteBookmark', err);
               return of(
-                FeatTweetBookmarkActions.removeBookmarkFailure({
+                FeatBookmarksActions.removeBookmarkFailure({
                   tweetId,
                   message:
                     'Sorry, error. We will take a look at it and meanwhile try later',
@@ -148,7 +148,7 @@ export class BookmarkEffects {
       ofType(FeatTweetActions.deleteSuccess),
       map(({ tweet: { id } }) =>
         /** @TODO @FIXME has to take into account deleteSuccess batch results  */
-        FeatTweetBookmarkActions.removeBookmarkAsTweetRemoved({
+        FeatBookmarksActions.removeBookmarkAsTweetRemoved({
           tweetId: id,
         })
       )
@@ -158,6 +158,6 @@ export class BookmarkEffects {
   constructor() {
     this.currentProfile$
       .pipe(distinctUntilKeyChanged('id'))
-      .subscribe(() => this.#store.dispatch(FeatTweetBookmarkActions.getAll()));
+      .subscribe(() => this.#store.dispatch(FeatBookmarksActions.getAll()));
   }
 }

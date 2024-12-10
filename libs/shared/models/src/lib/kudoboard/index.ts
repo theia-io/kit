@@ -1,3 +1,4 @@
+import { ContractUploadedMedia } from '../contracts/media';
 import { Profile } from '../entities-kitouch';
 import { KitTimestamp } from '../helpers';
 
@@ -37,6 +38,7 @@ export interface KudoBoardComment {
   profile?: Profile;
   // meta: string;
   content: string;
+  medias?: Array<ContractUploadedMedia>;
   timestamp: KitTimestamp;
 }
 

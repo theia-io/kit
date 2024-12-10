@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 
 import { FeatKudoBoardMediaActions } from '@kitouch/data-kudoboard';
-import { S3_KUDOBOARD_BUCKET_BASE_URL } from '@kitouch/ui-shared';
+import { S3_KUDOBOARD_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
 import { KudoBoardMediaService } from './kudoboard-media.service';

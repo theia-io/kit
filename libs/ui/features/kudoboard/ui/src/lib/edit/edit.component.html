@@ -82,9 +82,7 @@
   kudoBoardFormGroup.get('status')?.value;
 
   <ng-template #statusTmpl let-bigButton let-withHint="withHint">
-    @if(withHint) {
-    <p>Update status:</p>
-    } @if(status === kudoBoardStatus.Published) {
+    @if(status === kudoBoardStatus.Published) {
     <button
       pButton
       [ngClass]="[bigButton ? '' : 'py-0 px-2']"
@@ -161,7 +159,15 @@
     } }
   </ng-template>
 
-  <div class="flex justify-center gap-2 mt-6">
+  <div class="flex justify-center items-center gap-2 mt-6">
+    <ng-container
+      *ngTemplateOutlet="
+        statusTmpl;
+        context: { $implicit: true, withHint: true }
+      "></ng-container>
+  </div>
+
+  <div class="flex justify-center gap-2 mt-12">
     <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
     <ng-container *ngTemplateOutlet="asUserTmpl"></ng-container>
     <ng-container
@@ -171,15 +177,7 @@
       "></ng-container>
   </div>
 
-  <div class="flex justify-center items-center gap-2 mt-12">
-    <ng-container
-      *ngTemplateOutlet="
-        statusTmpl;
-        context: { $implicit: true, withHint: true }
-      "></ng-container>
-  </div>
-
-  <div class="flex justify-center items-center gap-2 mt-12">
+  <div class="flex justify-center items-center gap-2 mt-4">
     <button
       pButton
       (click)="gotoAll($event)"

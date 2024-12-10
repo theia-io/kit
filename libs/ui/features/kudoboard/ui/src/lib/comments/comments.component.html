@@ -1,5 +1,7 @@
 @let kudoboardOwner = kudoboardProfile(); @let recipient = (kudoboard$ |
-async)?.recipient; @if(canComment()) {
+async)?.recipient;
+<!-- Comment -->
+@if(canComment()) {
 <div
   class="block max-w-xl mx-auto"
   sharedUserHint
@@ -14,9 +16,13 @@ async)?.recipient; @if(canComment()) {
   [extraIdent]="{ top: 10, right: 35 }">
   <ui-kit-comment-area
     [placeholder]="placeholder()"
+    actionBtnText="Post"
+    [validators]="[commentValidator()]"
+    [maxMediaFiles]="1"
+    [uploadMediaFilesCb]="uploadCommentMediaFiles()"
+    [deleteMediaFilesCb]="deleteCommentMedia()"
     (comment)="commentHandler($event)">
     @if(currentProfile(); as currentProfile) {
-
     <div profile class="mb-4">
       <ui-kit-comp-account-tile
         sharedAuthorizedFeature
@@ -32,7 +38,7 @@ async)?.recipient; @if(canComment()) {
 }
 
 <div #commentsTmpl class="masonry mx-auto">
-  @for (comment of (kudoboardComments$ | async); track $index) {
+  @for (comment of (kudoboardComments$ | async); track comment.id) {
   <div
     class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl masonry-item">
     <ui-kit-comp-animate-ping [animate]="animatedCommentsSet().has(comment.id)">
@@ -54,6 +60,40 @@ async)?.recipient; @if(canComment()) {
               : undefined
           " />
       </div>
+
+      @if(comment.medias && comment.medias.length > 0) {
+      <div
+        id="kudo-posts-media-gallery"
+        class="flex gap-2 items-center flex-nowrap overflow-x-auto mb-3">
+        @for (media of comment.medias; track media.url) {
+        <a
+          class="block max-w-[350px]"
+          [href]="media.optimizedUrls[0]"
+          [attr.data-pswp-width]="media.width"
+          [attr.data-pswp-height]="media.height"
+          [ngStyle]="{
+            'max-width.px': mediaWidth(media.width)
+          }"
+          target="_blank">
+          <picture>
+            @for (url of media.optimizedUrls; track url) {
+            <source [srcset]="url" [type]="'image/' + mediaType(url)" />
+            }
+            <img
+              referrerpolicy="no-referrer"
+              class="rounded"
+              [width]="mediaWidth(media.width)"
+              [height]="
+                ((media.height ?? 100) / (media.width ?? 100)) *
+                mediaWidth(media.width)
+              "
+              [ngSrc]="media.url"
+              alt="Media to the comment" />
+          </picture>
+        </a>
+        }
+      </div>
+      }
 
       <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
 

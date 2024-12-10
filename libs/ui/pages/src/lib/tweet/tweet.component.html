@@ -1,8 +1,8 @@
-@if (tweet()) {
+@if (tweet(); as tweet) {
 <ui-kit-comp-card>
   <feat-tweet-tweety
     class="block w-full"
-    [tweetId]="tweet()!.id"
+    [tweetId]="tweet.id"
     (tweetDeleted)="tweetDeletedHandler()" />
 </ui-kit-comp-card>
 
@@ -41,7 +41,7 @@
   }
 </p-floatLabel>
 
-@if(tweet()!.comments) {
+@if(tweet.comments) {
 <p-timeline
   [value]="(tweetComments$ | async) ?? []"
   styleClass="w-full md:w-20rem kit-timeline">
@@ -57,9 +57,7 @@
       <svg
         class="h-6 w-6 absolute top-2 right-2 hover:animate-pulse"
         role="button"
-        (click)="
-          $event.stopPropagation(); commentDeleteHandler(tweet()!, comment)
-        "
+        (click)="$event.stopPropagation(); commentDeleteHandler(tweet, comment)"
         viewBox="0 0 24 24"
         fill="none"
         stroke="currentColor"

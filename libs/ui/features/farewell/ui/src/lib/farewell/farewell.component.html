@@ -17,10 +17,7 @@
     @if(linkedKudoBoard.profile; as profile) {
     <ui-kit-comp-account-tile
       [primaryText]="linkedKudoBoard.profile.name"
-      [primarySecondaryText]="
-        linkedKudoBoard.timestamp.createdAt ??
-          linkedKudoBoard.timestamp.updatedAt | date
-      "
+      [primarySecondaryText]="linkedKudoBoard.timestamp.createdAt | date"
       secondaryText="Collected this for you"
       [picture]="profilePictureFn(profile)"
       [link]="profileUrl + (profile.alias ?? profile.id)" />
@@ -66,7 +63,7 @@
 
   @let status = farewellFormGroup.get('status')?.value; @let id = farewellId();
 
-  <ng-template #statusTmpl let-bigButton>
+  <ng-template #statusTmpl let-bigButton let-withHint="withHint">
     @if(status === farewellStatus.Published) {
     <button
       pButton
@@ -85,6 +82,15 @@
       severity="success">
       <span class="text-xs font-semibold">Publish</span>
     </button>
+    } @if(withHint) {
+    <div
+      sharedUserHint
+      [extraIdent]="{ top: -20 }"
+      [text]="
+        status === farewellStatus.Published
+          ? 'Set as Draft'
+          : 'Click to Publish'
+      "></div>
     }
   </ng-template>
 
@@ -103,13 +109,15 @@
     } }
   </ng-template>
 
-  <div class="flex justify-center gap-2">
+  <div class="flex justify-center items-center gap-2 mt-6">
     <ng-container
       *ngTemplateOutlet="
         statusTmpl;
-        context: { $implicit: true }
+        context: { $implicit: true, withHint: true }
       "></ng-container>
+  </div>
 
+  <div class="flex justify-center gap-2 mt-12">
     @if(id) {
     <div
       [pTooltip]="
@@ -136,7 +144,7 @@
       "></ng-container>
   </div>
 
-  <div class="flex justify-center items-center gap-2 mt-12">
+  <div class="flex justify-center items-center gap-2 mt-4">
     <button
       pButton
       (click)="gotoAll($event)"

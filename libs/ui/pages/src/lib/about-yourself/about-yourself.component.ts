@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
+import { SharedKitUserHintDirective } from '@kitouch/containers';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import {
   FeatSettingsExperienceAddComponent,
@@ -15,15 +16,13 @@ import {
 } from '@kitouch/feat-settings-ui';
 import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import { FeatLegalApiActions, selectCurrentProfile } from '@kitouch/kit-data';
+import { TutorialService } from '@kitouch/shared-services';
 import {
   ButtonComponent,
   fadeInUpAnimation,
   UiKitCompAnimatePingComponent,
 } from '@kitouch/ui-components';
-import {
-  TutorialService,
-  SharedKitUserHintDirective,
-} from '@kitouch/ui-shared';
+
 import { Store } from '@ngrx/store';
 import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { take } from 'rxjs/operators';
@@ -59,7 +58,7 @@ import { take } from 'rxjs/operators';
     `,
   ],
   imports: [
-    CommonModule,
+    AsyncPipe,
     RouterLink,
     ReactiveFormsModule,
     //

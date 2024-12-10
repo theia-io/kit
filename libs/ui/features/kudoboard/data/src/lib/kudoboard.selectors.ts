@@ -46,6 +46,11 @@ export const selectKudoBoardReactionsById = (kudoboardId: KudoBoard['id']) =>
     findKudoBoardReactionsByKudoBoardId(kudoboardId, reactions)
   );
 
+export const selectKudoBoardCommentById = (commentId: KudoBoardComment['id']) =>
+  createSelector(selectComments, (comments) =>
+    comments.find(({ id }) => id === commentId)
+  );
+
 export const selectKudoBoardCommentsById = (kudoboardId: KudoBoard['id']) =>
   createSelector(selectComments, (comments) =>
     findKudoBoardCommentsByKudoBoardId(kudoboardId, comments)

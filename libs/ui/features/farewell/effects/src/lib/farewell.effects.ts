@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { FarewellService } from './farewell.service';
 
 @Injectable()
@@ -14,17 +13,24 @@ export class FarewellEffects {
 
   #farewellService = inject(FarewellService);
 
-  #currentProfile = this.#store
-    .select(selectCurrentProfile)
-    .pipe(filter(Boolean));
-
   getFarewells$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getProfileFarewells),
       switchMap(({ profileId }) =>
-        this.#farewellService.getFarewells(profileId)
-      ),
-      map((farewells) => FeatFarewellActions.getFarewellsSuccess({ farewells }))
+        this.#farewellService.getFarewells(profileId).pipe(
+          map((farewells) =>
+            FeatFarewellActions.getFarewellsSuccess({ farewells })
+          ),
+          catchError(() =>
+            of(
+              FeatFarewellActions.getFarewellsFailure({
+                message:
+                  'It is not you, it is us. Cannot load profile farewells, try again later.',
+              })
+            )
+          )
+        )
+      )
     )
   );
 

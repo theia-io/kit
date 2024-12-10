@@ -1,24 +1,25 @@
-import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import { FeatFollowActions } from '@kitouch/feat-follow-data';
-
-import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
 import {
   LayoutComponent,
   NavBarComponent,
-  OUTLET_DIALOG,
   SharedStaticInfoComponent,
-} from '@kitouch/ui-shared';
-import { Store } from '@ngrx/store';
+} from '@kitouch/containers';
+import { FeatFollowActions } from '@kitouch/feat-follow-data';
+
+import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
+import { selectCurrentProfile } from '@kitouch/kit-data';
+import { OUTLET_DIALOG } from '@kitouch/shared-constants';
+
+import { select, Store } from '@ngrx/store';
+import { filter, distinctUntilKeyChanged } from 'rxjs';
 
 @Component({
   standalone: true,
   imports: [
-    CommonModule,
     RouterModule,
     //
-    /** Features */
     SharedStaticInfoComponent,
     FeatFollowSuggestionsComponent,
     LayoutComponent,
@@ -27,7 +28,7 @@ import { Store } from '@ngrx/store';
   selector: 'app-kitouch',
   template: `
     <shared-layout>
-      <shared-navbar navbar class="block"></shared-navbar>
+      <shared-navbar navbar [profile]="profile()" class="block"></shared-navbar>
 
       <router-outlet></router-outlet>
 
@@ -49,14 +50,25 @@ import { Store } from '@ngrx/store';
     </shared-layout>
   `,
 })
-export class KitComponent implements OnInit {
+export class KitComponent {
   #store = inject(Store);
+
+  profile = this.#store.selectSignal(selectCurrentProfile);
 
   readonly outletSecondary = OUTLET_DIALOG;
 
-  ngOnInit(): void {
-    /** Data that will be required across all app */
-    // this.#store.dispatch(FeatTweetBookmarkActions.getAll());
-    this.#store.dispatch(FeatFollowActions.getSuggestionColleaguesToFollow());
+  constructor() {
+    this.#store
+      .pipe(
+        select(selectCurrentProfile),
+        filter(Boolean),
+        distinctUntilKeyChanged('id'),
+        takeUntilDestroyed()
+      )
+      .subscribe(() =>
+        this.#store.dispatch(
+          FeatFollowActions.getSuggestionColleaguesToFollow()
+        )
+      );
   }
 }

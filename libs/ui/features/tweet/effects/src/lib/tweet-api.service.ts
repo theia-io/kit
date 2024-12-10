@@ -3,6 +3,7 @@ import {
   dbClientBookmarkAdapter,
   dbClientTweetAdapter,
 } from '@kitouch/feat-tweet-data';
+import { DataSourceService } from '@kitouch/shared-infra';
 import {
   Bookmark,
   Profile,
@@ -10,7 +11,6 @@ import {
   Tweety,
   TweetyType,
 } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import {
   clientDBGenerateTimestamp,
   clientDBIdAdapter,

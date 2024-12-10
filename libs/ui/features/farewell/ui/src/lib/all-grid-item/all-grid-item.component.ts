@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { KudoBoard } from '@kitouch/shared-models';
 import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardViewComponent } from '@kitouch/ui-kudoboard';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 
 @Component({
   standalone: true,

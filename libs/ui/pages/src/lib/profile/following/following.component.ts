@@ -14,13 +14,13 @@ import {
   selectProfileById,
   selectProfilesByIds,
 } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   FollowButtonComponent,
   UiCompCardComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
 import { select, Store } from '@ngrx/store';
 import { MessagesModule } from 'primeng/messages';
 import { filter, map, shareReplay, switchMap, take, throwError } from 'rxjs';
@@ -44,14 +44,14 @@ export class PageProfileFollowingComponent {
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
 
-  #profileIdOrAlias$ = this.#activatedRouter.parent?.params.pipe(
-    map((params) => params['profileIdOrAlias'])
+  #profileId$ = this.#activatedRouter.parent?.params.pipe(
+    map((params) => params['profileId'])
   );
 
-  #profile$ = this.#profileIdOrAlias$
-    ? this.#profileIdOrAlias$.pipe(
-        switchMap((profileIdOrAlias) =>
-          this.#store.select(selectProfileById(profileIdOrAlias))
+  #profile$ = this.#profileId$
+    ? this.#profileId$.pipe(
+        switchMap((profileId) =>
+          this.#store.select(selectProfileById(profileId))
         ),
         filter(Boolean),
         shareReplay(1)

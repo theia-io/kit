@@ -1,3 +1,4 @@
+import { ContractUploadedMedia } from '../contracts';
 import { Profile } from '../entities-kitouch';
 import { KitTimestamp } from '../helpers';
 import { KudoBoard } from '../kudoboard';
@@ -32,6 +33,7 @@ export interface FarewellComment {
   profile?: Profile;
   // meta: string;
   content: string;
+  medias?: Array<ContractUploadedMedia>;
   timestamp: KitTimestamp;
 }
 

@@ -1,4 +1,4 @@
-import { AsyncPipe, DOCUMENT, DatePipe } from '@angular/common';
+import { DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -17,20 +17,21 @@ import { Router, RouterModule } from '@angular/router';
 import {
   FeatReTweetActions,
   FeatTweetActions,
-  FeatTweetBookmarkActions,
+  FeatBookmarksActions,
   selectIsBookmarked,
   selectTweet,
   tweetIsLikedByProfile,
   tweetIsRetweet,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitDeleteComponent,
+  UiKitSpinnerComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { APP_PATH } from '@kitouch/ui-shared';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
@@ -50,7 +51,6 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
   imports: [
     ReactiveFormsModule,
     DatePipe,
-    AsyncPipe,
     RouterModule,
     //
     OverlayPanelModule,
@@ -64,6 +64,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     FeatTweetActionsComponent,
     UiKitTweetButtonComponent,
     UiKitDeleteComponent,
+    UiKitSpinnerComponent,
   ],
 })
 export class FeatTweetTweetyComponent {
@@ -237,11 +238,11 @@ export class FeatTweetTweetyComponent {
     const bookmarked = this.tweetBookmarked();
     if (bookmarked) {
       this.#store.dispatch(
-        FeatTweetBookmarkActions.removeBookmark({ tweetId: tweet.id })
+        FeatBookmarksActions.removeBookmark({ tweetId: tweet.id })
       );
     } else {
       this.#store.dispatch(
-        FeatTweetBookmarkActions.bookmark({
+        FeatBookmarksActions.bookmark({
           tweetId: tweet.id,
           profileIdTweetyOwner: tweet.profileId,
         })

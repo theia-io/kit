@@ -1,18 +1,19 @@
+import { inject } from '@angular/core';
 import { Route } from '@angular/router';
+import { LayoutService, PanelState } from '@kitouch/containers';
 import {
   APP_PATH,
   APP_PATH_ALLOW_ANONYMOUS,
   APP_PATH_DIALOG,
   APP_PATH_STATIC_PAGES,
-  LayoutService,
+  OUTLET_DIALOG,
+} from '@kitouch/shared-constants';
+import {
   onlyForLoggedInGuard,
   onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
-  OUTLET_DIALOG,
-  PanelState,
-} from '@kitouch/ui-shared';
+} from '@kitouch/shared-infra';
 import { KitComponent } from './kit.component';
-import { inject } from '@angular/core';
 
 const pages = import('@kitouch/pages');
 
@@ -31,6 +32,27 @@ export const appRoutes: Route[] = [
         path: '',
         pathMatch: 'full',
         redirectTo: APP_PATH_STATIC_PAGES.IntroduceKit,
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.Features,
+        loadComponent: () => pages.then((comp) => comp.PagesFeatureComponent),
+        children: [
+          {
+            path: APP_PATH_STATIC_PAGES.FeaturesConnected,
+            loadComponent: () =>
+              pages.then((comp) => comp.PagesFeatureConnectedComponent),
+          },
+          {
+            path: APP_PATH_STATIC_PAGES.FeaturesFarewell,
+            loadComponent: () =>
+              pages.then((comp) => comp.PagesFeatureFarewellComponent),
+          },
+          {
+            path: APP_PATH_STATIC_PAGES.FeaturesKudoboard,
+            loadComponent: () =>
+              pages.then((comp) => comp.PagesFeatureKudoBoardComponent),
+          },
+        ],
       },
       {
         path: APP_PATH_STATIC_PAGES.SignIn,
@@ -121,11 +143,11 @@ export const appRoutes: Route[] = [
         path: APP_PATH.Profile,
         children: [
           {
-            path: `:profileIdOrAlias/${APP_PATH.Tweet}/:id`,
+            path: `:profileId/${APP_PATH.Tweet}/:id`,
             loadComponent: () => pages.then((comp) => comp.PageTweetComponent),
           },
           {
-            path: ':profileIdOrAlias',
+            path: ':profileId',
             loadChildren: () => pages.then((pages) => pages.PROFILE_ROUTES),
           },
         ],

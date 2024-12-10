@@ -6,8 +6,8 @@ import {
   input,
   signal,
 } from '@angular/core';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { KudoBoard } from '@kitouch/shared-models';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/ui-shared';
 import { ButtonModule } from 'primeng/button';
 
 @Component({

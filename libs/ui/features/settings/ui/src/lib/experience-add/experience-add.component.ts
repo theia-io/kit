@@ -19,16 +19,14 @@ import {
   Validators,
 } from '@angular/forms';
 import { FeatUserApiActions, getMatchingCompanies } from '@kitouch/kit-data';
+import { GeolocationService } from '@kitouch/shared-infra';
 import {
   Experience,
   ExperienceType,
   LocationType,
 } from '@kitouch/shared-models';
-import {
-  citiesInCountries,
-  countries,
-  GeolocationService,
-} from '@kitouch/ui-shared';
+import { citiesInCountries, countries } from '@kitouch/shared-services';
+
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';

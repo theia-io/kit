@@ -9,3 +9,8 @@
 1. [Retweet logic](docs/features/retweet.md),
 1. [State](docs/state.md),
 1. [Styles](docs/styles.md),
+
+## FAQ
+
+- Getting sharp NPM package issue? check this out <https://sharp.pixelplumbing.com/install>
+-

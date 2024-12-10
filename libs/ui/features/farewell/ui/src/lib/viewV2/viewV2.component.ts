@@ -9,7 +9,8 @@ import {
 import { toObservable } from '@angular/core/rxjs-interop';
 import { DomSanitizer } from '@angular/platform-browser';
 import { selectFarewellById } from '@kitouch/feat-farewell-data';
-import { DeviceService, PhotoService } from '@kitouch/ui-shared';
+import { DeviceService } from '@kitouch/shared-infra';
+import { PhotoService } from '@kitouch/shared-services';
 import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { filter, switchMap } from 'rxjs';
