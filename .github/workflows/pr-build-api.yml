@@ -1,4 +1,4 @@
-name: PRD Build
+name: PRD Build API
 
 on:
   pull_request:
