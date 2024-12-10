@@ -2,5 +2,6 @@
 
 node tools/update-version.js
 git add . # Stage the changes
+git commit --amend --no-edit --no-verify
 
 npx lint-staged
