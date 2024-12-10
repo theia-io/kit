@@ -1,0 +1,56 @@
+name: PRD Build & Deploy API
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main] # Or your main branch name
+
+# Needed for nx-set-shas when run on the main branch
+# permissions:
+#   actions: read
+#   contents: read
+
+env:
+  AWS_REGION: 'eu-north-1' # Replace with your AWS region
+  ECR_REPOSITORY: 'kit/api' # Replace with your ECR repository name
+
+jobs:
+  prd_build_and_deploy_api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grant write permissions to the repository's contents
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper linting and formatting
+          token: ${{ secrets.GITHUB_TOKEN }} # Use the GITHUB_TOKEN
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: $env.AWS_REGION
+
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Get commit hash
+        id: get-commit-hash
+        run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
+      - name: Get timestamp
+        id: get-timestamp
+        run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+          # IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
+          IMAGE_TAG: 'latest'
+        run: |
+          docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
