@@ -18,6 +18,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch all history for proper linting and formatting
+          token: ${{ secrets.GITHUB_TOKEN }} # Use the GITHUB_TOKEN
 
       - uses: actions/setup-node@v3
         with:
@@ -37,6 +38,18 @@ jobs:
 
       # - run: npx nx-cloud record -- nx format:check
       # - run: npx nx affected -t lint test build e2e-ci
+
+      - name: Set Git user information
+        run: |
+          git config user.email "danbilokha@gmail.com"
+          git config user.name "danemesis"
+
+      - name: Update version and push
+        run: |
+          node tools/update-version.js 
+          git add .
+          git commit -m "chore: bump (ui) version" 
+          git push origin HEAD 
 
       - name: Build KITouch UI PRD app
         run: npm run build:ui
