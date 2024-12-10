@@ -1,12 +1,8 @@
-import { Body, Controller, Get, Post, UsePipes } from '@nestjs/common';
+import { Controller, Get, Post, UsePipes } from '@nestjs/common';
 
 import { AppService } from './app.service';
-import {
-  CreateCatDto,
-  ZodValidationPipe,
-  createCatSchema,
-} from './pipes/validation';
 import { Roles } from './auth/roles/roles.drecorator';
+import { ZodValidationPipe, createCatSchema } from './pipes/validation';
 
 @Controller()
 export class AppController {
@@ -20,8 +16,7 @@ export class AppController {
   @Post()
   @Roles(['admin'])
   @UsePipes(new ZodValidationPipe(createCatSchema))
-  async create(@Body() catDto: CreateCatDto) {
-    console.log('catDto', catDto);
+  async create() {
     return this.appService.getData();
   }
 }
