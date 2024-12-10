@@ -6,12 +6,12 @@
     "@angular/core": "^18.2.0",
     "@angular/router": "18.2.6",
     "rxjs": "~7.8.0",
-    "@kitouch/shared-models": "1.0.0-beta",
+    "@kitouch/shared-models": "5.0.0-0",
     "realm-web": "^2.0.1",
     "@aws-sdk/client-s3": "^3.627.0",
-    "@kitouch/utils": "1.0.0-beta",
+    "@kitouch/utils": "5.0.0-0",
     "@aws-sdk/credential-providers": "^3.631.0",
-    "@kitouch/shared-constants": "0.0.1"
+    "@kitouch/shared-constants": "4.0.0-0"
   },
   "sideEffects": false
 }

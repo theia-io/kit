@@ -3,15 +3,15 @@
   "version": "5.0.0-0",
   "peerDependencies": {
     "@angular/core": "18.2.6",
-    "@kitouch/feat-farewell-data": "1.0.0-beta",
+    "@kitouch/feat-farewell-data": "5.0.0-0",
     "@ngrx/effects": "18.0.2",
     "rxjs": "~7.8.0",
     "@ngrx/store": "18.0.2",
-    "@kitouch/shared-models": "1.0.0-beta",
-    "@kitouch/utils": "1.0.0-beta",
+    "@kitouch/shared-models": "5.0.0-0",
+    "@kitouch/utils": "5.0.0-0",
     "realm-web": "^2.0.1",
     "@angular/common": "18.2.6",
-    "@kitouch/shared-infra": "0.0.1"
+    "@kitouch/shared-infra": "4.0.0-0"
   },
   "sideEffects": false
 }
