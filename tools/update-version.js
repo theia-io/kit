@@ -5,6 +5,8 @@ const { execSync } = require('child_process');
 const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf-8'));
 let [major, minor, patch] = packageJson.version.split('.');
 
+patch = patch.split('-')[0];
+
 // Increment the patch version
 patch++;
 
