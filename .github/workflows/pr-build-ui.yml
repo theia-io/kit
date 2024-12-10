@@ -11,7 +11,7 @@ on:
 #   contents: read
 
 jobs:
-  lint_and_build:
+  build_ui:
     runs-on: ubuntu-latest
 
     steps:
@@ -39,6 +39,6 @@ jobs:
       # - run: npx nx affected -t lint test build e2e-ci
 
       - name: Build KITouch UI PRD app
-        run: npm run build
+        run: npm run build:ui
         env:
           COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env

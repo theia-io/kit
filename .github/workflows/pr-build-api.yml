@@ -11,7 +11,7 @@ on:
 #   contents: read
 
 jobs:
-  lint_and_build:
+  build_api:
     runs-on: ubuntu-latest
 
     steps:
