@@ -24,6 +24,12 @@
         },
         "development": {
           "sourceMap": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/api/src/environments/environment.ts",
+              "with": "apps/api/src/environments/environment.dev.ts"
+            }
+          ],
           "webpackConfig": "apps/api/webpack.config.js"
         },
         "production": {
