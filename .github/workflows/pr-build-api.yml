@@ -13,6 +13,8 @@ on:
 jobs:
   build_api:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grant write permissions to the repository's contents
 
     steps:
       - uses: actions/checkout@v4
@@ -49,7 +51,7 @@ jobs:
           node tools/update-version.js 
           git add .
           git commit -m "chore: bump (ui) version" 
-          git push origin HEAD 
+          git push origin HEAD
 
       - name: Build KITouch UI PRD app
         run: npm run build:api
