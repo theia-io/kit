@@ -1,6 +1,7 @@
 name: PRD Build UI
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [main] # Or your main branch name
 
