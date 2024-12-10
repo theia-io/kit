@@ -1,12 +1,20 @@
 import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
 
+const version = process.env['PACKAGE_VERSION'];
+const uiVersion = process.env['UI_VERSION'];
+const cmdVersion = process.env['version'];
+
+console.log(
+  `\n\nversion: ${version}, uiVersion: ${uiVersion}, cmdVersion: ${cmdVersion}`
+);
+
 export const environment: Environment = {
   api: {
     root: '/api',
     media: '/media',
   },
   googleTagConfig: '${GOOGLE_TAG_ID}' || 'G-7YL998B39Q',
-  build: KIT_ENVS.production + '-' + 'v0.0.8-ddb4af2', //+ ('${COMMIT_SHA}' || ''),
+  build: KIT_ENVS.production + '-' + (version ?? 'N/A'),
   realmAppId: 'application-0-gnmmqxd',
   environment: KIT_ENVS.production,
   production: true,

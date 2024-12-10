@@ -41,8 +41,6 @@ jobs:
         with:
           push: true
           # Optional: Build args if you need to pass arguments to your Docker build
-          build-args: |
-            MY_BUILD_ARG=value1,value2
           tag: latest # Tag the image with 'latest'
 
       # This line enables distribution
@@ -57,10 +55,10 @@ jobs:
       # - run: npx nx-cloud record -- nx format:check
       # - run: npx nx affected -t lint test build e2e-ci
 
-      - name: Set Git user information
-        run: |
-          git config user.email "danbilokha@gmail.com"
-          git config user.name "danemesis"
+      # - name: Set Git user information
+      #   run: |
+      #     git config user.email "danbilokha@gmail.com"
+      #     git config user.name "danemesis"
 
       # - name: Update version and push
       #   run: |

@@ -38,10 +38,10 @@ jobs:
       # - run: npx nx-cloud record -- nx format:check
       # - run: npx nx affected -t lint test build e2e-ci
 
-      - name: Set Git user information
-        run: |
-          git config user.email "danbilokha@gmail.com"
-          git config user.name "danemesis"
+      # - name: Set Git user information
+      #   run: |
+      #     git config user.email "danbilokha@gmail.com"
+      #     git config user.name "danemesis"
 
       # - name: Update version and push
       #   run: |
@@ -50,7 +50,14 @@ jobs:
       #     git commit -m "chore: bump (ui) version"
       #     git push origin HEAD
 
+      - name: Set package version variable
+        run: PACKAGE_VERSION=$(npm pkg get version --workspaces=false | tr -d \")
+
+      - name: Check package version
+        run: echo $GITHUB_SHA_SHORT
+
       - name: Build KITouch UI PRD app
-        run: npm run build:ui
+        run: npm run build:ui -- --version=${{ env.PACKAGE_VERSION }}
         env:
+          UI_VERSION: $(npm pkg get version --workspaces=false | tr -d \")
           COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env
