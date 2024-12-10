@@ -1,13 +1,13 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.0",
+  "version": "5.0.NaN-fb90d77",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
     "dev": "nx run ui:serve",
     "dev:api-hmr": "nx run api:serve --configuration=hmr",
     "build:ui": "nx run ui:build --prod",
-    "prebuild:ui": "nx run-many -t version && git add . && git commit -m \"chore: bump (ui) version [skip ci]\" && git push",
+    "prebuild:ui": "node tools/update-version.js && git add . && git commit -m \"chore: bump (ui) version [skip ci]\" && git push",
     "build:api": "nx run api:build --configuration=production",
     "prebuild:api": "nx run --all:version && git add . && git commit -m \"chore: bump (api) version [skip ci]\" && git push",
     "build:affected": "nx affected --base=origin/main -t build",

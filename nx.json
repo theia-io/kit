@@ -14,14 +14,6 @@
     ],
     "sharedGlobals": []
   },
-  "targets": {
-    "version": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "node tools/update-version.js"
-      }
-    }
-  },
   "targetDefaults": {
     "@angular-devkit/build-angular:browser": {
       "cache": true,
