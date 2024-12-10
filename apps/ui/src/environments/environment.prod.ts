@@ -14,7 +14,8 @@ export const environment: Environment = {
     media: '/media',
   },
   googleTagConfig: '${GOOGLE_TAG_ID}' || 'G-7YL998B39Q',
-  build: KIT_ENVS.production + '-' + (version ?? 'N/A'),
+  build:
+    KIT_ENVS.production + '-' + (version ?? uiVersion ?? cmdVersion ?? 'N/A'),
   realmAppId: 'application-0-gnmmqxd',
   environment: KIT_ENVS.production,
   production: true,
