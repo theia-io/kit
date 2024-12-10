@@ -1,6 +1,7 @@
 name: DEV Build
 
 on:
+  workflow_dispatch:
   pull_request:
     branches: [develop] # Or your main branch name
 
