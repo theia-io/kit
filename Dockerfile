@@ -8,9 +8,13 @@ RUN npm pkg delete scripts.prepare
 # RUN npm ci --only=production
 RUN npm ci
 
+# TODO move this above as copying node_modules likely is not efficient
 COPY . .
 
-RUN npm run build:api
+ARG PACKAGE_VERSION
+ARG API_BASE
+
+RUN npm run build:api -- --version=$PACKAGE_VERSION --apiBase=$API_BASE
 
 EXPOSE 3000 
 

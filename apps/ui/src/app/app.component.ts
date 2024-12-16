@@ -9,6 +9,7 @@ import {
   NgcStatusChangeEvent,
 } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs';
+import { environment } from '../environments/environment';
 
 @Component({
   standalone: true,
@@ -37,6 +38,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    console.log(environment);
+
     // subscribe to cookieconsent observables to react to main events
     this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(() => {
       // you can use this.ccService.getConfig() to do stuff...

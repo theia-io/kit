@@ -10,6 +10,9 @@ on:
 #   actions: read
 #   contents: read
 
+env:
+  API_BASE: http://kit-api-alb-819910982.eu-north-1.elb.amazonaws.com/api
+
 jobs:
   build_ui:
     runs-on: ubuntu-latest

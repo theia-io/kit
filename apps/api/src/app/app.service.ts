@@ -5,7 +5,7 @@ import { environment } from '../environments/environment';
 export class AppService {
   getData(): { message: string } {
     return {
-      message: `Hello API /4/: ${environment.version}, ${environment.apiBase}`,
+      message: `Hello API /5/: ${environment.version}, ${environment.apiBase}`,
     };
   }
 }

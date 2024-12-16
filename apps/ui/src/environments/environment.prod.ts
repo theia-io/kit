@@ -8,7 +8,10 @@ console.log(
   `\n\nversion: ${version}, uiVersion: ${uiVersion}, cmdVersion: ${cmdVersion}`
 );
 
-export const environment: Environment = {
+export const environment: Environment & { test: any } = {
+  test: {
+    testVariable: '${{ API_BASE }} ',
+  },
   api: {
     root: '/api',
     media: '/media',

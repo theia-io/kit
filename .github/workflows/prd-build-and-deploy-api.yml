@@ -13,6 +13,7 @@ on:
 env:
   AWS_REGION: 'eu-north-1' # Replace with your AWS region
   ECR_REPOSITORY: 'kit/api' # Replace with your ECR repository name
+  API_BASE: http://kit-api-alb-819910982.eu-north-1.elb.amazonaws.com/api
 
 jobs:
   prd_build_and_deploy_api:
@@ -22,10 +23,10 @@ jobs:
       contents: write # Grant write permissions to the repository's contents
 
     steps:
-      # - uses: actions/checkout@v4
-      #   with:
-      #     fetch-depth: 0 # Fetch all history for proper linting and formatting
-      #     token: ${{ secrets.GITHUB_TOKEN }} # Use the GITHUB_TOKEN
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper linting and formatting
+          token: ${{ secrets.GITHUB_TOKEN }} # Use the GITHUB_TOKEN
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
@@ -45,16 +46,20 @@ jobs:
       #   id: get-timestamp
       #   run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
 
-      # - name: Build, tag, and push the image to Amazon ECR
-      #   id: build-image
-      #   env:
-      #     ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-      #     ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-      #     # IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
-      #     IMAGE_TAG: 'latest'
-      #   run: |
-      #     docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-      #     docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+      - name: Set environment variables
+        run: |
+          echo "PACKAGE_VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+
+      - name: Build, tag, and push the image to Amazon ECR
+        id: build-image
+        env:
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+          # IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
+          IMAGE_TAG: 'latest'
+        run: |
+          docker build --build-arg PACKAGE_VERSION=${{ env.PACKAGE_VERSION }} --build-arg API_BASE=${{ env.API_BASE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Force deployment
         run: |
