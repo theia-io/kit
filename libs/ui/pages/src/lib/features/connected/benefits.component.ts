@@ -8,7 +8,10 @@ import { CardModule } from 'primeng/card';
   selector: 'kit-page-feature-connected-page-benefits',
   template: `
     <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-      <a [routerLink]="featuresConnectedUrl"> Connected </a>
+      <a [routerLink]="featuresConnectedUrl">
+        <i class="pi pi-link font-semibold text-3xl"></i>
+        Connected
+      </a>
     </h2>
     <p class="mt-2">Stay connected with your colleagues.</p>
 

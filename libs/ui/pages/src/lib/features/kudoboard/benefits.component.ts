@@ -20,7 +20,10 @@ import { startWith } from 'rxjs';
   template: `
     <div class="flex gap-4 items-center">
       <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-        <a [routerLink]="featuresKudoBoardUrl"> Kudo boards ✨ </a>
+        <a [routerLink]="featuresKudoBoardUrl">
+          <i class="pi pi-link font-semibold text-3xl"></i>
+          Kudo boards ✨
+        </a>
       </h2>
 
       <div

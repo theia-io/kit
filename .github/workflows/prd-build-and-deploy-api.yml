@@ -2,8 +2,8 @@ name: PRD Build & Deploy API
 
 on:
   workflow_dispatch:
-  pull_request:
-    branches: [main] # Or your main branch name
+  push:
+    branches: [main] # Triggers on pushes to the main branch
 
 # Needed for nx-set-shas when run on the main branch
 # permissions:

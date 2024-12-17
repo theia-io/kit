@@ -38,6 +38,7 @@ import { startWith } from 'rxjs';
           [klasses]="getStartedKlassOverwrite"
           class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900"
         >
+          <i class="pi pi-link font-semibold text-3xl"></i>
           Create Farewell
         </a>
       </div>
