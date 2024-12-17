@@ -73,7 +73,7 @@ export class MediaController {
 
   @Post('profile')
   async saveProfileMedia(@Query('name') name: string, @Body() media: Buffer) {
-    console.log(name, media);
+    console.log('%s', name, media);
   }
 
   #getDimensions(media: Buffer) {
