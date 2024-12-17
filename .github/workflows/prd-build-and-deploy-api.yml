@@ -48,7 +48,7 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "PACKAGE_VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+          echo "PACKAGE_VERSION=$(node -p \"require(\'./package.json\').version\")" >> $GITHUB_ENV
 
       - name: Build, tag, and push the image to Amazon ECR
         id: build-image
