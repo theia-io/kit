@@ -5,7 +5,9 @@ import { environment } from '../environments/environment';
 export class AppService {
   getData(): { message: string } {
     return {
-      message: `Hello API 7: ${environment.version}, ${environment.apiBase}`,
+      message: `Hello API, deployed at: ${new Date().toUTCString()}. \nENVS: 
+        \n- version - ${environment.version}, 
+        \n- api base - ${environment.apiBase}`,
     };
   }
 }
