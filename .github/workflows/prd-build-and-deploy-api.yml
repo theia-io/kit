@@ -47,8 +47,10 @@ jobs:
       #   run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
 
       - name: Set environment variables
+        id: package-version
         run: |
-          echo "PACKAGE_VERSION=$(node -p \"require(\'./package.json\').version\")" >> $GITHUB_ENV
+          VERSION=$(node -p "require('./package.json').version")
+          echo "::set-output name=version::$VERSION"
 
       - name: Build, tag, and push the image to Amazon ECR
         id: build-image
@@ -58,7 +60,7 @@ jobs:
           # IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
           IMAGE_TAG: 'latest'
         run: |
-          docker build --build-arg PACKAGE_VERSION=${{ env.PACKAGE_VERSION }} --build-arg API_BASE=${{ env.API_BASE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }}" --build-arg API_BASE=${{ env.API_BASE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Force deployment
