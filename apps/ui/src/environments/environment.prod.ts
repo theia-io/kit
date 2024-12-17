@@ -1,8 +1,11 @@
 import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
 
-const version = process.env['PACKAGE_VERSION'];
-const uiVersion = process.env['UI_VERSION'];
-const cmdVersion = process.env['version'];
+const version = '${PACKAGE_VERSION}';
+const version2 = '${{ PACKAGE_VERSION }}';
+const uiVersion = '${UI_VERSION}';
+const uiVersion2 = '${ UI_VERSION }';
+const cmdVersion = '${version}';
+const cmdVersion2 = '${{version}}';
 
 console.log(
   `\n\nversion: ${version}, uiVersion: ${uiVersion}, cmdVersion: ${cmdVersion}`
@@ -10,6 +13,12 @@ console.log(
 
 export const environment: Environment & { test: any } = {
   test: {
+    version,
+    version2,
+    uiVersion,
+    uiVersion2,
+    cmdVersion,
+    cmdVersion2,
     testVariable: '${{ API_BASE }} ',
   },
   api: {
