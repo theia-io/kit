@@ -1,0 +1,27 @@
+{
+  "name": "s3",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/s3/src",
+  "projectType": "library",
+  "tags": ["scope:api", "scope:api-feature"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/s3",
+        "tsConfig": "libs/api/s3/tsconfig.lib.json",
+        "packageJson": "libs/api/s3/package.json",
+        "main": "libs/api/s3/src/index.ts",
+        "assets": ["libs/api/s3/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/s3/jest.config.ts"
+      }
+    }
+  }
+}

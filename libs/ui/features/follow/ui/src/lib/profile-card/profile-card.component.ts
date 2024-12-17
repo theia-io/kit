@@ -10,8 +10,8 @@ import {
 } from '@angular/core';
 import { profilePicture } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
+import { PhotoService } from '@kitouch/shared-services';
 import { FollowButtonComponent } from '@kitouch/ui-components';
-import { PhotoService } from '@kitouch/ui-shared';
 import PhotoSwipe from 'photoswipe';
 
 @Component({

@@ -27,7 +27,6 @@ import {
   FeatFarewellActions,
   FeatFarewellCommentActions,
   findProfileFarewells,
-  selectFarewellCommentsById,
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
 import {
@@ -46,11 +45,9 @@ import {
   AccountTileComponent,
   UiKitCompAnimatePingComponent,
 } from '@kitouch/ui-components';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  AuthorizedFeatureDirective,
-} from '@kitouch/ui-shared';
+
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';

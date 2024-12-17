@@ -1,10 +1,10 @@
-import { map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { dbClientProfileAdapter } from '@kitouch/kit-data';
+import { DataSourceService } from '@kitouch/shared-infra';
 import { Profile, User } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import { DBClientType } from '@kitouch/utils';
 import { Observable } from 'rxjs';
-import { dbClientProfileAdapter } from '@kitouch/kit-data';
+import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
 export class FollowService extends DataSourceService {

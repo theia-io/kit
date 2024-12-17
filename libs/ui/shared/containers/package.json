@@ -1,0 +1,19 @@
+{
+  "name": "@kitouch/containers",
+  "version": "4.0.0-0",
+  "peerDependencies": {
+    "@angular/common": "^18.2.0",
+    "@angular/core": "^18.2.0",
+    "@angular/animations": "18.2.6",
+    "rxjs": "~7.8.0",
+    "@angular/router": "18.2.6",
+    "primeng": "17.18.10",
+    "@kitouch/ui-components": "5.0.0-0",
+    "@angular/platform-browser": "18.2.6",
+    "@kitouch/shared-constants": "4.0.0-0",
+    "@kitouch/shared-infra": "4.0.0-0",
+    "@kitouch/shared-services": "4.0.0-0",
+    "@kitouch/shared-models": "5.0.0-0"
+  },
+  "sideEffects": false
+}

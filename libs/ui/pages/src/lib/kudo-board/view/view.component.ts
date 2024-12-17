@@ -1,4 +1,4 @@
-import { AsyncPipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -22,36 +22,30 @@ import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
 import {
   AccountTileComponent,
   UiKitPageOverlayComponent,
-  UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 import {
   FeatKudoBoardActionsComponent,
   FeatKudoBoardAnalyticsComponent,
   FeatKudoBoardCommentsComponent,
-  FeatKudoBoardViewComponent,
   FeatKudoBoardViewAdditionalActionsComponent,
+  FeatKudoBoardViewComponent,
 } from '@kitouch/ui-kudoboard';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  AuthorizedFeatureDirective,
-  AuthService,
-  DeviceService,
-  objectLoadingState$,
-  UiLogoComponent,
-} from '@kitouch/ui-shared';
+
 import { select, Store } from '@ngrx/store';
 import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
-import { TagModule } from 'primeng/tag';
 
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { AuthService, DeviceService } from '@kitouch/shared-infra';
+import { objectLoadingState$ } from '@kitouch/shared-services';
 import { ToastModule } from 'primeng/toast';
 import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
-  distinctUntilKeyChanged,
   filter,
   map,
   Observable,
@@ -61,7 +55,6 @@ import {
   switchMap,
   take,
 } from 'rxjs';
-import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 
 /**
  * Component has 5 states
@@ -78,17 +71,13 @@ import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
   imports: [
     AsyncPipe,
     RouterModule,
-    NgOptimizedImage,
     //
     ButtonModule,
-    TagModule,
     BreadcrumbModule,
     ToastModule,
     //
     AccountTileComponent,
-    UiLogoComponent,
     FeatKitProfileHeaderComponent,
-    UIKitSmallerHintTextUXDirective,
     FeatKudoBoardActionsComponent,
     FeatKudoBoardViewComponent,
     FeatKudoBoardAnalyticsComponent,

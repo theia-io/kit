@@ -25,7 +25,7 @@ export const profileReducer = createReducer(
   on(
     FeatProfileActions.addProfiles,
     FeatProfileApiActions.setProfiles,
-    FeatProfileApiActions.getFollowingProfilesSuccess,
+    FeatProfileApiActions.getProfilesSuccess,
     (state, { profiles }) => ({
       ...state,
       profiles: mergeArr(state.profiles || [], profiles),

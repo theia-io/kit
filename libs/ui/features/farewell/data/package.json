@@ -1,9 +1,9 @@
 {
   "name": "@kitouch/feat-farewell-data",
-  "version": "1.0.0-beta",
+  "version": "5.0.0-0",
   "peerDependencies": {
-    "@kitouch/shared-models": "1.0.0-beta",
-    "@kitouch/utils": "1.0.0-beta",
+    "@kitouch/shared-models": "5.0.0-0",
+    "@kitouch/utils": "5.0.0-0",
     "realm-web": "^2.0.1",
     "@ngrx/store": "18.0.2"
   },

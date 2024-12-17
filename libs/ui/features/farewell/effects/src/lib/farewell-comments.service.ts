@@ -1,17 +1,25 @@
-import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
 import {
   clientDbFarewellCommentAdapter,
   ClientDBFarewellCommentResponse,
   dbClientFarewellCommentAdapter,
 } from '@kitouch/feat-farewell-data';
-import { Farewell, FarewellComment } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
+import {
+  ContractUploadedMedia,
+  Farewell,
+  FarewellComment,
+} from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
-import { map, Observable, switchMap } from 'rxjs';
+import { from, map, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellCommentsService extends DataSourceService {
+  #env = inject(ENVIRONMENT);
+  #http = inject(HttpClient);
+
   getFarewellComments(
     farewellId: Farewell['id']
   ): Observable<Array<FarewellComment>> {
@@ -75,5 +83,35 @@ export class FarewellCommentsService extends DataSourceService {
       ),
       map(({ deletedCount }) => deletedCount > 0)
     );
+  }
+
+  uploadFarewellCommentMedia(key: string, blob: Blob) {
+    const { root, media } = this.#env.api;
+
+    return from(blob.arrayBuffer()).pipe(
+      switchMap((fileArrayBuffer) =>
+        this.#http.post<ContractUploadedMedia>(
+          `${root}${media}/farewell`,
+          fileArrayBuffer,
+          {
+            headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
+            params: {
+              name: key,
+            },
+          }
+        )
+      )
+    );
+  }
+
+  /** Media, S3 */
+  deleteFarewellCommentMedia(key: string) {
+    const { root, media } = this.#env.api;
+    // return this.deleteBucketItem(this.#env.s3Config.farewellBucket, key);
+    return this.#http.delete(`${root}${media}/farewell`, {
+      params: {
+        name: key,
+      },
+    });
   }
 }

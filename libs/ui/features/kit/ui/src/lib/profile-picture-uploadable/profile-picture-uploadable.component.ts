@@ -13,8 +13,8 @@ import {
   profilePicture,
   selectProfileById,
 } from '@kitouch/kit-data';
+import { S3_PROFILE_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
-import { S3_PROFILE_BUCKET_BASE_URL } from '@kitouch/ui-shared';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';

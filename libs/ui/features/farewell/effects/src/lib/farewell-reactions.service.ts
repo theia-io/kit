@@ -4,8 +4,8 @@ import {
   ClientDBFarewellReactionResponse,
   dbClientFarewellReactionAdapter,
 } from '@kitouch/feat-farewell-data';
+import { DataSourceService } from '@kitouch/shared-infra';
 import { Farewell, FarewellReaction } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import { ClientDataType } from '@kitouch/utils';
 import { BSON } from 'realm-web';
 import { map, Observable, switchMap } from 'rxjs';

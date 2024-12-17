@@ -7,8 +7,8 @@ import {
   dbClientFarewellAdapter,
   dbClientFarewellAnalyticsAdapter,
 } from '@kitouch/feat-farewell-data';
+import { DataSourceService } from '@kitouch/shared-infra';
 import { Farewell, FarewellAnalytics } from '@kitouch/shared-models';
-import { DataSourceService } from '@kitouch/ui-shared';
 import {
   ClientDataType,
   clientDBGenerateTimestamp,

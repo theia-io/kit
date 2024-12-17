@@ -1,8 +1,8 @@
 import { Bookmark, Profile, Tweety } from '@kitouch/shared-models';
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 
-export const FeatTweetBookmarkActions = createActionGroup({
-  source: 'FeatTweetBookmarkActions',
+export const FeatBookmarksActions = createActionGroup({
+  source: 'FeatBookmarksActions',
   events: {
     GetAll: emptyProps(),
     GetAllSuccess: props<{ bookmarks: Array<Bookmark> }>(),

@@ -1,0 +1,66 @@
+name: PRD Build UI
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main] # Or your main branch name
+
+# Needed for nx-set-shas when run on the main branch
+# permissions:
+#   actions: read
+#   contents: read
+
+env:
+  API_BASE: http://kit-api-alb-819910982.eu-north-1.elb.amazonaws.com/api
+
+jobs:
+  build_ui:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grant write permissions to the repository's contents
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper linting and formatting
+          token: ${{ secrets.GITHUB_TOKEN }} # Use the GITHUB_TOKEN
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+      # This line enables distribution
+      # The "--stop-agents-after" is optional, but allows idle agents to shut down once the "e2e-ci" targets have been requested
+      # - run: npx nx-cloud start-ci-run --distribute-on="3 linux-medium-js" --stop-agents-after="e2e-ci"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # - uses: nrwl/nx-set-shas@v4
+
+      # - run: npx nx-cloud record -- nx format:check
+      # - run: npx nx affected -t lint test build e2e-ci
+
+      # - name: Set Git user information
+      #   run: |
+      #     git config user.email "danbilokha@gmail.com"
+      #     git config user.name "danemesis"
+
+      # - name: Update version and push
+      #   run: |
+      #     node tools/update-version.js
+      #     git add .
+      #     git commit -m "chore: bump (ui) version"
+      #     git push origin HEAD
+
+      - name: Set package version variable
+        run: PACKAGE_VERSION=$(npm pkg get version --workspaces=false | tr -d \")
+
+      - name: Check package version
+        run: echo $PACKAGE_VERSION
+
+      - name: Build KITouch UI PRD app
+        run: npm run build:ui -- --version=$PACKAGE_VERSION
+        env:
+          UI_VERSION: $(npm pkg get version --workspaces=false | tr -d \")
+          COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env

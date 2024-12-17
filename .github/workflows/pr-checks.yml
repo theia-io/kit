@@ -6,7 +6,7 @@ on:
     branches: [main] # Or your main branch name
 
 jobs:
-  lint_and_build:
+  quality_checks_build_affected:
     runs-on: ubuntu-latest
 
     steps:

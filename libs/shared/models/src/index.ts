@@ -9,3 +9,6 @@ export * from './lib/entities-realworld';
 export * from './lib/farewell';
 export * from './lib/kudoboard';
 export * from './lib/tweet';
+
+// contracts FE <-> BE
+export * from './lib/contracts';

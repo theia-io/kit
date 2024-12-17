@@ -1,0 +1,33 @@
+name: Test build API
+
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [main] # Or your main branch name
+
+env:
+  API_BASE: http://kit-api-alb-819910982.eu-north-1.elb.amazonaws.com/api
+
+jobs:
+  test-build_api:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # Grant write permissions to the repository's contents
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for proper linting and formatting
+
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build KITouch UI PRD app
+        run: npm run build:api -- --version=$PACKAGE_VERSION --apiBase=$API_BASE
+        env:
+          COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env

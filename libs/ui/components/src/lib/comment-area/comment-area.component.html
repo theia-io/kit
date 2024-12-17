@@ -22,15 +22,64 @@
       aria-label="comment">
       <i class="pi pi-send"></i>
     </p-button>
-    <span class="block mb-4"></span>
-    } @else {
-    <ui-kit-tweet-button
-      class="mb-4"
-      text="Comment"
-      [iconAnimate]="true"
-      [disabled]="!commentContentControl.valid"
-      [loader]="false"
-      (click)="commentHandler()" />
     }
   </p-floatLabel>
+
+  @if(maxMediaFiles() > 0) {
+  <div class="flex gap-2 items-center">
+    <ui-kit-pic-uploadable
+      [conf]="{ fileUploadConf: { multiple: maxMediaFiles() !== 1 } }"
+      (files)="filesHandler($event)" />
+
+    @if(uploadingMedia()){
+    <ui-kit-spinner />
+    }
+
+    <div
+      id="uploaded-comment-media-gallery"
+      class="flex gap-2 items-center flex-nowrap overflow-x-auto">
+      @for (media of uploadedMedias(); track media.url) {
+      <a
+        class="block relative h-16"
+        [href]="media.optimizedUrls[0]"
+        [attr.data-pswp-width]="media.width"
+        [attr.data-pswp-height]="media.height"
+        [ngStyle]="{
+          'height.px': 64,
+          'min-width.px':
+            64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+        }"
+        target="_blank">
+        <picture>
+          @for (url of media.optimizedUrls; track url) {
+          <source [srcset]="url" [type]="'image/' + mediaType(url)" />
+          }
+          <img
+            referrerpolicy="no-referrer"
+            class="rounded"
+            [width]="64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)"
+            height="64"
+            [ngSrc]="media.url"
+            alt="Media to the comment" />
+        </picture>
+        @if(deleteMediaFilesCb()) {
+        <ui-kit-delete
+          [background]="true"
+          xOffset="right-0"
+          yOffset="top-0"
+          (onDelete)="deleteHandler(media)" />
+        }
+      </a>
+      }
+    </div>
+  </div>
+  } @if(commentContentControlRows !== 2) {
+  <ui-kit-tweet-button
+    class="my-2"
+    [text]="actionBtnText()"
+    [iconAnimate]="true"
+    [disabled]="!commentContentControl.valid"
+    [loader]="false"
+    (click)="commentHandler()" />
+  }
 </div>
