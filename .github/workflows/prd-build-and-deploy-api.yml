@@ -4,6 +4,13 @@ on:
   workflow_dispatch:
   push:
     branches: [main] # Triggers on pushes to the main branch
+    paths-ignore:
+      - 'apps/api-e2e/**'
+      - 'apps/archive/**'
+      - 'apps/release/**'
+      - 'apps/ui/**'
+      - 'docs/**' # Ignore changes in the 'docs' folder and its subfolders
+      - 'libs/ui/**'
 
 # Needed for nx-set-shas when run on the main branch
 # permissions:
