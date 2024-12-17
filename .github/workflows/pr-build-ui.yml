@@ -53,14 +53,8 @@ jobs:
       #     git commit -m "chore: bump (ui) version"
       #     git push origin HEAD
 
-      - name: Set package version variable
-        run: PACKAGE_VERSION=$(npm pkg get version --workspaces=false | tr -d \")
-
-      - name: Check package version
-        run: echo $PACKAGE_VERSION
-
       - name: Build KITouch UI PRD app
-        run: npm run build:ui -- --version=$PACKAGE_VERSION
+        run: npm run build:ui -- --version=$UI_VERSION
         env:
           UI_VERSION: $(npm pkg get version --workspaces=false | tr -d \")
           COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env
