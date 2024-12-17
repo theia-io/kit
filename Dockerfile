@@ -3,16 +3,19 @@ FROM node:20.18-alpine AS builder
 WORKDIR /app
 
 COPY package*.json ./
-
 RUN npm pkg delete scripts.prepare
+
+ARG PACKAGE_VERSION
+ARG API_BASE
+
 # RUN npm ci --only=production
 RUN npm ci
 
 # TODO move this above as copying node_modules likely is not efficient
 COPY . .
 
-ARG PACKAGE_VERSION
-ARG API_BASE
+ENV PACKAGE_VERSION=$PACKAGE_VERSION
+ENV API_BASE=$API_BASE
 
 RUN npm run build:api -- --version=$PACKAGE_VERSION --apiBase=$API_BASE
 
