@@ -1,4 +1,4 @@
-name: PRD Build UI
+name: Check:Build UI
 
 on:
   workflow_dispatch:
@@ -9,9 +9,6 @@ on:
 # permissions:
 #   actions: read
 #   contents: read
-
-env:
-  API_BASE: http://kit-api-alb-819910982.eu-north-1.elb.amazonaws.com/api
 
 jobs:
   build_ui:
@@ -54,7 +51,4 @@ jobs:
       #     git push origin HEAD
 
       - name: Build KITouch UI PRD app
-        run: npm run build:ui -- --version=$UI_VERSION
-        env:
-          UI_VERSION: $(npm pkg get version --workspaces=false | tr -d \")
-          COMMIT_SHA: ${{ github.sha }} # Access the commit hash from process.env
+        run: npm run build:ui

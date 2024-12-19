@@ -1,4 +1,4 @@
-name: PR Checks
+name: Check:Quality Gates
 
 on:
   workflow_dispatch:
