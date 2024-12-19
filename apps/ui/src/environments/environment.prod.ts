@@ -2,7 +2,7 @@ import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
 
 export const environment: Environment = {
   api: {
-    root: '$API_BASE',
+    root: 'API_BASE',
     media: '/media',
   },
   googleTagConfig: 'G-7YL998B39Q',
