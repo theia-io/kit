@@ -1,3 +1,4 @@
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -12,11 +13,11 @@ import {
 } from '@kitouch/containers';
 import { FeatFarewellIntoComponent } from '@kitouch/feat-farewell-ui';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
-import { RouterEventsService } from '@kitouch/shared-infra';
+import { DeviceService, RouterEventsService } from '@kitouch/shared-infra';
 import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
-import { take } from 'rxjs';
+import { startWith, take } from 'rxjs';
 
 const ANIMATION_REPEAT = 10000;
 
@@ -27,6 +28,7 @@ const ANIMATION_REPEAT = 10000;
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     RouterModule,
+    AsyncPipe,
     //
     TagModule,
     //
@@ -40,6 +42,8 @@ const ANIMATION_REPEAT = 10000;
 export class PageSignInComponent implements OnInit {
   #router = inject(Router);
   #routerEventsService = inject(RouterEventsService);
+
+  hintHidden$ = inject(DeviceService).isMobile$.pipe(startWith(true));
 
   kittenVisibleTimeout: NodeJS.Timeout;
   kittenVisible = signal<'in' | 'out'>('out');
