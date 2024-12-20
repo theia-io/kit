@@ -1,11 +1,11 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.49-3277d12",
+  "version": "5.0.51-fd99e13",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
-    "dev": "nx run ui:serve",
-    "dev:api-hmr": "nx run api:serve --configuration=hmr",
+    "serve": "nx run ui:serve",
+    "serve:api-hmr": "nx run api:serve --configuration=hmr",
     "build:ui": "nx run ui:build --prod",
     "build:api": "nx run api:build --configuration=production",
     "build:affected": "nx affected --base=origin/main -t build",
@@ -39,6 +39,7 @@
     "@nestjs/common": "^10.0.2",
     "@nestjs/core": "^10.0.2",
     "@nestjs/platform-express": "^10.4.8",
+    "@nestjs/terminus": "^10.2.3",
     "@ngrx/effects": "18.0.2",
     "@ngrx/operators": "18.0.2",
     "@ngrx/router-store": "18.0.2",
