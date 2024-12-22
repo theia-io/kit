@@ -19,7 +19,9 @@ async function bootstrap() {
     origin: function (origin, callback) {
       if (!origin) {
         // Don't allow requests with no origin (like mobile apps or curl requests)
-        callback(new Error('Not allowed without valid origin'));
+        // callback(new Error('Not allowed without valid origin'));
+        // Allow requests with no origin (like mobile apps or curl requests or healthcheck)
+        callback(null, true);
       } else {
         // Check if the origin is allowed
         const allowedOrigin = /^https?:\/\/(.*\.)?kitouch\.io$/.test(origin);
