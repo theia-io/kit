@@ -15,6 +15,26 @@ async function bootstrap() {
   });
 
   const globalPrefix = 'api';
+  app.enableCors({
+    origin: function (origin, callback) {
+      if (!origin) {
+        // Don't allow requests with no origin (like mobile apps or curl requests)
+        callback(new Error('Not allowed without valid origin'));
+      } else {
+        // Check if the origin is allowed
+        const allowedOrigin = /^https?:\/\/(.*\.)?kitouch\.io$/.test(origin);
+        if (allowedOrigin) {
+          callback(null, true);
+        } else {
+          callback(new Error('Not allowed by CORS'));
+        }
+      }
+    },
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+    credentials: true,
+  });
   app.setGlobalPrefix(globalPrefix);
   app.use(logger);
 

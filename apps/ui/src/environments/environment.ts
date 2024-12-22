@@ -7,6 +7,7 @@ console.error('This should has not be called ts-d8123S-Ad');
 
 export const environment: Environment = {
   api: {
+    // locally proxied to localhost:3000 ran by `npm run serve:api-hmr`
     root: '/api',
     media: '/media',
   },
