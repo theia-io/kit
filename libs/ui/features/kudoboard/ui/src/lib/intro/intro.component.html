@@ -1,11 +1,11 @@
-<div class="grid grid-rows-2 md:grid-rows-1 grid-cols-1 md:grid-cols-2 gap-4">
+<div class="flex flex-col sm:flex-row gap-4">
   <div class="h-full w-full">
     <img
       class="mx-auto md:mr-0 max-h-40 rounded"
       src="/features/kudoboard.png"
       alt="Kitouch farewell" />
   </div>
-  <div class="flex flex-col">
+  <div class="flex flex-col gap-4">
     <!-- <p-button
       styleClass="mt-auto w-48"
       [outlined]="true"
@@ -19,7 +19,7 @@
       icon="pi-question-circle"
       severity="secondary"
       text="Read more"
-      class="mt-2 w-48" />
+      class="w-40 sm:w-48" />
     <div
       sharedUserHint
       [enabled]="withHint()"
@@ -30,8 +30,8 @@
         [routerLink]="kudoBoardGenerateUrl"
         icon="pi-sparkles"
         [iconAnimate]="false"
-        text="New Kudoboard"
-        class="mt-6 w-48" />
+        text="Create Kudoboard"
+        class="w-40 sm:w-48" />
     </div>
   </div>
 </div>

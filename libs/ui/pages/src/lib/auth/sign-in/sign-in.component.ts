@@ -48,6 +48,8 @@ export class PageSignInComponent implements OnInit {
   kittenVisibleTimeout: NodeJS.Timeout;
   kittenVisible = signal<'in' | 'out'>('out');
 
+  clickedIntro = signal<null | 'kudo' | 'farewell'>(null);
+
   readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 
   handleGoogleSignIn(signedIn: boolean) {

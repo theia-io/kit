@@ -6,13 +6,17 @@
   </div>
 </div>
 
-<div class="flex flex-row p-2 xl:p-0 gap-2 -mt-32 mb-24">
+<div class="flex flex-row p-2 xl:p-0 gap-2 sm:-mt-32 mb-24">
   <ui-kit-comp-gradient-card
-    class="min-w-56 mx-auto md:mx-0 -rotate-1 translate-x-3 -translate-y-6">
+    (click)="clickedIntro.set('farewell')"
+    [class.z-10]="clickedIntro() === 'farewell'"
+    class="mx-auto md:mx-0 -rotate-1 translate-x-4 md:translate-x-2 -translate-y-6">
     <feat-farewell-intro [withHint]="(hintHidden$ | async) === false" />
   </ui-kit-comp-gradient-card>
   <ui-kit-comp-gradient-card
-    class="min-w-56 mx-auto md:mx-0 rotate-1 -translate-x-3 translate-y-6">
+    (click)="clickedIntro.set('kudo')"
+    [class.z-10]="clickedIntro() === 'kudo'"
+    class="mx-auto md:mx-0 rotate-1 -translate-x-4 md:-translate-x-2 translate-y-6">
     <feat-kudoboard-intro [withHint]="(hintHidden$ | async) === false" />
   </ui-kit-comp-gradient-card>
 </div>

@@ -25,7 +25,8 @@
   </a>
   } }
   <!-- Not logged in user -->
-  @else if(!hideLogin()) {
+  @else if(!hideLogin() && (deviceService.device$ | async) !==
+  deviceTypes.Mobile) {
   <a
     [routerLink]="loginUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
