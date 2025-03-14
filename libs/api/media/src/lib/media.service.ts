@@ -20,7 +20,6 @@ export class MediaService {
     let avif;
 
     try {
-      // const webpAsync = sharp(file).webp().toBuffer();
       const avifAsync = sharp(file).avif().toBuffer();
       avif = await avifAsync;
     } catch (err) {

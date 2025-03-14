@@ -77,55 +77,6 @@ export class AuthService {
     if (!this.#environment.production) {
       console.log('redirectUrl', this.redirectUrl);
     }
-
-    // this.#actions$
-    //   .pipe(
-    //     ofType(FeatAccountApiActions.deleteSuccess),
-    //     switchMap(() =>
-    //       this.realmUser$.pipe(
-    //         filter(Boolean),
-    //         filter(() => !!this.#realmApp),
-    //         take(1)
-    //       )
-    //     ),
-    //     switchMap((realmUser) => this.#realmApp!.deleteUser(realmUser))
-    //   )
-    //   .subscribe(() => {
-    //     this.#realmUser$$.next(undefined);
-    //     this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`);
-    //   });
-
-    // this.#account$$.pipe(filter(Boolean)).subscribe((account) => {
-    //   this.#store.dispatch(FeatAccountApiActions.setAccount({ account }));
-    // });
-
-    // this.#user$$.pipe(filter(Boolean)).subscribe((user) => {
-    //   this.#store.dispatch(FeatUserApiActions.setUser({ user }));
-    // });
-
-    // this.#profiles$$.pipe(filter(Boolean)).subscribe((profiles) => {
-    //   /** @TODO @FIXME add better logic for default profile once multi-profile feature is implemented */
-    //   const currentProfile = profiles?.[0];
-
-    //   if (!currentProfile) {
-    //     console.error('Major error, we are working on it');
-    //     return;
-    //   }
-
-    //   this.#store.dispatch(
-    //     FeatProfileApiActions.setCurrentProfile({ profile: currentProfile })
-    //   );
-
-    //   const followingProfilesIds = currentProfile.following?.map((id) => id);
-    //   if (followingProfilesIds?.length) {
-    //     this.#store.dispatch(
-    //       FeatProfileApiActions.getProfiles({
-    //         profileIds: followingProfilesIds.map(({ id }) => id),
-    //       })
-    //     );
-    //   }
-    //   this.#store.dispatch(FeatProfileApiActions.setProfiles({ profiles }));
-    // });
   }
 
   init() {
@@ -186,35 +137,16 @@ export class AuthService {
       redirectUrl: this.redirectUrl,
     });
 
-    return (
-      realmApp
-        .logIn(credentials)
-        .then((realmUser) => {
-          this.#realmUser$$.next(realmUser);
-          return true;
-          // return this.#getAccountUserProfiles(realmUser);
-        })
-        // .then(({ account, user, profiles }) => {
-        //   if (!account || !user || !profiles) {
-        //     return this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
-        //   }
-
-        //   this.#account$$.next(account);
-        //   this.#user$$.next(user);
-        //   this.#profiles$$.next(profiles);
-
-        //   // if (!user.experiences?.length) {
-        //   //   this.#router.navigateByUrl(APP_PATH.AboutYourself);
-        //   //   return;
-        //   // }
-
-        //   return true;
-        // })
-        .catch((error) => {
-          console.error('Error logging  in:', error);
-          return false;
-        })
-    );
+    return realmApp
+      .logIn(credentials)
+      .then((realmUser) => {
+        this.#realmUser$$.next(realmUser);
+        return true;
+      })
+      .catch((error) => {
+        console.error('Error logging  in:', error);
+        return false;
+      });
   }
 
   async logout() {

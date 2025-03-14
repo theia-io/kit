@@ -18,14 +18,4 @@ export class PhotoService {
 
     return lightBox;
   }
-
-  // uncomment and test in `FeatFarewellViewV2Component` `ngAfterViewInit` method - does not work and silently fails
-  // @onDemandCSS({ name: 'photoswipe', path: '/photoswipe.css' })
-  // async createGallery(options: Partial<PreparedPhotoSwipeOptions>) {
-  //   console.log('\n\ncreateGallery:', options);
-  //   const lightBox = new PhotoSwipeLightbox(options);
-  //   console.log('\n\ncreateGallery 1:', lightBox);
-
-  //   return lightBox;
-  // }
 }

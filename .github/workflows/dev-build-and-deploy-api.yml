@@ -2,25 +2,20 @@ name: PRD Build & Deploy API
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches: [main] # Triggers on pushes to the main branch
-  #   paths-ignore:
-  #     - 'apps/api-e2e/**'
-  #     - 'apps/archive/**'
-  #     - 'apps/release/**'
-  #     - 'apps/ui/**'
-  #     - 'docs/**' # Ignore changes in the 'docs' folder and its subfolders
-  #     - 'libs/ui/**'
-
-# Needed for nx-set-shas when run on the main branch
-# permissions:
-#   actions: read
-#   contents: read
+  push:
+    branches: [main] # Triggers on pushes to the main branch
+    paths-ignore:
+      - 'apps/api-e2e/**'
+      - 'apps/archive/**'
+      - 'apps/release/**'
+      - 'apps/ui/**'
+      - 'docs/**' # Ignore changes in the 'docs' folder and its subfolders
+      - 'libs/ui/**'
 
 env:
-  AWS_REGION: 'eu-north-1' # Replace with your AWS region
-  ECR_REPOSITORY: 'kit/api' # Replace with your ECR repository name
-  API_BASE: http://kit-api-alb-819910982.eu-north-1.elb.amazonaws.com/api
+  AWS_REGION: 'eu-north-1'
+  ECR_REPOSITORY: 'kit/api-dev'
+  API_BASE: http://kit-api-ALB-dev-1775740668.eu-north-1.elb.amazonaws.com/api
 
 jobs:
   prd_build_and_deploy_api:
@@ -46,13 +41,6 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
-      # - name: Get commit hash
-      #   id: get-commit-hash
-      #   run: echo "::set-output name=commit-hash::$(git rev-parse --short HEAD)"
-      # - name: Get timestamp
-      #   id: get-timestamp
-      #   run: echo "::set-output name=timestamp::$(date +'%Y-%m-%d-%H-%M')"
-
       - name: Set environment variables
         id: package-version
         run: |
@@ -65,7 +53,6 @@ jobs:
           PACKAGE_VERSION: ${{ steps.package-version.outputs.version }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
-          # IMAGE_TAG: ${{ steps.get-commit-hash.outputs.commit-hash }}-${{ steps.get-timestamp.outputs.timestamp }}
           IMAGE_TAG: 'latest'
         run: |
           docker build --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }} --build-arg API_BASE=${{ env.API_BASE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
@@ -73,4 +60,4 @@ jobs:
 
       - name: Force deployment
         run: |
-          aws ecs update-service --cluster kit-api-v2 --service kit-api-service-http --force-new-deployment
+          aws ecs update-service --cluster kit-api-v2-dev --service kit-api-service-http --force-new-deployment

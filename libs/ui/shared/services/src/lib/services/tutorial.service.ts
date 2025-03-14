@@ -61,10 +61,6 @@ export class TutorialService {
       let isFound = false;
       const scripts = document.getElementsByTagName('script');
       for (let i = 0; i < scripts.length; ++i) {
-        // console.log(
-        //   "scripts[i].getAttribute('src')",
-        //   scripts[i].getAttribute('src')
-        // );
         if (scripts[i].getAttribute('src')?.includes('intro')) {
           isFound = true;
         }
@@ -73,11 +69,9 @@ export class TutorialService {
       if (!isFound) {
         const script = document.createElement('script');
         script.onload = () => {
-          //   console.log('JS LOADED');
           res(true);
         };
 
-        // console.log('JS LOADING STARTED');
         script.src = '/intro.js';
         script.type = 'text/javascript';
         script.async = false;
@@ -104,8 +98,6 @@ export class TutorialService {
         style.onload = () => {
           res(true);
         };
-
-        // console.log('CSS LOADING STARTED');
 
         style.id = 'client-theme';
         style.rel = 'stylesheet';
