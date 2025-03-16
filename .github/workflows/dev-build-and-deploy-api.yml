@@ -15,7 +15,7 @@ on:
 env:
   AWS_REGION: 'eu-north-1'
   ECR_REPOSITORY: 'kit/api-dev'
-  API_BASE: http://kit-api-ALB-dev-1775740668.eu-north-1.elb.amazonaws.com/api
+  API_BASE: https://apidev.kitouch.io/api
 
 jobs:
   prd_build_and_deploy_api:
@@ -60,4 +60,4 @@ jobs:
 
       - name: Force deployment
         run: |
-          aws ecs update-service --cluster kit-api-v2-dev --service kit-api-service-http --force-new-deployment
+          aws ecs update-service --cluster kit-api-dev --service kit-api-service-http-dev --force-new-deployment

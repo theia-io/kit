@@ -8,6 +8,7 @@ if (!apiBase) {
 
 export const environment: Environment = {
   production: true,
+  date: new Date().toUTCString(),
   version,
   apiBase,
 };

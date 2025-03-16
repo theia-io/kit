@@ -5,7 +5,9 @@ import { environment } from '../environments/environment';
 export class AppService {
   getData() {
     return {
-      message: `Hello API, deployed at: ${new Date().toUTCString()}`,
+      message: `\nAPI time: ${new Date().toUTCString()};\nAPI deployed at ${
+        environment.date
+      }`,
       version: environment.version,
       apiBase: environment.apiBase,
     };

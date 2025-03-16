@@ -4,10 +4,10 @@
     transform: show() ? 'translateX(0)' : 'translateX(-100000px)',
     top: (bounds()?.top ?? 0) - (36 / 2) + 4 + 'px',
   }">
-  <div class="p-1 rounded">
+  <div class="p-1 pr-3 rounded bg-secondary">
     <div class="flex items-center justify-between gap-2">
       <p-toggleButton
-        styleClass="bg-transparent border-none mr-2"
+        styleClass="k-bg-transparent border-none mr-2"
         [(ngModel)]="opened"
         onIcon="pi pi-minus-circle font-semibold text-2xl"
         offIcon="pi pi-plus-circle font-semibold text-2xl"

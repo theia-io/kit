@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.60-ea30023",
+  "version": "5.0.61-f326bcf",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
@@ -10,6 +10,7 @@
     "build:ui": "nx run ui:build --prod",
     "build:ui:dev": "nx run ui:build:development",
     "build:api": "nx run api:build --configuration=production",
+    "build:api:dev": "nx run api:build:development --configuration=development",
     "build:affected": "nx affected --base=origin/main -t build",
     "prettier:check": "npx prettier --check .",
     "prettier:write": "prettier --write --ignore-unknown .",
