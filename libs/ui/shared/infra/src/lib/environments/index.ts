@@ -14,7 +14,7 @@ export interface Environment {
   };
   googleTagConfig: string | null;
   build: string;
-  environment: KIT_ENVS; // when true then DEV env
+  environment: KIT_ENVS;
   production: boolean; // when true then PRD env; does not matter if development is `true`
   realmAppId: string; // Realm Web App ID
   // S3

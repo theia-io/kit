@@ -72,6 +72,33 @@
           "buildOptimizer": false,
           "optimization": false,
           "vendorChunk": true,
+          "extractLicenses": true,
+          "sourceMap": true,
+          "namedChunks": true,
+          "fileReplacements": [
+            {
+              "replace": "apps/ui/src/environments/environment.ts",
+              "with": "apps/ui/src/environments/environment.dev.ts"
+            }
+          ],
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1.5mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "2kb",
+              "maximumError": "4kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "local": {
+          "buildOptimizer": false,
+          "optimization": false,
+          "vendorChunk": true,
           "extractLicenses": false,
           "sourceMap": true,
           "namedChunks": true
@@ -86,11 +113,14 @@
           "buildTarget": "ui:build:production"
         },
         "development": {
-          "proxyConfig": "apps/ui/proxy.local.js",
           "buildTarget": "ui:build:development"
+        },
+        "local": {
+          "proxyConfig": "apps/ui/proxy.local.js",
+          "buildTarget": "ui:build:local"
         }
       },
-      "defaultConfiguration": "development"
+      "defaultConfiguration": "local"
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",

@@ -10,6 +10,7 @@ import {
 } from 'ngx-cookieconsent';
 import { Subscription } from 'rxjs';
 import { environment } from '../environments/environment';
+import { KIT_ENVS } from '@kitouch/shared-infra';
 
 @Component({
   standalone: true,
@@ -38,7 +39,9 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    console.log(environment);
+    if (environment.environment !== KIT_ENVS.production) {
+      console.log('ENVs:', environment);
+    }
 
     // subscribe to cookieconsent observables to react to main events
     this.popupOpenSubscription = this.ccService.popupOpen$.subscribe(() => {

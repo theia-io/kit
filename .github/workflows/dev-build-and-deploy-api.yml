@@ -1,4 +1,4 @@
-name: PRD Build & Deploy API
+name: DEV Build & Deploy API
 
 on:
   workflow_dispatch:
@@ -18,7 +18,7 @@ env:
   API_BASE: https://apidev.kitouch.io/api
 
 jobs:
-  prd_build_and_deploy_api:
+  dev_build_and_deploy_api:
     runs-on: ubuntu-latest
     environment: production
     permissions:
@@ -55,7 +55,7 @@ jobs:
           ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
           IMAGE_TAG: 'latest'
         run: |
-          docker build --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }} --build-arg API_BASE=${{ env.API_BASE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -f Dockerfile.dev --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }} --build-arg API_BASE=${{ env.API_BASE }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Force deployment
