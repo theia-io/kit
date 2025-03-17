@@ -47,7 +47,7 @@
   </section>
 
   <feat-farewell-editor
-    class="block mt-4 min-h-[50vh]"
+    class="block mt-4 min-h-[33vh]"
     formControlName="content"
     [imageStorageProvider]="saveImages()"
     [deleteImage]="deleteImage()"
@@ -75,13 +75,15 @@
 
   <ng-template #shareTmpl>
     @if(id) {
-    <feat-farewell-share [id]="id" />
+    <shared-copy-clipboard [url]="farewellLinkFn(id)" />
     }
   </ng-template>
 
   <ng-template #previewTmpl>
     @if(id) {
-    <feat-farewell-preview [id]="id" [(visible)]="previewVisible" />
+    <shared-sidebar-preview [(visible)]="previewVisible">
+      <feat-farewell-viewv2 preview [farewellId]="id" />
+    </shared-sidebar-preview>
     }
   </ng-template>
 
@@ -91,11 +93,7 @@
   </div>
 
   <div class="flex justify-center items-center gap-2 mt-2">
-    <ng-container
-      *ngTemplateOutlet="
-        statusTmpl;
-        context: { $implicit: true }
-      "></ng-container>
+    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
 
     <button
       pButton

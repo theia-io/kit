@@ -1,5 +1,6 @@
 import {
   AsyncPipe,
+  DOCUMENT,
   Location,
   NgClass,
   NgTemplateOutlet,
@@ -15,6 +16,7 @@ import {
   model,
   OnDestroy,
   output,
+  signal,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
@@ -43,7 +45,12 @@ import {
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 
-import { SharedKitUserHintDirective } from '@kitouch/containers';
+import {
+  FeatSideBarPreviewComponent,
+  kudoboardLink,
+  SharedCopyClipboardComponent,
+  SharedKitUserHintDirective,
+} from '@kitouch/containers';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { DeviceService } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
@@ -73,6 +80,8 @@ import {
 } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
 import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
+import { FeatKudoBoardViewComponent } from '../view/view.component';
+import { FeatKudoBoardStatusComponent } from '../status/status.component';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -94,13 +103,15 @@ const TITLE_MAX_LENGTH = 128;
     TooltipModule,
     OverlayPanelModule,
     //
-    UIKitSmallerHintTextUXDirective,
     UiKitPicUploadableComponent,
     UiKitPicUploadableDirective,
     UiKitColorPickerComponent,
     UiKitColorDisplayerComponent,
     SharedKitUserHintDirective,
-    FeatKudoBoardViewAdditionalActionsComponent,
+    FeatKudoBoardStatusComponent,
+    FeatSideBarPreviewComponent,
+    FeatKudoBoardViewComponent,
+    SharedCopyClipboardComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -112,6 +123,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   asUserKudoTmpl = output<TemplateRef<unknown>>();
   shareKudoTmpl = output<TemplateRef<unknown>>();
 
+  #document = inject(DOCUMENT);
   #router = inject(Router);
   #location = inject(Location);
   #cdr = inject(ChangeDetectorRef);
@@ -159,8 +171,11 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
 
   isBucketUrl = isValidBucketUrl();
   isHexColor = isHexColor;
+  kudoboardLinkFn = (kudoboardId: string) =>
+    kudoboardLink(this.#document.location.origin, kudoboardId, false);
   readonly titleMaxLength = TITLE_MAX_LENGTH;
   readonly kudoBoardStatus = KudoBoardStatus;
+  previewVisible = signal(false);
 
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<unknown>;
@@ -319,18 +334,10 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  updateStatus(currentStatus?: KudoBoardStatus) {
-    if (currentStatus === KudoBoardStatus.Published) {
-      this.kudoBoardFormGroup.patchValue({
-        status: KudoBoardStatus.Draft,
-      });
-    } else {
-      this.kudoBoardFormGroup.patchValue({
-        status: KudoBoardStatus.Published,
-      });
-    }
-
-    this.#cdr.detectChanges();
+  updateStatus(status: KudoBoardStatus) {
+    this.kudoBoardFormGroup.patchValue({
+      status,
+    });
   }
 
   gotoBoard(kudoboardId: KudoBoard['id'], preview: boolean, event: Event) {

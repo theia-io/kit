@@ -1,19 +1,15 @@
-import { DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  inject,
   input,
   signal,
 } from '@angular/core';
-import { Farewell } from '@kitouch/shared-models';
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
-import { farewellLink } from './share';
 
 @Component({
   standalone: true,
-  selector: 'feat-farewell-share',
+  selector: 'shared-copy-clipboard',
   templateUrl: './share.component.html',
   imports: [
     //
@@ -22,17 +18,13 @@ import { farewellLink } from './share';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellShareComponent {
-  id = input.required<Farewell['id']>();
-
-  #document = inject(DOCUMENT);
+export class SharedCopyClipboardComponent {
+  url = input.required<string>();
 
   linkCopied = signal(false);
 
-  copyToClipBoard(farewellId: string) {
-    navigator.clipboard.writeText(
-      farewellLink(this.#document.location.origin, farewellId)
-    );
+  copyToClipBoard() {
+    navigator.clipboard.writeText(this.url());
 
     this.linkCopied.set(true);
     // TODO add also bubbling text saying that copied

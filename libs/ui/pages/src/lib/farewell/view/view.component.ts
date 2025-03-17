@@ -1,7 +1,11 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DOCUMENT } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
+import {
+  farewellLink,
+  SharedCopyClipboardComponent,
+} from '@kitouch/containers';
 import {
   FeatFarewellActions,
   FeatFarewellCommentActions,
@@ -13,7 +17,6 @@ import {
   FeatFarewellAllGridItemComponent,
   FeatFarewellAnalyticsComponent,
   FeatFarewellCommentsComponent,
-  FeatFarewellShareComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
@@ -67,12 +70,13 @@ import {
     FeatFarewellAnalyticsComponent,
     FeatFarewellCommentsComponent,
     FeatFollowUnfollowProfileComponent,
-    FeatFarewellShareComponent,
+    SharedCopyClipboardComponent,
   ],
 })
 export class PageFarewellViewComponent {
   preview = input(false);
 
+  #document = inject(DOCUMENT);
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
   #authService = inject(AuthService);
@@ -171,6 +175,9 @@ export class PageFarewellViewComponent {
   farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
+  farewellLinkFn = (farewellId: string) =>
+    farewellLink(this.#document.location.origin, farewellId);
 
   constructor() {
     this.farewellId$

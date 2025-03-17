@@ -9,7 +9,6 @@ import {
 } from '@kitouch/feat-farewell-data';
 import {
   FeatFarewellComponent,
-  FeatFarewellPreviewComponent,
   FeatFarewellStatusComponent,
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';

@@ -33,7 +33,7 @@
       </div>
 
       <p-breadcrumb
-        class="block mt-4 max-w-full test"
+        class="block mt-4 max-w-full"
         [model]="(breadcrumbMenuItems$ | async) ?? []">
         <ng-template pTemplate="item" #item let-item>
           <a class="cursor-pointer" [routerLink]="item.url">

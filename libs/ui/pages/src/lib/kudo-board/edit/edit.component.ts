@@ -11,7 +11,10 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
-import { FeatKudoBoardEditComponent } from '@kitouch/ui-kudoboard';
+import {
+  FeatKudoBoardEditComponent,
+  FeatKudoBoardStatusComponent,
+} from '@kitouch/ui-kudoboard';
 
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
@@ -32,6 +35,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
     FeatKudoBoardEditComponent,
+    FeatKudoBoardStatusComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -87,6 +91,7 @@ export class PageKudoBoardEditComponent {
     ])
   );
 
+  previewTmpl?: TemplateRef<unknown>;
   statusTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;
 

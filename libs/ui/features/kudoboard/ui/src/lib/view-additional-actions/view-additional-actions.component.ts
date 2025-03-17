@@ -6,7 +6,7 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { kudoboardLink } from '@kitouch/containers';
 import { KudoBoard } from '@kitouch/shared-models';
 import { ButtonModule } from 'primeng/button';
 
@@ -26,7 +26,9 @@ export class FeatKudoBoardViewAdditionalActionsComponent {
   copiedRecipient = signal(false);
 
   copyToClipBoard(kudoboardId: string, recipient: boolean) {
-    navigator.clipboard.writeText(this.#url(kudoboardId, recipient));
+    navigator.clipboard.writeText(
+      kudoboardLink(this.#document.location.origin, kudoboardId, recipient)
+    );
 
     const animationState = recipient ? this.copiedRecipient : this.copied;
 
@@ -35,16 +37,5 @@ export class FeatKudoBoardViewAdditionalActionsComponent {
     setTimeout(() => {
       animationState.set(false);
     }, 5000);
-  }
-
-  #url(kudoboardId: string, recipient: boolean) {
-    return (
-      [
-        this.#document.location.origin,
-        's',
-        APP_PATH_ALLOW_ANONYMOUS.KudoBoard,
-        kudoboardId,
-      ].join('/') + (recipient ? '?view=true' : '')
-    );
   }
 }

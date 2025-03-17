@@ -1,10 +1,9 @@
 @if(viewed$ | async; as viewed) {
-<div
-  class="flex items-center justify-end mt-1 text-xs font-medium text-gray-400">
+<div class="flex items-center justify-end text-sm text-gray-500">
   <i
-    pTooltip="Times this page was viewed so far"
+    pTooltip="Number of times kudoboard was viewed"
     tooltipStyleClass="text-xs"
-    class="pi pi-eye mr-2"></i>
-  Viewed {{ viewed.length }} times
+    class="pi pi-wave-pulse mr-1"></i>
+  {{ viewed.length }} views
 </div>
 }

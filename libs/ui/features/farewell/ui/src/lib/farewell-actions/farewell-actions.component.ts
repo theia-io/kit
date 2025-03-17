@@ -26,14 +26,17 @@ import {
 import { Farewell, FarewellReaction, Profile } from '@kitouch/shared-models';
 import { AccountTileComponent } from '@kitouch/ui-components';
 
-import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import {
+  AuthorizedFeatureDirective,
+  farewellLink,
+  SharedCopyClipboardComponent,
+} from '@kitouch/containers';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { farewellOwner } from '../common';
-import { FeatFarewellShareComponent } from '../share/share.component';
 
 @Component({
   standalone: true,
@@ -46,7 +49,7 @@ import { FeatFarewellShareComponent } from '../share/share.component';
     //
     AccountTileComponent,
     AuthorizedFeatureDirective,
-    FeatFarewellShareComponent,
+    SharedCopyClipboardComponent,
     //
     PickerComponent,
     ButtonModule,
@@ -59,9 +62,9 @@ export class FeatFarewellActionsComponent {
 
   commentsClick = output<void>();
 
-  #document = inject(DOCUMENT);
   #router = inject(Router);
   #store = inject(Store);
+  #document = inject(DOCUMENT);
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
   farewell = computed(() =>
@@ -157,6 +160,9 @@ export class FeatFarewellActionsComponent {
 
   linkCopied = signal(false);
 
+  // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
+  farewellLinkFn = (farewellId: string) =>
+    farewellLink(this.#document.location.origin, farewellId);
   readonly profilePicture = profilePicture;
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
   readonly emojiMap = emojiNameMap;
@@ -202,28 +208,9 @@ export class FeatFarewellActionsComponent {
     return;
   }
 
-  copyToClipBoard(kudoboardId: string) {
-    navigator.clipboard.writeText(this.#url(kudoboardId));
-
-    this.linkCopied.set(true);
-    // @TODO add also bubbling text saying that copied
-    setTimeout(() => {
-      this.linkCopied.set(false);
-    }, 5000);
-  }
-
   redirectToEdit() {
     this.#router.navigateByUrl(
       `/${APP_PATH.Farewell}/edit/${this.farewellId()}`
     );
-  }
-
-  #url(farewellId: string) {
-    return [
-      this.#document.location.origin,
-      's',
-      APP_PATH_ALLOW_ANONYMOUS.Farewell,
-      farewellId,
-    ].join('/');
   }
 }

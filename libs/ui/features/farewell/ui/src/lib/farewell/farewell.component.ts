@@ -1,8 +1,8 @@
 import {
   AsyncPipe,
   DatePipe,
+  DOCUMENT,
   Location,
-  NgClass,
   NgTemplateOutlet,
 } from '@angular/common';
 import {
@@ -12,7 +12,6 @@ import {
   Component,
   computed,
   DestroyRef,
-  effect,
   inject,
   model,
   output,
@@ -73,10 +72,13 @@ import { FeatFarewellAllGridItemComponent } from '../all-grid-item/all-grid-item
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
-import { FeatFarewellPreviewComponent } from '../preview/preview.component';
-import { FeatFarewellShareComponent } from '../share/share.component';
+import {
+  farewellLink,
+  FeatSideBarPreviewComponent,
+  SharedCopyClipboardComponent,
+} from '@kitouch/containers';
 import { FeatFarewellStatusComponent } from '../status/status.component';
-import { sign } from 'crypto';
+import { FeatFarewellViewV2Component } from '../viewV2/viewV2.component';
 
 // import to register custom bloats
 
@@ -112,9 +114,10 @@ function extractContent(html: string) {
     UIKitSmallerHintTextUXDirective,
     AccountTileComponent,
     DividerComponent,
-    FeatFarewellShareComponent,
-    FeatFarewellPreviewComponent,
+    SharedCopyClipboardComponent,
+    FeatSideBarPreviewComponent,
     FeatFarewellStatusComponent,
+    FeatFarewellViewV2Component,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -125,6 +128,7 @@ export class FeatFarewellComponent implements AfterViewInit {
   shareFarewellTmpl = output<TemplateRef<unknown>>();
   previewFarewellTmpl = output<TemplateRef<unknown>>();
 
+  #document = inject(DOCUMENT);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
@@ -172,6 +176,9 @@ export class FeatFarewellComponent implements AfterViewInit {
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   profilePictureFn = profilePicture;
+  // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
+  farewellLinkFn = (farewellId: string) =>
+    farewellLink(this.#document.location.origin, farewellId);
 
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<any>;

@@ -97,7 +97,7 @@
   farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
   farewell) {
   <div class="mb-8">
-    <feat-farewell-share [id]="farewell.id" />
+    <shared-copy-clipboard [url]="farewellLinkFn(farewell.id)" />
   </div>
   }
 </div>

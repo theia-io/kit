@@ -1,0 +1,21 @@
+@if(canBeChanged()) { @if(status() === kudoBoardStatus.Published) {
+<button
+  pButton
+  (click)="updateStatus(kudoBoardStatus.Draft)"
+  [rounded]="true"
+  severity="warning">
+  <span class="text-xs font-semibold">Set to draft</span>
+</button>
+} @else {
+<button
+  pButton
+  (click)="updateStatus(kudoBoardStatus.Published)"
+  [rounded]="true"
+  severity="success">
+  <span class="text-xs font-semibold">Publish</span>
+</button>
+} } @else { @if(status() === kudoBoardStatus.Published) {
+<p-tag severity="success" value="Published" />
+} @else if(status() === kudoBoardStatus.Draft) {
+<p-tag severity="warning" value="Draft" />
+} }

@@ -32,7 +32,9 @@
           'Created on ' +
           (farewell.timestamp.createdAt | date) +
           (farewell.timestamp.updatedAt
-            ? '\nUpdated on ' + (farewell.timestamp.updatedAt | date)
+            ? (!!farewell.timestamp.createdAt ? '\n' : '') +
+              'Updated on ' +
+              (farewell.timestamp.updatedAt | date)
             : '')
         "></i>
       {{ farewell.timestamp.createdAt | date }},
@@ -41,13 +43,16 @@
     <feat-farewell-analytics [farewellId]="farewell.id" [preview]="true" />
 
     <div class="ml-auto text-sm text-gray-500">
-      <a class="mr-2">
-        <span class="hover:text-gray-900 hover:font-semibold">Preview</span>
-        <feat-farewell-preview
-          class="ml-1"
-          kClass="text-gray-500 hover:text-gray-900"
-          [id]="farewell.id" />
-      </a>
+      <shared-sidebar-preview
+        class="mr-2"
+        kClass="text-gray-500 hover:text-gray-900 k-bg-transparent duration-0">
+        <span
+          extraText
+          class="text-sm mr-1 hover:text-gray-900 hover:font-semibold">
+          Preview
+        </span>
+        <feat-farewell-viewv2 preview [farewellId]="farewell.id" />
+      </shared-sidebar-preview>
 
       <a
         class="mr-2 hover:text-gray-900 hover:font-semibold"

@@ -1,64 +1,86 @@
 <feat-kudoboard-intro class="block mb-6 mx-12" />
 
 @for (kudoboard of myKudos$ | async; track $index) {
-<feat-farewell-all-grid-item
-  class="block"
-  [class.mt-12]="!$first"
-  [kudoboard]="kudoboard">
-  <div extensionBlockOne>
-    <feat-kudoboard-analytics
-      class="container mx-auto block mb-2"
-      [kudoboardId]="kudoboard.id"
-      [preview]="true" />
-  </div>
-  <div extensionBlockTwo>
-    <ui-kit-divider class="block mt-8" />
+<ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
+  <div class="relative block max-h-96 overflow-hidden">
+    <feat-kudoboard-view [id]="kudoboard.id" />
 
-    <div class="flex gap-2 items-center mt-4">
-      <button
-        pButton
-        class="py-0 px-2"
-        [disabled]="true"
-        [rounded]="true"
-        [severity]="
-          kudoboard.status === kudoBoardStatus.Published ? 'success' : 'warning'
-        ">
-        <span class="text-xs font-semibold">
-          {{
-            kudoboard.status === kudoBoardStatus.Published
-              ? 'Published'
-              : 'Draft'
-          }}
-        </span>
-      </button>
-
-      <p class="text-sm text-gray-500">
-        {{ kudoboard.timestamp.createdAt | date }}
-      </p>
-
-      <div class="ml-auto text-sm text-gray-500">
-        <a
-          class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
-          [routerLink]="[kudoBoardPartialUrl + '/' + kudoboard.id + '/edit']">
-          Edit
-          <i class="ml-1 pi pi-file-edit"></i>
-        </a>
-
-        <a
-          class="hover:text-gray-900 hover:font-semibold"
-          [routerLink]="[
-            kudoBoardPartialUrl + '/' + kudoboard.id,
-            { preview: true }
-          ]">
-          Open
-          <i class="ml-1 pi pi-arrow-right"></i>
-        </a>
+    <div class="absolute top-80 h-16 left-0 w-full">
+      <div class="h-full w-full relative flex justify-center items-end pb-2">
+        <div class="absolute top-0 h-full w-full bg-slate-800 blur-xl"></div>
+        <div
+          class="relative z-10 flex items-center justify-center text-cyan-200">
+          <a
+            class="text-8xl hover:text-cyan-100"
+            [routerLink]="[
+              kudoBoardPartialUrl + '/' + kudoboard.id,
+              { preview: true }
+            ]">
+            ...
+          </a>
+        </div>
       </div>
     </div>
-
-    <ui-kit-delete (onDelete)="onDeleteHandler(kudoboard, $event)" />
   </div>
-</feat-farewell-all-grid-item>
+
+  <ui-kit-divider class="block mt-8" />
+
+  <div class="flex gap-2 items-center mt-4">
+    <feat-kudoboard-status [status]="kudoboard.status" />
+
+    <p class="text-sm text-gray-500">
+      <i
+        class="pi pi-calendar mr-1"
+        [pTooltip]="
+          (kudoboard.timestamp.createdAt
+            ? 'Created on ' + (kudoboard.timestamp.createdAt | date)
+            : '') +
+          (kudoboard.timestamp.updatedAt
+            ? (!!kudoboard.timestamp.createdAt ? '\n' : '') +
+              'Updated on ' +
+              (kudoboard.timestamp.updatedAt | date)
+            : '')
+        "></i>
+      {{
+        kudoboard.timestamp.createdAt ?? kudoboard.timestamp.updatedAt | date
+      }},
+    </p>
+
+    <feat-kudoboard-analytics [kudoboardId]="kudoboard.id" [preview]="true" />
+
+    <div class="ml-auto text-sm text-gray-500">
+      <shared-sidebar-preview
+        class="mr-2"
+        kClass="text-gray-500 hover:text-gray-900 k-bg-transparent duration-0">
+        <span
+          extraText
+          class="text-sm mr-1 hover:text-gray-900 hover:font-semibold">
+          Preview
+        </span>
+        <feat-kudoboard-view preview [id]="kudoboard.id" />
+      </shared-sidebar-preview>
+
+      <a
+        class="mr-2 hover:text-gray-900 hover:font-semibold"
+        [routerLink]="[kudoBoardPartialUrl + '/' + kudoboard.id + '/edit']">
+        Edit
+        <i class="ml-1 pi pi-file-edit"></i>
+      </a>
+
+      <a
+        class="hover:text-gray-900 hover:font-semibold"
+        [routerLink]="[
+          kudoBoardPartialUrl + '/' + kudoboard.id,
+          { preview: true }
+        ]">
+        Open
+        <i class="ml-1 pi pi-arrow-right"></i>
+      </a>
+    </div>
+  </div>
+
+  <ui-kit-delete (onDelete)="onDeleteHandler(kudoboard, $event)" />
+</ui-kit-comp-gradient-card>
 } @empty {
 <div class="mt-4 flex flex-col justify-center items-center">
   <p>You have not created any kudoboards yet</p>

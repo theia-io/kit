@@ -7,5 +7,8 @@ export * from './navbar/navbar.component';
 export * from './navbar/navbar.service';
 export * from './navbar/subnav/subnav.component';
 export * from './navbar-static/navbar-static.component';
+export * from './preview/preview.component';
+export * from './share/share.component';
+export * from './share/share';
 export * from './sign-in-google/sign-in-google.component';
 export * from './static-info/static-info.component';

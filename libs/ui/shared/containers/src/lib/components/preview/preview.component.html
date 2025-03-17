@@ -4,10 +4,11 @@
   class="p-0"
   [ngClass]="kClass()"
   [text]="true">
+  <ng-content select="[extraText]" />
   @if(visible()) {
-  <i class="pi pi-eye-slash" pTooltip="Hide farewell preview"></i>
+  <i class="pi pi-eye-slash" pTooltip="Hide preview"></i>
   } @else {
-  <i class="pi pi-eye" pTooltip="Preview farewell"></i>
+  <i class="pi pi-eye" pTooltip="Preview"></i>
   }
 </button>
 
@@ -19,6 +20,6 @@
   [visible]="visible()"
   (onHide)="visible.set(false)">
   <div class="flex flex-col">
-    <feat-farewell-viewv2 [farewellId]="id()" />
+    <ng-content select="[preview]" />
   </div>
 </p-sidebar>

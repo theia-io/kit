@@ -74,7 +74,7 @@
       [text]="true"
       icon="pi pi-share-alt" />
     <p-overlayPanel #shareOverlayTmpl>
-      <feat-farewell-share [id]="farewellId()" />
+      <shared-copy-clipboard [url]="farewellLinkFn(farewellId())" />
     </p-overlayPanel>
 
     <!-- Admin owner menu -->
