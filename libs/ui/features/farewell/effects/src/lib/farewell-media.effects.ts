@@ -3,7 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import { FeatFarewellMediaActions } from '@kitouch/feat-farewell-data';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { catchError, delay, forkJoin, map, of, switchMap } from 'rxjs';
 import { FarewellMediaService } from './farewell-media.service';
 
 export const getFullS3Url = (s3Url: string, key: string) => `${s3Url}/${key}`;
@@ -33,6 +33,8 @@ export class FarewellMediaEffects {
               items,
             })
           ),
+          // AWW S3 takes time to handle and make image available. It has eventual consistency so need a time for it to be available
+          delay(2500),
           catchError(() =>
             of(
               FeatFarewellMediaActions.uploadFarewellStorageMediaFailure({

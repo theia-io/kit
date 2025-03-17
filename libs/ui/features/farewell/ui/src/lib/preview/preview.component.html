@@ -1,0 +1,24 @@
+<button
+  pButton
+  (click)="updatePreview()"
+  class="p-0"
+  [ngClass]="kClass()"
+  [text]="true">
+  @if(visible()) {
+  <i class="pi pi-eye-slash" pTooltip="Hide farewell preview"></i>
+  } @else {
+  <i class="pi pi-eye" pTooltip="Preview farewell"></i>
+  }
+</button>
+
+<p-sidebar
+  position="bottom"
+  styleClass="h-2/3 w-full shadow-[0_-20px_25px_-5px_rgba(0,0,0,0.1)] inset-shadow-xs ring"
+  header="Farewell Preview"
+  [blockScroll]="true"
+  [visible]="visible()"
+  (onHide)="visible.set(false)">
+  <div class="flex flex-col">
+    <feat-farewell-viewv2 [farewellId]="id()" />
+  </div>
+</p-sidebar>

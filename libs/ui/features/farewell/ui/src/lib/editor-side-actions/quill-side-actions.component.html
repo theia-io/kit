@@ -1,23 +1,24 @@
 <div
-  class="absolute z-10 -left-[26px] h-[36px]"
+  class="absolute z-10 -left-[55px] h-[36px]"
   [ngStyle]="{
+    left: device() === currentDevice.Mobile ? '25px' : '-55px',
     transform: show() ? 'translateX(0)' : 'translateX(-100000px)',
     top: (bounds()?.top ?? 0) - (36 / 2) + 4 + 'px',
   }">
-  <div class="p-1 pr-3 rounded bg-secondary">
+  <div class="p-1 rounded bg-secondary shadow-xl">
     <div class="flex items-center justify-between gap-2">
       <p-toggleButton
         styleClass="k-bg-transparent border-none mr-2"
         [(ngModel)]="opened"
-        onIcon="pi pi-minus-circle font-semibold text-2xl"
-        offIcon="pi pi-plus-circle font-semibold text-2xl"
+        onIcon="pi pi-minus-circle font-semibold text-2xl k-bg-transparent shadow-none text-gray-950 p-0"
+        offIcon="pi pi-plus-circle font-semibold text-2xl k-bg-transparent shadow-none text-gray-950 p-0 animate-pulse"
         ariaLabel="View embedded content" />
 
       @if(opened()) {
       <button
         class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
         <ui-kit-pic-uploadable
-          class="d-block h-5"
+          class="d-block h-[16px]"
           [conf]="{ withIcon: false }"
           [autoUploadCb]="onBasicUploadAuto.bind(this)">
           <ng-template uiKitPicUploadableTemplate>

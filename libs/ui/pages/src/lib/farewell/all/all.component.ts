@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe, NgOptimizedImage } from '@angular/common';
+import { AsyncPipe, DatePipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -9,26 +9,24 @@ import {
 import {
   FeatFarewellAnalyticsComponent,
   FeatFarewellIntoComponent,
+  FeatFarewellPreviewComponent,
+  FeatFarewellStatusComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import {
-  APP_PATH,
-  APP_PATH_ALLOW_ANONYMOUS,
-  APP_PATH_STATIC_PAGES,
-} from '@kitouch/shared-constants';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
-  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
 import { combineLatest } from 'rxjs';
 
 import { filter, map } from 'rxjs/operators';
@@ -47,17 +45,19 @@ import { filter, map } from 'rxjs/operators';
     DatePipe,
     RouterModule,
     //
-    ButtonModule,
-    ToastModule,
-    ConfirmDialogModule,
-    //
     FeatFarewellViewV2Component,
     FeatFarewellAnalyticsComponent,
     DividerComponent,
     UiCompGradientCardComponent,
     UiKitDeleteComponent,
     FeatFarewellIntoComponent,
+    FeatFarewellStatusComponent,
+    FeatFarewellPreviewComponent,
     //
+    ButtonModule,
+    ToastModule,
+    ConfirmDialogModule,
+    TooltipModule,
   ],
   providers: [ConfirmationService, MessageService],
 })

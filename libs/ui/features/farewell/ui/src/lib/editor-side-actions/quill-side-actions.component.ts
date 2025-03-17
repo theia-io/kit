@@ -3,12 +3,15 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
+  inject,
   input,
   model,
   output,
   signal,
 } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
+import { Device, DeviceService } from '@kitouch/shared-infra';
 import {
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
@@ -42,6 +45,9 @@ export class FeatFarewellQuillSideActionsComponent {
 
   imageFiles = output<Array<File>>();
   divider = output<void>();
+
+  device = toSignal(inject(DeviceService).device$);
+  currentDevice = Device;
 
   constructor() {
     effect(

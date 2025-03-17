@@ -12,6 +12,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   model,
   output,
@@ -49,7 +50,6 @@ import {
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 
-import { SharedKitUserHintDirective } from '@kitouch/containers';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
@@ -62,22 +62,21 @@ import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
   debounceTime,
-  delay,
   filter,
   map,
   Observable,
   of,
-  shareReplay,
   skipUntil,
-  switchMap,
   take,
-  withLatestFrom,
 } from 'rxjs';
 import { FeatFarewellAllGridItemComponent } from '../all-grid-item/all-grid-item.component';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
+import { FeatFarewellPreviewComponent } from '../preview/preview.component';
 import { FeatFarewellShareComponent } from '../share/share.component';
+import { FeatFarewellStatusComponent } from '../status/status.component';
+import { sign } from 'crypto';
 
 // import to register custom bloats
 
@@ -101,7 +100,6 @@ function extractContent(html: string) {
     RouterModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
-    NgClass,
     //
     FloatLabelModule,
     InputTextModule,
@@ -114,16 +112,18 @@ function extractContent(html: string) {
     UIKitSmallerHintTextUXDirective,
     AccountTileComponent,
     DividerComponent,
-    SharedKitUserHintDirective,
     FeatFarewellShareComponent,
+    FeatFarewellPreviewComponent,
+    FeatFarewellStatusComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
-  statusKudoTmpl = output<TemplateRef<any>>();
-  shareKudoTmpl = output<TemplateRef<unknown>>();
+  statusFarewellTmpl = output<TemplateRef<any>>();
+  shareFarewellTmpl = output<TemplateRef<unknown>>();
+  previewFarewellTmpl = output<TemplateRef<unknown>>();
 
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
@@ -166,6 +166,7 @@ export class FeatFarewellComponent implements AfterViewInit {
   });
   farewellAnalytics = signal<FarewellAnalytics | null>(null);
   editorTextValue = signal<string>('');
+  previewVisible = signal(false);
 
   readonly farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
@@ -176,15 +177,20 @@ export class FeatFarewellComponent implements AfterViewInit {
   statusTmpl?: TemplateRef<any>;
   @ViewChild('shareTmpl', { read: TemplateRef })
   shareTmpl?: TemplateRef<any>;
+  @ViewChild('previewTmpl', { read: TemplateRef })
+  previewTmpl?: TemplateRef<any>;
 
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
     setTimeout(() => {
       if (this.statusTmpl) {
-        this.statusKudoTmpl.emit(this.statusTmpl);
+        this.statusFarewellTmpl.emit(this.statusTmpl);
       }
       if (this.shareTmpl) {
-        this.shareKudoTmpl.emit(this.shareTmpl);
+        this.shareFarewellTmpl.emit(this.shareTmpl);
+      }
+      if (this.previewTmpl) {
+        this.previewFarewellTmpl.emit(this.previewTmpl);
       }
     }, 0);
 
@@ -257,12 +263,9 @@ export class FeatFarewellComponent implements AfterViewInit {
         );
       });
 
-      // TODO add error handling
       return this.#actions$.pipe(
         ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
         take(1),
-        // AWS S3 bucket has eventual consistency so need a time for it to be available
-        delay(1500),
         map(({ items }) =>
           items.map(({ key }) => getFullS3Url(this.#s3FarewellBaseUrl, key))
         )
@@ -278,22 +281,13 @@ export class FeatFarewellComponent implements AfterViewInit {
           url,
         })
       );
-      // TODO add error handling
     };
   }
 
-  updateStatus(currentStatus?: FarewellStatus) {
-    if (currentStatus === FarewellStatus.Published) {
-      this.farewellFormGroup.patchValue({
-        status: FarewellStatus.Draft,
-      });
-    } else {
-      this.farewellFormGroup.patchValue({
-        status: FarewellStatus.Published,
-      });
-    }
-
-    this.#cdr.detectChanges();
+  updateStatus(status: FarewellStatus) {
+    this.farewellFormGroup.patchValue({
+      status,
+    });
   }
 
   updateFarewellStatus(status: FarewellStatus) {
@@ -308,15 +302,6 @@ export class FeatFarewellComponent implements AfterViewInit {
     );
   }
 
-  gotoFarewell(farewellId: Farewell['id'], event: Event) {
-    event.preventDefault();
-
-    this.#router.navigate(
-      [`/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/${farewellId}`],
-      { queryParams: { preview: true } }
-    );
-  }
-
   gotoAll(event: Event) {
     event.preventDefault();
 
@@ -324,20 +309,10 @@ export class FeatFarewellComponent implements AfterViewInit {
   }
 
   #autoCreateFarewell() {
-    const autoCreate$ = this.farewellFormGroup.valueChanges.pipe(
-      takeUntilDestroyed(this.#destroyRef),
-      debounceTime(2500),
-      filter(({ content, title }) => !!title || !!content),
-      take(1),
-      shareReplay({
-        refCount: true,
-        bufferSize: 1,
-      })
-    );
-
-    autoCreate$
-      .pipe(withLatestFrom(this.#currentProfile$.pipe(filter(Boolean))))
-      .subscribe(([{ title, content, status }, profile]) =>
+    this.#currentProfile$
+      .pipe(filter(Boolean), take(1))
+      .subscribe((profile) => {
+        const { title, content, status } = this.farewellFormGroup.value;
         this.#store.dispatch(
           FeatFarewellActions.createFarewell({
             title: title ?? '',
@@ -346,12 +321,11 @@ export class FeatFarewellComponent implements AfterViewInit {
             profile: profile,
             status: status ?? FarewellStatus.Draft,
           })
-        )
-      );
+        );
+      });
 
-    autoCreate$
+    this.#actions$
       .pipe(
-        switchMap(() => this.#actions$),
         ofType(FeatFarewellActions.createFarewellSuccess),
         takeUntilDestroyed(this.#destroyRef),
         take(1),

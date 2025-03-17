@@ -7,7 +7,11 @@ import {
   FeatFarewellActions,
   selectFarewellById,
 } from '@kitouch/feat-farewell-data';
-import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
+import {
+  FeatFarewellComponent,
+  FeatFarewellPreviewComponent,
+  FeatFarewellStatusComponent,
+} from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
@@ -30,6 +34,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
     FeatFarewellComponent,
+    FeatFarewellStatusComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -80,8 +85,9 @@ export class PageFarewellEditComponent {
     ])
   );
 
-  statusTmpl?: TemplateRef<any>;
+  statusTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;
+  previewTmpl?: TemplateRef<unknown>;
 
   constructor() {
     this.farewellId$

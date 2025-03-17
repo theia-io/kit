@@ -3,10 +3,6 @@
 @for (farewell of farewells$ | async; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <div class="relative block max-h-96 overflow-hidden">
-    <feat-farewell-analytics
-      class="block mb-2"
-      [farewellId]="farewell.id"
-      [preview]="true" />
     <feat-farewell-viewv2 [farewellId]="farewell.id" />
 
     <div class="absolute top-80 h-16 left-0 w-full">
@@ -25,29 +21,36 @@
   </div>
 
   <ui-kit-divider class="block mt-8" />
+
   <div class="flex gap-2 items-center mt-4">
-    <button
-      pButton
-      class="py-0 px-2"
-      [disabled]="true"
-      [rounded]="true"
-      [severity]="
-        farewell.status === farewellStatus.Published ? 'success' : 'warning'
-      ">
-      <span class="text-xs font-semibold">
-        {{
-          farewell.status === farewellStatus.Published ? 'Published' : 'Draft'
-        }}
-      </span>
-    </button>
+    <feat-farewell-status [status]="farewell.status" />
 
     <p class="text-sm text-gray-500">
-      {{ farewell.timestamp.createdAt | date }}
+      <i
+        class="pi pi-calendar mr-1"
+        [pTooltip]="
+          'Created on ' +
+          (farewell.timestamp.createdAt | date) +
+          (farewell.timestamp.updatedAt
+            ? '\nUpdated on ' + (farewell.timestamp.updatedAt | date)
+            : '')
+        "></i>
+      {{ farewell.timestamp.createdAt | date }},
     </p>
 
+    <feat-farewell-analytics [farewellId]="farewell.id" [preview]="true" />
+
     <div class="ml-auto text-sm text-gray-500">
+      <a class="mr-2">
+        <span class="hover:text-gray-900 hover:font-semibold">Preview</span>
+        <feat-farewell-preview
+          class="ml-1"
+          kClass="text-gray-500 hover:text-gray-900"
+          [id]="farewell.id" />
+      </a>
+
       <a
-        class="mr-4 font-bold hover:text-gray-900 hover:font-semibold"
+        class="mr-2 hover:text-gray-900 hover:font-semibold"
         [routerLink]="[farewellEdit + '/' + farewell.id]">
         Edit
         <i class="ml-1 pi pi-file-edit"></i>
@@ -55,8 +58,8 @@
 
       <a
         class="hover:text-gray-900 hover:font-semibold"
-        [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
-        Open preview
+        [routerLink]="[farewellUrl + '/' + farewell.id]">
+        Open
         <i class="ml-1 pi pi-arrow-right"></i>
       </a>
     </div>

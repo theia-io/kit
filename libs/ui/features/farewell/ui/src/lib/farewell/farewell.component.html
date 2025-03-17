@@ -47,7 +47,7 @@
   </section>
 
   <feat-farewell-editor
-    class="block mt-4"
+    class="block mt-4 min-h-[50vh]"
     formControlName="content"
     [imageStorageProvider]="saveImages()"
     [deleteImage]="deleteImage()"
@@ -61,96 +61,48 @@
     </strong>
   </section>
 
-  @let status = farewellFormGroup.get('status')?.value; @let id = farewellId();
+  <!-- Farewell status -->
+  @let status = farewellFormGroup.get('status')?.value;
+  <!-- Farewell id -->
+  @let id = farewellId();
 
-  <ng-template #statusTmpl let-bigButton let-withHint="withHint">
-    @if(status === farewellStatus.Published) {
-    <button
-      pButton
-      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
-      (click)="updateStatus(status)"
-      [rounded]="true"
-      severity="warning">
-      <span class="text-xs font-semibold">Back to draft</span>
-    </button>
-    } @else {
-    <button
-      pButton
-      [ngClass]="[bigButton ? '' : 'py-0 px-2']"
-      (click)="updateStatus(status)"
-      [rounded]="true"
-      severity="success">
-      <span class="text-xs font-semibold">Publish</span>
-    </button>
-    } @if(withHint) {
-    <div
-      sharedUserHint
-      [extraIdent]="{ top: -20 }"
-      [text]="
-        status === farewellStatus.Published
-          ? 'Set as Draft'
-          : 'Click to Publish'
-      "></div>
+  <ng-template #statusTmpl>
+    <feat-farewell-status
+      [status]="status ?? farewellStatus.Draft"
+      [canBeChanged]="true"
+      (onUpdatedStatus)="updateStatus($event)" />
+  </ng-template>
+
+  <ng-template #shareTmpl>
+    @if(id) {
+    <feat-farewell-share [id]="id" />
     }
   </ng-template>
 
-  <ng-template #shareTmpl let-simple>
-    @if(id) { @if(simple) {
-    <feat-farewell-share [id]="id" />
-    } @else {
-    <p-button
-      styleClass="p-1"
-      (onClick)="shareOverlayTmpl.toggle($event)"
-      [text]="true"
-      icon="pi pi-share-alt" />
-    <p-overlayPanel #shareOverlayTmpl>
-      <feat-farewell-share [id]="id" />
-    </p-overlayPanel>
-    } }
+  <ng-template #previewTmpl>
+    @if(id) {
+    <feat-farewell-preview [id]="id" [(visible)]="previewVisible" />
+    }
   </ng-template>
 
-  <div class="flex justify-center items-center gap-2 mt-6">
+  <div class="flex justify-center gap-2 mt-12">
+    <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
+    <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-2">
     <ng-container
       *ngTemplateOutlet="
         statusTmpl;
-        context: { $implicit: true, withHint: true }
-      "></ng-container>
-  </div>
-
-  <div class="flex justify-center gap-2 mt-12">
-    @if(id) {
-    <div
-      [pTooltip]="
-        status !== farewellStatus.Published
-          ? 'Publish farewell so everyone can see'
-          : ''
-      ">
-      <button
-        pButton
-        class="relative"
-        (click)="gotoFarewell(id, $event)"
-        icon="pi pi-eye"
-        [rounded]="true"
-        severity="info">
-        <span class="ml-1 text-xs">See farewell</span>
-      </button>
-    </div>
-    }
-
-    <ng-container
-      *ngTemplateOutlet="
-        shareTmpl;
         context: { $implicit: true }
       "></ng-container>
-  </div>
 
-  <div class="flex justify-center items-center gap-2 mt-4">
     <button
       pButton
       (click)="gotoAll($event)"
       [rounded]="true"
       styleClass="p-1"
-      severity="success"
+      severity="info"
       icon="pi pi-sparkles">
       <span class="ml-1 text-xs">Done</span>
     </button>

@@ -6,10 +6,10 @@ import {
   input,
   signal,
 } from '@angular/core';
-import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Farewell } from '@kitouch/shared-models';
 import { ButtonModule } from 'primeng/button';
-import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TooltipModule } from 'primeng/tooltip';
+import { farewellLink } from './share';
 
 @Component({
   standalone: true,
@@ -18,7 +18,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
   imports: [
     //
     ButtonModule,
-    OverlayPanelModule,
+    TooltipModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -29,22 +29,15 @@ export class FeatFarewellShareComponent {
 
   linkCopied = signal(false);
 
-  copyToClipBoard(kudoboardId: string) {
-    navigator.clipboard.writeText(this.#url(kudoboardId));
+  copyToClipBoard(farewellId: string) {
+    navigator.clipboard.writeText(
+      farewellLink(this.#document.location.origin, farewellId)
+    );
 
     this.linkCopied.set(true);
-    // @TODO add also bubbling text saying that copied
+    // TODO add also bubbling text saying that copied
     setTimeout(() => {
       this.linkCopied.set(false);
     }, 5000);
-  }
-
-  #url(farewellId: string) {
-    return [
-      this.#document.location.origin,
-      's',
-      APP_PATH_ALLOW_ANONYMOUS.Farewell,
-      farewellId,
-    ].join('/');
   }
 }

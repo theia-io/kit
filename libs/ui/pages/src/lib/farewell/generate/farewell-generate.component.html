@@ -2,6 +2,7 @@
   [blockScroll]="true"
   [visible]="true"
   [fullScreen]="true"
+  [closeOnEscape]="false"
   (onHide)="redirectToLatest()">
   <ng-template pTemplate="headless">
     <shared-navbar-static
@@ -20,6 +21,6 @@
 
     <feat-farewell
       class="block grow container mx-auto p-6"
-      (statusKudoTmpl)="statusTmpl = $event" />
+      (statusFarewellTmpl)="statusTmpl = $event" />
   </ng-template>
 </p-sidebar>

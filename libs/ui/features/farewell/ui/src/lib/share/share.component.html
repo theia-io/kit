@@ -1,11 +1,7 @@
-<button pButton (click)="copyToClipBoard(id())" severity="success">
+<button pButton (click)="copyToClipBoard(id())" styleClass="p-1" [text]="true">
   @if(linkCopied()) {
-  <i class="pi pi-check"></i>
+  <i class="pi pi-check" pTooltip="Copied"></i>
   } @else {
-  <i class="pi pi-link"></i>
+  <i class="pi pi-share-alt" pTooltip="Copy link"></i>
   }
-
-  <span class="ml-1 text-xs font-semibold">
-    {{ linkCopied() ? '✨ Link copied' : 'Share link' }}
-  </span>
 </button>

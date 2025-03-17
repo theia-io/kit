@@ -58,18 +58,24 @@ export class FarewellService extends DataSourceService {
   }
 
   putFarewell({ id, ...rest }: Farewell) {
+    const update = {
+      ...rest,
+      timestamp: {
+        ...rest.timestamp,
+        updatedAt: new Date(Date.now()),
+      },
+    };
+
     return this.db$().pipe(
       switchMap((db) =>
         db.collection<DBClientType<Farewell>>('farewell').updateOne(
           { _id: new BSON.ObjectId(id) },
           {
-            $set: {
-              ...rest,
-            },
+            $set: update,
           }
         )
       ),
-      map(() => ({ ...rest, id }))
+      map(() => ({ ...update, id }))
     );
   }
 
@@ -156,18 +162,24 @@ export class FarewellService extends DataSourceService {
 
   putAnalytics(analytics: FarewellAnalytics) {
     const { id, farewellId, ...rest } = analytics;
+    const update = {
+      ...rest,
+      timestamp: {
+        ...rest.timestamp,
+        updatedAt: new Date(Date.now()),
+      },
+    };
+
     return this.allowAnonymousDb$().pipe(
       switchMap((db) =>
         db.collection<DBClientType<Farewell>>('farewell-analytics').updateOne(
           { _id: new BSON.ObjectId(analytics.id) },
           {
-            $set: {
-              ...rest,
-            },
+            $set: update,
           }
         )
       ),
-      map(() => analytics)
+      map(() => ({ ...update, id, farewellId }))
     );
   }
 }
