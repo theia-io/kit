@@ -25,8 +25,9 @@ import {
 } from '@kitouch/ui-components';
 import {
   FeatKudoBoardActionsComponent,
-  FeatKudoBoardAnalyticsComponent,
   FeatKudoBoardCommentsComponent,
+  FeatKudoboardInfoPanelComponent,
+  FeatKudoBoardStatusComponent,
   FeatKudoBoardViewAdditionalActionsComponent,
   FeatKudoBoardViewComponent,
 } from '@kitouch/ui-kudoboard';
@@ -37,7 +38,11 @@ import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 
 import { AuthorizedFeatureDirective } from '@kitouch/containers';
-import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
+import {
+  FeatFarewellActions,
+  findProfileFarewells,
+  selectFarewells,
+} from '@kitouch/feat-farewell-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { AuthService, DeviceService } from '@kitouch/shared-infra';
 import { objectLoadingState$ } from '@kitouch/shared-services';
@@ -80,11 +85,12 @@ import {
     FeatKitProfileHeaderComponent,
     FeatKudoBoardActionsComponent,
     FeatKudoBoardViewComponent,
-    FeatKudoBoardAnalyticsComponent,
     FeatKudoBoardCommentsComponent,
     UiKitPageOverlayComponent,
     FeatKudoBoardViewAdditionalActionsComponent,
     AuthorizedFeatureDirective,
+    FeatKudoBoardStatusComponent,
+    FeatKudoboardInfoPanelComponent,
   ],
   providers: [MessageService],
 })
@@ -217,6 +223,26 @@ export class PageKudoBoardViewComponent {
 
       return '';
     })
+  );
+
+  #myFarewells$ = combineLatest([
+    this.#store.pipe(select(selectFarewells), filter(Boolean)),
+    this.#currentProfile$.pipe(filter(Boolean)),
+  ]).pipe(
+    map(([farewells, currentProfile]) =>
+      findProfileFarewells(currentProfile.id, farewells)
+    )
+  );
+
+  myFarewellsKudoResponses$ = combineLatest([
+    this.#myFarewells$,
+    this.kudoboard$,
+  ]).pipe(
+    map(([myFarewells, kudoBoard]) =>
+      myFarewells.filter(
+        (myFarewell) => myFarewell.kudoBoardId === kudoBoard?.id
+      )
+    )
   );
 
   commentsSideBarVisibility = signal(false);

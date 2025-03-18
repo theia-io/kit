@@ -68,27 +68,16 @@
       "
       icon="pi pi-comments" />
 
-    <p-button
-      styleClass="p-1"
-      (onClick)="shareOverlayTmpl.toggle($event)"
-      [text]="true"
-      icon="pi pi-share-alt" />
-    <p-overlayPanel #shareOverlayTmpl>
-      <shared-copy-clipboard [url]="farewellLinkFn(farewellId())" />
-    </p-overlayPanel>
+    <shared-copy-clipboard [url]="farewellLinkFn(farewellId())" />
 
     <!-- Admin owner menu -->
     @if(canEdit()) {
-    <div
-      pTooltip="Admin view only visible to you"
-      class="ml-1 p-1 flex items-center gap-2 shadow-md text-sm text-gray-500">
-      <i class="pi pi-wrench"></i>
-      <p-button
-        styleClass="p-0"
-        (onClick)="redirectToEdit()"
-        [text]="true"
-        icon="pi pi-file-edit" />
-    </div>
+    <p-button
+      pTooltip="Edit (Only visible for you)"
+      styleClass="ml-2 p-1 text-gray-500"
+      (onClick)="redirectToEdit()"
+      [text]="true"
+      icon="pi pi-file-edit" />
     }
   </div>
 </div>

@@ -22,25 +22,12 @@
 
   <ui-kit-divider class="block mt-8" />
 
-  <div class="flex gap-2 items-center mt-4">
-    <feat-farewell-status [status]="farewell.status" />
-
-    <p class="text-sm text-gray-500">
-      <i
-        class="pi pi-calendar mr-1"
-        [pTooltip]="
-          'Created on ' +
-          (farewell.timestamp.createdAt | date) +
-          (farewell.timestamp.updatedAt
-            ? (!!farewell.timestamp.createdAt ? '\n' : '') +
-              'Updated on ' +
-              (farewell.timestamp.updatedAt | date)
-            : '')
-        "></i>
-      {{ farewell.timestamp.createdAt | date }},
-    </p>
-
-    <feat-farewell-analytics [farewellId]="farewell.id" [preview]="true" />
+  <div class="flex flex-col md:flex-row gap-2 items-center mt-4">
+    <feat-farewell-info-panel
+      [farewell]="farewell"
+      [linkedKudoboard]="farewell.kudoBoard"
+      [showUpdatedDate]="true"
+      [preview]="true" />
 
     <div class="ml-auto text-sm text-gray-500">
       <shared-sidebar-preview
@@ -63,7 +50,7 @@
 
       <a
         class="hover:text-gray-900 hover:font-semibold"
-        [routerLink]="[farewellUrl + '/' + farewell.id]">
+        [routerLink]="[farewellUrl + '/' + farewell.id, { preview: true }]">
         Open
         <i class="ml-1 pi pi-arrow-right"></i>
       </a>
