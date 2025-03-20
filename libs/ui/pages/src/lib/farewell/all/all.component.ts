@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -8,9 +8,8 @@ import {
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
 import {
-  FeatFarewellAnalyticsComponent,
+  FeatFarewellInfoPanelComponent,
   FeatFarewellIntoComponent,
-  FeatFarewellStatusComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
@@ -42,16 +41,14 @@ import { filter, map } from 'rxjs/operators';
   `,
   imports: [
     AsyncPipe,
-    DatePipe,
     RouterModule,
     //
     FeatFarewellViewV2Component,
-    FeatFarewellAnalyticsComponent,
     DividerComponent,
     UiCompGradientCardComponent,
     UiKitDeleteComponent,
     FeatFarewellIntoComponent,
-    FeatFarewellStatusComponent,
+    FeatFarewellInfoPanelComponent,
     FeatSideBarPreviewComponent,
     //
     ButtonModule,

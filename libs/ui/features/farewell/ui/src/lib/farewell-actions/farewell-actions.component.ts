@@ -37,6 +37,7 @@ import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { farewellOwner } from '../common';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -53,6 +54,7 @@ import { farewellOwner } from '../common';
     //
     PickerComponent,
     ButtonModule,
+    TooltipModule,
     OverlayPanelModule,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

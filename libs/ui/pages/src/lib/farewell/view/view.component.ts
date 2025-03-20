@@ -17,6 +17,8 @@ import {
   FeatFarewellAllGridItemComponent,
   FeatFarewellAnalyticsComponent,
   FeatFarewellCommentsComponent,
+  FeatFarewellInfoPanelComponent,
+  FeatFarewellStatusComponent,
   FeatFarewellViewV2Component,
 } from '@kitouch/feat-farewell-ui';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
@@ -67,10 +69,10 @@ import {
     FeatFarewellActionsComponent,
     FeatFarewellAllGridItemComponent,
     FeatFarewellViewV2Component,
-    FeatFarewellAnalyticsComponent,
     FeatFarewellCommentsComponent,
     FeatFollowUnfollowProfileComponent,
-    SharedCopyClipboardComponent,
+    FeatFarewellStatusComponent,
+    FeatFarewellInfoPanelComponent,
   ],
 })
 export class PageFarewellViewComponent {

@@ -1,0 +1,33 @@
+<div class="flex gap-1 md:gap-2 items-center">
+  <feat-farewell-status [status]="farewell().status" />
+
+  <p class="text-sm text-gray-500">
+    <i
+      class="pi pi-calendar mr-1"
+      [pTooltip]="
+        'Created on ' +
+        (farewell().timestamp.createdAt | date) +
+        (showUpdatedDate()
+          ? farewell().timestamp.updatedAt
+            ? (!!farewell().timestamp.createdAt ? '\n' : '') +
+              'Updated on ' +
+              (farewell().timestamp.updatedAt | date)
+            : ''
+          : '')
+      "></i>
+    {{ farewell().timestamp.createdAt | date }},
+  </p>
+
+  <feat-farewell-analytics [farewellId]="farewell().id" [preview]="preview()" />
+
+  @if(linkedKudoboard(); as linkedKudoboard) {
+  <a
+    class="max-w-20 whitespace-nowrap text-ellipsis overflow-auto text-sm text-gray-500 hover:text-gray-900 hover:font-semibold"
+    [pTooltip]="'Open connected \'' + linkedKudoboard.title + '\' Kudo board'"
+    [href]="kudoBoardPartialUrl + '/' + linkedKudoboard.id + '?view=true'"
+    target="_blank">
+    <i class="pi pi-link mr-1"></i>
+    {{ linkedKudoboard.title }}
+  </a>
+  }
+</div>

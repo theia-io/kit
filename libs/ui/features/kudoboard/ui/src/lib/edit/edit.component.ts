@@ -20,7 +20,11 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { takeUntilDestroyed, toObservable } from '@angular/core/rxjs-interop';
+import {
+  takeUntilDestroyed,
+  toObservable,
+  toSignal,
+} from '@angular/core/rxjs-interop';
 import {
   FormBuilder,
   FormControl,
@@ -42,7 +46,6 @@ import {
   UiKitColorPickerComponent,
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
-  UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 
 import {
@@ -79,9 +82,9 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
-import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
-import { FeatKudoBoardViewComponent } from '../view/view.component';
 import { FeatKudoBoardStatusComponent } from '../status/status.component';
+import { FeatKudoBoardViewComponent } from '../view/view.component';
+import { FeatKudoboardInfoPanelComponent } from '../info-panel/info-panel.component';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -112,6 +115,7 @@ const TITLE_MAX_LENGTH = 128;
     FeatSideBarPreviewComponent,
     FeatKudoBoardViewComponent,
     SharedCopyClipboardComponent,
+    FeatKudoboardInfoPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -153,6 +157,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
       bufferSize: 1,
     })
   );
+  kudoBoard = toSignal(this.#kudoBoard$);
 
   kudoBoardFormGroup = inject(FormBuilder).nonNullable.group({
     title: new FormControl<string>('', {

@@ -26,27 +26,10 @@
   <ui-kit-divider class="block mt-8" />
 
   <div class="flex gap-2 items-center mt-4">
-    <feat-kudoboard-status [status]="kudoboard.status" />
-
-    <p class="text-sm text-gray-500">
-      <i
-        class="pi pi-calendar mr-1"
-        [pTooltip]="
-          (kudoboard.timestamp.createdAt
-            ? 'Created on ' + (kudoboard.timestamp.createdAt | date)
-            : '') +
-          (kudoboard.timestamp.updatedAt
-            ? (!!kudoboard.timestamp.createdAt ? '\n' : '') +
-              'Updated on ' +
-              (kudoboard.timestamp.updatedAt | date)
-            : '')
-        "></i>
-      {{
-        kudoboard.timestamp.createdAt ?? kudoboard.timestamp.updatedAt | date
-      }},
-    </p>
-
-    <feat-kudoboard-analytics [kudoboardId]="kudoboard.id" [preview]="true" />
+    <feat-kudoboard-info-panel
+      [kudoboard]="kudoboard"
+      [preview]="true"
+      [showUpdatedDate]="true" />
 
     <div class="ml-auto text-sm text-gray-500">
       <shared-sidebar-preview
