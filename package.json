@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.69-d964d08",
+  "version": "5.0.70-a11a406",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
@@ -54,10 +54,13 @@
     "axios": "^1.6.0",
     "cookieconsent": "^3.1.1",
     "cors": "~2.8.5",
+    "dotenv": "^16.4.7",
     "emojilib": "^4.0.0",
     "express": "~4.21.1",
+    "express-openid-connect": "^2.18.0",
     "image-size": "^1.1.1",
     "intro.js": "^7.2.0",
+    "jsonwebtoken": "^9.0.2",
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
     "mongoose": "^8.8.4",
