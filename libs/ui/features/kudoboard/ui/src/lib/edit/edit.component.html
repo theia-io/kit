@@ -1,4 +1,12 @@
 <form class="flex flex-col" [formGroup]="kudoBoardFormGroup">
+  @if(kudoBoard(); as kudoBoard) {
+  <feat-kudoboard-info-panel
+    class="block float-right mb-12"
+    [preview]="true"
+    [showUpdatedDate]="true"
+    [kudoboard]="kudoBoard" />
+  }
+
   <div>
     @let isMobile = (deviceService.isMobile$ | async); @let background =
     kudoBoardFormGroup.get('background')?.value;

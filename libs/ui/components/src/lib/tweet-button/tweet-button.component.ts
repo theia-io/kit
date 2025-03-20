@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -11,7 +11,7 @@ import { Button, ButtonModule } from 'primeng/button';
 @Component({
   selector: 'ui-kit-tweet-button',
   standalone: true,
-  imports: [CommonModule, ButtonModule],
+  imports: [NgClass, ButtonModule],
   styles: `
     :host {
       display: block;
@@ -20,7 +20,7 @@ import { Button, ButtonModule } from 'primeng/button';
   template: `
     <p-button
       [severity]="severity()"
-      [styleClass]="'w-full flex ' + styleClass()"
+      [styleClass]="'w-full flex ' + styleClass() + ' ' + kClass()"
       [disabled]="disabled()"
       (onClick)="onClickEvent.emit($event)"
       aria-label="tweet"
@@ -43,6 +43,7 @@ import { Button, ButtonModule } from 'primeng/button';
 export class UiKitTweetButtonComponent {
   text = input('Tweet');
   severity = input<Button['severity']>('primary');
+  kClass = input<string>('');
 
   disabled = input(false);
   loader = input(false);

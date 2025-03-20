@@ -10,6 +10,7 @@ on:
       - 'apps/release/**'
       - 'apps/ui/**'
       - 'docs/**' # Ignore changes in the 'docs' folder and its subfolders
+      - package.json
       - 'libs/ui/**'
 
 env:
