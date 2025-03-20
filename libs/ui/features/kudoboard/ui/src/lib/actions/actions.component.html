@@ -70,45 +70,15 @@
 
     <!-- Create Response (farewell) for this -->
     @if(kudoboard(); as kudoBoard) {
-    <div sharedAuthorizedFeature pTooltip="You can create statement on this">
-      <button
-        pButton
-        class="relative"
-        (click)="createKudoBoardResponse(kudoBoard)"
-        icon="pi pi-send"
-        [rounded]="true"
-        severity="info">
-        <span class="ml-1 text-xs">Respond to this.</span>
-      </button>
+    <div sharedAuthorizedFeature>
+      <ui-kit-tweet-button
+        icon="pi-send"
+        kClass="py-1 px-2"
+        [iconAnimate]="true"
+        text="Farewell"
+        (onClickEvent)="createKudoBoardResponse(kudoBoard)"
+        class="w-28" />
     </div>
-    } @let myFarewellsKudoResponses = (myFarewellsKudoResponses$ | async);
-    @if(myFarewellsKudoResponses && myFarewellsKudoResponses.length > 0) {
-    <button
-      pButton
-      class="relative text-xs"
-      severity="secondary"
-      (click)="responsesTmpl.toggle($event)"
-      [rounded]="true">
-      <span>My responses</span>
-      <i class="ml-1 pi pi-caret-down"></i>
-    </button>
-    <p-overlayPanel #responsesTmpl>
-      <ul>
-        @for (response of myFarewellsKudoResponses; track $index) {
-        <li
-          [class.mt-4]="!$first"
-          [routerLink]="farewellViewUrlPath + response.id">
-          <p>
-            <span class="font-semibold">{{ $index + 1 }}.</span>
-            {{ response.title }},
-          </p>
-          <p class="text-sm text-gray-400">
-            {{ response.timestamp.createdAt | date }}
-          </p>
-        </li>
-        }
-      </ul>
-    </p-overlayPanel>
     }
 
     <!-- If there is no admin/owner for this Kudo -->
@@ -127,17 +97,14 @@
 
     <!-- Admin owner menu -->
     @if(canEdit()) {
-    <div
-      pTooltip="Admin view only visible to you"
-      class="ml-1 p-1 flex items-center gap-2 shadow-md text-sm text-gray-500">
-      <i class="pi pi-wrench"></i>
-      <p-button
-        styleClass="p-0"
-        (onClick)="redirectToEdit()"
-        [text]="true"
-        label="Edit"
-        icon="pi pi-file-edit" />
-    </div>
+    <p-button
+      pTooltip="Edit (Only visible for you)"
+      styleClass="ml-2 p-1 text-gray-500"
+      (onClick)="redirectToEdit()"
+      [text]="true"
+      icon="pi pi-file-edit" />
     }
   </div>
 </div>
+
+<p-confirmDialog />

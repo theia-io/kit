@@ -1,30 +1,11 @@
 <form class="flex flex-col" [formGroup]="farewellFormGroup">
-  @let linkedKudoBoard = linkedKudoBoard$ | async; @if(linkedKudoBoard &&
-  linkedKudoBoard.id) {
-  <div class="flex items-center gap-4">
-    <div>
-      <i class="pi pi-link font-semibold text-4xl"></i>
-    </div>
-
-    <feat-farewell-all-grid-item
-      [kudoboard]="linkedKudoBoard"
-      [routerLink]="[
-        kudoBoardPartialUrl + '/' + linkedKudoBoard.id,
-        { preview: true }
-      ]"
-      class="block cursor-pointer" />
-
-    @if(linkedKudoBoard.profile; as profile) {
-    <ui-kit-comp-account-tile
-      [primaryText]="linkedKudoBoard.profile.name"
-      [primarySecondaryText]="linkedKudoBoard.timestamp.createdAt | date"
-      secondaryText="Collected this for you"
-      [picture]="profilePictureFn(profile)"
-      [link]="profileUrl + (profile.alias ?? profile.id)" />
-    }
-  </div>
-
-  <ui-kit-divider class="block my-12" />
+  @if(farewell(); as farewell) {
+  <feat-farewell-info-panel
+    class="block float-right mb-12"
+    [farewell]="farewell"
+    [linkedKudoboard]="linkedKudoBoard$ | async"
+    [preview]="true"
+    [showUpdatedDate]="true" />
   }
 
   <p-floatLabel class="block">
