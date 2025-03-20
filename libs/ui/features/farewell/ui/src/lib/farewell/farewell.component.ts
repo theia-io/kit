@@ -79,6 +79,7 @@ import {
 } from '@kitouch/containers';
 import { FeatFarewellStatusComponent } from '../status/status.component';
 import { FeatFarewellViewV2Component } from '../viewV2/viewV2.component';
+import { FeatFarewellInfoPanelComponent } from '../info-panel/info-panel.component';
 
 // import to register custom bloats
 
@@ -118,6 +119,7 @@ function extractContent(html: string) {
     FeatSideBarPreviewComponent,
     FeatFarewellStatusComponent,
     FeatFarewellViewV2Component,
+    FeatFarewellInfoPanelComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -174,7 +176,6 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   readonly farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   profilePictureFn = profilePicture;
   // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
   farewellLinkFn = (farewellId: string) =>

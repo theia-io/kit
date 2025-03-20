@@ -19,6 +19,7 @@ import {
 } from '@kitouch/ui-components';
 import {
   FeatKudoBoardAnalyticsComponent,
+  FeatKudoboardInfoPanelComponent,
   FeatKudoBoardIntoComponent,
   FeatKudoBoardStatusComponent,
   FeatKudoBoardViewComponent,
@@ -43,23 +44,21 @@ import { filter, map } from 'rxjs/operators';
     }
   `,
   imports: [
+    DividerComponent,
+    UiKitDeleteComponent,
+    FeatKudoBoardIntoComponent,
+    FeatKudoBoardViewComponent,
+    UiCompGradientCardComponent,
+    FeatSideBarPreviewComponent,
+    FeatKudoboardInfoPanelComponent,
+    //
     AsyncPipe,
     RouterModule,
-    DatePipe,
     //
     ButtonModule,
     ToastModule,
     ConfirmDialogModule,
     TooltipModule,
-    //
-    FeatKudoBoardAnalyticsComponent,
-    DividerComponent,
-    UiKitDeleteComponent,
-    FeatKudoBoardIntoComponent,
-    FeatKudoBoardViewComponent,
-    FeatKudoBoardStatusComponent,
-    UiCompGradientCardComponent,
-    FeatSideBarPreviewComponent,
   ],
   providers: [ConfirmationService, MessageService],
 })

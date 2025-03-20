@@ -1,27 +1,40 @@
-@if(farewellProfile(); as profile) {
+<!-- Farewell -->
+@let farewell = farewell$ | async;
+
+<!-- Breadcrumb menu -->
+@if(preview()) {
+<p-breadcrumb
+  class="block mt-4 max-w-full"
+  [model]="(breadcrumbMenuItems$ | async) ?? []">
+  <ng-template pTemplate="item" #item let-item>
+    <a class="cursor-pointer" [routerLink]="item.url">
+      <i [class]="item.icon"></i>
+      {{ item.label }}
+    </a>
+    @if(item?.label === farewell?.title && farewell?.status; as status) {
+    <feat-farewell-status class="ml-2" [status]="status" />
+    }
+  </ng-template>
+</p-breadcrumb>
+}
+
+<!-- Overlay for draft -->
+@if(!preview() && farewellLoadingState()?.loaded) {
+<ui-kit-page-overlay
+  [show]="farewell?.status !== farewellStatus.Published"
+  [text]="(kudoBoardOverlayText$ | async) ?? ''">
+  @if(farewellProfile(); as profile) {
+  <feat-kit-profile-header
+    class="block relative p-2 bg-white"
+    [profile]="profile"></feat-kit-profile-header>
+  }
+</ui-kit-page-overlay>
+} @if(farewellProfile(); as profile) {
 <feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
   <div
     profileExtensionTwo
     class="ml-auto mr-4 -mb-4 flex items-end gap-1 sm:gap-2 md:gap-12">
-    @let linkedKudoBoard = linkedKudoBoard$ | async; @if(linkedKudoBoard &&
-    linkedKudoBoard.id) {
-    <div class="hidden sm:flex items-center gap-4 mr-auto">
-      <div>
-        <i class="pi pi-link font-semibold text-4xl"></i>
-      </div>
-
-      <a
-        [href]="kudoBoardPartialUrl + '/' + linkedKudoBoard.id + '?view=true'"
-        target="_blank">
-        <feat-farewell-all-grid-item
-          [kudoboard]="linkedKudoBoard"
-          [smaller]="true"
-          class="block cursor-pointer" />
-      </a>
-    </div>
-    }
-
-    <div class="">
+    <div>
       @if(!currentProfile()) {
       <button
         (click)="signInAndFollow(profile)"
@@ -36,33 +49,13 @@
     </div>
   </div>
 </feat-kit-profile-header>
-} @let farewell = farewell$ | async;
-
-<!-- Breadcrumb menu -->
-@if(preview()) {
-<p-breadcrumb
-  class="block mt-4 max-w-full"
-  [model]="(breadcrumbMenuItems$ | async) ?? []" />
-}
-
-<!-- Overlay for draft -->
-@if(!preview() && farewellLoadingState()?.loaded) {
-<ui-kit-page-overlay
-  [show]="farewell?.status !== farewellStatus.Published"
-  [text]="(kudoBoardOverlayText$ | async) ?? ''">
-  @if(farewellProfile(); as profile) {
-  <feat-kit-profile-header
-    class="block relative p-2 bg-white"
-    [profile]="profile"></feat-kit-profile-header>
-  }
-</ui-kit-page-overlay>
 }
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
   <div
     class="container shadow-sm mx-auto py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-farewell-actions
-      class="block container mx-auto"
+      class="block container"
       [farewellId]="farewellId$ | async"
       (commentsClick)="commentsSideBarVisibility.set(true)" />
   </div>
@@ -71,12 +64,15 @@
     <feat-farewell-viewv2 class="grow" [farewellId]="farewellId$ | async" />
   </div>
 
+  @if(farewell) {
   <div class="container mx-auto">
-    <feat-farewell-analytics
-      class="container mx-auto mt-1"
-      [farewellId]="farewellId$ | async"
+    <feat-farewell-info-panel
+      class="float-right"
+      [farewell]="farewell"
+      [linkedKudoboard]="linkedKudoBoard$ | async"
       [preview]="preview()" />
   </div>
+  }
 
   <div class="container mx-auto">
     <feat-farewell-comments
@@ -92,12 +88,4 @@
       class="block max-w-xl mx-auto"
       [farewellId]="farewellId$ | async" />
   </p-sidebar>
-
-  @if(preview() && farewellProfile() && currentProfile() &&
-  farewellProfile()?.id === currentProfile()?.id && (farewell$ | async); as
-  farewell) {
-  <div class="mb-8">
-    <shared-copy-clipboard [url]="farewellLinkFn(farewell.id)" />
-  </div>
-  }
 </div>
