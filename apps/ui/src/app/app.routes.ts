@@ -64,6 +64,11 @@ export const appRoutes: Route[] = [
         loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
       },
       {
+        path: APP_PATH_STATIC_PAGES.RedirectAuth0,
+        loadComponent: () =>
+          pages.then((comp) => comp.PageRedirectAuth0Component),
+      },
+      {
         path: APP_PATH_STATIC_PAGES.Join,
         loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
       },
@@ -114,6 +119,10 @@ export const appRoutes: Route[] = [
           pages.then((comp) => comp.KitPagesIntroduceKitComponent),
       },
     ],
+  },
+  {
+    path: 'callback',
+    loadComponent: () => pages.then((comp) => comp.PageRedirectAuth0Component),
   },
   {
     path: APP_PATH.AboutYourself,
