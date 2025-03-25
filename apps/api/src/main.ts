@@ -3,17 +3,43 @@
  * This is only a minimal backend to get started.
  */
 
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
-import { auth } from 'express-openid-connect';
 
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 import { logger } from './app/middleware/logger';
 
+import * as dotenv from 'dotenv';
+import * as path from 'path';
+import { environment } from './environments/environment';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
+dotenv.config({
+  path: path.resolve(
+    process.cwd(),
+    'config/',
+    environment.production ? '.env' : '.env.local'
+  ),
+});
+
+console.log(
+  'path',
+  path.resolve(
+    process.cwd(),
+    'config/',
+    environment.production ? '.env' : '.env.local'
+  )
+);
+
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
+  const app = await NestFactory.create<NestExpressApplication>(AppModule, {
     abortOnError: false,
   });
+
+  // Enable shutdown hooks
+  app.enableShutdownHooks();
 
   const globalPrefix = 'api';
   app.enableCors({
@@ -39,27 +65,47 @@ async function bootstrap() {
     optionsSuccessStatus: 204,
     credentials: true,
   });
+
+  const secret = process.env.SESSION_SECRET;
+  if (!secret) {
+    process.exit(1);
+  }
+
+  console.log('process.envs', process.env.NODE_ENV, process.env.JWT_SECRET);
+
+  // if (process.env.NODE_ENV === 'production') {
+  //   app.set('trust proxy', 1); // trust first proxy
+  //   sess.cookie.secure = true; // serve secure cookies, requires https
+  // }
+  // TODO TEST this in prod
+  app.set('trust proxy', 1);
+
+  app.use(
+    session({
+      secret,
+      resave: false,
+      saveUninitialized: false,
+      proxy: true, // TODO TEST this in prod
+      cookie: {
+        secure: false, //process.env.NODE_ENV === 'production', // Use secure cookies in production
+        httpOnly: true,
+        maxAge: 3600000, // Session duration (e.g., 1 hour)
+        sameSite: false, //'strict',
+      },
+    })
+  );
+
+  app.use(cookieParser());
+
   app.setGlobalPrefix(globalPrefix);
   app.use(logger);
+  app.useGlobalPipes(
+    new ValidationPipe({
+      disableErrorMessages: true,
+    })
+  );
 
   const port = process.env.PORT || 3000;
-
-  const config = {
-    authRequired: false,
-    auth0Logout: true,
-    secret: 'a long, randomly-generated string stored in env',
-    baseURL: 'http://localhost:3000',
-    clientID: 'hInvlb9QK8mQH2PBa69ZxBFh3uFxSUcg',
-    issuerBaseURL: 'https://dev-mjhqkc36ox0wieg1.us.auth0.com',
-  };
-
-  // auth router attaches /login, /logout, and /callback routes to the baseURL
-  app.use(auth(config));
-
-  // app.get('/profile', requiresAuth(), (req, res) => {
-  //   res.send(JSON.stringify(req.oidc.user));
-  // });
-
   await app.listen(port);
   if ((module as any).hot) {
     (module as any).hot.accept();

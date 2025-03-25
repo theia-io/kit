@@ -7,9 +7,10 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule } from './config';
 import { HealthController } from './heath.controller';
+import { AuthModule } from '@kitouch/be-auth';
 
 @Module({
-  imports: [TerminusModule, ConfigModule, InfraModule, MediaModule],
+  imports: [TerminusModule, ConfigModule, InfraModule, MediaModule, AuthModule],
   controllers: [HealthController, AppController],
   providers: [AppService],
 })
