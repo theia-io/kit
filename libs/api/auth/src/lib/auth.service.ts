@@ -9,12 +9,16 @@ export class AuthService {
   async generateJwtToken(id_token: string) {
     try {
       const idToken = id_token;
+      const decoded = this.jwtService.decode(idToken); // Decode JWT to get user data
+      // TODO REMOVE
+      console.log('USER:', decoded);
+
       const {
         email,
         given_name: name,
         family_name: surname,
         picture,
-      } = this.jwtService.decode(idToken); // Decode JWT to get user data
+      } = decoded;
 
       const token = await this.generateJWT({ email, name, surname, picture }); // use it
       return token;

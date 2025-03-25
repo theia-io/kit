@@ -10,5 +10,6 @@ export * from './navbar-static/navbar-static.component';
 export * from './preview/preview.component';
 export * from './share/share.component';
 export * from './share/share';
+export * from './sign-in-auth0/sign-in-auth0.component';
 export * from './sign-in-google/sign-in-google.component';
 export * from './static-info/static-info.component';

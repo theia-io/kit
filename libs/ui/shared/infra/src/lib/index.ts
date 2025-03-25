@@ -1,6 +1,7 @@
 export * from './auth/auth.service';
 export * from './auth/guards';
 export * from './auth/auth.interceptor';
+export * from './auth0/auth0.service';
 export * from './business-services';
 export * from './data';
 export * from './device/device.service';

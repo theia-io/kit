@@ -8,6 +8,7 @@ import {
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {
+  SignInAuth0Component,
   SignInGoogleComponent,
   slideInOutAnimation,
 } from '@kitouch/containers';
@@ -33,6 +34,7 @@ const ANIMATION_REPEAT = 10000;
     TagModule,
     //
     SignInGoogleComponent,
+    SignInAuth0Component,
     UiCompGradientCardComponent,
     FeatFarewellIntoComponent,
     FeatKudoBoardIntoComponent,

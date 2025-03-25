@@ -21,7 +21,7 @@ export class AuthController {
   @Get('login')
   login(@Res() res: Response) {
     (res as any).oidc.login({
-      returnTo: '/', // Where to go after successful login *on the frontend*
+      returnTo: 'http://localhost:4200', // Where to go after successful login *on the frontend*
       authorizationParams: {
         redirect_uri: 'http://localhost:3000/api/auth/callback',
       },
@@ -41,7 +41,7 @@ export class AuthController {
 
     const token = await this.authService.generateJwtToken(id_token);
 
-    (res as any).cookie('jwt', token, {
+    res.cookie('jwt', token, {
       httpOnly: true,
       secure: false, // process.env?.['NODE_ENV'] === 'production',
       maxAge: 3600 * 1000,
@@ -49,14 +49,14 @@ export class AuthController {
       path: '/',
     });
 
-    return { url: '/api/auth/profile' };
+    return { url: 'http://localhost:4200/s/redirect-auth0' };
   }
 
   @Get('logout')
   @Redirect()
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
     // Clear cookie
-    (res as any).clearCookie('jwt');
+    res.clearCookie('jwt');
 
     const logoutUrl = new URL(`${process.env?.['AUTH0_DOMAIN']}/v2/logout`);
     logoutUrl.searchParams.set('client_id', process.env?.['AUTH0_CLIENT_ID']!);
