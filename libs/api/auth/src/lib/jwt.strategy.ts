@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
+import { User } from '../types/user';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -11,12 +12,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     }
 
     super({
-      // secretOrKeyProvider: passportJwtSecret({
-      //   cache: true,
-      //   rateLimit: true,
-      //   jwksRequestsPerMinute: 5,
-      //   jwksUri: `${process.env['AUTH0_DOMAIN']}.well-known/jwks.json`,
-      // }),
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req) => req?.cookies?.jwt || null,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -27,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   // Simplified validate method - just return the payload
-  async validate(payload: any) {
+  async validate(payload: User) {
     console.log('JwtStrategy validate', payload);
     // We are not querying DB, and simply return user data from the token
     return payload;

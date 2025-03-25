@@ -10,7 +10,7 @@ node_modules
 
 # secrets 
 .env*
-!.env.example
+!/config/.env.example
 secrets/
 
 # IoC

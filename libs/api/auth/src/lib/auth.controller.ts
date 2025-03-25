@@ -1,6 +1,16 @@
 /* eslint-disable @typescript-eslint/no-non-null-asserted-optional-chain */
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Post,
+  Redirect,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
+import { Request, Response } from 'express';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
 
@@ -8,73 +18,56 @@ import { AuthGuard } from '@nestjs/passport';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Get('test')
-  test(@Req() req: Request) {
-    console.log('TEST reached', (req as any).oidc.user);
-    return {
-      message:
-        'test, time:' +
-        new Date().toISOString() +
-        '; user' +
-        (req as any).oidc.user,
-    };
+  @Get('login')
+  login(@Res() res: Response) {
+    (res as any).oidc.login({
+      returnTo: '/', // Where to go after successful login *on the frontend*
+      authorizationParams: {
+        redirect_uri: 'http://localhost:3000/api/auth/callback',
+      },
+    });
   }
 
-  // @Get('login')
-  // @UseGuards(AuthGuard('auth0'))
-  // login() {
-  //   // Handled by auth0
-  // }
-
-  @Get('callback')
-  // @UseGuards(AuthGuard('auth0'))
-  // @Redirect()
-  async authCallback(
+  @Post('callback')
+  @Redirect()
+  async authCallbackPost(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response
   ) {
-    console.log('AUTH LOGIN CB', (req as any).oidc.user);
-
-    if (!(req as any).oidc?.isAuthenticated()) {
-      // Use oidc.isAuthenticated()
-      throw new Error('Authentication failed');
+    const { id_token } = (req.body as any) ?? {};
+    if (!id_token) {
+      throw new BadRequestException('Auth0 flow login error, try later.');
     }
-    // req.oidc.user contains user information from Auth0
-    const token = await this.authService.generateJWT((req as any).oidc.user);
+
+    const token = await this.authService.generateJwtToken(id_token);
 
     (res as any).cookie('jwt', token, {
       httpOnly: true,
-      secure: process.env?.['NODE_ENV'] === 'production',
+      secure: false, // process.env?.['NODE_ENV'] === 'production',
       maxAge: 3600 * 1000,
-      sameSite: false, //'strict',
+      sameSite: false, // 'strict',
       path: '/',
     });
 
-    return { url: '/api/auth/profile' }; // Redirect to frontend
+    return { url: '/api/auth/profile' };
   }
 
   @Get('logout')
   @Redirect()
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    console.log('AUTH LOGOUT', (req as any).oidc.user);
-
     // Clear cookie
     (res as any).clearCookie('jwt');
 
-    const logoutUrl = new URL(
-      `https://${process.env?.['AUTH0_DOMAIN']}/v2/logout`
-    );
+    const logoutUrl = new URL(`${process.env?.['AUTH0_DOMAIN']}/v2/logout`);
     logoutUrl.searchParams.set('client_id', process.env?.['AUTH0_CLIENT_ID']!);
-    logoutUrl.searchParams.set('returnTo', process.env?.['AUTH0_BASE_URL']!); //important
+    logoutUrl.searchParams.set('returnTo', process.env?.['BASE_URL']!);
 
     return { url: logoutUrl.toString() };
   }
 
   @Get('profile')
   @UseGuards(AuthGuard('jwt'))
-  getProfile(@Req() req: any) {
-    console.log('controller profile', req.user);
-
+  getProfile(@Req() req: Request) {
     return req.user; // Contains the Auth0 user ID (sub) and any other claims you added
   }
 }

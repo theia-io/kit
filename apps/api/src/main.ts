@@ -17,22 +17,16 @@ import * as path from 'path';
 import { environment } from './environments/environment';
 import { NestExpressApplication } from '@nestjs/platform-express';
 
-dotenv.config({
-  path: path.resolve(
-    process.cwd(),
-    'config/',
-    environment.production ? '.env' : '.env.local'
-  ),
-});
+if (!environment.production) {
+  dotenv.config({
+    path: path.resolve(process.cwd(), 'config/', '.env.local'),
+  });
 
-console.log(
-  'path',
-  path.resolve(
-    process.cwd(),
-    'config/',
-    environment.production ? '.env' : '.env.local'
-  )
-);
+  console.log(
+    'resolved env',
+    path.resolve(process.cwd(), 'config/', '.env.local')
+  );
+}
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -92,14 +86,13 @@ async function bootstrap() {
     //   scope: 'openid profile email',
     // },
     routes: {
-      login: '/api/auth/login',
-      callback: '/api/auth/callback',
-      logout: '/api/auth/logout',
+      login: false,
+      callback: false,
+      logout: false,
       postLogoutRedirect: '/',
     },
   };
   app.use(auth(config));
-
   console.log('process.envs', process.env.NODE_ENV, process.env.JWT_SECRET);
 
   // if (process.env.NODE_ENV === 'production') {
