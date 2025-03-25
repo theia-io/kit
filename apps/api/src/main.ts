@@ -6,6 +6,7 @@
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
+import { auth, ConfigParams } from 'express-openid-connect';
 import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
@@ -66,10 +67,38 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const secret = process.env.SESSION_SECRET;
-  if (!secret) {
+  const secret = process.env.SESSION_SECRET,
+    baseURL = process.env.BASE_URL,
+    clientID = process.env.AUTH0_CLIENT_ID,
+    clientSecret = process.env.AUTH0_CLIENT_SECRET,
+    issuerBaseURL = process.env.AUTH0_DOMAIN;
+
+  if (!secret || !baseURL || !clientID || !issuerBaseURL) {
     process.exit(1);
   }
+
+  // Configure express-openid-connect
+  const config: ConfigParams = {
+    authRequired: false, // Don't require auth for all routes
+    auth0Logout: true,
+    baseURL,
+    clientID,
+    issuerBaseURL,
+    //
+    secret,
+    clientSecret,
+    // authorizationParams: {
+    //   response_type: 'code',
+    //   scope: 'openid profile email',
+    // },
+    routes: {
+      login: '/api/auth/login',
+      callback: '/api/auth/callback',
+      logout: '/api/auth/logout',
+      postLogoutRedirect: '/',
+    },
+  };
+  app.use(auth(config));
 
   console.log('process.envs', process.env.NODE_ENV, process.env.JWT_SECRET);
 
@@ -77,6 +106,8 @@ async function bootstrap() {
   //   app.set('trust proxy', 1); // trust first proxy
   //   sess.cookie.secure = true; // serve secure cookies, requires https
   // }
+
+  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
   // TODO TEST this in prod
   app.set('trust proxy', 1);
 

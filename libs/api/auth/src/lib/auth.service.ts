@@ -5,9 +5,9 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  async generateJWT(profile: any): Promise<string> {
-    // Use the Auth0 user ID (sub) as the subject of our JWT
-    const payload = { sub: profile.id, ...profile }; // Include relevant profile data
+  async generateJWT(auth0User: any): Promise<string> {
+    // Use the Auth0 user's 'sub' claim as the subject of *your* JWT
+    const payload = { sub: auth0User.sub, ...auth0User }; // Include other relevant user data
     return this.jwtService.sign(payload);
   }
 }

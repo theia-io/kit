@@ -9,34 +9,38 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get('test')
-  test() {
-    console.log('TEST reached');
+  test(@Req() req: Request) {
+    console.log('TEST reached', (req as any).oidc.user);
     return {
-      message: 'test, time:' + new Date().toISOString(),
+      message:
+        'test, time:' +
+        new Date().toISOString() +
+        '; user' +
+        (req as any).oidc.user,
     };
   }
 
-  @Get('login')
-  @UseGuards(AuthGuard('auth0'))
-  login() {
-    // Handled by auth0
-  }
+  // @Get('login')
+  // @UseGuards(AuthGuard('auth0'))
+  // login() {
+  //   // Handled by auth0
+  // }
 
   @Get('callback')
-  @UseGuards(AuthGuard('auth0'))
-  @Redirect()
+  // @UseGuards(AuthGuard('auth0'))
+  // @Redirect()
   async authCallback(
     @Req() req: Request,
     @Res({ passthrough: true }) res: Response
   ) {
-    const user = (req as any).user;
-    console.log('CALLBACK USER', user);
-    if (!user) {
-      throw new Error('User not found'); // Should not happen
-    }
+    console.log('AUTH LOGIN CB', (req as any).oidc.user);
 
-    // req.user now contain profile data from auth0Strategy
-    const token = await this.authService.generateJWT(user); // Pass the Auth0 profile
+    if (!(req as any).oidc?.isAuthenticated()) {
+      // Use oidc.isAuthenticated()
+      throw new Error('Authentication failed');
+    }
+    // req.oidc.user contains user information from Auth0
+    const token = await this.authService.generateJWT((req as any).oidc.user);
 
     (res as any).cookie('jwt', token, {
       httpOnly: true,
@@ -52,6 +56,8 @@ export class AuthController {
   @Get('logout')
   @Redirect()
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    console.log('AUTH LOGOUT', (req as any).oidc.user);
+
     // Clear cookie
     (res as any).clearCookie('jwt');
 

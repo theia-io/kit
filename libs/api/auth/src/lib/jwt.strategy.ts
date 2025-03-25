@@ -18,13 +18,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
       //   jwksUri: `${process.env['AUTH0_DOMAIN']}.well-known/jwks.json`,
       // }),
       jwtFromRequest: ExtractJwt.fromExtractors([
-        (req) => {
-          let token = null;
-          if (req && req.cookies) {
-            token = req.cookies['jwt'];
-          }
-          return token;
-        },
+        (req) => req?.cookies?.jwt || null,
         ExtractJwt.fromAuthHeaderAsBearerToken(),
       ]),
       ignoreExpiration: false,
@@ -34,6 +28,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   // Simplified validate method - just return the payload
   async validate(payload: any) {
+    console.log('JwtStrategy validate', payload);
     // We are not querying DB, and simply return user data from the token
     return payload;
   }
