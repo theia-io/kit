@@ -14,7 +14,7 @@ export class Auth0Service {
   #http = inject(HttpClient);
 
   signIn() {
-    window.location.href = `http://localhost:3000/api/auth/login`; // express-openid-connect handles this
+    window.location.href = `http://localhost:3000/api/auth/login?returnTo=http://localhost:4200/s/redirect-auth0`; // express-openid-connect handles this
     // return this.#http
     //   .get('/api/auth/login')
   }

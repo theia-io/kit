@@ -1,14 +1,17 @@
-import { Environment } from './types';
+import { Environment } from '@kitouch/be-config';
 
 const version = process.env['PACKAGE_VERSION'] ?? 'N/A';
-const apiBase = process.env['API_BASE'];
-if (!apiBase) {
-  throw new Error('API Base URL is not set');
+const baseUrl = process.env['BASE_URL'];
+const apiPrefix = process.env['API_PREFIX'];
+const feUrl = process.env['FE_URL'];
+if (!apiPrefix || !baseUrl) {
+  throw new Error(`env variable(s) is(are) missing: ${baseUrl},${apiPrefix}`);
 }
 
 export const environment: Environment = {
   production: true,
-  date: new Date().toUTCString(),
   version,
-  apiBase,
+  baseUrl,
+  apiPrefix,
+  feUrl,
 };

@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { Auth0Service } from '@kitouch/shared-infra';
+import { take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -12,6 +13,11 @@ export class PageRedirectAuth0Component implements OnInit {
 
   ngOnInit() {
     console.log('AUTH0 REDIRECT');
-    this.#auth0Service.getProfile$().subscribe((v) => console.log(v));
+    setInterval(() => {
+      this.#auth0Service
+        .getProfile$()
+        .pipe(take(1))
+        .subscribe((v) => console.log(v));
+    }, 5000);
   }
 }

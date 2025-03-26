@@ -20,7 +20,9 @@ on:
 env:
   AWS_REGION: 'eu-north-1' # Replace with your AWS region
   ECR_REPOSITORY: 'kit/api' # Replace with your ECR repository name
-  API_BASE: https://api.kitouch.io/api
+  BASE_URL: https://api.kitouch.io
+  API_PREFIX: /api
+  FE_URL: https://kitouch.io
 
 jobs:
   prd_build_and_deploy_api:

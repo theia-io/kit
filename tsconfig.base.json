@@ -19,6 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@kitouch/be-auth": ["libs/api/auth/src/index.ts"],
+      "@kitouch/be-config": ["libs/api/config/src/index.ts"],
       "@kitouch/be-media": ["libs/api/media/src/index.ts"],
       "@kitouch/containers": ["libs/ui/shared/containers/src/index.ts"],
       "@kitouch/data-kudoboard": [

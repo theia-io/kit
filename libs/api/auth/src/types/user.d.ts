@@ -3,6 +3,7 @@ export interface User {
   name: string;
   surname: string;
   picture: string;
+  email_verified: boolean;
 }
 
 // Augment the Express Request interface

@@ -1,20 +1,20 @@
 import { DynamicModule, Module } from '@nestjs/common';
 import { ConfigService } from './config.service';
-import { ConfigOptionsToken, EnvConfig } from './type';
+import { Environment, EnvironmentToken } from './type';
 
 @Module({})
 export class ConfigModule {
-  static register(options: Record<string, EnvConfig>): DynamicModule {
+  static register(environment: Environment): DynamicModule {
     return {
       module: ConfigModule,
       providers: [
         {
-          provide: ConfigOptionsToken,
-          useValue: options,
+          provide: EnvironmentToken,
+          useValue: environment,
         },
         ConfigService,
       ],
-      exports: [ConfigService],
+      exports: [ConfigService, EnvironmentToken],
     };
   }
 }

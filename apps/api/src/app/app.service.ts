@@ -1,15 +1,14 @@
+import { ConfigService } from '@kitouch/be-config';
 import { Injectable } from '@nestjs/common';
-import { environment } from '../environments/environment';
 
 @Injectable()
 export class AppService {
+  constructor(private readonly configService: ConfigService) {}
+
   getData() {
     return {
-      message: `\nAPI time: ${new Date().toUTCString()};\nAPI deployed at ${
-        environment.date
-      }`,
-      version: environment.version,
-      apiBase: environment.apiBase,
+      message: `API time: ${new Date().toUTCString()}`,
+      environment: JSON.stringify(this.configService.getEnvironment()),
     };
   }
 }

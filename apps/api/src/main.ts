@@ -1,32 +1,16 @@
-/**
- * This is not a production server yet!
- * This is only a minimal backend to get started.
- */
-
 import { Logger, ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 
+import cookieParser from 'cookie-parser';
 import { auth, ConfigParams } from 'express-openid-connect';
 import session from 'express-session';
-import cookieParser from 'cookie-parser';
 import { AppModule } from './app/app.module';
 import { logger } from './app/middleware/logger';
 
-import * as dotenv from 'dotenv';
-import * as path from 'path';
-import { environment } from './environments/environment';
+import { AuthService } from '@kitouch/be-auth';
+import { ConfigService } from '@kitouch/be-config';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
-if (!environment.production) {
-  dotenv.config({
-    path: path.resolve(process.cwd(), 'config/', '.env.local'),
-  });
-
-  console.log(
-    'resolved env',
-    path.resolve(process.cwd(), 'config/', '.env.local')
-  );
-}
+import axios from 'axios';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -36,7 +20,6 @@ async function bootstrap() {
   // Enable shutdown hooks
   app.enableShutdownHooks();
 
-  const globalPrefix = 'api';
   app.enableCors({
     origin: function (origin, callback) {
       console.log('CORS origin:', origin);
@@ -61,52 +44,16 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const secret = process.env.SESSION_SECRET,
-    baseURL = process.env.BASE_URL,
-    clientID = process.env.AUTH0_CLIENT_ID,
-    clientSecret = process.env.AUTH0_CLIENT_SECRET,
-    issuerBaseURL = process.env.AUTH0_DOMAIN;
+  const configService = app.get(ConfigService);
 
-  if (!secret || !baseURL || !clientID || !issuerBaseURL) {
-    process.exit(1);
-  }
-
-  // Configure express-openid-connect
-  const config: ConfigParams = {
-    authRequired: false, // Don't require auth for all routes
-    auth0Logout: true,
-    baseURL,
-    clientID,
-    issuerBaseURL,
-    //
-    secret,
-    clientSecret,
-    // authorizationParams: {
-    //   response_type: 'code',
-    //   scope: 'openid profile email',
-    // },
-    routes: {
-      login: false,
-      callback: false,
-      logout: false,
-      postLogoutRedirect: '/',
-    },
-  };
-  app.use(auth(config));
-  console.log('process.envs', process.env.NODE_ENV, process.env.JWT_SECRET);
-
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.set('trust proxy', 1); // trust first proxy
-  //   sess.cookie.secure = true; // serve secure cookies, requires https
-  // }
-
-  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
-  // TODO TEST this in prod
-  app.set('trust proxy', 1);
+  const baseUrl = configService.getEnvironment('baseUrl'),
+    feUrl = configService.getEnvironment('feUrl');
+  const { sessionSecret, clientSecret, authSecret, clientId, issuerBaseUrl } =
+    configService.getConfig('auth');
 
   app.use(
     session({
-      secret,
+      secret: sessionSecret,
       resave: false,
       saveUninitialized: false,
       proxy: true, // TODO TEST this in prod
@@ -119,9 +66,120 @@ async function bootstrap() {
     })
   );
 
+  // Configure express-openid-connect
+  const config: ConfigParams = {
+    authRequired: false, // Don't require auth for all routes
+    auth0Logout: true,
+    baseURL: baseUrl,
+    clientID: clientId,
+    issuerBaseURL: issuerBaseUrl,
+    //
+    secret: authSecret,
+    clientSecret,
+    authorizationParams: {
+      response_type: 'code',
+      scope: 'openid profile email',
+      // audience: baseURL,
+    },
+    afterCallback: async (req, res, session) => {
+      // session contains the id_token, access_token, user claims
+      console.log('\nSession Object:', JSON.stringify(session, null, 2)); // Log the whole session
+
+      // Check if authentication was actually successful (session should contain tokens)
+      if (!session.id_token || !session.access_token) {
+        console.error(
+          'Authentication failed before afterCallback - Missing tokens.'
+        );
+        // Redirect to an error page or login
+        res.redirect(`${feUrl}?error=auth_failed`);
+        // MUST return session even on error to avoid hanging
+        return session;
+      }
+
+      let user: any;
+      try {
+        const userInfoReq = await axios(`${issuerBaseUrl}/userinfo`, {
+          headers: {
+            // *** Use the access_token from the session ***
+            Authorization: `Bearer ${session.access_token}`,
+          },
+        });
+        if (userInfoReq.status === 200 && userInfoReq.data) {
+          user = userInfoReq.data;
+        }
+        console.log('\nUser:', user);
+      } catch (error) {
+        console.error(
+          'Error fetching from /userinfo:',
+          error.response?.data || error.message
+        );
+        // Handle the error - maybe redirect to login with an error flag
+        res.redirect(`${feUrl}?error=userinfo_failed`);
+        return session; // Stop processing if userinfo fails
+      }
+
+      // Generate your application's JWT
+      const authService = app.get(AuthService);
+      const {
+        email,
+        given_name: name,
+        family_name: surname,
+        picture,
+        email_verified,
+      } = user;
+      const appToken = await authService.generateJWT({
+        email,
+        name,
+        surname,
+        picture,
+        email_verified,
+      }); // Use Auth0 user info
+
+      // Set your application's JWT cookie
+      res.cookie('jwt', appToken, {
+        httpOnly: true,
+        secure: false, //configService.get('NODE_ENV') === 'production',
+        maxAge: 3600 * 1000,
+        sameSite: false, //'strict',
+        path: '/',
+      });
+
+      // Return the session object (required by afterCallback)
+      return {
+        ...session,
+        user,
+      };
+    },
+    routes: {
+      login: '/api/auth/login',
+      callback: '/api/auth/callback',
+      logout: '/api/auth/logout',
+      postLogoutRedirect: `${feUrl}`,
+    },
+    getLoginState(req, options) {
+      return {
+        ...options,
+        returnTo: `${feUrl}/s/redirect-auth0`, //options.returnTo || req.originalUrl,
+        // customState: 'foo'
+      };
+    },
+  };
+  app.use(auth(config));
+
+  // if (process.env.NODE_ENV === 'production') {
+  //   app.set('trust proxy', 1); // trust first proxy
+  //   sess.cookie.secure = true; // serve secure cookies, requires https
+  // }
+
+  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
+  // TODO TEST this in prod
+  app.set('trust proxy', 1);
+
   app.use(cookieParser());
 
+  const globalPrefix = configService.getEnvironment('apiPrefix');
   app.setGlobalPrefix(globalPrefix);
+
   app.use(logger);
   app.useGlobalPipes(
     new ValidationPipe({
