@@ -180,22 +180,6 @@ export class AuthService {
     // await this.#refreshAccessToken();
 
     this.#realmUser$$.next(realmUser);
-    // const { account, user, profiles } = await this.#getAccountUserProfiles(
-    //   realmUser
-    // );
-
-    /** @TODO @fixme so accounts, users and profiles are not set  */
-    // if (
-    //   (account as any)?.identities?.some(
-    //     (identity: any) => identity?.provider_type === 'anon-user'
-    //   )
-    // ) {
-    //   return realmUser;
-    // }
-
-    // this.#account$$.next(account);
-    // this.#user$$.next(user);
-    // this.#profiles$$.next(profiles);
 
     return realmUser;
   }
@@ -205,16 +189,4 @@ export class AuthService {
     // to location and to session (to create a new one token)
     await this.#realmApp?.currentUser?.refreshAccessToken();
   }
-
-  // async #getAccountUserProfiles(
-  //   realmUser: Realm.User
-  // ): Promise<{ account: Account; user: User; profiles: Array<Profile> }> {
-  //   return await realmUser.functions['getAccountUserProfiles'](
-  //     realmUser.id
-  //   ).then(({ account, user, profiles }) => ({
-  //     account: dbClientAccountAdapter(account),
-  //     user: dbClientUserAdapter(user),
-  //     profiles: profiles.map(dbClientProfileAdapter),
-  //   }));
-  // }
 }

@@ -10,6 +10,8 @@ export class EnvironmentToken {}
 export type envkeys = keyof Environment;
 
 export interface Config {
+  // DB
+  atlasUri: string;
   // S3
   s3: S3Config;
   // Auth0

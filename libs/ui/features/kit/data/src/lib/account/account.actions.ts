@@ -1,5 +1,12 @@
 import { Account } from '@kitouch/shared-models';
-import { createActionGroup, props } from '@ngrx/store';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+
+export const FeatAccountEvents = createActionGroup({
+  source: 'FeatAccountEvents',
+  events: {
+    HandleRedirect: emptyProps(),
+  },
+});
 
 export const FeatAccountApiActions = createActionGroup({
   source: 'FeatAccountApiActions',

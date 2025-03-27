@@ -2,8 +2,9 @@ import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
 
 export const environment: Environment = {
   api: {
-    root: 'https://api.kitouch.io/api',
-    media: '/media',
+    root: '/api',
+    media: '/api/media',
+    auth: '/api/auth',
   },
   googleTagConfig: 'G-7YL998B39Q',
   build: KIT_ENVS.production + '-5-' + '$AWS_COMMIT_ID',

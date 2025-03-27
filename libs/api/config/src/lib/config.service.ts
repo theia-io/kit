@@ -41,7 +41,14 @@ export class ConfigService {
       process.exit(1);
     }
 
+    const atlasUri = process.env['ATLAS_URI'];
+    if (!atlasUri) {
+      console.error('missing DB connection string');
+      process.exit(1);
+    }
+
     this.#config = {
+      atlasUri,
       s3: {
         region: process.env?.['S3_REGION'] ?? 'eu-north-1',
         identityPoolId:

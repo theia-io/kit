@@ -5,7 +5,8 @@ export const environment: Environment = {
   api: {
     // locally proxied to localhost:3000 ran by `npm run serve:api-hmr`
     root: '/api',
-    media: '/media',
+    media: '/api/media',
+    auth: '/api/auth',
   },
   googleTagConfig: null,
   build: `${KIT_ENVS.development}`,

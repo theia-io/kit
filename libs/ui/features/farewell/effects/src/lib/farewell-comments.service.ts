@@ -86,12 +86,12 @@ export class FarewellCommentsService extends DataSourceService {
   }
 
   uploadFarewellCommentMedia(key: string, blob: Blob) {
-    const { root, media } = this.#env.api;
+    const { media } = this.#env.api;
 
     return from(blob.arrayBuffer()).pipe(
       switchMap((fileArrayBuffer) =>
         this.#http.post<ContractUploadedMedia>(
-          `${root}${media}/farewell`,
+          `${media}/farewell`,
           fileArrayBuffer,
           {
             headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
@@ -106,9 +106,9 @@ export class FarewellCommentsService extends DataSourceService {
 
   /** Media, S3 */
   deleteFarewellCommentMedia(key: string) {
-    const { root, media } = this.#env.api;
+    const { media } = this.#env.api;
     // return this.deleteBucketItem(this.#env.s3Config.farewellBucket, key);
-    return this.#http.delete(`${root}${media}/farewell`, {
+    return this.#http.delete(`${media}/farewell`, {
       params: {
         name: key,
       },

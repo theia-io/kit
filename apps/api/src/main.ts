@@ -4,6 +4,7 @@ import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 import { auth, ConfigParams } from 'express-openid-connect';
 import session from 'express-session';
+import { URL } from 'url';
 import { AppModule } from './app/app.module';
 import { logger } from './app/middleware/logger';
 
@@ -11,6 +12,7 @@ import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
+import { environment } from './environments/environment';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -20,9 +22,17 @@ async function bootstrap() {
   // Enable shutdown hooks
   app.enableShutdownHooks();
 
+  const configService = app.get(ConfigService);
+
+  const baseUrl = configService.getEnvironment('baseUrl'),
+    feUrl = configService.getEnvironment('feUrl'),
+    isProduction = configService.getEnvironment('production');
+
   app.enableCors({
     origin: function (origin, callback) {
-      console.log('CORS origin:', origin);
+      if (!isProduction) {
+        console.log('CORS origin:', origin);
+      }
       if (!origin || origin === 'null') {
         // Don't allow requests with no origin (like mobile apps or curl requests)
         // callback(new Error('Not allowed without valid origin'));
@@ -44,10 +54,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const configService = app.get(ConfigService);
-
-  const baseUrl = configService.getEnvironment('baseUrl'),
-    feUrl = configService.getEnvironment('feUrl');
   const { sessionSecret, clientSecret, authSecret, clientId, issuerBaseUrl } =
     configService.getConfig('auth');
 
@@ -82,8 +88,12 @@ async function bootstrap() {
       // audience: baseURL,
     },
     afterCallback: async (req, res, session) => {
+      res.clearCookie('jwt');
+
       // session contains the id_token, access_token, user claims
-      console.log('\nSession Object:', JSON.stringify(session, null, 2)); // Log the whole session
+      if (!isProduction) {
+        console.log('\nSession Object:', JSON.stringify(session, null, 2)); // Log the whole session
+      }
 
       // Check if authentication was actually successful (session should contain tokens)
       if (!session.id_token || !session.access_token) {
@@ -96,18 +106,35 @@ async function bootstrap() {
         return session;
       }
 
+      const authService = app.get(AuthService);
       let user: any;
+
       try {
-        const userInfoReq = await axios(`${issuerBaseUrl}/userinfo`, {
+        const userInfoReq = await axios(`${issuerBaseUrl}/userInfo`, {
           headers: {
-            // *** Use the access_token from the session ***
             Authorization: `Bearer ${session.access_token}`,
           },
         });
+        // const { email } = authService.decode(session.id_token);
+        // const auth0UserUrl = new URL(`${issuerBaseUrl}/api/v2/users`);
+        // auth0UserUrl.search = new URLSearchParams({
+        //   search_engine: 'v3',
+        //   q: email,
+        // }).toString();
+
+        // const userInfoReq = await axios(auth0UserUrl.toString(), {
+        //   headers: {
+        //     Authorization:
+        //       'Bearer',
+        //   },
+        // });
+
         if (userInfoReq.status === 200 && userInfoReq.data) {
           user = userInfoReq.data;
         }
-        console.log('\nUser:', user);
+        if (!isProduction) {
+          console.log('\nUser:', user);
+        }
       } catch (error) {
         console.error(
           'Error fetching from /userinfo:',
@@ -119,7 +146,6 @@ async function bootstrap() {
       }
 
       // Generate your application's JWT
-      const authService = app.get(AuthService);
       const {
         email,
         given_name: name,
@@ -159,8 +185,7 @@ async function bootstrap() {
     getLoginState(req, options) {
       return {
         ...options,
-        returnTo: `${feUrl}/s/redirect-auth0`, //options.returnTo || req.originalUrl,
-        // customState: 'foo'
+        returnTo: `${feUrl}/s/redirect-auth0`, //options.returnTo
       };
     },
   };

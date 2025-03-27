@@ -1,7 +1,7 @@
+import { Auth0User } from '@kitouch/shared-models';
 import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { User } from '../types/user';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
@@ -22,7 +22,7 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   }
 
   // Simplified validate method - just return the payload
-  async validate(payload: User) {
+  async validate(payload: Auth0User) {
     console.log('JwtStrategy validate', payload);
     // We are not querying DB, and simply return user data from the token
     return payload;

@@ -65,12 +65,12 @@ export class KudoBoardCommentsService extends DataSourceService {
   }
 
   uploadKudoBoardCommentMedia(key: string, blob: Blob) {
-    const { root, media } = this.#env.api;
+    const { media } = this.#env.api;
 
     return from(blob.arrayBuffer()).pipe(
       switchMap((fileArrayBuffer) =>
         this.#http.post<ContractUploadedMedia>(
-          `${root}${media}/kudoboard`,
+          `${media}/kudoboard`,
           fileArrayBuffer,
           {
             headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
@@ -85,8 +85,8 @@ export class KudoBoardCommentsService extends DataSourceService {
 
   /** Media, S3 */
   deleteKudoBoardCommentMedia(key: string) {
-    const { root, media } = this.#env.api;
-    return this.#http.delete(`${root}${media}/kudoboard`, {
+    const { media } = this.#env.api;
+    return this.#http.delete(`${media}/kudoboard`, {
       params: {
         name: key,
       },

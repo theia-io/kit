@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.76-e30d544",
+  "version": "5.0.77-0fa46f3",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
@@ -73,7 +73,7 @@
     "jwks-rsa": "^3.2.0",
     "lodash": "^4.17.21",
     "masonry-layout": "^4.2.2",
-    "mongoose": "^8.8.4",
+    "mongoose": "^8.13.0",
     "multer": "^1.4.5-lts.1",
     "ngx-cookieconsent": "^6.0.0",
     "passport": "^0.7.0",
