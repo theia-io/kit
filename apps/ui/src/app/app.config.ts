@@ -29,6 +29,7 @@ import { featFollowReducer } from '@kitouch/feat-follow-data';
 import { FollowEffects } from '@kitouch/feat-follow-effects';
 import {
   AccountsEffects,
+  Auth0Effects,
   AuthEffects,
   LegalEffects,
   ProfileEffects,
@@ -135,6 +136,7 @@ export const appConfig: ApplicationConfig = {
       FollowEffects,
       // kit feat effects
       AuthEffects,
+      Auth0Effects,
       AccountsEffects,
       LegalEffects,
       ProfileEffects,

@@ -170,6 +170,7 @@ async function bootstrap() {
         path: '/',
       });
 
+      console.log('NEW Session set! New token', appToken);
       // Return the session object (required by afterCallback)
       return {
         ...session,

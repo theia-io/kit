@@ -2,7 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import {
   FeatAccountApiActions,
-  FeatAccountEvents,
+  FeatAuth0Events,
   FeatProfileApiActions,
   FeatUserApiActions,
 } from '@kitouch/kit-data';
@@ -10,7 +10,16 @@ import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { filter, map, switchMap, tap } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  merge,
+  of,
+  shareReplay,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { Auth0DataService } from './auth0.service';
 
 @Injectable()
@@ -20,39 +29,46 @@ export class Auth0Effects {
   #auth0Service = inject(Auth0Service);
   #auth0DataService = inject(Auth0DataService);
 
-  handleAuthRedirect = createEffect(
+  handleAuthRedirect = createEffect(() =>
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.handleRedirect),
+      switchMap(() =>
+        this.#auth0Service.handleSignInRedirect().pipe(
+          map((user) => FeatAuth0Events.handleRedirectSuccess({ user })),
+          catchError(() => of(FeatAuth0Events.handleRedirectFailure()))
+        )
+      )
+    )
+  );
+
+  postAuthRedirect = createEffect(
     () =>
-      this.#actions.pipe(
-        ofType(FeatAccountEvents.handleRedirect),
-        tap(() => this.#auth0Service.handleSignInRedirect())
-      ),
+      merge(
+        this.#actions.pipe(ofType(FeatAuth0Events.handleRedirectSuccess)),
+        this.#actions.pipe(ofType(FeatAuth0Events.handleRedirectFailure))
+      ).pipe(tap(() => this.#router.navigateByUrl('/'))),
     {
       dispatch: false,
     }
   );
 
-  #resolvedAccountUserProfiles$ = this.#auth0Service.auth0User$$.pipe(
+  #accountUserProfiles$ = this.#actions.pipe(
+    ofType(FeatAuth0Events.handleRedirectSuccess),
+    map(({ user }) => user),
     filter(Boolean),
-    switchMap((user) => this.#auth0DataService.getAccountUserProfiles(user))
+    switchMap((user) => this.#auth0DataService.getAccountUserProfiles(user)),
+    shareReplay({
+      refCount: true,
+      bufferSize: 1,
+    })
   );
 
-  #profiles$ = this.#resolvedAccountUserProfiles$.pipe(
-    map(({ profiles }) => profiles),
-    filter(Boolean)
-  );
-
-  redirectNewUser$ = createEffect(
-    () =>
-      this.#resolvedAccountUserProfiles$.pipe(
-        tap(({ account, user, profiles }) => {
-          if (!account || !user || !profiles) {
-            this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
-          }
-        })
-      ),
-    {
-      dispatch: false,
-    }
+  redirectNewUser$ = this.#accountUserProfiles$.pipe(
+    tap(({ account, user, profiles }) => {
+      if (!account || !user || !profiles) {
+        this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
+      }
+    })
   );
 
   deleteUser$ = createEffect(
@@ -65,7 +81,7 @@ export class Auth0Effects {
   );
 
   setAccount$ = createEffect(() =>
-    this.#resolvedAccountUserProfiles$.pipe(
+    this.#accountUserProfiles$.pipe(
       map(({ account }) => account),
       filter(Boolean),
       map((account) => FeatAccountApiActions.setAccount({ account }))
@@ -73,7 +89,7 @@ export class Auth0Effects {
   );
 
   setUser$ = createEffect(() =>
-    this.#resolvedAccountUserProfiles$.pipe(
+    this.#accountUserProfiles$.pipe(
       map(({ user }) => user),
       filter(Boolean),
       map((user) => FeatUserApiActions.setUser({ user }))
@@ -81,7 +97,9 @@ export class Auth0Effects {
   );
 
   setCurrentProfile$ = createEffect(() =>
-    this.#profiles$.pipe(
+    this.#accountUserProfiles$.pipe(
+      map(({ profiles }) => profiles),
+      filter(Boolean),
       map((profiles) => {
         const currentProfile = profiles?.[0];
 
@@ -95,16 +113,6 @@ export class Auth0Effects {
           profile: currentProfile,
         });
       })
-    )
-  );
-
-  setProfiles$ = createEffect(() =>
-    this.#profiles$.pipe(
-      map((profiles) =>
-        FeatProfileApiActions.setProfiles({
-          profiles,
-        })
-      )
     )
   );
 
@@ -124,6 +132,18 @@ export class Auth0Effects {
           profileIds: followingProfilesIds.map(({ id }) => id),
         });
       })
+    )
+  );
+
+  setProfiles$ = createEffect(() =>
+    this.#accountUserProfiles$.pipe(
+      map(({ profiles }) => profiles),
+      filter(Boolean),
+      map((profiles) =>
+        FeatProfileApiActions.setProfiles({
+          profiles,
+        })
+      )
     )
   );
 }

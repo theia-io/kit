@@ -7,6 +7,7 @@ export const environment: Environment = {
     root: '/api',
     media: '/api/media',
     auth: '/api/auth',
+    kit: '/api/kit',
   },
   googleTagConfig: null,
   build: KIT_ENVS.localhost,

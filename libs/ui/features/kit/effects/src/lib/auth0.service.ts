@@ -18,7 +18,7 @@ export class Auth0DataService {
       account: Account;
       user: User;
       profiles: Array<Profile>;
-    }>(this.#environment.api.root, {
+    }>(`${this.#environment.api.kit}/entity`, {
       params: {
         email: user.email,
       },

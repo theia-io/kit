@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { FeatAccountEvents } from '@kitouch/kit-data';
+import { FeatAuth0Events } from '@kitouch/kit-data';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -11,6 +11,6 @@ export class PageRedirectAuth0Component implements OnInit {
   #store = inject(Store);
 
   ngOnInit() {
-    this.#store.dispatch(FeatAccountEvents.handleRedirect());
+    this.#store.dispatch(FeatAuth0Events.handleRedirect());
   }
 }

@@ -12,6 +12,7 @@ export interface Environment {
     root: string;
     media: string;
     auth: string;
+    kit: string;
   };
   googleTagConfig: string | null;
   build: string;

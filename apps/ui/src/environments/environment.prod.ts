@@ -5,6 +5,7 @@ export const environment: Environment = {
     root: '/api',
     media: '/api/media',
     auth: '/api/auth',
+    kit: '/api/kit',
   },
   googleTagConfig: 'G-7YL998B39Q',
   build: KIT_ENVS.production + '-5-' + '$AWS_COMMIT_ID',
