@@ -1,3 +1,4 @@
+import { FeatAuth0Events } from '@kitouch/kit-data';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,6 +7,7 @@ import {
   output,
 } from '@angular/core';
 import { Auth0Service } from '@kitouch/shared-infra';
+import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -18,6 +20,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class SignInAuth0Component {
   #authService = inject(Auth0Service);
+  #store = inject(Store);
 
   signedIn = output<boolean>();
 
@@ -28,6 +31,11 @@ export class SignInAuth0Component {
         dynamicDialogRef.close(data);
       });
     }
+  }
+
+  refresh() {
+    console.log('');
+    this.#store.dispatch(FeatAuth0Events.handleRedirect());
   }
 
   handleSignIn() {

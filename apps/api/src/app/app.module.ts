@@ -21,7 +21,7 @@ import { KitModule } from '@kitouch/be-kit';
     AuthModule,
     /** DB-related info */
     DbModule,
-    KitModule,
+    KitModule, // accounts, profiles, users
   ],
   controllers: [HealthController, AppController],
   providers: [AppService],

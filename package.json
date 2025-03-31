@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.78-62efa8f",
+  "version": "5.0.79-e46b2dd",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
@@ -43,6 +43,7 @@
     "@nestjs/config": "^4.0.1",
     "@nestjs/core": "^10.0.2",
     "@nestjs/jwt": "^11.0.0",
+    "@nestjs/mongoose": "^10.1.0",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^10.4.8",
     "@nestjs/terminus": "^10.2.3",
