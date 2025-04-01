@@ -10,7 +10,6 @@ import {
 } from '@kitouch/shared-constants';
 import {
   onlyForLoggedInGuard,
-  onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
 } from '@kitouch/shared-infra';
 import { KitComponent } from './kit.component';
@@ -90,11 +89,9 @@ export const appRoutes: Route[] = [
         path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
         loadComponent: () =>
           pages.then((comp) => comp.PageFarewellViewComponent),
-        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
       },
       {
         path: `${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
-        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
         children: [
           {
             path: 'generate',

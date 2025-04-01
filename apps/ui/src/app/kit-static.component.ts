@@ -5,7 +5,7 @@ import {
   SharedNavBarStaticComponent,
   SharedStaticInfoComponent,
 } from '@kitouch/containers';
-import { selectCurrentProfile } from '@kitouch/kit-data';
+import { FeatAuth0Events, selectCurrentProfile } from '@kitouch/kit-data';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -39,9 +39,12 @@ import { select, Store } from '@ngrx/store';
   `,
 })
 export class KitStaticComponent {
-  currentProfile$ = inject(Store).pipe(select(selectCurrentProfile));
+  #store = inject(Store);
+
+  currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
 
   constructor() {
     // inject(Auth0Service).signIn();
+    // this.#store.dispatch(FeatAuth0Events.silentSignIn());
   }
 }

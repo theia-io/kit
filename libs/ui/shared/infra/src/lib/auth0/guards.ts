@@ -1,5 +1,9 @@
 import { inject } from '@angular/core';
-import { Router } from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  Router,
+  RouterStateSnapshot,
+} from '@angular/router';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { map, of, switchMap, take } from 'rxjs';
 import { Auth0Service } from './auth0.service';
@@ -26,37 +30,27 @@ export const onlyForNotLoggedInGuard = () => {
   );
 };
 
-export const onlyForLoggedInGuard = () => {
+export const onlyForLoggedInGuard = (
+  route: ActivatedRouteSnapshot,
+  state: RouterStateSnapshot
+) => {
   const router = inject(Router);
+  const authService = inject(Auth0Service);
 
-  return inject(Auth0Service).loggedInUser$.pipe(
+  console.log(route.url, state.url, route, state);
+
+  return authService.loggedInUser$.pipe(
     take(1),
     map((user) => !!user),
+    switchMap((isLoggedIn) =>
+      isLoggedIn ? of(isLoggedIn) : authService.signIn(state.url)
+    ),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
         return router.createUrlTree([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }
 
       return isLoggedIn;
-    })
-  );
-};
-
-/**
- * This function will make sure that there is logged in (Authorized) user
- * or will log in current session anonymously (this is because this page
- * need read data from MongoDB)
- */
-export const onlyForLoggedInOrAnonymouslyLoggedInGuard = () => {
-  return inject(Auth0Service).loggedInUser$.pipe(
-    take(1),
-    map((user) => !!user),
-    switchMap(async (isLoggedIn: boolean) => {
-      if (isLoggedIn) {
-        return of(true);
-      }
-
-      return of(true);
     })
   );
 };

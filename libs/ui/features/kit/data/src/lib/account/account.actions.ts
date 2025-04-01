@@ -4,13 +4,14 @@ import { createActionGroup, emptyProps, props } from '@ngrx/store';
 export const FeatAuth0Events = createActionGroup({
   source: 'FeatAuth0Events',
   events: {
+    SilentSignIn: emptyProps(),
     HandleRedirect: emptyProps(),
-    HandleRedirectSuccess: props<{
+    SignInSuccess: props<{
       account: Account;
       user: User;
       profiles: Array<Profile>;
     }>(),
-    HandleRedirectFailure: emptyProps(),
+    SignInFailure: emptyProps(),
   },
 });
 
