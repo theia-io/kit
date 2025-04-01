@@ -57,15 +57,40 @@ export class Auth0Service {
 
     window.open('http://localhost:3000/api/auth/login', '_blank')?.focus();
 
-    console.log('reached');
+    return new Promise((resolve, reject) => {
+      const storageEventHandler = (event: StorageEvent) => {
+        console.log('Storage Event Origin:', event, (event as any).origin);
 
-    return new Promise((res, rej) => {
-      window.addEventListener('storage', (event: StorageEvent) => {
-        console.log(event);
-        if (event.key === this.#separateWindow) {
-          res(true);
+        // Check if it's the key we are waiting for
+        if (
+          event.key === this.#separateWindow &&
+          event.url.includes(window.origin)
+        ) {
+          console.log(
+            `Detected storage event for key: ${
+              this.#separateWindow
+            }. Resolving promise.`
+          );
+
+          clearTimeout(timeoutId);
+          window.removeEventListener('storage', storageEventHandler);
+          resolve(true);
         }
-      });
+      };
+
+      // --- Add the listener using the named function reference ---
+      window.addEventListener('storage', storageEventHandler);
+
+      const timeoutDuration = 60000; // 60 seconds
+      const timeoutId = setTimeout(() => {
+        console.warn(
+          `signInTab timed out after ${
+            timeoutDuration / 1000
+          }s waiting for storage event.`
+        );
+        window.removeEventListener('storage', storageEventHandler); // Clean up listener on timeout
+        reject(new Error('Login window timed out or was closed.'));
+      }, timeoutDuration);
     });
   }
 
@@ -75,7 +100,7 @@ export class Auth0Service {
     );
   }
 
-  separateWindowSignInClear() {
+  separateWindowSignInClearAndTrigger() {
     return this.#localStoreService.removeItem(this.#separateWindow);
   }
 
@@ -94,4 +119,6 @@ export class Auth0Service {
   deleteAuth0User() {
     console.log('implement delete auth0 user');
   }
+
+  #handleStorageEvents() {}
 }

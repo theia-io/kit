@@ -14,9 +14,9 @@ export class PageRedirectAuth0Component implements OnInit {
 
   ngOnInit() {
     const separateWindowSignIn = this.#auth0Service.separateWindowSignIn();
-    console.log('separateWindowSignIn', separateWindowSignIn);
     if (separateWindowSignIn) {
-      this.#auth0Service.separateWindowSignInClear();
+      this.#auth0Service.separateWindowSignInClearAndTrigger();
+      window.close();
     } else {
       this.#store.dispatch(FeatAuth0Events.handleRedirect());
     }

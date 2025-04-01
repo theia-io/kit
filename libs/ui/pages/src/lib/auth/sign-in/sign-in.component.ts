@@ -14,7 +14,7 @@ import { DeviceService, RouterEventsService } from '@kitouch/shared-infra';
 import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
-import { startWith, take } from 'rxjs';
+import { startWith } from 'rxjs';
 
 const ANIMATION_REPEAT = 10000;
 
@@ -48,17 +48,6 @@ export class PageSignInComponent implements OnInit {
   clickedIntro = signal<null | 'kudo' | 'farewell'>(null);
 
   readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
-
-  handleGoogleSignIn(signedIn: boolean) {
-    if (signedIn) {
-      this.#routerEventsService.lastUrlBeforeCancelled$
-        .pipe(take(1))
-        .subscribe((urlBeforeSignIn) => {
-          console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
-          this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
-        });
-    }
-  }
 
   ngOnInit(): void {
     this.#animateKitten();

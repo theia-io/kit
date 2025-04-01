@@ -1,4 +1,3 @@
-import { FeatAuth0Events } from '@kitouch/kit-data';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,6 +5,7 @@ import {
   Optional,
   output,
 } from '@angular/core';
+import { FeatAuth0Events } from '@kitouch/kit-data';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -25,7 +25,7 @@ export class SignInAuth0Component {
   signedIn = output<boolean>();
 
   // When SignInGoogleComponent opened as dynamic dialog it Dialog will expect close event. However component is also used in other places not as dynamic dialog thus dynamicDialogRef will not be provided (is not expected)
-  constructor(@Optional() dynamicDialogRef: DynamicDialogRef) {
+  constructor(@Optional() private dynamicDialogRef: DynamicDialogRef) {
     if (dynamicDialogRef) {
       this.signedIn.subscribe((data) => {
         dynamicDialogRef.close(data);
@@ -34,12 +34,20 @@ export class SignInAuth0Component {
   }
 
   refresh() {
-    console.log('');
     this.#store.dispatch(FeatAuth0Events.handleRedirect());
   }
 
   handleSignIn() {
-    this.#auth0Service.signIn();
-    // .subscribe(v => console.log('v',v))
+    if (this.dynamicDialogRef) {
+      this.#auth0Service
+        .signInTab()
+        .then(() => {
+          console.log('TEST');
+          this.signedIn.emit(true);
+        })
+        .catch(() => this.signedIn.emit(false));
+    } else {
+      this.#auth0Service.signIn();
+    }
   }
 }
