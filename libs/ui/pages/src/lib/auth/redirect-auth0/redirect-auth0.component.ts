@@ -1,5 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FeatAuth0Events } from '@kitouch/kit-data';
+import { Auth0Service } from '@kitouch/shared-infra';
 import { Store } from '@ngrx/store';
 
 @Component({
@@ -9,8 +10,15 @@ import { Store } from '@ngrx/store';
 })
 export class PageRedirectAuth0Component implements OnInit {
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
 
   ngOnInit() {
-    this.#store.dispatch(FeatAuth0Events.handleRedirect());
+    const separateWindowSignIn = this.#auth0Service.separateWindowSignIn();
+    console.log('separateWindowSignIn', separateWindowSignIn);
+    if (separateWindowSignIn) {
+      this.#auth0Service.separateWindowSignInClear();
+    } else {
+      this.#store.dispatch(FeatAuth0Events.handleRedirect());
+    }
   }
 }

@@ -6,9 +6,9 @@ import {
   OnDestroy,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { AuthService } from '@kitouch/shared-infra';
+import { Auth0Service } from '@kitouch/shared-infra';
 import { DialogService, DynamicDialogRef } from 'primeng/dynamicdialog';
-import { SignInGoogleComponent } from '../components/sign-in-google/sign-in-google.component';
+import { SignInAuth0Component } from '../components';
 
 @Directive({
   standalone: true,
@@ -16,12 +16,12 @@ import { SignInGoogleComponent } from '../components/sign-in-google/sign-in-goog
   providers: [DialogService],
 })
 export class AuthorizedFeatureDirective implements AfterViewInit, OnDestroy {
-  #authService = inject(AuthService);
+  #auth0Service = inject(Auth0Service);
   dialogService = inject(DialogService);
   dialogRef: DynamicDialogRef | undefined;
   #elRef = inject(ElementRef);
 
-  loggedIn = toSignal(this.#authService.loggedInWithRealmUser$, {
+  loggedIn = toSignal(this.#auth0Service.loggedIn$, {
     initialValue: false,
   });
 
@@ -49,7 +49,7 @@ export class AuthorizedFeatureDirective implements AfterViewInit, OnDestroy {
       event.stopPropagation();
       event.preventDefault();
 
-      this.dialogRef = this.dialogService.open(SignInGoogleComponent, {
+      this.dialogRef = this.dialogService.open(SignInAuth0Component, {
         header: 'Instant sign-in / register 🫡',
         modal: true,
         draggable: false,

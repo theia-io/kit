@@ -6,7 +6,6 @@ import {
   SharedStaticInfoComponent,
 } from '@kitouch/containers';
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { AuthService } from '@kitouch/shared-infra';
 import { select, Store } from '@ngrx/store';
 
 @Component({
@@ -43,6 +42,6 @@ export class KitStaticComponent {
   currentProfile$ = inject(Store).pipe(select(selectCurrentProfile));
 
   constructor() {
-    inject(AuthService).refreshUser();
+    // inject(Auth0Service).signIn();
   }
 }

@@ -1,15 +1,3 @@
-// import mongoose from 'mongoose';
-// const { Schema, model } = mongoose;
-
-// export const accountSettingsSchema = new Schema({
-//   _id: mongoose.Types.ObjectId,
-//   subscriptions: [],
-// });
-
-// export const AccountSettings = model('accountSettings', accountSettingsSchema);
-// export type IAccountSettings = typeof AccountSettings;
-
-// src/db/schemas/account-settings.schema.ts (example path)
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
 

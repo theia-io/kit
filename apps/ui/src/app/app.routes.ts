@@ -121,10 +121,6 @@ export const appRoutes: Route[] = [
     ],
   },
   {
-    path: 'callback',
-    loadComponent: () => pages.then((comp) => comp.PageRedirectAuth0Component),
-  },
-  {
     path: APP_PATH.AboutYourself,
     canActivate: [onlyForLoggedInGuard],
     loadComponent: () => pages.then((comp) => comp.PageAboutYourselfComponent),

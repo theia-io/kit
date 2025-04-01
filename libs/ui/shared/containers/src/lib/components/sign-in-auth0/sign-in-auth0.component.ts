@@ -19,7 +19,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInAuth0Component {
-  #authService = inject(Auth0Service);
+  #auth0Service = inject(Auth0Service);
   #store = inject(Store);
 
   signedIn = output<boolean>();
@@ -39,7 +39,7 @@ export class SignInAuth0Component {
   }
 
   handleSignIn() {
-    this.#authService.signIn();
+    this.#auth0Service.signIn();
     // .subscribe(v => console.log('v',v))
   }
 }

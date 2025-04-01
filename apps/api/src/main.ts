@@ -4,7 +4,6 @@ import { NestFactory } from '@nestjs/core';
 import cookieParser from 'cookie-parser';
 import { auth, ConfigParams } from 'express-openid-connect';
 import session from 'express-session';
-import { URL } from 'url';
 import { AppModule } from './app/app.module';
 import { logger } from './app/middleware/logger';
 
@@ -12,7 +11,6 @@ import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
-import { environment } from './environments/environment';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {

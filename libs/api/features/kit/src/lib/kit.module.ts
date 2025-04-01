@@ -1,38 +1,43 @@
-import { DbModule } from '@kitouch/be-db';
+import {
+  Account,
+  AccountSchema,
+  AccountSettings,
+  AccountSettingsSchema,
+  DbModule,
+  Profile,
+  ProfileSchema,
+  User,
+  UserSchema,
+} from '@kitouch/be-db';
 import { Module } from '@nestjs/common';
+import { MongooseModule } from '@nestjs/mongoose';
 import { KitController } from './kit.controller';
 import { KitService } from './kit.service';
 
 @Module({
   imports: [
     DbModule,
-    // MongooseModule.forFeature([
-    //   {
-    //     name: Account.name,
-    //     schema: AccountSchema,
-    //   },
-    //   {
-    //     name: AccountSettings.name,
-    //     schema: AccountSettingsSchema,
-    //   },
-    //   {
-    //     name: Profile.name,
-    //     schema: ProfileSchema,
-    //   },
-    //   {
-    //     name: User.name,
-    //     schema: UserSchema,
-    //   },
-    // ]),
+    MongooseModule.forFeatureAsync([
+      {
+        name: Account.name,
+        useFactory: () => AccountSchema,
+      },
+      {
+        name: AccountSettings.name,
+        useFactory: () => AccountSettingsSchema,
+      },
+      {
+        name: Profile.name,
+        useFactory: () => ProfileSchema,
+      },
+      {
+        name: User.name,
+        useFactory: () => UserSchema,
+      },
+    ]),
   ],
   controllers: [KitController],
   providers: [KitService],
-  exports: [
-    KitService,
-    // Account,
-    // AccountSettings,
-    // Profile,
-    // User
-  ],
+  exports: [KitService],
 })
 export class KitModule {}

@@ -31,7 +31,6 @@ export class KitService {
         .findOne<AccountDocument>({ email })
         .exec();
       //   const accounts = await this.accountModel.find().exec();
-      console.log('Accounts', account);
       //   account = accounts?.[0];
     } catch (err) {
       console.error('Cannot execute account search', err);
@@ -50,11 +49,6 @@ export class KitService {
 
   async userFindOne(accountId: string) {
     let user;
-    console.log(
-      ' new mongoose.Types.ObjectId(accountId)',
-      accountId,
-      new mongoose.Types.ObjectId(accountId)
-    );
     try {
       // check if will find many or INFORCE it with something
       user = await this.userModel
@@ -73,11 +67,13 @@ export class KitService {
     return user;
   }
 
-  async profileFindOne(userId: mongoose.Types.ObjectId) {
+  async profileFind(userId: string) {
     let profile;
     try {
       // check if will find many or INFORCE it with something
-      profile = await this.profileModel.findOne({ userId }).exec();
+      profile = await this.profileModel
+        .find({ userId: new mongoose.Types.ObjectId(userId) })
+        .exec();
     } catch (err) {
       console.error('Cannot execute profile search', err);
       throw new HttpException(

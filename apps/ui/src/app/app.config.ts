@@ -1,4 +1,4 @@
-import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
   ApplicationConfig,
   importProvidersFrom,
@@ -30,7 +30,6 @@ import { FollowEffects } from '@kitouch/feat-follow-effects';
 import {
   AccountsEffects,
   Auth0Effects,
-  AuthEffects,
   LegalEffects,
   ProfileEffects,
   UserEffects,
@@ -44,7 +43,7 @@ import {
 } from '@kitouch/feat-tweet-effects';
 import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
-  AuthInterceptor,
+  authInterceptor,
   ENVIRONMENT,
   Environment,
   S3_FAREWELL_BUCKET_BASE_URL,
@@ -59,11 +58,6 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
-
-// const kitProviders: Provider[] = [];
-// if (environment.environment !== KIT_ENVS.localhost) {
-//   kitProviders.push(provideNgcCookieConsent(cookieConfig));
-// }
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -135,7 +129,6 @@ export const appConfig: ApplicationConfig = {
       // follow feat effects
       FollowEffects,
       // kit feat effects
-      AuthEffects,
       Auth0Effects,
       AccountsEffects,
       LegalEffects,
@@ -150,19 +143,7 @@ export const appConfig: ApplicationConfig = {
     provideStoreDevtools(),
 
     // auth
-    // ...kitProviders,
     provideNgcCookieConsent(cookieConfig),
-    provideHttpClient(),
-    // {
-    //   provide: APP_INITIALIZER,
-    //   useFactory: realAppFactory,
-    //   multi: true,
-    //   deps: [HttpClient, AuthService],
-    // },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true,
-    },
+    provideHttpClient(withInterceptors([authInterceptor])),
   ],
 };

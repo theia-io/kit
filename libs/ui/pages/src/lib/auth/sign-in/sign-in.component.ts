@@ -7,11 +7,7 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import {
-  SignInAuth0Component,
-  SignInGoogleComponent,
-  slideInOutAnimation,
-} from '@kitouch/containers';
+import { SignInAuth0Component, slideInOutAnimation } from '@kitouch/containers';
 import { FeatFarewellIntoComponent } from '@kitouch/feat-farewell-ui';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { DeviceService, RouterEventsService } from '@kitouch/shared-infra';
@@ -33,7 +29,6 @@ const ANIMATION_REPEAT = 10000;
     //
     TagModule,
     //
-    SignInGoogleComponent,
     SignInAuth0Component,
     UiCompGradientCardComponent,
     FeatFarewellIntoComponent,

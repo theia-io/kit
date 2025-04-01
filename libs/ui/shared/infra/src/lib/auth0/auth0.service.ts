@@ -1,29 +1,94 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { Auth0User } from '@kitouch/shared-models';
+import { selectCurrentUser } from '@kitouch/kit-data';
+import { Account, Profile, User } from '@kitouch/shared-models';
+import { select, Store } from '@ngrx/store';
+import { map, Observable } from 'rxjs';
 import { ENVIRONMENT } from '../environments';
+import { LocalStoreService } from '../localstore.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class Auth0Service {
-  #environment = inject(ENVIRONMENT);
+  #store = inject(Store);
   #http = inject(HttpClient);
+  #environment = inject(ENVIRONMENT);
+  #localStoreService = inject(LocalStoreService);
 
-  signIn() {
+  loggedInUser$ = this.#store.pipe(select(selectCurrentUser));
+  loggedIn$ = this.loggedInUser$.pipe(map((user) => !!user));
+
+  readonly #separateWindow = 'kit.auth.separate-window';
+  readonly #beforeRedirectKey = 'kit.auth.pre-redirect';
+
+  logout() {
+    window.location.href = `http://localhost:3000/api/auth/logout`; // express-openid-connect handles this
+  }
+
+  postSignInUrl() {
+    const urlBeforeRedirect = this.#localStoreService.getItem(
+      this.#beforeRedirectKey
+    );
+
+    if (urlBeforeRedirect) {
+      this.#localStoreService.removeItem(this.#beforeRedirectKey);
+    }
+
+    return urlBeforeRedirect;
+  }
+
+  signIn(beforeRedirectUrl?: string) {
+    this.#localStoreService.removeItem(this.#beforeRedirectKey);
+
+    if (beforeRedirectUrl) {
+      this.#localStoreService.setItem(
+        this.#beforeRedirectKey,
+        beforeRedirectUrl
+      );
+    }
+
     window.location.href = `http://localhost:3000/api/auth/login`; // express-openid-connect handles this
   }
 
-  handleSignInRedirect() {
-    return this.#getUser$();
+  signInTab() {
+    this.#localStoreService.setItem(this.#separateWindow, JSON.stringify(true));
+
+    window.open('http://localhost:3000/api/auth/login', '_blank')?.focus();
+
+    console.log('reached');
+
+    return new Promise((res, rej) => {
+      window.addEventListener('storage', (event: StorageEvent) => {
+        console.log(event);
+        if (event.key === this.#separateWindow) {
+          res(true);
+        }
+      });
+    });
   }
 
-  #getUser$() {
-    const {
-      api: { auth },
-    } = this.#environment;
-    return this.#http.get<Auth0User>(`${auth}/user`);
+  separateWindowSignIn() {
+    return JSON.parse(
+      this.#localStoreService.getItem(this.#separateWindow) ?? 'false'
+    );
+  }
+
+  separateWindowSignInClear() {
+    return this.#localStoreService.removeItem(this.#separateWindow);
+  }
+
+  getCurrentSessionAccountUserProfiles(): Observable<{
+    account: Account;
+    user: User;
+    profiles: Array<Profile>;
+  }> {
+    return this.#http.get<{
+      account: Account;
+      user: User;
+      profiles: Array<Profile>;
+    }>(`${this.#environment.api.kit}`);
   }
 
   deleteAuth0User() {

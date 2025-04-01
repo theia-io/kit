@@ -1,5 +1,5 @@
 import { ConfigModule, ConfigService } from '@kitouch/be-config';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Connection } from 'mongoose';
 import {
@@ -13,6 +13,7 @@ import {
   UserSchema,
 } from './schemas';
 
+@Global()
 @Module({
   imports: [
     MongooseModule.forRoot(
@@ -38,24 +39,24 @@ import {
     //     },
     //   }),
     // }),
-    MongooseModule.forFeature([
-      {
-        name: Account.name,
-        schema: AccountSchema,
-      },
-      {
-        name: AccountSettings.name,
-        schema: AccountSettingsSchema,
-      },
-      {
-        name: Profile.name,
-        schema: ProfileSchema,
-      },
-      {
-        name: User.name,
-        schema: UserSchema,
-      },
-    ]),
+    // MongooseModule.forFeature([
+    //   {
+    //     name: Account.name,
+    //     schema: AccountSchema,
+    //   },
+    //   {
+    //     name: AccountSettings.name,
+    //     schema: AccountSettingsSchema,
+    //   },
+    //   {
+    //     name: Profile.name,
+    //     schema: ProfileSchema,
+    //   },
+    //   {
+    //     name: User.name,
+    //     schema: UserSchema,
+    //   },
+    // ]),
   ],
   // exports: [],
   exports: [MongooseModule],

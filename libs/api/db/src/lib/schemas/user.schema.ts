@@ -71,8 +71,6 @@ export type UserDocument = HydratedDocument<User>;
 
 @Schema({ timestamps: true, collection: 'user' }) // Adds createdAt and updatedAt automatically
 export class User {
-  // _id is added automatically by Mongoose/TypeORM, but we need accountId relation
-
   // Link to the Account document
   @Prop({
     type: mongoose.Schema.Types.ObjectId,

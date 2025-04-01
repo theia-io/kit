@@ -44,7 +44,7 @@ import {
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { AuthService, DeviceService } from '@kitouch/shared-infra';
+import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
 import { objectLoadingState$ } from '@kitouch/shared-services';
 import { ToastModule } from 'primeng/toast';
 import {
@@ -102,7 +102,7 @@ export class PageKudoBoardViewComponent {
 
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
-  #authService = inject(AuthService);
+  #auth0Service = inject(Auth0Service);
   device$ = inject(DeviceService).device$;
   #messageService = inject(MessageService);
 
@@ -308,8 +308,8 @@ export class PageKudoBoardViewComponent {
   }
 
   signInAndFollow(profileToFollow: Profile) {
-    this.#authService
-      .googleSignIn()
+    this.#auth0Service
+      .signInTab()
       .then(() => this.#followAfterSignIn(profileToFollow));
   }
 

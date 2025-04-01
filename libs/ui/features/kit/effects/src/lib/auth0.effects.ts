@@ -20,33 +20,45 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { Auth0DataService } from './auth0.service';
 
 @Injectable()
 export class Auth0Effects {
   #router = inject(Router);
   #actions = inject(Actions);
   #auth0Service = inject(Auth0Service);
-  #auth0DataService = inject(Auth0DataService);
 
   handleAuthRedirect = createEffect(() =>
     this.#actions.pipe(
       ofType(FeatAuth0Events.handleRedirect),
       switchMap(() =>
-        this.#auth0Service.handleSignInRedirect().pipe(
-          map((user) => FeatAuth0Events.handleRedirectSuccess({ user })),
+        this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
+          map(({ user, account, profiles }) =>
+            FeatAuth0Events.handleRedirectSuccess({ user, account, profiles })
+          ),
           catchError(() => of(FeatAuth0Events.handleRedirectFailure()))
         )
       )
     )
   );
 
-  postAuthRedirect = createEffect(
+  postAuthRedirectActions = createEffect(
     () =>
       merge(
-        this.#actions.pipe(ofType(FeatAuth0Events.handleRedirectSuccess)),
-        this.#actions.pipe(ofType(FeatAuth0Events.handleRedirectFailure))
-      ).pipe(tap(() => this.#router.navigateByUrl('/'))),
+        this.#actions.pipe(
+          ofType(FeatAuth0Events.handleRedirectSuccess),
+          tap(() =>
+            this.#router.navigateByUrl(
+              this.#auth0Service.postSignInUrl() ?? '/'
+            )
+          )
+        ),
+        this.#actions.pipe(
+          ofType(FeatAuth0Events.handleRedirectFailure),
+          tap(() =>
+            this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`)
+          )
+        )
+      ),
     {
       dispatch: false,
     }
@@ -54,9 +66,6 @@ export class Auth0Effects {
 
   #accountUserProfiles$ = this.#actions.pipe(
     ofType(FeatAuth0Events.handleRedirectSuccess),
-    map(({ user }) => user),
-    filter(Boolean),
-    switchMap((user) => this.#auth0DataService.getAccountUserProfiles(user)),
     shareReplay({
       refCount: true,
       bufferSize: 1,
@@ -69,15 +78,6 @@ export class Auth0Effects {
         this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
       }
     })
-  );
-
-  deleteUser$ = createEffect(
-    () =>
-      this.#actions.pipe(
-        ofType(FeatAccountApiActions.deleteSuccess),
-        tap(() => this.#auth0Service.deleteAuth0User())
-      ),
-    { dispatch: false }
   );
 
   setAccount$ = createEffect(() =>
@@ -145,5 +145,14 @@ export class Auth0Effects {
         })
       )
     )
+  );
+
+  deleteUser$ = createEffect(
+    () =>
+      this.#actions.pipe(
+        ofType(FeatAccountApiActions.deleteSuccess),
+        tap(() => this.#auth0Service.deleteAuth0User())
+      ),
+    { dispatch: false }
   );
 }
