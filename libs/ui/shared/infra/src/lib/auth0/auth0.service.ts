@@ -57,6 +57,7 @@ export class Auth0Service {
 
     window.open('http://localhost:3000/api/auth/login', '_blank')?.focus();
 
+    /** TODO use CrossTabSyncService instead of localstorage and keep LS as fallback */
     return new Promise((resolve, reject) => {
       const storageEventHandler = (event: StorageEvent) => {
         console.log('Storage Event Origin:', event, (event as any).origin);
@@ -66,12 +67,6 @@ export class Auth0Service {
           event.key === this.#separateWindow &&
           event.url.includes(window.origin)
         ) {
-          console.log(
-            `Detected storage event for key: ${
-              this.#separateWindow
-            }. Resolving promise.`
-          );
-
           clearTimeout(timeoutId);
           window.removeEventListener('storage', storageEventHandler);
           resolve(true);
@@ -119,6 +114,4 @@ export class Auth0Service {
   deleteAuth0User() {
     console.log('implement delete auth0 user');
   }
-
-  #handleStorageEvents() {}
 }

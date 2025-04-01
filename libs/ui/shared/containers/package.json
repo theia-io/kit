@@ -13,7 +13,9 @@
     "@kitouch/shared-constants": "4.0.0-0",
     "@kitouch/shared-infra": "4.0.0-0",
     "@kitouch/shared-services": "4.0.0-0",
-    "@kitouch/shared-models": "5.0.0-0"
+    "@kitouch/shared-models": "5.0.0-0",
+    "@kitouch/kit-data": "5.0.0-0",
+    "@ngrx/store": "18.0.2"
   },
   "sideEffects": false
 }
