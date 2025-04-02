@@ -13,6 +13,7 @@ export interface Environment {
     media: string;
     auth: string;
     kit: string;
+    tweet: string;
   };
   googleTagConfig: string | null;
   build: string;

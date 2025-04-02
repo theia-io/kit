@@ -27,14 +27,23 @@ export const SocialsSchema = SchemaFactory.createForClass(Socials);
 
 export type ProfileDocument = HydratedDocument<Profile>;
 
-@Schema({ timestamps: true, collection: 'profile' })
+@Schema({
+  timestamps: true,
+  collection: 'profile',
+  toJSON: {
+    virtuals: true, // <<< ENSURE this is true (or omit, as true is default)
+    versionKey: false, // Optional: Remove the __v field
+    transform(doc, ret) {
+      delete ret._id; // <<< Remove the original _id field from the output
+      // You can add other transformations here if needed
+    },
+  },
+})
 export class Profile {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
-    unique: true,
-    index: true,
   })
   userId: Types.ObjectId;
 
@@ -45,17 +54,21 @@ export class Profile {
   pictures: Picture[];
 
   // Assuming followers/following store IDs of OTHER User documents
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-    default: [],
-  })
-  followers: Types.ObjectId[];
+  // @Prop({
+  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+  //   default: [],
+  // })
+  // followers: Types.ObjectId[];
+  @Prop()
+  followers: [{ id: string }];
 
-  @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-    default: [],
-  })
-  following: Types.ObjectId[];
+  // @Prop({
+  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+  //   default: [],
+  // })
+  // following: Types.ObjectId[];
+  @Prop()
+  following: [{ id: string }];
 
   @Prop({ unique: true, sparse: true, index: true })
   alias: string;

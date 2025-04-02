@@ -1,0 +1,27 @@
+{
+  "name": "be-tweet",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/features/tweet/src",
+  "projectType": "library",
+  "tags": ["scope:api"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/features/tweet",
+        "tsConfig": "libs/api/features/tweet/tsconfig.lib.json",
+        "packageJson": "libs/api/features/tweet/package.json",
+        "main": "libs/api/features/tweet/src/index.ts",
+        "assets": ["libs/api/features/tweet/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/features/tweet/jest.config.ts"
+      }
+    }
+  }
+}

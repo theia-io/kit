@@ -48,6 +48,14 @@ export type AccountDocument = HydratedDocument<Account>;
 
 @Schema({
   collection: 'account',
+  toJSON: {
+    virtuals: true, // <<< ENSURE this is true (or omit, as true is default)
+    versionKey: false, // Optional: Remove the __v field
+    transform(doc, ret) {
+      delete ret._id; // <<< Remove the original _id field from the output
+      // You can add other transformations here if needed
+    },
+  },
 })
 export class Account {
   @Prop({ required: true, unique: true }) // Example: Make userId required and unique

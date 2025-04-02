@@ -38,6 +38,5 @@ import { KitService } from './kit.service';
   ],
   controllers: [KitController],
   providers: [KitService],
-  exports: [KitService],
 })
 export class KitModule {}

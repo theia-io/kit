@@ -19,12 +19,14 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
+import { TweetV2Service } from './tweet-v2.service';
 
 @Injectable()
 export class TweetsEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
   #tweetApi = inject(TweetApiService);
+  #tweetV2Service = inject(TweetV2Service);
 
   #currentProfile$ = this.#store.select(selectCurrentProfile).pipe(
     filter(Boolean),
@@ -39,7 +41,8 @@ export class TweetsEffects {
       ofType(TweetApiActions.getAll),
       switchMap(() => this.#currentProfile$.pipe(take(1))),
       switchMap((profile) =>
-        this.#tweetApi
+        // this.#tweetApi
+        this.#tweetV2Service
           .getFeed(profile.id, profile.following?.map(({ id }) => id) ?? [])
           .pipe(
             map((tweets) =>

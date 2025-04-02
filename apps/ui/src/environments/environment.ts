@@ -8,6 +8,7 @@ export const environment: Environment = {
     media: '/api/media',
     auth: '/api/auth',
     kit: '/api/kit',
+    tweet: '/api/tweets',
   },
   googleTagConfig: null,
   build: KIT_ENVS.localhost,

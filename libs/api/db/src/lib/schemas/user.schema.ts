@@ -69,7 +69,18 @@ export const ExperienceSchema = SchemaFactory.createForClass(Experience);
 
 export type UserDocument = HydratedDocument<User>;
 
-@Schema({ timestamps: true, collection: 'user' }) // Adds createdAt and updatedAt automatically
+@Schema({
+  timestamps: true,
+  collection: 'user',
+  toJSON: {
+    virtuals: true, // <<< ENSURE this is true (or omit, as true is default)
+    versionKey: false, // Optional: Remove the __v field
+    transform(doc, ret) {
+      delete ret._id; // <<< Remove the original _id field from the output
+      // You can add other transformations here if needed
+    },
+  },
+}) // Adds createdAt and updatedAt automatically
 export class User {
   // Link to the Account document
   @Prop({
