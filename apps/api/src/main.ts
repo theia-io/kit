@@ -159,7 +159,7 @@ async function bootstrap() {
         email_verified,
       }); // Use Auth0 user info
 
-      // Set your application's JWT cookie
+      // Set your application's JWT cookie. Update also AUTH controller
       res.cookie('jwt', appToken, {
         httpOnly: true,
         secure: false, //configService.get('NODE_ENV') === 'production',
@@ -178,7 +178,9 @@ async function bootstrap() {
     routes: {
       login: '/api/auth/login',
       callback: '/api/auth/callback',
-      logout: '/api/auth/logout',
+      // to inject clearing JWT token before calling endpoint we first implement custom logout that calls native Auth0 endpoint
+      logout: false,
+      // logout: '/api/auth/logout',
       postLogoutRedirect: `${feUrl}`,
     },
     getLoginState(req, options) {

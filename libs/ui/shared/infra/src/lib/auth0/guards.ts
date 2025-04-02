@@ -4,8 +4,10 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
+import { FeatAuth0Events } from '@kitouch/kit-data';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
-import { map, of, switchMap, take } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { catchError, map, of, switchMap, take, tap } from 'rxjs';
 import { Auth0Service } from './auth0.service';
 
 /**
@@ -36,6 +38,7 @@ export const onlyForLoggedInGuard = (
 ) => {
   const router = inject(Router);
   const authService = inject(Auth0Service);
+  const store = inject(Store);
 
   console.log(route.url, state.url, route, state);
 
@@ -43,7 +46,18 @@ export const onlyForLoggedInGuard = (
     take(1),
     map((user) => !!user),
     switchMap((isLoggedIn) =>
-      isLoggedIn ? of(isLoggedIn) : authService.signIn(state.url)
+      isLoggedIn
+        ? of(isLoggedIn)
+        : authService.getCurrentSessionAccountUserProfiles().pipe(
+            tap((data) => {
+              store.dispatch(FeatAuth0Events.setAuthState({ ...data }));
+            }),
+            map((res) => !!res as boolean),
+            catchError((err) => {
+              console.info('[Auth guard] silent sing-in failed', err);
+              return of(false);
+            })
+          )
     ),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {

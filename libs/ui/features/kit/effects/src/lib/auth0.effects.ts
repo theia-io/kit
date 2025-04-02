@@ -28,16 +28,14 @@ export class Auth0Effects {
   #auth0Service = inject(Auth0Service);
 
   handleAuthRedirect = createEffect(() =>
-    merge(
-      this.#actions.pipe(ofType(FeatAuth0Events.silentSignIn)),
-      this.#actions.pipe(ofType(FeatAuth0Events.handleRedirect))
-    ).pipe(
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.handleRedirect),
       switchMap(() =>
         this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
           map(({ user, account, profiles }) =>
-            FeatAuth0Events.signInSuccess({ user, account, profiles })
+            FeatAuth0Events.handleRedirectSuccess({ user, account, profiles })
           ),
-          catchError(() => of(FeatAuth0Events.signInFailure()))
+          catchError(() => of(FeatAuth0Events.handleRedirectFailure()))
         )
       )
     )
@@ -47,15 +45,11 @@ export class Auth0Effects {
     () =>
       merge(
         this.#actions.pipe(
-          ofType(FeatAuth0Events.signInSuccess),
-          tap(() =>
-            this.#router.navigateByUrl(
-              this.#auth0Service.postSignInUrl() ?? '/'
-            )
-          )
+          ofType(FeatAuth0Events.handleRedirectSuccess),
+          tap(() => this.#router.navigateByUrl('/'))
         ),
         this.#actions.pipe(
-          ofType(FeatAuth0Events.signInFailure),
+          ofType(FeatAuth0Events.handleRedirectFailure),
           tap(() =>
             this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`)
           )
@@ -66,8 +60,15 @@ export class Auth0Effects {
     }
   );
 
+  setAuthState$ = createEffect(() =>
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.handleRedirectSuccess),
+      map((data) => FeatAuth0Events.setAuthState({ ...data }))
+    )
+  );
+
   #accountUserProfiles$ = this.#actions.pipe(
-    ofType(FeatAuth0Events.signInSuccess),
+    ofType(FeatAuth0Events.setAuthState),
     shareReplay({
       refCount: true,
       bufferSize: 1,

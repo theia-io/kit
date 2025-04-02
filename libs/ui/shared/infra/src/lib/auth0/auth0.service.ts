@@ -27,7 +27,11 @@ export class Auth0Service {
     window.location.href = `http://localhost:3000/api/auth/logout`; // express-openid-connect handles this
   }
 
-  postSignInUrl() {
+  savePostRedirectUrl(beforeRedirectUrl: string) {
+    this.#localStoreService.setItem(this.#beforeRedirectKey, beforeRedirectUrl);
+  }
+
+  getPostRedirectUrl() {
     const urlBeforeRedirect = this.#localStoreService.getItem(
       this.#beforeRedirectKey
     );
@@ -39,16 +43,7 @@ export class Auth0Service {
     return urlBeforeRedirect;
   }
 
-  signIn(beforeRedirectUrl?: string) {
-    this.#localStoreService.removeItem(this.#beforeRedirectKey);
-
-    if (beforeRedirectUrl) {
-      this.#localStoreService.setItem(
-        this.#beforeRedirectKey,
-        beforeRedirectUrl
-      );
-    }
-
+  signIn() {
     window.location.href = `http://localhost:3000/api/auth/login`; // express-openid-connect handles this
   }
 

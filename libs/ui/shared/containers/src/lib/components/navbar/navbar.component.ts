@@ -142,7 +142,6 @@ export class NavBarComponent implements AfterViewInit {
 
   async logoutHandler() {
     await this.#auth0Service.logout();
-    // window.location.reload();
   }
 
   onFocusHandler(event: Event) {
