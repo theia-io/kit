@@ -18,4 +18,13 @@ export class BeTweetController {
       followingProfileIds ?? []
     );
   }
+
+  @Get('tweet')
+  @UseGuards(AuthGuard('jwt'))
+  async getTweet(
+    @Query('tweetId') tweetId: string,
+    @Query('profileId') profileId: string
+  ) {
+    return this.beTweetService.getTweet(tweetId, profileId);
+  }
 }

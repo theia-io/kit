@@ -82,7 +82,7 @@ export class TweetsEffects {
     this.#actions$.pipe(
       ofType(TweetApiActions.getTweetsForProfile),
       switchMap(({ profileId }) =>
-        this.#tweetApi.getTweetsForProfile(profileId).pipe(
+        this.#tweetV2Service.getTweetsForProfile(profileId).pipe(
           map((tweets) =>
             TweetApiActions.getTweetsForProfileSuccess({ tweets })
           ),

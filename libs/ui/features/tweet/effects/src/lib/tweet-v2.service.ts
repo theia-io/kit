@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ENVIRONMENT } from '@kitouch/shared-infra';
-import { Tweety } from '@kitouch/shared-models';
+import { Profile, Tweety } from '@kitouch/shared-models';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -24,5 +24,21 @@ export class TweetV2Service {
         },
       }
     );
+  }
+
+  getTweetsForProfile(profileId: Profile['id']) {
+    return this.getFeed(profileId);
+  }
+
+  getTweet(
+    tweetId: Tweety['id'],
+    profileId: Profile['id']
+  ): Observable<Tweety> {
+    return this.#http.get<Tweety>(`${this.#environment.api.tweet}/tweet`, {
+      params: {
+        tweetId,
+        profileId,
+      },
+    });
   }
 }

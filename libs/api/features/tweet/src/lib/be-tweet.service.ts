@@ -136,4 +136,25 @@ export class BeTweetService {
       id: tweet._id,
     }));
   }
+
+  async getTweet(tweetId: string, profileId: string) {
+    let tweet;
+
+    try {
+      tweet = await this.tweetModel
+        .findOne<TweetDocument>({ id: tweetId, profileId })
+        .exec();
+    } catch (err) {
+      console.error(
+        `Cannot execute tweet search for ${tweetId}, ${profileId}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot execute tweet feed search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return tweet;
+  }
 }
