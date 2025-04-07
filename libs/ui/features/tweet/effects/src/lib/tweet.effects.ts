@@ -101,7 +101,7 @@ export class TweetsEffects {
     this.#actions$.pipe(
       ofType(TweetApiActions.get),
       switchMap(({ tweetId, profileId }) =>
-        this.#tweetApi.get(tweetId, profileId).pipe(
+        this.#tweetV2Service.getTweet(tweetId, profileId).pipe(
           map((tweet) => TweetApiActions.getSuccess({ tweet })),
           catchError((err) => {
             console.error('[TweetsEffects] getTweet ERROR', err);

@@ -41,4 +41,17 @@ export class TweetV2Service {
       },
     });
   }
+
+  getTweets(
+    ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>
+  ): Observable<Array<Tweety>> {
+    return this.#http.get<Array<Tweety>>(
+      `${this.#environment.api.tweet}/tweets`,
+      {
+        params: {
+          ids: JSON.stringify(ids),
+        },
+      }
+    );
+  }
 }

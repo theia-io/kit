@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, PipelineStage } from 'mongoose';
+import mongoose, { Model, PipelineStage } from 'mongoose';
 import { Tweet, TweetDocument } from './schemas';
 
 @Injectable()
@@ -142,7 +142,10 @@ export class BeTweetService {
 
     try {
       tweet = await this.tweetModel
-        .findOne<TweetDocument>({ id: tweetId, profileId })
+        .findOne<TweetDocument>({
+          _id: new mongoose.Types.ObjectId(tweetId),
+          profileId: new mongoose.Types.ObjectId(profileId),
+        })
         .exec();
     } catch (err) {
       console.error(
@@ -156,5 +159,35 @@ export class BeTweetService {
     }
 
     return tweet;
+  }
+
+  async getTweets(ids: Array<{ tweetId: string; profileId: string }>) {
+    const agg: Array<PipelineStage> = [
+      {
+        $or: ids.map(({ tweetId, profileId }) => ({
+          _id: new mongoose.Types.ObjectId(tweetId),
+          profileId: new mongoose.Types.ObjectId(profileId),
+        })),
+      },
+      {
+        sort: {
+          'timestamp.createdAt': -1,
+        },
+      },
+    ];
+
+    let tweets;
+
+    try {
+      tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
+    } catch (err) {
+      console.error(`Cannot execute tweets search for ${ids}`, err);
+      throw new HttpException(
+        'Cannot execute tweets search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return tweets;
   }
 }

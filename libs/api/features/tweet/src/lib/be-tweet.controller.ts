@@ -27,4 +27,12 @@ export class BeTweetController {
   ) {
     return this.beTweetService.getTweet(tweetId, profileId);
   }
+
+  @Get('tweets')
+  @UseGuards(AuthGuard('jwt'))
+  async getTweets(
+    @Query('ids') ids: Array<{ tweetId: string; profileId: string }>
+  ) {
+    return this.beTweetService.getTweets(ids);
+  }
 }

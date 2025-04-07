@@ -15,7 +15,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
     super({
       jwtFromRequest: ExtractJwt.fromExtractors([
         (req) => {
-          console.log('CALLED INSIDE JwtStrategy', req?.cookies?.jwt);
           return req?.cookies?.jwt || null;
         },
         ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -27,7 +26,6 @@ export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
 
   // Simplified validate method - just return the payload
   async validate(payload: Auth0User) {
-    console.log('JwtStrategy validate', payload);
     // We are not querying DB, and simply return user data from the token
     return payload;
   }
