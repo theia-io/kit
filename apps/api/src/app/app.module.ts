@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 
 import { AuthModule } from '@kitouch/be-auth';
+import { BeBookmarksModule } from '@kitouch/be-bookmarks';
 import { ConfigModule } from '@kitouch/be-config';
 import { DbModule } from '@kitouch/be-db';
 import { KitModule } from '@kitouch/be-kit';
@@ -24,6 +25,7 @@ import { HealthController } from './heath.controller';
     DbModule,
     KitModule, // accounts, profiles, users
     BeTweetModule,
+    BeBookmarksModule,
   ],
   controllers: [HealthController, AppController],
   providers: [AppService],

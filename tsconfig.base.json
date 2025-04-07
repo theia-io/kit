@@ -19,6 +19,7 @@
     "baseUrl": ".",
     "paths": {
       "@kitouch/be-auth": ["libs/api/auth/src/index.ts"],
+      "@kitouch/be-bookmarks": ["libs/api/features/bookmarks/src/index.ts"],
       "@kitouch/be-config": ["libs/api/config/src/index.ts"],
       "@kitouch/be-db": ["libs/api/db/src/index.ts"],
       "@kitouch/be-kit": ["libs/api/features/kit/src/index.ts"],

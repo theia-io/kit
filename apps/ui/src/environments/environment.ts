@@ -9,6 +9,7 @@ export const environment: Environment = {
     auth: '/api/auth',
     kit: '/api/kit',
     tweet: '/api/tweets',
+    bookmarks: '/api/bookmarks',
   },
   googleTagConfig: null,
   build: KIT_ENVS.localhost,

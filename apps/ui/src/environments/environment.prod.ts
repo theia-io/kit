@@ -7,6 +7,7 @@ export const environment: Environment = {
     auth: '/api/auth',
     kit: '/api/kit',
     tweet: '/api/tweets',
+    bookmarks: '/api/bookmarks',
   },
   googleTagConfig: 'G-7YL998B39Q',
   build: KIT_ENVS.production + '-5-' + '$AWS_COMMIT_ID',

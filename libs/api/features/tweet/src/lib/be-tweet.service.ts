@@ -10,116 +10,116 @@ export class BeTweetService {
   ) {}
 
   async getFeed(profileId: string, followingProfileIds?: Array<string>) {
-    const agg: Array<PipelineStage> = [
-      {
-        $lookup: {
-          from: 'retweet',
-          localField: '_id',
-          foreignField: 'tweetId',
-          as: 'retweetsData',
-          pipeline: [
-            {
-              $match: {
-                $or: [
-                  {
-                    profileId: profileId,
-                  },
-                  {
-                    profileId: {
-                      $in: followingProfileIds ?? [],
-                    },
-                  },
-                ],
-              },
-            },
-          ],
-        },
-      },
-      {
-        $facet: {
-          original: [
-            {
-              $replaceRoot: {
-                newRoot: '$$ROOT',
-              },
-            },
-            {
-              $addFields: {
-                type: 'tweet',
-              },
-            },
-          ],
-          unwound: [
-            {
-              $unwind: '$retweetsData',
-            },
-            {
-              $match: {
-                'retweetsData._id': {
-                  $exists: true,
-                },
-              },
-            },
-            {
-              $project: {
-                _id: '$retweetsData._id',
-                referenceId: '$retweetsData.tweetId',
-                referenceProfileId: '$retweetsData.profileId',
-                timestamp: '$retweetsData.timestamp',
-                type: 'retweet',
-                //
-                // Get from the original tweet
-                profileId: '$profileId',
-                content: '$content',
-                upProfileIds: '$retweetsData.upProfileIds',
-              },
-            },
-          ],
-        },
-      },
-      {
-        $project: {
-          allDocs: {
-            $concatArrays: ['$original', '$unwound'],
-          },
-        },
-      },
-      {
-        $unwind: {
-          path: '$allDocs',
-        },
-      },
-      {
-        $replaceWith: '$allDocs',
-      },
-      // {
-      //   $match: {
-      //     $or: [
-      //       {
-      //         profileId: profileId,
-      //       },
-      //       {
-      //         profileId: {
-      //           $in: followingProfileIds ?? [],
-      //         },
-      //       },
-      //       {
-      //         referenceProfileId: profileId,
-      //       },
-      //       {
-      //         referenceProfileId: {
-      //           $in: followingProfileIds ?? [],
-      //         },
-      //       },
-      //     ],
-      //   },
-      // },
-      { $sort: { 'timestamp.createdAt': -1 } },
-    ];
-
     let tweets;
 
     try {
+      const agg: Array<PipelineStage> = [
+        {
+          $lookup: {
+            from: 'retweet',
+            localField: '_id',
+            foreignField: 'tweetId',
+            as: 'retweetsData',
+            pipeline: [
+              {
+                $match: {
+                  $or: [
+                    {
+                      profileId: profileId,
+                    },
+                    {
+                      profileId: {
+                        $in: followingProfileIds ?? [],
+                      },
+                    },
+                  ],
+                },
+              },
+            ],
+          },
+        },
+        {
+          $facet: {
+            original: [
+              {
+                $replaceRoot: {
+                  newRoot: '$$ROOT',
+                },
+              },
+              {
+                $addFields: {
+                  type: 'tweet',
+                },
+              },
+            ],
+            unwound: [
+              {
+                $unwind: '$retweetsData',
+              },
+              {
+                $match: {
+                  'retweetsData._id': {
+                    $exists: true,
+                  },
+                },
+              },
+              {
+                $project: {
+                  _id: '$retweetsData._id',
+                  referenceId: '$retweetsData.tweetId',
+                  referenceProfileId: '$retweetsData.profileId',
+                  timestamp: '$retweetsData.timestamp',
+                  type: 'retweet',
+                  //
+                  // Get from the original tweet
+                  profileId: '$profileId',
+                  content: '$content',
+                  upProfileIds: '$retweetsData.upProfileIds',
+                },
+              },
+            ],
+          },
+        },
+        {
+          $project: {
+            allDocs: {
+              $concatArrays: ['$original', '$unwound'],
+            },
+          },
+        },
+        {
+          $unwind: {
+            path: '$allDocs',
+          },
+        },
+        {
+          $replaceWith: '$allDocs',
+        },
+        // {
+        //   $match: {
+        //     $or: [
+        //       {
+        //         profileId: profileId,
+        //       },
+        //       {
+        //         profileId: {
+        //           $in: followingProfileIds ?? [],
+        //         },
+        //       },
+        //       {
+        //         referenceProfileId: profileId,
+        //       },
+        //       {
+        //         referenceProfileId: {
+        //           $in: followingProfileIds ?? [],
+        //         },
+        //       },
+        //     ],
+        //   },
+        // },
+        { $sort: { 'timestamp.createdAt': -1 } },
+      ];
+
       tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
       //   const accounts = await this.accountModel.find().exec();
       //   account = accounts?.[0];
@@ -162,23 +162,25 @@ export class BeTweetService {
   }
 
   async getTweets(ids: Array<{ tweetId: string; profileId: string }>) {
-    const agg: Array<PipelineStage> = [
-      {
-        $or: ids.map(({ tweetId, profileId }) => ({
-          _id: new mongoose.Types.ObjectId(tweetId),
-          profileId: new mongoose.Types.ObjectId(profileId),
-        })),
-      },
-      {
-        sort: {
-          'timestamp.createdAt': -1,
-        },
-      },
-    ];
-
     let tweets;
 
     try {
+      const agg: Array<PipelineStage> = [
+        {
+          $match: {
+            $or: ids.map(({ tweetId, profileId }) => ({
+              _id: new mongoose.Types.ObjectId(tweetId),
+              profileId: new mongoose.Types.ObjectId(profileId),
+            })),
+          },
+        },
+        {
+          $sort: {
+            'timestamp.createdAt': -1,
+          },
+        },
+      ];
+
       tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
     } catch (err) {
       console.error(`Cannot execute tweets search for ${ids}`, err);
@@ -188,6 +190,9 @@ export class BeTweetService {
       );
     }
 
-    return tweets;
+    return tweets.map(({ _id, ...tweet }) => ({
+      ...tweet,
+      id: _id.toString(),
+    }));
   }
 }

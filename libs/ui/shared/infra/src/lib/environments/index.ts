@@ -14,6 +14,7 @@ export interface Environment {
     auth: string;
     kit: string;
     tweet: string;
+    bookmarks: string;
   };
   googleTagConfig: string | null;
   build: string;

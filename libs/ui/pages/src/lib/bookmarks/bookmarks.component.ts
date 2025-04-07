@@ -8,7 +8,7 @@ import {
 } from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
 import { Bookmark, Tweety } from '@kitouch/shared-models';
-import { QuotesService } from '@kitouch/shared-services';
+import { QuotesService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import { DividerComponent, UiCompCardComponent } from '@kitouch/ui-components';
 
 import { Store } from '@ngrx/store';
@@ -45,9 +45,10 @@ export class PageBookmarksComponent {
       /** @TODO @FIXME */
       // likely should be memoized and improved
       const tweetsMap = new Map(tweets.map((tweet) => [tweet.id, tweet]));
-      return bookmarks.map(
-        (bookmark) => tweetsMap.get(bookmark.tweetId) ?? bookmark
-      );
+      return bookmarks
+        .slice()
+        .sort((a, b) => sortByCreatedTimeDesc(a, b))
+        .map((bookmark) => tweetsMap.get(bookmark.tweetId) ?? bookmark);
     }),
     filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
   );
