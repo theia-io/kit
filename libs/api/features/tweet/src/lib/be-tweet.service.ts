@@ -2,6 +2,7 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, PipelineStage } from 'mongoose';
 import { Tweet, TweetDocument } from './schemas';
+import { Tweety } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeTweetService {
@@ -194,5 +195,23 @@ export class BeTweetService {
       ...tweet,
       id: _id.toString(),
     }));
+  }
+
+  async newTweet(tweet: Partial<Tweety>) {
+    let newTweet;
+
+    try {
+      newTweet = await this.tweetModel.create(tweet);
+    } catch (err) {
+      console.error(`Cannot create new tweet ${JSON.stringify(tweet)}`, err);
+      throw new HttpException(
+        'Cannot execute tweets search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    console.log('NEW TWEET', newTweet);
+
+    return newTweet;
   }
 }

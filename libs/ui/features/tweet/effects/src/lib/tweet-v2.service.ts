@@ -1,8 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ENVIRONMENT } from '@kitouch/shared-infra';
-import { Profile, Tweety } from '@kitouch/shared-models';
+import { Profile, Tweety, TweetyType } from '@kitouch/shared-models';
 import { Observable } from 'rxjs';
+import { BSON } from 'realm-web';
 
 @Injectable({
   providedIn: 'root',
@@ -49,6 +50,18 @@ export class TweetV2Service {
       params: {
         ids: JSON.stringify(ids),
       },
+    });
+  }
+
+  newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
+    const newTweet = {
+      ...tweet,
+      profileId: new BSON.ObjectId(tweet.profileId),
+      type: TweetyType.Tweet,
+    };
+
+    return this.#http.post<Tweety>(this.#environment.api.tweet, {
+      body: newTweet,
     });
   }
 }

@@ -143,7 +143,7 @@ export class TweetsEffects {
       ofType(FeatTweetActions.tweet),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ uuid, content }, profile]) =>
-        this.#tweetApi.newTweet({ profileId: profile.id, content }).pipe(
+        this.#tweetV2Service.newTweet({ profileId: profile.id, content }).pipe(
           map((tweet) =>
             FeatTweetActions.tweetSuccess({
               uuid,

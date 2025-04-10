@@ -27,6 +27,10 @@ export function authInterceptor(
     }),
     catchError((err) => {
       console.log('[AuthInterceptor]: ', err);
+      if (err instanceof HttpErrorResponse && err.status === 401) {
+        router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
+      }
+
       return throwError(() => err);
     })
   );
