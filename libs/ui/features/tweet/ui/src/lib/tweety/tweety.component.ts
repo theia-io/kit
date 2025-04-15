@@ -188,7 +188,7 @@ export class FeatTweetTweetyComponent {
       tweet.profileId,
       APP_PATH.Tweet,
       tweet.type === TweetyType.Retweet
-        ? (tweet as ReTweety).referenceId
+        ? (tweet as ReTweety).tweetId
         : tweet.id,
     ].join('/');
   }

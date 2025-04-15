@@ -16,19 +16,19 @@ export enum AccountType {
 export interface Account {
   // keys
   id: string;
-  settingsId: string;
+  settingsId?: string;
   // busines
   email: string[];
   type: AccountType;
   status: AccountStatus;
   // denormilized
-  settings: {
+  settings?: {
     mfa: string[];
     // info, publicitly, searchibility, etc
     subscriptionOns: string[];
   };
   // meta
-  timestamp: KitTimestamp;
+  timestamp?: KitTimestamp;
   // password?: string;
   // services?: Array<ThirdPartyServices>;
 }

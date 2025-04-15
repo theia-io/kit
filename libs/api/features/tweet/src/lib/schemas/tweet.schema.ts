@@ -41,11 +41,9 @@ export const TweetCommentSchema = SchemaFactory.createForClass(TweetComment);
 })
 export class Tweet {
   @Prop({
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Profile',
-      required: true,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
+    required: true,
   })
   profileId: Types.ObjectId;
 
@@ -62,17 +60,20 @@ export class Tweet {
   type: string;
 
   @Prop({
-    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
   })
   upProfileIds: Types.ObjectId[];
 
   @Prop({
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tweet',
   })
   referenceId: string;
 
   @Prop({
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
   })
   referenceProfileId: string;
 

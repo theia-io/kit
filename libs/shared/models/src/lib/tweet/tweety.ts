@@ -29,7 +29,7 @@ export interface TweetComment extends Partial<KitTimestamp> {
 }
 
 //
-export interface Tweety {
+export interface Tweety extends Partial<KitTimestamp> {
   // keys
   id: string;
   //
@@ -49,12 +49,12 @@ export interface Tweety {
   };
   // meta
   type: TweetyType;
-  timestamp?: KitTimestamp;
 }
 
-export interface ReTweety extends Tweety {
-  referenceId: Tweety['id']; // for retweets, quotes, comments, replies
-  referenceProfileId: Profile['id'];
+export interface ReTweety extends Partial<KitTimestamp> {
+  id: string;
+  profileId: string;
+  tweetId: Tweety['id'];
+  // meta
+  type: TweetyType;
 }
-
-export class TweetySchema {}

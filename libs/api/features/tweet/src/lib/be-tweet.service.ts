@@ -1,8 +1,8 @@
+import { Tweety } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model, PipelineStage } from 'mongoose';
 import { Tweet, TweetDocument } from './schemas';
-import { Tweety } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeTweetService {
@@ -10,8 +10,12 @@ export class BeTweetService {
     @InjectModel(Tweet.name) private tweetModel: Model<TweetDocument>
   ) {}
 
+  // TODO: create & migrate to "Feed" module
   async getFeed(profileId: string, followingProfileIds?: Array<string>) {
     let tweets;
+    const profileIdObject = new mongoose.Types.ObjectId(profileId);
+    const followingProfileIdsObject =
+      followingProfileIds?.map((id) => new mongoose.Types.ObjectId(id)) ?? [];
 
     try {
       const agg: Array<PipelineStage> = [
@@ -26,11 +30,11 @@ export class BeTweetService {
                 $match: {
                   $or: [
                     {
-                      profileId: profileId,
+                      profileId: profileIdObject,
                     },
                     {
                       profileId: {
-                        $in: followingProfileIds ?? [],
+                        $in: followingProfileIdsObject,
                       },
                     },
                   ],
@@ -67,11 +71,12 @@ export class BeTweetService {
               {
                 $project: {
                   _id: '$retweetsData._id',
-                  referenceId: '$retweetsData.tweetId',
-                  referenceProfileId: '$retweetsData.profileId',
-                  timestamp: '$retweetsData.timestamp',
+                  tweetId: '$retweetsData.tweetId',
+                  // referenceId: '$retweetsData.tweetId',
+                  // referenceProfileId: '$retweetsData.profileId',
+                  // timestamp: '$retweetsData.timestamp',
                   type: 'retweet',
-                  //
+
                   // Get from the original tweet
                   profileId: '$profileId',
                   content: '$content',
@@ -96,34 +101,32 @@ export class BeTweetService {
         {
           $replaceWith: '$allDocs',
         },
-        // {
-        //   $match: {
-        //     $or: [
-        //       {
-        //         profileId: profileId,
-        //       },
-        //       {
-        //         profileId: {
-        //           $in: followingProfileIds ?? [],
-        //         },
-        //       },
-        //       {
-        //         referenceProfileId: profileId,
-        //       },
-        //       {
-        //         referenceProfileId: {
-        //           $in: followingProfileIds ?? [],
-        //         },
-        //       },
-        //     ],
-        //   },
-        // },
-        { $sort: { 'timestamp.createdAt': -1 } },
+        {
+          $match: {
+            $or: [
+              {
+                profileId: profileIdObject,
+              },
+              {
+                profileId: {
+                  $in: followingProfileIdsObject ?? [],
+                },
+              },
+              // {
+              //   referenceProfileId: profileIdObject,
+              // },
+              // {
+              //   referenceProfileId: {
+              //     $in: followingProfileIdsObject ?? [],
+              //   },
+              // },
+            ],
+          },
+        },
+        { $sort: { createdAt: -1 } },
       ];
 
       tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
-      //   const accounts = await this.accountModel.find().exec();
-      //   account = accounts?.[0];
     } catch (err) {
       console.error('Cannot execute tweets feed search', err);
       throw new HttpException(
@@ -154,7 +157,7 @@ export class BeTweetService {
         err
       );
       throw new HttpException(
-        'Cannot execute tweet feed search',
+        'Cannot find tweet',
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
@@ -201,7 +204,10 @@ export class BeTweetService {
     let newTweet;
 
     try {
-      newTweet = await this.tweetModel.create(tweet);
+      newTweet = await this.tweetModel.create({
+        ...tweet,
+        profileId: new mongoose.Types.ObjectId(tweet.profileId),
+      });
     } catch (err) {
       console.error(`Cannot create new tweet ${JSON.stringify(tweet)}`, err);
       throw new HttpException(
@@ -210,8 +216,43 @@ export class BeTweetService {
       );
     }
 
-    console.log('NEW TWEET', newTweet);
-
     return newTweet;
+  }
+
+  async deleteTweet(
+    tweetId: string,
+    profileId: string,
+    loggedInProfiles: Array<string>
+  ) {
+    const tweet = await this.getTweet(tweetId, profileId);
+    if (!tweet) {
+      throw new HttpException('Tweet not found', HttpStatus.NOT_FOUND);
+    }
+
+    if (
+      !loggedInProfiles.some(
+        (loggedInProfileId) => tweet?.profileId.toString() === loggedInProfileId
+      )
+    ) {
+      throw new HttpException(
+        'You can delete only yours tweet',
+        HttpStatus.BAD_REQUEST
+      );
+    }
+
+    try {
+      await this.tweetModel.deleteOne({
+        tweetId: new mongoose.Types.ObjectId(tweetId),
+        profileId: new mongoose.Types.ObjectId(tweet.profileId),
+      });
+    } catch (err) {
+      console.error(`Cannot delete tweet ${tweetId}, ${profileId}`, err);
+      throw new HttpException(
+        'Cannot delete tweet',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return true;
   }
 }

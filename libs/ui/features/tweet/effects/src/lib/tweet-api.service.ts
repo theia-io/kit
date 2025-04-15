@@ -361,7 +361,15 @@ export class TweetApiService extends DataSourceService {
   }
 
   #updateTweet(tweet: Partial<Tweety>) {
-    const { id, type, profileId, timestamp, ...tweetRest } = tweet;
+    const {
+      id,
+      type,
+      profileId,
+      createdAt: ___,
+      updatedAt: __,
+      deletedAt: _,
+      ...tweetRest
+    } = tweet;
 
     return this.db$().pipe(
       switchMap((db) => {
@@ -377,7 +385,7 @@ export class TweetApiService extends DataSourceService {
           {
             $set: tweetRest,
             $currentDate: {
-              'timestamp.updatedAt': true,
+              updatedAt: true,
             },
           },
           {

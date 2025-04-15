@@ -47,6 +47,7 @@ interface Data {
 export type AccountDocument = HydratedDocument<Account>;
 
 @Schema({
+  timestamps: true,
   collection: 'account',
   toJSON: {
     virtuals: true, // <<< ENSURE this is true (or omit, as true is default)

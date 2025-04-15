@@ -1,6 +1,17 @@
-import { Tweety } from '@kitouch/shared-models';
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Auth0Kit, Tweety } from '@kitouch/shared-models';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { BeTweetService } from './be-tweet.service';
 
 @Controller('tweets')
@@ -13,7 +24,6 @@ export class BeTweetController {
     @Query('profileId') profileId: string,
     @Query('followingProfileIds') followingProfileIds?: Array<string>
   ) {
-    console.log('FEED', profileId, followingProfileIds ?? []);
     return await this.beTweetService.getFeed(
       profileId,
       followingProfileIds ?? []
@@ -40,7 +50,18 @@ export class BeTweetController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async newTweet(@Body() tweetyDto: Partial<Tweety>) {
-    console.log('NEW TWEET DTO', tweetyDto);
     return this.beTweetService.newTweet(tweetyDto);
+  }
+
+  @Delete(':tweetId')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteTweet(
+    @Req() req: Request,
+    @Param('tweetId') tweetId: string,
+    @Query('profileId') profileId: string
+  ) {
+    const authUser = req.user as Auth0Kit;
+    const profileIds = authUser.profiles.map((profile) => profile.id);
+    return this.beTweetService.deleteTweet(tweetId, profileId, profileIds);
   }
 }

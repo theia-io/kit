@@ -1,6 +1,5 @@
 import { Account } from '../account';
 import { Languages } from '../helpers';
-import { Legal } from './legal';
 import {
   Certificates,
   CurriculumVitae,
