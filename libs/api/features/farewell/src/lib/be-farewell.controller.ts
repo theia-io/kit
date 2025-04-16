@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { BeFarewellService } from './be-farewell.service';
 
-@Controller('be-farewell')
+@Controller('farewell')
 export class BeFarewellController {
   constructor(private beFarewellService: BeFarewellService) {}
 }
