@@ -171,10 +171,13 @@ export class FarewellEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellActions.putAnalyticsFarewell),
       switchMap(({ analytics }) =>
-        this.#farewellService.putAnalytics(analytics)
-      ),
-      map((analytics) =>
-        FeatFarewellActions.putAnalyticsFarewellSuccess({ analytics })
+        this.#farewellService.putAnalytics(analytics).pipe(
+          map((analytics) =>
+            FeatFarewellActions.putAnalyticsFarewellSuccess({
+              analytics: analytics as any,
+            })
+          )
+        )
       )
     )
   );

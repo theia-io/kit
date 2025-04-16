@@ -1,0 +1,27 @@
+{
+  "name": "be-farewell",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/features/farewell/src",
+  "projectType": "library",
+  "tags": ["scope:api"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/features/farewell",
+        "tsConfig": "libs/api/features/farewell/tsconfig.lib.json",
+        "packageJson": "libs/api/features/farewell/package.json",
+        "main": "libs/api/features/farewell/src/index.ts",
+        "assets": ["libs/api/features/farewell/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/features/farewell/jest.config.ts"
+      }
+    }
+  }
+}

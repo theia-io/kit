@@ -308,6 +308,7 @@ export class FeatKudoBoardActionsComponent {
                 kudoBoardId: kudoBoard.id,
                 kudoBoard,
                 status: FarewellStatus.Draft,
+                createdAt: new Date(Date.now()),
               })
             );
           });

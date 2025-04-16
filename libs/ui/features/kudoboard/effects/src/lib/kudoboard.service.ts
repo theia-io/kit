@@ -50,12 +50,12 @@ export class KudoBoardService extends DataSourceService {
     );
   }
 
-  putKudoBoard({ id, profileId, timestamp, ...rest }: KudoBoard) {
+  putKudoBoard({ id, profileId, createdAt, timestamp, ...rest }: KudoBoard) {
     const withUpdatedTime = {
       ...rest,
       profileId: profileId ? new BSON.ObjectId(profileId) : null,
       timestamp: {
-        createdAt: timestamp.createdAt,
+        createdAt: createdAt ?? timestamp?.createdAt,
         updatedAt: getNow(),
       },
     };
