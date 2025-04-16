@@ -109,7 +109,7 @@ export class TweetV2Service {
   }
 
   deleteComment(tweetId: Tweety['id'], { profileId, content }: TweetComment) {
-    return this.#http.delete(
+    return this.#http.delete<Tweety>(
       `${this.#environment.api.tweets}/${tweetId}/comment`,
       {
         params: {

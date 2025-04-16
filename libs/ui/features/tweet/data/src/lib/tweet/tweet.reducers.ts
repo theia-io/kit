@@ -52,24 +52,17 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets: state.tweets.filter((stateTweet) => stateTweet.id !== tweet.id),
   })),
-  on(
-    FeatTweetActions.commentDeleteSuccess,
-    (state, { tweet, comment: { profileId, content, createdAt } }) => ({
-      ...state,
-      tweets: state.tweets.map((stateTweet) => {
-        if (stateTweet.id === tweet.id) {
-          return {
-            ...stateTweet,
-            ...tweet,
-            comments: stateTweet.comments?.filter(
-              (stateComment) =>
-                !_.isEqual(stateComment, { profileId, content, createdAt })
-            ),
-          };
-        }
+  on(FeatTweetActions.commentDeleteSuccess, (state, { tweet }) => ({
+    ...state,
+    tweets: state.tweets.map((stateTweet) => {
+      if (stateTweet.id === tweet.id) {
+        return {
+          ...stateTweet,
+          ...tweet,
+        };
+      }
 
-        return stateTweet;
-      }),
-    })
-  )
+      return stateTweet;
+    }),
+  }))
 );

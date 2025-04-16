@@ -260,13 +260,12 @@ export class BeTweetService {
 
   async likeTweet(tweetId: Tweety['id'], likeProfileId: Profile['id']) {
     let updatedTweet;
-    const likeProfileIdOb = new mongoose.Types.ObjectId(likeProfileId);
-    console.log('likeProfileIdOb 1', likeProfileIdOb);
+    const likeProfileObjectId = new mongoose.Types.ObjectId(likeProfileId);
 
     try {
-      updatedTweet = await this.tweetModel
-        .findById(new mongoose.Types.ObjectId(tweetId))
-        .exec();
+      updatedTweet = await this.tweetModel.findById(
+        new mongoose.Types.ObjectId(tweetId)
+      );
     } catch (err) {
       console.error(
         `Cannot execute find tweet ${tweetId}, with ${likeProfileId}`,
@@ -282,27 +281,21 @@ export class BeTweetService {
       throw new HttpException('Tweet not found', HttpStatus.NOT_FOUND);
     }
 
-    console.log('\n\n:FOUND TWEET', updatedTweet);
-
     try {
       if (!updatedTweet.upProfileIds) {
-        console.log('new', likeProfileIdOb);
-        updatedTweet.upProfileIds = new Array(likeProfileIdOb);
+        updatedTweet.upProfileIds = new Array(likeProfileObjectId);
       } else if (
-        updatedTweet.upProfileIds.some((likeProfileIdOb) =>
-          likeProfileIdOb.equals(likeProfileIdOb)
+        updatedTweet.upProfileIds.some((upProfileId) =>
+          upProfileId.equals(likeProfileObjectId)
         )
       ) {
-        console.log('remove', likeProfileIdOb);
         updatedTweet.upProfileIds = updatedTweet.upProfileIds.filter(
-          (like) => !like.equals(likeProfileIdOb)
+          (like) => !like.equals(likeProfileObjectId)
         );
       } else {
-        console.log('add', likeProfileIdOb);
-        updatedTweet.upProfileIds.push(likeProfileIdOb);
+        updatedTweet.upProfileIds.push(likeProfileObjectId);
       }
 
-      console.log('\nBEFORE SAVE TWEET', updatedTweet);
       await updatedTweet.save();
     } catch (err) {
       console.error(
@@ -314,8 +307,6 @@ export class BeTweetService {
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
-
-    console.log('updatedTweet', updatedTweet);
 
     return updatedTweet;
   }
@@ -339,7 +330,7 @@ export class BeTweetService {
         },
         {
           upsert: true,
-          new: false,
+          new: true,
         }
       );
     } catch (err) {
@@ -394,8 +385,10 @@ export class BeTweetService {
     try {
       tweet.comments = tweet.comments.filter(
         (comment) =>
-          comment.profileId.toString() !== profileId &&
-          comment.content !== content
+          !(
+            comment.profileId.toString() === profileId &&
+            comment.content === content
+          )
       );
       await tweet.save();
     } catch (err) {
@@ -409,6 +402,6 @@ export class BeTweetService {
       );
     }
 
-    return true;
+    return tweet;
   }
 }

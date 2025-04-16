@@ -65,11 +65,13 @@ export class CommentsEffects {
     this.#actions$.pipe(
       ofType(FeatTweetActions.commentDelete),
       switchMap(({ tweet, comment }) =>
-        this.#tweetV2Service
-          .deleteComment(tweet.id, comment)
-          .pipe(
-            map(() => FeatTweetActions.commentDeleteSuccess({ tweet, comment }))
+        this.#tweetV2Service.deleteComment(tweet.id, comment).pipe(
+          map((tweetWithRemovedComment) =>
+            FeatTweetActions.commentDeleteSuccess({
+              tweet: { ...tweet, ...tweetWithRemovedComment },
+            })
           )
+        )
       ),
       catchError((err) => {
         console.error('[CommentsEffects] deleteCommentTweet', err);

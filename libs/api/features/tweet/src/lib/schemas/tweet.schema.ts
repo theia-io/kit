@@ -64,13 +64,15 @@ export class Tweet {
   type: string;
 
   @Prop({
-    type: Array<mongoose.Schema.Types.ObjectId>,
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    default: [],
     ref: 'Profile',
   })
   upProfileIds: Types.ObjectId[];
 
   @Prop({
-    type: Array<mongoose.Schema.Types.ObjectId>,
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    default: [],
     ref: 'Profile',
   })
   downProfileIds: Types.ObjectId[];
