@@ -144,7 +144,10 @@ export class BeTweetService {
       );
     }
 
-    return tweet;
+    return {
+      ...tweet?.toJSON(),
+      type: 'tweet',
+    };
   }
 
   async #getTweetById(tweetId: string) {
@@ -198,6 +201,7 @@ export class BeTweetService {
 
     return tweets.map(({ _id, ...tweet }) => ({
       ...tweet,
+      type: 'tweet',
       id: _id.toString(),
     }));
   }
@@ -231,9 +235,10 @@ export class BeTweetService {
       throw new HttpException('Tweet not found', HttpStatus.NOT_FOUND);
     }
 
+    console.log('tweet.profileId 2', tweet, tweet.profileId?.toString());
     if (
       !loggedInUserProfiles.some(
-        (loggedInProfileId) => tweet?.profileId.toString() === loggedInProfileId
+        (loggedInProfileId) => tweet.profileId?.toString() === loggedInProfileId
       )
     ) {
       throw new HttpException(
@@ -244,8 +249,8 @@ export class BeTweetService {
 
     try {
       await this.tweetModel.deleteOne({
-        tweetId: new mongoose.Types.ObjectId(tweetId),
-        profileId: new mongoose.Types.ObjectId(tweet.profileId),
+        _id: new mongoose.Types.ObjectId(tweetId),
+        profileId: tweet.profileId,
       });
     } catch (err) {
       console.error(`Cannot delete tweet ${tweetId}, ${profileId}`, err);

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { of, throwError } from 'rxjs';
@@ -11,14 +11,12 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { TweetApiService } from './tweet-api.service';
 import { TweetV2Service } from './tweet-v2.service';
 
 @Injectable()
 export class CommentsEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
-  #tweetApi = inject(TweetApiService);
   #tweetV2Service = inject(TweetV2Service);
 
   currentProfile$ = this.#store

@@ -10,35 +10,29 @@ export type BookmarkDocument = HydratedDocument<Bookmark>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
-      delete ret['_id'];
+      delete ret._id;
     },
   },
 })
 export class Bookmark {
   @Prop({
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Tweet',
-      required: true,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tweet',
+    required: true,
   })
   tweetId: Types.ObjectId;
 
   @Prop({
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Profile',
-      required: true,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
+    required: true,
   })
   profileIdTweetyOwner: Types.ObjectId;
 
   @Prop({
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Profile',
-      required: true,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
+    required: true,
   })
   profileIdBookmarker: Types.ObjectId;
 }

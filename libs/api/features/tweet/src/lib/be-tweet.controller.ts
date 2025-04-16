@@ -63,6 +63,7 @@ export class BeTweetController {
   ) {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles.map((profile) => profile.id);
+    console.log('\ntweetId, profileId 3:', tweetId, profileId, profileIds);
     return this.beTweetService.deleteTweet(tweetId, profileId, profileIds);
   }
 

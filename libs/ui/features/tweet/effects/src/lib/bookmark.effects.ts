@@ -16,14 +16,12 @@ import {
   withLatestFrom,
 } from 'rxjs/operators';
 import { BookmarksService } from './bookmarks.service';
-import { TweetApiService } from './tweet-api.service';
 import { TweetV2Service } from './tweet-v2.service';
 
 @Injectable()
 export class BookmarkEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
-  #tweetApi = inject(TweetApiService);
   #tweetV2Service = inject(TweetV2Service);
   #bookmarksService = inject(BookmarksService);
 
@@ -91,7 +89,7 @@ export class BookmarkEffects {
       ofType(FeatBookmarksActions.bookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId, profileIdTweetyOwner }, profile]) =>
-        this.#tweetApi
+        this.#bookmarksService
           .bookmark({
             tweetId,
             profileIdTweetyOwner,
@@ -123,38 +121,40 @@ export class BookmarkEffects {
       ofType(FeatBookmarksActions.removeBookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId }, { id }]) =>
-        this.#tweetApi
-          .deleteBookmark({ profileIdBookmarker: id, tweetId })
-          .pipe(
-            map(() =>
-              FeatBookmarksActions.removeBookmarkSuccess({
-                tweetId,
-                profileId: id,
-              })
-            ),
-            catchError((err) => {
-              console.error('[BookmarkEffects] deleteBookmark', err);
-              return of(
-                FeatBookmarksActions.removeBookmarkFailure({
-                  tweetId,
-                  message:
-                    'Sorry, error. We will take a look at it and meanwhile try later',
-                })
-              );
+        this.#bookmarksService.deleteTweetBookmark(tweetId, id).pipe(
+          map(() =>
+            FeatBookmarksActions.removeBookmarkSuccess({
+              tweetId,
+              profileId: id,
             })
-          )
+          ),
+          catchError((err) => {
+            console.error('[BookmarkEffects] deleteBookmark', err);
+            return of(
+              FeatBookmarksActions.removeBookmarkFailure({
+                tweetId,
+                message:
+                  'Sorry, error. We will take a look at it and meanwhile try later',
+              })
+            );
+          })
+        )
       )
     )
   );
 
   deleteBookmarkWhenTweetDeleted$ = createEffect(() =>
     this.#actions$.pipe(
+      // TODO move this and aline (retweet) to BE
       ofType(FeatTweetActions.deleteSuccess),
-      map(({ tweet: { id } }) =>
-        /** @TODO @FIXME has to take into account deleteSuccess batch results  */
-        FeatBookmarksActions.removeBookmarkAsTweetRemoved({
-          tweetId: id,
-        })
+      switchMap(({ tweet: { id } }) =>
+        this.#bookmarksService.deleteAllTweetBookmarks(id).pipe(
+          map(() =>
+            FeatBookmarksActions.removeBookmarkAsTweetRemoved({
+              tweetId: id,
+            })
+          )
+        )
       )
     )
   );

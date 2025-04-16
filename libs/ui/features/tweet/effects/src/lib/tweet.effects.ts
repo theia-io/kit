@@ -1,9 +1,8 @@
 import { Injectable, inject } from '@angular/core';
 import {
-  FeatTweetActions,
   FeatBookmarksActions,
+  FeatTweetActions,
   TweetApiActions,
-  tweetIsLikedByProfile,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -16,17 +15,14 @@ import {
   shareReplay,
   switchMap,
   take,
-  tap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { TweetApiService } from './tweet-api.service';
 import { TweetV2Service } from './tweet-v2.service';
 
 @Injectable()
 export class TweetsEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
-  #tweetApi = inject(TweetApiService);
   #tweetV2Service = inject(TweetV2Service);
 
   #currentProfile$ = this.#store.select(selectCurrentProfile).pipe(
