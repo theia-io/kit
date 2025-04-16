@@ -45,9 +45,6 @@ export class KitController {
       throw new HttpException('Profile not found', HttpStatus.BAD_REQUEST);
     }
 
-    const profilesUpd = profiles.map((profile) => profile.toJSON());
-    profilesUpd.forEach((profileUp) => console.log(profileUp));
-
     return {
       account,
       user,

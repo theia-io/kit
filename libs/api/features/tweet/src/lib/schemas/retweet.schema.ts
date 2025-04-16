@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose'; // Import mongoose for Types.ObjectId if needed
 
-export type BookmarkDocument = HydratedDocument<Bookmark>;
+export type ReTweetDocument = HydratedDocument<ReTweet>;
 
 @Schema({
   timestamps: true,
-  collection: 'bookmark',
+  collection: 'retweet',
   toJSON: {
     virtuals: true,
     versionKey: false,
@@ -14,7 +14,7 @@ export type BookmarkDocument = HydratedDocument<Bookmark>;
     },
   },
 })
-export class Bookmark {
+export class ReTweet {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Tweet',
@@ -27,14 +27,7 @@ export class Bookmark {
     ref: 'Profile',
     required: true,
   })
-  profileIdTweetyOwner: Types.ObjectId;
-
-  @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Profile',
-    required: true,
-  })
-  profileIdBookmarker: Types.ObjectId;
+  profileId: Types.ObjectId;
 }
 
-export const BookmarkSchema = SchemaFactory.createForClass(Bookmark);
+export const ReTweetSchema = SchemaFactory.createForClass(ReTweet);

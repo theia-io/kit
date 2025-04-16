@@ -42,7 +42,7 @@ export const dbClientAccountAdapter = (
 
   return {
     ...partiallyDBObjectRest,
-    settingsId: settingsId.toString(),
+    settingsId: settingsId?.toString(),
   };
 };
 

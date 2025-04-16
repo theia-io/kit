@@ -10,10 +10,13 @@ export enum KIT_ENVS {
 export interface Environment {
   api: {
     root: string;
-    media: string;
     auth: string;
+    // Helper APIs
+    media: string;
+    // business logic APIs
     kit: string;
-    tweet: string;
+    tweets: string;
+    retweets: string;
     bookmarks: string;
   };
   googleTagConfig: string | null;

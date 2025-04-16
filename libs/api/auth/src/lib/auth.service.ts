@@ -1,4 +1,4 @@
-import { Auth0User } from '@kitouch/shared-models';
+import { Auth0Kit } from '@kitouch/shared-models';
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
@@ -6,11 +6,11 @@ import { JwtService } from '@nestjs/jwt';
 export class AuthService {
   constructor(private readonly jwtService: JwtService) {}
 
-  async generateJWT(user: Auth0User): Promise<string> {
-    return this.jwtService.sign(user);
+  async generateJWT(auth0Kit: Auth0Kit): Promise<string> {
+    return this.jwtService.sign(auth0Kit);
   }
 
-  decode(id_token: string): Auth0User {
+  decode(id_token: string): Auth0Kit {
     return this.jwtService.decode(id_token);
   }
 }

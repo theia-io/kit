@@ -16,11 +16,12 @@ export class TweetComment {
   })
   profileId: Types.ObjectId; // Use Mongoose Types.ObjectId for refs
 
-  @Prop({ required: true, trim: true }) // Add trim for content
+  @Prop({ required: true }) // Add trim for content
   content: string;
 
   @Prop({ default: Date.now })
   createdAt: Date;
+
   @Prop({ default: Date.now })
   updatedAt: Date;
 }
@@ -41,11 +42,9 @@ export const TweetCommentSchema = SchemaFactory.createForClass(TweetComment);
 })
 export class Tweet {
   @Prop({
-    type: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Profile',
-      required: true,
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Profile',
+    required: true,
   })
   profileId: Types.ObjectId;
 
@@ -58,26 +57,25 @@ export class Tweet {
   })
   content: string;
 
+  @Prop({ type: [TweetCommentSchema], default: [] }) // Use the TweetCommentSchema in an array type
+  comments: TweetComment[];
+
   @Prop()
   type: string;
 
   @Prop({
     type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    default: [],
+    ref: 'Profile',
   })
   upProfileIds: Types.ObjectId[];
 
   @Prop({
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Tweet' },
+    type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
+    default: [],
+    ref: 'Profile',
   })
-  referenceId: string;
-
-  @Prop({
-    type: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile' },
-  })
-  referenceProfileId: string;
-
-  @Prop({ type: [TweetCommentSchema], default: [] }) // Use the TweetCommentSchema in an array type
-  comments: TweetComment[];
+  downProfileIds: Types.ObjectId[];
 }
 
 export const TweetSchema = SchemaFactory.createForClass(Tweet);

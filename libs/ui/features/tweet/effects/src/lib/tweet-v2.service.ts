@@ -1,9 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { ENVIRONMENT } from '@kitouch/shared-infra';
-import { Profile, Tweety, TweetyType } from '@kitouch/shared-models';
+import { Profile, TweetComment, Tweety } from '@kitouch/shared-models';
 import { Observable } from 'rxjs';
-import { BSON } from 'realm-web';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +16,7 @@ export class TweetV2Service {
     followingProfileIds?: string[]
   ): Observable<Array<Tweety>> {
     return this.#http.get<Array<Tweety>>(
-      `${this.#environment.api.tweet}/feed`,
+      `${this.#environment.api.tweets}/feed`,
       {
         params: {
           profileId,
@@ -35,7 +34,7 @@ export class TweetV2Service {
     tweetId: Tweety['id'],
     profileId: Profile['id']
   ): Observable<Tweety> {
-    return this.#http.get<Tweety>(`${this.#environment.api.tweet}/tweet`, {
+    return this.#http.get<Tweety>(`${this.#environment.api.tweets}/tweet`, {
       params: {
         tweetId,
         profileId,
@@ -46,7 +45,7 @@ export class TweetV2Service {
   getTweets(
     ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>
   ): Observable<Array<Tweety>> {
-    return this.#http.get<Array<Tweety>>(this.#environment.api.tweet, {
+    return this.#http.get<Array<Tweety>>(this.#environment.api.tweets, {
       params: {
         ids: JSON.stringify(ids),
       },
@@ -54,14 +53,57 @@ export class TweetV2Service {
   }
 
   newTweet(tweet: Partial<Tweety>): Observable<Tweety> {
-    const newTweet = {
+    return this.#http.post<Tweety>(this.#environment.api.tweets, {
       ...tweet,
-      profileId: new BSON.ObjectId(tweet.profileId),
-      type: TweetyType.Tweet,
-    };
-
-    return this.#http.post<Tweety>(this.#environment.api.tweet, {
-      body: newTweet,
     });
+  }
+
+  deleteTweet(tweet: Tweety, profileId: string): Observable<boolean> {
+    return this.#http.delete<boolean>(
+      `${this.#environment.api.tweets}/${tweet.id}`,
+      {
+        params: {
+          profileId,
+        },
+      }
+    );
+  }
+
+  likeTweet(tweetId: Tweety['id'], profileId: Profile['id']) {
+    return this.#http.put(
+      `${this.#environment.api.tweets}/${tweetId}/like`,
+      null,
+      {
+        params: {
+          profileId,
+        },
+      }
+    );
+  }
+
+  commentTweet(
+    tweetId: Tweety['id'],
+    profileId: Profile['id'],
+    content: string
+  ) {
+    return this.#http.post(
+      `${this.#environment.api.tweets}/${tweetId}/comment`,
+      {
+        profileId,
+        content,
+      }
+    );
+  }
+
+  deleteComment(tweetId: Tweety['id'], { profileId, content }: TweetComment) {
+    return this.#http.delete<Tweety>(
+      `${this.#environment.api.tweets}/${tweetId}/comment`,
+      {
+        params: {
+          profileId,
+          content,
+        },
+      }
+    );
   }
 }

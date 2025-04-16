@@ -2,6 +2,7 @@ import { DOCUMENT, DatePipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  DestroyRef,
   HostListener,
   ViewChild,
   computed,
@@ -10,18 +11,19 @@ import {
   output,
   signal,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, RouterModule } from '@angular/router';
 import {
+  FeatBookmarksActions,
   FeatReTweetActions,
   FeatTweetActions,
-  FeatBookmarksActions,
   selectIsBookmarked,
   selectTweet,
   tweetIsLikedByProfile,
   tweetIsRetweet,
+  tweetIsTweet,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
@@ -32,12 +34,14 @@ import {
   UiKitSpinnerComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
+import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
+import { merge, take } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
@@ -73,8 +77,10 @@ export class FeatTweetTweetyComponent {
 
   // Deps
   #document = inject(DOCUMENT);
+  #destroyRef = inject(DestroyRef);
   #router = inject(Router);
   #store = inject(Store);
+  #actions = inject(Actions);
   //
   domSanitizer = inject(DomSanitizer);
 
@@ -96,10 +102,13 @@ export class FeatTweetTweetyComponent {
 
   retweetProfile = computed(() => {
     const tweet = this.tweet();
+    const originalTweet = this.#store.selectSignal(
+      selectTweet((tweet as ReTweety).tweetId)
+    )();
 
-    if (tweet && tweetIsRetweet(tweet)) {
+    if (originalTweet && tweet && tweetIsRetweet(tweet)) {
       return this.#store.selectSignal(
-        selectProfileById((tweet as ReTweety).referenceProfileId)
+        selectProfileById(originalTweet.profileId)
       )();
     }
     return undefined;
@@ -108,13 +117,19 @@ export class FeatTweetTweetyComponent {
   // Component logic
   commentOverlayVisible = signal(false);
 
-  tweetComments = computed(() => this.tweet()?.comments);
+  tweetComments = computed(() => {
+    const tweet = this.tweet();
+    if (tweet && tweetIsTweet(tweet)) {
+      return tweet.comments;
+    }
+    return [];
+  });
 
   tweetLiked = computed(() => {
     const tweet = this.tweet(),
       profile = this.currentProfile();
 
-    if (tweet && profile) {
+    if (tweet && tweetIsTweet(tweet) && profile) {
       return tweetIsLikedByProfile(tweet, profile.id);
     }
 
@@ -133,8 +148,7 @@ export class FeatTweetTweetyComponent {
       return false;
     }
 
-    const profileToVerify =
-      tweet.type === TweetyType.Tweet ? tweetProfile : retweetProfile;
+    const profileToVerify = tweetIsTweet(tweet) ? tweetProfile : retweetProfile;
 
     if (currentProfile && profileToVerify) {
       return (
@@ -168,7 +182,7 @@ export class FeatTweetTweetyComponent {
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
     const tweet = this.tweet();
-    if (tweet && this.commentOverlayVisible()) {
+    if (tweet && tweetIsTweet(tweet) && this.commentOverlayVisible()) {
       this.commentHandler(tweet);
     }
   }
@@ -188,7 +202,7 @@ export class FeatTweetTweetyComponent {
       tweet.profileId,
       APP_PATH.Tweet,
       tweet.type === TweetyType.Retweet
-        ? (tweet as ReTweety).referenceId
+        ? (tweet as ReTweety).tweetId
         : tweet.id,
     ].join('/');
   }
@@ -198,12 +212,18 @@ export class FeatTweetTweetyComponent {
   }
 
   deleteHandler(tweet: Tweety | ReTweety) {
+    merge(
+      this.#actions.pipe(ofType(FeatReTweetActions.deleteSuccess)),
+      this.#actions.pipe(ofType(FeatTweetActions.deleteSuccess))
+    )
+      .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => this.tweetDeleted.emit());
+
     if (tweetIsRetweet(tweet)) {
       this.#store.dispatch(FeatReTweetActions.delete({ tweet }));
     } else {
       this.#store.dispatch(FeatTweetActions.delete({ tweet }));
     }
-    this.tweetDeleted.emit();
   }
 
   /** @TODO migrate commentHandler to a specific class and re-use it here and in tweet.component */

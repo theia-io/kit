@@ -9,6 +9,8 @@ import { logger } from './app/middleware/logger';
 
 import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
+import { KitService } from '@kitouch/be-kit';
+import { Auth0Kit } from '@kitouch/shared-models';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
 
@@ -28,9 +30,13 @@ async function bootstrap() {
 
   app.enableCors({
     origin: function (origin, callback) {
-      if (!isProduction) {
+      if (!isProduction && /localhost:4200/.test(origin)) {
         console.log('CORS origin:', origin);
+        // Allow localhost for dev
+        callback(null, true);
+        return;
       }
+
       if (!origin || origin === 'null') {
         // Don't allow requests with no origin (like mobile apps or curl requests)
         // callback(new Error('Not allowed without valid origin'));
@@ -143,21 +149,28 @@ async function bootstrap() {
         return session; // Stop processing if userinfo fails
       }
 
-      // Generate your application's JWT
-      const {
-        email,
-        given_name: name,
-        family_name: surname,
-        picture,
-        email_verified,
-      } = user;
-      const appToken = await authService.generateJWT({
-        email,
-        name,
-        surname,
-        picture,
-        email_verified,
-      }); // Use Auth0 user info
+      const auth0User = {
+        email: user.email,
+        name: user.given_name,
+        surname: user.family_name,
+        picture: user.picture,
+        email_verified: user.email_verified,
+      };
+
+      // get KIT user from auth0 user
+      const kitService = app.get(KitService);
+      const kitAccount = await kitService.accountFindOneAndUpdate(auth0User);
+      const kitUser = await kitService.userFindOneAndUpdate(kitAccount);
+      const kitProfiles = await kitService.profilesFindOrInsert(kitUser);
+
+      const authKit: Auth0Kit = {
+        ...auth0User,
+        account: kitAccount as any, // as Account
+        user: kitUser as any, //as User
+        profiles: kitProfiles as any, // Array<Profile>,
+      };
+
+      const appToken = await authService.generateJWT(authKit);
 
       // Set your application's JWT cookie. Update also AUTH controller
       res.cookie('jwt', appToken, {
@@ -172,7 +185,7 @@ async function bootstrap() {
       // Return the session object (required by afterCallback)
       return {
         ...session,
-        user,
+        user: authKit,
       };
     },
     routes: {
@@ -207,11 +220,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   app.use(logger);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      disableErrorMessages: true,
-    })
-  );
+  app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

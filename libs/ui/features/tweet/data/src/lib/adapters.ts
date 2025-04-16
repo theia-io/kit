@@ -4,23 +4,19 @@ import { dbClientAdapter, DBClientType } from '@kitouch/utils';
 export const dbClientTweetAdapter = (
   dbObject: DBClientType<Tweety>
 ): Tweety => {
-  const {
-    profileId,
-    referenceId,
-    referenceProfileId,
-    ...partiallyDBObjectRest
-  } = dbClientAdapter(dbObject) as any;
+  const { profileId, tweetId, retweetedProfileId, ...partiallyDBObjectRest } =
+    dbClientAdapter(dbObject) as any;
 
   if (profileId) {
     partiallyDBObjectRest.profileId = profileId.toString();
   }
 
-  if (referenceId) {
-    partiallyDBObjectRest.referenceId = referenceId.toString();
+  if (tweetId) {
+    partiallyDBObjectRest.tweetId = tweetId.toString();
   }
 
-  if (referenceProfileId) {
-    partiallyDBObjectRest.referenceProfileId = referenceProfileId.toString();
+  if (retweetedProfileId) {
+    partiallyDBObjectRest.retweetedProfileId = retweetedProfileId.toString();
   }
 
   return {

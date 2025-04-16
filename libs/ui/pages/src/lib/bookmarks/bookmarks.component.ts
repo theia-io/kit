@@ -47,7 +47,7 @@ export class PageBookmarksComponent {
       const tweetsMap = new Map(tweets.map((tweet) => [tweet.id, tweet]));
       return bookmarks
         .slice()
-        .sort((a, b) => sortByCreatedTimeDesc(a, b))
+        .sort((a, b) => sortByCreatedTimeDesc(a.createdAt, b.createdAt))
         .map((bookmark) => tweetsMap.get(bookmark.tweetId) ?? bookmark);
     }),
     filter((tweets): tweets is Array<Tweety> => tweets.length > 0)

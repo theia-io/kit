@@ -1,6 +1,18 @@
-import { Tweety } from '@kitouch/shared-models';
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import { Auth0Kit, TweetComment, Tweety } from '@kitouch/shared-models';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+  Query,
+  Req,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { BeTweetService } from './be-tweet.service';
 
 @Controller('tweets')
@@ -13,7 +25,6 @@ export class BeTweetController {
     @Query('profileId') profileId: string,
     @Query('followingProfileIds') followingProfileIds?: Array<string>
   ) {
-    console.log('FEED', profileId, followingProfileIds ?? []);
     return await this.beTweetService.getFeed(
       profileId,
       followingProfileIds ?? []
@@ -40,7 +51,57 @@ export class BeTweetController {
   @Post()
   @UseGuards(AuthGuard('jwt'))
   async newTweet(@Body() tweetyDto: Partial<Tweety>) {
-    console.log('NEW TWEET DTO', tweetyDto);
     return this.beTweetService.newTweet(tweetyDto);
+  }
+
+  @Delete(':tweetId')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteTweet(
+    @Req() req: Request,
+    @Param('tweetId') tweetId: string,
+    @Query('profileId') profileId: string
+  ) {
+    const authUser = req.user as Auth0Kit;
+    const profileIds = authUser.profiles.map((profile) => profile.id);
+    console.log('\ntweetId, profileId 3:', tweetId, profileId, profileIds);
+    return this.beTweetService.deleteTweet(tweetId, profileId, profileIds);
+  }
+
+  @Put(':tweetId/like')
+  @UseGuards(AuthGuard('jwt'))
+  async likeTweet(
+    @Param('tweetId') tweetId: string,
+    @Query('profileId') profileId: string
+  ) {
+    return this.beTweetService.likeTweet(tweetId, profileId);
+  }
+
+  @Post(':tweetId/comment')
+  @UseGuards(AuthGuard('jwt'))
+  async addComment(
+    @Param('tweetId') tweetId: string,
+    @Body() commentDto: Partial<TweetComment>
+  ) {
+    console.log(commentDto);
+    return this.beTweetService.newTweetComment(tweetId, commentDto);
+  }
+
+  @Delete(':tweetId/comment')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteComment(
+    @Req() req: Request,
+    @Param('tweetId') tweetId: string,
+    @Query('profileId') profileId: string,
+    @Query('content') content: string
+  ) {
+    const profileIds = (req.user as Auth0Kit).profiles.map(
+      (profile) => profile.id
+    );
+    return this.beTweetService.deleteTweetComment(
+      tweetId,
+      profileId,
+      content,
+      profileIds
+    );
   }
 }

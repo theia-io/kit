@@ -1,7 +1,6 @@
 import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import { addOrUpdate, mergeArr } from '@kitouch/utils';
 import { createReducer, on } from '@ngrx/store';
-import _ from 'lodash';
 import {
   FeatReTweetActions,
   FeatTweetActions,
@@ -42,7 +41,7 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets: state.tweets.filter((stateTweet) => {
       if (stateTweet.type === TweetyType.Retweet) {
-        return (stateTweet as ReTweety).referenceId !== id;
+        return (stateTweet as ReTweety).tweetId !== id;
       }
 
       return stateTweet.id !== id;
@@ -52,24 +51,17 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets: state.tweets.filter((stateTweet) => stateTweet.id !== tweet.id),
   })),
-  on(
-    FeatTweetActions.commentDeleteSuccess,
-    (state, { tweet, comment: { profileId, content, createdAt } }) => ({
-      ...state,
-      tweets: state.tweets.map((stateTweet) => {
-        if (stateTweet.id === tweet.id) {
-          return {
-            ...stateTweet,
-            ...tweet,
-            comments: stateTweet.comments?.filter(
-              (stateComment) =>
-                !_.isEqual(stateComment, { profileId, content, createdAt })
-            ),
-          };
-        }
+  on(FeatTweetActions.commentDeleteSuccess, (state, { tweet }) => ({
+    ...state,
+    tweets: state.tweets.map((stateTweet) => {
+      if (stateTweet.id === tweet.id) {
+        return {
+          ...stateTweet,
+          ...tweet,
+        };
+      }
 
-        return stateTweet;
-      }),
-    })
-  )
+      return stateTweet;
+    }),
+  }))
 );
