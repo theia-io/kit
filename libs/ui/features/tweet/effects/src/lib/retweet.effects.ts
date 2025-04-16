@@ -33,8 +33,12 @@ export class RetweetEffects {
           map((retweet) =>
             FeatReTweetActions.reTweetSuccess({
               tweet: {
+                ...tweet,
                 ...retweet,
+                tweetId: tweet.id,
+                retweetedProfileId: retweet.profileId,
                 type: TweetyType.Retweet,
+                createdAt: retweet.createdAt,
               },
             })
           )
@@ -62,7 +66,7 @@ export class RetweetEffects {
       ofType(FeatReTweetActions.delete),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, profile]) =>
-        tweet.referenceProfileId === profile.id
+        tweet.retweetedProfileId === profile.id
           ? this.#retweetV2Service.deleteRetweet(tweet, profile.id).pipe(
               map(() =>
                 FeatReTweetActions.deleteSuccess({

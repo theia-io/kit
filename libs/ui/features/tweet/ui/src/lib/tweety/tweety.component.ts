@@ -22,6 +22,7 @@ import {
   selectTweet,
   tweetIsLikedByProfile,
   tweetIsRetweet,
+  tweetIsTweet,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
@@ -96,10 +97,13 @@ export class FeatTweetTweetyComponent {
 
   retweetProfile = computed(() => {
     const tweet = this.tweet();
+    const originalTweet = this.#store.selectSignal(
+      selectTweet((tweet as ReTweety).tweetId)
+    )();
 
-    if (tweet && tweetIsRetweet(tweet)) {
+    if (originalTweet && tweet && tweetIsRetweet(tweet)) {
       return this.#store.selectSignal(
-        selectProfileById((tweet as ReTweety).referenceProfileId)
+        selectProfileById(originalTweet.profileId)
       )();
     }
     return undefined;
@@ -108,13 +112,19 @@ export class FeatTweetTweetyComponent {
   // Component logic
   commentOverlayVisible = signal(false);
 
-  tweetComments = computed(() => this.tweet()?.comments);
+  tweetComments = computed(() => {
+    const tweet = this.tweet();
+    if (tweet && tweetIsTweet(tweet)) {
+      return tweet.comments;
+    }
+    return [];
+  });
 
   tweetLiked = computed(() => {
     const tweet = this.tweet(),
       profile = this.currentProfile();
 
-    if (tweet && profile) {
+    if (tweet && tweetIsTweet(tweet) && profile) {
       return tweetIsLikedByProfile(tweet, profile.id);
     }
 
@@ -168,7 +178,7 @@ export class FeatTweetTweetyComponent {
   @HostListener('window:keydown.enter', ['$event'])
   keyDownEnterHandler() {
     const tweet = this.tweet();
-    if (tweet && this.commentOverlayVisible()) {
+    if (tweet && tweetIsTweet(tweet) && this.commentOverlayVisible()) {
       this.commentHandler(tweet);
     }
   }

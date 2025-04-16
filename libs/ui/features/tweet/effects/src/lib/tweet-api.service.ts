@@ -81,8 +81,8 @@ export class TweetApiService extends DataSourceService {
             {
               $project: {
                 _id: '$retweetsData._id',
-                referenceId: '$retweetsData.tweetId',
-                referenceProfileId: '$retweetsData.profileId',
+                tweetId: '$retweetsData.tweetId',
+                retweetedProfileId: '$retweetsData.profileId',
                 timestamp: '$retweetsData.timestamp',
                 type: 'retweet',
                 //
@@ -122,10 +122,10 @@ export class TweetApiService extends DataSourceService {
               },
             },
             {
-              referenceProfileId: clientDBIdAdapter(profileId),
+              retweetedProfileId: clientDBIdAdapter(profileId),
             },
             {
-              referenceProfileId: {
+              retweetedProfileId: {
                 $in: followingProfileIds?.map(clientDBIdAdapter) ?? [],
               },
             },

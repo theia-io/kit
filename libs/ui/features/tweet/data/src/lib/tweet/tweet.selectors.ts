@@ -3,13 +3,14 @@ import { createSelector } from '@ngrx/store';
 import { FeatureTweetState } from './tweet.reducers';
 
 /** helper */
-export const tweetIsLikedByProfile = (
-  tweet: Tweety | ReTweety,
-  profileId: string
-) => tweet.upProfileIds?.some((upProfileId) => upProfileId === profileId);
+export const tweetIsLikedByProfile = (tweet: Tweety, profileId: string) =>
+  tweet.upProfileIds?.some((upProfileId) => upProfileId === profileId);
+
+export const tweetIsTweet = (tweety: Tweety | ReTweety): tweety is Tweety =>
+  tweety.type === TweetyType.Tweet;
 
 export const tweetIsRetweet = (tweety: Tweety | ReTweety): tweety is ReTweety =>
-  'referenceProfileId' in tweety;
+  tweety.type === TweetyType.Retweet;
 
 /** selectors */
 export const selectTweetState = (state: {
@@ -24,12 +25,7 @@ export const selectAllTweets = createSelector(
 export const selectTweetsProfile = (
   profileId: string,
   tweets: Array<Tweety | ReTweety>
-) =>
-  tweets.filter((tweet) =>
-    tweet.type === TweetyType.Tweet
-      ? tweet.profileId === profileId
-      : (tweet as ReTweety).referenceProfileId === profileId
-  );
+) => tweets.filter((tweet) => tweet.profileId === profileId);
 
 export const selectTweet = (id: string) =>
   createSelector(selectAllTweets, (tweets: Array<Tweety | ReTweety>) =>

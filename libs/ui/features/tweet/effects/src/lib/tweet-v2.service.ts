@@ -82,50 +82,42 @@ export class TweetV2Service {
     );
   }
 
-  #deleteAllRetweet(tweetId: string): Observable<boolean> {
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db.collection('retweet').deleteMany({
-    //       tweetId: new BSON.ObjectId(tweetId),
-    //     })
-    //   ),
-    //   map(({ deletedCount }) => deletedCount > 0)
-    // );
-    return of(true);
+  likeTweet(tweetId: Tweety['id'], profileId: Profile['id']) {
+    return this.#http.put(
+      `${this.#environment.api.tweets}/${tweetId}/like`,
+      null,
+      {
+        params: {
+          profileId,
+        },
+      }
+    );
   }
 
-  likeTweet(tweet: Tweety) {
-    // return this.#updateTweet(tweet);
-    return of(true);
-  }
-
-  deleteComment(
-    tweet: Tweety,
-    { profileId, content, createdAt }: TweetComment
+  commentTweet(
+    tweetId: Tweety['id'],
+    profileId: Profile['id'],
+    content: string
   ) {
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db.collection('tweet').updateOne(
-    //       { _id: new BSON.ObjectId(tweet.id) },
-    //       {
-    //         $pull: {
-    //           comments: {
-    //             profileId,
-    //             content,
-    //             createdAt,
-    //           },
-    //         },
-    //       }
-    //     )
-    //   ),
-    //   map(() => null)
-    // );
-    return of(true);
+    return this.#http.post(
+      `${this.#environment.api.tweets}/${tweetId}/comment`,
+      {
+        profileId,
+        content,
+      }
+    );
   }
 
-  commentTweet(tweet: Partial<Tweety>) {
-    // return this.#updateTweet(tweet);
-    return of({} as any);
+  deleteComment(tweetId: Tweety['id'], { profileId, content }: TweetComment) {
+    return this.#http.delete(
+      `${this.#environment.api.tweets}/${tweetId}/comment`,
+      {
+        params: {
+          profileId,
+          content,
+        },
+      }
+    );
   }
 
   getBookmarks(profileId: Profile['id']): Observable<Array<Bookmark>> {
@@ -218,30 +210,11 @@ export class TweetV2Service {
   }
 
   #updateTweet(tweet: Partial<Tweety>) {
-    // const { id, type, profileId, createdAt: ___, updatedAt: __, deletedAt: _, ...tweetRest } = tweet;
-    // return this.db$().pipe(
-    //   switchMap((db) => {
-    //     const collection =
-    //       type === TweetyType.Retweet
-    //         ? db.collection<DBClientType<Tweety>>('retweet')
-    //         : db.collection<DBClientType<Tweety>>('tweet');
-    //     return collection.findOneAndUpdate(
-    //       {
-    //         _id: new BSON.ObjectId(id),
-    //       },
-    //       {
-    //         $set: tweetRest,
-    //         $currentDate: {
-    //           'updatedAt': true,
-    //         },
-    //       },
-    //       {
-    //         returnNewDocument: true,
-    //       }
-    //     );
-    //   }),
-    //   map((dbTweet) => (dbTweet ? dbClientTweetAdapter(dbTweet) : dbTweet))
-    // );
-    return of({} as any);
+    return this.#http.put<Tweety>(
+      `${this.#environment.api.tweets}/${tweet.id}/content`,
+      {
+        ...tweet,
+      }
+    );
   }
 }

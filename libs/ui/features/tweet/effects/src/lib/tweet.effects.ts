@@ -16,6 +16,7 @@ import {
   shareReplay,
   switchMap,
   take,
+  tap,
   withLatestFrom,
 } from 'rxjs/operators';
 import { TweetApiService } from './tweet-api.service';
@@ -170,28 +171,24 @@ export class TweetsEffects {
       ofType(FeatTweetActions.like),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, currentProfile]) =>
-        this.#tweetApi
-          .likeTweet({
-            ...tweet,
-            upProfileIds: tweetIsLikedByProfile(tweet, currentProfile.id)
-              ? tweet.upProfileIds?.filter((id) => id !== currentProfile.id)
-              : [currentProfile.id, ...(tweet.upProfileIds ?? [])],
+        this.#tweetV2Service.likeTweet(tweet.id, currentProfile.id).pipe(
+          switchMap((likedTweet) =>
+            likedTweet
+              ? of(
+                  FeatTweetActions.likeSuccess({
+                    tweet: {
+                      ...tweet,
+                      ...likedTweet,
+                    },
+                  })
+                )
+              : throwError(() => new Error('Cannot find such tweet to like'))
+          ),
+          catchError((err) => {
+            console.error('[TweetsEffects] likeTweet ERROR', err);
+            return of(FeatTweetActions.likeFailure({ tweet }));
           })
-          .pipe(
-            switchMap((tweet) =>
-              tweet
-                ? of(
-                    FeatTweetActions.likeSuccess({
-                      tweet,
-                    })
-                  )
-                : throwError(() => new Error('Cannot find such tweet to like'))
-            ),
-            catchError((err) => {
-              console.error('[TweetsEffects] likeTweet ERROR', err);
-              return of(FeatTweetActions.likeFailure({ tweet }));
-            })
-          )
+        )
       )
     )
   );

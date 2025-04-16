@@ -42,7 +42,7 @@ export const featTweetTweetsReducer = createReducer(
     ...state,
     tweets: state.tweets.filter((stateTweet) => {
       if (stateTweet.type === TweetyType.Retweet) {
-        return (stateTweet as ReTweety).referenceId !== id;
+        return (stateTweet as ReTweety).tweetId !== id;
       }
 
       return stateTweet.id !== id;

@@ -2,7 +2,7 @@
   {
     "id": "1",
     "profileId": "1",
-    "referenceId": null,
+    "tweetId": null,
     "content": "This is my first tweet!",
     "replies": [],
     "comments": [],
@@ -31,7 +31,7 @@
   {
     "id": "2",
     "profileId": "2",
-    "referenceId": null,
+    "tweetId": null,
     "content": "This is my second tweet!",
     "replies": [],
     "comments": [],
@@ -60,7 +60,7 @@
   {
     "id": "3",
     "profileId": "1",
-    "referenceId": "1",
+    "tweetId": "1",
     "content": "This is a retweet of the first tweet!",
     "replies": [],
     "comments": [],
@@ -89,7 +89,7 @@
   {
     "id": "4",
     "profileId": "2",
-    "referenceId": "2",
+    "tweetId": "2",
     "content": "This is a retweet of the second tweet!",
     "replies": [],
     "comments": [],
@@ -118,7 +118,7 @@
   {
     "id": "5",
     "profileId": "3",
-    "referenceId": null,
+    "tweetId": null,
     "content": "This is a tweet from a company!",
     "replies": [],
     "comments": [],
@@ -147,7 +147,7 @@
   {
     "id": "6",
     "profileId": "1",
-    "referenceId": null,
+    "tweetId": null,
     "content": "This is a reply to the first tweet!",
     "replies": [],
     "comments": [],
@@ -176,7 +176,7 @@
   {
     "id": "7",
     "profileId": "2",
-    "referenceId": null,
+    "tweetId": null,
     "content": "This is a comment on the first tweet!",
     "replies": [],
     "comments": [],

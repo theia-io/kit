@@ -38,10 +38,10 @@ export interface Tweety extends Partial<KitTimestamp> {
   // business
   content: string;
   comments?: Partial<TweetComment>[]; // PagedData<Tweety[]>;
-  replies?: Partial<Tweety>[]; // PagedData<Tweety[]>;
+  // replies?: Partial<Tweety>[]; // PagedData<Tweety[]>;
   // Instagram-issue solution ->
-  upProfileIds?: Account['id'][];
-  downProfileIds?: Account['id'][];
+  upProfileIds?: Profile['id'][];
+  downProfileIds?: Profile['id'][];
   // />
   // some statistics connections
   denormalization?: {
@@ -51,10 +51,9 @@ export interface Tweety extends Partial<KitTimestamp> {
   type: TweetyType;
 }
 
-export interface ReTweety extends Partial<KitTimestamp> {
-  id: string;
-  profileId: string;
-  tweetId: Tweety['id'];
-  // meta
-  type: TweetyType;
+export interface ReTweety extends Tweety {
+  // original tweet id
+  tweetId: string;
+  // profile who retweeted it
+  retweetedProfileId: Profile['id'];
 }

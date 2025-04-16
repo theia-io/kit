@@ -220,11 +220,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   app.use(logger);
-  app.useGlobalPipes(
-    new ValidationPipe({
-      disableErrorMessages: true,
-    })
-  );
+  app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

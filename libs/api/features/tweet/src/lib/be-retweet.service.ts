@@ -34,13 +34,13 @@ export class BeReTweetService {
     return retweet;
   }
 
-  async newReTweet({ profileId, tweetId }: Partial<ReTweety>) {
+  async newReTweet({ retweetedProfileId, tweetId }: Partial<ReTweety>) {
     let newReTweet;
 
     try {
       newReTweet = await this.retweetModel.create({
         tweetId: new mongoose.Types.ObjectId(tweetId),
-        profileId: new mongoose.Types.ObjectId(profileId),
+        profileId: new mongoose.Types.ObjectId(retweetedProfileId),
       });
     } catch (err) {
       console.error(

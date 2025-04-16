@@ -1,4 +1,4 @@
-import { Auth0Kit, Tweety } from '@kitouch/shared-models';
+import { Auth0Kit, TweetComment, Tweety } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   Req,
   UseGuards,
@@ -63,5 +64,43 @@ export class BeTweetController {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles.map((profile) => profile.id);
     return this.beTweetService.deleteTweet(tweetId, profileId, profileIds);
+  }
+
+  @Put(':tweetId/like')
+  @UseGuards(AuthGuard('jwt'))
+  async likeTweet(
+    @Param('tweetId') tweetId: string,
+    @Query('profileId') profileId: string
+  ) {
+    return this.beTweetService.likeTweet(tweetId, profileId);
+  }
+
+  @Post(':tweetId/comment')
+  @UseGuards(AuthGuard('jwt'))
+  async addComment(
+    @Param('tweetId') tweetId: string,
+    @Body() commentDto: Partial<TweetComment>
+  ) {
+    console.log(commentDto);
+    return this.beTweetService.newTweetComment(tweetId, commentDto);
+  }
+
+  @Delete(':tweetId/comment')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteComment(
+    @Req() req: Request,
+    @Param('tweetId') tweetId: string,
+    @Query('profileId') profileId: string,
+    @Query('content') content: string
+  ) {
+    const profileIds = (req.user as Auth0Kit).profiles.map(
+      (profile) => profile.id
+    );
+    return this.beTweetService.deleteTweetComment(
+      tweetId,
+      profileId,
+      content,
+      profileIds
+    );
   }
 }
