@@ -25,6 +25,7 @@
 
 // export const User = model('user', userSchema);
 // src/db/schemas/user.schema.ts (example path)
+import { ExperienceType, LocationType } from '@kitouch/shared-models';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
 
@@ -41,29 +42,32 @@ export class Experience {
   country: string;
 
   @Prop()
-  type: string; // e.g., 'Full-time', 'Contract'
+  city: string;
 
-  @Prop()
-  locationType: string; // e.g., 'On-site', 'Remote'
+  @Prop({ type: String, enum: ExperienceType })
+  type: ExperienceType; // e.g., 'Full-time', 'Contract'
+
+  @Prop({ type: String, enum: LocationType })
+  locationType: LocationType; // e.g., 'On-site', 'Remote'
 
   @Prop()
   startDate: Date;
 
-  @Prop({ type: Date, required: false }) // Make endDate optional
-  endDate?: Date;
+  @Prop({ type: Date }) // Make endDate optional
+  endDate: Date;
 
   @Prop()
   description: string;
 
-  @Prop({ type: String, required: false }) // Assuming skills/links are comma-separated strings? Consider arrays.
-  skills?: string;
+  @Prop({ type: [{ type: String }] }) // Assuming skills/links are comma-separated strings? Consider arrays.
+  skills?: Array<string>;
 
-  @Prop({ type: String, required: false })
-  links?: string;
+  @Prop({ type: [{ type: String }] })
+  links?: Array<string>;
 
   // media: [] -> Need to define the structure if you store media info here
-  @Prop({ type: [mongoose.Schema.Types.Mixed], default: [] }) // Example: Array of anything
-  media: any[];
+  @Prop({ type: [{ type: String }] }) // Example: Array of anything
+  media: Array<string>;
 }
 export const ExperienceSchema = SchemaFactory.createForClass(Experience);
 

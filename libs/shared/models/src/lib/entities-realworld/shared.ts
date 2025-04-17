@@ -29,8 +29,8 @@ export interface Experience {
   country: string;
   city: string;
   locationType: LocationType;
-  startDate: string; // isoDate
-  endDate: string | null; // isoDate
+  startDate: Date; // isoDate
+  endDate: Date | null; // isoDate
   description?: string;
   skills?: Array<string>;
   links?: Array<string>;

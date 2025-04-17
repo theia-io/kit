@@ -1,24 +1,23 @@
-import { Injectable } from '@angular/core';
-import { dbClientLegalAdapter } from '@kitouch/kit-data';
-import { DataSourceService } from '@kitouch/shared-infra';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
 import { Legal } from '@kitouch/shared-models';
-import { DBClientType } from '@kitouch/utils';
-import { map, switchMap } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LegalService extends DataSourceService {
+  #env = inject(ENVIRONMENT);
+  #http = inject(HttpClient);
+
   getCompanies$() {
-    return this.db$().pipe(
-      switchMap((db) => db.collection<DBClientType<Legal>>('legal').find()),
-      map((companies) => companies.map(dbClientLegalAdapter))
-    );
+    return this.#http.get<Array<Legal>>(`${this.#env.api.kit}/legal`);
   }
 
   addCompanies$(companies: Array<Pick<Legal, 'alias' | 'name'>>) {
-    return this.db$().pipe(
-      switchMap((db) => db.collection('legal').insertMany(companies))
+    return this.#http.post<Array<Legal>>(
+      `${this.#env.api.kit}/legal`,
+      companies
     );
   }
 }

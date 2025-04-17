@@ -13,6 +13,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { KitController } from './kit.controller';
 import { KitService } from './kit.service';
+import { Legal, LegalSchema } from './schemas';
 
 @Module({
   imports: [
@@ -33,6 +34,10 @@ import { KitService } from './kit.service';
       {
         name: User.name,
         useFactory: () => UserSchema,
+      },
+      {
+        name: Legal.name,
+        useFactory: () => LegalSchema,
       },
     ]),
   ],

@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -40,7 +40,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { InputTextModule } from 'primeng/inputtext';
 import { StepperModule } from 'primeng/stepper';
-import { filter, map, of, scan, startWith, switchMap, take } from 'rxjs';
+import { filter, map, scan, startWith, switchMap, take } from 'rxjs';
 
 interface UploadEvent {
   originalEvent: Event;
@@ -51,7 +51,8 @@ interface UploadEvent {
   selector: 'feat-settings-experience-add',
   standalone: true,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgClass,
     ReactiveFormsModule,
     //
     FloatLabelModule,
@@ -128,15 +129,16 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
   experienceType = Object.values(ExperienceType);
   locationType = Object.values(LocationType);
 
-  suggestedCompanies$ = this.experienceForm
-    .get('company')
-    ?.valueChanges.pipe(
-      switchMap((typedCompany: string | null) =>
-        (typedCompany?.length ?? 0) > 2
-          ? this.#store.select(getMatchingCompanies(typedCompany as string))
-          : of([])
-      )
-    );
+  suggestedCompanies$ = this.experienceForm.get('company')?.valueChanges.pipe(
+    startWith(''),
+    switchMap(
+      (typedCompany: string | null) =>
+        this.#store.select(getMatchingCompanies(typedCompany as string))
+      // (typedCompany?.length ?? 0) > 2
+      // ? this.#store.select(getMatchingCompanies(typedCompany as string))
+      // : of([])
+    )
+  );
 
   countries = countries.map(
     (country: { name: string; code: string }) => country.name
@@ -198,7 +200,20 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
   }
 
   onSaveExperienceClick() {
-    const experience = this.experienceForm.value as Experience;
+    const endDateFormValue = this.experienceForm.get('endDate')?.value;
+
+    const startDate = new Date(
+        this.experienceForm.get('startDate')?.value ?? Date.now()
+      ),
+      endDate = endDateFormValue ? new Date(endDateFormValue) : null;
+
+    const experience = {
+      ...this.experienceForm.value,
+      startDate,
+      endDate,
+      skills: this.experienceForm.get('skills')?.value?.split(',') ?? [],
+      links: this.experienceForm.get('links')?.value?.split(',') ?? [],
+    } as Experience;
 
     /** @TODO @FIXME we can also keep this experience form and create a new one next to this so user can update it straight away **/
     this.experienceForm.reset();

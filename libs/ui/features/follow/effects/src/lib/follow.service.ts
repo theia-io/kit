@@ -1,17 +1,15 @@
-import { Injectable } from '@angular/core';
-import { dbClientProfileAdapter } from '@kitouch/kit-data';
-import { DataSourceService } from '@kitouch/shared-infra';
-import { Profile, User } from '@kitouch/shared-models';
-import { DBClientType } from '@kitouch/utils';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
+import { Profile } from '@kitouch/shared-models';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
 
 @Injectable({ providedIn: 'root' })
-export class FollowService extends DataSourceService {
-  getColleaguesProfileSuggestions$(user: User): Observable<Array<Profile>> {
-    return this.realmFunction$<Array<DBClientType<Profile>>>(
-      'getSuggestionColleaguesToFollow',
-      user
-    ).pipe(map((profiles) => profiles.map(dbClientProfileAdapter)));
+export class FollowService {
+  #http = inject(HttpClient);
+  #env = inject(ENVIRONMENT);
+
+  getColleaguesProfileSuggestions$(): Observable<Array<Profile>> {
+    return this.#http.get<Array<Profile>>(`${this.#env.api.kit}/suggestion`);
   }
 }

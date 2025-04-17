@@ -4,7 +4,7 @@ import { selectCurrentUser } from '@kitouch/kit-data';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, filter, map, of, switchMap } from 'rxjs';
 import { FollowService } from './follow.service';
 
 @Injectable()
@@ -18,9 +18,8 @@ export class FollowEffects {
   getSuggestionColleaguesToFollow$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFollowActions.getSuggestionColleaguesToFollow),
-      withLatestFrom(this.#currentUser),
-      switchMap(([_, user]) =>
-        this.#followService.getColleaguesProfileSuggestions$(user).pipe(
+      switchMap(() =>
+        this.#followService.getColleaguesProfileSuggestions$().pipe(
           map((profiles) =>
             FeatFollowActions.getSuggestionColleaguesToFollowSuccess({
               profiles,
