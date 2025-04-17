@@ -1,6 +1,12 @@
 import { Injectable, InjectionToken } from '@angular/core';
-import { S3Client } from '@aws-sdk/client-s3';
+import {
+  DeleteObjectCommand,
+  GetObjectCommand,
+  PutObjectCommand,
+  S3Client,
+} from '@aws-sdk/client-s3';
 import { fromCognitoIdentityPool } from '@aws-sdk/credential-providers';
+import { from } from 'rxjs';
 
 export interface S3Config {
   region: string;
@@ -35,4 +41,38 @@ export class S3Service {
       },
     }),
   });
+
+  getBucketItem(Bucket: string, Key: string) {
+    return from(
+      this.client.send(
+        new GetObjectCommand({
+          Bucket,
+          Key,
+        })
+      )
+    );
+  }
+
+  setBucketItem(Bucket: string, Key: string, Body: Blob) {
+    return from(
+      this.client.send(
+        new PutObjectCommand({
+          Bucket,
+          Key,
+          Body,
+        })
+      )
+    );
+  }
+
+  deleteBucketItem(Bucket: string, Key: string) {
+    return from(
+      this.client.send(
+        new DeleteObjectCommand({
+          Bucket,
+          Key,
+        })
+      )
+    );
+  }
 }

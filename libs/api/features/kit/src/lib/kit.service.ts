@@ -6,20 +6,29 @@ import {
   User,
   UserDocument,
 } from '@kitouch/be-db';
-import { AccountStatus, AccountType, Auth0User } from '@kitouch/shared-models';
+import {
+  AccountStatus,
+  AccountType,
+  Auth0User,
+  Experience,
+  Profile as IProfile,
+  User as IUser,
+} from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
+import { Legal, LegalDocument } from './schemas';
 
 @Injectable()
 export class KitService {
   constructor(
     @InjectModel(Account.name) private accountModel: Model<AccountDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
-    @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>
+    @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>,
+    @InjectModel(Legal.name) private legalModel: Model<LegalDocument>
   ) {}
 
-  async accountFindOne(email: string): Promise<AccountDocument | null> {
+  async accountByEmail(email: string): Promise<AccountDocument | null> {
     let account;
     try {
       // check if will find many or INFORCE it with something
@@ -37,7 +46,7 @@ export class KitService {
     return account;
   }
 
-  async accountFindOneAndUpdate(
+  async auth0AccountFindAndUpdate(
     auth0User: Omit<Auth0User, 'account' | 'user' | 'profiles'>
   ): Promise<AccountDocument> {
     const auth0UserEmail = auth0User.email.toLowerCase();
@@ -89,7 +98,7 @@ export class KitService {
     return account;
   }
 
-  async userFindOne(accountId: string) {
+  async accountUser(accountId: string) {
     let user;
     try {
       // check if will find many or INFORCE it with something
@@ -109,7 +118,9 @@ export class KitService {
     return user;
   }
 
-  async userFindOneAndUpdate(account: AccountDocument): Promise<UserDocument> {
+  async accountUserFindAndUpdate(
+    account: AccountDocument
+  ): Promise<UserDocument> {
     let user: UserDocument | null;
 
     try {
@@ -155,7 +166,7 @@ export class KitService {
     return user;
   }
 
-  async profileFind(userId: string) {
+  async userProfiles(userId: string) {
     let profile: Array<ProfileDocument> | null;
 
     try {
@@ -177,7 +188,7 @@ export class KitService {
   async profilesFindOrInsert(
     user: UserDocument
   ): Promise<Array<ProfileDocument>> {
-    const profiles: Array<ProfileDocument> | null = await this.profileFind(
+    const profiles: Array<ProfileDocument> | null = await this.userProfiles(
       user.id
     );
     if (profiles && profiles.length > 0) {
@@ -206,5 +217,156 @@ export class KitService {
     }
 
     return [profile];
+  }
+
+  async suggestProfilesToFollow(currentUser: IUser) {
+    let allUsers: Array<UserDocument> | null;
+
+    try {
+      allUsers = await this.userModel
+        .find<UserDocument>({
+          _id: { $ne: new mongoose.Types.ObjectId(currentUser.id) },
+        })
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute user search', err);
+      throw new HttpException(
+        'Cannot execute user search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    const getExperienceIntersection = (
+      { startDate: s1, endDate: e1 }: Experience,
+      { startDate: s2, endDate: e2 }: Experience
+    ) => {
+      const NOW = new Date();
+
+      const s1Number = new Date(s1).getTime(),
+        e1Number = (e1 ? new Date(e1) : NOW).getTime(),
+        s2Number = new Date(s2).getTime(),
+        e2Number = (e2 ? new Date(e2) : NOW).getTime();
+
+      return (
+        (s1Number - s2Number >= 0 && e2Number - s1Number >= 0) ||
+        (s2Number - s1Number >= 0 && e1Number - s2Number >= 0)
+      );
+    };
+
+    const matchingUsers = allUsers.filter((anotherUser) =>
+      currentUser.experiences?.some((thisUserExperience) =>
+        anotherUser.experiences?.some((anotherUserExperience) =>
+          getExperienceIntersection(thisUserExperience, anotherUserExperience)
+        )
+      )
+    );
+
+    const matchingUsersIds = matchingUsers.map(
+      (matchingUser) => matchingUser._id
+    );
+
+    let matchingUserProfiles;
+    try {
+      matchingUserProfiles = await this.profileModel
+        .aggregate([
+          {
+            $match: {
+              userId: { $in: matchingUsersIds },
+            },
+          },
+        ])
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute profile search', err);
+      throw new HttpException(
+        'Cannot execute profile search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return matchingUserProfiles.map(({ _id, ...matchingUserProfile }) => ({
+      id: _id,
+      ...matchingUserProfile,
+    }));
+  }
+
+  async profiles(profileIds: Array<string>) {
+    let profiles: Array<ProfileDocument> | null;
+
+    try {
+      // check if will find many or INFORCE it with something
+      profiles = await this.profileModel
+        .find<ProfileDocument>({
+          _id: { $in: profileIds.map((id) => new mongoose.Types.ObjectId(id)) },
+        })
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute profile search', err);
+      throw new HttpException(
+        'Cannot execute profile search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return profiles;
+  }
+
+  async updateProfile(profile: IProfile) {
+    let updatedProfile: ProfileDocument | null;
+
+    try {
+      updatedProfile = await this.profileModel
+        .findOneAndUpdate<ProfileDocument>(
+          { _id: new mongoose.Types.ObjectId(profile.id) },
+          {
+            $set: {
+              ...profile,
+            },
+          },
+          { new: true }
+        )
+        .exec();
+    } catch (err) {
+      console.error('Cannot update profile', err);
+      throw new HttpException(
+        'Cannot update profile',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return updatedProfile;
+  }
+
+  async companies() {
+    let companies: Array<LegalDocument> | null;
+
+    try {
+      // check if will find many or INFORCE it with something
+      companies = await this.legalModel.find<LegalDocument>().exec();
+    } catch (err) {
+      console.error('Cannot get companies', err);
+      throw new HttpException(
+        'Cannot get companies',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return companies;
+  }
+
+  async addCompanies(companies: Array<Pick<Legal, 'alias' | 'name'>>) {
+    let newCompanies: Array<LegalDocument> | null;
+
+    try {
+      newCompanies = await this.legalModel.insertMany(companies);
+    } catch (err) {
+      console.error('Cannot add company', err);
+      throw new HttpException(
+        'Cannot add new legal entity',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return newCompanies;
   }
 }

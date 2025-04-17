@@ -159,8 +159,8 @@ async function bootstrap() {
 
       // get KIT user from auth0 user
       const kitService = app.get(KitService);
-      const kitAccount = await kitService.accountFindOneAndUpdate(auth0User);
-      const kitUser = await kitService.userFindOneAndUpdate(kitAccount);
+      const kitAccount = await kitService.auth0AccountFindAndUpdate(auth0User);
+      const kitUser = await kitService.accountUserFindAndUpdate(kitAccount);
       const kitProfiles = await kitService.profilesFindOrInsert(kitUser);
 
       const authKit: Auth0Kit = {

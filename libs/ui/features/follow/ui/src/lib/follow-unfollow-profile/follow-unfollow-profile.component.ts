@@ -1,4 +1,4 @@
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -14,7 +14,6 @@ import {
 } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { UXDynamicService } from '@kitouch/shared-services';
-import { FollowButtonComponent } from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { filter, take } from 'rxjs';
@@ -91,9 +90,6 @@ export const followerHandlerFn = () => {
   templateUrl: './follow-unfollow-profile.component.html',
   imports: [
     NgOptimizedImage,
-    NgClass,
-    //
-    FollowButtonComponent,
     //
     ButtonModule,
   ],

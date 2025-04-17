@@ -1,4 +1,3 @@
-import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -15,7 +14,6 @@ import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import {
   FeatSettingsExperienceAddComponent,
   FeatSettingsExperienceShowComponent,
-  FeatSettingsProfileInformationComponent,
 } from '@kitouch/feat-settings-ui';
 import {
   FeatLegalApiActions,
@@ -26,7 +24,6 @@ import {
   selectUserExperience,
 } from '@kitouch/kit-data';
 import { Experience } from '@kitouch/shared-models';
-import { UiKitCompAnimatePingComponent } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
 import { ButtonModule } from 'primeng/button';
@@ -39,14 +36,10 @@ import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
   templateUrl: './experience.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    AsyncPipe,
-    //
     MessagesModule,
     AccordionModule,
     ButtonModule,
     //
-    UiKitCompAnimatePingComponent,
-    FeatSettingsProfileInformationComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsExperienceShowComponent,
     //

@@ -10,14 +10,17 @@ import {
 } from '@kitouch/feat-farewell-data';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import {
+  FeatBookmarksActions,
+  TweetApiActions,
+} from '@kitouch/feat-tweet-data';
+import {
   FeatProfileActions,
   FeatProfileApiActions,
-  noopAction,
-  selectProfileById,
   selectProfilesByIds,
 } from '@kitouch/kit-data';
 import { KitTimestamp, Profile } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import {
   bufferTime,
   catchError,
@@ -28,18 +31,13 @@ import {
   switchMap,
   take,
 } from 'rxjs';
-import { ProfileService } from './profile.service';
-import {
-  FeatBookmarksActions,
-  TweetApiActions,
-} from '@kitouch/feat-tweet-data';
-import { select, Store } from '@ngrx/store';
+import { ProfileV2Service } from './profilev2.service';
 
 @Injectable()
 export class ProfileEffects {
   #store = inject(Store);
   #actions$ = inject(Actions);
-  #profileService = inject(ProfileService);
+  #profileV2Service = inject(ProfileV2Service);
 
   #profilesForTweet$ = this.#actions$.pipe(
     ofType(TweetApiActions.get),
@@ -70,7 +68,7 @@ export class ProfileEffects {
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.getProfiles),
       switchMap(({ profileIds }) =>
-        this.#profileService.getProfiles(profileIds).pipe(
+        this.#profileV2Service.getProfiles(profileIds).pipe(
           map((profiles) =>
             FeatProfileApiActions.getProfilesSuccess({ profiles })
           ),
@@ -138,12 +136,11 @@ export class ProfileEffects {
     )
   );
 
-  // CRUD
   updateProfile$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.updateProfile),
       switchMap(({ profile }) =>
-        this.#profileService.put(profile).pipe(
+        this.#profileV2Service.put(profile).pipe(
           map(() => FeatProfileApiActions.updateProfileSuccess({ profile })),
           catchError((err) => {
             console.error('[ProfileEffects] updateProfile', err);
@@ -162,7 +159,7 @@ export class ProfileEffects {
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.uploadProfilePicture),
       switchMap(({ id, pic }) =>
-        this.#profileService.uploadProfilePicture(id, pic).pipe(
+        this.#profileV2Service.uploadProfilePicture(id, pic).pipe(
           map(() =>
             FeatProfileApiActions.uploadProfilePictureSuccess({ id, url: id })
           ),
@@ -183,7 +180,7 @@ export class ProfileEffects {
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.uploadProfileBackground),
       switchMap(({ id, pic }) =>
-        this.#profileService.uploadProfilePicture(id, pic).pipe(
+        this.#profileV2Service.uploadProfilePicture(id, pic).pipe(
           map(() =>
             FeatProfileApiActions.uploadProfileBackgroundSuccess({
               id,
