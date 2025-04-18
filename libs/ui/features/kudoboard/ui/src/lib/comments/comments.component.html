@@ -47,8 +47,10 @@ async)?.recipient;
           sharedAuthorizedFeature
           [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
           [primarySecondaryText]="
-            comment.timestamp.updatedAt ?? comment.timestamp.createdAt
-              | date : 'MMM d, h:mm a'
+            comment.updatedAt ??
+              comment.timestamp?.updatedAt ??
+              comment.createdAt ??
+              comment.timestamp?.createdAt | date : 'MMM d, h:mm a'
           "
           [picture]="profilePictureFn(comment.profile)"
           [link]="

@@ -17,7 +17,12 @@
 
 <ui-kit-divider class="block my-9" />
 
-@for (comment of (farewellComments$ | async); track $index) {
+@for (comment of (farewellComments$ | async); track $index) { @let
+commentCreatedAt = comment.createdAt; @let commentCreatedAtCreatedAtLegacy =
+comment.timestamp?.createdAt; @let commentCreatedAtUpdatedAt =
+comment.createdAt; @let commentCreatedAtUpdatedAtLegacy =
+comment.timestamp?.createdAt;
+
 <div
   [class.mb-9]="!$last"
   class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl">
@@ -26,8 +31,10 @@
       sharedAuthorizedFeature
       [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
       [primarySecondaryText]="
-        comment.timestamp.updatedAt ?? comment.timestamp.createdAt
-          | date : 'MMM d, h:mm a'
+        commentCreatedAtUpdatedAt ??
+          commentCreatedAtUpdatedAtLegacy ??
+          commentCreatedAt ??
+          commentCreatedAtCreatedAtLegacy | date : 'MMM d, h:mm a'
       "
       [picture]="profilePictureFn(comment.profile)"
       [link]="

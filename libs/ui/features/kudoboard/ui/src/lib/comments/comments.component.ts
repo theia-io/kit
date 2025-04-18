@@ -51,7 +51,11 @@ import {
   ContractUploadedMedia,
   KudoBoardComment,
 } from '@kitouch/shared-models';
-import { MasonryService, PhotoService } from '@kitouch/shared-services';
+import {
+  MasonryService,
+  PhotoService,
+  sortByCreatedTimeDesc,
+} from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -155,9 +159,11 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
       this.#store.pipe(select(selectKudoBoardCommentsById(kudoboardId)))
     ),
     map((comments) =>
-      comments.sort(
-        (a, b) =>
-          b.timestamp.createdAt.getTime() - a.timestamp.createdAt.getTime()
+      comments.sort((a, b) =>
+        sortByCreatedTimeDesc(
+          a.createdAt ?? (a as any).timestamp?.createdAt,
+          b.createdAt ?? (b as any).timestamp?.createdAt
+        )
       )
     )
   );
