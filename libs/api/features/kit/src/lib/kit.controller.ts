@@ -1,10 +1,17 @@
-import { Auth0Kit, Profile as IProfile, Legal } from '@kitouch/shared-models';
+import {
+  Auth0Kit,
+  Experience,
+  Profile as IProfile,
+  Legal,
+} from '@kitouch/shared-models';
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpException,
   HttpStatus,
+  Param,
   Post,
   Put,
   Query,
@@ -64,7 +71,6 @@ export class KitController {
   @Get('profiles')
   @UseGuards(AuthGuard('jwt'))
   async getProfiles(@Query('profiles') profiles: string) {
-    console.log('profiles', profiles);
     return this.kitService.profiles(
       profiles.split(',').map((profile) => profile.trim())
     );
@@ -73,8 +79,32 @@ export class KitController {
   @Put('profiles')
   @UseGuards(AuthGuard('jwt'))
   async update(@Body() profile: IProfile) {
-    console.log('profile', profile);
     return this.kitService.updateProfile(profile);
+  }
+
+  @Get('user/:usedId')
+  @UseGuards(AuthGuard('jwt'))
+  async getUser(@Param('usedId') id: string) {
+    return this.kitService.getUser(id);
+  }
+
+  @Put('user/:usedId/experience')
+  @UseGuards(AuthGuard('jwt'))
+  async addUserExperience(
+    @Param('usedId') userId: string,
+    @Body() experience: Experience
+  ) {
+    return this.kitService.addUserExperience(userId, experience);
+  }
+
+  @Delete('user/:usedId/experience/:experienceId')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteUserExperience(
+    @Param('usedId') userId: string,
+    @Param('experienceId') experienceId: string
+  ) {
+    console.log('deleteUserExperience 1', userId, experienceId);
+    return this.kitService.deleteUserExperience(userId, experienceId);
   }
 
   @Get('legal')
