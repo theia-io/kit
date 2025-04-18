@@ -103,15 +103,6 @@ export class PageProfileExperienceComponent {
       .subscribe(() =>
         this.#store.dispatch(FeatLegalApiActions.getCompanies())
       );
-    // @TODO Figure out why bottom's `store.dispatch`  returns error
-    // effect(() => {
-    //   const profile = this.profile();
-    //   if (profile && profile.userId) {
-    //     this.#store.dispatch(
-    //       FeatUserApiActions.getUser({ userId: profile.userId })
-    //     );
-    //   }
-    // });
   }
 
   deleteExperienceHandler(experience: Experience) {

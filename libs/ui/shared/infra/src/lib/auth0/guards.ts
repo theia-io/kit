@@ -40,8 +40,6 @@ export const onlyForLoggedInGuard = (
   const authService = inject(Auth0Service);
   const store = inject(Store);
 
-  console.log(route.url, state.url, route, state);
-
   return authService.loggedInUser$.pipe(
     take(1),
     map((user) => !!user),
@@ -61,7 +59,7 @@ export const onlyForLoggedInGuard = (
     ),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
-        return router.createUrlTree([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
+        return router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }
 
       return isLoggedIn;

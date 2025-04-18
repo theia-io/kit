@@ -166,6 +166,93 @@ export class KitService {
     return user;
   }
 
+  async getUser(userId: string) {
+    let user: UserDocument | null;
+
+    try {
+      user = await this.userModel
+        .findOne<UserDocument>({ _id: new mongoose.Types.ObjectId(userId) })
+        .exec();
+    } catch (err) {
+      console.error(`Cannot get user ${userId}`, err);
+      throw new HttpException(
+        'Cannot get user',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return user;
+  }
+
+  async addUserExperience(userId: string, experience: Experience) {
+    let updatedUser: UserDocument | null;
+
+    try {
+      updatedUser = await this.userModel
+        .findOneAndUpdate<UserDocument>(
+          { _id: new mongoose.Types.ObjectId(userId) },
+          {
+            $push: {
+              experiences: experience,
+            },
+          },
+          { new: true }
+        )
+        .exec();
+    } catch (err) {
+      console.error(
+        `Cannot add user experiences ${userId}, ${experience}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot add user experience',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    console.log('updatedUser', updatedUser);
+
+    return updatedUser;
+  }
+
+  async deleteUserExperience(userId: string, experienceId: Experience['id']) {
+    let updatedUser: UserDocument | null;
+
+    try {
+      updatedUser = await this.userModel
+        .findOneAndUpdate<UserDocument>(
+          {
+            _id: new mongoose.Types.ObjectId(userId),
+            experiences: {
+              $elemMatch: {
+                _id: new mongoose.Types.ObjectId(experienceId),
+              },
+            },
+          },
+          {
+            $pull: {
+              experiences: {
+                _id: new mongoose.Types.ObjectId(experienceId),
+              },
+            },
+          },
+          { new: true }
+        )
+        .exec();
+    } catch (err) {
+      console.error(
+        `Cannot delete user experience ${userId}, ${experienceId}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot delete user experience',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return updatedUser;
+  }
+
   async userProfiles(userId: string) {
     let profile: Array<ProfileDocument> | null;
 
@@ -237,8 +324,8 @@ export class KitService {
     }
 
     const getExperienceIntersection = (
-      { startDate: s1, endDate: e1 }: Experience,
-      { startDate: s2, endDate: e2 }: Experience
+      { startDate: s1, endDate: e1 }: Omit<Experience, 'id'>,
+      { startDate: s2, endDate: e2 }: Omit<Experience, 'id'>
     ) => {
       const NOW = new Date();
 

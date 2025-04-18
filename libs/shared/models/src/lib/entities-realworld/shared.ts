@@ -23,6 +23,7 @@ export enum LocationType {
 }
 
 export interface Experience {
+  id: string;
   title: string;
   type: ExperienceType;
   company: string;
