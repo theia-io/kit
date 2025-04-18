@@ -32,7 +32,7 @@ import {
 import { APP_PATH } from '@kitouch/shared-constants';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
-import { PhotoService } from '@kitouch/shared-services';
+import { PhotoService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -116,9 +116,11 @@ export class FeatFarewellCommentsComponent {
       this.#store.pipe(select(selectFarewellCommentsById(farewellId)))
     ),
     map((comments) =>
-      comments.sort(
-        (a, b) =>
-          b.timestamp.createdAt.getTime() - a.timestamp.createdAt.getTime()
+      comments.sort((a, b) =>
+        sortByCreatedTimeDesc(
+          a.createdAt ?? (a as any).timestamp?.createdAt,
+          b.createdAt ?? (b as any).timestamp?.createdAt
+        )
       )
     )
   );

@@ -218,14 +218,18 @@ export class ProfileEffects {
 
 // TODO test this
 const getRecentUniqueProfilesFromT = <
-  T extends { profile?: Profile; timestamp: KitTimestamp }
+  T extends {
+    profile?: Profile;
+    createdAt?: KitTimestamp['createdAt'];
+    timestamp?: Partial<KitTimestamp>;
+  }
 >(
   items: Array<T>
 ): Array<Profile> => {
   const profilesMap = new Map<Profile['id'], T & { profile: Profile }>();
 
   items.forEach((item) => {
-    const { profile, timestamp } = item;
+    const { profile, timestamp, createdAt } = item;
     if (!profile) {
       return;
     }
@@ -239,8 +243,8 @@ const getRecentUniqueProfilesFromT = <
 
     // get latest profile (= latest farewell reaction)
     if (
-      savedProfile.timestamp.createdAt.getTime() -
-        timestamp.createdAt.getTime() <
+      (savedProfile.createdAt ?? savedProfile.timestamp?.createdAt)!.getTime() -
+        (createdAt ?? timestamp?.createdAt)!.getTime() <
       0
     ) {
       profilesMap.set(id, { ...item, profile });

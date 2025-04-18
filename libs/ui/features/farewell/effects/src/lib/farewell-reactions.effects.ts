@@ -8,13 +8,13 @@ import { FarewellReactionsService } from './farewell-reactions.service';
 @Injectable()
 export class FarewellReactionsEffects {
   #actions$ = inject(Actions);
-  #farewellMediaService = inject(FarewellReactionsService);
+  #farewellReactionsService = inject(FarewellReactionsService);
 
   getFarewellReactions$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellReactionActions.getReactionsFarewell),
       switchMap(({ farewellId }) =>
-        this.#farewellMediaService.getFarewellReactions(farewellId).pipe(
+        this.#farewellReactionsService.getFarewellReactions(farewellId).pipe(
           map((reactions) =>
             FeatFarewellReactionActions.getReactionsFarewellSuccess({
               reactions,
@@ -36,7 +36,7 @@ export class FarewellReactionsEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellReactionActions.postReactionFarewell),
       switchMap(({ reaction }) =>
-        this.#farewellMediaService.postFarewellReaction(reaction).pipe(
+        this.#farewellReactionsService.postFarewellReaction(reaction).pipe(
           map((reactionResponse) =>
             FeatFarewellReactionActions.postReactionFarewellSuccess({
               reaction: reactionResponse,
@@ -58,7 +58,7 @@ export class FarewellReactionsEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellReactionActions.deleteReactionFarewell),
       switchMap(({ id }) =>
-        this.#farewellMediaService.deleteFarewellReaction(id).pipe(
+        this.#farewellReactionsService.deleteFarewellReaction(id).pipe(
           map(() =>
             FeatFarewellReactionActions.deleteReactionFarewellSuccess({
               id,

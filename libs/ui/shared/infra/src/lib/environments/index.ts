@@ -18,6 +18,10 @@ export interface Environment {
     tweets: string;
     retweets: string;
     bookmarks: string;
+    farewell: string;
+    farewellComments: string;
+    farewellReactions: string;
+    farewellAnalytics: string;
   };
   googleTagConfig: string | null;
   build: string;

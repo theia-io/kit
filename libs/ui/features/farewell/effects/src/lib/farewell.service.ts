@@ -61,7 +61,7 @@ export class FarewellService extends DataSourceService {
     const update = {
       ...rest,
       timestamp: {
-        ...rest.timestamp,
+        ...(rest as any).timestamp,
         updatedAt: new Date(Date.now()),
       },
     };
