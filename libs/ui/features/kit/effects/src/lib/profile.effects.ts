@@ -243,8 +243,14 @@ const getRecentUniqueProfilesFromT = <
 
     // get latest profile (= latest farewell reaction)
     if (
-      (savedProfile.createdAt ?? savedProfile.timestamp?.createdAt)!.getTime() -
-        (createdAt ?? timestamp?.createdAt)!.getTime() <
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+      new Date(
+        savedProfile.createdAt ??
+          savedProfile.timestamp?.createdAt ??
+          Date.now()
+      )!.getTime() -
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        new Date(createdAt ?? timestamp?.createdAt ?? Date.now())!.getTime() <
       0
     ) {
       profilesMap.set(id, { ...item, profile });

@@ -48,7 +48,7 @@ export class BeKudoboardController {
 
   @Delete(':kudoboardId')
   @UseGuards(AuthGuard('jwt'))
-  async deleteKudoboard(@Param() kudoboardId: string) {
+  async deleteKudoboard(@Param('kudoboardId') kudoboardId: string) {
     console.log('deleteKudoboard', kudoboardId);
     return this.beKudoboardService.deleteKudoboard(kudoboardId);
   }

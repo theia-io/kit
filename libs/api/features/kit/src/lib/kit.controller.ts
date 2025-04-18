@@ -62,6 +62,34 @@ export class KitController {
     };
   }
 
+  @Delete('entity/:accountId')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteAccountUserProfiles(@Param('accountId') accountId: string) {
+    console.log('deleteAccountUserProfiles 1', accountId);
+
+    const account = await this.kitService.deleteAccount(accountId);
+    if (!account) {
+      throw new HttpException(
+        'Account was not deleted',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    const user = await this.kitService.accountUser(accountId);
+    if (!user) {
+      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+    }
+    console.log('user 1', user);
+
+    const profiles = await this.kitService.userProfiles(user.id);
+    if (!profiles || profiles.length === 0) {
+      throw new HttpException('Profile not found', HttpStatus.BAD_REQUEST);
+    }
+    console.log('profiles 1', profiles);
+
+    return true;
+  }
+
   @Get('suggestion')
   @UseGuards(AuthGuard('jwt'))
   async getSuggestionProfiles(@Req() req: Request) {

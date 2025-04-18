@@ -5,7 +5,7 @@ export type KudoBoardReactionsDocument = HydratedDocument<KudoBoardReactions>;
 
 @Schema({
   timestamps: true,
-  collection: 'farewell-reactions',
+  collection: 'kudoboard-reactions',
   toJSON: {
     virtuals: true,
     versionKey: false,

@@ -4,7 +4,7 @@ import {
   Router,
   RouterStateSnapshot,
 } from '@angular/router';
-import { FeatAuth0Events } from '@kitouch/kit-data';
+import { FeatAuth0Events, FeatUserApiActions } from '@kitouch/kit-data';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, take, tap } from 'rxjs';
@@ -59,6 +59,8 @@ export const onlyForLoggedInGuard = (
     ),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
+        console.log('INSIDE onlyForLoggedInGuard REDIRECT');
+        store.dispatch(FeatUserApiActions.setUser({ user: undefined }));
         return router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }
 

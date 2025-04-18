@@ -1,12 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 import { Legal } from '@kitouch/shared-models';
 
 @Injectable({
   providedIn: 'root',
 })
-export class LegalService extends DataSourceService {
+export class LegalService {
   #env = inject(ENVIRONMENT);
   #http = inject(HttpClient);
 

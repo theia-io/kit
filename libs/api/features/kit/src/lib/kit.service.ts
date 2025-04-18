@@ -46,6 +46,25 @@ export class KitService {
     return account;
   }
 
+  async deleteAccount(accountId: string): Promise<boolean> {
+    try {
+      // check if will find many or INFORCE it with something
+      await this.accountModel
+        .findOneAndDelete<AccountDocument>({
+          _id: new mongoose.Types.ObjectId(accountId),
+        })
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute account deleting', err);
+      throw new HttpException(
+        'Cannot execute account delete',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return true;
+  }
+
   async auth0AccountFindAndUpdate(
     auth0User: Omit<Auth0User, 'account' | 'user' | 'profiles'>
   ): Promise<AccountDocument> {
@@ -111,6 +130,26 @@ export class KitService {
       console.error('Cannot execute user search', err);
       throw new HttpException(
         'Cannot execute user search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return user;
+  }
+
+  async deleteUser(accountId: string) {
+    let user;
+    try {
+      // check if will find many or INFORCE it with something
+      user = await this.userModel
+        .findOneAndDelete<UserDocument>({
+          accountId: new mongoose.Types.ObjectId(accountId),
+        })
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute user delete', err);
+      throw new HttpException(
+        'Cannot execute user delete',
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
@@ -270,6 +309,25 @@ export class KitService {
     }
 
     return profile;
+  }
+
+  async deleteProfiles(userId: string) {
+    try {
+      // check if will find many or INFORCE it with something
+      await this.profileModel
+        .findByIdAndDelete<ProfileDocument>({
+          userId: new mongoose.Types.ObjectId(userId),
+        })
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute profile search', err);
+      throw new HttpException(
+        'Cannot execute profile search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return true;
   }
 
   async profilesFindOrInsert(

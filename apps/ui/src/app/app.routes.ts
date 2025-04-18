@@ -17,11 +17,6 @@ import { KitComponent } from './kit.component';
 const pages = import('@kitouch/pages');
 
 export const appRoutes: Route[] = [
-  /** @TODO @FIXME remove after on 1st September 2024 */
-  {
-    path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
-    redirectTo: `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
-  },
   {
     path: 's',
     loadComponent: () =>

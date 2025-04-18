@@ -1,10 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import {
   KudoBoardReactions,
   KudoBoardReactionsDocument,
 } from './schemas/kudoboard-reaction.schema';
+import { KudoBoardReaction as IKudoBoardReactions } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeKudoBoardReactionsService {
@@ -12,4 +13,75 @@ export class BeKudoBoardReactionsService {
     @InjectModel(KudoBoardReactions.name)
     private kudoBoardReactionsModel: Model<KudoBoardReactionsDocument>
   ) {}
+
+  async getReactionsKudoBoard(kudoBoardId: string) {
+    let kudoBoardReactions;
+
+    try {
+      kudoBoardReactions = await this.kudoBoardReactionsModel
+        .find({
+          kudoBoardId: new mongoose.Types.ObjectId(kudoBoardId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(
+        `Cannot execute kudoboard reactions search for ${kudoBoardId}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot find kudoboard reactions',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return kudoBoardReactions;
+  }
+
+  async createReactionsKudoBoard(kudoBoard: IKudoBoardReactions) {
+    let newKudoBoardReaction;
+
+    try {
+      newKudoBoardReaction = await this.kudoBoardReactionsModel.create({
+        ...kudoBoard,
+        kudoBoardId: new mongoose.Types.ObjectId(kudoBoard.kudoBoardId),
+        profileId: new mongoose.Types.ObjectId(kudoBoard.profileId),
+      });
+    } catch (err) {
+      console.error(
+        `Cannot execute kudoboard reaction create for ${kudoBoard.toString()}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot create kudoboard reaction',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    console.log('RES', newKudoBoardReaction);
+
+    return newKudoBoardReaction;
+  }
+
+  async deleteKudoboardReactions(kudoBoardReactionId: string) {
+    let deletedKudoboardReactions;
+
+    try {
+      deletedKudoboardReactions = await this.kudoBoardReactionsModel
+        .findOneAndDelete({
+          _id: new mongoose.Types.ObjectId(kudoBoardReactionId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(
+        `Cannot execute kudoboard reaction delete for ${kudoBoardReactionId}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot delete kudoboard reactions',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return deletedKudoboardReactions;
+  }
 }

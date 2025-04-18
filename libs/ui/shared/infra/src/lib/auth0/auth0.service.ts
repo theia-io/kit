@@ -27,21 +27,21 @@ export class Auth0Service {
     window.location.href = `http://localhost:3000/api/auth/logout`; // express-openid-connect handles this
   }
 
-  savePostRedirectUrl(beforeRedirectUrl: string) {
-    this.#localStoreService.setItem(this.#beforeRedirectKey, beforeRedirectUrl);
-  }
+  // savePostRedirectUrl(beforeRedirectUrl: string) {
+  //   this.#localStoreService.setItem(this.#beforeRedirectKey, beforeRedirectUrl);
+  // }
 
-  getPostRedirectUrl() {
-    const urlBeforeRedirect = this.#localStoreService.getItem(
-      this.#beforeRedirectKey
-    );
+  // getPostRedirectUrl() {
+  //   const urlBeforeRedirect = this.#localStoreService.getItem(
+  //     this.#beforeRedirectKey
+  //   );
 
-    if (urlBeforeRedirect) {
-      this.#localStoreService.removeItem(this.#beforeRedirectKey);
-    }
+  //   if (urlBeforeRedirect) {
+  //     this.#localStoreService.removeItem(this.#beforeRedirectKey);
+  //   }
 
-    return urlBeforeRedirect;
-  }
+  //   return urlBeforeRedirect;
+  // }
 
   signIn() {
     window.location.href = `http://localhost:3000/api/auth/login`; // express-openid-connect handles this
@@ -104,9 +104,5 @@ export class Auth0Service {
       user: User;
       profiles: Array<Profile>;
     }>(`${this.#environment.api.kit}`);
-  }
-
-  deleteAuth0User() {
-    console.log('implement delete auth0 user');
   }
 }

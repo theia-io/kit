@@ -104,6 +104,6 @@ export class PageKudoBoardEditComponent {
   }
 
   redirectToAll() {
-    this.#router.navigateByUrl(APP_PATH_ALLOW_ANONYMOUS.KudoBoard);
+    this.#router.navigateByUrl(`/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
   }
 }

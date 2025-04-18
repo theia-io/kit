@@ -149,13 +149,4 @@ export class Auth0Effects {
       )
     )
   );
-
-  deleteUser$ = createEffect(
-    () =>
-      this.#actions.pipe(
-        ofType(FeatAccountApiActions.deleteSuccess),
-        tap(() => this.#auth0Service.deleteAuth0User())
-      ),
-    { dispatch: false }
-  );
 }

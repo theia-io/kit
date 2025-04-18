@@ -1,55 +1,33 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 
 import { KudoBoard, KudoBoardReaction } from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
-import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class KudoBoardReactionsService {
-  getKudoBoardReactions(
-    kudoBoardId: KudoBoard['id']
-  ): Observable<Array<KudoBoardReaction>> {
-    return of([] as any);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardReactionResponse>('kudoboard-reactions')
-    //       .find({ kudoBoardId: new BSON.ObjectId(kudoBoardId) })
-    //   ),
-    //   map((reactions) => reactions.map(dbClientKudoBoardReactionAdapter))
-    // );
+export class KudoBoardReactionsV2Service {
+  #http = inject(HttpClient);
+  #environment = inject(ENVIRONMENT);
+
+  getKudoBoardReactions(kudoBoardId: KudoBoard['id']) {
+    return this.#http.get<Array<KudoBoardReaction>>(
+      `${this.#environment.api.kudoboardReactions}/${kudoBoardId}`
+    );
   }
 
-  postKudoBoardReaction(
-    reactionData: ClientDataType<KudoBoardReaction>
-  ): Observable<KudoBoardReaction> {
-    return of({} as any);
-    // const reactionRequest = clientDbKudoBoardReactionAdapter(reactionData);
-
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardReactionResponse>('kudoboard-reactions')
-    //       .insertOne(reactionRequest)
-    //   ),
-    //   map(({ insertedId }) => ({ ...reactionRequest, _id: insertedId })),
-    //   map((kudoboardReaction) =>
-    //     dbClientKudoBoardReactionAdapter(kudoboardReaction)
-    //   )
-    // );
+  createKudoBoardReaction(
+    kudoBoardReaction: ClientDataType<KudoBoardReaction>
+  ) {
+    return this.#http.post<KudoBoardReaction>(
+      `${this.#environment.api.kudoboardReactions}`,
+      kudoBoardReaction
+    );
   }
 
-  deleteKudoBoardReaction(id: KudoBoardReaction['id']) {
-    return of({} as any);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardReactionResponse>('kudoboard-reactions')
-    //       .deleteOne({
-    //         _id: new BSON.ObjectId(id),
-    //       })
-    //   ),
-    //   map(({ deletedCount }) => deletedCount > 0)
-    // );
+  deleteKudoBoardReaction(kudoBoardReactionId: KudoBoardReaction['id']) {
+    return this.#http.delete<KudoBoardReaction>(
+      `${this.#environment.api.kudoboardReactions}/${kudoBoardReactionId}`
+    );
   }
 }

@@ -1,4 +1,4 @@
-import { KudoBoard as IKudoBoard } from '@kitouch/shared-models';
+import { KudoBoardAnalytics as IKudoBoardAnalytics } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -6,7 +6,6 @@ import {
   KudoBoardAnalytics,
   KudoBoardAnalyticsDocument,
 } from './schemas/kudoboard-analytics.schema';
-import { KudoBoardAnalytics as IKudoBoardAnalytics } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeKudoBoardAnalyticsService {
@@ -73,7 +72,7 @@ export class BeKudoBoardAnalyticsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard analytics create for ${kudoBoard}`,
+        `Cannot execute kudoboard analytics create for ${kudoBoard.toString()}`,
         err
       );
       throw new HttpException(

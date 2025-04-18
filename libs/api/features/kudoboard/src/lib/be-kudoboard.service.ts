@@ -56,12 +56,16 @@ export class BeKudoboardService {
 
     try {
       newKudoBoard = await this.kudoBoardModel.create({
+        ...kudoBoard,
         profileId: kudoBoard.profileId
           ? new mongoose.Types.ObjectId(kudoBoard.profileId)
           : null,
       });
     } catch (err) {
-      console.error(`Cannot execute kudoboard create for ${kudoBoard}`, err);
+      console.error(
+        `Cannot execute kudoboard create for ${kudoBoard.toString()}`,
+        err
+      );
       throw new HttpException(
         'Cannot create kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -88,7 +92,10 @@ export class BeKudoboardService {
         )
         .exec();
     } catch (err) {
-      console.error(`Cannot execute kudoboard update for ${kudoBoard}`, err);
+      console.error(
+        `Cannot execute kudoboard update for ${kudoBoard.toString()}`,
+        err
+      );
       throw new HttpException(
         'Cannot update kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR

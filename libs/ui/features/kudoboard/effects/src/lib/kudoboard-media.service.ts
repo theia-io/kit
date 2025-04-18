@@ -1,15 +1,23 @@
 import { inject, Injectable } from '@angular/core';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
+import { ENVIRONMENT, S3Service } from '@kitouch/shared-infra';
 
 @Injectable({ providedIn: 'root' })
-export class KudoBoardMediaService extends DataSourceService {
+export class KudoBoardMediaService {
   #env = inject(ENVIRONMENT);
+  #s3Service = inject(S3Service);
 
   uploadKudoBoardMedia(key: string, media: Blob) {
-    return this.setBucketItem(this.#env.s3Config.kudoBoardBucket, key, media);
+    return this.#s3Service.setBucketItem(
+      this.#env.s3Config.kudoBoardBucket,
+      key,
+      media
+    );
   }
   /** Media, S3 */
   deleteKudoBoardMedia(key: string) {
-    return this.deleteBucketItem(this.#env.s3Config.kudoBoardBucket, key);
+    return this.#s3Service.deleteBucketItem(
+      this.#env.s3Config.kudoBoardBucket,
+      key
+    );
   }
 }

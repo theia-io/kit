@@ -1,4 +1,5 @@
-@if((kudoBoard$ | async); as kudoBoard) {
+@let kudoBoard = kudoBoard$ | async;
+
 <p-sidebar
   [blockScroll]="true"
   [visible]="true"
@@ -42,7 +43,8 @@
             <i [class]="item.icon"></i>
             {{ item.label }}
           </a>
-          @if(item?.label === kudoBoard?.title) {
+
+          @if(kudoBoard && item?.label === kudoBoard?.title) {
           <feat-kudoboard-status class="ml-2" [status]="kudoBoard.status" />
           }
         </ng-template>
@@ -57,5 +59,3 @@
     </div>
   </ng-template>
 </p-sidebar>
-
-}

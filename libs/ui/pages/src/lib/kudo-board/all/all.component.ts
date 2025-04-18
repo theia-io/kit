@@ -93,7 +93,7 @@ export class PageKudoBoardsAllComponent {
     )
   );
 
-  kudoBoardGenerateUrl = `/${APP_PATH.Farewell}/generate`;
+  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly kudoBoardStatus = KudoBoardStatus;
 
