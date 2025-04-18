@@ -51,5 +51,6 @@ export interface KudoBoard extends Partial<KitTimestamp> {
   recipient?: string;
   background?: string;
   status: KudoBoardStatus;
+  /** @deprecated to be removed */
   timestamp?: Partial<KitTimestamp>;
 }

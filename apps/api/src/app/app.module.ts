@@ -13,6 +13,8 @@ import { environment } from '../environments/environment';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { HealthController } from './heath.controller';
+import { BeKudoboardModule } from '@kitouch/be-kudoboard';
+import { BeFarewellModule } from '@kitouch/be-farewell';
 
 @Module({
   imports: [
@@ -26,6 +28,8 @@ import { HealthController } from './heath.controller';
     KitModule, // accounts, profiles, users
     BeTweetModule,
     BeBookmarksModule,
+    BeFarewellModule,
+    BeKudoboardModule,
   ],
   controllers: [HealthController, AppController],
   providers: [AppService],

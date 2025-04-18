@@ -1,12 +1,11 @@
-import { FarewellStatus } from '@kitouch/shared-models';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose'; // Import mongoose for Types.ObjectId if needed
 
-export type FarewellDocument = HydratedDocument<Farewell>;
+export type KudoBoardCommentsDocument = HydratedDocument<KudoBoardComments>;
 
 @Schema({
   timestamps: true,
-  collection: 'farewell',
+  collection: 'kudoboard-comments',
   toJSON: {
     virtuals: true,
     versionKey: false,
@@ -15,7 +14,7 @@ export type FarewellDocument = HydratedDocument<Farewell>;
     },
   },
 })
-export class Farewell {
+export class KudoBoardComments {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'KudoBoard',
@@ -23,27 +22,15 @@ export class Farewell {
   })
   kudoBoardId: Types.ObjectId;
 
-  // TODO @Danylo remove & populate with DB
-  // @Prop()
-  // kudoBoard: any;
-
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
-    required: true,
   })
   profileId: Types.ObjectId;
 
-  // TODO @Danylo remove & populate with DB
-  // @Prop()
-  // profile: any;
-
-  // TODO @Alex not sure about this type
-  @Prop({
-    type: String,
-    enum: FarewellStatus,
-  })
-  status: FarewellStatus;
+  @Prop({ required: true })
+  content: string;
 }
 
-export const FarewellSchema = SchemaFactory.createForClass(Farewell);
+export const KudoBoardCommentsSchema =
+  SchemaFactory.createForClass(KudoBoardComments);

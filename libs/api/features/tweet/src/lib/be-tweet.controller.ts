@@ -63,7 +63,6 @@ export class BeTweetController {
   ) {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles.map((profile) => profile.id);
-    console.log('\ntweetId, profileId 3:', tweetId, profileId, profileIds);
     return this.beTweetService.deleteTweet(tweetId, profileId, profileIds);
   }
 
@@ -82,7 +81,6 @@ export class BeTweetController {
     @Param('tweetId') tweetId: string,
     @Body() commentDto: Partial<TweetComment>
   ) {
-    console.log(commentDto);
     return this.beTweetService.newTweetComment(tweetId, commentDto);
   }
 

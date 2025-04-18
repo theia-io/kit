@@ -22,6 +22,10 @@ export interface Environment {
     farewellComments: string;
     farewellReactions: string;
     farewellAnalytics: string;
+    kudoboards: string;
+    kudoboardComments: string;
+    kudoboardReactions: string;
+    kudoboardAnalytics: string;
   };
   googleTagConfig: string | null;
   build: string;

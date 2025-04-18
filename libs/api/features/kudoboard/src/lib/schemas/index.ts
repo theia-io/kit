@@ -1,2 +1,4 @@
-export * from './retweet.schema';
-export * from './tweet.schema';
+export * from './kudoboard-analytics.schema';
+export * from './kudoboard-comments.schema';
+export * from './kudoboard-reaction.schema';
+export * from './kudoboard.schema';

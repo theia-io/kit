@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 
 import { FeatKudoBoardActions } from '@kitouch/data-kudoboard';
+import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import {
@@ -13,15 +14,14 @@ import {
   tap,
   withLatestFrom,
 } from 'rxjs';
-import { KudoBoardService } from './kudoboard.service';
-import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
+import { KudoBoardV2Service } from './kudoboardV2.service';
 
 @Injectable()
 export class KudoBoardEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
 
-  #kudoboardService = inject(KudoBoardService);
+  #kudoboardService = inject(KudoBoardV2Service);
 
   #currentProfile = this.#store.select(selectCurrentProfile);
 

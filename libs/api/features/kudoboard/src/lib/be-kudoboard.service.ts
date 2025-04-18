@@ -1,4 +1,120 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import mongoose, { Model } from 'mongoose';
+import { KudoBoard as IKudoBoard } from '@kitouch/shared-models';
+import { KudoBoard, KudoBoardDocument } from './schemas';
 
 @Injectable()
-export class BeKudoboardService {}
+export class BeKudoboardService {
+  constructor(
+    @InjectModel(KudoBoard.name)
+    private kudoBoardModel: Model<KudoBoardDocument>
+  ) {}
+
+  async getProfileKudoboards(profileId: string) {
+    let kudoBoards: Array<KudoBoardDocument>;
+
+    try {
+      kudoBoards = await this.kudoBoardModel
+        .find<KudoBoardDocument>({
+          profileId: new mongoose.Types.ObjectId(profileId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(`Cannot execute kudoboard search for ${profileId}`, err);
+      throw new HttpException(
+        'Cannot find kudoboards',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return kudoBoards;
+  }
+
+  async getKudoboard(kudoBoardId: string) {
+    let kudoBoard;
+
+    try {
+      kudoBoard = await this.kudoBoardModel
+        .findOne({
+          _id: new mongoose.Types.ObjectId(kudoBoardId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(`Cannot execute kudoboard search for ${kudoBoardId}`, err);
+      throw new HttpException(
+        'Cannot find kudoboard',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return kudoBoard;
+  }
+
+  async createKudoboard(kudoBoard: IKudoBoard) {
+    let newKudoBoard;
+
+    try {
+      newKudoBoard = await this.kudoBoardModel.create({
+        profileId: kudoBoard.profileId
+          ? new mongoose.Types.ObjectId(kudoBoard.profileId)
+          : null,
+      });
+    } catch (err) {
+      console.error(`Cannot execute kudoboard create for ${kudoBoard}`, err);
+      throw new HttpException(
+        'Cannot create kudoboard',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return newKudoBoard;
+  }
+
+  async updateKudoboard(kudoboardId: string, kudoBoard: IKudoBoard) {
+    let updatedKudoBoard;
+
+    try {
+      updatedKudoBoard = await this.kudoBoardModel
+        .findOneAndUpdate(
+          { _id: new mongoose.Types.ObjectId(kudoboardId) },
+          {
+            ...kudoBoard,
+            profileId: kudoBoard.profileId
+              ? new mongoose.Types.ObjectId(kudoBoard.profileId)
+              : null,
+          },
+          { new: true }
+        )
+        .exec();
+    } catch (err) {
+      console.error(`Cannot execute kudoboard update for ${kudoBoard}`, err);
+      throw new HttpException(
+        'Cannot update kudoboard',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return updatedKudoBoard;
+  }
+
+  async deleteKudoboard(kudoboardId: string) {
+    let deletedKudoBoard;
+
+    try {
+      deletedKudoBoard = await this.kudoBoardModel
+        .findOneAndDelete({
+          _id: new mongoose.Types.ObjectId(kudoboardId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(`Cannot execute kudoboard delete for ${kudoboardId}`, err);
+      throw new HttpException(
+        'Cannot delete kudoboard',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return deletedKudoBoard;
+  }
+}

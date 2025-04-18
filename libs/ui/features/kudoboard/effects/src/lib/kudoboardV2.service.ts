@@ -1,88 +1,50 @@
-import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 
 import { KudoBoard } from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class KudoBoardService {
+export class KudoBoardV2Service {
+  #http = inject(HttpClient);
+  #environment = inject(ENVIRONMENT);
+
   getKudoBoards(profileId: string): Observable<Array<KudoBoard>> {
-    return of([] as any);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<DBClientType<KudoBoard>>('kudoboard')
-    //       .find({ 'profile.id': profileId })
-    //   ),
-    //   map((kudoboards) => kudoboards.map(dbClientKudoBoardAdapter))
-    // );
+    return this.#http.get<Array<KudoBoard>>(
+      `${this.#environment.api.kudoboards}`,
+      {
+        params: {
+          profileId,
+        },
+      }
+    );
   }
 
   getKudoBoard(kudoBoardId: string): Observable<KudoBoard | null> {
-    return of({} as any);
-    // return this.allowAnonymousDb$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<DBClientType<KudoBoard>>('kudoboard')
-    //       .findOne({ _id: new BSON.ObjectId(kudoBoardId) })
-    //   ),
-    //   map((kudoboard) =>
-    //     kudoboard ? dbClientKudoBoardAdapter(kudoboard) : null
-    //   )
-    // );
+    return this.#http.get<KudoBoard>(
+      `${this.#environment.api.kudoboards}/${kudoBoardId}`
+    );
   }
 
-  createKudoBoard(kuboBoard: ClientDataType<KudoBoard>): Observable<KudoBoard> {
-    return of({} as any);
-    // const kuboBoardReq = clientDbKudoBoardAdapter(kuboBoard);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardResponse>('kudoboard')
-    //       .insertOne(kuboBoardReq)
-    //   ),
-    //   map(({ insertedId }) => ({ ...kuboBoardReq, _id: insertedId })),
-    //   map((kudoboard) => dbClientKudoBoardAdapter(kudoboard))
-    // );
+  createKudoBoard(kudoBoard: ClientDataType<KudoBoard>): Observable<KudoBoard> {
+    return this.#http.post<KudoBoard>(
+      `${this.#environment.api.kudoboards}`,
+      kudoBoard
+    );
   }
 
-  putKudoBoard({ id, profileId, timestamp, ...rest }: KudoBoard) {
-    return of({} as any);
-    // const withUpdatedTime = {
-    //   ...rest,
-    //   profileId: profileId ? new BSON.ObjectId(profileId) : null,
-    //   timestamp: {
-    //     createdAt: timestamp.createdAt,
-    //     updatedAt: getNow(),
-    //   },
-    // };
-
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db.collection<ClientDBKudoBoardResponse>('kudoboard').updateOne(
-    //       { _id: new BSON.ObjectId(id) },
-    //       {
-    //         $set: withUpdatedTime,
-    //       }
-    //     )
-    //   ),
-    //   map(() => ({
-    //     ...withUpdatedTime,
-    //     profileId,
-    //     id,
-    //   }))
-    // );
+  putKudoBoard(kudoBoard: KudoBoard) {
+    return this.#http.put<KudoBoard>(
+      `${this.#environment.api.kudoboards}/${kudoBoard.id}`,
+      kudoBoard
+    );
   }
 
   deleteKudoBoard(id: KudoBoard['id']) {
-    return of({} as any);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db.collection<ClientDBKudoBoardResponse>('kudoboard').deleteOne({
-    //       _id: new BSON.ObjectId(id),
-    //     })
-    //   ),
-    //   map(({ deletedCount }) => deletedCount > 0)
-    // );
+    return this.#http.delete<KudoBoard>(
+      `${this.#environment.api.kudoboards}/${id}`
+    );
   }
 }

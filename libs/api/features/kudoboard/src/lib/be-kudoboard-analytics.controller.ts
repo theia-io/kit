@@ -1,0 +1,54 @@
+import { KudoBoardAnalytics } from '@kitouch/shared-models';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
+import { BeKudoBoardAnalyticsService } from './be-kudoboard-analytics.service';
+
+@Controller('kudoboard-analytics')
+export class BeKudoBoardAnalyticsController {
+  constructor(
+    private beKudoBoardAnalyticsService: BeKudoBoardAnalyticsService
+  ) {}
+
+  @Get()
+  @UseGuards(AuthGuard('jwt'))
+  async getAnalyticsKudoBoards(@Query('kudoBoardIds') kudoBoardIds: string) {
+    const kudoBoardIdsArray = kudoBoardIds.split(',');
+    return this.beKudoBoardAnalyticsService.getAnalyticsKudoBoards(
+      kudoBoardIdsArray
+    );
+  }
+
+  @Get(':kudoboardId')
+  @UseGuards(AuthGuard('jwt'))
+  async getAnalyticsKudoBoard(@Param('kudoBoardId') kudoboardId: string) {
+    return this.beKudoBoardAnalyticsService.getAnalyticsKudoBoard(kudoboardId);
+  }
+
+  @Post()
+  @UseGuards(AuthGuard('jwt'))
+  async createAnalyticsKudoBoard(
+    @Body() kudoBoardAnalytics: KudoBoardAnalytics
+  ) {
+    return this.beKudoBoardAnalyticsService.createAnalyticsKudoBoard(
+      kudoBoardAnalytics
+    );
+  }
+
+  @Delete(':kudoboardId')
+  @UseGuards(AuthGuard('jwt'))
+  async deleteKudoboardAnalytics(@Param() kudoboardId: string) {
+    console.log('deleteKudoboard', kudoboardId);
+    return this.beKudoBoardAnalyticsService.deleteKudoboardAnalytics(
+      kudoboardId
+    );
+  }
+}

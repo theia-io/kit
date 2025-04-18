@@ -3,8 +3,8 @@
 
   @let farewellCreatedAt = farewell().createdAt; @let farewellCreatedAtLegacy =
   farewell().timestamp?.createdAt; @let farewellUpdatedAt =
-  farewell().createdAt; @let farewellUpdatedAtLegacy =
-  farewell().timestamp?.createdAt;
+  farewell().updatedAt; @let farewellUpdatedAtLegacy =
+  farewell().timestamp?.updatedAt;
 
   <p class="text-sm text-gray-500">
     <i
@@ -20,7 +20,12 @@
             : ''
           : '')
       "></i>
-    {{ farewellCreatedAt ?? farewellCreatedAtLegacy | date }},
+    {{
+      farewellCreatedAt ??
+        farewellCreatedAtLegacy ??
+        farewellUpdatedAt ??
+        farewellUpdatedAtLegacy | date
+    }},
   </p>
 
   <feat-farewell-analytics [farewellId]="farewell().id" [preview]="preview()" />

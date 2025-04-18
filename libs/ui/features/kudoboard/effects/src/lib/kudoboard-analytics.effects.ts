@@ -6,19 +6,19 @@ import {
 } from '@kitouch/data-kudoboard';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { KudoBoardAnalyticsService } from './kudoboard-analytics.service';
+import { KudoBoardAnalyticsV2Service } from './kudoboard-analyticsV2.service';
 
 @Injectable()
 export class KudoBoardAnalyticsEffects {
   #actions$ = inject(Actions);
 
-  #kudoboardAnalyticsService = inject(KudoBoardAnalyticsService);
+  #kudoboardAnalyticsService = inject(KudoBoardAnalyticsV2Service);
 
   newAnalyticsKudoBoard$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatKudoBoardAnalyticsActions.postAnalyticsKudoBoard),
       switchMap(({ analytics }) =>
-        this.#kudoboardAnalyticsService.postAnalyticsKudoBoard(analytics)
+        this.#kudoboardAnalyticsService.createAnalyticsKudoBoard(analytics)
       ),
       map((analytics) =>
         analytics

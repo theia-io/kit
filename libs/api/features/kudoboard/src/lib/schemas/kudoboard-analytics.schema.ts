@@ -1,11 +1,11 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose'; // Import mongoose for Types.ObjectId if needed
 
-export type ReTweetDocument = HydratedDocument<ReTweet>;
+export type KudoBoardAnalyticsDocument = HydratedDocument<KudoBoardAnalytics>;
 
 @Schema({
   timestamps: true,
-  collection: 'retweet',
+  collection: 'kudoboard-analytics',
   toJSON: {
     virtuals: true,
     versionKey: false,
@@ -14,20 +14,20 @@ export type ReTweetDocument = HydratedDocument<ReTweet>;
     },
   },
 })
-export class ReTweet {
+export class KudoBoardAnalytics {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'Tweet',
+    ref: 'KudoBoard',
     required: true,
   })
-  tweetId: Types.ObjectId;
+  kudoBoardId: Types.ObjectId;
 
   @Prop({
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Profile',
+    type: String,
     required: true,
   })
-  profileId: Types.ObjectId;
+  event: string;
 }
 
-export const ReTweetSchema = SchemaFactory.createForClass(ReTweet);
+export const KudoBoardAnalyticsSchema =
+  SchemaFactory.createForClass(KudoBoardAnalytics);
