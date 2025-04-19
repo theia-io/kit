@@ -11,7 +11,8 @@
       <shared-navbar-static
         [userLoggedIn]="!!(currentProfile$ | async)"
         [hideLogin]="true"
-        [_sysUpdatePrimengHighlight]="true" />
+        [_sysUpdatePrimengHighlight]="true"
+        (getStarted)="handleGetStarted()" />
 
       <ui-kit-delete
         xOffset="right-4"

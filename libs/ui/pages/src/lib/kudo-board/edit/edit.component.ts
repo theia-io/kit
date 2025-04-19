@@ -10,6 +10,7 @@ import {
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { Auth0Service } from '@kitouch/shared-infra';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import {
   FeatKudoBoardEditComponent,
@@ -45,6 +46,7 @@ export class PageKudoBoardEditComponent {
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
 
   kudoBoardId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
@@ -105,5 +107,9 @@ export class PageKudoBoardEditComponent {
 
   redirectToAll() {
     this.#router.navigateByUrl(`/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
+  }
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
   }
 }

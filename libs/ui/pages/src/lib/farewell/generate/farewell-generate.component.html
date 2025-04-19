@@ -7,7 +7,8 @@
   <ng-template pTemplate="headless">
     <shared-navbar-static
       [userLoggedIn]="!!currentProfile()"
-      [_sysUpdatePrimengHighlight]="true" />
+      [_sysUpdatePrimengHighlight]="true"
+      (getStarted)="handleGetStarted()" />
     <ui-kit-delete
       xOffset="right-4"
       yOffset="top-4"

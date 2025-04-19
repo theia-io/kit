@@ -4,6 +4,7 @@ import {
   inject,
   input,
   OnDestroy,
+  output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -43,8 +44,11 @@ import { NavbarService } from '../navbar/navbar.service';
 export class SharedNavBarStaticComponent implements OnDestroy {
   userLoggedIn = input.required<boolean>();
   hideLogin = input(false);
+  // TODO: address below
   /** This is system variable and can be considered to be removed */
   _sysUpdatePrimengHighlight = input(false);
+
+  getStarted = output<void>();
 
   #navbarService = inject(NavbarService);
   deviceService = inject(DeviceService);
@@ -89,5 +93,9 @@ export class SharedNavBarStaticComponent implements OnDestroy {
     } else {
       this.opEl.show(event);
     }
+  }
+
+  handleGetStarted() {
+    this.getStarted.emit();
   }
 }

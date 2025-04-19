@@ -8,7 +8,7 @@ import {
 import { FeatFarewellComponent } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { RouterEventsService } from '@kitouch/shared-infra';
+import { Auth0Service, RouterEventsService } from '@kitouch/shared-infra';
 import { UiKitDeleteComponent } from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
 import { SidebarModule } from 'primeng/sidebar';
@@ -32,6 +32,7 @@ export class PageFarewellGenerateComponent {
   #router = inject(Router);
   #routerEventsService = inject(RouterEventsService);
   #navbarService = inject(NavbarService);
+  #auth0Service = inject(Auth0Service);
 
   currentProfile = inject(Store).selectSignal(selectCurrentProfile);
 
@@ -45,5 +46,9 @@ export class PageFarewellGenerateComponent {
           .navigateByUrl(latestUrl ?? APP_PATH.Farewell)
           .then(() => this.#navbarService.triggerPrimengHighlight$.next());
       });
+  }
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
   }
 }

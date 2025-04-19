@@ -9,7 +9,8 @@
     <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
       <shared-navbar-static
         [userLoggedIn]="!!(currentProfile$ | async)"
-        [_sysUpdatePrimengHighlight]="true" />
+        [_sysUpdatePrimengHighlight]="true"
+        (getStarted)="handleGetStarted()" />
       <ui-kit-delete
         xOffset="right-4"
         yOffset="top-4"

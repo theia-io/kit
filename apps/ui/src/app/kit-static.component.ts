@@ -29,7 +29,10 @@ import { delay, EMPTY, of, switchMap, take } from 'rxjs';
   }
   `,
   template: `
-    <shared-navbar-static [userLoggedIn]="!!(currentProfile$ | async)" />
+    <shared-navbar-static
+      [userLoggedIn]="!!(currentProfile$ | async)"
+      (getStarted)="handleGetStarted()"
+    />
     <div class="flex-grow flex flex-col">
       <router-outlet></router-outlet>
     </div>
@@ -71,5 +74,9 @@ export class KitStaticComponent implements OnInit {
           FeatAuth0Events.setAuthState(currentSessionAccountUserProfiles)
         )
       );
+  }
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
   }
 }

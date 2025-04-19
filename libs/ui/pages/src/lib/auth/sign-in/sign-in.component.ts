@@ -16,7 +16,7 @@ import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
 import { startWith } from 'rxjs';
 
-const ANIMATION_REPEAT = 10000;
+const ANIMATION_REPEAT = 2500;
 
 @Component({
   standalone: true,

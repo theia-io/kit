@@ -19,6 +19,7 @@ import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { SidebarModule } from 'primeng/sidebar';
 import { combineLatest, Observable } from 'rxjs';
+import { Auth0Service } from '@kitouch/shared-infra';
 
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -43,6 +44,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 export class PageFarewellEditComponent {
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
+  #auth0Service = inject(Auth0Service);
   #store = inject(Store);
 
   farewellId$ = this.#activatedRouter.params.pipe(
@@ -98,5 +100,9 @@ export class PageFarewellEditComponent {
 
   redirectToAll() {
     this.#router.navigateByUrl(APP_PATH.Farewell);
+  }
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
   }
 }

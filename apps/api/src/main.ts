@@ -149,6 +149,8 @@ async function bootstrap() {
         return session; // Stop processing if userinfo fails
       }
 
+      console.log('User from Auth0:', user);
+
       const auth0User = {
         email: user.email,
         name: user.given_name,
@@ -161,7 +163,10 @@ async function bootstrap() {
       const kitService = app.get(KitService);
       const kitAccount = await kitService.auth0AccountFindAndUpdate(auth0User);
       const kitUser = await kitService.accountUserFindAndUpdate(kitAccount);
-      const kitProfiles = await kitService.profilesFindOrInsert(kitUser);
+      const kitProfiles = await kitService.profilesFindOrInsert(
+        kitUser,
+        auth0User
+      );
 
       const authKit: Auth0Kit = {
         ...auth0User,
