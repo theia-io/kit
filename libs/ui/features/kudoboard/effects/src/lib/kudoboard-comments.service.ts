@@ -7,62 +7,38 @@ import {
   KudoBoardComment,
 } from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
-import { from, Observable, of, switchMap } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class KudoBoardCommentsService {
-  #env = inject(ENVIRONMENT);
+  #environment = inject(ENVIRONMENT);
   #http = inject(HttpClient);
 
   getKudoBoardComments(
     kudoBoardId: KudoBoard['id']
   ): Observable<Array<KudoBoardComment>> {
-    return of([] as any);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardCommentResponse>('kudoboard-comments')
-    //       .find({ kudoBoardId: new BSON.ObjectId(kudoBoardId) })
-    //   ),
-    //   map((reactions) => reactions.map(dbClientKudoBoardCommentAdapter))
-    // );
+    return this.#http.get<Array<KudoBoardComment>>(
+      `${this.#environment.api.kudoboardComments}/${kudoBoardId}`
+    );
   }
 
-  postKudoBoardComment(
-    reactionData: ClientDataType<KudoBoardComment>
+  createKudoBoardComment(
+    kudoBoardComment: ClientDataType<KudoBoardComment>
   ): Observable<KudoBoardComment> {
-    return of({} as any);
-    // const reactionRequest = clientDbKudoBoardCommentAdapter(reactionData);
-
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardCommentResponse>('kudoboard-comments')
-    //       .insertOne(reactionRequest)
-    //   ),
-    //   map(({ insertedId }) => ({ ...reactionRequest, _id: insertedId })),
-    //   map((KudoBoardComment) =>
-    //     dbClientKudoBoardCommentAdapter(KudoBoardComment)
-    //   )
-    // );
+    return this.#http.post<KudoBoardComment>(
+      `${this.#environment.api.kudoboardComments}`,
+      kudoBoardComment
+    );
   }
 
   deleteKudoBoardComment(id: KudoBoardComment['id']) {
-    return of(true as any);
-    // return this.db$().pipe(
-    //   switchMap((db) =>
-    //     db
-    //       .collection<ClientDBKudoBoardCommentResponse>('kudoboard-comments')
-    //       .deleteOne({
-    //         _id: new BSON.ObjectId(id),
-    //       })
-    //   ),
-    //   map(({ deletedCount }) => deletedCount > 0)
-    // );
+    return this.#http.delete<KudoBoard>(
+      `${this.#environment.api.kudoboardComments}/${id}`
+    );
   }
 
   uploadKudoBoardCommentMedia(key: string, blob: Blob) {
-    const { media } = this.#env.api;
+    const { media } = this.#environment.api;
 
     return from(blob.arrayBuffer()).pipe(
       switchMap((fileArrayBuffer) =>
@@ -82,7 +58,7 @@ export class KudoBoardCommentsService {
 
   /** Media, S3 */
   deleteKudoBoardCommentMedia(key: string) {
-    const { media } = this.#env.api;
+    const { media } = this.#environment.api;
     return this.#http.delete(`${media}/kudoboard`, {
       params: {
         name: key,
