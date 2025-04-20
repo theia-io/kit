@@ -26,13 +26,11 @@ export class BeKudoBoardCommentsController {
   }
 
   @Get(':kudoBoardId')
-  @UseGuards(AuthGuard('jwt'))
   async getCommentsKudoBoard(@Param('kudoBoardId') kudoboardId: string) {
     return this.beKudoBoardCommentsService.getCommentsKudoBoard(kudoboardId);
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
   async createCommentsKudoBoard(@Body() kudoBoardComments: IKudoBoardComment) {
     return this.beKudoBoardCommentsService.createCommentsKudoBoard(
       kudoBoardComments

@@ -1,7 +1,4 @@
-import {
-  KudoBoardComment as IKudoBoardComment,
-  Profile,
-} from '@kitouch/shared-models';
+import { KudoBoardComment as IKudoBoardComment } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -68,7 +65,7 @@ export class BeKudoBoardCommentsService {
       return {
         ...rest,
         profile: profileId,
-        profileId: profileId.id,
+        profileId: profileId?.id,
       };
     });
   }

@@ -9,7 +9,7 @@ import {
 import { FeatAuth0Events, selectCurrentProfile } from '@kitouch/kit-data';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { select, Store } from '@ngrx/store';
-import { delay, EMPTY, of, switchMap, take } from 'rxjs';
+import { delay, of, switchMap, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -62,17 +62,22 @@ export class KitStaticComponent implements OnInit {
         delay(1500),
         takeUntilDestroyed(this.#destroyRef),
         switchMap(() => this.#auth0Service.loggedIn$),
-        take(1),
-        switchMap((loggedIn) =>
-          loggedIn
-            ? EMPTY
-            : this.#auth0Service.getCurrentSessionAccountUserProfiles()
-        )
+        take(1)
+        // switchMap((loggedIn) =>
+        //   loggedIn
+        //     ? EMPTY
+        //     : this.#auth0Service.getCurrentSessionAccountUserProfiles()
+        // )
       )
-      .subscribe((currentSessionAccountUserProfiles) =>
-        this.#store.dispatch(
-          FeatAuth0Events.setAuthState(currentSessionAccountUserProfiles)
-        )
+      .subscribe(
+        (loggedIn) => {
+          if (!loggedIn) {
+            this.#store.dispatch(FeatAuth0Events.tryAuth());
+          }
+        }
+        // this.#store.dispatch(
+        //   FeatAuth0Events.setAuthState(currentSessionAccountUserProfiles)
+        // )
       );
   }
 

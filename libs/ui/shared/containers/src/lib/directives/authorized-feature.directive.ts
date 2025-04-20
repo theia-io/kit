@@ -59,7 +59,7 @@ export class AuthorizedFeatureDirective implements AfterViewInit, OnDestroy {
 
       this.dialogRef.onClose.subscribe((loggedIn) => {
         if (loggedIn) {
-          setTimeout(() => this.#replayEvent(event));
+          setTimeout(() => this.#replayEvent(event), 100);
         }
       });
 

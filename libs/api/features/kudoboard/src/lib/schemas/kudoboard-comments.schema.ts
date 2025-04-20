@@ -33,7 +33,7 @@ export class KudoBoardComments {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
   })
-  profileId: Types.ObjectId;
+  profileId: Types.ObjectId | null;
 
   @Prop()
   content: string;

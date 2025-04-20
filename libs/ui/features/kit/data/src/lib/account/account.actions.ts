@@ -11,6 +11,8 @@ export const FeatAuth0Events = createActionGroup({
       profiles: Array<Profile>;
     }>(),
     HandleRedirectFailure: emptyProps(),
+    TryAuth: emptyProps(),
+    TryAuthFailure: emptyProps(),
     SetAuthState: props<{
       account: Account;
       user: User;
