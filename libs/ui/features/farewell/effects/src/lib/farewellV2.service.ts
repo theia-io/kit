@@ -1,26 +1,25 @@
-import { Injectable } from '@angular/core';
-import {
-  clientDbFarewellAdapter,
-  ClientDBFarewellAnalyticsRequest,
-  ClientDBFarewellAnalyticsResponse,
-  ClientDBFarewellResponse,
-  dbClientFarewellAdapter,
-  dbClientFarewellAnalyticsAdapter,
-} from '@kitouch/feat-farewell-data';
-import { DataSourceService } from '@kitouch/shared-infra';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 import { Farewell, FarewellAnalytics } from '@kitouch/shared-models';
-import {
-  ClientDataType,
-  clientDBGenerateTimestamp,
-  DBClientType,
-} from '@kitouch/utils';
-import { BSON } from 'realm-web';
-import { map, Observable, of, switchMap } from 'rxjs';
+import { ClientDataType } from '@kitouch/utils';
+import { Observable, of } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellV2Service {
+  #http = inject(HttpClient);
+  #environment = inject(ENVIRONMENT);
+
   getFarewells(profileId: string): Observable<Array<Farewell>> {
-    return of([] as any);
+    return this.#http.get<Array<Farewell>>(
+      `${this.#environment.api.farewell}`,
+      {
+        params: {
+          profileId,
+        },
+      }
+    );
+
     // return this.db$().pipe(
     //   switchMap((db) =>
     //     db
@@ -98,7 +97,7 @@ export class FarewellV2Service {
 
   /** Analytics */
   getAnalyticsFarewells(farewellIds: Array<string>) {
-    return of({} as any);
+    return of([] as any);
     // return this.db$().pipe(
     //   switchMap((db) =>
     //     db

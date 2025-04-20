@@ -4,14 +4,14 @@ import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { FarewellService } from './farewell.service';
+import { FarewellV2Service } from './farewellv2.service';
 
 @Injectable()
 export class FarewellEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
 
-  #farewellService = inject(FarewellService);
+  #farewellService = inject(FarewellV2Service);
 
   getFarewells$ = createEffect(() =>
     this.#actions$.pipe(

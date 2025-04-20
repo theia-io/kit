@@ -19,9 +19,8 @@ export class Farewell {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'KudoBoard',
-    required: true,
   })
-  kudoBoardId: Types.ObjectId;
+  kudoBoardId: Types.ObjectId | null;
 
   // TODO @Danylo remove & populate with DB
   // @Prop()

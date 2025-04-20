@@ -6,11 +6,10 @@ import { Farewell, FarewellDocument } from './schemas';
 
 @Injectable()
 export class BeFarewellService {
-  createfarewell(Farewell: Ifarewell) {
-    throw new Error('Method not implemented.');
-  }
-  farewellsModel: any;
-  farewellModel: any;
+  constructor(
+    @InjectModel(Farewell.name)
+    private farewellModel: Model<FarewellDocument>
+  ) {}
 
   async getfarewell(farewellId: string) {
     let farewell;
@@ -107,13 +106,13 @@ export class BeFarewellService {
 
     return farewells;
   }
-  async getProfilefarewell(profileId: string) {
+  async getProfileFarewells(profileId: string) {
     let farewells;
 
     try {
       farewells = await this.farewellModel
-        .findOne({
-          _id: new mongoose.Types.ObjectId(profileId),
+        .find({
+          profileId: new mongoose.Types.ObjectId(profileId),
         })
         .exec();
     } catch (err) {
