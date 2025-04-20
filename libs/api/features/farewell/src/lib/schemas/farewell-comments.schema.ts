@@ -28,8 +28,16 @@ export class FarewellComments {
   })
   profileId: Types.ObjectId;
 
-  @Prop({ required: true })
+  @Prop()
   content: string;
+
+  @Prop({ type: [Object] })
+  medias: Array<{
+    url: string;
+    width: number;
+    height: number;
+    optimizedUrls: Array<string>;
+  }>;
 }
 
 export const FarewellCommentsSchema =

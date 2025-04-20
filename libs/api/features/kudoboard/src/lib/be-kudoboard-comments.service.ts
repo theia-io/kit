@@ -1,4 +1,7 @@
-import { KudoBoardComment as IKudoBoardComment } from '@kitouch/shared-models';
+import {
+  KudoBoardComment as IKudoBoardComment,
+  Profile,
+} from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -47,6 +50,7 @@ export class BeKudoBoardCommentsService {
         .find({
           kudoBoardId: new mongoose.Types.ObjectId(kudoBoardId),
         })
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(
@@ -59,9 +63,14 @@ export class BeKudoBoardCommentsService {
       );
     }
 
-    console.log('getCommentsKudoBoard', kudoBoardId, kudoBoardComments);
-
-    return kudoBoardComments;
+    return kudoBoardComments.map((comment) => {
+      const { profileId, ...rest } = comment.toObject();
+      return {
+        ...rest,
+        profile: profileId,
+        profileId: profileId.id,
+      };
+    });
   }
 
   async createCommentsKudoBoard(kudoBoard: IKudoBoardComment) {
@@ -86,7 +95,10 @@ export class BeKudoBoardCommentsService {
       );
     }
 
-    return newKudoBoardComments;
+    return {
+      ...newKudoBoardComments.toObject(),
+      profile: kudoBoard.profile,
+    };
   }
 
   async deleteKudoboardComments(commentId: string) {

@@ -173,7 +173,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   #masonryReadyTrigger$ = this.kudoboardComments$.pipe(
     takeUntilDestroyed(this.#destroyRef),
     filter((comments) => comments && comments.length > 0),
-    delay(0),
+    delay(100),
     shareReplay({
       refCount: true,
       bufferSize: 1,
