@@ -60,6 +60,20 @@ export class Auth0Effects {
     }
   );
 
+  tryAuth = createEffect(() =>
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.tryAuth),
+      switchMap(() =>
+        this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
+          map(({ user, account, profiles }) =>
+            FeatAuth0Events.setAuthState({ user, account, profiles })
+          ),
+          catchError(() => of(FeatAuth0Events.tryAuthFailure()))
+        )
+      )
+    )
+  );
+
   setAuthState$ = createEffect(() =>
     this.#actions.pipe(
       ofType(FeatAuth0Events.handleRedirectSuccess),

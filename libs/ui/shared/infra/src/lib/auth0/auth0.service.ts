@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 
 import { HttpClient } from '@angular/common/http';
-import { selectCurrentUser } from '@kitouch/kit-data';
+import { FeatAuth0Events, selectCurrentUser } from '@kitouch/kit-data';
 import { Account, Profile, User } from '@kitouch/shared-models';
 import { select, Store } from '@ngrx/store';
 import { map, Observable } from 'rxjs';
@@ -63,6 +63,8 @@ export class Auth0Service {
           event.url.includes(window.origin)
         ) {
           clearTimeout(timeoutId);
+          this.#store.dispatch(FeatAuth0Events.tryAuth());
+
           window.removeEventListener('storage', storageEventHandler);
           resolve(true);
         }

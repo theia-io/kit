@@ -1,4 +1,5 @@
 import { RawBodyInterceptor } from '@kitouch/infra';
+import { ConfigService } from '@kitouch/be-config';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
 import {
   Body,
@@ -14,14 +15,17 @@ import { MediaService } from './media.service';
 
 @Controller('media')
 export class MediaController {
-  constructor(private mediaService: MediaService) {}
+  constructor(
+    private mediaService: MediaService,
+    private configService: ConfigService
+  ) {}
 
   @Post('kudoboard')
   @UseInterceptors(new RawBodyInterceptor())
   async saveKudoboardMedia(@Query('name') name: string, @Body() media: Buffer) {
     const dimensions = this.#getDimensions(media);
     const { url, optimizedUrls } = await this.mediaService.upload({
-      bucket: 'kitouch-public-kudoboard',
+      bucket: this.configService.getConfig('s3').kudoBoardBucket, // 'kitouch-public-kudoboard',
       file: media,
       filePath: name,
       fileType: dimensions.type ?? name.split('.').reverse()[0],
@@ -38,7 +42,10 @@ export class MediaController {
 
   @Delete('kudoboard')
   async deleteKudoBoardMedia(@Query('name') url: string): Promise<boolean> {
-    await this.mediaService.delete('kitouch-public-kudoboard', url);
+    await this.mediaService.delete(
+      this.configService.getConfig('s3').kudoBoardBucket, //'kitouch-public-kudoboard',
+      url
+    );
     return true;
   }
 
@@ -50,7 +57,7 @@ export class MediaController {
   ): Promise<ContractUploadedMedia> {
     const dimensions = this.#getDimensions(media);
     const { url, optimizedUrls } = await this.mediaService.upload({
-      bucket: 'kitouch-public-farewell',
+      bucket: this.configService.getConfig('s3').farewellBucket, //'kitouch-public-farewell',
       file: media,
       filePath: name,
       fileType: dimensions.type ?? name.split('.').reverse()[0],
@@ -67,7 +74,10 @@ export class MediaController {
 
   @Delete('farewell')
   async deleteFarewellMedia(@Query('name') url: string): Promise<boolean> {
-    await this.mediaService.delete('kitouch-public-farewell', url);
+    await this.mediaService.delete(
+      this.configService.getConfig('s3').farewellBucket, //'kitouch-public-farewell',
+      url
+    );
     return true;
   }
 

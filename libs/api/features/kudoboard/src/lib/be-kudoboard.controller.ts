@@ -24,15 +24,12 @@ export class BeKudoboardController {
   }
 
   @Get(':kudoboardId')
-  @UseGuards(AuthGuard('jwt'))
   async getKudoboard(@Param('kudoboardId') kudoboardId: string) {
     return this.beKudoboardService.getKudoboard(kudoboardId);
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
   async createKudoboard(@Body() kudoBoard: IKudoBoard) {
-    console.log('createKudoboard', kudoBoard);
     return this.beKudoboardService.createKudoboard(kudoBoard);
   }
 
@@ -42,14 +39,12 @@ export class BeKudoboardController {
     @Param('kudoboardId') kudoboardId: string,
     @Body() kudoBoard: IKudoBoard
   ) {
-    console.log('updateKudoboard', kudoboardId, kudoBoard);
     return this.beKudoboardService.updateKudoboard(kudoboardId, kudoBoard);
   }
 
   @Delete(':kudoboardId')
   @UseGuards(AuthGuard('jwt'))
   async deleteKudoboard(@Param('kudoboardId') kudoboardId: string) {
-    console.log('deleteKudoboard', kudoboardId);
     return this.beKudoboardService.deleteKudoboard(kudoboardId);
   }
 }

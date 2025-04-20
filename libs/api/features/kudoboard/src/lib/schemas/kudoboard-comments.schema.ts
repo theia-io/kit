@@ -13,6 +13,13 @@ export type KudoBoardCommentsDocument = HydratedDocument<KudoBoardComments>;
       delete ret._id;
     },
   },
+  toObject: {
+    virtuals: true,
+    versionKey: false,
+    transform(doc, ret) {
+      delete ret._id;
+    },
+  },
 })
 export class KudoBoardComments {
   @Prop({
@@ -26,10 +33,18 @@ export class KudoBoardComments {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
   })
-  profileId: Types.ObjectId;
+  profileId: Types.ObjectId | null;
 
-  @Prop({ required: true })
+  @Prop()
   content: string;
+
+  @Prop({ type: [Object] })
+  medias: Array<{
+    url: string;
+    width: number;
+    height: number;
+    optimizedUrls: Array<string>;
+  }>;
 }
 
 export const KudoBoardCommentsSchema =

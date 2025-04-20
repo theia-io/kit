@@ -6,6 +6,7 @@ import {
   output,
 } from '@angular/core';
 import { Auth0Service } from '@kitouch/shared-infra';
+import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
@@ -18,6 +19,7 @@ import { DynamicDialogRef } from 'primeng/dynamicdialog';
 })
 export class SignInAuth0Component {
   #auth0Service = inject(Auth0Service);
+
   signedIn = output<boolean>();
 
   // When SignInGoogleComponent opened as dynamic dialog it Dialog will expect close event. However component is also used in other places not as dynamic dialog thus dynamicDialogRef will not be provided (is not expected)

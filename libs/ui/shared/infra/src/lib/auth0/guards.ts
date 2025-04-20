@@ -27,7 +27,7 @@ export const onlyForNotLoggedInGuard = () => {
         return router.createUrlTree(['']);
       }
 
-      return !isLoggedIn;
+      return true;
     })
   );
 };
@@ -59,7 +59,7 @@ export const onlyForLoggedInGuard = (
     ),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
-        console.log('INSIDE onlyForLoggedInGuard REDIRECT');
+        console.info('INSIDE onlyForLoggedInGuard REDIRECT');
         store.dispatch(FeatUserApiActions.setUser({ user: undefined }));
         return router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }

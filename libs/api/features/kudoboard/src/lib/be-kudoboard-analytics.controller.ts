@@ -27,14 +27,12 @@ export class BeKudoBoardAnalyticsController {
     );
   }
 
-  @Get(':kudoboardId')
-  @UseGuards(AuthGuard('jwt'))
-  async getAnalyticsKudoBoard(@Param('kudoBoardId') kudoboardId: string) {
-    return this.beKudoBoardAnalyticsService.getAnalyticsKudoBoard(kudoboardId);
+  @Get(':kudoBoardId')
+  async getAnalyticsKudoBoard(@Param('kudoBoardId') kudoBoardId: string) {
+    return this.beKudoBoardAnalyticsService.getAnalyticsKudoBoard(kudoBoardId);
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
   async createAnalyticsKudoBoard(
     @Body() kudoBoardAnalytics: KudoBoardAnalytics
   ) {

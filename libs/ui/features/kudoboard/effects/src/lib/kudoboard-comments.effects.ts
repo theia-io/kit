@@ -55,7 +55,7 @@ export class KudoBoardCommentsEffects {
     this.#actions$.pipe(
       ofType(FeatKudoBoardCommentActions.postCommentKudoBoard),
       switchMap(({ comment }) =>
-        this.#kudoboardCommentService.postKudoBoardComment(comment).pipe(
+        this.#kudoboardCommentService.createKudoBoardComment(comment).pipe(
           map((comment) =>
             FeatKudoBoardCommentActions.postCommentKudoBoardSuccess({
               comment,

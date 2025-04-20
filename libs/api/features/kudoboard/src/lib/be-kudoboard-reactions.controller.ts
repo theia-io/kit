@@ -8,9 +8,7 @@ import {
   HttpStatus,
   Param,
   Post,
-  UseGuards,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { BeKudoBoardReactionsService } from './be-kudoboard-reactions.service';
 
 @Controller('kudoboard-reactions')
@@ -20,9 +18,7 @@ export class BeKudoBoardReactionsController {
   ) {}
 
   @Get(':kudoBoardId')
-  @UseGuards(AuthGuard('jwt'))
   async getReactionsKudoBoard(@Param('kudoBoardId') kudoBoardId: string) {
-    console.log('kudoBoardId', kudoBoardId);
     if (!kudoBoardId) {
       throw new HttpException(
         'kudoboardId is required',
@@ -33,7 +29,6 @@ export class BeKudoBoardReactionsController {
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
   async createReactionsKudoBoard(@Body() kudoBoardReaction: KudoBoardReaction) {
     console.log('kudoBoardReaction', kudoBoardReaction);
     return this.beKudoBoardReactionsService.createReactionsKudoBoard(
@@ -42,7 +37,6 @@ export class BeKudoBoardReactionsController {
   }
 
   @Delete(':kudoBoardReactionId')
-  @UseGuards(AuthGuard('jwt'))
   async deleteKudoboardReactions(
     @Param('kudoBoardReactionId') kudoBoardReactionId: string
   ) {

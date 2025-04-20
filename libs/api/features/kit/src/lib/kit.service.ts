@@ -331,7 +331,8 @@ export class KitService {
   }
 
   async profilesFindOrInsert(
-    user: UserDocument
+    user: UserDocument,
+    auth0Updates: Pick<Auth0User, 'name' | 'picture'>
   ): Promise<Array<ProfileDocument>> {
     const profiles: Array<ProfileDocument> | null = await this.userProfiles(
       user.id
@@ -343,7 +344,16 @@ export class KitService {
     let profile;
     try {
       // check if will find many or INFORCE it with something
-      profile = await this.profileModel.create({ userId: user._id });
+      profile = await this.profileModel.create({
+        userId: user._id,
+        name: auth0Updates.name,
+        pictures: [
+          {
+            url: auth0Updates.picture,
+            primary: true,
+          },
+        ],
+      });
     } catch (err) {
       console.error('Cannot add new profile', err);
       throw new HttpException(
