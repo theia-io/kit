@@ -114,6 +114,7 @@ export class BeFarewellService {
         .find({
           profileId: new mongoose.Types.ObjectId(profileId),
         })
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(`Cannot execute farewells search for ${farewells}`, err);
@@ -123,6 +124,17 @@ export class BeFarewellService {
       );
     }
 
-    return farewells;
+    return farewells.map((farewell) => {
+      const { profileId: populatedProfile, ...rest } = farewell.toObject();
+      const profileId = populatedProfile?._id.toString();
+      return {
+        ...rest,
+        profile: {
+          ...populatedProfile,
+          id: profileId,
+        },
+        profileId: profileId,
+      };
+    });
   }
 }

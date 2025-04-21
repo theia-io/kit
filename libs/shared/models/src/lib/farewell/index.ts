@@ -42,9 +42,9 @@ export interface Farewell extends Partial<KitTimestamp> {
   kudoBoardId?: KudoBoard['id'];
   // TODO @Danylo remove this
   kudoBoard?: KudoBoard;
-  profileId?: Profile['id'];
+  profileId: Profile['id'];
   // TODO @Danylo remove this
-  profile: Profile;
+  profile?: Profile;
   title: string;
   content: string;
   status: FarewellStatus;

@@ -63,7 +63,6 @@ import {
     UiKitPageOverlayComponent,
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
-    FeatFarewellAllGridItemComponent,
     FeatFarewellViewV2Component,
     FeatFarewellCommentsComponent,
     FeatFollowUnfollowProfileComponent,
@@ -96,9 +95,9 @@ export class PageFarewellViewComponent {
 
   farewellProfile = toSignal(
     this.farewell$.pipe(
-      switchMap(({ profile: farewellSavedProfile }) =>
+      switchMap(({ profile: farewellSavedProfile, profileId }) =>
         this.#store
-          .select(selectProfileById(farewellSavedProfile.id))
+          .select(selectProfileById(profileId))
           .pipe(map((profile) => profile ?? farewellSavedProfile))
       )
     )

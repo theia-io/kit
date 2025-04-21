@@ -20,7 +20,6 @@ export class BeFarewellController {
   @Get()
   @UseGuards(AuthGuard('jwt'))
   async getProfileFarewells(@Query('profileId') profileId: string) {
-    console.log('getProfileFarewells', profileId);
     return this.beFarewellService.getProfileFarewells(profileId);
   }
 

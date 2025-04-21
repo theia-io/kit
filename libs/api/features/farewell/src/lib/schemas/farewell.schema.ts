@@ -11,6 +11,13 @@ export type FarewellDocument = HydratedDocument<Farewell>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
+      delete ret['_id'];
+    },
+  },
+  toObject: {
+    virtuals: true,
+    versionKey: false,
+    transform(doc, ret) {
       delete ret._id;
     },
   },
