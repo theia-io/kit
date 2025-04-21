@@ -9,7 +9,7 @@ export const environment: Environment = {
     tweets: '/api/tweets',
     retweets: '/api/retweets',
     bookmarks: '/api/bookmarks',
-    farewell: '/api/farewell',
+    farewells: '/api/farewells',
     farewellComments: '/api/farewell-comments',
     farewellReactions: '/api/farewell-reactions',
     farewellAnalytics: '/api/farewell-analytics',

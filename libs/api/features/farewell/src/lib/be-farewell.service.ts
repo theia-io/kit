@@ -11,7 +11,7 @@ export class BeFarewellService {
     private farewellModel: Model<FarewellDocument>
   ) {}
 
-  async getfarewell(farewellId: string) {
+  async getFarewell(farewellId: string) {
     let farewell;
 
     try {
@@ -52,7 +52,7 @@ export class BeFarewellService {
     }
     return newfarewell;
   }
-  async updatefarewell(farewellId: string, farewell: Ifarewell) {
+  async updateFarewell(farewellId: string, farewell: Ifarewell) {
     let updatedfarewell;
 
     try {
@@ -71,7 +71,7 @@ export class BeFarewellService {
 
     return updatedfarewell;
   }
-  async deletefarewell(farewellId: string) {
+  async deleteFarewell(farewellId: string) {
     let deletedfarewell;
 
     try {

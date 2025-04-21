@@ -1,4 +1,4 @@
-import { FarewellAnalytics as IfarewellAnalytics } from '@kitouch/shared-models';
+import { FarewellAnalytics as IFarewellsAnalytics } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -39,7 +39,7 @@ export class BeFarewellAnalyticsService {
     return farewellsAnalytics;
   }
 
-  async getAnalyticsfarewell(farewellId: string) {
+  async getAnalyticsFarewell(farewellId: string) {
     let farewellAnalytics;
 
     try {
@@ -62,7 +62,7 @@ export class BeFarewellAnalyticsService {
     return farewellAnalytics;
   }
 
-  async createAnalyticsfarewell(farewell: IfarewellAnalytics) {
+  async createAnalyticsfarewell(farewell: IFarewellsAnalytics) {
     let newfarewellAnalytics;
 
     try {
