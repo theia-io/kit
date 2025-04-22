@@ -5,12 +5,13 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { FarewellV2Service } from './farewellV2.service';
-import { profile } from 'console';
+import { Farewell } from '@kitouch/shared-models';
 
 @Injectable()
 export class FarewellEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
+  g;
 
   #farewellService = inject(FarewellV2Service);
   #currentProfile = this.#store.pipe(
