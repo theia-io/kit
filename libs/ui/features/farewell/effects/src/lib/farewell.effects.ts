@@ -11,7 +11,6 @@ import { Farewell } from '@kitouch/shared-models';
 export class FarewellEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
-  g;
 
   #farewellService = inject(FarewellV2Service);
   #currentProfile = this.#store.pipe(
