@@ -30,7 +30,7 @@ export class BeFarewellService {
 
     return farewells;
   }
-  
+
   async getFarewell(farewellId: string) {
     let farewell;
 
@@ -50,7 +50,7 @@ export class BeFarewellService {
 
     return farewell;
   }
-  
+
   async createFarewell(farewell: IFarewell) {
     let newfarewell;
 
@@ -78,16 +78,18 @@ export class BeFarewellService {
     let updatedFarewell;
 
     try {
-      updatedFarewell = await this.farewellModel.
-      findOneAndUpdate(
-        { _id: new mongoose.Types.ObjectId(farewellId) },
-        { ...farewell,
-          profileId: farewell.profileId
-          ? new mongoose.Types.ObjectId(farewell.profileId)
-          : null, },
-        { new: true }
-      )
-      .exec();
+      updatedFarewell = await this.farewellModel
+        .findOneAndUpdate(
+          { _id: new mongoose.Types.ObjectId(farewellId) },
+          {
+            ...farewell,
+            profileId: farewell.profileId
+              ? new mongoose.Types.ObjectId(farewell.profileId)
+              : null,
+          },
+          { new: true }
+        )
+        .exec();
     } catch (err) {
       console.error(`Cannot execute farewell update for ${farewellId}`, err);
       throw new HttpException(
@@ -98,6 +100,7 @@ export class BeFarewellService {
 
     return updatedFarewell;
   }
+
   async deleteFarewell(farewellId: string) {
     let deletedFarewell;
 
@@ -114,5 +117,4 @@ export class BeFarewellService {
     }
     return deletedFarewell;
   }
-  
 }

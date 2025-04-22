@@ -66,7 +66,7 @@ export class KitService {
   }
 
   async auth0AccountFindAndUpdate(
-    auth0User: Omit<Auth0User, 'account' | 'user' | 'profiles'>
+    auth0User: Auth0User
   ): Promise<AccountDocument> {
     const auth0UserEmail = auth0User.email.toLowerCase();
     let account: AccountDocument | null;
@@ -89,6 +89,8 @@ export class KitService {
         runValidators: true,
       };
 
+      console.log(auth0UserEmail, updateOnInsert);
+
       // check if will find many or INFORCE it with something
       account = await this.accountModel
         .findOneAndUpdate<AccountDocument>(
@@ -98,7 +100,10 @@ export class KitService {
         )
         .exec();
     } catch (err) {
-      console.error('Cannot execute account findOneAndUpdate', err);
+      console.error(
+        '[auth0AccountFindAndUpdate] Cannot execute account findOneAndUpdate',
+        err
+      );
       throw new HttpException(
         'Cannot execute account search',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -186,9 +191,12 @@ export class KitService {
         )
         .exec();
     } catch (err) {
-      console.error('Cannot execute account findOneAndUpdate', err);
+      console.error(
+        '[accountUserFindAndUpdate] Cannot execute user findOneAndUpdate',
+        err
+      );
       throw new HttpException(
-        'Cannot execute account search',
+        'Cannot execute user search',
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }

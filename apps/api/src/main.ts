@@ -10,7 +10,7 @@ import { logger } from './app/middleware/logger';
 import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
 import { KitService } from '@kitouch/be-kit';
-import { Auth0Kit } from '@kitouch/shared-models';
+import { Auth0Kit, Auth0User } from '@kitouch/shared-models';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
 
@@ -151,9 +151,10 @@ async function bootstrap() {
 
       console.log('User from Auth0:', user);
 
-      const auth0User = {
+      const auth0User: Auth0User = {
+        sub: user.sub,
         email: user.email,
-        name: user.given_name,
+        name: user.given_name ?? user.name ?? user.nickname,
         surname: user.family_name,
         picture: user.picture,
         email_verified: user.email_verified,

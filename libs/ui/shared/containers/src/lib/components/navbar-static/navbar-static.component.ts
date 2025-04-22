@@ -20,10 +20,11 @@ import {
   APP_PATH_STATIC_PAGES,
   DESKTOP_NAV_ITEMS,
 } from '@kitouch/shared-constants';
-import { Device, DeviceService } from '@kitouch/shared-infra';
+import { Device, DeviceService, ENVIRONMENT } from '@kitouch/shared-infra';
 import { ButtonModule } from 'primeng/button';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -33,6 +34,7 @@ import { NavbarService } from '../navbar/navbar.service';
     NgClass,
     OverlayPanelModule,
     ButtonModule,
+    TooltipModule,
     //
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
@@ -52,6 +54,7 @@ export class SharedNavBarStaticComponent implements OnDestroy {
 
   #navbarService = inject(NavbarService);
   deviceService = inject(DeviceService);
+  environment = inject(ENVIRONMENT);
 
   @ViewChild(OverlayPanel)
   opEl: OverlayPanel;
