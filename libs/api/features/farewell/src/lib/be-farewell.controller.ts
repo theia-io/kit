@@ -24,30 +24,26 @@ export class BeFarewellController {
   }
 
   @Get(':farewellId')
-  @UseGuards(AuthGuard('jwt'))
-  async getfarewell(@Param('farewellId') farewellId: string) {
+  async getFarewell(@Param('farewellId') farewellId: string) {
     return this.beFarewellService.getFarewell(farewellId);
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
-  async createfarewell(@Body() Farewell: IFarewell) {
-    console.log('createFarewell', Farewell);
-    return this.beFarewellService.createFarewell(Farewell);
+  async createFarewell(@Body() farewell: IFarewell) {
+    return this.beFarewellService.createFarewell(farewell);
   }
 
   @Put(':farewellId')
-  @UseGuards(AuthGuard('jwt'))
-  async updatefarewell(
+  async updateFarewell(
     @Param('farewellId') farewellId: string,
     @Body() farewell: IFarewell
   ) {
     console.log('updateFarewell', farewellId, farewell);
     return this.beFarewellService.updateFarewell(farewellId, farewell);
   }
+  
   @Delete(':farewellId')
-  @UseGuards(AuthGuard('jwt'))
-  async deletefarewell(@Param('farewellId') farewellId: string) {
+  async deleteFarewell(@Param('farewellId') farewellId: string) {
     console.log('deleteFarewell', farewellId);
     return this.beFarewellService.deleteFarewell(farewellId);
   }

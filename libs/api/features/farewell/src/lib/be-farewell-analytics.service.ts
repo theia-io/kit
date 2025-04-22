@@ -63,10 +63,10 @@ export class BeFarewellAnalyticsService {
   }
 
   async createAnalyticsfarewell(farewell: IFarewellsAnalytics) {
-    let newfarewellAnalytics;
+    let newFarewellAnalytics;
 
     try {
-      newfarewellAnalytics = await this.farewellAnalyticsModel.create({
+      newFarewellAnalytics = await this.farewellAnalyticsModel.create({
         ...farewell,
         farewellId: new mongoose.Types.ObjectId(farewell.farewellId),
       });
@@ -81,7 +81,7 @@ export class BeFarewellAnalyticsService {
       );
     }
 
-    return newfarewellAnalytics;
+    return newFarewellAnalytics;
   }
 
   async deleteFarewellAnalytics(farewellId: string) {

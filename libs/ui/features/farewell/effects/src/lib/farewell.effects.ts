@@ -3,7 +3,7 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { catchError, filter, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
 import { FarewellV2Service } from './farewellV2.service';
 import { Farewell } from '@kitouch/shared-models';
 
@@ -70,8 +70,21 @@ export class FarewellEffects {
   putFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.putFarewell),
-      switchMap(({ farewell }) => this.#farewellService.putFarewell(farewell)),
-      map((farewell) => FeatFarewellActions.putFarewellSuccess({ farewell }))
+      tap((v) => console.log('TEST UPDATINNG', v)),
+      switchMap(({ farewell }) =>
+        this.#farewellService.putFarewell(farewell).pipe(
+          map((farewell) =>
+            FeatFarewellActions.putFarewellSuccess({ farewell })
+          ),
+          catchError((err) =>
+            of(
+              FeatFarewellActions.putFarewellFailure({
+                message: `Failed to update farewell. Try again later or contact support. ${err.message}`,
+              })
+            )
+          )
+        )
+      )
     )
   );
 

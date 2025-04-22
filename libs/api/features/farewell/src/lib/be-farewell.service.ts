@@ -1,4 +1,4 @@
-import { Farewell as Ifarewell } from '@kitouch/shared-models';
+import { Farewell as IFarewell } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -11,6 +11,26 @@ export class BeFarewellService {
     private farewellModel: Model<FarewellDocument>
   ) {}
 
+  async getProfileFarewells(profileId: string) {
+    let farewells: Array<FarewellDocument>;
+
+    try {
+      farewells = await this.farewellModel
+        .find<FarewellDocument>({
+          profileId: new mongoose.Types.ObjectId(profileId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(`Cannot execute farewell search for ${profileId}`, err);
+      throw new HttpException(
+        'Cannot find farewells',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return farewells;
+  }
+  
   async getFarewell(farewellId: string) {
     let farewell;
 
@@ -30,7 +50,8 @@ export class BeFarewellService {
 
     return farewell;
   }
-  async createFarewell(farewell: Ifarewell) {
+  
+  async createFarewell(farewell: IFarewell) {
     let newfarewell;
 
     try {
@@ -52,15 +73,21 @@ export class BeFarewellService {
     }
     return newfarewell;
   }
-  async updateFarewell(farewellId: string, farewell: Ifarewell) {
-    let updatedfarewell;
+
+  async updateFarewell(farewellId: string, farewell: IFarewell) {
+    let updatedFarewell;
 
     try {
-      updatedfarewell = await this.farewellModel.findOneAndUpdate(
+      updatedFarewell = await this.farewellModel.
+      findOneAndUpdate(
         { _id: new mongoose.Types.ObjectId(farewellId) },
-        { ...farewell },
+        { ...farewell,
+          profileId: farewell.profileId
+          ? new mongoose.Types.ObjectId(farewell.profileId)
+          : null, },
         { new: true }
-      );
+      )
+      .exec();
     } catch (err) {
       console.error(`Cannot execute farewell update for ${farewellId}`, err);
       throw new HttpException(
@@ -69,13 +96,13 @@ export class BeFarewellService {
       );
     }
 
-    return updatedfarewell;
+    return updatedFarewell;
   }
   async deleteFarewell(farewellId: string) {
-    let deletedfarewell;
+    let deletedFarewell;
 
     try {
-      deletedfarewell = await this.farewellModel.findOneAndDelete({
+      deletedFarewell = await this.farewellModel.findOneAndDelete({
         _id: new mongoose.Types.ObjectId(farewellId),
       });
     } catch (err) {
@@ -85,56 +112,7 @@ export class BeFarewellService {
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
-    return deletedfarewell;
+    return deletedFarewell;
   }
-  async getFarewells(profileId: string) {
-    let farewells;
-
-    try {
-      farewells = await this.farewellModel
-        .findOne({
-          _id: new mongoose.Types.ObjectId(profileId),
-        })
-        .exec();
-    } catch (err) {
-      console.error(`Cannot execute farewells search for ${farewells}`, err);
-      throw new HttpException(
-        'Cannot find farewells',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
-    }
-
-    return farewells;
-  }
-  async getProfileFarewells(profileId: string) {
-    let farewells;
-
-    try {
-      farewells = await this.farewellModel
-        .find({
-          profileId: new mongoose.Types.ObjectId(profileId),
-        })
-        .populate('profileId')
-        .exec();
-    } catch (err) {
-      console.error(`Cannot execute farewells search for ${farewells}`, err);
-      throw new HttpException(
-        'Cannot find farewells',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
-    }
-
-    return farewells.map((farewell) => {
-      const { profileId: populatedProfile, ...rest } = farewell.toObject();
-      const profileId = populatedProfile?._id.toString();
-      return {
-        ...rest,
-        profile: {
-          ...populatedProfile,
-          id: profileId,
-        },
-        profileId: profileId,
-      };
-    });
-  }
+  
 }
