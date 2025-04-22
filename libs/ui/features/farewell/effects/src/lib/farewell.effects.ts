@@ -3,7 +3,15 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap, tap, withLatestFrom } from 'rxjs';
+import {
+  catchError,
+  filter,
+  map,
+  of,
+  switchMap,
+  tap,
+  withLatestFrom,
+} from 'rxjs';
 import { FarewellV2Service } from './farewellV2.service';
 import { Farewell } from '@kitouch/shared-models';
 

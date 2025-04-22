@@ -41,7 +41,7 @@ export class BeFarewellController {
     console.log('updateFarewell', farewellId, farewell);
     return this.beFarewellService.updateFarewell(farewellId, farewell);
   }
-  
+
   @Delete(':farewellId')
   async deleteFarewell(@Param('farewellId') farewellId: string) {
     console.log('deleteFarewell', farewellId);

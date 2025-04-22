@@ -19,14 +19,12 @@ export class FarewellV2Service {
         },
       }
     );
-
   }
 
   getFarewell(farewellId: string): Observable<Farewell | null> {
     return this.#http.get<Farewell>(
       `${this.#environment.api.farewells}/${farewellId}`
     );
-
   }
   createFarewell(farewell: ClientDataType<Farewell>): Observable<Farewell> {
     return this.#http.post<Farewell>(
@@ -40,16 +38,14 @@ export class FarewellV2Service {
       `${this.#environment.api.farewells}/${id}`,
       rest
     );
-
   }
 
   deleteFarewell(id: Farewell['id']) {
     return this.#http.delete<Farewell>(
       `${this.#environment.api.farewells}/${id}`
     );
-  
   }
-  
+
   getAnalyticsFarewells(farewellIds: Array<string>) {
     if (farewellIds.length > 0) {
       return this.#http.get<Array<FarewellAnalytics>>(
@@ -68,7 +64,6 @@ export class FarewellV2Service {
     return this.#http.get<FarewellAnalytics>(
       `${this.#environment.api.farewellAnalytics}/${farewellId}`
     );
-
   }
 
   postAnalyticsFarewell(farewellId: string) {
@@ -76,7 +71,6 @@ export class FarewellV2Service {
       `${this.#environment.api.farewellAnalytics}/${farewellId}`,
       {}
     );
-
   }
 
   deleteAnalyticsFarewell(farewellId: string) {

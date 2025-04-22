@@ -25,13 +25,11 @@ export class BeFarewellAnalyticsController {
   }
 
   @Get(':farewellId')
-  
   async getAnalyticsFarewell(@Param('farewellId') farewellId: string) {
     return this.beFarewellAnalyticsService.getAnalyticsFarewell(farewellId);
   }
 
   @Post()
-
   async createAnalyticsfarewell(@Body() farewellAnalytics: IFarewellAnalytics) {
     return this.beFarewellAnalyticsService.createAnalyticsfarewell(
       farewellAnalytics
@@ -39,7 +37,6 @@ export class BeFarewellAnalyticsController {
   }
 
   @Delete(':farewellId')
-  
   async deletefarewellAnalytics(@Param('farewellid') farewellId: string) {
     return this.beFarewellAnalyticsService.deleteFarewellAnalytics(farewellId);
   }
