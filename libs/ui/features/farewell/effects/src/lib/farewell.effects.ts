@@ -1,10 +1,11 @@
 import { Injectable, inject } from '@angular/core';
-
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { catchError, map, of, switchMap } from 'rxjs';
-import { FarewellV2Service } from './farewellv2.service';
+import { select, Store } from '@ngrx/store';
+import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
+import { FarewellV2Service } from './farewellV2.service';
+import { profile } from 'console';
 
 @Injectable()
 export class FarewellEffects {
@@ -12,23 +13,26 @@ export class FarewellEffects {
   #store = inject(Store);
 
   #farewellService = inject(FarewellV2Service);
+  #currentProfile = this.#store.pipe(
+    select(selectCurrentProfile),
+    filter((profile) => !!profile)
+  );
 
   getFarewells$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getProfileFarewells),
       switchMap(({ profileId }) =>
-        this.#farewellService.getFarewells(profileId).pipe(
-          map((farewells) =>
-            FeatFarewellActions.getFarewellsSuccess({ farewells })
-          ),
-          catchError(() =>
-            of(
-              FeatFarewellActions.getFarewellsFailure({
-                message:
-                  'It is not you, it is us. Cannot load profile farewells, try again later.',
-              })
-            )
-          )
+        this.#farewellService.getFarewells(profileId)
+      ),
+      map((farewells) =>
+        FeatFarewellActions.getFarewellsSuccess({ farewells })
+      ),
+      catchError(() =>
+        of(
+          FeatFarewellActions.getFarewellsFailure({
+            message:
+              'It is not you, it is us. Cannot load profile farewells, try again later.',
+          })
         )
       )
     )
@@ -51,13 +55,18 @@ export class FarewellEffects {
   createFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.createFarewell),
-      switchMap(({ type: _, ...rest }) =>
-        this.#farewellService.createFarewell({ ...rest })
+      withLatestFrom(this.#currentProfile),
+      switchMap(([{ farewell }, profile]) =>
+        this.#farewellService.createFarewell({
+          ...farewell,
+          profileId: profile.id,
+          profile,
+        })
       ),
       map((farewell) => FeatFarewellActions.createFarewellSuccess({ farewell }))
     )
   );
-
+  //to here
   putFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.putFarewell),
