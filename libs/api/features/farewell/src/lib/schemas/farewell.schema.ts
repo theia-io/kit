@@ -40,11 +40,18 @@ export class Farewell {
   })
   profileId: Types.ObjectId;
 
-  // TODO @Danylo remove & populate with DB
-  // @Prop()
-  // profile: any;
+  @Prop({
+    default: '',
+    trim: true,
+  })
+  content: string;
 
-  // TODO @Alex not sure about this type
+  @Prop({
+    default: '',
+    trim: true,
+  })
+  title: string;
+
   @Prop({
     type: String,
     enum: FarewellStatus,

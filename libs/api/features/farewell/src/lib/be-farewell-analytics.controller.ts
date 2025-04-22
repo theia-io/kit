@@ -9,8 +9,9 @@ import {
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { BeFarewellAnalyticsService } from './be-farewell-analytics.service';
 import { AuthGuard } from '@nestjs/passport';
+import { BeFarewellAnalyticsService } from './be-farewell-analytics.service';
+
 @Controller('farewell-analytics')
 export class BeFarewellAnalyticsController {
   constructor(private beFarewellAnalyticsService: BeFarewellAnalyticsService) {}
@@ -30,8 +31,8 @@ export class BeFarewellAnalyticsController {
   }
 
   @Post()
-  async createAnalyticsfarewell(@Body() farewellAnalytics: IFarewellAnalytics) {
-    return this.beFarewellAnalyticsService.createAnalyticsfarewell(
+  async createAnalyticsFarewell(@Body() farewellAnalytics: IFarewellAnalytics) {
+    return this.beFarewellAnalyticsService.createAnalyticsFarewell(
       farewellAnalytics
     );
   }

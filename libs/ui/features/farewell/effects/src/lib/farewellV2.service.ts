@@ -26,6 +26,7 @@ export class FarewellV2Service {
       `${this.#environment.api.farewells}/${farewellId}`
     );
   }
+
   createFarewell(farewell: ClientDataType<Farewell>): Observable<Farewell> {
     return this.#http.post<Farewell>(
       `${this.#environment.api.farewells}`,

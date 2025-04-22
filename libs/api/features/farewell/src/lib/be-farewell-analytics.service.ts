@@ -62,7 +62,7 @@ export class BeFarewellAnalyticsService {
     return farewellAnalytics;
   }
 
-  async createAnalyticsfarewell(farewell: IFarewellsAnalytics) {
+  async createAnalyticsFarewell(farewell: IFarewellsAnalytics) {
     let newFarewellAnalytics;
 
     try {
