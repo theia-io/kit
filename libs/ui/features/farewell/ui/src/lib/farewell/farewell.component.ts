@@ -323,11 +323,13 @@ export class FeatFarewellComponent implements AfterViewInit {
         const { title, content, status } = this.farewellFormGroup.value;
         this.#store.dispatch(
           FeatFarewellActions.createFarewell({
-            title: title ?? '',
-            content: content ?? '',
-            profileId: profile.id,
-            profile: profile,
-            status: status ?? FarewellStatus.Draft,
+            farewell: {
+              title: title ?? '',
+              content: content ?? '',
+              profileId: profile.id,
+              profile: profile,
+              status: status ?? FarewellStatus.Draft,
+            },
           })
         );
       });
