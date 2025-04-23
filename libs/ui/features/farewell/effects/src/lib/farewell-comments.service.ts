@@ -23,53 +23,67 @@ export class FarewellCommentsService extends DataSourceService {
   getFarewellComments(
     farewellId: Farewell['id']
   ): Observable<Array<FarewellComment>> {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellCommentResponse>('farewell-comments')
-          .find({ farewellId: new BSON.ObjectId(farewellId) })
-      ),
-      map((reactions) => reactions.map(dbClientFarewellCommentAdapter))
+    // return this.db$().pipe(
+    //   switchMap((db) =>
+    //     db
+    //       .collection<ClientDBFarewellCommentResponse>('farewell-comments')
+    //       .find({ farewellId: new BSON.ObjectId(farewellId) })
+    //   ),
+    //   map((reactions) => reactions.map(dbClientFarewellCommentAdapter))
+    // );
+
+    return this.#http.get<Array<FarewellComment>>(
+      `${this.#env.api.farewellComments}/${farewellId}`
     );
   }
 
   postFarewellComment(
-    reactionData: ClientDataType<FarewellComment>
+    farewellComment: ClientDataType<FarewellComment>
   ): Observable<FarewellComment> {
-    const commentRequest = clientDbFarewellCommentAdapter(reactionData);
+    // const commentRequest = clientDbFarewellCommentAdapter(reactionData);
 
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellCommentResponse>('farewell-comments')
-          .insertOne(commentRequest)
-      ),
-      map(({ insertedId }) => ({ ...commentRequest, _id: insertedId })),
-      map((FarewellComment) => dbClientFarewellCommentAdapter(FarewellComment))
+    // return this.db$().pipe(
+    //   switchMap((db) =>
+    //     db
+    //       .collection<ClientDBFarewellCommentResponse>('farewell-comments')
+    //       .insertOne(commentRequest)
+    //   ),
+    //   map(({ insertedId }) => ({ ...commentRequest, _id: insertedId })),
+    //   map((FarewellComment) => dbClientFarewellCommentAdapter(FarewellComment))
+    // );
+
+    return this.#http.post<FarewellComment>(
+      `${this.#env.api.farewellComments}`,
+      farewellComment
     );
   }
 
   batchFarewellComments(
     comments: Array<ClientDataType<FarewellComment>>
   ): Observable<Array<FarewellComment>> {
-    const commentsRequest = comments.map(clientDbFarewellCommentAdapter);
-
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellCommentResponse>('farewell-comments')
-          .insertMany(commentsRequest)
-      ),
-      map(({ insertedIds }) =>
-        insertedIds.map((insertedId, idx) => ({
-          ...commentsRequest[idx],
-          _id: insertedId,
-        }))
-      ),
-      map((farewellComments) =>
-        farewellComments.map(dbClientFarewellCommentAdapter)
-      )
+    return this.#http.post<Array<FarewellComment>>(
+      `${this.#env.api.farewellComments}/batch`,
+      comments
     );
+
+    // const commentsRequest = comments.map(clientDbFarewellCommentAdapter);
+
+    // return this.db$().pipe(
+    //   switchMap((db) =>
+    //     db
+    //       .collection<ClientDBFarewellCommentResponse>('farewell-comments')
+    //       .insertMany(commentsRequest)
+    //   ),
+    //   map(({ insertedIds }) =>
+    //     insertedIds.map((insertedId, idx) => ({
+    //       ...commentsRequest[idx],
+    //       _id: insertedId,
+    //     }))
+    //   ),
+    //   map((farewellComments) =>
+    //     farewellComments.map(dbClientFarewellCommentAdapter)
+    //   )
+    // );
   }
 
   deleteFarewellComment(id: FarewellComment['id']) {
