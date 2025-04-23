@@ -32,8 +32,9 @@ export class FarewellComment {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
+    required: false,
   })
-  profileId: Types.ObjectId;
+  profileId: Types.ObjectId | null;
 
   @Prop()
   content: string;

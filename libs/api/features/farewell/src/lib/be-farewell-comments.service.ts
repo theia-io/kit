@@ -1,10 +1,10 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { InjectModel } from '@nestjs/mongoose';
+import mongoose, { Model } from 'mongoose';
 import {
   FarewellComment,
   FarewellCommentDocument,
 } from './schemas/farewell-comments.schema';
-import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
 
 @Injectable()
 export class BeFarewellCommentsService {
@@ -33,8 +33,6 @@ export class BeFarewellCommentsService {
 
     return farewellComments.map((farewellComment) => {
       const farewellCommentObject = farewellComment.toObject();
-
-      console.log(farewellCommentObject);
 
       return {
         ...farewellCommentObject,
@@ -106,19 +104,19 @@ export class BeFarewellCommentsService {
 
     try {
       farewellCommentDeleted =
-        await this.farewellCommentsModel.findByIdAndDelete({
+        await this.farewellCommentsModel.findOneAndDelete({
           _id: new mongoose.Types.ObjectId(farewellCommentId),
-          $or: [
-            { profileId: null },
-            {
-              profileId: {
-                $in: currentProfileIds.map(
-                  (currentProfileId) =>
-                    new mongoose.Types.ObjectId(currentProfileId)
-                ),
-              },
-            },
-          ],
+          // $or: [
+          //   {
+          //     profileId: {
+          //       $in: currentProfileIds.map(
+          //         (currentProfileId) =>
+          //           new mongoose.Types.ObjectId(currentProfileId)
+          //       ),
+          //     },
+          //   },
+          //   // { profileId: null },
+          // ],
         });
     } catch (err) {
       console.error(
@@ -126,6 +124,16 @@ export class BeFarewellCommentsService {
         err
       );
       throw new Error('Cannot delete farewell comment');
+    }
+
+    if (!farewellCommentDeleted) {
+      console.warn(
+        `Farewell comment ${farewellCommentId} not found or not authorized for update by provided profiles.`
+      );
+      throw new HttpException(
+        `Farewell comment with ID "${farewellCommentId}" not found or you lack permission.`,
+        HttpStatus.NOT_FOUND
+      );
     }
 
     return farewellCommentDeleted;
