@@ -202,9 +202,9 @@ export class FarewellEffects {
       ofType(FeatFarewellActions.putAnalyticsFarewell),
       switchMap(({ analytics }) =>
         this.#farewellService.putAnalytics(analytics).pipe(
-          map((analytics) =>
+          map((updatedAnalytics) =>
             FeatFarewellActions.putAnalyticsFarewellSuccess({
-              analytics: analytics as any,
+              analytics: updatedAnalytics,
             })
           )
         )

@@ -21,6 +21,7 @@ export class BeFarewellCommentsService {
         .find({
           farewellId: new mongoose.Types.ObjectId(farewellId),
         })
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(
@@ -30,7 +31,22 @@ export class BeFarewellCommentsService {
       throw new Error('Cannot find farewell comments');
     }
 
-    return farewellComments;
+    return farewellComments.map((farewellComment) => {
+      const farewellCommentObject = farewellComment.toObject();
+
+      console.log(farewellCommentObject);
+
+      return {
+        ...farewellCommentObject,
+        profileId: farewellCommentObject.profileId?._id,
+        profile: farewellCommentObject.profileId?._id
+          ? {
+              ...farewellCommentObject.profileId,
+              id: farewellCommentObject.profileId?._id,
+            }
+          : null,
+      };
+    });
   }
 
   async createCommentFarewell({
@@ -56,7 +72,6 @@ export class BeFarewellCommentsService {
       throw new Error('Cannot create farewell comment');
     }
 
-    console.log('RES', newFarewellComment);
     return newFarewellComment;
   }
 

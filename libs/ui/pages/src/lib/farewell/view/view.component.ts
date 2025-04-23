@@ -11,7 +11,6 @@ import {
 } from '@kitouch/feat-farewell-data';
 import {
   FeatFarewellActionsComponent,
-  FeatFarewellAllGridItemComponent,
   FeatFarewellCommentsComponent,
   FeatFarewellInfoPanelComponent,
   FeatFarewellStatusComponent,

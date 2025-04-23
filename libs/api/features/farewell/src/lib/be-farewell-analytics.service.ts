@@ -88,6 +88,40 @@ export class BeFarewellAnalyticsService {
     return newFarewellAnalytics;
   }
 
+  async updateAnalyticsFarewell(
+    analyticId: IFarewellsAnalytics['id'],
+    farewell: IFarewell
+  ) {
+    let updatedFarewellAnalytics;
+
+    try {
+      updatedFarewellAnalytics =
+        await this.farewellAnalyticsModel.findByIdAndUpdate(
+          {
+            _id: new mongoose.Types.ObjectId(analyticId),
+          },
+          {
+            $inc: { viewed: 1 },
+          },
+          {
+            new: true,
+            upsert: true,
+          }
+        );
+    } catch (err) {
+      console.error(
+        `Cannot execute farewell analytics update for ${analyticId}, ${farewell.toString()}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot update farewell analytics',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return updatedFarewellAnalytics;
+  }
+
   async deleteFarewellAnalytics(farewellId: string) {
     let deletedFarewellAnalytics;
 

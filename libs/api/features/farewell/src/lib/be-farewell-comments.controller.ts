@@ -20,11 +20,11 @@ export class BeFarewellCommentsController {
   constructor(private beFarewellCommentsService: BeFarewellCommentsService) {}
 
   @Get(':farewellId')
-  async getCommentFarewell(@Param('farewellId') farewellId: string) {
-    console.log('farewellId', farewellId);
+  async getCommentsFarewell(@Param('farewellId') farewellId: string) {
     if (!farewellId) {
       throw new HttpException('farewellId is required', HttpStatus.BAD_REQUEST);
     }
+
     return this.beFarewellCommentsService.getCommentsFarewell(farewellId);
   }
 
@@ -60,13 +60,5 @@ export class BeFarewellCommentsController {
       farewellCommentId,
       currentProfileIds
     );
-  }
-  @Get(':farewellId')
-  async getCommentsFarewell(@Param('farewellId') farewellId: string) {
-    console.log('farewellId', farewellId);
-    if (!farewellId) {
-      throw new HttpException('farewellId is required', HttpStatus.BAD_REQUEST);
-    }
-    return this.beFarewellCommentsService.getCommentsFarewell(farewellId);
   }
 }

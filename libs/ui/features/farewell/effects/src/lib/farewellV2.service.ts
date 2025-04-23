@@ -77,7 +77,7 @@ export class FarewellV2Service {
 
   putAnalytics(analytics: FarewellAnalytics) {
     return this.#http.put<FarewellAnalytics>(
-      `${this.#environment.api.farewellAnalytics}/${analytics.farewellId}`,
+      `${this.#environment.api.farewellAnalytics}/${analytics.id}`,
       analytics
     );
   }

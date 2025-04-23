@@ -1,3 +1,4 @@
+import { ToastModule } from 'primeng/toast';
 import { Farewell as IFarewell } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -35,10 +36,18 @@ export class BeFarewellService {
 
       return {
         ...farewellObject,
-        kudoBoardId: farewellObject.kudoBoardId?.kudoBoardId,
-        kudoBoard: farewellObject.kudoBoardId,
-        profileId: farewellObject.profileId?.profileId,
-        profile: farewellObject.profileId,
+        kudoBoardId: farewellObject.kudoBoardId?._id,
+        kudoBoard: farewellObject.kudoBoardId?._id
+          ? {
+              ...farewellObject.kudoBoardId,
+              id: farewellObject.kudoBoardId?._id,
+            }
+          : null,
+        profileId: farewellObject.profileId?._id,
+        profile: {
+          ...farewellObject.profileId,
+          id: farewellObject.profileId?._id,
+        },
       } as IFarewell;
     });
   }
@@ -68,12 +77,21 @@ export class BeFarewellService {
 
     const farewellObject = farewell.toObject() as any; // TODO Come up with a better OR better even to redo kudoBoardId and profileId in the Farewell schema to
 
+    // TODO This will be refactored once the Farewell schema is refactored to use the new KudoBoard and Profile schemas.
     return {
       ...farewellObject,
-      kudoBoardId: farewellObject.kudoBoardId?.kudoBoardId,
-      kudoBoard: farewellObject.kudoBoardId,
-      profileId: farewellObject.profileId?.profileId,
-      profile: farewellObject.profileId,
+      kudoBoardId: farewellObject.kudoBoardId?._id,
+      kudoBoard: farewellObject.kudoBoardId?._id
+        ? {
+            ...farewellObject.kudoBoardId,
+            id: farewellObject.kudoBoardId?._id,
+          }
+        : null,
+      profileId: farewellObject.profileId?._id,
+      profile: {
+        ...farewellObject.profileId,
+        id: farewellObject.profileId?._id,
+      },
     } as IFarewell;
   }
 

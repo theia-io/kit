@@ -6,6 +6,7 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
@@ -33,6 +34,17 @@ export class BeFarewellAnalyticsController {
   @Post()
   async createAnalyticsFarewell(@Body() farewell: IFarewell) {
     return this.beFarewellAnalyticsService.createAnalyticsFarewell(farewell);
+  }
+
+  @Put(':analyticId')
+  async updateFarewellAnalytics(
+    @Param('analyticId') analyticId: string,
+    @Body() farewell: IFarewell
+  ) {
+    return this.beFarewellAnalyticsService.updateAnalyticsFarewell(
+      analyticId,
+      farewell
+    );
   }
 
   @Delete(':farewellId')

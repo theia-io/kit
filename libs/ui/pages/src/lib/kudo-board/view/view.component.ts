@@ -59,7 +59,9 @@ import {
   startWith,
   switchMap,
   take,
+  tap,
 } from 'rxjs';
+import ContentLoader from 'photoswipe/dist/types/slide/loader';
 
 /**
  * Component has 5 states
