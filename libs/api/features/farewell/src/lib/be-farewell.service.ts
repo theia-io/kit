@@ -19,6 +19,8 @@ export class BeFarewellService {
         .find<FarewellDocument>({
           profileId: new mongoose.Types.ObjectId(profileId),
         })
+        .populate('kudoBoardId')
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(`Cannot execute farewell search for ${profileId}`, err);
@@ -28,7 +30,17 @@ export class BeFarewellService {
       );
     }
 
-    return farewells;
+    return farewells.map((farewell) => {
+      const farewellObject = farewell.toObject() as any; // TODO Come up with a better OR better even to redo kudoBoardId and profileId in the Farewell schema to
+
+      return {
+        ...farewellObject,
+        kudoBoardId: farewellObject.kudoBoardId?.kudoBoardId,
+        kudoBoard: farewellObject.kudoBoardId,
+        profileId: farewellObject.profileId?.profileId,
+        profile: farewellObject.profileId,
+      } as IFarewell;
+    });
   }
 
   async getFarewell(farewellId: string) {
@@ -39,24 +51,41 @@ export class BeFarewellService {
         .findOne({
           _id: new mongoose.Types.ObjectId(farewellId),
         })
+        .populate('kudoBoardId')
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(`Cannot execute farewell search for ${farewellId}`, err);
       throw new HttpException(
-        'Cannot find farewell',
+        'Cannot run farewell search correctly',
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
 
-    return farewell;
+    if (!farewell) {
+      return null;
+    }
+
+    const farewellObject = farewell.toObject() as any; // TODO Come up with a better OR better even to redo kudoBoardId and profileId in the Farewell schema to
+
+    return {
+      ...farewellObject,
+      kudoBoardId: farewellObject.kudoBoardId?.kudoBoardId,
+      kudoBoard: farewellObject.kudoBoardId,
+      profileId: farewellObject.profileId?.profileId,
+      profile: farewellObject.profileId,
+    } as IFarewell;
   }
 
   async createFarewell(farewell: IFarewell) {
-    let newfarewell;
+    let newFarewell;
 
     try {
-      newfarewell = await this.farewellModel.create({
+      newFarewell = await this.farewellModel.create({
         ...farewell,
+        kudoBoardId: farewell.kudoBoardId
+          ? new mongoose.Types.ObjectId(farewell.kudoBoardId)
+          : null,
         profileId: farewell.profileId
           ? new mongoose.Types.ObjectId(farewell.profileId)
           : null,
@@ -67,24 +96,47 @@ export class BeFarewellService {
         err
       );
       throw new HttpException(
-        'Cannot create farewell',
+        'Cannot run create farewell',
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
-    return newfarewell;
+
+    if (!newFarewell) {
+      console.warn(`Farewell ${farewell.toString()} not created.`);
+      throw new HttpException(
+        `Farewell "${farewell.toString()}" not created.`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
+    return newFarewell;
   }
 
-  async updateFarewell(farewellId: string, farewell: IFarewell) {
+  async updateFarewell(
+    farewellId: string,
+    { title, content, status, kudoBoardId }: Omit<IFarewell, 'id'>,
+    currentProfileIds: Array<string>
+  ) {
     let updatedFarewell;
 
     try {
       updatedFarewell = await this.farewellModel
         .findOneAndUpdate(
-          { _id: new mongoose.Types.ObjectId(farewellId) },
           {
-            ...farewell,
-            profileId: farewell.profileId
-              ? new mongoose.Types.ObjectId(farewell.profileId)
+            _id: new mongoose.Types.ObjectId(farewellId),
+            profileId: {
+              $in: currentProfileIds.map(
+                (currentProfileId) =>
+                  new mongoose.Types.ObjectId(currentProfileId)
+              ),
+            },
+          },
+          {
+            title,
+            content,
+            status,
+            kudoBoardId: kudoBoardId
+              ? new mongoose.Types.ObjectId(kudoBoardId)
               : null,
           },
           { new: true }
@@ -98,15 +150,34 @@ export class BeFarewellService {
       );
     }
 
+    if (!updatedFarewell) {
+      console.warn(
+        `Farewell ${farewellId} not found or not authorized for update by provided profiles.`
+      );
+      throw new HttpException(
+        `Farewell message with ID "${farewellId}" not found or you lack permission.`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
     return updatedFarewell;
   }
 
-  async deleteFarewell(farewellId: string) {
+  async deleteFarewell(
+    farewellId: string,
+    currentCallerProfileIds: Array<string>
+  ) {
     let deletedFarewell;
 
     try {
       deletedFarewell = await this.farewellModel.findOneAndDelete({
         _id: new mongoose.Types.ObjectId(farewellId),
+        profileId: {
+          $in: currentCallerProfileIds.map(
+            (currentCallerProfileId) =>
+              new mongoose.Types.ObjectId(currentCallerProfileId)
+          ),
+        },
       });
     } catch (err) {
       console.error(`Cannot execute farewell delete for ${farewellId}`, err);
@@ -115,6 +186,19 @@ export class BeFarewellService {
         HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
+
+    if (!deletedFarewell) {
+      // This means EITHER the farewellId didn't exist OR its profileId wasn't in the requestingProfileObjectIds array.
+      // Throwing NotFound is generally safer than Forbidden.
+      console.warn(
+        `Farewell ${farewellId} not found or not authorized for deletion by provided profiles.`
+      );
+      throw new HttpException(
+        `Farewell message with ID "${farewellId}" not found or you lack permission.`,
+        HttpStatus.NOT_FOUND
+      );
+    }
+
     return deletedFarewell;
   }
 }

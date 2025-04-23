@@ -1,4 +1,4 @@
-import { Farewell as IFarewell } from '@kitouch/shared-models';
+import { Auth0Kit, Farewell as IFarewell } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
@@ -8,10 +8,12 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
-import { BeFarewellService } from './be-farewell.service';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
+import { BeFarewellService } from './be-farewell.service';
 
 @Controller('farewells')
 export class BeFarewellController {
@@ -29,22 +31,39 @@ export class BeFarewellController {
   }
 
   @Post()
+  @UseGuards(AuthGuard('jwt'))
   async createFarewell(@Body() farewell: IFarewell) {
     return this.beFarewellService.createFarewell(farewell);
   }
 
   @Put(':farewellId')
+  @UseGuards(AuthGuard('jwt'))
   async updateFarewell(
+    @Req() req: Request,
     @Param('farewellId') farewellId: string,
-    @Body() farewell: IFarewell
+    @Body() farewell: Omit<IFarewell, 'id'>
   ) {
-    console.log('updateFarewell', farewellId, farewell);
-    return this.beFarewellService.updateFarewell(farewellId, farewell);
+    const currentProfileIds = (req.user as Auth0Kit).profiles.map(
+      (profile) => profile.id
+    );
+
+    return this.beFarewellService.updateFarewell(
+      farewellId,
+      farewell,
+      currentProfileIds
+    );
   }
 
   @Delete(':farewellId')
-  async deleteFarewell(@Param('farewellId') farewellId: string) {
-    console.log('deleteFarewell', farewellId);
-    return this.beFarewellService.deleteFarewell(farewellId);
+  @UseGuards(AuthGuard('jwt'))
+  async deleteFarewell(
+    @Req() req: Request,
+    @Param('farewellId') farewellId: string
+  ) {
+    const currentProfileIds = (req.user as Auth0Kit).profiles.map(
+      (profile) => profile.id
+    );
+
+    return this.beFarewellService.deleteFarewell(farewellId, currentProfileIds);
   }
 }

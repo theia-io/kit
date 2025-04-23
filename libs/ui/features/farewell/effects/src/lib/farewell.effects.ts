@@ -127,8 +127,8 @@ export class FarewellEffects {
   createAnalyticsFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.createFarewellSuccess),
-      switchMap(({ farewell: { id } }) =>
-        this.#farewellService.postAnalyticsFarewell(id)
+      switchMap(({ farewell }) =>
+        this.#farewellService.postAnalyticsFarewell(farewell)
       ),
       map((analytics) =>
         analytics

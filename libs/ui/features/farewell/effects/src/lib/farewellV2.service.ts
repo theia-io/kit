@@ -58,6 +58,7 @@ export class FarewellV2Service {
         }
       );
     }
+
     return of([] as Array<FarewellAnalytics>);
   }
 
@@ -67,16 +68,10 @@ export class FarewellV2Service {
     );
   }
 
-  postAnalyticsFarewell(farewellId: string) {
+  postAnalyticsFarewell(farewell: Farewell) {
     return this.#http.post<FarewellAnalytics>(
-      `${this.#environment.api.farewellAnalytics}/${farewellId}`,
-      {}
-    );
-  }
-
-  deleteAnalyticsFarewell(farewellId: string) {
-    return this.#http.delete<FarewellAnalytics>(
-      `${this.#environment.api.farewellAnalytics}/${farewellId}`
+      `${this.#environment.api.farewellAnalytics}`,
+      farewell
     );
   }
 
@@ -84,6 +79,12 @@ export class FarewellV2Service {
     return this.#http.put<FarewellAnalytics>(
       `${this.#environment.api.farewellAnalytics}/${analytics.farewellId}`,
       analytics
+    );
+  }
+
+  deleteAnalyticsFarewell(farewellId: string) {
+    return this.#http.delete<FarewellAnalytics>(
+      `${this.#environment.api.farewellAnalytics}/${farewellId}`
     );
   }
 }

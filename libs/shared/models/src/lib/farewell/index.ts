@@ -40,10 +40,8 @@ export interface FarewellComment extends Partial<KitTimestamp> {
 export interface Farewell extends Partial<KitTimestamp> {
   id: string;
   kudoBoardId?: KudoBoard['id'];
-  // TODO @Danylo remove this
   kudoBoard?: KudoBoard;
   profileId: Profile['id'];
-  // TODO @Danylo remove this
   profile?: Profile;
   title: string;
   content: string;

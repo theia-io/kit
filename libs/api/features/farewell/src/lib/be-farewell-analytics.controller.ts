@@ -1,4 +1,4 @@
-import { FarewellAnalytics as IFarewellAnalytics } from '@kitouch/shared-models';
+import { Farewell as IFarewell } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
@@ -20,25 +20,24 @@ export class BeFarewellAnalyticsController {
   @UseGuards(AuthGuard('jwt'))
   async getAnalyticsFarewells(@Query('farewellIds') farewellIds: string) {
     const farewellIdsArray = farewellIds.split(',');
-    return this.beFarewellAnalyticsService.getAnalyticsFarewells(
+    return this.beFarewellAnalyticsService.getAnalyticFarewells(
       farewellIdsArray
     );
   }
 
   @Get(':farewellId')
   async getAnalyticsFarewell(@Param('farewellId') farewellId: string) {
-    return this.beFarewellAnalyticsService.getAnalyticsFarewell(farewellId);
+    return this.beFarewellAnalyticsService.getAnalyticFarewell(farewellId);
   }
 
   @Post()
-  async createAnalyticsFarewell(@Body() farewellAnalytics: IFarewellAnalytics) {
-    return this.beFarewellAnalyticsService.createAnalyticsFarewell(
-      farewellAnalytics
-    );
+  async createAnalyticsFarewell(@Body() farewell: IFarewell) {
+    return this.beFarewellAnalyticsService.createAnalyticsFarewell(farewell);
   }
 
   @Delete(':farewellId')
-  async deletefarewellAnalytics(@Param('farewellid') farewellId: string) {
+  @UseGuards(AuthGuard('jwt'))
+  async deleteFarewellAnalytics(@Param('farewellId') farewellId: string) {
     return this.beFarewellAnalyticsService.deleteFarewellAnalytics(farewellId);
   }
 }

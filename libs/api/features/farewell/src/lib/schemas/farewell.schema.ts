@@ -29,10 +29,6 @@ export class Farewell {
   })
   kudoBoardId: Types.ObjectId | null;
 
-  // TODO @Danylo remove & populate with DB
-  // @Prop()
-  // kudoBoard: any;
-
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
@@ -44,13 +40,13 @@ export class Farewell {
     default: '',
     trim: true,
   })
-  content: string;
+  title: string;
 
   @Prop({
     default: '',
     trim: true,
   })
-  title: string;
+  content: string;
 
   @Prop({
     type: String,

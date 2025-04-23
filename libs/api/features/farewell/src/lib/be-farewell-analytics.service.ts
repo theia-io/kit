@@ -1,4 +1,7 @@
-import { FarewellAnalytics as IFarewellsAnalytics } from '@kitouch/shared-models';
+import {
+  FarewellAnalytics as IFarewellsAnalytics,
+  Farewell as IFarewell,
+} from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -14,7 +17,7 @@ export class BeFarewellAnalyticsService {
     private farewellAnalyticsModel: Model<FarewellAnalyticsDocument>
   ) {}
 
-  async getAnalyticsFarewells(farewellId: Array<string>) {
+  async getAnalyticFarewells(farewellId: Array<string>) {
     let farewellsAnalytics: Array<FarewellAnalyticsDocument>;
 
     try {
@@ -39,12 +42,13 @@ export class BeFarewellAnalyticsService {
     return farewellsAnalytics;
   }
 
-  async getAnalyticsFarewell(farewellId: string) {
+  async getAnalyticFarewell(farewellId: string) {
     let farewellAnalytics;
 
     try {
       farewellAnalytics = await this.farewellAnalyticsModel
-        .find({
+        // TODO Refactor this to `find` once farewell is migrated to better analytics solution - https://trello.com/c/Rzxn7aKg
+        .findOne({
           farewellId: new mongoose.Types.ObjectId(farewellId),
         })
         .exec();
@@ -62,13 +66,13 @@ export class BeFarewellAnalyticsService {
     return farewellAnalytics;
   }
 
-  async createAnalyticsFarewell(farewell: IFarewellsAnalytics) {
+  async createAnalyticsFarewell(farewell: IFarewell) {
     let newFarewellAnalytics;
 
     try {
       newFarewellAnalytics = await this.farewellAnalyticsModel.create({
-        ...farewell,
-        farewellId: new mongoose.Types.ObjectId(farewell.farewellId),
+        farewellId: new mongoose.Types.ObjectId(farewell.id),
+        viewed: 0,
       });
     } catch (err) {
       console.error(
