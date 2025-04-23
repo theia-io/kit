@@ -33,7 +33,7 @@ export class FarewellCommentsService extends DataSourceService {
     // );
 
     return this.#http.get<Array<FarewellComment>>(
-      `${this.#env.api.farewellComments}/${farewellId}`
+      `${this.#env.api.farewellComments}/${farewellId}`,
     );
   }
 
@@ -66,6 +66,7 @@ export class FarewellCommentsService extends DataSourceService {
       comments
     );
 
+
     // const commentsRequest = comments.map(clientDbFarewellCommentAdapter);
 
     // return this.db$().pipe(
@@ -87,16 +88,20 @@ export class FarewellCommentsService extends DataSourceService {
   }
 
   deleteFarewellComment(id: FarewellComment['id']) {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellCommentResponse>('farewell-comments')
-          .deleteOne({
-            _id: new BSON.ObjectId(id),
-          })
-      ),
-      map(({ deletedCount }) => deletedCount > 0)
+    return this.#http.delete<Array<FarewellComment>>(
+      `${this.#env.api.farewellComments}/${id}`
     );
+
+    // return this.db$().pipe(
+    //   switchMap((db) =>
+    //     db
+    //       .collection<ClientDBFarewellCommentResponse>('farewell-comments')
+    //       .deleteOne({
+    //         _id: new BSON.ObjectId(id),
+    //       })
+    //   ),
+    //   map(({ deletedCount }) => deletedCount > 0)
+    // );
   }
 
   uploadFarewellCommentMedia(key: string, blob: Blob) {
