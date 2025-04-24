@@ -9,7 +9,6 @@
     "@kitouch/shared-models": "5.0.0-0",
     "realm-web": "^2.0.1",
     "@aws-sdk/client-s3": "^3.627.0",
-    "@kitouch/utils": "5.0.0-0",
     "@aws-sdk/credential-providers": "^3.631.0",
     "@kitouch/shared-constants": "4.0.0-0",
     "@kitouch/kit-data": "5.0.0-0",

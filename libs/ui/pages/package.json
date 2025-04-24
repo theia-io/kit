@@ -28,7 +28,8 @@
     "@kitouch/containers": "4.0.0-0",
     "@kitouch/shared-services": "4.0.0-0",
     "@kitouch/shared-infra": "4.0.0-0",
-    "@kitouch/shared-constants": "4.0.0-0"
+    "@kitouch/shared-constants": "4.0.0-0",
+    "photoswipe": "^5.4.4"
   },
   "sideEffects": false
 }

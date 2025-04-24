@@ -9,7 +9,6 @@
     "@ngrx/store": "18.0.2",
     "@kitouch/shared-models": "5.0.0-0",
     "@kitouch/utils": "5.0.0-0",
-    "realm-web": "^2.0.1",
     "@angular/common": "18.2.6",
     "@kitouch/shared-infra": "4.0.0-0",
     "@kitouch/kit-data": "5.0.0-0"

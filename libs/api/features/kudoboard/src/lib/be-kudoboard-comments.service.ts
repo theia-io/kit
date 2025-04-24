@@ -62,10 +62,14 @@ export class BeKudoBoardCommentsService {
 
     return kudoBoardComments.map((comment) => {
       const { profileId, ...rest } = comment.toObject();
+
       return {
         ...rest,
-        profile: profileId,
-        profileId: profileId?.id,
+        profile: {
+          ...profileId,
+          id: profileId?._id,
+        },
+        profileId: profileId?._id,
       };
     });
   }
