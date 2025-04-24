@@ -18,7 +18,7 @@ export interface Environment {
     tweets: string;
     retweets: string;
     bookmarks: string;
-    farewell: string;
+    farewells: string;
     farewellComments: string;
     farewellReactions: string;
     farewellAnalytics: string;

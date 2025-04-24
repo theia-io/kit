@@ -16,7 +16,7 @@ export const FeatFarewellActions = createActionGroup({
     GetFarewellFailure: props<{ message: string }>(),
 
     //
-    CreateFarewell: props<ClientDataType<Farewell>>(),
+    CreateFarewell: props<{ farewell: ClientDataType<Farewell> }>(),
     CreateFarewellSuccess: props<{ farewell: Farewell }>(),
     CreateFarewellFailure: props<{ message: string }>(),
     //

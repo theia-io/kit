@@ -59,9 +59,9 @@ export class FarewellCommentsEffects {
       ofType(FeatFarewellCommentActions.postCommentFarewell),
       switchMap(({ comment }) =>
         this.#farewellCommentService.postFarewellComment(comment).pipe(
-          map((comment) =>
+          map((updatedComment) =>
             FeatFarewellCommentActions.postCommentFarewellSuccess({
-              comment,
+              comment: updatedComment,
             })
           ),
           catchError((err) =>

@@ -1,4 +1,7 @@
-import { FarewellAnalytics as IfarewellAnalytics } from '@kitouch/shared-models';
+import {
+  FarewellAnalytics as IFarewellsAnalytics,
+  Farewell as IFarewell,
+} from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -14,7 +17,7 @@ export class BeFarewellAnalyticsService {
     private farewellAnalyticsModel: Model<FarewellAnalyticsDocument>
   ) {}
 
-  async getAnalyticsFarewells(farewellId: Array<string>) {
+  async getAnalyticFarewells(farewellId: Array<string>) {
     let farewellsAnalytics: Array<FarewellAnalyticsDocument>;
 
     try {
@@ -39,12 +42,13 @@ export class BeFarewellAnalyticsService {
     return farewellsAnalytics;
   }
 
-  async getAnalyticsfarewell(farewellId: string) {
+  async getAnalyticFarewell(farewellId: string) {
     let farewellAnalytics;
 
     try {
       farewellAnalytics = await this.farewellAnalyticsModel
-        .find({
+        // TODO Refactor this to `find` once farewell is migrated to better analytics solution - https://trello.com/c/Rzxn7aKg
+        .findOne({
           farewellId: new mongoose.Types.ObjectId(farewellId),
         })
         .exec();
@@ -62,13 +66,13 @@ export class BeFarewellAnalyticsService {
     return farewellAnalytics;
   }
 
-  async createAnalyticsfarewell(farewell: IfarewellAnalytics) {
-    let newfarewellAnalytics;
+  async createAnalyticsFarewell(farewell: IFarewell) {
+    let newFarewellAnalytics;
 
     try {
-      newfarewellAnalytics = await this.farewellAnalyticsModel.create({
-        ...farewell,
-        farewellId: new mongoose.Types.ObjectId(farewell.farewellId),
+      newFarewellAnalytics = await this.farewellAnalyticsModel.create({
+        farewellId: new mongoose.Types.ObjectId(farewell.id),
+        viewed: 0,
       });
     } catch (err) {
       console.error(
@@ -81,7 +85,41 @@ export class BeFarewellAnalyticsService {
       );
     }
 
-    return newfarewellAnalytics;
+    return newFarewellAnalytics;
+  }
+
+  async updateAnalyticsFarewell(
+    analyticId: IFarewellsAnalytics['id'],
+    farewell: IFarewell
+  ) {
+    let updatedFarewellAnalytics;
+
+    try {
+      updatedFarewellAnalytics =
+        await this.farewellAnalyticsModel.findByIdAndUpdate(
+          {
+            _id: new mongoose.Types.ObjectId(analyticId),
+          },
+          {
+            $inc: { viewed: 1 },
+          },
+          {
+            new: true,
+            upsert: true,
+          }
+        );
+    } catch (err) {
+      console.error(
+        `Cannot execute farewell analytics update for ${analyticId}, ${farewell.toString()}`,
+        err
+      );
+      throw new HttpException(
+        'Cannot update farewell analytics',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return updatedFarewellAnalytics;
   }
 
   async deleteFarewellAnalytics(farewellId: string) {

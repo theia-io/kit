@@ -102,9 +102,9 @@ export class FeatFarewellCommentsComponent {
   farewellProfile = toSignal(
     this.farewell$.pipe(
       filter(Boolean),
-      switchMap(({ profile }) =>
+      switchMap(({ profile, profileId }) =>
         this.#store.pipe(
-          select(selectProfileById(profile.id)),
+          select(selectProfileById(profileId)),
           map((resolvedProfile) => resolvedProfile ?? profile)
         )
       )

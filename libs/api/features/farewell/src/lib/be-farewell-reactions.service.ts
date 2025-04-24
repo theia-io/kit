@@ -1,3 +1,4 @@
+import { FarewellReaction as IFarewellReactions } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -5,7 +6,6 @@ import {
   FarewellReactions,
   FarewellReactionsDocument,
 } from './schemas/farewell-reaction.schema';
-import { FarewellReaction as IFarewellReactions } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeFarewellReactionsService {
@@ -22,6 +22,7 @@ export class BeFarewellReactionsService {
         .find({
           farewellId: new mongoose.Types.ObjectId(farewellId),
         })
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(
@@ -34,21 +35,38 @@ export class BeFarewellReactionsService {
       );
     }
 
-    return farewellReactions;
+    return farewellReactions.map((farewellReaction) => {
+      const farewellReactionObject = farewellReaction.toObject();
+
+      return {
+        ...farewellReactionObject,
+        profileId: farewellReactionObject.profileId?._id,
+        profile: farewellReactionObject.profileId?._id
+          ? {
+              ...farewellReactionObject.profileId,
+              id: farewellReactionObject.profileId?._id,
+            }
+          : null,
+      };
+    });
   }
 
-  async createReactionsFarewell(farewell: IFarewellReactions) {
+  async createReactionsFarewell({
+    farewellId,
+    profileId,
+    content,
+  }: IFarewellReactions) {
     let newFarewellReaction;
 
     try {
       newFarewellReaction = await this.farewellReactionsModel.create({
-        ...farewell,
-        farewellId: new mongoose.Types.ObjectId(farewell.farewellId),
-        profileId: new mongoose.Types.ObjectId(farewell.profileId),
+        content,
+        farewellId: new mongoose.Types.ObjectId(farewellId),
+        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell reaction create for ${farewell.toString()}`,
+        `Cannot execute farewell reaction create for ${farewellId}, ${profileId}, ${content}`,
         err
       );
       throw new HttpException(
@@ -57,18 +75,30 @@ export class BeFarewellReactionsService {
       );
     }
 
-    console.log('RES', newFarewellReaction);
-
     return newFarewellReaction;
   }
 
-  async deleteFarewellReactions(farewellReactionId: string) {
+  async deleteFarewellReactions(
+    farewellReactionId: string,
+    currentProfileIds: Array<string>
+  ) {
     let deletedFarewellReactions;
 
     try {
       deletedFarewellReactions = await this.farewellReactionsModel
         .findOneAndDelete({
           _id: new mongoose.Types.ObjectId(farewellReactionId),
+          // $or: [
+          //   {
+          //     profileId: {
+          //       $in: currentProfileIds.map(
+          //         (currentProfileId) =>
+          //           new mongoose.Types.ObjectId(currentProfileId)
+          //       ),
+          //     },
+          //   },
+          //   { profileId: null },
+          // ],
         })
         .exec();
     } catch (err) {
@@ -79,6 +109,16 @@ export class BeFarewellReactionsService {
       throw new HttpException(
         'Cannot delete farewell reactions',
         HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    if (!deletedFarewellReactions) {
+      console.warn(
+        `Farewell reaction ${farewellReactionId} not found or not authorized for update by provided profiles.`
+      );
+      throw new HttpException(
+        `Farewell reaction with ID "${farewellReactionId}" not found or you lack permission.`,
+        HttpStatus.NOT_FOUND
       );
     }
 

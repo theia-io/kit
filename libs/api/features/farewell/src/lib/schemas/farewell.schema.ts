@@ -11,6 +11,13 @@ export type FarewellDocument = HydratedDocument<Farewell>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
+      delete ret['_id'];
+    },
+  },
+  toObject: {
+    virtuals: true,
+    versionKey: false,
+    transform(doc, ret) {
       delete ret._id;
     },
   },
@@ -22,10 +29,6 @@ export class Farewell {
   })
   kudoBoardId: Types.ObjectId | null;
 
-  // TODO @Danylo remove & populate with DB
-  // @Prop()
-  // kudoBoard: any;
-
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
@@ -33,11 +36,18 @@ export class Farewell {
   })
   profileId: Types.ObjectId;
 
-  // TODO @Danylo remove & populate with DB
-  // @Prop()
-  // profile: any;
+  @Prop({
+    default: '',
+    trim: true,
+  })
+  title: string;
 
-  // TODO @Alex not sure about this type
+  @Prop({
+    default: '',
+    trim: true,
+  })
+  content: string;
+
   @Prop({
     type: String,
     enum: FarewellStatus,

@@ -1,3 +1,4 @@
+import { Farewell as IFarewell } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
@@ -5,43 +6,50 @@ import {
   Get,
   Param,
   Post,
+  Put,
   Query,
   UseGuards,
 } from '@nestjs/common';
-import { BeFarewellAnalyticsService } from './be-farewell-analytics.service';
-import { FarewellAnalytics } from './schemas/farewell-analytics.schema';
 import { AuthGuard } from '@nestjs/passport';
+import { BeFarewellAnalyticsService } from './be-farewell-analytics.service';
+
 @Controller('farewell-analytics')
 export class BeFarewellAnalyticsController {
-  beFarewellAnalyticsService: any;
-  constructor(private beFarewellService: BeFarewellAnalyticsService) {}
+  constructor(private beFarewellAnalyticsService: BeFarewellAnalyticsService) {}
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
-  async getAnalyticsfarewell(@Query('kudoBoardIds') farewellIds: string) {
+  async getAnalyticsFarewells(@Query('farewellIds') farewellIds: string) {
     const farewellIdsArray = farewellIds.split(',');
-    return this.beFarewellAnalyticsService.getAnalyticsKudoBoards(
+    return this.beFarewellAnalyticsService.getAnalyticFarewells(
       farewellIdsArray
     );
   }
 
   @Get(':farewellId')
-  @UseGuards(AuthGuard('jwt'))
-  async getAnalyticsKudoBoard(@Param('farewellId') farewellId: string) {
-    return this.beFarewellAnalyticsService.getAnalyticsfarewell(farewellId);
+  async getAnalyticsFarewell(@Param('farewellId') farewellId: string) {
+    return this.beFarewellAnalyticsService.getAnalyticFarewell(farewellId);
   }
 
   @Post()
-  @UseGuards(AuthGuard('jwt'))
-  async createAnalyticsfarewell(@Body() farewellAnalytics: FarewellAnalytics) {
-    return this.beFarewellAnalyticsService.createAnalyticsfarewell(
-      farewellAnalytics
+  async createAnalyticsFarewell(@Body() farewell: IFarewell) {
+    return this.beFarewellAnalyticsService.createAnalyticsFarewell(farewell);
+  }
+
+  @Put(':analyticId')
+  async updateFarewellAnalytics(
+    @Param('analyticId') analyticId: string,
+    @Body() farewell: IFarewell
+  ) {
+    return this.beFarewellAnalyticsService.updateAnalyticsFarewell(
+      analyticId,
+      farewell
     );
   }
 
   @Delete(':farewellId')
   @UseGuards(AuthGuard('jwt'))
-  async deletefarewellAnalytics(@Param('farewellid') farewellId: string) {
-    return this.beFarewellAnalyticsService.deletefarewellAnalytics(farewellId);
+  async deleteFarewellAnalytics(@Param('farewellId') farewellId: string) {
+    return this.beFarewellAnalyticsService.deleteFarewellAnalytics(farewellId);
   }
 }

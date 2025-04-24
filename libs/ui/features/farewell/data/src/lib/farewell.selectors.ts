@@ -94,7 +94,7 @@ export const findProfileFarewells = (
   farewells: Array<Farewell>
 ) =>
   farewells.filter(
-    (farewell) => (farewell.profileId ?? farewell.profile.id) === profileId
+    (farewell) => (farewell.profileId ?? farewell.profile?.id) === profileId
   );
 
 export const findFarewellReactionsByFarewellId = (

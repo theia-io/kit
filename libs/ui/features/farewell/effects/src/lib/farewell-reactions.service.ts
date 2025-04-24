@@ -1,58 +1,35 @@
-import { Injectable } from '@angular/core';
-import {
-  clientDbFarewellReactionAdapter,
-  ClientDBFarewellReactionResponse,
-  dbClientFarewellReactionAdapter,
-} from '@kitouch/feat-farewell-data';
-import { DataSourceService } from '@kitouch/shared-infra';
+import { HttpClient } from '@angular/common/http';
+import { inject, Injectable } from '@angular/core';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 import { Farewell, FarewellReaction } from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
-import { BSON } from 'realm-web';
-import { map, Observable, switchMap } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class FarewellReactionsService extends DataSourceService {
+export class FarewellReactionsService {
+  #env = inject(ENVIRONMENT);
+  #http = inject(HttpClient);
+
   getFarewellReactions(
     farewellId: Farewell['id']
   ): Observable<Array<FarewellReaction>> {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellReactionResponse>('farewell-reactions')
-          .find({ farewellId: new BSON.ObjectId(farewellId) })
-      ),
-      map((reactions) => reactions.map(dbClientFarewellReactionAdapter))
+    return this.#http.get<Array<FarewellReaction>>(
+      `${this.#env.api.farewellReactions}/${farewellId}`
     );
   }
 
   postFarewellReaction(
     reactionData: ClientDataType<FarewellReaction>
   ): Observable<FarewellReaction> {
-    const reactionRequest = clientDbFarewellReactionAdapter(reactionData);
-
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellReactionResponse>('farewell-reactions')
-          .insertOne(reactionRequest)
-      ),
-      map(({ insertedId }) => ({ ...reactionRequest, _id: insertedId })),
-      map((farewellReaction) =>
-        dbClientFarewellReactionAdapter(farewellReaction)
-      )
+    return this.#http.post<FarewellReaction>(
+      `${this.#env.api.farewellReactions}`,
+      reactionData
     );
   }
 
   deleteFarewellReaction(id: FarewellReaction['id']) {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBFarewellReactionResponse>('farewell-reactions')
-          .deleteOne({
-            _id: new BSON.ObjectId(id),
-          })
-      ),
-      map(({ deletedCount }) => deletedCount > 0)
+    return this.#http.delete<FarewellReaction>(
+      `${this.#env.api.farewellReactions}/${id}`
     );
   }
 }

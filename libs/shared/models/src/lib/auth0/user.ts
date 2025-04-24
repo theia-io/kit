@@ -3,6 +3,7 @@ import { Profile } from '../entities-kitouch';
 import { User } from '../entities-realworld';
 
 export interface Auth0User {
+  sub: string;
   email: string;
   name: string;
   surname: string;

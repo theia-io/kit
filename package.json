@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "5.0.113-ff21c3b",
+  "version": "5.0.132-4427e1d",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",
@@ -86,7 +86,6 @@
     "primeng": "17.18.10",
     "quill": "^2.0.2",
     "raw-body": "^3.0.0",
-    "realm-web": "^2.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.8.0",
     "sharp": "^0.33.5",

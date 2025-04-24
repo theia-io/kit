@@ -1,50 +1,64 @@
+import { filter } from 'rxjs';
 import {
-  Controller,
   Body,
+  Controller,
   Delete,
   Get,
   HttpException,
   HttpStatus,
   Param,
   Post,
+  Req,
 } from '@nestjs/common';
 import { BeFarewellCommentsService } from './be-farewell-comments.service';
-import { FarewellComments } from './schemas/farewell-comments.schema';
+import { FarewellComment } from './schemas/farewell-comments.schema';
+import { Request } from 'express';
+import { Auth0Kit } from '@kitouch/shared-models';
 
 @Controller('farewell-comments')
 export class BeFarewellCommentsController {
   constructor(private beFarewellCommentsService: BeFarewellCommentsService) {}
 
   @Get(':farewellId')
-  async getCommentFarewell(@Param('farewellId') farewellId: string) {
-    console.log('farewellId', farewellId);
+  async getCommentsFarewell(@Param('farewellId') farewellId: string) {
     if (!farewellId) {
       throw new HttpException('farewellId is required', HttpStatus.BAD_REQUEST);
     }
+
     return this.beFarewellCommentsService.getCommentsFarewell(farewellId);
   }
+
   @Post()
-  async createCommentsFarewell(@Body() farewellComment: FarewellComments) {
+  async createCommentsFarewell(@Body() farewellComment: FarewellComment) {
     console.log('farewellComment', farewellComment);
-    return this.beFarewellCommentsService.createCommentsFarewell(
+    return this.beFarewellCommentsService.createCommentFarewell(
       farewellComment
     );
   }
 
-  @Delete(':farewellCommentId')
-  async deleteFarewellComments(
-    @Param('farewellCommentId') farewellCommentId: string
+  @Post('batch')
+  async batchCreateCommentsFarewell(
+    @Body() farewellComments: Array<FarewellComment>
   ) {
-    return this.beFarewellCommentsService.deleteFarewellComments(
-      farewellCommentId
+    console.log('farewellComments', farewellComments);
+    return this.beFarewellCommentsService.createCommentsFarewell(
+      farewellComments
     );
   }
-  @Get(':farewellId')
-  async getCommentsFarewell(@Param('farewellId') farewellId: string) {
-    console.log('farewellId', farewellId);
-    if (!farewellId) {
-      throw new HttpException('farewellId is required', HttpStatus.BAD_REQUEST);
-    }
-    return this.beFarewellCommentsService.getCommentsFarewell(farewellId);
+
+  @Delete(':farewellCommentId')
+  // TODO think on having and checking a auth
+  async deleteFarewellComments(
+    @Req() req: Request,
+    @Param('farewellCommentId') farewellCommentId: string
+  ) {
+    const currentProfileIds = ((req.user as Auth0Kit)?.profiles ?? [])
+      .map((profile) => profile?.id)
+      .filter(Boolean);
+
+    return this.beFarewellCommentsService.deleteFarewellComments(
+      farewellCommentId,
+      currentProfileIds
+    );
   }
 }

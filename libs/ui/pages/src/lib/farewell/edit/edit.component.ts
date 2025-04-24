@@ -64,7 +64,7 @@ export class PageFarewellEditComponent {
   );
 
   farewellCreator$ = combineLatest([this.farewell$, this.currentProfile$]).pipe(
-    map(([farewell, profile]) => farewell.profile.id === profile.id),
+    map(([farewell, profile]) => farewell.profileId === profile.id),
     startWith(false)
   );
 

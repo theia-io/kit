@@ -79,7 +79,7 @@ export class PageFarewellAllComponent {
     this.#currentProfile$,
   ]).pipe(
     map(([farewells, currentProfile]) =>
-      farewells.filter(({ profile }) => profile.id === currentProfile.id)
+      farewells.filter(({ profileId }) => profileId === currentProfile.id)
     ),
     map((farewells) =>
       farewells

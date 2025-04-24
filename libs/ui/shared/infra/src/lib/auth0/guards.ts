@@ -10,11 +10,6 @@ import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, take, tap } from 'rxjs';
 import { Auth0Service } from './auth0.service';
 
-/**
- * Checks if user is in RxJS (RAM) state. If it is not check
- * if Realm can resolve the user. If so it was refresh of the app
- * and user willis resolved by
- */
 export const onlyForNotLoggedInGuard = () => {
   const router = inject(Router);
 

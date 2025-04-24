@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose'; // Import mongoose for Types.ObjectId if needed
 
-export type FarewellCommentsDocument = HydratedDocument<FarewellComments>;
+export type FarewellCommentDocument = HydratedDocument<FarewellComment>;
 
 @Schema({
   timestamps: true,
@@ -13,8 +13,15 @@ export type FarewellCommentsDocument = HydratedDocument<FarewellComments>;
       delete ret._id;
     },
   },
+  toObject: {
+    virtuals: true,
+    versionKey: false,
+    transform(doc, ret) {
+      delete ret._id;
+    },
+  },
 })
-export class FarewellComments {
+export class FarewellComment {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Farewell',
@@ -25,8 +32,9 @@ export class FarewellComments {
   @Prop({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Profile',
+    required: false,
   })
-  profileId: Types.ObjectId;
+  profileId: Types.ObjectId | null;
 
   @Prop()
   content: string;
@@ -40,5 +48,5 @@ export class FarewellComments {
   }>;
 }
 
-export const FarewellCommentsSchema =
-  SchemaFactory.createForClass(FarewellComments);
+export const FarewellCommentSchema =
+  SchemaFactory.createForClass(FarewellComment);

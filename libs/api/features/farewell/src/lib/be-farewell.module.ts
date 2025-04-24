@@ -10,8 +10,8 @@ import {
   FarewellAnalyticsSchema,
 } from './schemas/farewell-analytics.schema';
 import {
-  FarewellComments,
-  FarewellCommentsSchema,
+  FarewellComment,
+  FarewellCommentSchema,
 } from './schemas/farewell-comments.schema';
 import {
   FarewellReactions,
@@ -31,8 +31,8 @@ import { BeFarewellReactionsService } from './be-farewell-reactions.service';
         useFactory: () => FarewellSchema,
       },
       {
-        name: FarewellComments.name,
-        useFactory: () => FarewellCommentsSchema,
+        name: FarewellComment.name,
+        useFactory: () => FarewellCommentSchema,
       },
       {
         name: FarewellReactions.name,
