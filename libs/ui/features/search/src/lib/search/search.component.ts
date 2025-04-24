@@ -45,7 +45,6 @@ export class SearchComponent<T extends string> implements ControlValueAccessor {
   searchChanges$ = this.searchControl.valueChanges
     .pipe(takeUntilDestroyed(), debounceTime(500), distinctUntilChanged())
     .subscribe((value) => {
-      console.log('test inside search', value);
       this.textOnChanged.emit(value);
       this.onChange(value);
     });

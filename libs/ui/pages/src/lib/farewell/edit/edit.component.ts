@@ -1,5 +1,5 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
@@ -13,13 +13,16 @@ import {
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { UiKitDeleteComponent } from '@kitouch/ui-components';
+import { Auth0Service } from '@kitouch/shared-infra';
+import {
+  UiKitDeleteComponent,
+  UiKitSpinnerComponent,
+} from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { SidebarModule } from 'primeng/sidebar';
 import { combineLatest, Observable } from 'rxjs';
-import { Auth0Service } from '@kitouch/shared-infra';
 
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
@@ -35,6 +38,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     SharedNavBarStaticComponent,
     FeatFarewellComponent,
     FeatFarewellStatusComponent,
+    UiKitSpinnerComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -85,6 +89,8 @@ export class PageFarewellEditComponent {
       },
     ])
   );
+
+  updating = signal(false);
 
   statusTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;

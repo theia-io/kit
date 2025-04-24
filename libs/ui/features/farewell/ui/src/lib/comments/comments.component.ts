@@ -30,7 +30,10 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
+import {
+  Auth0Service,
+  S3_FAREWELL_BUCKET_BASE_URL,
+} from '@kitouch/shared-infra';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
 import { PhotoService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
@@ -89,6 +92,7 @@ export class FeatFarewellCommentsComponent {
 
   #actions$ = inject(Actions);
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
   #photoService = inject(PhotoService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
@@ -261,5 +265,9 @@ export class FeatFarewellCommentsComponent {
 
   mediaWidthRatio(height: number, width: number) {
     return width / height;
+  }
+
+  signIn() {
+    this.#auth0Service.signInTab();
   }
 }

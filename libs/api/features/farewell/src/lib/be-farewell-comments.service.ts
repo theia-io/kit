@@ -60,7 +60,7 @@ export class BeFarewellCommentsService {
         content,
         medias,
         farewellId: new mongoose.Types.ObjectId(farewellId),
-        profileId: new mongoose.Types.ObjectId(profileId),
+        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
       console.error(
@@ -70,7 +70,40 @@ export class BeFarewellCommentsService {
       throw new Error('Cannot create farewell comment');
     }
 
-    return newFarewellComment;
+    if (!newFarewellComment) {
+      throw new HttpException(
+        `Cannot create farewell comment.`,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    try {
+      if (newFarewellComment.profileId) {
+        await newFarewellComment.populate('profileId');
+      }
+    } catch (err) {
+      console.error(
+        `Cannot populate farewell comment profileId for ${newFarewellComment._id}`,
+        err
+      );
+      throw new HttpException(
+        `Cannot populate farewell comment profileId.`,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    const newFarewellCommentObject = newFarewellComment.toObject();
+
+    return {
+      ...newFarewellCommentObject,
+      profileId: newFarewellCommentObject.profileId?._id,
+      profile: newFarewellCommentObject.profileId?._id
+        ? {
+            ...newFarewellCommentObject.profileId,
+            id: newFarewellCommentObject.profileId?._id,
+          }
+        : null,
+    };
   }
 
   async createCommentsFarewell(farewellComments: Array<FarewellComment>) {
@@ -82,7 +115,7 @@ export class BeFarewellCommentsService {
           content,
           medias,
           farewellId: new mongoose.Types.ObjectId(farewellId),
-          profileId: new mongoose.Types.ObjectId(profileId),
+          profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
         }))
       );
     } catch (err) {

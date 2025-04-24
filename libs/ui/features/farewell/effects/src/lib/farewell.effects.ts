@@ -1,19 +1,10 @@
-import { Injectable, inject } from '@angular/core';
-import { selectCurrentProfile } from '@kitouch/kit-data';
+import { inject, Injectable } from '@angular/core';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
-import {
-  catchError,
-  filter,
-  map,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { FarewellV2Service } from './farewellV2.service';
-import { Farewell } from '@kitouch/shared-models';
 
 @Injectable()
 export class FarewellEffects {
@@ -78,7 +69,6 @@ export class FarewellEffects {
   putFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.putFarewell),
-      tap((v) => console.log('TEST UPDATINNG', v)),
       switchMap(({ farewell }) =>
         this.#farewellService.putFarewell(farewell).pipe(
           map((farewell) =>

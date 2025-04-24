@@ -21,6 +21,10 @@
 
       <div class="hidden sm:block absolute top-5 right-24">
         <div class="flex justify-center gap-2">
+          @if(updating()) {
+          <ui-kit-spinner size="h-6 w-6" />
+          }
+
           <!-- Preview -->
           @if(previewTmpl) {
           <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
@@ -47,7 +51,10 @@
 
           @if(kudoBoard && item?.label === kudoBoard?.title) {
           <feat-kudoboard-status class="ml-2" [status]="kudoBoard.status" />
-          }
+
+          @if(updating()) {
+          <ui-kit-spinner size="ml-2 h-6 w-6" />
+          } }
         </ng-template>
       </p-breadcrumb>
 
@@ -56,7 +63,8 @@
         [id]="kudoBoardId$ | async"
         (statusKudoTmpl)="statusTmpl = $event"
         (shareKudoTmpl)="shareTmpl = $event"
-        (previewKudoTmpl)="previewTmpl = $event" />
+        (previewKudoTmpl)="previewTmpl = $event"
+        [(updating)]="updating" />
     </div>
   </ng-template>
 </p-sidebar>

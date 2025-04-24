@@ -31,9 +31,9 @@ export class BeKudoBoardCommentsController {
   }
 
   @Post()
-  async createCommentsKudoBoard(@Body() kudoBoardComments: IKudoBoardComment) {
-    return this.beKudoBoardCommentsService.createCommentsKudoBoard(
-      kudoBoardComments
+  async createCommentsKudoBoard(@Body() kudoBoardComment: IKudoBoardComment) {
+    return this.beKudoBoardCommentsService.createCommentKudoBoard(
+      kudoBoardComment
     );
   }
 

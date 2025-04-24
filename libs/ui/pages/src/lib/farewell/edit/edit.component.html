@@ -18,6 +18,10 @@
 
       <div class="hidden sm:block absolute top-5 right-24">
         <div class="flex justify-center gap-2">
+          @if(updating()) {
+          <ui-kit-spinner size="h-6 w-6" />
+          }
+
           <!-- Preview -->
           @if(previewTmpl) {
           <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
@@ -43,7 +47,9 @@
           </a>
           @if(item?.label === farewell?.title) {
           <feat-farewell-status class="ml-2" [status]="farewell.status" />
-          }
+          @if(updating()) {
+          <ui-kit-spinner size="ml-2 h-6 w-6" />
+          } }
         </ng-template>
       </p-breadcrumb>
 
@@ -52,7 +58,8 @@
         [farewellId]="farewell.id"
         (statusFarewellTmpl)="statusTmpl = $event"
         (shareFarewellTmpl)="shareTmpl = $event"
-        (previewFarewellTmpl)="previewTmpl = $event" />
+        (previewFarewellTmpl)="previewTmpl = $event"
+        [(updating)]="updating" />
     </div>
   </ng-template>
 </p-sidebar>

@@ -5,15 +5,7 @@ import { FeatKudoBoardActions } from '@kitouch/data-kudoboard';
 import { FeatFarewellActions } from '@kitouch/feat-farewell-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import {
-  catchError,
-  filter,
-  map,
-  of,
-  switchMap,
-  tap,
-  withLatestFrom,
-} from 'rxjs';
+import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { KudoBoardV2Service } from './kudoboardV2.service';
 
 @Injectable()
@@ -92,7 +84,6 @@ export class KudoBoardEffects {
   putKudoBoard$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatKudoBoardActions.putKudoBoard),
-      tap((v) => console.log('TEST UPDATINNG', v)),
       switchMap(({ kudoboard }) =>
         this.#kudoboardService.putKudoBoard(kudoboard).pipe(
           map((kudoboard) =>

@@ -44,6 +44,7 @@ import {
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
 import {
+  Auth0Service,
   DeviceService,
   S3_KUDOBOARD_BUCKET_BASE_URL,
 } from '@kitouch/shared-infra';
@@ -122,6 +123,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   #destroyRef = inject(DestroyRef);
   #actions$ = inject(Actions);
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
   #photoService = inject(PhotoService);
   #deviceService = inject(DeviceService);
   #masonryService = inject(MasonryService);
@@ -376,5 +378,9 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
 
   mediaWidthRatio(height: number, width: number) {
     return width / height;
+  }
+
+  signIn() {
+    this.#auth0Service.signInTab();
   }
 }

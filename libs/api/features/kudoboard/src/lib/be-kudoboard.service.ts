@@ -39,6 +39,7 @@ export class BeKudoboardService {
         .findOne({
           _id: new mongoose.Types.ObjectId(kudoBoardId),
         })
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(`Cannot execute kudoboard search for ${kudoBoardId}`, err);
@@ -48,7 +49,18 @@ export class BeKudoboardService {
       );
     }
 
-    return kudoBoard;
+    const kudoBoardObject = kudoBoard?.toObject();
+
+    return {
+      ...kudoBoardObject,
+      profileId: kudoBoardObject?.profileId?._id,
+      profile: kudoBoardObject?.profileId?._id
+        ? {
+            ...kudoBoardObject.profileId,
+            id: kudoBoardObject.profileId?._id,
+          }
+        : null,
+    };
   }
 
   async createKudoboard(kudoBoard: IKudoBoard) {

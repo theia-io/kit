@@ -1,5 +1,5 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
@@ -11,7 +11,10 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Auth0Service } from '@kitouch/shared-infra';
-import { UiKitDeleteComponent } from '@kitouch/ui-components';
+import {
+  UiKitDeleteComponent,
+  UiKitSpinnerComponent,
+} from '@kitouch/ui-components';
 import {
   FeatKudoBoardEditComponent,
   FeatKudoBoardStatusComponent,
@@ -37,6 +40,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     SharedNavBarStaticComponent,
     FeatKudoBoardEditComponent,
     FeatKudoBoardStatusComponent,
+    UiKitSpinnerComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -92,6 +96,8 @@ export class PageKudoBoardEditComponent {
       },
     ])
   );
+
+  updating = signal(false);
 
   previewTmpl?: TemplateRef<unknown>;
   statusTmpl?: TemplateRef<unknown>;

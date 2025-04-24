@@ -46,6 +46,7 @@ import {
   UiKitColorPickerComponent,
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
+  UiKitSpinnerComponent,
 } from '@kitouch/ui-components';
 
 import {
@@ -116,6 +117,7 @@ const TITLE_MAX_LENGTH = 128;
     FeatKudoBoardViewComponent,
     SharedCopyClipboardComponent,
     FeatKudoboardInfoPanelComponent,
+    UiKitSpinnerComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -126,6 +128,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   previewKudoTmpl = output<TemplateRef<unknown>>();
   asUserKudoTmpl = output<TemplateRef<unknown>>();
   shareKudoTmpl = output<TemplateRef<unknown>>();
+  updating = model<boolean>(false);
 
   #document = inject(DOCUMENT);
   #router = inject(Router);
@@ -229,8 +232,12 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
       });
     }
 
+    this.kudoBoardFormGroup.valueChanges
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => this.updating.set(true));
+
     merge(
-      this.kudoBoardFormGroup.valueChanges.pipe(debounceTime(5000)),
+      this.kudoBoardFormGroup.valueChanges.pipe(debounceTime(1500)),
       this.#beforeUnloadTrigger$$
         .asObservable()
         .pipe(map(() => this.kudoBoardFormGroup.value))
@@ -242,7 +249,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
         withLatestFrom(this.#kudoBoard$)
       )
       .subscribe(
-        ([{ title, recipient, background, content, status }, kudoBoard]) =>
+        ([{ title, recipient, background, content, status }, kudoBoard]) => {
           this.#updateKudoBoard({
             ...kudoBoard,
             title: title ?? '',
@@ -250,7 +257,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
             content,
             background,
             status: status ?? KudoBoardStatus.Draft,
-          })
+          });
+        }
       );
   }
 
@@ -368,7 +376,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
       takeUntilDestroyed(this.#destroyRef),
       takeUntil(this.kudoBoardCreated$),
       take(1),
-      debounceTime(2500),
+      debounceTime(1500),
       filter(
         ({ recipient, background, title, status }) =>
           !!title || !!background || !!recipient || !!status
@@ -403,7 +411,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   }
 
   #updateKudoBoard(kudoboard: KudoBoard) {
-    console.log('UPDARING KUDO, VALUE', kudoboard);
+    this.updating.set(false);
     this.#store.dispatch(
       FeatKudoBoardActions.putKudoBoard({
         kudoboard,

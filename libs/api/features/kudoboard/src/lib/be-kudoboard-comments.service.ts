@@ -74,20 +74,24 @@ export class BeKudoBoardCommentsService {
     });
   }
 
-  async createCommentsKudoBoard(kudoBoard: IKudoBoardComment) {
+  async createCommentKudoBoard({
+    kudoBoardId,
+    profileId,
+    content,
+    medias,
+  }: IKudoBoardComment) {
     let newKudoBoardComments;
 
     try {
       newKudoBoardComments = await this.kudoBoardCommentsModel.create({
-        ...kudoBoard,
-        kudoBoardId: new mongoose.Types.ObjectId(kudoBoard.kudoBoardId),
-        profileId: kudoBoard.profileId
-          ? new mongoose.Types.ObjectId(kudoBoard.profileId)
-          : null,
+        content,
+        medias,
+        kudoBoardId: new mongoose.Types.ObjectId(kudoBoardId),
+        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard comments create for ${kudoBoard.toString()}`,
+        `Cannot execute kudoboard comments create for ${content}, ${medias}, ${kudoBoardId}, ${profileId}`,
         err
       );
       throw new HttpException(
@@ -96,9 +100,39 @@ export class BeKudoBoardCommentsService {
       );
     }
 
+    if (!newKudoBoardComments) {
+      throw new HttpException(
+        `Cannot create kudoboard comment.`,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    try {
+      if (newKudoBoardComments.profileId) {
+        await newKudoBoardComments.populate('profileId');
+      }
+    } catch (err) {
+      console.error(
+        `Cannot populate kudoboard comment profileId for ${newKudoBoardComments._id}`,
+        err
+      );
+      throw new HttpException(
+        `Cannot populate kudoboard comment profileId.`,
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    const newKudoBoardCommentsObject = newKudoBoardComments.toObject();
+
     return {
-      ...newKudoBoardComments.toObject(),
-      profile: kudoBoard.profile,
+      ...newKudoBoardCommentsObject,
+      profileId: newKudoBoardCommentsObject.profileId?._id,
+      profile: newKudoBoardCommentsObject.profileId?._id
+        ? {
+            ...newKudoBoardCommentsObject.profileId,
+            id: newKudoBoardCommentsObject.profileId?._id,
+          }
+        : null,
     };
   }
 

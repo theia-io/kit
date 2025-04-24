@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  DatePipe,
   DOCUMENT,
   Location,
   NgTemplateOutlet,
@@ -44,12 +43,16 @@ import {
   FarewellStatus,
 } from '@kitouch/shared-models';
 import {
-  AccountTileComponent,
-  DividerComponent,
   UIKitSmallerHintTextUXDirective,
+  UiKitSpinnerComponent,
 } from '@kitouch/ui-components';
 
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import {
+  farewellLink,
+  FeatSideBarPreviewComponent,
+  SharedCopyClipboardComponent,
+} from '@kitouch/containers';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -68,18 +71,12 @@ import {
   skipUntil,
   take,
 } from 'rxjs';
-import { FeatFarewellAllGridItemComponent } from '../all-grid-item/all-grid-item.component';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
 import { FeatFarewellEditorComponent } from '../editor/editor.component';
-import {
-  farewellLink,
-  FeatSideBarPreviewComponent,
-  SharedCopyClipboardComponent,
-} from '@kitouch/containers';
+import { FeatFarewellInfoPanelComponent } from '../info-panel/info-panel.component';
 import { FeatFarewellStatusComponent } from '../status/status.component';
 import { FeatFarewellViewV2Component } from '../viewV2/viewV2.component';
-import { FeatFarewellInfoPanelComponent } from '../info-panel/info-panel.component';
 
 // import to register custom bloats
 
@@ -99,7 +96,6 @@ function extractContent(html: string) {
   templateUrl: './farewell.component.html',
   imports: [
     AsyncPipe,
-    DatePipe,
     RouterModule,
     ReactiveFormsModule,
     NgTemplateOutlet,
@@ -110,25 +106,24 @@ function extractContent(html: string) {
     TooltipModule,
     OverlayPanelModule,
     //
-    FeatFarewellAllGridItemComponent,
     FeatFarewellEditorComponent,
     UIKitSmallerHintTextUXDirective,
-    AccountTileComponent,
-    DividerComponent,
     SharedCopyClipboardComponent,
     FeatSideBarPreviewComponent,
     FeatFarewellStatusComponent,
     FeatFarewellViewV2Component,
     FeatFarewellInfoPanelComponent,
+    UiKitSpinnerComponent,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
-  statusFarewellTmpl = output<TemplateRef<any>>();
+  statusFarewellTmpl = output<TemplateRef<unknown>>();
   shareFarewellTmpl = output<TemplateRef<unknown>>();
   previewFarewellTmpl = output<TemplateRef<unknown>>();
+  updating = model<boolean>(false);
 
   #document = inject(DOCUMENT);
   #cdr = inject(ChangeDetectorRef);
@@ -225,13 +220,17 @@ export class FeatFarewellComponent implements AfterViewInit {
     }
 
     this.farewellFormGroup.valueChanges
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => this.updating.set(true));
+
+    this.farewellFormGroup.valueChanges
       .pipe(
         takeUntilDestroyed(this.#destroyRef),
         // when its new farewell we don't update until farewell is created
         skipUntil(
           this.farewellId() ? of(true) : this.#farewell$.pipe(filter(Boolean))
         ),
-        debounceTime(5000)
+        debounceTime(1500)
       )
       .subscribe(() => this.#updateFarewell());
   }
@@ -353,6 +352,9 @@ export class FeatFarewellComponent implements AfterViewInit {
     const { title, content, status } = this.farewellFormGroup.value;
 
     const farewell = this.farewell();
+
+    this.updating.set(false);
+
     this.#store.dispatch(
       FeatFarewellActions.putFarewell({
         farewell: {
