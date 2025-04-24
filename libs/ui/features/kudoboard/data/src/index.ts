@@ -1,4 +1,3 @@
-export * from './lib/adapters';
 export * from './lib/kudoboard-analytics.actions';
 export * from './lib/kudoboard-comment.actions';
 export * from './lib/kudoboard-media.actions';

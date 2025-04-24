@@ -55,10 +55,6 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH_STATIC_PAGES.Redirect,
-        loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.RedirectAuth0,
         loadComponent: () =>
           pages.then((comp) => comp.PageRedirectAuth0Component),
       },

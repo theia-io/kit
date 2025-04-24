@@ -27,7 +27,6 @@ export enum APP_PATH_STATIC_PAGES {
   FeaturesKudoboard = `kudo-board`,
   FeaturesFarewell = `farewell`,
   Redirect = `redirect`,
-  RedirectAuth0 = `redirect-auth0`,
   Join = `join`,
   TermsAndConditions = `terms-and-conditions`,
   PrivacyPolicy = `privacy-policy`,

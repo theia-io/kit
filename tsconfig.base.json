@@ -82,8 +82,7 @@
       "@kitouch/shared-utils": ["libs/shared/utils/index.ts"],
       "@kitouch/ui-components": ["libs/ui/components/src/index.ts"],
       "@kitouch/ui-kudoboard": ["libs/ui/features/kudoboard/ui/src/index.ts"],
-      "@kitouch/utils": ["libs/shared/utils/src/index.ts"],
-      "realm": ["node_modules/realm-web/types/realm"]
+      "@kitouch/utils": ["libs/shared/utils/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

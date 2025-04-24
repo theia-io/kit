@@ -205,7 +205,7 @@ async function bootstrap() {
     getLoginState(req, options) {
       return {
         ...options,
-        returnTo: `${feUrl}/s/redirect-auth0`, //options.returnTo
+        returnTo: `${feUrl}/s/redirect`, //options.returnTo
       };
     },
   };
