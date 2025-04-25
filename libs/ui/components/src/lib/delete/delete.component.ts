@@ -14,7 +14,7 @@ import {
       $event.preventDefault();
       $event.stopPropagation();
       $event.stopImmediatePropagation();
-      onDelete.emit($event)
+      delete.emit($event)
     "
     role="button"
     class="pi pi-times-circle absolute z-10 hover:animate-pulse"
@@ -34,5 +34,5 @@ export class UiKitDeleteComponent {
 
   background = input(false);
 
-  onDelete = output<Event>();
+  delete = output<Event>();
 }

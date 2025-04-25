@@ -72,9 +72,9 @@ interface UploadEvent {
   providers: [MessageService],
 })
 export class FeatSettingsExperienceAddComponent implements OnInit {
-  onSaving = output();
-  onSaved = output();
-  onRemove = output();
+  saving = output();
+  saved = output();
+  remove = output();
 
   #actions = inject(Actions);
   #store = inject(Store);
@@ -219,11 +219,11 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     this.experienceForm.reset();
     this.stepperActive.set(0);
 
-    this.onSaving.emit();
+    this.saving.emit();
 
     this.#actions
       .pipe(ofType(FeatUserApiActions.addExperienceSuccess), take(1))
-      .subscribe(() => this.onSaved.emit());
+      .subscribe(() => this.saved.emit());
     this.#store.dispatch(FeatUserApiActions.addExperience({ experience }));
   }
 }

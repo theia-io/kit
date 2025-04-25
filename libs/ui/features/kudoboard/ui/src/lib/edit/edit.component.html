@@ -93,7 +93,7 @@
     <feat-kudoboard-status
       [status]="status ?? kudoBoardStatus.Draft"
       [canBeChanged]="true"
-      (onUpdatedStatus)="updateStatus($event)" />
+      (updatedStatus)="updateStatus($event)" />
   </ng-template>
 
   <ng-template #previewTmpl>

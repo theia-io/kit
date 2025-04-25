@@ -66,12 +66,12 @@ async function bootstrap() {
       secret: sessionSecret,
       resave: false,
       saveUninitialized: false,
-      proxy: !isProduction, 
+      proxy: !isProduction,
       cookie: {
         secure: isProduction,
         httpOnly: true,
         maxAge: 3600000, // Session duration (e.g., 1 hour)
-        sameSite: isProduction ? 'strict'  :false, //'strict',
+        sameSite: isProduction ? 'strict' : false, //'strict',
       },
     })
   );

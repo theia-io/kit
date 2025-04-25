@@ -108,7 +108,7 @@ async)?.recipient;
 
       @if(currentProfile()?.id && (currentProfile()?.id === kudoboardOwner?.id
       || currentProfile()?.id === comment.profileId)) {
-      <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
+      <ui-kit-delete (delete)="deleteHandler(comment.id)" />
       }
     </ui-kit-comp-animate-ping>
   </div>

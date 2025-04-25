@@ -68,7 +68,7 @@
 
 @if(tweetCanBeDeleted()) {
 <ui-kit-delete
-  (onDelete)="
+  (delete)="
     $event.stopImmediatePropagation(); tweetDeleteConfirmationVisible.set(true)
   " />
 }

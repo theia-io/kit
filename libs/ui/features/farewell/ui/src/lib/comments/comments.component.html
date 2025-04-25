@@ -88,7 +88,7 @@ comment.timestamp?.createdAt;
 
   @if(currentProfile()?.id && (currentProfile()?.id === farewellProfile()?.id ||
   currentProfile()?.id === comment.profileId)) {
-  <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
+  <ui-kit-delete (delete)="deleteHandler(comment.id)" />
   }
 </div>
 } @empty {

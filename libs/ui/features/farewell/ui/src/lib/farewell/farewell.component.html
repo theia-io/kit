@@ -51,7 +51,7 @@
     <feat-farewell-status
       [status]="status ?? farewellStatus.Draft"
       [canBeChanged]="true"
-      (onUpdatedStatus)="updateStatus($event)" />
+      (updateStatus)="updateStatus($event)" />
   </ng-template>
 
   <ng-template #shareTmpl>
