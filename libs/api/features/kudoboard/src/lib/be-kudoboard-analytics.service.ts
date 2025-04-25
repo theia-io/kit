@@ -99,7 +99,7 @@ export class BeKudoBoardAnalyticsService {
     } catch (err) {
       console.error(
         `Cannot execute kudoboard analytics delete for %s`,
-        kudoBoardId,
+        kudoboardId,
         err
       );
       throw new HttpException(
