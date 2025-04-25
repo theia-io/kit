@@ -24,7 +24,7 @@ export class Auth0Service {
   readonly #beforeRedirectKey = 'kit.auth.pre-redirect';
 
   logout() {
-    window.location.href = `http://localhost:3000/api/auth/logout`; // express-openid-connect handles this
+    window.location.href = `${this.#environment.api.auth}/logout`; // express-openid-connect handles this
   }
 
   // savePostRedirectUrl(beforeRedirectUrl: string) {
@@ -44,13 +44,13 @@ export class Auth0Service {
   // }
 
   signIn() {
-    window.location.href = `http://localhost:3000/api/auth/login`; // express-openid-connect handles this
+    window.location.href = `${this.#environment.api.auth}/login`; // express-openid-connect handles this
   }
 
   signInTab() {
     this.#localStoreService.setItem(this.#separateWindow, JSON.stringify(true));
 
-    window.open('http://localhost:3000/api/auth/login', '_blank')?.focus();
+    window.open(`${this.#environment.api.auth}/login`, '_blank')?.focus();
 
     /** TODO use CrossTabSyncService instead of localstorage and keep LS as fallback */
     return new Promise((resolve, reject) => {
