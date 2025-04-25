@@ -22,15 +22,22 @@ async)?.recipient;
     [uploadMediaFilesCb]="uploadCommentMediaFiles()"
     [deleteMediaFilesCb]="deleteCommentMedia()"
     (comment)="commentHandler($event)">
-    @if(currentProfile(); as currentProfile) {
     <div profile class="mb-4">
+      @if(currentProfile(); as currentProfile) {
       <ui-kit-comp-account-tile
         sharedAuthorizedFeature
         [primaryText]="currentProfile.name"
         [picture]="currentProfilePic()"
         [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
+      } @else {
+      <p class="m-0 mb-1 text-sm text-gray-500">
+        <a (click)="signIn()" role="button" class="underline">
+          Sign-in or register
+        </a>
+        . Otherwise comments will be left anonymously
+      </p>
+      }
     </div>
-    }
   </ui-kit-comment-area>
 </div>
 
@@ -47,8 +54,10 @@ async)?.recipient;
           sharedAuthorizedFeature
           [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
           [primarySecondaryText]="
-            comment.timestamp.updatedAt ?? comment.timestamp.createdAt
-              | date : 'MMM d, h:mm a'
+            comment.updatedAt ??
+              comment.timestamp?.updatedAt ??
+              comment.createdAt ??
+              comment.timestamp?.createdAt | date : 'MMM d, h:mm a'
           "
           [picture]="profilePictureFn(comment.profile)"
           [link]="
@@ -99,7 +108,7 @@ async)?.recipient;
 
       @if(currentProfile()?.id && (currentProfile()?.id === kudoboardOwner?.id
       || currentProfile()?.id === comment.profileId)) {
-      <ui-kit-delete (onDelete)="deleteHandler(comment.id)" />
+      <ui-kit-delete (delete)="deleteHandler(comment.id)" />
       }
     </ui-kit-comp-animate-ping>
   </div>

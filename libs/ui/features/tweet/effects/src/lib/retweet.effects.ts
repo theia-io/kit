@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatReTweetActions, tweetIsRetweet } from '@kitouch/feat-tweet-data';
+import { FeatReTweetActions, FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { TweetyType } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -12,13 +12,13 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { TweetApiService } from './tweet-api.service';
+import { ReTweetV2Service } from './retweet-v2.service';
 
 @Injectable()
 export class RetweetEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
-  #tweetApi = inject(TweetApiService);
+  #retweetV2Service = inject(ReTweetV2Service);
 
   #currentProfile$ = this.#store
     .select(selectCurrentProfile)
@@ -29,30 +29,36 @@ export class RetweetEffects {
       ofType(FeatReTweetActions.reTweet),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, profile]) =>
-        this.#tweetApi
-          .retweet(
-            tweetIsRetweet(tweet) ? tweet.referenceId : tweet.id,
-            profile.id
+        this.#retweetV2Service.retweet(tweet.id, profile.id).pipe(
+          map((retweet) =>
+            FeatReTweetActions.reTweetSuccess({
+              tweet: {
+                ...tweet,
+                ...retweet,
+                tweetId: tweet.id,
+                retweetedProfileId: retweet.profileId,
+                type: TweetyType.Retweet,
+                createdAt: retweet.createdAt,
+              },
+            })
           )
-          .pipe(
-            map((id) =>
-              FeatReTweetActions.reTweetSuccess({
-                tweet: {
-                  ...tweet,
-                  id,
-                  referenceId: tweet.id,
-                  profileId: tweet.profileId,
-                  referenceProfileId: profile.id,
-                  timestamp: {
-                    createdAt: new Date(Date.now()),
-                  },
-                  type: TweetyType.Retweet,
-                },
-              })
-            )
-          )
+        )
       )
     )
+  );
+
+  deleteTweetSuccess$ = createEffect(
+    () =>
+      this.#actions$.pipe(
+        ofType(FeatTweetActions.deleteSuccess),
+        switchMap(
+          ({ tweet }) => this.#retweetV2Service.deleteRetweets(tweet.id)
+          // TODO Add handling for user to show that some of his retweets might have been deleted
+        )
+      ),
+    {
+      dispatch: false,
+    }
   );
 
   deleteReTweet$ = createEffect(() =>
@@ -60,8 +66,8 @@ export class RetweetEffects {
       ofType(FeatReTweetActions.delete),
       withLatestFrom(this.#currentProfile$),
       switchMap(([{ tweet }, profile]) =>
-        tweet.referenceProfileId === profile.id
-          ? this.#tweetApi.deleteRetweet(tweet).pipe(
+        tweet.retweetedProfileId === profile.id
+          ? this.#retweetV2Service.deleteRetweet(tweet, profile.id).pipe(
               map(() =>
                 FeatReTweetActions.deleteSuccess({
                   tweet,

@@ -10,7 +10,22 @@ export enum KIT_ENVS {
 export interface Environment {
   api: {
     root: string;
+    auth: string;
+    // Helper APIs
     media: string;
+    // business logic APIs
+    kit: string;
+    tweets: string;
+    retweets: string;
+    bookmarks: string;
+    farewells: string;
+    farewellComments: string;
+    farewellReactions: string;
+    farewellAnalytics: string;
+    kudoboards: string;
+    kudoboardComments: string;
+    kudoboardReactions: string;
+    kudoboardAnalytics: string;
   };
   googleTagConfig: string | null;
   build: string;

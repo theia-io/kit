@@ -44,6 +44,7 @@ import {
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
 import {
+  Auth0Service,
   DeviceService,
   S3_KUDOBOARD_BUCKET_BASE_URL,
 } from '@kitouch/shared-infra';
@@ -51,7 +52,11 @@ import {
   ContractUploadedMedia,
   KudoBoardComment,
 } from '@kitouch/shared-models';
-import { MasonryService, PhotoService } from '@kitouch/shared-services';
+import {
+  MasonryService,
+  PhotoService,
+  sortByCreatedTimeDesc,
+} from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -118,6 +123,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   #destroyRef = inject(DestroyRef);
   #actions$ = inject(Actions);
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
   #photoService = inject(PhotoService);
   #deviceService = inject(DeviceService);
   #masonryService = inject(MasonryService);
@@ -155,9 +161,11 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
       this.#store.pipe(select(selectKudoBoardCommentsById(kudoboardId)))
     ),
     map((comments) =>
-      comments.sort(
-        (a, b) =>
-          b.timestamp.createdAt.getTime() - a.timestamp.createdAt.getTime()
+      comments.sort((a, b) =>
+        sortByCreatedTimeDesc(
+          a.createdAt ?? (a as any).timestamp?.createdAt,
+          b.createdAt ?? (b as any).timestamp?.createdAt
+        )
       )
     )
   );
@@ -167,7 +175,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   #masonryReadyTrigger$ = this.kudoboardComments$.pipe(
     takeUntilDestroyed(this.#destroyRef),
     filter((comments) => comments && comments.length > 0),
-    delay(0),
+    delay(100),
     shareReplay({
       refCount: true,
       bufferSize: 1,
@@ -370,5 +378,9 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
 
   mediaWidthRatio(height: number, width: number) {
     return width / height;
+  }
+
+  signIn() {
+    this.#auth0Service.signInTab();
   }
 }

@@ -19,7 +19,7 @@ export class FeatKudoBoardStatusComponent {
   status = input.required<KudoBoardStatus>();
   canBeChanged = input<boolean>(false);
 
-  onUpdatedStatus = output<KudoBoardStatus>();
+  updatedStatus = output<KudoBoardStatus>();
 
   kudoBoardStatus = KudoBoardStatus;
 
@@ -27,6 +27,6 @@ export class FeatKudoBoardStatusComponent {
     if (!this.canBeChanged()) {
       return;
     }
-    this.onUpdatedStatus.emit(status);
+    this.updatedStatus.emit(status);
   }
 }

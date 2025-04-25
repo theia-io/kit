@@ -2,7 +2,6 @@ import { NgOptimizedImage, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   effect,
   HostListener,
@@ -21,9 +20,9 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
 import { Observable } from 'rxjs';
 import { UiKitDeleteComponent } from '../delete/delete.component';
+import { UiKitSpinnerComponent } from '../spinner/spinner.component';
 import { UiKitTweetButtonComponent } from '../tweet-button/tweet-button.component';
 import { UiKitPicUploadableComponent } from '../uploadable/uploadable.component';
-import { UiKitSpinnerComponent } from '../spinner/spinner.component';
 
 const CONTROL_INITIAL_ROWS = 2;
 

@@ -23,14 +23,15 @@ export enum LocationType {
 }
 
 export interface Experience {
+  id: string;
   title: string;
   type: ExperienceType;
   company: string;
   country: string;
   city: string;
   locationType: LocationType;
-  startDate: string; // isoDate
-  endDate: string | null; // isoDate
+  startDate: Date; // isoDate
+  endDate: Date | null; // isoDate
   description?: string;
   skills?: Array<string>;
   links?: Array<string>;

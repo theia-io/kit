@@ -4,6 +4,7 @@ import {
   inject,
   input,
   OnDestroy,
+  output,
   signal,
   ViewChild,
 } from '@angular/core';
@@ -19,10 +20,11 @@ import {
   APP_PATH_STATIC_PAGES,
   DESKTOP_NAV_ITEMS,
 } from '@kitouch/shared-constants';
-import { Device, DeviceService } from '@kitouch/shared-infra';
+import { Device, DeviceService, ENVIRONMENT } from '@kitouch/shared-infra';
 import { ButtonModule } from 'primeng/button';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -32,6 +34,7 @@ import { NavbarService } from '../navbar/navbar.service';
     NgClass,
     OverlayPanelModule,
     ButtonModule,
+    TooltipModule,
     //
     UiLogoComponent,
     UIKitSmallerHintTextUXDirective,
@@ -43,11 +46,15 @@ import { NavbarService } from '../navbar/navbar.service';
 export class SharedNavBarStaticComponent implements OnDestroy {
   userLoggedIn = input.required<boolean>();
   hideLogin = input(false);
+  // TODO: address below
   /** This is system variable and can be considered to be removed */
   _sysUpdatePrimengHighlight = input(false);
 
+  getStarted = output<void>();
+
   #navbarService = inject(NavbarService);
   deviceService = inject(DeviceService);
+  environment = inject(ENVIRONMENT);
 
   @ViewChild(OverlayPanel)
   opEl: OverlayPanel;
@@ -89,5 +96,9 @@ export class SharedNavBarStaticComponent implements OnDestroy {
     } else {
       this.opEl.show(event);
     }
+  }
+
+  handleGetStarted() {
+    this.getStarted.emit();
   }
 }

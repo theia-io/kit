@@ -1,4 +1,4 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -7,21 +7,19 @@ import {
   FeatKudoBoardActions,
   selectKudoBoards,
 } from '@kitouch/data-kudoboard';
-import { FeatFarewellAllGridItemComponent } from '@kitouch/feat-farewell-ui';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
+import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
 import {
-  FeatKudoBoardAnalyticsComponent,
   FeatKudoboardInfoPanelComponent,
   FeatKudoBoardIntoComponent,
-  FeatKudoBoardStatusComponent,
   FeatKudoBoardViewComponent,
 } from '@kitouch/ui-kudoboard';
 import { select, Store } from '@ngrx/store';
@@ -87,15 +85,15 @@ export class PageKudoBoardsAllComponent {
       kudoboards
         .slice()
         .sort((a, b) =>
-          new Date(b.timestamp?.createdAt?.toString()).getTime() >
-          new Date(a.timestamp?.createdAt?.toString()).getTime()
-            ? 1
-            : -1
+          sortByCreatedTimeDesc(
+            a.createdAt ?? (a as any).timestamp?.createdAt,
+            b.createdAt ?? (b as any).timestamp?.createdAt
+          )
         )
     )
   );
 
-  kudoBoardGenerateUrl = `/${APP_PATH.Farewell}/generate`;
+  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly kudoBoardStatus = KudoBoardStatus;
 

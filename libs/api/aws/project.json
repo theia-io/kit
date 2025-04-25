@@ -1,0 +1,27 @@
+{
+  "name": "aws",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/aws/src",
+  "projectType": "library",
+  "tags": ["scope:api", "scope:api-feature"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/aws",
+        "tsConfig": "libs/api/aws/tsconfig.lib.json",
+        "packageJson": "libs/api/aws/package.json",
+        "main": "libs/api/aws/src/index.ts",
+        "assets": ["libs/api/aws/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/aws/jest.config.ts"
+      }
+    }
+  }
+}

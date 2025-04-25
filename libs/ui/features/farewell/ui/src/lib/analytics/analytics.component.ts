@@ -67,19 +67,19 @@ export class FeatFarewellAnalyticsComponent {
         withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
       )
       .subscribe(([[farewell, analytics], currentProfile]) =>
-        this.#visitorActions(farewell.profile, analytics, currentProfile)
+        this.#visitorActions(farewell.profileId, analytics, currentProfile)
       );
   }
 
   #visitorActions(
-    farewellProfile: Profile,
+    farewellProfileId: Profile['id'],
     analytics: FarewellAnalytics,
     currentProfile: Profile | undefined
   ) {
     if (
       this.preview() &&
       currentProfile &&
-      farewellProfile.id === currentProfile.id
+      farewellProfileId === currentProfile.id
     ) {
       // Only when it is current profile and its farewell we consider
       // such users real previewers

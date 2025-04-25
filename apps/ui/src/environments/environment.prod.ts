@@ -2,8 +2,21 @@ import { Environment, KIT_ENVS } from '@kitouch/shared-infra';
 
 export const environment: Environment = {
   api: {
-    root: 'https://api.kitouch.io/api',
-    media: '/media',
+    root: '/api',
+    media: '/api/media',
+    auth: '/api/auth',
+    kit: '/api/kit',
+    tweets: '/api/tweets',
+    retweets: '/api/retweets',
+    bookmarks: '/api/bookmarks',
+    farewells: '/api/farewells',
+    farewellComments: '/api/farewell-comments',
+    farewellReactions: '/api/farewell-reactions',
+    farewellAnalytics: '/api/farewell-analytics',
+    kudoboards: '/api/kudoboards',
+    kudoboardComments: '/api/kudoboard-comments',
+    kudoboardReactions: '/api/kudoboard-reactions',
+    kudoboardAnalytics: '/api/kudoboard-analytics',
   },
   googleTagConfig: 'G-7YL998B39Q',
   build: KIT_ENVS.production + '-5-' + '$AWS_COMMIT_ID',

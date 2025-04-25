@@ -2,10 +2,7 @@ import { AsyncPipe, DOCUMENT } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import {
-  farewellLink,
-  SharedCopyClipboardComponent,
-} from '@kitouch/containers';
+import { farewellLink } from '@kitouch/containers';
 import {
   FeatFarewellActions,
   FeatFarewellCommentActions,
@@ -14,8 +11,6 @@ import {
 } from '@kitouch/feat-farewell-data';
 import {
   FeatFarewellActionsComponent,
-  FeatFarewellAllGridItemComponent,
-  FeatFarewellAnalyticsComponent,
   FeatFarewellCommentsComponent,
   FeatFarewellInfoPanelComponent,
   FeatFarewellStatusComponent,
@@ -32,7 +27,7 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { AuthService, DeviceService } from '@kitouch/shared-infra';
+import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import { objectLoadingState$ } from '@kitouch/shared-services';
 import { UiKitPageOverlayComponent } from '@kitouch/ui-components';
@@ -67,7 +62,6 @@ import {
     UiKitPageOverlayComponent,
     FeatKitProfileHeaderComponent,
     FeatFarewellActionsComponent,
-    FeatFarewellAllGridItemComponent,
     FeatFarewellViewV2Component,
     FeatFarewellCommentsComponent,
     FeatFollowUnfollowProfileComponent,
@@ -81,7 +75,7 @@ export class PageFarewellViewComponent {
   #document = inject(DOCUMENT);
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
-  #authService = inject(AuthService);
+  #auth0Service = inject(Auth0Service);
 
   device$ = inject(DeviceService).device$;
   #followerHandlerFn = followerHandlerFn();
@@ -100,9 +94,9 @@ export class PageFarewellViewComponent {
 
   farewellProfile = toSignal(
     this.farewell$.pipe(
-      switchMap(({ profile: farewellSavedProfile }) =>
+      switchMap(({ profile: farewellSavedProfile, profileId }) =>
         this.#store
-          .select(selectProfileById(farewellSavedProfile.id))
+          .select(selectProfileById(profileId))
           .pipe(map((profile) => profile ?? farewellSavedProfile))
       )
     )
@@ -199,8 +193,8 @@ export class PageFarewellViewComponent {
   }
 
   signInAndFollow(profileToFollow: Profile) {
-    this.#authService
-      .googleSignIn()
+    this.#auth0Service
+      .signInTab()
       .then(() => this.#followAfterSignIn(profileToFollow));
   }
 

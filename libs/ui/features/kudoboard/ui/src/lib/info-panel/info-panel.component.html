@@ -1,23 +1,32 @@
 <div class="flex gap-1 md:gap-2 items-center">
   <feat-kudoboard-status [status]="kudoboard().status" />
 
+  @let kudoboardCreatedAt = kudoboard().createdAt; @let kudoboardCreatedAtLegacy
+  = kudoboard().timestamp?.createdAt; @let kudoboardUpdatedAt =
+  kudoboard().updatedAt; @let kudoboardUpdatedAtLegacy =
+  kudoboard().timestamp?.updatedAt;
+
   <p class="text-sm text-gray-500">
     <i
       class="pi pi-calendar mr-1"
       [pTooltip]="
-        (kudoboard().timestamp.createdAt
-          ? 'Created on ' + (kudoboard().timestamp.createdAt | date)
+        (kudoboardCreatedAt ?? kudoboardCreatedAtLegacy
+          ? 'Created on ' +
+            (kudoboardCreatedAt ?? kudoboardCreatedAtLegacy | date)
           : '') +
         (showUpdatedDate()
-          ? kudoboard().timestamp.updatedAt
-            ? (!!kudoboard().timestamp.createdAt ? '\n' : '') +
+          ? kudoboardUpdatedAt ?? kudoboardUpdatedAtLegacy
+            ? (!!(kudoboardCreatedAt ?? kudoboardCreatedAtLegacy) ? '\n' : '') +
               'Updated on ' +
-              (kudoboard().timestamp.updatedAt | date)
+              (kudoboardUpdatedAt ?? kudoboardUpdatedAtLegacy | date)
             : ''
           : '')
       "></i>
     {{
-      kudoboard().timestamp.createdAt ?? kudoboard().timestamp.updatedAt | date
+      kudoboardCreatedAt ??
+        kudoboardCreatedAtLegacy ??
+        kudoboardUpdatedAt ??
+        kudoboardUpdatedAtLegacy | date
     }},
   </p>
 

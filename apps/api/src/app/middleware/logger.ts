@@ -1,6 +1,10 @@
 import { Request, Response, NextFunction } from 'express';
 
 export function logger(req: Request, res: Response, next: NextFunction) {
-  console.log(`Request...; endpoint:${req.url}`);
+  console.log(
+    `\nRequest: ${req.method}, ${req.url}, ${JSON.stringify(
+      req.query
+    )}, ${JSON.stringify(req.params)}`
+  );
   next();
 }

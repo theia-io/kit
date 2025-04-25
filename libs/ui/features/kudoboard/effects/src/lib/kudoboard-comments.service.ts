@@ -1,76 +1,49 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import {
-  clientDbKudoBoardCommentAdapter,
-  ClientDBKudoBoardCommentResponse,
-  dbClientKudoBoardCommentAdapter,
-} from '@kitouch/data-kudoboard';
-import { DataSourceService, ENVIRONMENT } from '@kitouch/shared-infra';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 import {
   ContractUploadedMedia,
   KudoBoard,
   KudoBoardComment,
 } from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
-import { BSON } from 'realm-web';
-import { from, map, Observable, switchMap } from 'rxjs';
+import { from, Observable, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
-export class KudoBoardCommentsService extends DataSourceService {
-  #env = inject(ENVIRONMENT);
+export class KudoBoardCommentsService {
+  #environment = inject(ENVIRONMENT);
   #http = inject(HttpClient);
 
   getKudoBoardComments(
     kudoBoardId: KudoBoard['id']
   ): Observable<Array<KudoBoardComment>> {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBKudoBoardCommentResponse>('kudoboard-comments')
-          .find({ kudoBoardId: new BSON.ObjectId(kudoBoardId) })
-      ),
-      map((reactions) => reactions.map(dbClientKudoBoardCommentAdapter))
+    return this.#http.get<Array<KudoBoardComment>>(
+      `${this.#environment.api.kudoboardComments}/${kudoBoardId}`
     );
   }
 
-  postKudoBoardComment(
-    reactionData: ClientDataType<KudoBoardComment>
+  createKudoBoardComment(
+    kudoBoardComment: ClientDataType<KudoBoardComment>
   ): Observable<KudoBoardComment> {
-    const reactionRequest = clientDbKudoBoardCommentAdapter(reactionData);
-
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBKudoBoardCommentResponse>('kudoboard-comments')
-          .insertOne(reactionRequest)
-      ),
-      map(({ insertedId }) => ({ ...reactionRequest, _id: insertedId })),
-      map((KudoBoardComment) =>
-        dbClientKudoBoardCommentAdapter(KudoBoardComment)
-      )
+    return this.#http.post<KudoBoardComment>(
+      `${this.#environment.api.kudoboardComments}`,
+      kudoBoardComment
     );
   }
 
   deleteKudoBoardComment(id: KudoBoardComment['id']) {
-    return this.db$().pipe(
-      switchMap((db) =>
-        db
-          .collection<ClientDBKudoBoardCommentResponse>('kudoboard-comments')
-          .deleteOne({
-            _id: new BSON.ObjectId(id),
-          })
-      ),
-      map(({ deletedCount }) => deletedCount > 0)
+    return this.#http.delete<KudoBoard>(
+      `${this.#environment.api.kudoboardComments}/${id}`
     );
   }
 
   uploadKudoBoardCommentMedia(key: string, blob: Blob) {
-    const { root, media } = this.#env.api;
+    const { media } = this.#environment.api;
 
     return from(blob.arrayBuffer()).pipe(
       switchMap((fileArrayBuffer) =>
         this.#http.post<ContractUploadedMedia>(
-          `${root}${media}/kudoboard`,
+          `${media}/kudoboard`,
           fileArrayBuffer,
           {
             headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
@@ -85,8 +58,8 @@ export class KudoBoardCommentsService extends DataSourceService {
 
   /** Media, S3 */
   deleteKudoBoardCommentMedia(key: string) {
-    const { root, media } = this.#env.api;
-    return this.#http.delete(`${root}${media}/kudoboard`, {
+    const { media } = this.#environment.api;
+    return this.#http.delete(`${media}/kudoboard`, {
       params: {
         name: key,
       },

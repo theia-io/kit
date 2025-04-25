@@ -7,19 +7,16 @@ import {
   signal,
 } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import {
-  SignInGoogleComponent,
-  slideInOutAnimation,
-} from '@kitouch/containers';
+import { SignInAuth0Component, slideInOutAnimation } from '@kitouch/containers';
 import { FeatFarewellIntoComponent } from '@kitouch/feat-farewell-ui';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { DeviceService, RouterEventsService } from '@kitouch/shared-infra';
 import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
-import { startWith, take } from 'rxjs';
+import { startWith } from 'rxjs';
 
-const ANIMATION_REPEAT = 10000;
+const ANIMATION_REPEAT = 2500;
 
 @Component({
   standalone: true,
@@ -32,7 +29,7 @@ const ANIMATION_REPEAT = 10000;
     //
     TagModule,
     //
-    SignInGoogleComponent,
+    SignInAuth0Component,
     UiCompGradientCardComponent,
     FeatFarewellIntoComponent,
     FeatKudoBoardIntoComponent,
@@ -51,17 +48,6 @@ export class PageSignInComponent implements OnInit {
   clickedIntro = signal<null | 'kudo' | 'farewell'>(null);
 
   readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
-
-  handleGoogleSignIn(signedIn: boolean) {
-    if (signedIn) {
-      this.#routerEventsService.lastUrlBeforeCancelled$
-        .pipe(take(1))
-        .subscribe((urlBeforeSignIn) => {
-          console.info('[AUTH SERVICE] urlBeforeSignIn:', urlBeforeSignIn);
-          this.#router.navigateByUrl(urlBeforeSignIn ?? 'home');
-        });
-    }
-  }
 
   ngOnInit(): void {
     this.#animateKitten();

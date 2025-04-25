@@ -1,0 +1,27 @@
+{
+  "name": "kit",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/features/kit/src",
+  "projectType": "library",
+  "tags": ["scope:api"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/features/kit",
+        "tsConfig": "libs/api/features/kit/tsconfig.lib.json",
+        "packageJson": "libs/api/features/kit/package.json",
+        "main": "libs/api/features/kit/src/index.ts",
+        "assets": ["libs/api/features/kit/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/features/kit/jest.config.ts"
+      }
+    }
+  }
+}

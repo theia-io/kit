@@ -129,7 +129,6 @@ export class PageSettingsComponent implements OnInit {
 
   deleteAccountHandler() {
     const currentAccount = this.currentAccount();
-    console.log(currentAccount);
     if (currentAccount) {
       this.#store.dispatch(
         FeatAccountApiActions.delete({ account: currentAccount })

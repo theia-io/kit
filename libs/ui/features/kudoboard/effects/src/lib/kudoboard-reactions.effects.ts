@@ -1,14 +1,14 @@
 import { Injectable, inject } from '@angular/core';
 
+import { FeatKudoBoardReactionActions } from '@kitouch/data-kudoboard';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, of, switchMap } from 'rxjs';
-import { KudoBoardReactionsService } from './kudoboard-reactions.service';
-import { FeatKudoBoardReactionActions } from '@kitouch/data-kudoboard';
+import { KudoBoardReactionsV2Service } from './kudoboard-reactionsV2.service';
 
 @Injectable()
 export class KudoBoardReactionsEffects {
   #actions$ = inject(Actions);
-  #kudoboardMediaService = inject(KudoBoardReactionsService);
+  #kudoboardMediaService = inject(KudoBoardReactionsV2Service);
 
   getKudoBoardReactions$ = createEffect(() =>
     this.#actions$.pipe(
@@ -36,7 +36,7 @@ export class KudoBoardReactionsEffects {
     this.#actions$.pipe(
       ofType(FeatKudoBoardReactionActions.postReactionKudoBoard),
       switchMap(({ reaction }) =>
-        this.#kudoboardMediaService.postKudoBoardReaction(reaction).pipe(
+        this.#kudoboardMediaService.createKudoBoardReaction(reaction).pipe(
           map((reactionResponse) =>
             FeatKudoBoardReactionActions.postReactionKudoBoardSuccess({
               reaction: reactionResponse,

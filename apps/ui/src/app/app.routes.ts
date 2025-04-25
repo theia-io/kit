@@ -10,7 +10,6 @@ import {
 } from '@kitouch/shared-constants';
 import {
   onlyForLoggedInGuard,
-  onlyForLoggedInOrAnonymouslyLoggedInGuard,
   onlyForNotLoggedInGuard,
 } from '@kitouch/shared-infra';
 import { KitComponent } from './kit.component';
@@ -18,11 +17,6 @@ import { KitComponent } from './kit.component';
 const pages = import('@kitouch/pages');
 
 export const appRoutes: Route[] = [
-  /** @TODO @FIXME remove after on 1st September 2024 */
-  {
-    path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
-    redirectTo: `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
-  },
   {
     path: 's',
     loadComponent: () =>
@@ -61,7 +55,8 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH_STATIC_PAGES.Redirect,
-        loadComponent: () => pages.then((comp) => comp.PageRedirectComponent),
+        loadComponent: () =>
+          pages.then((comp) => comp.PageRedirectAuth0Component),
       },
       {
         path: APP_PATH_STATIC_PAGES.Join,
@@ -85,11 +80,9 @@ export const appRoutes: Route[] = [
         path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
         loadComponent: () =>
           pages.then((comp) => comp.PageFarewellViewComponent),
-        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
       },
       {
         path: `${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
-        canActivate: [onlyForLoggedInOrAnonymouslyLoggedInGuard],
         children: [
           {
             path: 'generate',
@@ -217,8 +210,8 @@ export const appRoutes: Route[] = [
 
       // Outlet
       {
-        path: APP_PATH_DIALOG.Tweet,
         outlet: OUTLET_DIALOG,
+        path: APP_PATH_DIALOG.Tweet,
         loadComponent: () =>
           import('@kitouch/feat-tweet-ui').then(
             (feat) => feat.FeatTweetDialogComponent

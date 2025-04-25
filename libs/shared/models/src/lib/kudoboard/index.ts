@@ -14,24 +14,24 @@ export enum KudoBoardEvents {
   PageClosed = 'page-closed',
 }
 
-export interface KudoBoardAnalytics {
+export interface KudoBoardAnalytics extends Partial<KitTimestamp> {
   id: string;
   kudoBoardId: KudoBoard['id'];
   event: KudoBoardEvents;
-  timestamp: KitTimestamp;
+  timestamp?: Partial<KitTimestamp>;
 }
 
-export interface KudoBoardReaction {
+export interface KudoBoardReaction extends Partial<KitTimestamp> {
   id: string;
   kudoBoardId: KudoBoard['id'];
   profileId?: Profile['id'] | null;
   profile?: Profile;
   // meta: string;
   content: string;
-  timestamp: KitTimestamp;
+  timestamp?: Partial<KitTimestamp>;
 }
 
-export interface KudoBoardComment {
+export interface KudoBoardComment extends Partial<KitTimestamp> {
   id: string;
   kudoBoardId: KudoBoard['id'];
   profileId?: Profile['id'] | null;
@@ -39,10 +39,10 @@ export interface KudoBoardComment {
   // meta: string;
   content: string;
   medias?: Array<ContractUploadedMedia>;
-  timestamp: KitTimestamp;
+  timestamp?: Partial<KitTimestamp>;
 }
 
-export interface KudoBoard {
+export interface KudoBoard extends Partial<KitTimestamp> {
   id: string;
   profileId?: Profile['id'] | null;
   profile?: Profile;
@@ -51,5 +51,6 @@ export interface KudoBoard {
   recipient?: string;
   background?: string;
   status: KudoBoardStatus;
-  timestamp: KitTimestamp;
+  /** @deprecated to be removed */
+  timestamp?: Partial<KitTimestamp>;
 }

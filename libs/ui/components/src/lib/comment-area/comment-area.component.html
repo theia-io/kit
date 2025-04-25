@@ -26,6 +26,7 @@
   </p-floatLabel>
 
   @if(maxMediaFiles() > 0) {
+  <p class="m-0 mb-1 text-sm text-gray-500">Images:</p>
   <div class="flex gap-2 items-center">
     <ui-kit-pic-uploadable
       [conf]="{ fileUploadConf: { multiple: maxMediaFiles() !== 1 } }"
@@ -67,7 +68,7 @@
           [background]="true"
           xOffset="right-0"
           yOffset="top-0"
-          (onDelete)="deleteHandler(media)" />
+          (delete)="deleteHandler(media)" />
         }
       </a>
       }

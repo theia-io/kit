@@ -1,5 +1,5 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
@@ -10,7 +10,11 @@ import {
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { UiKitDeleteComponent } from '@kitouch/ui-components';
+import { Auth0Service } from '@kitouch/shared-infra';
+import {
+  UiKitDeleteComponent,
+  UiKitSpinnerComponent,
+} from '@kitouch/ui-components';
 import {
   FeatKudoBoardEditComponent,
   FeatKudoBoardStatusComponent,
@@ -36,6 +40,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     SharedNavBarStaticComponent,
     FeatKudoBoardEditComponent,
     FeatKudoBoardStatusComponent,
+    UiKitSpinnerComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -45,6 +50,7 @@ export class PageKudoBoardEditComponent {
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
 
   kudoBoardId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
@@ -91,6 +97,8 @@ export class PageKudoBoardEditComponent {
     ])
   );
 
+  updating = signal(false);
+
   previewTmpl?: TemplateRef<unknown>;
   statusTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;
@@ -104,6 +112,10 @@ export class PageKudoBoardEditComponent {
   }
 
   redirectToAll() {
-    this.#router.navigateByUrl(APP_PATH_ALLOW_ANONYMOUS.KudoBoard);
+    this.#router.navigateByUrl(`/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
+  }
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
   }
 }

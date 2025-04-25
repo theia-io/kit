@@ -25,7 +25,7 @@ import {
   MOBILE_NAV_ITEMS,
   OUTLET_DIALOG,
 } from '@kitouch/shared-constants';
-import { AuthService } from '@kitouch/shared-infra';
+import { Auth0Service } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
 import { UXDynamicService } from '@kitouch/shared-services';
 import {
@@ -68,7 +68,7 @@ export class NavBarComponent implements AfterViewInit {
   #elemRef = inject(ElementRef);
   #router = inject(Router);
   //
-  #authService = inject(AuthService);
+  #auth0Service = inject(Auth0Service);
   #uxDynamicService = inject(UXDynamicService);
   #navbarService = inject(NavbarService);
   #layoutService = inject(LayoutService);
@@ -141,8 +141,7 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   async logoutHandler() {
-    await this.#authService.logout();
-    window.location.reload();
+    await this.#auth0Service.logout();
   }
 
   onFocusHandler(event: Event) {

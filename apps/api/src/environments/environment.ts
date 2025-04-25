@@ -1,6 +1,6 @@
 // Import the 'fs' module for file system access
+import { Environment } from '@kitouch/be-config';
 import * as fs from 'fs';
-import { Environment } from './types';
 
 // Read the package.json file
 const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
@@ -12,7 +12,8 @@ console.log('\n\nmonorepo version (API):', version, '\n\n');
 
 export const environment: Environment = {
   production: false,
-  date: new Date().toUTCString(),
   version,
-  apiBase: 'http://localhost:3000/api',
+  baseUrl: 'http://localhost:3000',
+  apiPrefix: '/api',
+  feUrl: 'http://localhost:4200',
 };

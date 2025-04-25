@@ -19,14 +19,14 @@ export class FeatFarewellStatusComponent {
   status = input.required<Farewell['status']>();
   canBeChanged = input<boolean>(false);
 
-  onUpdatedStatus = output<FarewellStatus>();
+  updateStatus = output<FarewellStatus>();
 
   farewellStatus = FarewellStatus;
 
-  updateStatus(status: Farewell['status']) {
+  updateStatusHandler(status: Farewell['status']) {
     if (!this.canBeChanged()) {
       return;
     }
-    this.onUpdatedStatus.emit(status);
+    this.updateStatus.emit(status);
   }
 }

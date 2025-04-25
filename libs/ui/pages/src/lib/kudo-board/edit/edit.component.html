@@ -1,4 +1,5 @@
-@if((kudoBoard$ | async); as kudoBoard) {
+@let kudoBoard = kudoBoard$ | async;
+
 <p-sidebar
   [blockScroll]="true"
   [visible]="true"
@@ -10,15 +11,20 @@
       <shared-navbar-static
         [userLoggedIn]="!!(currentProfile$ | async)"
         [hideLogin]="true"
-        [_sysUpdatePrimengHighlight]="true" />
+        [_sysUpdatePrimengHighlight]="true"
+        (getStarted)="handleGetStarted()" />
 
       <ui-kit-delete
         xOffset="right-4"
         yOffset="top-4"
-        (onDelete)="redirectToAll()" />
+        (delete)="redirectToAll()" />
 
       <div class="hidden sm:block absolute top-5 right-24">
         <div class="flex justify-center gap-2">
+          @if(updating()) {
+          <ui-kit-spinner size="h-6 w-6" />
+          }
+
           <!-- Preview -->
           @if(previewTmpl) {
           <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
@@ -42,9 +48,13 @@
             <i [class]="item.icon"></i>
             {{ item.label }}
           </a>
-          @if(item?.label === kudoBoard?.title) {
+
+          @if(kudoBoard && item?.label === kudoBoard?.title) {
           <feat-kudoboard-status class="ml-2" [status]="kudoBoard.status" />
-          }
+
+          @if(updating()) {
+          <ui-kit-spinner size="ml-2 h-6 w-6" />
+          } }
         </ng-template>
       </p-breadcrumb>
 
@@ -53,9 +63,8 @@
         [id]="kudoBoardId$ | async"
         (statusKudoTmpl)="statusTmpl = $event"
         (shareKudoTmpl)="shareTmpl = $event"
-        (previewKudoTmpl)="previewTmpl = $event" />
+        (previewKudoTmpl)="previewTmpl = $event"
+        [(updating)]="updating" />
     </div>
   </ng-template>
 </p-sidebar>
-
-}

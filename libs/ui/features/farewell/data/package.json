@@ -4,7 +4,6 @@
   "peerDependencies": {
     "@kitouch/shared-models": "5.0.0-0",
     "@kitouch/utils": "5.0.0-0",
-    "realm-web": "^2.0.1",
     "@ngrx/store": "18.0.2"
   },
   "sideEffects": false

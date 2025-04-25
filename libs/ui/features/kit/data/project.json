@@ -4,7 +4,7 @@
   "sourceRoot": "libs/ui/features/kit/data/src",
   "prefix": "lib",
   "projectType": "library",
-  "tags": ["scope:ui", "feature", "feat-data"],
+  "tags": ["scope:ui", "scope:ui-shared", "feature", "feat-data"],
   "targets": {
     "build": {
       "executor": "@nx/angular:ng-packagr-lite",

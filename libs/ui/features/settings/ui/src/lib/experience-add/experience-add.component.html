@@ -40,12 +40,14 @@
                   {{ experienceForm.get('company')?.value }}
                 </ng-template>
                 <ng-template pTemplate="empty">
-                  {{
+                  You will be the first from
+                  {{ experienceForm.get('company')?.value }}
+                  <!-- {{
                     (experienceForm.get('company')?.value?.length ?? 0) > 2
                       ? 'You will be the first from ' +
                         experienceForm.get('company')?.value
                       : 'Enter more then 2 symbols to start searching'
-                  }}
+                  }} -->
                 </ng-template>
               </p-dropdown>
               <label for="company">Company*</label>

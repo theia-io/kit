@@ -1,5 +1,5 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
-import { Component, inject, TemplateRef } from '@angular/core';
+import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
@@ -13,7 +13,11 @@ import {
 } from '@kitouch/feat-farewell-ui';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { UiKitDeleteComponent } from '@kitouch/ui-components';
+import { Auth0Service } from '@kitouch/shared-infra';
+import {
+  UiKitDeleteComponent,
+  UiKitSpinnerComponent,
+} from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
@@ -34,6 +38,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     SharedNavBarStaticComponent,
     FeatFarewellComponent,
     FeatFarewellStatusComponent,
+    UiKitSpinnerComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -43,6 +48,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 export class PageFarewellEditComponent {
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
+  #auth0Service = inject(Auth0Service);
   #store = inject(Store);
 
   farewellId$ = this.#activatedRouter.params.pipe(
@@ -62,7 +68,7 @@ export class PageFarewellEditComponent {
   );
 
   farewellCreator$ = combineLatest([this.farewell$, this.currentProfile$]).pipe(
-    map(([farewell, profile]) => farewell.profile.id === profile.id),
+    map(([farewell, profile]) => farewell.profileId === profile.id),
     startWith(false)
   );
 
@@ -84,6 +90,8 @@ export class PageFarewellEditComponent {
     ])
   );
 
+  updating = signal(false);
+
   statusTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;
   previewTmpl?: TemplateRef<unknown>;
@@ -98,5 +106,9 @@ export class PageFarewellEditComponent {
 
   redirectToAll() {
     this.#router.navigateByUrl(APP_PATH.Farewell);
+  }
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
   }
 }

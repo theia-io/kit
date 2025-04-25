@@ -11,7 +11,7 @@
 @if(tweetProfile(); as tProfile) {
 <ui-kit-comp-account-tile
   [primaryText]="tProfile.name"
-  [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
+  [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
   [secondaryText]="tProfile.type"
   [picture]="tProfile.pictures?.[0]?.url"
   [link]="profileUrlPath + tProfile.id" />
@@ -68,7 +68,7 @@
 
 @if(tweetCanBeDeleted()) {
 <ui-kit-delete
-  (onDelete)="
+  (delete)="
     $event.stopImmediatePropagation(); tweetDeleteConfirmationVisible.set(true)
   " />
 }
@@ -90,7 +90,7 @@
   } @if(tweetProfile(); as tProfile) {
   <ui-kit-comp-account-tile
     [primaryText]="$any(tProfile).name"
-    [primarySecondaryText]="tweet.timestamp?.createdAt | date : 'MMM d, h:mm a'"
+    [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
     [secondaryText]="$any(tProfile).type"
     [picture]="$any(tProfile).pictures?.[0]?.url"
     [link]="profileUrlPath + $any(tProfile).id" />

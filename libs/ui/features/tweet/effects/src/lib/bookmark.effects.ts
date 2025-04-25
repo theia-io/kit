@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import {
-  FeatTweetActions,
   FeatBookmarksActions,
+  FeatTweetActions,
 } from '@kitouch/feat-tweet-data';
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -15,13 +15,15 @@ import {
   switchMap,
   withLatestFrom,
 } from 'rxjs/operators';
-import { TweetApiService } from './tweet-api.service';
+import { BookmarksService } from './bookmarks.service';
+import { TweetV2Service } from './tweet-v2.service';
 
 @Injectable()
 export class BookmarkEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
-  #tweetApi = inject(TweetApiService);
+  #tweetV2Service = inject(TweetV2Service);
+  #bookmarksService = inject(BookmarksService);
 
   currentProfile$ = this.#store
     .select(selectCurrentProfile)
@@ -32,7 +34,7 @@ export class BookmarkEffects {
       ofType(FeatBookmarksActions.getAll),
       withLatestFrom(this.currentProfile$),
       switchMap(([_, profile]) =>
-        this.#tweetApi.getBookmarks(profile.id).pipe(
+        this.#bookmarksService.getBookmarks(profile.id).pipe(
           map((bookmarks) =>
             FeatBookmarksActions.getAllSuccess({
               bookmarks,
@@ -62,7 +64,7 @@ export class BookmarkEffects {
         }))
       ),
       switchMap((tweetGetRequest) =>
-        this.#tweetApi.getMany(tweetGetRequest).pipe(
+        this.#tweetV2Service.getTweets(tweetGetRequest).pipe(
           map((tweets) =>
             FeatBookmarksActions.getBookmarksFeedSuccess({
               tweets,
@@ -87,7 +89,7 @@ export class BookmarkEffects {
       ofType(FeatBookmarksActions.bookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId, profileIdTweetyOwner }, profile]) =>
-        this.#tweetApi
+        this.#bookmarksService
           .bookmark({
             tweetId,
             profileIdTweetyOwner,
@@ -119,38 +121,40 @@ export class BookmarkEffects {
       ofType(FeatBookmarksActions.removeBookmark),
       withLatestFrom(this.currentProfile$),
       switchMap(([{ tweetId }, { id }]) =>
-        this.#tweetApi
-          .deleteBookmark({ profileIdBookmarker: id, tweetId })
-          .pipe(
-            map(() =>
-              FeatBookmarksActions.removeBookmarkSuccess({
-                tweetId,
-                profileId: id,
-              })
-            ),
-            catchError((err) => {
-              console.error('[BookmarkEffects] deleteBookmark', err);
-              return of(
-                FeatBookmarksActions.removeBookmarkFailure({
-                  tweetId,
-                  message:
-                    'Sorry, error. We will take a look at it and meanwhile try later',
-                })
-              );
+        this.#bookmarksService.deleteTweetBookmark(tweetId, id).pipe(
+          map(() =>
+            FeatBookmarksActions.removeBookmarkSuccess({
+              tweetId,
+              profileId: id,
             })
-          )
+          ),
+          catchError((err) => {
+            console.error('[BookmarkEffects] deleteBookmark', err);
+            return of(
+              FeatBookmarksActions.removeBookmarkFailure({
+                tweetId,
+                message:
+                  'Sorry, error. We will take a look at it and meanwhile try later',
+              })
+            );
+          })
+        )
       )
     )
   );
 
   deleteBookmarkWhenTweetDeleted$ = createEffect(() =>
     this.#actions$.pipe(
+      // TODO move this and aline (retweet) to BE
       ofType(FeatTweetActions.deleteSuccess),
-      map(({ tweet: { id } }) =>
-        /** @TODO @FIXME has to take into account deleteSuccess batch results  */
-        FeatBookmarksActions.removeBookmarkAsTweetRemoved({
-          tweetId: id,
-        })
+      switchMap(({ tweet: { id } }) =>
+        this.#bookmarksService.deleteAllTweetBookmarks(id).pipe(
+          map(() =>
+            FeatBookmarksActions.removeBookmarkAsTweetRemoved({
+              tweetId: id,
+            })
+          )
+        )
       )
     )
   );

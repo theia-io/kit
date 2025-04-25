@@ -93,7 +93,7 @@
     <feat-kudoboard-status
       [status]="status ?? kudoBoardStatus.Draft"
       [canBeChanged]="true"
-      (onUpdatedStatus)="updateStatus($event)" />
+      (updatedStatus)="updateStatus($event)" />
   </ng-template>
 
   <ng-template #previewTmpl>
@@ -118,6 +118,9 @@
   <div class="flex justify-center gap-2 mt-12">
     <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
     <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
+    @if(updating()) {
+    <ui-kit-spinner size="h-6 w-6" />
+    }
   </div>
 
   <div class="flex justify-center items-center gap-2 mt-2">

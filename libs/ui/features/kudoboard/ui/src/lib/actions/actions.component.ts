@@ -301,13 +301,15 @@ export class FeatKudoBoardActionsComponent {
           .subscribe((profile) => {
             this.#store.dispatch(
               FeatFarewellActions.createFarewell({
-                title: '',
-                content: '',
-                profileId: profile.id,
-                profile,
-                kudoBoardId: kudoBoard.id,
-                kudoBoard,
-                status: FarewellStatus.Draft,
+                farewell: {
+                  title: '',
+                  content: '',
+                  profileId: profile.id,
+                  profile,
+                  kudoBoardId: kudoBoard.id,
+                  kudoBoard,
+                  status: FarewellStatus.Draft,
+                },
               })
             );
           });

@@ -6,7 +6,11 @@ COPY package*.json ./
 RUN npm pkg delete scripts.prepare
 
 ARG PACKAGE_VERSION
-ARG API_BASE
+# ARG AUTH0_CLIENT_SECRET_DEV
+# ARG AUTH0_SECRET_DEV
+# ARG JWT_SECRET_DEV
+# ARG SESSION_SECRET_DEV
+# ARG ATLAS_URI_DEV
 
 # RUN npm ci --only=production
 RUN npm ci
@@ -14,10 +18,35 @@ RUN npm ci
 # TODO move this above as copying node_modules likely is not efficient
 COPY . .
 
+# for env file
 ENV PACKAGE_VERSION=$PACKAGE_VERSION
-ENV API_BASE=$API_BASE
+ENV BASE_URL=https://apidev.kitouch.io
+ENV API_PREFIX=/api
+ENV FE_URL=https://dev.kitouch.io
+ENV AWS_SECRET_NAME=kit-api-secrets-dev
 
-RUN npm run build:api:dev -- --version=$PACKAGE_VERSION --apiBase=$API_BASE
+# for auth0
+ENV AUTH0_ISSUER=https://dev-mjhqkc36ox0wieg1.us.auth0.com
+ENV AUTH0_CLIENT_ID=hInvlb9QK8mQH2PBa69ZxBFh3uFxSUcg
+ENV AUTH0_CALLBACK_URL=https://apidev.kitouch.io/api/auth/callback
+
+# # secrets
+# ENV AUTH0_CLIENT_SECRET=$AUTH0_CLIENT_SECRET_DEV
+# ENV AUTH0_SECRET=$AUTH0_SECRET_DEV
+# ENV JWT_SECRET=$JWT_SECRET_DEV
+# ENV SESSION_SECRET=$SESSION_SECRET_DEV
+# #DB
+# ENV ATLAS_URI=$ATLAS_URI_DEV
+
+#S3 
+ENV S3_REGION=eu-north-1
+ENV S3_IDENTITY_POOL_ID=eu-north-1:0d7df556-9796-4d53-8387-aed1c71f8aec
+ENV S3_BUCKET_PROFILE=kitouch-public-profiles-dev
+ENV S3_BUCKET_FAREWELL=kitouch-public-farewell-dev
+ENV S3_BUCKET_KUDOBOARD=kitouch-public-kudoboard-dev
+
+# RUN npm run build:api:dev -- --version=$PACKAGE_VERSION --apiBase=$API_BASE
+RUN npm run build:api:dev
 
 EXPOSE 3000 
 

@@ -15,6 +15,7 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
+import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
   UiCompGradientCardComponent,
@@ -78,15 +79,16 @@ export class PageFarewellAllComponent {
     this.#currentProfile$,
   ]).pipe(
     map(([farewells, currentProfile]) =>
-      farewells.filter(({ profile }) => profile.id === currentProfile.id)
+      farewells.filter(({ profileId }) => profileId === currentProfile.id)
     ),
     map((farewells) =>
       farewells
         .slice()
-        .sort(
-          (a, b) =>
-            new Date(b.timestamp.createdAt.toString()).getTime() -
-            new Date(a.timestamp.createdAt.toString()).getTime()
+        .sort((a, b) =>
+          sortByCreatedTimeDesc(
+            a.createdAt ?? (a as any).timestamp?.createdAt,
+            b.createdAt ?? (b as any).timestamp?.createdAt
+          )
         )
     )
   );

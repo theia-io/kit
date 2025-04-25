@@ -30,9 +30,12 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
+import {
+  Auth0Service,
+  S3_FAREWELL_BUCKET_BASE_URL,
+} from '@kitouch/shared-infra';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
-import { PhotoService } from '@kitouch/shared-services';
+import { PhotoService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -89,6 +92,7 @@ export class FeatFarewellCommentsComponent {
 
   #actions$ = inject(Actions);
   #store = inject(Store);
+  #auth0Service = inject(Auth0Service);
   #photoService = inject(PhotoService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
@@ -102,9 +106,9 @@ export class FeatFarewellCommentsComponent {
   farewellProfile = toSignal(
     this.farewell$.pipe(
       filter(Boolean),
-      switchMap(({ profile }) =>
+      switchMap(({ profile, profileId }) =>
         this.#store.pipe(
-          select(selectProfileById(profile.id)),
+          select(selectProfileById(profileId)),
           map((resolvedProfile) => resolvedProfile ?? profile)
         )
       )
@@ -116,9 +120,11 @@ export class FeatFarewellCommentsComponent {
       this.#store.pipe(select(selectFarewellCommentsById(farewellId)))
     ),
     map((comments) =>
-      comments.sort(
-        (a, b) =>
-          b.timestamp.createdAt.getTime() - a.timestamp.createdAt.getTime()
+      comments.sort((a, b) =>
+        sortByCreatedTimeDesc(
+          a.createdAt ?? (a as any).timestamp?.createdAt,
+          b.createdAt ?? (b as any).timestamp?.createdAt
+        )
       )
     )
   );
@@ -259,5 +265,9 @@ export class FeatFarewellCommentsComponent {
 
   mediaWidthRatio(height: number, width: number) {
     return width / height;
+  }
+
+  signIn() {
+    this.#auth0Service.signInTab();
   }
 }

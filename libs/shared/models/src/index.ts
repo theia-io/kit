@@ -4,6 +4,7 @@ export * from './lib/helpers';
 // business
 
 export * from './lib/account';
+export * from './lib/auth0';
 export * from './lib/entities-kitouch';
 export * from './lib/entities-realworld';
 export * from './lib/farewell';

@@ -1,21 +1,31 @@
 <div class="flex gap-1 md:gap-2 items-center">
   <feat-farewell-status [status]="farewell().status" />
 
+  @let farewellCreatedAt = farewell().createdAt; @let farewellCreatedAtLegacy =
+  farewell().timestamp?.createdAt; @let farewellUpdatedAt =
+  farewell().updatedAt; @let farewellUpdatedAtLegacy =
+  farewell().timestamp?.updatedAt;
+
   <p class="text-sm text-gray-500">
     <i
       class="pi pi-calendar mr-1"
       [pTooltip]="
         'Created on ' +
-        (farewell().timestamp.createdAt | date) +
+        (farewellCreatedAt ?? farewellCreatedAtLegacy | date) +
         (showUpdatedDate()
-          ? farewell().timestamp.updatedAt
-            ? (!!farewell().timestamp.createdAt ? '\n' : '') +
+          ? farewellUpdatedAt ?? farewellUpdatedAtLegacy
+            ? (!!(farewellCreatedAt ?? farewellCreatedAtLegacy) ? '\n' : '') +
               'Updated on ' +
-              (farewell().timestamp.updatedAt | date)
+              (farewellUpdatedAt ?? farewellUpdatedAtLegacy | date)
             : ''
           : '')
       "></i>
-    {{ farewell().timestamp.createdAt | date }},
+    {{
+      farewellCreatedAt ??
+        farewellCreatedAtLegacy ??
+        farewellUpdatedAt ??
+        farewellUpdatedAtLegacy | date
+    }},
   </p>
 
   <feat-farewell-analytics [farewellId]="farewell().id" [preview]="preview()" />

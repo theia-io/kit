@@ -5,6 +5,9 @@ on:
   pull_request:
     branches: [main] # Or your main branch name
 
+env:
+  NX_DISABLE_DB: true
+
 jobs:
   quality_checks_build_affected:
     runs-on: ubuntu-latest

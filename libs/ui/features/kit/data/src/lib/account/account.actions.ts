@@ -1,5 +1,25 @@
-import { Account } from '@kitouch/shared-models';
-import { createActionGroup, props } from '@ngrx/store';
+import { Account, Profile, User } from '@kitouch/shared-models';
+import { createActionGroup, emptyProps, props } from '@ngrx/store';
+
+export const FeatAuth0Events = createActionGroup({
+  source: 'FeatAuth0Events',
+  events: {
+    HandleRedirect: emptyProps(),
+    HandleRedirectSuccess: props<{
+      account: Account;
+      user: User;
+      profiles: Array<Profile>;
+    }>(),
+    HandleRedirectFailure: emptyProps(),
+    TryAuth: emptyProps(),
+    TryAuthFailure: emptyProps(),
+    SetAuthState: props<{
+      account: Account;
+      user: User;
+      profiles: Array<Profile>;
+    }>(),
+  },
+});
 
 export const FeatAccountApiActions = createActionGroup({
   source: 'FeatAccountApiActions',

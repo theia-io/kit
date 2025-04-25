@@ -22,7 +22,7 @@ import { Button, ButtonModule } from 'primeng/button';
       [severity]="severity()"
       [styleClass]="'w-full flex ' + styleClass() + ' ' + kClass()"
       [disabled]="disabled()"
-      (onClick)="onClickEvent.emit($event)"
+      (onClick)="clickEvent.emit($event)"
       aria-label="tweet"
     >
       <span>{{ text() }}</span>
@@ -54,5 +54,5 @@ export class UiKitTweetButtonComponent {
     !this.loader() && !this.icon() ? 'justify-center' : 'justify-between'
   );
 
-  onClickEvent = output<Event>();
+  clickEvent = output<Event>();
 }

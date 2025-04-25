@@ -1,4 +1,4 @@
-import { S3ApiService } from '@kitouch/s3';
+import { S3ApiService } from '@kitouch/aws';
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import sharp from 'sharp';
 

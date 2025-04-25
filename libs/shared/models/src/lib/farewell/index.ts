@@ -9,24 +9,24 @@ export enum FarewellStatus {
   Removed = 'removed',
 }
 
-export interface FarewellAnalytics {
+export interface FarewellAnalytics extends Partial<KitTimestamp> {
   id: string;
   farewellId: Farewell['id'];
   viewed: number;
-  timestamp: KitTimestamp;
+  timestamp?: KitTimestamp;
 }
 
-export interface FarewellReaction {
+export interface FarewellReaction extends Partial<KitTimestamp> {
   id: string;
   farewellId: Farewell['id'];
   profileId: Profile['id'] | null;
   profile?: Profile;
   // meta: string;
   content: string;
-  timestamp: KitTimestamp;
+  timestamp?: KitTimestamp;
 }
 
-export interface FarewellComment {
+export interface FarewellComment extends Partial<KitTimestamp> {
   id: string;
   farewellId: Farewell['id'];
   profileId?: Profile['id'] | null;
@@ -34,17 +34,18 @@ export interface FarewellComment {
   // meta: string;
   content: string;
   medias?: Array<ContractUploadedMedia>;
-  timestamp: KitTimestamp;
+  timestamp?: KitTimestamp;
 }
 
-export interface Farewell {
+export interface Farewell extends Partial<KitTimestamp> {
   id: string;
   kudoBoardId?: KudoBoard['id'];
   kudoBoard?: KudoBoard;
-  profileId?: Profile['id'];
-  profile: Profile;
+  profileId: Profile['id'];
+  profile?: Profile;
   title: string;
   content: string;
-  timestamp: KitTimestamp;
   status: FarewellStatus;
+  // TODO @Danylo remove this
+  timestamp?: KitTimestamp;
 }

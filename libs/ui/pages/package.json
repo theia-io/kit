@@ -14,7 +14,6 @@
     "@ngrx/store": "18.0.2",
     "primeng": "^17.18.1",
     "rxjs": "~7.8.0",
-    "realm-web": "^2.0.1",
     "@kitouch/feat-tweet-data": "5.0.0-0",
     "@kitouch/feat-tweet-ui": "5.0.0-0",
     "@kitouch/shared-models": "5.0.0-0",
@@ -28,7 +27,8 @@
     "@kitouch/containers": "4.0.0-0",
     "@kitouch/shared-services": "4.0.0-0",
     "@kitouch/shared-infra": "4.0.0-0",
-    "@kitouch/shared-constants": "4.0.0-0"
+    "@kitouch/shared-constants": "4.0.0-0",
+    "photoswipe": "^5.4.4"
   },
   "sideEffects": false
 }
