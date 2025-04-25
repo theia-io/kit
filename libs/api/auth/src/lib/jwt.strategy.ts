@@ -6,7 +6,7 @@ import { ExtractJwt, Strategy } from 'passport-jwt';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
-  constructor(private configService: ConfigService) {
+  constructor(configService: ConfigService) {
     const secretOrKey = configService.getConfig('auth').jwtSecret;
     if (!secretOrKey) {
       throw new Error('JWT secret misconfigured');

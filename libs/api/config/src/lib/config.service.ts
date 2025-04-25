@@ -1,3 +1,4 @@
+import { AWSSecretsService } from '@kitouch/aws';
 import { Inject, Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
 import * as path from 'path';
@@ -8,10 +9,32 @@ export class ConfigService {
   #environment: Environment;
   #config: Config;
 
-  constructor(@Inject(EnvironmentToken) environment: Environment) {
+  constructor(
+    @Inject(EnvironmentToken) environment: Environment,
+    private secretsService: AWSSecretsService
+  ) {
     this.#environment = environment;
+    this.#setConfig();
+  }
 
-    if (!environment.production) {
+  getEnvironment<T extends keyof Environment>(key: T): Environment[T];
+  getEnvironment(): Environment;
+  getEnvironment<T extends keyof Environment>(
+    key?: T
+  ): Environment[T] | Environment {
+    if (!key) {
+      return this.#environment;
+    }
+
+    return this.#environment[key];
+  }
+
+  getConfig<T extends keyof Config>(key: T) {
+    return this.#config[key];
+  }
+
+  async #setConfig() {
+    if (!this.#environment.production) {
       dotenv.config({
         path: path.resolve(process.cwd(), 'config/', '.env.local'),
       });
@@ -22,18 +45,21 @@ export class ConfigService {
       );
     }
 
-    const sessionSecret = process.env['SESSION_SECRET'],
-      jwtSecret = process.env['JWT_SECRET'],
-      authSecret = process.env['AUTH0_SECRET'],
-      clientSecret = process.env['AUTH0_CLIENT_SECRET'],
-      clientId = process.env['AUTH0_CLIENT_ID'],
-      issuerBaseUrl = process.env['AUTH0_ISSUER'];
+    // const sessionSecret = process.env['SESSION_SECRET'],
+    //   jwtSecret = process.env['JWT_SECRET'],
+    //   authSecret = process.env['AUTH0_SECRET'],
+    //   clientSecret = process.env['AUTH0_CLIENT_SECRET'],
+    const clientId = process.env['AUTH0_CLIENT_ID'],
+      issuerBaseUrl = process.env['AUTH0_ISSUER'],
+      awsSecret = process.env['AWS_SECRET_NAME'];
+
+    console.log('awsSecret', awsSecret, process.env['TEST_DAN'], process.env);
 
     if (
-      !sessionSecret ||
-      !jwtSecret ||
-      !authSecret ||
-      !clientSecret ||
+      // !sessionSecret ||
+      // !jwtSecret ||
+      // !authSecret ||
+      // !clientSecret ||
       !clientId ||
       !issuerBaseUrl
     ) {
@@ -41,7 +67,34 @@ export class ConfigService {
       process.exit(1);
     }
 
-    const atlasUri = process.env['ATLAS_URI'];
+    // const atlasUri = process.env['ATLAS_URI'];
+    // if (!atlasUri) {
+    //   console.error('missing DB connection string');
+    //   process.exit(1);
+    // }
+
+    let sessionSecret, jwtSecret, authSecret, clientSecret, atlasUri;
+    if (!this.#environment.production) {
+      sessionSecret = process.env['SESSION_SECRET'];
+      jwtSecret = process.env['JWT_SECRET'];
+      authSecret = process.env['AUTH0_SECRET'];
+      clientSecret = process.env['AUTH0_CLIENT_SECRET'];
+      atlasUri = process.env['ATLAS_URI'];
+    } else {
+      console.log('RESOLVING SECRETS FROM AWS MANAGER');
+      const secrets = await this.secretsService.getSecrets();
+      sessionSecret = secrets.sessionSecret;
+      jwtSecret = secrets.jwtSecret;
+      authSecret = secrets.authSecret;
+      clientSecret = secrets.clientSecret;
+      atlasUri = secrets.atlasUri;
+    }
+
+    if (!sessionSecret || !jwtSecret || !authSecret || !clientSecret) {
+      console.error('missing secret variable(s)');
+      process.exit(1);
+    }
+
     if (!atlasUri) {
       console.error('missing DB connection string');
       process.exit(1);
@@ -71,30 +124,10 @@ export class ConfigService {
       },
     };
 
-    if (!environment.production) {
+    // TODO remove this after debugging
+    if (true) {
       console.log('\nenvironment:\n', JSON.stringify(this.#environment));
-      console.log(
-        '\nconfig:\n',
-        JSON.stringify(this.#config.s3),
-        '\n',
-        JSON.stringify(this.#config.auth)
-      );
+      console.log('\nconfig:\n', JSON.stringify(this.#config));
     }
-  }
-
-  getEnvironment<T extends keyof Environment>(key: T): Environment[T];
-  getEnvironment(): Environment;
-  getEnvironment<T extends keyof Environment>(
-    key?: T
-  ): Environment[T] | Environment {
-    if (!key) {
-      return this.#environment;
-    }
-
-    return this.#environment[key];
-  }
-
-  getConfig<T extends keyof Config>(key: T) {
-    return this.#config[key];
   }
 }

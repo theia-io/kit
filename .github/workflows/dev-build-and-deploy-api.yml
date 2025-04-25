@@ -58,8 +58,11 @@ jobs:
           ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
           IMAGE_TAG: 'latest'
         run: |
-          docker build -f Dockerfile.dev --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }} --build-arg AUTH0_CLIENT_SECRET_DEV=${{ secrets.AUTH0_CLIENT_SECRET_DEV }} --build-arg AUTH0_SECRET_DEV=${{ secrets.AUTH0_SECRET_DEV }} --build-arg JWT_SECRET_DEV=${{ secrets.JWT_SECRET_DEV }} --build-arg SESSION_SECRET_DEV=${{ secrets.SESSION_SECRET_DEV }} --build-arg ATLAS_URI_DEV=${{ secrets.ATLAS_URI_DEV }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+          docker build -f Dockerfile.dev --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        # run: |
+        #   docker build -f Dockerfile.dev --build-arg PACKAGE_VERSION=${{ steps.package-version.outputs.version }} --build-arg AUTH0_CLIENT_SECRET_DEV=${{ secrets.AUTH0_CLIENT_SECRET_DEV }} --build-arg AUTH0_SECRET_DEV=${{ secrets.AUTH0_SECRET_DEV }} --build-arg JWT_SECRET_DEV=${{ secrets.JWT_SECRET_DEV }} --build-arg SESSION_SECRET_DEV=${{ secrets.SESSION_SECRET_DEV }} --build-arg ATLAS_URI_DEV=${{ secrets.ATLAS_URI_DEV }} -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        #   docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
 
       - name: Force deployment
         run: |

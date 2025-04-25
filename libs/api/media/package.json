@@ -6,7 +6,7 @@
   },
   "peerDependencies": {
     "@kitouch/infra": "0.0.1",
-    "@kitouch/s3": "0.0.1"
+    "@kitouch/aws": "0.0.1"
   },
   "type": "commonjs",
   "main": "./src/index.js",

@@ -74,7 +74,7 @@
       "@kitouch/infra": ["libs/api/infra/src/index.ts"],
       "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
       "@kitouch/pages": ["libs/ui/pages/src/index.ts"],
-      "@kitouch/s3": ["libs/api/s3/src/index.ts"],
+      "@kitouch/aws": ["libs/api/aws/src/index.ts"],
       "@kitouch/shared-constants": ["libs/ui/shared/constants/src/index.ts"],
       "@kitouch/shared-infra": ["libs/ui/shared/infra/src/index.ts"],
       "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],

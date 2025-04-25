@@ -15,11 +15,13 @@ import { AppService } from './app.service';
 import { HealthController } from './heath.controller';
 import { BeKudoboardModule } from '@kitouch/be-kudoboard';
 import { BeFarewellModule } from '@kitouch/be-farewell';
+import { AWSModule } from '@kitouch/aws';
 
 @Module({
   imports: [
     TerminusModule,
     ConfigModule.forRoot(environment),
+    AWSModule,
     InfraModule,
     MediaModule,
     AuthModule,
