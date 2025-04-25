@@ -66,17 +66,17 @@ export class BeFarewellAnalyticsService {
     return farewellAnalytics;
   }
 
-  async createAnalyticsFarewell(farewell: IFarewell) {
+  async createAnalyticsFarewell({ id }: IFarewell) {
     let newFarewellAnalytics;
 
     try {
       newFarewellAnalytics = await this.farewellAnalyticsModel.create({
-        farewellId: new mongoose.Types.ObjectId(farewell.id),
+        farewellId: new mongoose.Types.ObjectId(id),
         viewed: 0,
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics create for ${farewell.toString()}`,
+        `Cannot execute farewell analytics create for id:${id}`,
         err
       );
       throw new HttpException(
@@ -90,7 +90,7 @@ export class BeFarewellAnalyticsService {
 
   async updateAnalyticsFarewell(
     analyticId: IFarewellsAnalytics['id'],
-    farewell: IFarewell
+    { id }: IFarewell
   ) {
     let updatedFarewellAnalytics;
 
@@ -110,7 +110,7 @@ export class BeFarewellAnalyticsService {
         );
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics update for ${analyticId}, ${farewell.toString()}`,
+        `Cannot execute farewell analytics update for ${analyticId}, id:${id}`,
         err
       );
       throw new HttpException(

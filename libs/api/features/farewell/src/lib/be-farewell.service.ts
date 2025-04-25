@@ -95,22 +95,28 @@ export class BeFarewellService {
     } as IFarewell;
   }
 
-  async createFarewell(farewell: IFarewell) {
+  async createFarewell({
+    kudoBoardId,
+    profileId,
+    title,
+    content,
+    status,
+  }: IFarewell) {
     let newFarewell;
 
     try {
       newFarewell = await this.farewellModel.create({
-        ...farewell,
-        kudoBoardId: farewell.kudoBoardId
-          ? new mongoose.Types.ObjectId(farewell.kudoBoardId)
+        title,
+        content,
+        status,
+        kudoBoardId: kudoBoardId
+          ? new mongoose.Types.ObjectId(kudoBoardId)
           : null,
-        profileId: farewell.profileId
-          ? new mongoose.Types.ObjectId(farewell.profileId)
-          : null,
+        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell create for ${farewell.toString()}`,
+        `Cannot execute farewell create for ${title}, ${content}, ${status}, ${kudoBoardId}, ${profileId}`,
         err
       );
       throw new HttpException(
@@ -120,10 +126,10 @@ export class BeFarewellService {
     }
 
     if (!newFarewell) {
-      console.warn(`Farewell ${farewell.toString()} not created.`);
+      console.warn(`Farewell was not created.`);
       throw new HttpException(
-        `Farewell "${farewell.toString()}" not created.`,
-        HttpStatus.NOT_FOUND
+        `Farewell was not created.`,
+        HttpStatus.INTERNAL_SERVER_ERROR
       );
     }
 

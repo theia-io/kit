@@ -10,7 +10,7 @@ export type KudoBoardReactionsDocument = HydratedDocument<KudoBoardReactions>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
-      delete ret._id;
+      delete ret['_id'];
     },
   },
 })

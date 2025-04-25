@@ -1,7 +1,7 @@
+import { KudoBoard as IKudoBoard } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { KudoBoard as IKudoBoard } from '@kitouch/shared-models';
 import { KudoBoard, KudoBoardDocument } from './schemas';
 
 @Injectable()
@@ -63,21 +63,27 @@ export class BeKudoboardService {
     };
   }
 
-  async createKudoboard(kudoBoard: IKudoBoard) {
+  async createKudoboard({
+    profileId,
+    title,
+    content,
+    recipient,
+    background,
+    status,
+  }: IKudoBoard) {
     let newKudoBoard;
 
     try {
       newKudoBoard = await this.kudoBoardModel.create({
-        ...kudoBoard,
-        profileId: kudoBoard.profileId
-          ? new mongoose.Types.ObjectId(kudoBoard.profileId)
-          : null,
+        title,
+        content,
+        recipient,
+        background,
+        status,
+        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
-      console.error(
-        `Cannot execute kudoboard create for ${kudoBoard.toString()}`,
-        err
-      );
+      console.error(`Cannot execute kudoboard create for ${profileId}`, err);
       throw new HttpException(
         'Cannot create kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -87,7 +93,10 @@ export class BeKudoboardService {
     return newKudoBoard;
   }
 
-  async updateKudoboard(kudoboardId: string, kudoBoard: IKudoBoard) {
+  async updateKudoboard(
+    kudoboardId: string,
+    { profileId, title, content, recipient, background, status }: IKudoBoard
+  ) {
     let updatedKudoBoard;
 
     try {
@@ -95,19 +104,20 @@ export class BeKudoboardService {
         .findOneAndUpdate(
           { _id: new mongoose.Types.ObjectId(kudoboardId) },
           {
-            ...kudoBoard,
-            profileId: kudoBoard.profileId
-              ? new mongoose.Types.ObjectId(kudoBoard.profileId)
+            title,
+            content,
+            recipient,
+            background,
+            status,
+            profileId: profileId
+              ? new mongoose.Types.ObjectId(profileId)
               : null,
           },
           { new: true }
         )
         .exec();
     } catch (err) {
-      console.error(
-        `Cannot execute kudoboard update for ${kudoBoard.toString()}`,
-        err
-      );
+      console.error(`Cannot execute kudoboard update for`, err);
       throw new HttpException(
         'Cannot update kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR

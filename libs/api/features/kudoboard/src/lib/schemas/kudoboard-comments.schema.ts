@@ -10,14 +10,14 @@ export type KudoBoardCommentsDocument = HydratedDocument<KudoBoardComments>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
-      delete ret._id;
+      delete ret['_id'];
     },
   },
   toObject: {
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
-      delete ret._id;
+      delete ret['_id'];
     },
   },
 })

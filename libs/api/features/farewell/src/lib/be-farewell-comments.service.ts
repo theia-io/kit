@@ -119,10 +119,7 @@ export class BeFarewellCommentsService {
         }))
       );
     } catch (err) {
-      console.error(
-        `Cannot execute farewell comment create for ${farewellComments.toString()}`,
-        err
-      );
+      console.error(`Cannot execute farewell comments batch create`, err);
       throw new Error('Cannot create farewell comments');
     }
 

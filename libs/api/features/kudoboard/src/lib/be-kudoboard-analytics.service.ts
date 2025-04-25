@@ -62,17 +62,17 @@ export class BeKudoBoardAnalyticsService {
     return kudoBoardAnalytics;
   }
 
-  async createAnalyticsKudoBoard(kudoBoard: IKudoBoardAnalytics) {
+  async createAnalyticsKudoBoard({ kudoBoardId, event }: IKudoBoardAnalytics) {
     let newKudoBoardAnalytics;
 
     try {
       newKudoBoardAnalytics = await this.kudoBoardAnalyticsModel.create({
-        ...kudoBoard,
-        kudoBoardId: new mongoose.Types.ObjectId(kudoBoard.kudoBoardId),
+        event,
+        kudoBoardId: new mongoose.Types.ObjectId(kudoBoardId),
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard analytics create for ${kudoBoard.toString()}`,
+        `Cannot execute kudoboard analytics create for ${kudoBoardId}`,
         err
       );
       throw new HttpException(

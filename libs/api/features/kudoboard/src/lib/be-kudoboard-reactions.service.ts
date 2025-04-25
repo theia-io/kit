@@ -37,18 +37,22 @@ export class BeKudoBoardReactionsService {
     return kudoBoardReactions;
   }
 
-  async createReactionsKudoBoard(kudoBoard: IKudoBoardReactions) {
+  async createReactionsKudoBoard({
+    kudoBoardId,
+    profileId,
+    content,
+  }: IKudoBoardReactions) {
     let newKudoBoardReaction;
 
     try {
       newKudoBoardReaction = await this.kudoBoardReactionsModel.create({
-        ...kudoBoard,
-        kudoBoardId: new mongoose.Types.ObjectId(kudoBoard.kudoBoardId),
-        profileId: new mongoose.Types.ObjectId(kudoBoard.profileId),
+        content,
+        kudoBoardId: new mongoose.Types.ObjectId(kudoBoardId),
+        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard reaction create for ${kudoBoard.toString()}`,
+        `Cannot execute kudoboard reaction create for kudoBoardId:${kudoBoardId}, profileId:${profileId}`,
         err
       );
       throw new HttpException(

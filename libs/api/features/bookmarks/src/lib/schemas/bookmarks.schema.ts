@@ -10,7 +10,7 @@ export type BookmarkDocument = HydratedDocument<Bookmark>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
-      delete ret._id;
+      delete ret['_id'];
     },
   },
 })

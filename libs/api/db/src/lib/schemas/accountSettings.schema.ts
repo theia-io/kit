@@ -10,7 +10,7 @@ export type AccountSettingsDocument = HydratedDocument<AccountSettings>;
     virtuals: true, // <<< ENSURE this is true (or omit, as true is default)
     versionKey: false, // Optional: Remove the __v field
     transform(doc, ret) {
-      delete ret._id; // <<< Remove the original _id field from the output
+      delete ret['_id']; // <<< Remove the original _id field from the output
       // You can add other transformations here if needed
     },
   },
