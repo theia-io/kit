@@ -20,7 +20,7 @@ export class BeBookmarksService {
         })
         .exec();
     } catch (err) {
-      console.error(`Cannot run bookmark search for ${profileId}`, err);
+      console.error(`Cannot run bookmark search for %s`, profileId, err);
       throw new HttpException(
         'Cannot execute bookmark search',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -40,7 +40,7 @@ export class BeBookmarksService {
         })
         .exec();
     } catch (err) {
-      console.error(`Cannot execute bookmark find for ${bookmarkId}`, err);
+      console.error(`Cannot execute bookmark find for %s`, bookmarkId, err);
       throw new HttpException(
         'Cannot execute bookmark search',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -65,7 +65,8 @@ export class BeBookmarksService {
       });
     } catch (err) {
       console.error(
-        `Cannot create new bookmark ${JSON.stringify(newBookmark)}`,
+        `Cannot create new bookmark for %s`,
+        JSON.stringify(newBookmark),
         err
       );
       throw new HttpException(
@@ -98,7 +99,7 @@ export class BeBookmarksService {
     try {
       await bookmark.deleteOne();
     } catch (err) {
-      console.error(`Cannot delete bookmark ${bookmarkId}`, err);
+      console.error(`Cannot delete bookmark %s`, bookmarkId, err);
       throw new HttpException(
         'Cannot delete bookmark',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -118,7 +119,9 @@ export class BeBookmarksService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot delete tweet bookmark ${tweetId}, ${profileIdBookmarker}`,
+        `Cannot delete tweet bookmark %s`,
+        tweetId,
+        profileIdBookmarker,
         err
       );
       throw new HttpException(
@@ -138,7 +141,7 @@ export class BeBookmarksService {
         })
         .exec();
     } catch (err) {
-      console.error(`Cannot delete tweet bookmarks ${tweetId}`, err);
+      console.error(`Cannot delete tweet bookmarks %s`, tweetId, err);
       throw new HttpException(
         'Cannot find and delete bookmarks',
         HttpStatus.INTERNAL_SERVER_ERROR

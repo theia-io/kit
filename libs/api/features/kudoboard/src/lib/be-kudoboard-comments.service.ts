@@ -27,7 +27,8 @@ export class BeKudoBoardCommentsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard comments search for ${kudoBoardId}`,
+        `Cannot execute kudoboard comments search for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
@@ -51,7 +52,8 @@ export class BeKudoBoardCommentsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard comments search for ${kudoBoardId}`,
+        `Cannot execute kudoboard comments search for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
@@ -91,7 +93,11 @@ export class BeKudoBoardCommentsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard comments create for ${content}, ${medias}, ${kudoBoardId}, ${profileId}`,
+        `Cannot execute kudoboard comments create for %s, %s, %s, %s`,
+        content,
+        medias,
+        kudoBoardId,
+        profileId,
         err
       );
       throw new HttpException(
@@ -113,7 +119,8 @@ export class BeKudoBoardCommentsService {
       }
     } catch (err) {
       console.error(
-        `Cannot populate kudoboard comment profileId for ${newKudoBoardComments._id}`,
+        `Cannot populate kudoboard comment profileId for %s`,
+        newKudoBoardComments._id,
         err
       );
       throw new HttpException(
@@ -147,7 +154,8 @@ export class BeKudoBoardCommentsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard comments delete for ${commentId}`,
+        `Cannot execute kudoboard comments delete for %s`,
+        commentId,
         err
       );
       throw new HttpException(

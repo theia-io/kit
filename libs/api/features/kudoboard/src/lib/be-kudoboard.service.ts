@@ -21,7 +21,7 @@ export class BeKudoboardService {
         })
         .exec();
     } catch (err) {
-      console.error(`Cannot execute kudoboard search for ${profileId}`, err);
+      console.error(`Cannot execute kudoboard search for %s`, profileId, err);
       throw new HttpException(
         'Cannot find kudoboards',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -42,7 +42,7 @@ export class BeKudoboardService {
         .populate('profileId')
         .exec();
     } catch (err) {
-      console.error(`Cannot execute kudoboard search for ${kudoBoardId}`, err);
+      console.error(`Cannot execute kudoboard search for %s`, kudoBoardId, err);
       throw new HttpException(
         'Cannot find kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -83,7 +83,7 @@ export class BeKudoboardService {
         profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
       });
     } catch (err) {
-      console.error(`Cannot execute kudoboard create for ${profileId}`, err);
+      console.error(`Cannot execute kudoboard create for %s`, profileId, err);
       throw new HttpException(
         'Cannot create kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -137,7 +137,7 @@ export class BeKudoboardService {
         })
         .exec();
     } catch (err) {
-      console.error(`Cannot execute kudoboard delete for ${kudoboardId}`, err);
+      console.error(`Cannot execute kudoboard delete for %s`, kudoboardId, err);
       throw new HttpException(
         'Cannot delete kudoboard',
         HttpStatus.INTERNAL_SERVER_ERROR

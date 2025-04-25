@@ -1,3 +1,4 @@
+import { KudoBoardReaction as IKudoBoardReactions } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -5,7 +6,6 @@ import {
   KudoBoardReactions,
   KudoBoardReactionsDocument,
 } from './schemas/kudoboard-reaction.schema';
-import { KudoBoardReaction as IKudoBoardReactions } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeKudoBoardReactionsService {
@@ -25,7 +25,8 @@ export class BeKudoBoardReactionsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard reactions search for ${kudoBoardId}`,
+        `Cannot execute kudoboard reactions search for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
@@ -52,7 +53,9 @@ export class BeKudoBoardReactionsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard reaction create for kudoBoardId:${kudoBoardId}, profileId:${profileId}`,
+        `Cannot execute kudoboard reaction create for kudoBoardId: %s, profileId: %s`,
+        kudoBoardId,
+        profileId,
         err
       );
       throw new HttpException(
@@ -77,7 +80,8 @@ export class BeKudoBoardReactionsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard reaction delete for ${kudoBoardReactionId}`,
+        `Cannot execute kudoboard reaction delete for %s`,
+        kudoBoardReactionId,
         err
       );
       throw new HttpException(

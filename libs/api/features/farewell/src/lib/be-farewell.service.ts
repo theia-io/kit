@@ -24,7 +24,7 @@ export class BeFarewellService {
         .populate('profileId')
         .exec();
     } catch (err) {
-      console.error(`Cannot execute farewell search for ${profileId}`, err);
+      console.error(`Cannot execute farewell search for %s`, profileId, err);
       throw new HttpException(
         'Cannot find farewells',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -64,7 +64,7 @@ export class BeFarewellService {
         .populate('profileId')
         .exec();
     } catch (err) {
-      console.error(`Cannot execute farewell search for ${farewellId}`, err);
+      console.error(`Cannot execute farewell search for %s`, farewellId, err);
       throw new HttpException(
         'Cannot run farewell search correctly',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -116,7 +116,12 @@ export class BeFarewellService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell create for ${title}, ${content}, ${status}, ${kudoBoardId}, ${profileId}`,
+        `Cannot execute farewell create for %s, %s, %s, %s, %s`,
+        title,
+        content,
+        status,
+        kudoBoardId,
+        profileId,
         err
       );
       throw new HttpException(
@@ -167,7 +172,7 @@ export class BeFarewellService {
         )
         .exec();
     } catch (err) {
-      console.error(`Cannot execute farewell update for ${farewellId}`, err);
+      console.error(`Cannot execute farewell update for %s`, farewellId, err);
       throw new HttpException(
         'Cannot update farewell',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -204,7 +209,7 @@ export class BeFarewellService {
         },
       });
     } catch (err) {
-      console.error(`Cannot execute farewell delete for ${farewellId}`, err);
+      console.error(`Cannot execute farewell delete for %s`, farewellId, err);
       throw new HttpException(
         'Cannot delete farewell',
         HttpStatus.INTERNAL_SERVER_ERROR

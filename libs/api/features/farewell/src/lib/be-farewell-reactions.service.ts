@@ -26,7 +26,8 @@ export class BeFarewellReactionsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute farewell reactions search for ${farewellId}`,
+        `Cannot execute farewell reactions search for %s`,
+        farewellId,
         err
       );
       throw new HttpException(
@@ -66,7 +67,10 @@ export class BeFarewellReactionsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell reaction create for ${farewellId}, ${profileId}, ${content}`,
+        `Cannot execute farewell reaction create for %s, %s, %s`,
+        farewellId,
+        profileId,
+        content,
         err
       );
       throw new HttpException(
@@ -103,7 +107,8 @@ export class BeFarewellReactionsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute farewell reaction delete for ${farewellReactionId}`,
+        `Cannot execute farewell reaction delete for  %s`,
+        farewellReactionId,
         err
       );
       throw new HttpException(

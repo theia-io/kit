@@ -33,7 +33,7 @@ export class KitService {
     try {
       // check if will find many or INFORCE it with something
       account = await this.accountModel
-        .findOne<AccountDocument>({ email })
+        .findOne<AccountDocument>({ email: { $eq: email } })
         .exec();
     } catch (err) {
       console.error('Cannot execute account search', err);
@@ -221,7 +221,7 @@ export class KitService {
         .findOne<UserDocument>({ _id: new mongoose.Types.ObjectId(userId) })
         .exec();
     } catch (err) {
-      console.error(`Cannot get user ${userId}`, err);
+      console.error(`Cannot get user %s`, userId, err);
       throw new HttpException(
         'Cannot get user',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -248,7 +248,9 @@ export class KitService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot add user experiences ${userId}, ${experience}`,
+        `Cannot add user experiences %s, %s`,
+        userId,
+        JSON.stringify(experience),
         err
       );
       throw new HttpException(
@@ -288,7 +290,9 @@ export class KitService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot delete user experience ${userId}, ${experienceId}`,
+        `Cannot delete user experience %s, %s`,
+        userId,
+        experienceId,
         err
       );
       throw new HttpException(

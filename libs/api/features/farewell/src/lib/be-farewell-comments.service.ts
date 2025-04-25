@@ -25,7 +25,8 @@ export class BeFarewellCommentsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute farewell comments search for ${farewellId}`,
+        `Cannot execute farewell comments search for %s`,
+        farewellId,
         err
       );
       throw new Error('Cannot find farewell comments');
@@ -64,7 +65,11 @@ export class BeFarewellCommentsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell comment create for ${content}, ${medias}, ${farewellId}, ${profileId}`,
+        `Cannot execute farewell comment create for %s, %s, %s, %s`,
+        content,
+        medias,
+        farewellId,
+        profileId,
         err
       );
       throw new Error('Cannot create farewell comment');
@@ -83,7 +88,8 @@ export class BeFarewellCommentsService {
       }
     } catch (err) {
       console.error(
-        `Cannot populate farewell comment profileId for ${newFarewellComment._id}`,
+        `Cannot populate farewell comment profileId for %s`,
+        newFarewellComment,
         err
       );
       throw new HttpException(
@@ -150,7 +156,8 @@ export class BeFarewellCommentsService {
         });
     } catch (err) {
       console.error(
-        `Cannot execute farewell comment delete for ${farewellCommentId}`,
+        `Cannot execute farewell comment delete for %s`,
+        farewellCommentId,
         err
       );
       throw new Error('Cannot delete farewell comment');

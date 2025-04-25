@@ -1,8 +1,8 @@
+import { ReTweety } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { ReTweet, ReTweetDocument, TweetDocument } from './schemas';
-import { ReTweety } from '@kitouch/shared-models';
 
 @Injectable()
 export class BeReTweetService {
@@ -22,7 +22,9 @@ export class BeReTweetService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute retweet search for ${retweetId}, ${profileId}`,
+        `Cannot execute retweet search for %s, %s`,
+        retweetId,
+        profileId,
         err
       );
       throw new HttpException(
@@ -44,7 +46,8 @@ export class BeReTweetService {
       });
     } catch (err) {
       console.error(
-        `Cannot create new retweet ${JSON.stringify(newReTweet)}`,
+        `Cannot create new retweet %s`,
+        JSON.stringify(newReTweet),
         err
       );
       throw new HttpException(
@@ -85,7 +88,7 @@ export class BeReTweetService {
       //   profileId: new mongoose.Types.ObjectId(retweet.profileId),
       // });
     } catch (err) {
-      console.error(`Cannot delete retweet ${retweetId}, ${profileId}`, err);
+      console.error(`Cannot delete retweet %s, %s`, retweetId, profileId, err);
       throw new HttpException(
         'Cannot delete retweet',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -104,7 +107,8 @@ export class BeReTweetService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute retweets search and delete for ${tweetId}`,
+        `Cannot execute retweets search and delete for %s`,
+        tweetId,
         err
       );
       throw new HttpException(

@@ -135,7 +135,9 @@ export class BeTweetService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute tweet search for ${tweetId}, ${tweetProfileId}`,
+        `Cannot execute tweet search for %s, %s`,
+        tweetId,
+        tweetProfileId,
         err
       );
       throw new HttpException(
@@ -160,7 +162,7 @@ export class BeTweetService {
         })
         .exec();
     } catch (err) {
-      console.error(`Cannot execute tweet search for ${tweetId}`, err);
+      console.error(`Cannot execute tweet search for %s`, tweetId, err);
       throw new HttpException(
         'Cannot find tweet',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -192,7 +194,7 @@ export class BeTweetService {
 
       tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
     } catch (err) {
-      console.error(`Cannot execute tweets search for ${ids}`, err);
+      console.error(`Cannot execute tweets search for %s`, ids, err);
       throw new HttpException(
         'Cannot execute tweets search',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -215,7 +217,7 @@ export class BeTweetService {
         profileId: new mongoose.Types.ObjectId(tweet.profileId),
       });
     } catch (err) {
-      console.error(`Cannot create new tweet ${JSON.stringify(tweet)}`, err);
+      console.error(`Cannot create new tweet %s`, JSON.stringify(tweet), err);
       throw new HttpException(
         'Cannot execute tweets search',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -253,7 +255,7 @@ export class BeTweetService {
         profileId: tweet.profileId,
       });
     } catch (err) {
-      console.error(`Cannot delete tweet ${tweetId}, ${profileId}`, err);
+      console.error(`Cannot delete tweet %s, %s`, tweetId, profileId, err);
       throw new HttpException(
         'Cannot delete tweet',
         HttpStatus.INTERNAL_SERVER_ERROR
@@ -273,7 +275,9 @@ export class BeTweetService {
       );
     } catch (err) {
       console.error(
-        `Cannot execute find tweet ${tweetId}, with ${likeProfileId}`,
+        `Cannot execute find tweet %s, with %s`,
+        tweetId,
+        likeProfileId,
         err
       );
       throw new HttpException(
@@ -304,7 +308,9 @@ export class BeTweetService {
       await updatedTweet.save();
     } catch (err) {
       console.error(
-        `Cannot update tweet ${tweetId}, with ${likeProfileId}`,
+        `Cannot update tweet %s, with %s`,
+        tweetId,
+        likeProfileId,
         err
       );
       throw new HttpException(
@@ -340,7 +346,10 @@ export class BeTweetService {
       );
     } catch (err) {
       console.error(
-        `Cannot add new comment to tweet ${tweetId}, ${profileId}, ${content}`,
+        `Cannot add new comment to tweet %s, %s, %s`,
+        tweetId,
+        profileId,
+        content,
         err
       );
       throw new HttpException(
@@ -398,7 +407,10 @@ export class BeTweetService {
       await tweet.save();
     } catch (err) {
       console.error(
-        `Cannot delete tweet ${tweetId}, comment's ${profileId}, ${content}`,
+        `Cannot delete tweet %s, comment's %s, %s`,
+        tweetId,
+        profileId,
+        content,
         err
       );
       throw new HttpException(

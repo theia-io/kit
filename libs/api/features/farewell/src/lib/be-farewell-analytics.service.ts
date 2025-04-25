@@ -30,7 +30,8 @@ export class BeFarewellAnalyticsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics search for ${farewellId}`,
+        `Cannot execute farewell analytics search for %s`,
+        farewellId,
         err
       );
       throw new HttpException(
@@ -54,7 +55,8 @@ export class BeFarewellAnalyticsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics search for ${farewellId}`,
+        `Cannot execute farewell analytics search for %s`,
+        farewellId,
         err
       );
       throw new HttpException(
@@ -76,7 +78,8 @@ export class BeFarewellAnalyticsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics create for id:${id}`,
+        `Cannot execute farewell analytics create for id: %s`,
+        id,
         err
       );
       throw new HttpException(
@@ -110,7 +113,9 @@ export class BeFarewellAnalyticsService {
         );
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics update for ${analyticId}, id:${id}`,
+        `Cannot execute farewell analytics update for %s and %s`,
+        analyticId,
+        id,
         err
       );
       throw new HttpException(
@@ -133,7 +138,8 @@ export class BeFarewellAnalyticsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute farewell analytics delete for ${farewellId}`,
+        `Cannot execute farewell analytics delete for %s`,
+        farewellId,
         err
       );
       throw new HttpException(

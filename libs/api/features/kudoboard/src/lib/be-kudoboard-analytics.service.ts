@@ -27,7 +27,8 @@ export class BeKudoBoardAnalyticsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard analytics search for ${kudoBoardId}`,
+        `Cannot execute kudoboard analytics search for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
@@ -50,7 +51,8 @@ export class BeKudoBoardAnalyticsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard analytics search for ${kudoBoardId}`,
+        `Cannot execute kudoboard analytics search for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
@@ -72,7 +74,8 @@ export class BeKudoBoardAnalyticsService {
       });
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard analytics create for ${kudoBoardId}`,
+        `Cannot execute kudoboard analytics create for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
@@ -95,7 +98,8 @@ export class BeKudoBoardAnalyticsService {
         .exec();
     } catch (err) {
       console.error(
-        `Cannot execute kudoboard analytics delete for ${kudoboardId}`,
+        `Cannot execute kudoboard analytics delete for %s`,
+        kudoBoardId,
         err
       );
       throw new HttpException(
