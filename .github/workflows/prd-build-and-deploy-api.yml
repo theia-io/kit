@@ -23,6 +23,7 @@ env:
   BASE_URL: https://api.kitouch.io
   API_PREFIX: /api
   FE_URL: https://kitouch.io
+  NX_DISABLE_DB: true
 
 jobs:
   prd_build_and_deploy_api:

@@ -16,6 +16,7 @@ on:
 env:
   AWS_REGION: 'eu-north-1'
   ECR_REPOSITORY: 'kit/api-dev'
+  NX_DISABLE_DB: true
   # BASE_URL: https://apidev.kitouch.io
   # API_PREFIX: /api
   # FE_URL: https://dev.kitouch.io
