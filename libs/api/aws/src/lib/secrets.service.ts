@@ -10,7 +10,12 @@ export class AWSSecretsService {
     region: 'eu-north-1',
   });
 
+  constructor() {
+    console.log('AWSSecretsService constructor');
+  }
+
   async getSecrets() {
+    console.log('AWSSecretsService getSecrets');
     let response;
 
     // eslint-disable-next-line no-useless-catch
