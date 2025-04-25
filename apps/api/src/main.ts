@@ -181,9 +181,9 @@ async function bootstrap() {
       // Set your application's JWT cookie. Update also AUTH controller
       res.cookie('jwt', appToken, {
         httpOnly: true,
-        secure: false, //configService.get('NODE_ENV') === 'production',
+        secure: isProduction, //configService.get('NODE_ENV') === 'production',
         maxAge: 3600 * 1000,
-        sameSite: false, //'strict',
+        sameSite: isProduction ? 'strict' : false, //'strict',
         path: '/',
       });
 
@@ -218,7 +218,9 @@ async function bootstrap() {
 
   // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
   // TODO TEST this in prod
-  app.set('trust proxy', 1);
+  if (!isProduction) {
+    app.set('trust proxy', 1);
+  }
 
   app.use(cookieParser());
 
