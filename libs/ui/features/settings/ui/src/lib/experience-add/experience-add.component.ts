@@ -211,7 +211,9 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
       ...this.experienceForm.value,
       startDate,
       endDate,
-      skills: this.experienceForm.get('skills')?.value?.split(',') ?? [],
+      skills:
+        (this.experienceForm.get('skills')?.value as any as Array<string>) ??
+        [],
       links: this.experienceForm.get('links')?.value?.split(',') ?? [],
     } as Experience;
 
