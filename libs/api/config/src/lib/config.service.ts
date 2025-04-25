@@ -1,3 +1,4 @@
+/* eslint-disable prefer-const */
 import { AWSSecretsService } from '@kitouch/aws';
 import { Inject, Injectable } from '@nestjs/common';
 import * as dotenv from 'dotenv';
@@ -64,28 +65,28 @@ export class ConfigService {
     }
 
     let sessionSecret, jwtSecret, authSecret, clientSecret, atlasUri;
-    if (!this.#environment.production) {
-      sessionSecret = process.env['SESSION_SECRET'];
-      jwtSecret = process.env['JWT_SECRET'];
-      authSecret = process.env['AUTH0_SECRET'];
-      clientSecret = process.env['AUTH0_CLIENT_SECRET'];
-      atlasUri = process.env['ATLAS_URI'];
-    } else {
-      console.log(
-        'RESOLVING SECRETS FROM AWS MANAGER',
-        process.env,
-        process.env['env-kit-api-secrets-dev']
-      );
-      const secrets = await this.secretsService.getSecrets();
-      console.log('RESOLVED secrets', secrets);
+    // if (!this.#environment.production) {
+    sessionSecret = process.env['SESSION_SECRET'];
+    jwtSecret = process.env['JWT_SECRET'];
+    authSecret = process.env['AUTH0_SECRET'];
+    clientSecret = process.env['AUTH0_CLIENT_SECRET'];
+    atlasUri = process.env['ATLAS_URI'];
+    // } else {
+    //   console.log(
+    //     'RESOLVING SECRETS FROM AWS MANAGER',
+    //     process.env,
+    //     process.env['env-kit-api-secrets-dev']
+    //   );
+    //   const secrets = await this.secretsService.getSecrets();
+    //   console.log('RESOLVED secrets', secrets);
 
-      sessionSecret = secrets?.sessionSecret ?? process.env['SESSION_SECRET'];
-      jwtSecret = secrets?.jwtSecret ?? process.env['JWT_SECRET'];
-      authSecret = secrets?.authSecret ?? process.env['AUTH0_SECRET'];
-      clientSecret =
-        secrets?.clientSecret ?? process.env['AUTH0_CLIENT_SECRET'];
-      atlasUri = secrets?.atlasUri ?? process.env['ATLAS_URI'];
-    }
+    //   sessionSecret = secrets?.sessionSecret ?? process.env['SESSION_SECRET'];
+    //   jwtSecret = secrets?.jwtSecret ?? process.env['JWT_SECRET'];
+    //   authSecret = secrets?.authSecret ?? process.env['AUTH0_SECRET'];
+    //   clientSecret =
+    //     secrets?.clientSecret ?? process.env['AUTH0_CLIENT_SECRET'];
+    //   atlasUri = secrets?.atlasUri ?? process.env['ATLAS_URI'];
+    // }
 
     if (!sessionSecret || !jwtSecret || !authSecret || !clientSecret) {
       console.error('missing secret variable(s)');
