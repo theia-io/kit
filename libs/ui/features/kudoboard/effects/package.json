@@ -1,17 +1,17 @@
 {
   "name": "@kitouch/effects-kudoboard",
-  "version": "4.0.0-0",
+  "version": "6.0.0-0",
   "peerDependencies": {
     "@angular/core": "^18.2.0",
-    "@kitouch/data-kudoboard": "4.0.0-0",
+    "@kitouch/data-kudoboard": "6.0.0-0",
     "@ngrx/effects": "18.0.2",
     "rxjs": "~7.8.0",
-    "@kitouch/shared-models": "5.0.0-0",
-    "@kitouch/utils": "5.0.0-0",
-    "@kitouch/kit-data": "5.0.0-0",
+    "@kitouch/shared-models": "6.0.0-0",
+    "@kitouch/utils": "6.0.0-0",
+    "@kitouch/kit-data": "6.0.0-0",
     "@ngrx/store": "18.0.2",
-    "@kitouch/feat-farewell-data": "5.0.0-0",
-    "@kitouch/shared-infra": "4.0.0-0",
+    "@kitouch/feat-farewell-data": "6.0.0-0",
+    "@kitouch/shared-infra": "6.0.0-0",
     "@angular/common": "18.2.6"
   },
   "sideEffects": false
