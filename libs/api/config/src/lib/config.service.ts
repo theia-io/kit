@@ -83,6 +83,7 @@ export class ConfigService {
     } else {
       console.log('RESOLVING SECRETS FROM AWS MANAGER');
       const secrets = await this.secretsService.getSecrets();
+      console.log('secrets', secrets);
       sessionSecret = secrets.sessionSecret;
       jwtSecret = secrets.jwtSecret;
       authSecret = secrets.authSecret;

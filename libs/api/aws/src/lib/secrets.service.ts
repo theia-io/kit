@@ -22,6 +22,7 @@ export class AWSSecretsService {
         })
       );
     } catch (error) {
+      console.error('getSecrets error', error);
       // For a list of exceptions thrown, see
       // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
       throw error;
@@ -42,6 +43,7 @@ export class AWSSecretsService {
         })
       );
     } catch (error) {
+      console.error('getSecrets error 1', error);
       // For a list of exceptions thrown, see
       // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
       throw error;
