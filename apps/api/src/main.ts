@@ -227,7 +227,7 @@ async function bootstrap() {
   const globalPrefix = configService.getEnvironment('apiPrefix');
   app.setGlobalPrefix(globalPrefix);
 
-  app.use(logger);
+  app.use(logger(app));
   app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 3000;

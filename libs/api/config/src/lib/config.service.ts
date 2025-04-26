@@ -88,6 +88,8 @@ export class ConfigService {
     //   atlasUri = secrets?.atlasUri ?? process.env['ATLAS_URI'];
     // }
 
+    console.log('SECRETS', sessionSecret, jwtSecret, authSecret, clientSecret);
+
     if (!sessionSecret || !jwtSecret || !authSecret || !clientSecret) {
       console.error('missing secret variable(s)');
       process.exit(1);
