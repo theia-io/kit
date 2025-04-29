@@ -106,7 +106,13 @@ async function bootstrap() {
       },
     },
     afterCallback: async (req, res, session) => {
-      res.clearCookie('jwt');
+      res.clearCookie('jwt', {
+        domain: domainBase,
+        httpOnly: true,
+        secure: isProduction,
+        sameSite: isProduction ? 'lax' : false,
+        path: '/',
+      });
 
       // session contains the id_token, access_token, user claims
       if (!isProduction) {
