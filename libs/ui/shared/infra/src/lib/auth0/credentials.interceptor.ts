@@ -9,12 +9,6 @@ export function credentialsInterceptor(
 ): Observable<HttpEvent<any>> {
   const environment = inject(ENVIRONMENT);
 
-  console.log(
-    '[credentialsInterceptor], ',
-    req.url,
-    req.url.startsWith(environment.api.root)
-  );
-
   if (req.url.startsWith(environment.api.root)) {
     req = req.clone({
       withCredentials: true,

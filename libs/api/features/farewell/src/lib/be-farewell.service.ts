@@ -1,4 +1,3 @@
-import { ToastModule } from 'primeng/toast';
 import { Farewell as IFarewell } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';

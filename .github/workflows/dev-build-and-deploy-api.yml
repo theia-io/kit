@@ -67,4 +67,4 @@ jobs:
 
       - name: Force deployment
         run: |
-          aws ecs update-service --cluster kit-api-dev --service kit-api-task-dev-service-qgftsknh --force-new-deployment
+          aws ecs update-service --cluster kit-api-dev --service kit-api-task-dev-service-sn8rkw9j --force-new-deployment
