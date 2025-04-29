@@ -66,12 +66,12 @@ async function bootstrap() {
       secret: sessionSecret,
       resave: false,
       saveUninitialized: false,
-      proxy: !isProduction,
+      proxy: true, // !isProduction,
       cookie: {
         secure: isProduction,
         httpOnly: true,
         maxAge: 3600000, // Session duration (e.g., 1 hour)
-        sameSite: isProduction ? 'strict' : false, //'strict',
+        sameSite: isProduction ? 'lax' : false, // could be changed to 'strict' once docker will have both API and Web on the same domain
       },
     })
   );
@@ -149,8 +149,6 @@ async function bootstrap() {
         return session; // Stop processing if userinfo fails
       }
 
-      console.log('User from Auth0:', user);
-
       const auth0User: Auth0User = {
         sub: user.sub,
         email: user.email,
@@ -178,16 +176,19 @@ async function bootstrap() {
 
       const appToken = await authService.generateJWT(authKit);
 
-      // Set your application's JWT cookie. Update also AUTH controller
       res.cookie('jwt', appToken, {
+        domain: isProduction ? '.kitouch.io' : undefined,
         httpOnly: true,
-        secure: isProduction, //configService.get('NODE_ENV') === 'production',
+        secure: isProduction,
         maxAge: 3600 * 1000,
-        sameSite: isProduction ? 'strict' : false, //'strict',
+        sameSite: isProduction ? 'lax' : false,
         path: '/',
       });
 
-      console.log('NEW Session set! New token', appToken);
+      console.log(
+        '[NEW Session set] Token: %s',
+        isProduction ? appToken : `not visible in prod`
+      );
       // Return the session object (required by afterCallback)
       return {
         ...session,
@@ -199,7 +200,6 @@ async function bootstrap() {
       callback: '/api/auth/callback',
       // to inject clearing JWT token before calling endpoint we first implement custom logout that calls native Auth0 endpoint
       logout: false,
-      // logout: '/api/auth/logout',
       postLogoutRedirect: `${feUrl}`,
     },
     getLoginState(req, options) {
@@ -217,10 +217,9 @@ async function bootstrap() {
   // }
 
   // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
-  // TODO TEST this in prod
-  if (!isProduction) {
-    app.set('trust proxy', 1);
-  }
+  // if (!isProduction) {
+  app.set('trust proxy', 1);
+  // }
 
   app.use(cookieParser());
 
