@@ -95,6 +95,16 @@ async function bootstrap() {
       scope: 'openid profile email',
       // audience: baseURL,
     },
+    session: {
+      cookie: {
+        httpOnly: true, // Keep HttpOnly
+        secure: isProduction, // Use dynamic secure flag
+        sameSite: 'Lax', // <<< Use 'lax' for compatibility with redirects
+        domain: domainBase, // <<< ADD domain for cross-subdomain function
+        path: '/', // Usually root path is fine
+        // maxAge can be set, but library often manages based on OIDC flow duration
+      },
+    },
     afterCallback: async (req, res, session) => {
       res.clearCookie('jwt');
 
