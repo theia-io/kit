@@ -61,6 +61,8 @@ async function bootstrap() {
   const { sessionSecret, clientSecret, authSecret, clientId, issuerBaseUrl } =
     configService.getConfig('auth');
 
+  const domainBase = isProduction ? '.kitouch.io' : undefined;
+
   app.use(
     session({
       secret: sessionSecret,
@@ -68,6 +70,8 @@ async function bootstrap() {
       saveUninitialized: false,
       proxy: true, // !isProduction,
       cookie: {
+        path: '/',
+        domain: domainBase,
         secure: isProduction,
         httpOnly: true,
         maxAge: 3600000, // Session duration (e.g., 1 hour)
@@ -177,7 +181,7 @@ async function bootstrap() {
       const appToken = await authService.generateJWT(authKit);
 
       res.cookie('jwt', appToken, {
-        domain: isProduction ? '.kitouch.io' : undefined,
+        domain: domainBase,
         httpOnly: true,
         secure: isProduction,
         maxAge: 3600 * 1000,
@@ -187,7 +191,7 @@ async function bootstrap() {
 
       console.log(
         '[NEW Session set] Token: %s',
-        isProduction ? appToken : `not visible in prod`
+        !isProduction ? appToken : `not visible in prod`
       );
       // Return the session object (required by afterCallback)
       return {
