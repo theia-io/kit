@@ -44,6 +44,7 @@ import {
 import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
   authInterceptor,
+  credentialsInterceptor,
   ENVIRONMENT,
   Environment,
   S3_FAREWELL_BUCKET_BASE_URL,
@@ -144,6 +145,8 @@ export const appConfig: ApplicationConfig = {
 
     // auth
     provideNgcCookieConsent(cookieConfig),
-    provideHttpClient(withInterceptors([authInterceptor])),
+    provideHttpClient(
+      withInterceptors([authInterceptor, credentialsInterceptor])
+    ),
   ],
 };

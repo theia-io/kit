@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 import { FeatUserApiActions } from '@kitouch/kit-data';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { Store } from '@ngrx/store';
-import { Observable, catchError, of, throwError } from 'rxjs';
+import { Observable, catchError, throwError } from 'rxjs';
 
 export function authInterceptor(
   req: HttpRequest<any>,
