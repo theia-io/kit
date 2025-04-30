@@ -27,6 +27,7 @@ import { FeatFarewellQuillActionsComponent } from '../editor-actions/quill-actio
 import { FeatFarewellQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
 import { ImageConfiguration } from './bloats-leaf';
 import { quillBackspaceImageHandler } from './quill';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
 
 export interface Range {
   index: number;
@@ -63,7 +64,7 @@ export interface Range {
 })
 export class FeatFarewellEditorComponent implements ControlValueAccessor {
   imageStorageProvider =
-    input<(images: Array<File>) => Observable<Array<string>>>();
+    input<(images: Array<File>) => Observable<Array<ContractUploadedMedia>>>();
   deleteImage = input<(imageSrc: string) => void>();
   editorTextChange = output<string>();
 
@@ -177,7 +178,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   imageFilesHandler(quill: Quill, mediaFiles: Array<File>) {
     const imageStorageProvider = this.imageStorageProvider();
     if (imageStorageProvider) {
-      const imagesStorageProvider$ = imageStorageProvider(mediaFiles); //?? of([URL.createObjectURL(mediaFiles[0])]);
+      const imagesStorageProvider$ = imageStorageProvider(mediaFiles);
 
       this.quillTextChangeActive.set(false);
 
@@ -186,9 +187,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
         const kitQuillImageBloat: ImageConfiguration = {
           alt: 'KIT kitouch farewell image',
-          src: imageSrc,
-          width: 300,
-          height: 300,
+          src: imageSrc.url,
+          width: imageSrc.width ?? 300,
+          height: imageSrc.height ?? 300,
           loadedCb: () => {
             this.#keepSideActionOpened({ quill });
           },

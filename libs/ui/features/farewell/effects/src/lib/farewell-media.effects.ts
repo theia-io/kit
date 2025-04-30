@@ -21,16 +21,16 @@ export class FarewellMediaEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellMediaActions.uploadFarewellStorageMedia),
       switchMap(({ farewellId, profileId, items }) =>
-        forkJoin([
+        forkJoin(
           items.map(({ key, blob }) =>
             this.#farewellMediaService.uploadFarewellMedia(key, blob)
-          ),
-        ]).pipe(
-          map(() =>
+          )
+        ).pipe(
+          map((res) =>
             FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess({
               farewellId,
               profileId,
-              items,
+              items: res,
             })
           ),
           // AWW S3 takes time to handle and make image available. It has eventual consistency so need a time for it to be available

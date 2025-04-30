@@ -1,23 +1,40 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { ENVIRONMENT, S3Service } from '@kitouch/shared-infra';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
+import { from, switchMap } from 'rxjs';
 
 @Injectable({ providedIn: 'root' })
 export class FarewellMediaService {
   #env = inject(ENVIRONMENT);
-  #s3Service = inject(S3Service);
+  #http = inject(HttpClient);
 
-  uploadFarewellMedia(key: string, media: Blob) {
-    return this.#s3Service.setBucketItem(
-      this.#env.s3Config.farewellBucket,
-      key,
-      media
+  uploadFarewellMedia(key: string, blob: Blob) {
+    const { media } = this.#env.api;
+
+    return from(blob.arrayBuffer()).pipe(
+      switchMap((fileArrayBuffer) =>
+        this.#http.post<ContractUploadedMedia>(
+          `${media}/farewell`,
+          fileArrayBuffer,
+          {
+            headers: new HttpHeaders({ 'Content-Type': 'multipart/form-data' }),
+            params: {
+              name: key,
+            },
+          }
+        )
+      )
     );
   }
-  /** Media, S3 */
+
   deleteFarewellMedia(key: string) {
-    return this.#s3Service.deleteBucketItem(
-      this.#env.s3Config.farewellBucket,
-      key
-    );
+    const { media } = this.#env.api;
+
+    return this.#http.delete(`${media}/farewell`, {
+      params: {
+        name: key,
+      },
+    });
   }
 }

@@ -65,10 +65,8 @@ export class FarewellCommentsService {
     );
   }
 
-  /** Media, S3 */
   deleteFarewellCommentMedia(key: string) {
     const { media } = this.#env.api;
-    // return this.deleteBucketItem(this.#env.s3Config.farewellBucket, key);
     return this.#http.delete(`${media}/farewell`, {
       params: {
         name: key,

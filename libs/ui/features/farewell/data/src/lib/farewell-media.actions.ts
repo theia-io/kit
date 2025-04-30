@@ -1,3 +1,4 @@
+import { ContractUploadedMedia } from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatFarewellMediaActions = createActionGroup({
@@ -11,7 +12,7 @@ export const FeatFarewellMediaActions = createActionGroup({
     UploadFarewellStorageMediaSuccess: props<{
       farewellId: string;
       profileId: string;
-      items: Array<{ key: string }>;
+      items: Array<ContractUploadedMedia>;
     }>(),
     UploadFarewellStorageMediaFailure: props<{ message: string }>(),
     DeleteFarewellStorageMedia: props<{

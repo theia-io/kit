@@ -39,6 +39,7 @@ import {
 import { getFullS3Url } from '@kitouch/feat-farewell-effects';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import {
+  ContractUploadedMedia,
   Farewell,
   FarewellAnalytics,
   FarewellStatus,
@@ -65,6 +66,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
   debounceTime,
+  delay,
   filter,
   map,
   merge,
@@ -259,7 +261,9 @@ export class FeatFarewellComponent implements AfterViewInit {
       .subscribe(() => this.updating.set(false));
   }
 
-  saveImages(): (images: Array<File>) => Observable<Array<string>> {
+  saveImages(): (
+    images: Array<File>
+  ) => Observable<Array<ContractUploadedMedia>> {
     const getFarewellId = () => this.farewell()?.id;
     const getProfileId = () => this.currentProfile()?.id;
 
@@ -297,8 +301,16 @@ export class FeatFarewellComponent implements AfterViewInit {
       return this.#actions$.pipe(
         ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
         take(1),
+        // AWS S3 bucket has eventual consistency so need a time for it to be available
+        delay(1500),
         map(({ items }) =>
-          items.map(({ key }) => getFullS3Url(this.#s3FarewellBaseUrl, key))
+          items.map((item) => ({
+            ...item,
+            url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
+            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
+              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
+            ),
+          }))
         )
       );
     };
