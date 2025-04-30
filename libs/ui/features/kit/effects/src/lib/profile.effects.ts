@@ -39,6 +39,11 @@ export class ProfileEffects {
   #actions$ = inject(Actions);
   #profileV2Service = inject(ProfileV2Service);
 
+  #profilesForTweets$ = this.#actions$.pipe(
+    ofType(TweetApiActions.getAllSuccess),
+    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
+  );
+
   #profilesForTweet$ = this.#actions$.pipe(
     ofType(TweetApiActions.get),
     map(({ profileId }) => profileId)
@@ -63,9 +68,10 @@ export class ProfileEffects {
   // ensure profiles are resolved through the app for tweet
   resolveProfiles$ = createEffect(() =>
     merge(
-      this.#profilesForBookmarks$.pipe(),
-      this.#profilesForTweet$.pipe(),
-      this.#profilesForTweetComments$.pipe()
+      this.#profilesForBookmarks$,
+      this.#profilesForTweet$,
+      this.#profilesForTweetComments$,
+      this.#profilesForTweets$
     ).pipe(
       bufferTime(1000),
       map((profileIds) => [...new Set(profileIds.flat())]),
