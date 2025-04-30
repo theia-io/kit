@@ -11,6 +11,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  HostListener,
   inject,
   model,
   output,
@@ -66,9 +67,11 @@ import {
   debounceTime,
   filter,
   map,
+  merge,
   Observable,
   of,
   skipUntil,
+  Subject,
   take,
 } from 'rxjs';
 import { registerKitEditorHandlers } from '../editor/bloats';
@@ -150,6 +153,8 @@ export class FeatFarewellComponent implements AfterViewInit {
     filter(Boolean)
   );
 
+  #beforeUnloadTrigger$$ = new Subject<void>();
+
   readonly TITLE_MAX_LENGTH = 128;
   readonly CONTENT_MAX_LENGTH = 8_092;
   farewellFormGroup = inject(FormBuilder).group({
@@ -182,6 +187,11 @@ export class FeatFarewellComponent implements AfterViewInit {
   shareTmpl?: TemplateRef<any>;
   @ViewChild('previewTmpl', { read: TemplateRef })
   previewTmpl?: TemplateRef<any>;
+
+  @HostListener('window:beforeunload', ['$event'])
+  beforeunloadHandler() {
+    this.#beforeUnloadTrigger$$.next();
+  }
 
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
@@ -219,20 +229,34 @@ export class FeatFarewellComponent implements AfterViewInit {
       }
     }
 
+    merge(
+      this.farewellFormGroup.valueChanges.pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        debounceTime(1500)
+      ),
+      this.#beforeUnloadTrigger$$.asObservable().pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        map(() => this.farewellFormGroup.valueChanges)
+      )
+    )
+      .pipe(
+        // when its new farewell we don't update until farewell is created
+        skipUntil(
+          this.farewellId() ? of(true) : this.#farewell$.pipe(filter(Boolean))
+        )
+      )
+      .subscribe(() => this.#updateFarewell());
+
     this.farewellFormGroup.valueChanges
       .pipe(takeUntilDestroyed(this.#destroyRef))
       .subscribe(() => this.updating.set(true));
 
-    this.farewellFormGroup.valueChanges
+    this.#actions$
       .pipe(
-        takeUntilDestroyed(this.#destroyRef),
-        // when its new farewell we don't update until farewell is created
-        skipUntil(
-          this.farewellId() ? of(true) : this.#farewell$.pipe(filter(Boolean))
-        ),
-        debounceTime(1500)
+        ofType(FeatFarewellActions.putFarewellSuccess),
+        takeUntilDestroyed(this.#destroyRef)
       )
-      .subscribe(() => this.#updateFarewell());
+      .subscribe(() => this.updating.set(false));
   }
 
   saveImages(): (images: Array<File>) => Observable<Array<string>> {
@@ -352,8 +376,6 @@ export class FeatFarewellComponent implements AfterViewInit {
     const { title, content, status } = this.farewellFormGroup.value;
 
     const farewell = this.farewell();
-
-    this.updating.set(false);
 
     this.#store.dispatch(
       FeatFarewellActions.putFarewell({

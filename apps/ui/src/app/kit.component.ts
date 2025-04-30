@@ -58,6 +58,7 @@ export class KitComponent {
   readonly outletSecondary = OUTLET_DIALOG;
 
   constructor() {
+    console.log('KitComponent constructor');
     this.#store
       .pipe(
         select(selectCurrentProfile),

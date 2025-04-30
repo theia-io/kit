@@ -14,7 +14,6 @@ import {
   HostListener,
   inject,
   model,
-  OnDestroy,
   output,
   signal,
   TemplateRef,
@@ -80,12 +79,13 @@ import {
   switchMap,
   take,
   takeUntil,
+  tap,
   withLatestFrom,
 } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
+import { FeatKudoboardInfoPanelComponent } from '../info-panel/info-panel.component';
 import { FeatKudoBoardStatusComponent } from '../status/status.component';
 import { FeatKudoBoardViewComponent } from '../view/view.component';
-import { FeatKudoboardInfoPanelComponent } from '../info-panel/info-panel.component';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -121,7 +121,7 @@ const TITLE_MAX_LENGTH = 128;
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
+export class FeatKudoBoardEditComponent implements AfterViewInit {
   id = model<KudoBoard['id']>();
 
   statusKudoTmpl = output<TemplateRef<unknown>>();
@@ -221,29 +221,31 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
       this.#autoCreateKudoBoard();
     } else {
       this.#kudoBoard$.pipe(take(1)).subscribe((kudoBoard) => {
-        this.kudoBoardFormGroup.patchValue({
-          title: kudoBoard.title,
-          background: kudoBoard.background,
-          recipient: kudoBoard.recipient,
-          content: kudoBoard.content,
-          status: kudoBoard.status,
-        });
+        this.kudoBoardFormGroup.patchValue(
+          {
+            title: kudoBoard.title,
+            background: kudoBoard.background,
+            recipient: kudoBoard.recipient,
+            content: kudoBoard.content,
+            status: kudoBoard.status,
+          },
+          { emitEvent: false }
+        );
         this.#cdr.detectChanges();
       });
     }
 
-    this.kudoBoardFormGroup.valueChanges
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(() => this.updating.set(true));
-
     merge(
-      this.kudoBoardFormGroup.valueChanges.pipe(debounceTime(1500)),
-      this.#beforeUnloadTrigger$$
-        .asObservable()
-        .pipe(map(() => this.kudoBoardFormGroup.value))
+      this.kudoBoardFormGroup.valueChanges.pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        debounceTime(1500)
+      ),
+      this.#beforeUnloadTrigger$$.asObservable().pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        map(() => this.kudoBoardFormGroup.value)
+      )
     )
       .pipe(
-        takeUntilDestroyed(this.#destroyRef),
         // when its new farewell we don't update until farewell is created
         skipUntil(this.id() ? of(true) : this.#kudoBoard$),
         withLatestFrom(this.#kudoBoard$)
@@ -260,10 +262,17 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
           });
         }
       );
-  }
 
-  ngOnDestroy(): void {
-    this.#beforeUnloadTrigger$$.next();
+    this.kudoBoardFormGroup.valueChanges
+      .pipe(takeUntilDestroyed(this.#destroyRef))
+      .subscribe(() => this.updating.set(true));
+
+    this.#actions$
+      .pipe(
+        ofType(FeatKudoBoardActions.putKudoBoardSuccess),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe(() => this.updating.set(false));
   }
 
   autoUploadBackground(event: FileUploadHandlerEvent) {
@@ -411,7 +420,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit, OnDestroy {
   }
 
   #updateKudoBoard(kudoboard: KudoBoard) {
-    this.updating.set(false);
     this.#store.dispatch(
       FeatKudoBoardActions.putKudoBoard({
         kudoboard,
