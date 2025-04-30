@@ -27,9 +27,9 @@ ENV AUTH0_CALLBACK_URL=https://api.kitouch.io/api/auth/callback
 #S3 
 ENV S3_REGION=eu-north-1
 ENV S3_IDENTITY_POOL_ID=eu-north-1:0d7df556-9796-4d53-8387-aed1c71f8aec
-ENV S3_BUCKET_PROFILE=kitouch-public-profiles-dev
-ENV S3_BUCKET_FAREWELL=kitouch-public-farewell-dev
-ENV S3_BUCKET_KUDOBOARD=kitouch-public-kudoboard-dev
+ENV S3_BUCKET_PROFILE=kitouch-public-profiles
+ENV S3_BUCKET_FAREWELL=kitouch-public-farewell
+ENV S3_BUCKET_KUDOBOARD=kitouch-public-kudoboard
 
 RUN npm run build:api
 

@@ -117,10 +117,12 @@ export class BeTweetService {
       );
     }
 
-    return tweets.map(({ _id, __v, ...tweet }) => ({
-      ...tweet,
-      id: _id,
-    }));
+    return (
+      tweets?.map(({ _id, __v, ...tweet }) => ({
+        ...tweet,
+        id: _id,
+      })) ?? []
+    );
   }
 
   async getTweet(tweetId: string, tweetProfileId: string) {
