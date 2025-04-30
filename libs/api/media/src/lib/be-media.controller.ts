@@ -11,7 +11,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import imageSize from 'image-size';
-import { MediaService } from './media.service';
+import { MediaService } from './be-media.service';
 
 @Controller('media')
 export class MediaController {

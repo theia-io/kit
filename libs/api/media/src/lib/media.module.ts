@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MulterModule } from '@nestjs/platform-express';
-import { MediaController } from './media.controller';
-import { MediaService } from './media.service';
+import { MediaController } from './be-media.controller';
+import { MediaService } from './be-media.service';
 
 @Module({
   imports: [

@@ -14,6 +14,7 @@ import {
   NG_VALUE_ACCESSOR,
   ReactiveFormsModule,
 } from '@angular/forms';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
 import {
   EditorInitEvent,
   EditorModule,
@@ -27,7 +28,6 @@ import { FeatFarewellQuillActionsComponent } from '../editor-actions/quill-actio
 import { FeatFarewellQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
 import { ImageConfiguration } from './bloats-leaf';
 import { quillBackspaceImageHandler } from './quill';
-import { ContractUploadedMedia } from '@kitouch/shared-models';
 
 export interface Range {
   index: number;
@@ -110,6 +110,10 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
   writeValue(value: string): void {
     this.editorControl.setValue(value);
+    // has to be done after quill sets value
+    setTimeout(() => {
+      this.#setSelectionToEnd(this.quill());
+    }, 1000);
     // check if this needed
     //   this.onChange(value);
   }
@@ -168,7 +172,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
     quill.insertEmbed(idx++, 'divider', false, Quill.sources.USER);
     quill.insertText(idx++, '\n', Quill.sources.USER);
+    quill.insertText(idx++, '\n', Quill.sources.USER);
     quill.setSelection(idx++, Quill.sources.SILENT);
+    quill.focus();
 
     // this.sideActionsShow.set(false);
     this.quillTextChangeActive.set(true);
@@ -187,7 +193,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
         const kitQuillImageBloat: ImageConfiguration = {
           alt: 'KIT kitouch farewell image',
-          src: imageSrc.url,
+          src: imageSrc.optimizedUrls[0] ?? imageSrc.url,
           width: imageSrc.width ?? 300,
           height: imageSrc.height ?? 300,
           loadedCb: () => {
@@ -205,7 +211,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
           Quill.sources.USER
         );
         quill.insertText(idx++, '\n', Quill.sources.USER);
+        quill.insertText(idx++, '\n', Quill.sources.USER);
         quill.setSelection(idx++, Quill.sources.SILENT);
+        quill.focus();
 
         this.quillTextChangeActive.set(true);
       });
@@ -275,6 +283,20 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
     this.#checkActionShow(quill, range);
     this.#checkSideActionShow(quill, range);
+  }
+
+  #setSelectionToEnd(quill: Quill | null) {
+    if (!quill) {
+      console.warn('quill is not initialized');
+      return;
+    }
+
+    const length = quill.getLength();
+    quill.setSelection(length, Quill.sources.SILENT);
+    quill.focus();
+
+    this.sideActionsShow.set(true);
+    this.#keepSideActionOpened({ quill, updateBoundOnly: true });
   }
 
   #checkActionShow(quill: Quill, { index, length }: Range) {
