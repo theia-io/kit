@@ -140,11 +140,11 @@ export const appRoutes: Route[] = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: APP_PATH.Home,
+        redirectTo: APP_PATH.Feed,
       },
       {
-        path: APP_PATH.Home,
-        title: 'Kitouch - Home',
+        path: APP_PATH.Feed,
+        title: 'Kitouch - Feed',
         loadComponent: () => pages.then((comp) => comp.PageHomeComponent),
         providers: [
           // provideState({ name: 'pages.home', reducer: pageHomeReducer }),

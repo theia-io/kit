@@ -25,7 +25,7 @@ export class MediaController {
   async saveKudoboardMedia(@Query('name') name: string, @Body() media: Buffer) {
     const dimensions = this.#getDimensions(media);
     const { url, optimizedUrls } = await this.mediaService.upload({
-      bucket: this.configService.getConfig('s3').kudoBoardBucket, // 'kitouch-public-kudoboard',
+      bucket: this.configService.getConfig('s3').kudoBoardBucket,
       file: media,
       filePath: name,
       fileType: dimensions.type ?? name.split('.').reverse()[0],
@@ -43,7 +43,7 @@ export class MediaController {
   @Delete('kudoboard')
   async deleteKudoBoardMedia(@Query('name') url: string): Promise<boolean> {
     await this.mediaService.delete(
-      this.configService.getConfig('s3').kudoBoardBucket, //'kitouch-public-kudoboard',
+      this.configService.getConfig('s3').kudoBoardBucket,
       url
     );
     return true;
@@ -57,7 +57,7 @@ export class MediaController {
   ): Promise<ContractUploadedMedia> {
     const dimensions = this.#getDimensions(media);
     const { url, optimizedUrls } = await this.mediaService.upload({
-      bucket: this.configService.getConfig('s3').farewellBucket, //'kitouch-public-farewell',
+      bucket: this.configService.getConfig('s3').farewellBucket,
       file: media,
       filePath: name,
       fileType: dimensions.type ?? name.split('.').reverse()[0],
@@ -75,7 +75,7 @@ export class MediaController {
   @Delete('farewell')
   async deleteFarewellMedia(@Query('name') url: string): Promise<boolean> {
     await this.mediaService.delete(
-      this.configService.getConfig('s3').farewellBucket, //'kitouch-public-farewell',
+      this.configService.getConfig('s3').farewellBucket,
       url
     );
     return true;

@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "6.0.23-3801e36",
+  "version": "6.0.24-8d8b11a",
   "license": "MIT",
   "scripts": {
     "graph": "nx graph",

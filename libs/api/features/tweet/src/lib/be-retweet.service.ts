@@ -2,12 +2,14 @@ import { ReTweety } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { ReTweet, ReTweetDocument, TweetDocument } from './schemas';
+import { ReTweet, ReTweetDocument, Tweet, TweetDocument } from './schemas';
+import { profile } from 'console';
 
 @Injectable()
 export class BeReTweetService {
   constructor(
-    @InjectModel(ReTweet.name) private retweetModel: Model<ReTweetDocument>
+    @InjectModel(ReTweet.name) private retweetModel: Model<ReTweetDocument>,
+    @InjectModel(Tweet.name) private tweetModel: Model<TweetDocument>
   ) {}
 
   async getReTweet(retweetId: string, profileId: string) {
@@ -37,7 +39,21 @@ export class BeReTweetService {
   }
 
   async newReTweet({ retweetedProfileId, tweetId }: Partial<ReTweety>) {
-    let newReTweet;
+    let newReTweet, originalTweet;
+
+    try {
+      originalTweet = await this.tweetModel
+        .findOne<TweetDocument>({
+          _id: new mongoose.Types.ObjectId(tweetId),
+        })
+        .exec();
+    } catch (err) {
+      console.error(`Cannot execute tweet search for %s, %s`, tweetId, err);
+      throw new HttpException(
+        'Cannot find tweet for retweet',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
 
     try {
       newReTweet = await this.retweetModel.create({
@@ -56,7 +72,17 @@ export class BeReTweetService {
       );
     }
 
-    return newReTweet;
+    const tweet = originalTweet?.toObject(),
+      retweet = newReTweet.toObject();
+
+    return {
+      ...retweet,
+      type: 'retweet',
+      retweetedProfileId: retweet.profileId,
+      profileId: tweet?.profileId,
+      content: tweet?.content,
+      comments: tweet?.comments,
+    };
   }
 
   async deleteReTweet(

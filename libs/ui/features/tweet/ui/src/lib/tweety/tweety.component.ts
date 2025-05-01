@@ -100,17 +100,29 @@ export class FeatTweetTweetyComponent {
     return undefined;
   });
 
-  retweetProfile = computed(() => {
+  retweetedOriginalTweet = computed(() => {
     const tweet = this.tweet();
-    const originalTweet = this.#store.selectSignal(
-      selectTweet((tweet as ReTweety).tweetId)
-    )();
 
-    if (originalTweet && tweet && tweetIsRetweet(tweet)) {
+    if (tweet && tweetIsRetweet(tweet)) {
       return this.#store.selectSignal(
-        selectProfileById(originalTweet.profileId)
+        selectTweet((tweet as ReTweety).tweetId)
       )();
     }
+
+    return undefined;
+  });
+
+  retweetProfile = computed(() => {
+    // if not empty then this is original tweet and `retweet` is a retweet of `retweetedOriginalTweet` (original tweet)
+    const retweetedOriginalTweet = this.retweetedOriginalTweet();
+    const retweet = this.tweet();
+
+    if (retweetedOriginalTweet && retweet && tweetIsRetweet(retweet)) {
+      return this.#store.selectSignal(
+        selectProfileById(retweet.retweetedProfileId)
+      )();
+    }
+
     return undefined;
   });
 

@@ -29,5 +29,5 @@ export class SharedFeatureIntroComponent {
     },
   };
 
-  homeUrl = `/${APP_PATH.Home}`;
+  homeUrl = `/${APP_PATH.Feed}`;
 }

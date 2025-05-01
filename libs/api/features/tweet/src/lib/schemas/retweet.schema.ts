@@ -13,6 +13,13 @@ export type ReTweetDocument = HydratedDocument<ReTweet>;
       delete ret['_id'];
     },
   },
+  toObject: {
+    virtuals: true,
+    versionKey: false,
+    transform(doc, ret) {
+      delete ret['_id'];
+    },
+  },
 })
 export class ReTweet {
   @Prop({

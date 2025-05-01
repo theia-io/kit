@@ -1,20 +1,25 @@
 @if(tweet(); as tweet) {
+<!-- tweet profile -->
+@let tweetedProfile = tweetProfile();
+<!-- retweet profile -->
+@let retweetedProfile = retweetProfile();
+
 <!-- Retweet header -->
-@if(tweetIsRetweetFn(tweet) && retweetProfile(); as retweetProfile) {
+@if(tweetIsRetweetFn(tweet) && retweetedProfile) {
 <feat-tweet-retweet-header
   [currentProfileId]="currentProfile()?.id"
   [tweet]="tweet"
-  [retweetProfile]="retweetProfile"
-  [tweetProfile]="tweetProfile()" />
+  [retweetProfile]="retweetedProfile"
+  [tweetProfile]="tweetedProfile" />
 }
 <!-- Tweet profile -->
-@if(tweetProfile(); as tProfile) {
+@if(tweetedProfile) {
 <ui-kit-comp-account-tile
-  [primaryText]="tProfile.name"
+  [primaryText]="tweetedProfile.name"
   [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
-  [secondaryText]="tProfile.type"
-  [picture]="tProfile.pictures?.[0]?.url"
-  [link]="profileUrlPath + tProfile.id" />
+  [secondaryText]="tweetedProfile.type"
+  [picture]="tweetedProfile.pictures?.[0]?.url"
+  [link]="profileUrlPath + tweetedProfile.id" />
 } @else {
 <ui-kit-spinner size="h-10 w-10" />
 }
@@ -74,26 +79,26 @@
 }
 
 <p-dialog
-  header="Delete tweet?"
+  [header]="tweetIsRetweetFn(tweet) ? 'Delete retweet?' : 'Delete tweet?'"
   [modal]="true"
   [draggable]="false"
   [dismissableMask]="true"
   (click)="$event.stopPropagation()"
   [(visible)]="tweetDeleteConfirmationVisible"
   [style]="{ width: '25rem' }">
-  @if(tweetIsRetweetFn(tweet) && retweetProfile(); as retweetProfile) {
+  @if(tweetIsRetweetFn(tweet) && retweetedProfile) {
   <feat-tweet-retweet-header
     [currentProfileId]="currentProfile()?.id"
     [tweet]="tweet"
-    [retweetProfile]="retweetProfile"
-    [tweetProfile]="tweetProfile()" />
-  } @if(tweetProfile(); as tProfile) {
+    [retweetProfile]="retweetedProfile"
+    [tweetProfile]="tweetedProfile" />
+  } @if(tweetedProfile) {
   <ui-kit-comp-account-tile
-    [primaryText]="$any(tProfile).name"
+    [primaryText]="$any(tweetedProfile).name"
     [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
-    [secondaryText]="$any(tProfile).type"
-    [picture]="$any(tProfile).pictures?.[0]?.url"
-    [link]="profileUrlPath + $any(tProfile).id" />
+    [secondaryText]="$any(tweetedProfile).type"
+    [picture]="$any(tweetedProfile).pictures?.[0]?.url"
+    [link]="profileUrlPath + $any(tweetedProfile).id" />
   }
 
   <div class="pt-1 pl-6">
@@ -108,7 +113,7 @@
       severity="secondary"
       (onClick)="tweetDeleteConfirmationVisible.set(false)" />
     <p-button
-      label="Delete tweet"
+      [label]="tweetIsRetweetFn(tweet) ? 'Delete retweet' : 'Delete tweet'"
       severity="danger"
       (onClick)="
         tweetDeleteConfirmationVisible.set(false); deleteHandler(tweet)

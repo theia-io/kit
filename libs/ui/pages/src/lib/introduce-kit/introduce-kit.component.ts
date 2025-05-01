@@ -48,7 +48,7 @@ export class KitPagesIntroduceKitComponent {
     },
   };
 
-  homeUrl = `/${APP_PATH.Home}`;
+  homeUrl = `/${APP_PATH.Feed}`;
 
   otherInformation = {
     title: 'How, When, Who, Where?',

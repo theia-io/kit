@@ -32,14 +32,7 @@ export class RetweetEffects {
         this.#retweetV2Service.retweet(tweet.id, profile.id).pipe(
           map((retweet) =>
             FeatReTweetActions.reTweetSuccess({
-              tweet: {
-                ...tweet,
-                ...retweet,
-                tweetId: tweet.id,
-                retweetedProfileId: retweet.profileId,
-                type: TweetyType.Retweet,
-                createdAt: retweet.createdAt,
-              },
+              tweet: retweet,
             })
           )
         )

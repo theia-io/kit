@@ -69,7 +69,7 @@ export class SharedNavBarStaticComponent implements OnDestroy {
   featuresOpened = signal(false);
 
   deviceTypes = Device;
-  homeUrl = `/${APP_PATH.Home}`;
+  homeUrl = `/${APP_PATH.Feed}`;
   loginUrl = `/s/${APP_PATH_STATIC_PAGES.SignIn}`;
   introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   featuresConnectedUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
