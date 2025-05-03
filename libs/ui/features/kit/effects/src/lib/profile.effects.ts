@@ -58,6 +58,11 @@ export class ProfileEffects {
     )
   );
 
+  #profilesForProfileTweets$ = this.#actions$.pipe(
+    ofType(TweetApiActions.getTweetsForProfileSuccess),
+    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
+  );
+
   #profilesForBookmarks$ = this.#actions$.pipe(
     ofType(FeatBookmarksActions.getBookmarksFeed),
     map(({ bookmarks }) =>
@@ -71,7 +76,8 @@ export class ProfileEffects {
       this.#profilesForBookmarks$,
       this.#profilesForTweet$,
       this.#profilesForTweetComments$,
-      this.#profilesForTweets$
+      this.#profilesForTweets$,
+      this.#profilesForProfileTweets$
     ).pipe(
       bufferTime(1000),
       map((profileIds) => [...new Set(profileIds.flat())]),

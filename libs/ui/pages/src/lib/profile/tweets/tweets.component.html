@@ -1,4 +1,6 @@
-@for (tweet of (tweets$ | async); track $index) { @if(!$first) {
+@for (tweet of (tweets$ | async); track $index) {
+<!-- if not first -->
+@if(!$first) {
 <ui-kit-divider class="block my-2" />
 }
 

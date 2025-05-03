@@ -78,9 +78,9 @@ export class BeTweetService {
                   // --- Include data from the original tweet ---
                   profileId: '$originalTweetData.profileId', // Original author
                   content: '$originalTweetData.content',
-                  comments: '$originalTweetData.comments', // Or other fields you need
-                  // originalCreatedAt: '$originalTweetData.createdAt',
-                  // originalUpdatedAt: '$originalTweetData.updatedAt',
+                  comments: '$originalTweetData.comments',
+                  upProfileIds: '$originalTweetData.upProfileIds',
+                  downProfileIds: '$originalTweetData.downProfileIds',
 
                   activityTimestamp: '$createdAt', // Use createdAt of the retweet for sorting
                 },

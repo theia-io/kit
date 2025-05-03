@@ -22,10 +22,15 @@ export const selectAllTweets = createSelector(
   (state: FeatureTweetState) => state.tweets
 );
 
-export const selectTweetsProfile = (
+export const selectTweetsProfileAndRetweets = (
   profileId: string,
   tweets: Array<Tweety | ReTweety>
-) => tweets.filter((tweet) => tweet.profileId === profileId);
+) =>
+  tweets.filter(
+    (tweet) =>
+      tweet.profileId === profileId ||
+      (tweetIsRetweet(tweet) && tweet.retweetedProfileId === profileId)
+  );
 
 export const selectTweet = (id: string) =>
   createSelector(selectAllTweets, (tweets: Array<Tweety | ReTweety>) =>

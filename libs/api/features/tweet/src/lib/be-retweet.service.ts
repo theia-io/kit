@@ -3,7 +3,6 @@ import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { ReTweet, ReTweetDocument, Tweet, TweetDocument } from './schemas';
-import { profile } from 'console';
 
 @Injectable()
 export class BeReTweetService {
@@ -76,12 +75,11 @@ export class BeReTweetService {
       retweet = newReTweet.toObject();
 
     return {
+      ...tweet,
       ...retweet,
       type: 'retweet',
       retweetedProfileId: retweet.profileId,
       profileId: tweet?.profileId,
-      content: tweet?.content,
-      comments: tweet?.comments,
     };
   }
 

@@ -10,21 +10,24 @@ export const PROFILE_ROUTES: Routes = [
       import('./profile.component').then((comp) => comp.PageProfileComponent),
     children: [
       {
-        path: 'tweets',
+        path: 'activity',
         component: PageProfileTweetsComponent,
+        title: 'Profile Activity',
       },
       {
         path: 'experience',
         component: PageProfileExperienceComponent,
+        title: 'Profile Experience',
       },
       {
         path: 'following',
         component: PageProfileFollowingComponent,
+        title: 'Profile Connections',
       },
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: 'tweets',
+        redirectTo: 'activity',
       },
     ],
   },

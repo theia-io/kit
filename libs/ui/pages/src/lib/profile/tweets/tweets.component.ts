@@ -9,7 +9,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   selectAllTweets,
-  selectTweetsProfile,
+  selectTweetsProfileAndRetweets,
   TweetApiActions,
 } from '@kitouch/feat-tweet-data';
 import { FeatTweetTweetyComponent } from '@kitouch/feat-tweet-ui';
@@ -79,7 +79,9 @@ export class PageProfileTweetsComponent {
   tweets$ = combineLatest([
     this.#profile$,
     this.#store.select(selectAllTweets),
-  ]).pipe(map(([{ id }, allTweets]) => selectTweetsProfile(id, allTweets)));
+  ]).pipe(
+    map(([{ id }, allTweets]) => selectTweetsProfileAndRetweets(id, allTweets))
+  );
 
   currentProfile = toSignal(
     this.#store.pipe(select(selectCurrentProfile), filter(Boolean))

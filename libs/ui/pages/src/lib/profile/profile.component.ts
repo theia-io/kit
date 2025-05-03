@@ -74,12 +74,12 @@ export class PageProfileComponent {
     map((device) =>
       device === Device.Mobile
         ? [
-            { label: '', icon: 'pi pi-inbox', routerLink: 'tweets' },
+            { label: '', icon: 'pi pi-inbox', routerLink: 'activity' },
             { label: '', icon: 'pi pi-briefcase', routerLink: 'experience' },
             { label: '', icon: 'pi pi-users', routerLink: 'following' },
           ]
         : [
-            { label: 'Tweets', icon: 'pi pi-inbox', routerLink: 'tweets' },
+            { label: 'Activity', icon: 'pi pi-inbox', routerLink: 'activity' },
             {
               label: 'Experience',
               icon: 'pi pi-briefcase',

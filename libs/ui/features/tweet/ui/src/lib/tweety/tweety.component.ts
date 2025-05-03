@@ -100,24 +100,10 @@ export class FeatTweetTweetyComponent {
     return undefined;
   });
 
-  retweetedOriginalTweet = computed(() => {
-    const tweet = this.tweet();
-
-    if (tweet && tweetIsRetweet(tweet)) {
-      return this.#store.selectSignal(
-        selectTweet((tweet as ReTweety).tweetId)
-      )();
-    }
-
-    return undefined;
-  });
-
   retweetProfile = computed(() => {
-    // if not empty then this is original tweet and `retweet` is a retweet of `retweetedOriginalTweet` (original tweet)
-    const retweetedOriginalTweet = this.retweetedOriginalTweet();
     const retweet = this.tweet();
 
-    if (retweetedOriginalTweet && retweet && tweetIsRetweet(retweet)) {
+    if (retweet && tweetIsRetweet(retweet)) {
       return this.#store.selectSignal(
         selectProfileById(retweet.retweetedProfileId)
       )();

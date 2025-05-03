@@ -40,12 +40,12 @@ export const selectProfiles = createSelector(
 /** Utilities */
 
 export const selectProfileById = (profileId: string) =>
-  createSelector(
-    selectProfiles,
-    (profiles: Profile[]) =>
+  createSelector(selectProfiles, (profiles: Profile[]) => {
+    return (
       profiles.find(({ id }) => id === profileId) ??
       profiles.find(({ alias }) => alias === profileId)
-  );
+    );
+  });
 
 export const selectProfilesByIds = (profileIds: Array<Profile['id']>) =>
   createSelector(selectProfiles, (profiles) => {
