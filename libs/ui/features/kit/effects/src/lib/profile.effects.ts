@@ -90,7 +90,7 @@ export class ProfileEffects {
     )
   );
 
-  profilesFollowing$ = createEffect(() =>
+  profiles$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.getProfiles),
       switchMap(({ profileIds }) =>
@@ -99,7 +99,7 @@ export class ProfileEffects {
             FeatProfileApiActions.getProfilesSuccess({ profiles })
           ),
           catchError((err) => {
-            console.error('[ProfileEffects] profilesFollowing', err);
+            console.error('[ProfileEffects] profiles$', err);
             return of(FeatProfileApiActions.getProfilesFailure());
           })
         )

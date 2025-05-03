@@ -38,7 +38,6 @@ export const selectProfiles = createSelector(
 );
 
 /** Utilities */
-
 export const selectProfileById = (profileId: string) =>
   createSelector(selectProfiles, (profiles: Profile[]) => {
     return (

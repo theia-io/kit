@@ -5,7 +5,7 @@ import {
   computed,
   inject,
 } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { FeatFollowUnfollowProfileComponent } from '@kitouch/follow-ui';
@@ -18,10 +18,10 @@ import { APP_PATH } from '@kitouch/shared-constants';
 import { Device, DeviceService } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
 import { UXDynamicService } from '@kitouch/shared-services';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { filter, map, shareReplay, switchMap, take } from 'rxjs';
+import { combineLatest, filter, map, shareReplay, switchMap, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -40,20 +40,20 @@ import { filter, map, shareReplay, switchMap, take } from 'rxjs';
   ],
 })
 export class PageProfileComponent {
-  readonly settingsUrl = `/${APP_PATH.Settings}`;
-
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
   #uxDynamicService = inject(UXDynamicService);
   #deviceService = inject(DeviceService);
 
   #profileId$ = this.#activatedRouter.params.pipe(
-    map((params) => params['profileId'])
+    map((params) => params['profileId']),
+    shareReplay(1)
   );
 
   #profile$ = this.#profileId$.pipe(
-    switchMap((profileId) => this.#store.select(selectProfileById(profileId))),
-    filter(Boolean),
+    switchMap((profileId) =>
+      this.#store.pipe(select(selectProfileById(profileId)))
+    ),
     shareReplay(1)
   );
 
@@ -93,6 +93,20 @@ export class PageProfileComponent {
           ]
     )
   );
+
+  readonly settingsUrl = `/${APP_PATH.Settings}`;
+
+  constructor() {
+    combineLatest([this.#profileId$, this.#profile$])
+      .pipe(take(1), takeUntilDestroyed())
+      .subscribe(([profileId, profile]) => {
+        if (!profile) {
+          this.#store.dispatch(
+            FeatProfileApiActions.getProfiles({ profileIds: [profileId] })
+          );
+        }
+      });
+  }
 
   followProfileHandler(profile: Profile | undefined) {
     if (!profile) {
