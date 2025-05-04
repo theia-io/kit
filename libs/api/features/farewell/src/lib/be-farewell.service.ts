@@ -1,4 +1,4 @@
-import { Farewell as IFarewell } from '@kitouch/shared-models';
+import { FarewellStatus, Farewell as IFarewell } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -51,7 +51,7 @@ export class BeFarewellService {
     });
   }
 
-  async getFarewell(farewellId: string) {
+  async getFarewell(farewellId: string, currentProfileIds: Array<string>) {
     let farewell;
 
     try {
@@ -74,24 +74,35 @@ export class BeFarewellService {
       return null;
     }
 
-    const farewellObject = farewell.toObject() as any; // TODO Come up with a better OR better even to redo kudoBoardId and profileId in the Farewell schema to
+    const farewellObject = farewell.toObject(); // TODO Come up with a better OR better even to redo kudoBoardId and profileId in the Farewell schema to
+
+    const farewellWithStatus =
+      farewellObject?.status === FarewellStatus.Published ||
+      currentProfileIds.includes(farewellObject?.profileId?._id?.toString())
+        ? farewellObject
+        : {
+            id: farewellObject?.id,
+            profileId: farewellObject?.profileId,
+            kudoBoardId: farewellObject?.kudoBoardId,
+            status: farewellObject?.status,
+          };
 
     // TODO This will be refactored once the Farewell schema is refactored to use the new KudoBoard and Profile schemas.
     return {
-      ...farewellObject,
-      kudoBoardId: farewellObject.kudoBoardId?._id,
-      kudoBoard: farewellObject.kudoBoardId?._id
+      ...farewellWithStatus,
+      kudoBoardId: farewellWithStatus.kudoBoardId?._id,
+      kudoBoard: farewellWithStatus.kudoBoardId?._id
         ? {
-            ...farewellObject.kudoBoardId,
-            id: farewellObject.kudoBoardId?._id,
+            ...farewellWithStatus.kudoBoardId,
+            id: farewellWithStatus.kudoBoardId?._id,
           }
         : null,
-      profileId: farewellObject.profileId?._id,
+      profileId: farewellWithStatus.profileId?._id,
       profile: {
-        ...farewellObject.profileId,
-        id: farewellObject.profileId?._id,
+        ...farewellWithStatus.profileId,
+        id: farewellWithStatus.profileId?._id,
       },
-    } as IFarewell;
+    };
   }
 
   async createFarewell({

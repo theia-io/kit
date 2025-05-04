@@ -66,6 +66,8 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   imageStorageProvider =
     input<(images: Array<File>) => Observable<Array<ContractUploadedMedia>>>();
   deleteImage = input<(imageSrc: string) => void>();
+  /** e.g. when user updates title we don't want to autofocus editor automatically */
+  disableEditorAutoFocus = input<boolean>(false);
   editorTextChange = output<string>();
 
   editorControl = new FormControl<string>('');
@@ -82,10 +84,23 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   sideActionsBounds = signal<Bounds | null>(null);
   sideActionOpened = signal<boolean>(this.sideActionsShow()); // default value same as initial value `show`
 
+  /** Used to auto focus quill to then end on initial page load  */
+  autoFocusToEndTimeout: NodeJS.Timeout | null = null;
+
   constructor() {
+    effect(() => {
+      if (this.disableEditorAutoFocus()) {
+        this.#disableAutoFocus();
+      }
+    });
+
     this.editorControl.valueChanges
       .pipe(takeUntilDestroyed())
-      .subscribe((v) => this.onChange(v ?? ''));
+      .subscribe((v) => {
+        console.log('editorControl value changed', v);
+        this.#disableAutoFocus();
+        this.onChange(v ?? '');
+      });
 
     effect(
       () => {
@@ -111,11 +126,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   writeValue(value: string): void {
     this.editorControl.setValue(value);
     // has to be done after quill sets value
-    setTimeout(() => {
-      this.#setSelectionToEnd(this.quill());
+    this.autoFocusToEndTimeout = setTimeout(() => {
+      this.#setFocusToEnd(this.quill());
     }, 1000);
-    // check if this needed
-    //   this.onChange(value);
   }
 
   registerOnChange(fn: any): void {
@@ -285,13 +298,21 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     this.#checkSideActionShow(quill, range);
   }
 
-  #setSelectionToEnd(quill: Quill | null) {
+  #disableAutoFocus() {
+    if (this.autoFocusToEndTimeout) {
+      clearTimeout(this.autoFocusToEndTimeout);
+      this.autoFocusToEndTimeout = null;
+    }
+  }
+
+  #setFocusToEnd(quill: Quill | null) {
     if (!quill) {
       console.warn('quill is not initialized');
       return;
     }
 
-    const length = quill.getLength();
+    let length = quill.getLength();
+    quill.insertText(length++, '\n', Quill.sources.USER);
     quill.setSelection(length, Quill.sources.SILENT);
     quill.focus();
 

@@ -14,6 +14,7 @@ import {
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { BeFarewellService } from './be-farewell.service';
+import { OptionalJwtAuthGuard } from '@kitouch/be-auth';
 
 @Controller('farewells')
 export class BeFarewellController {
@@ -26,8 +27,15 @@ export class BeFarewellController {
   }
 
   @Get(':farewellId')
-  async getFarewell(@Param('farewellId') farewellId: string) {
-    return this.beFarewellService.getFarewell(farewellId);
+  @UseGuards(OptionalJwtAuthGuard)
+  async getFarewell(
+    @Req() req: Request,
+    @Param('farewellId') farewellId: string
+  ) {
+    const currentProfileIds =
+      (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
+
+    return this.beFarewellService.getFarewell(farewellId, currentProfileIds);
   }
 
   @Post()
@@ -43,9 +51,8 @@ export class BeFarewellController {
     @Param('farewellId') farewellId: string,
     @Body() farewell: Omit<IFarewell, 'id'>
   ) {
-    const currentProfileIds = (req.user as Auth0Kit).profiles.map(
-      (profile) => profile.id
-    );
+    const currentProfileIds =
+      (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
 
     return this.beFarewellService.updateFarewell(
       farewellId,
@@ -60,9 +67,8 @@ export class BeFarewellController {
     @Req() req: Request,
     @Param('farewellId') farewellId: string
   ) {
-    const currentProfileIds = (req.user as Auth0Kit).profiles.map(
-      (profile) => profile.id
-    );
+    const currentProfileIds =
+      (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
 
     return this.beFarewellService.deleteFarewell(farewellId, currentProfileIds);
   }

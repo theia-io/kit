@@ -1,8 +1,7 @@
-import { AsyncPipe, DOCUMENT } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import { farewellLink } from '@kitouch/containers';
 import {
   FeatFarewellActions,
   FeatFarewellCommentActions,
@@ -72,7 +71,6 @@ import {
 export class PageFarewellViewComponent {
   preview = input(false);
 
-  #document = inject(DOCUMENT);
   #activatedRouter = inject(ActivatedRoute);
   #store = inject(Store);
   #auth0Service = inject(Auth0Service);
@@ -120,7 +118,7 @@ export class PageFarewellViewComponent {
     })
   );
 
-  kudoBoardOverlayText$ = this.farewell$.pipe(
+  farewellOverlayText$ = this.farewell$.pipe(
     map(({ status, profile }) => {
       const profileContact = profile?.name
         ? `Contact owner: ${profile.name}`
@@ -167,15 +165,21 @@ export class PageFarewellViewComponent {
     ])
   );
 
+  farewellOwner = computed(() => {
+    return (
+      this.farewellProfile() &&
+      this.currentProfile() &&
+      this.farewellProfile()?.id === this.currentProfile()?.id
+    );
+  });
+
   commentsSideBarVisibility = signal(false);
   farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
-  // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
-  farewellLinkFn = (farewellId: string) =>
-    farewellLink(this.#document.location.origin, farewellId);
 
   constructor() {
+    console.log('CREATED');
     this.farewellId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
       .subscribe((id) => {

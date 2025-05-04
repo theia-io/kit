@@ -32,6 +32,7 @@
     formControlName="content"
     [imageStorageProvider]="saveImages()"
     [deleteImage]="deleteImage()"
+    [disableEditorAutoFocus]="disableEditorAutoFocus()"
     (editorTextChange)="editorTextValue.set($event)"></feat-farewell-editor>
   <section class="relative">
     <strong
@@ -56,7 +57,7 @@
 
   <ng-template #shareTmpl>
     @if(id) {
-    <shared-copy-clipboard [url]="farewellLinkFn(id)" />
+    <shared-copy-clipboard [id]="id" type="farewell" />
     }
   </ng-template>
 

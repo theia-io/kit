@@ -62,7 +62,7 @@ export class BeTweetController {
     @Query('profileId') profileId: string
   ) {
     const authUser = req.user as Auth0Kit;
-    const profileIds = authUser.profiles.map((profile) => profile.id);
+    const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
     return this.beTweetService.deleteTweet(tweetId, profileId, profileIds);
   }
 
@@ -92,9 +92,9 @@ export class BeTweetController {
     @Query('profileId') profileId: string,
     @Query('content') content: string
   ) {
-    const profileIds = (req.user as Auth0Kit).profiles.map(
-      (profile) => profile.id
-    );
+    const profileIds =
+      (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
+
     return this.beTweetService.deleteTweetComment(
       tweetId,
       profileId,

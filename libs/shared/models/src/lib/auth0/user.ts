@@ -12,7 +12,7 @@ export interface Auth0User {
 }
 
 export interface Auth0Kit extends Auth0User {
-  account: Account;
-  user: User;
-  profiles: Array<Profile>;
+  account?: Account;
+  user?: User;
+  profiles?: Array<Profile>;
 }

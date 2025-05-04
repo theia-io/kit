@@ -1,4 +1,4 @@
-import { AsyncPipe, DOCUMENT } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -28,16 +28,15 @@ import { AccountTileComponent } from '@kitouch/ui-components';
 
 import {
   AuthorizedFeatureDirective,
-  farewellLink,
   SharedCopyClipboardComponent,
 } from '@kitouch/containers';
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { APP_PATH } from '@kitouch/shared-constants';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { TooltipModule } from 'primeng/tooltip';
 import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { farewellOwner } from '../common';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
@@ -66,7 +65,6 @@ export class FeatFarewellActionsComponent {
 
   #router = inject(Router);
   #store = inject(Store);
-  #document = inject(DOCUMENT);
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
   farewell = computed(() =>
@@ -162,9 +160,6 @@ export class FeatFarewellActionsComponent {
 
   linkCopied = signal(false);
 
-  // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
-  farewellLinkFn = (farewellId: string) =>
-    farewellLink(this.#document.location.origin, farewellId);
   readonly profilePicture = profilePicture;
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
   readonly emojiMap = emojiNameMap;

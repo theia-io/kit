@@ -111,7 +111,10 @@
 
   <ng-template #shareTmpl>
     @if(kudoBoardId) {
-    <shared-copy-clipboard [url]="kudoboardLinkFn(kudoBoardId)" />
+    <shared-copy-clipboard
+      [id]="kudoBoardId"
+      [gifting]="false"
+      type="kudoboard" />
     }
   </ng-template>
 

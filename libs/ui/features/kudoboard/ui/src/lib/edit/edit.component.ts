@@ -1,6 +1,5 @@
 import {
   AsyncPipe,
-  DOCUMENT,
   Location,
   NgClass,
   NgTemplateOutlet,
@@ -50,7 +49,6 @@ import {
 
 import {
   FeatSideBarPreviewComponent,
-  kudoboardLink,
   SharedCopyClipboardComponent,
   SharedKitUserHintDirective,
 } from '@kitouch/containers';
@@ -79,7 +77,6 @@ import {
   switchMap,
   take,
   takeUntil,
-  tap,
   withLatestFrom,
 } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
@@ -130,7 +127,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   shareKudoTmpl = output<TemplateRef<unknown>>();
   updating = model<boolean>(false);
 
-  #document = inject(DOCUMENT);
   #router = inject(Router);
   #location = inject(Location);
   #cdr = inject(ChangeDetectorRef);
@@ -179,8 +175,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
 
   isBucketUrl = isValidBucketUrl();
   isHexColor = isHexColor;
-  kudoboardLinkFn = (kudoboardId: string) =>
-    kudoboardLink(this.#document.location.origin, kudoboardId, false);
   readonly titleMaxLength = TITLE_MAX_LENGTH;
   readonly kudoBoardStatus = KudoBoardStatus;
   previewVisible = signal(false);

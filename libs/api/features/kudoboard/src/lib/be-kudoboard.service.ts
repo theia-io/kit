@@ -1,4 +1,7 @@
-import { KudoBoard as IKudoBoard } from '@kitouch/shared-models';
+import {
+  KudoBoard as IKudoBoard,
+  KudoBoardStatus,
+} from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
@@ -31,7 +34,7 @@ export class BeKudoboardService {
     return kudoBoards;
   }
 
-  async getKudoboard(kudoBoardId: string) {
+  async getKudoboard(kudoBoardId: string, currentProfileIds: Array<string>) {
     let kudoBoard;
 
     try {
@@ -50,9 +53,19 @@ export class BeKudoboardService {
     }
 
     const kudoBoardObject = kudoBoard?.toObject();
+    const kudoWithStatus =
+      kudoBoardObject?.status === KudoBoardStatus.Published ||
+      (kudoBoardObject?.profileId?._id?.toString() &&
+        currentProfileIds.includes(kudoBoardObject?.profileId?._id?.toString()))
+        ? kudoBoardObject
+        : {
+            id: kudoBoardObject?.id,
+            profileId: kudoBoardObject?.profileId,
+            status: kudoBoardObject?.status,
+          };
 
     return {
-      ...kudoBoardObject,
+      ...kudoWithStatus,
       profileId: kudoBoardObject?.profileId?._id,
       profile: kudoBoardObject?.profileId?._id
         ? {

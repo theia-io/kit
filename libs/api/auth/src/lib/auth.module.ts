@@ -1,12 +1,14 @@
 import { ConfigModule, ConfigService } from '@kitouch/be-config';
 import { HttpModule } from '@nestjs/axios';
-import { Module } from '@nestjs/common';
+import { Global, Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtStrategy } from './jwt.strategy';
+import { OptionalJwtAuthGuard } from './optional-jwt-auth.guard';
 
+@Global()
 @Module({
   imports: [
     HttpModule,
@@ -23,7 +25,7 @@ import { JwtStrategy } from './jwt.strategy';
     }),
   ],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy], // Auth0Strategy
-  exports: [PassportModule, AuthService],
+  providers: [AuthService, JwtStrategy, OptionalJwtAuthGuard], // Auth0Strategy
+  exports: [PassportModule, AuthService, OptionalJwtAuthGuard],
 })
 export class AuthModule {}

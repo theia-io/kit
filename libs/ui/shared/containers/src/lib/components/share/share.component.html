@@ -1,7 +1,15 @@
 <button pButton (click)="copyToClipBoard()" class="p-2" [text]="true">
   @if(linkCopied()) {
-  <i class="pi pi-check" pTooltip="Copied"></i>
+  <i
+    [style]="bigger() ? 'font-size: 1.25rem' : ''"
+    class="pi pi-check"
+    pTooltip="Copied"></i>
   } @else {
-  <i class="pi pi-share-alt" pTooltip="Copy link"></i>
+  <i
+    [style]="bigger() ? 'font-size: 1.25rem' : ''"
+    class="pi pi-share-alt"
+    pTooltip="Copy link"></i>
   }
 </button>
+
+<p-toast />

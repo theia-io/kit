@@ -1,9 +1,4 @@
-import {
-  AsyncPipe,
-  DOCUMENT,
-  Location,
-  NgTemplateOutlet,
-} from '@angular/common';
+import { AsyncPipe, Location, NgTemplateOutlet } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -50,7 +45,6 @@ import {
 } from '@kitouch/ui-components';
 
 import {
-  farewellLink,
   FeatSideBarPreviewComponent,
   SharedCopyClipboardComponent,
 } from '@kitouch/containers';
@@ -130,7 +124,6 @@ export class FeatFarewellComponent implements AfterViewInit {
   previewFarewellTmpl = output<TemplateRef<unknown>>();
   updating = model<boolean>(false);
 
-  #document = inject(DOCUMENT);
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
@@ -175,13 +168,11 @@ export class FeatFarewellComponent implements AfterViewInit {
   farewellAnalytics = signal<FarewellAnalytics | null>(null);
   editorTextValue = signal<string>('');
   previewVisible = signal(false);
+  disableEditorAutoFocus = signal(false);
 
   readonly farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   profilePictureFn = profilePicture;
-  // TODO Check if I can pass farewellId and get rid of HOF here (if parameter is evaluated lazily)
-  farewellLinkFn = (farewellId: string) =>
-    farewellLink(this.#document.location.origin, farewellId);
 
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<any>;
@@ -251,7 +242,10 @@ export class FeatFarewellComponent implements AfterViewInit {
 
     this.farewellFormGroup.valueChanges
       .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(() => this.updating.set(true));
+      .subscribe(() => {
+        this.disableEditorAutoFocus.set(true);
+        this.updating.set(true);
+      });
 
     this.#actions$
       .pipe(

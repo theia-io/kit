@@ -45,7 +45,7 @@ export class BeBookmarksController {
     @Param('bookmarkId') bookmarkId: string
   ) {
     const authUser = req.user as Auth0Kit;
-    const profileIds = authUser.profiles.map((profile) => profile.id);
+    const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
     return this.beBookmarksService.deleteBookmark(bookmarkId, profileIds);
   }
 
@@ -57,7 +57,7 @@ export class BeBookmarksController {
     @Query('profileIdBookmarker') profileIdBookmarker: string
   ) {
     const authUser = req.user as Auth0Kit;
-    const profileIds = authUser.profiles.map((profile) => profile.id);
+    const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
 
     if (!profileIds.includes(profileIdBookmarker)) {
       throw new HttpException(

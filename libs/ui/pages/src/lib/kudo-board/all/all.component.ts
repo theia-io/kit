@@ -2,14 +2,17 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import { FeatSideBarPreviewComponent } from '@kitouch/containers';
+import {
+  FeatSideBarPreviewComponent,
+  SharedCopyClipboardComponent,
+} from '@kitouch/containers';
 import {
   FeatKudoBoardActions,
   selectKudoBoards,
 } from '@kitouch/data-kudoboard';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
-import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
+import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
 import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
@@ -49,6 +52,7 @@ import { filter, map } from 'rxjs/operators';
     UiCompGradientCardComponent,
     FeatSideBarPreviewComponent,
     FeatKudoboardInfoPanelComponent,
+    SharedCopyClipboardComponent,
     //
     AsyncPipe,
     RouterModule,

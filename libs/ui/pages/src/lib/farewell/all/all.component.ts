@@ -2,7 +2,10 @@ import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import { FeatSideBarPreviewComponent } from '@kitouch/containers';
+import {
+  FeatSideBarPreviewComponent,
+  SharedCopyClipboardComponent,
+} from '@kitouch/containers';
 import {
   FeatFarewellActions,
   selectFarewells,
@@ -51,6 +54,7 @@ import { filter, map } from 'rxjs/operators';
     FeatFarewellIntoComponent,
     FeatFarewellInfoPanelComponent,
     FeatSideBarPreviewComponent,
+    SharedCopyClipboardComponent,
     //
     ButtonModule,
     ToastModule,

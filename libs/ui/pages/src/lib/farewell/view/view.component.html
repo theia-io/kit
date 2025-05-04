@@ -19,10 +19,10 @@
 }
 
 <!-- Overlay for draft -->
-@if(!preview() && farewellLoadingState()?.loaded) {
+@if(!farewellOwner() && farewellLoadingState()?.loaded) {
 <ui-kit-page-overlay
   [show]="farewell?.status !== farewellStatus.Published"
-  [text]="(kudoBoardOverlayText$ | async) ?? ''">
+  [text]="(farewellOverlayText$ | async) ?? ''">
   @if(farewellProfile(); as profile) {
   <feat-kit-profile-header
     class="block relative p-2 bg-white"

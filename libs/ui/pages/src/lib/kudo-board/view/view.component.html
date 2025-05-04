@@ -19,7 +19,7 @@
 }
 
 <!-- Overlay for draft -->
-@if(!preview() && kudoboardLoadingState()?.loaded) {
+@if(!kudoOwner() && kudoboardLoadingState()?.loaded) {
 <ui-kit-page-overlay
   [show]="kudoboard?.status !== kudoBoardStatus.Published"
   [text]="(kudoBoardOverlayText$ | async) ?? ''">

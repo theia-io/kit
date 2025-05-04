@@ -31,7 +31,7 @@ export class BeReTweetController {
     @Query('profileId') profileId: string
   ) {
     const authUser = req.user as Auth0Kit;
-    const profileIds = authUser.profiles.map((profile) => profile.id);
+    const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
     return this.beReTweetService.deleteReTweet(
       retweetId,
       profileId,

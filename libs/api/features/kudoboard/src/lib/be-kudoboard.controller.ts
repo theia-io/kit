@@ -1,4 +1,4 @@
-import { KudoBoard as IKudoBoard } from '@kitouch/shared-models';
+import { Auth0Kit, KudoBoard as IKudoBoard } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
@@ -8,10 +8,13 @@ import {
   Post,
   Put,
   Query,
+  Req,
   UseGuards,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
+import { Request } from 'express';
 import { BeKudoboardService } from './be-kudoboard.service';
+import { OptionalJwtAuthGuard } from '@kitouch/be-auth';
 
 @Controller('kudoboards')
 export class BeKudoboardController {
@@ -24,8 +27,15 @@ export class BeKudoboardController {
   }
 
   @Get(':kudoboardId')
-  async getKudoboard(@Param('kudoboardId') kudoboardId: string) {
-    return this.beKudoboardService.getKudoboard(kudoboardId);
+  @UseGuards(OptionalJwtAuthGuard)
+  async getKudoboard(
+    @Req() req: Request,
+    @Param('kudoboardId') kudoboardId: string
+  ) {
+    const currentProfileIds =
+      (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
+
+    return this.beKudoboardService.getKudoboard(kudoboardId, currentProfileIds);
   }
 
   @Post()

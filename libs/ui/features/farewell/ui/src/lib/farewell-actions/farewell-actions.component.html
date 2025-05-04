@@ -68,7 +68,7 @@
       "
       icon="pi pi-comments" />
 
-    <shared-copy-clipboard [url]="farewellLinkFn(farewellId())" />
+    <shared-copy-clipboard [id]="farewellId()" type="farewell" />
 
     <!-- Admin owner menu -->
     @if(canEdit()) {
