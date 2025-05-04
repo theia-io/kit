@@ -29,6 +29,6 @@ export class FeatFarewellIntoComponent {
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
 
   watchVideo() {
-    console.log('Watch video');
+    console.info('[ UI FeatFarewellIntoComponent] Watch video');
   }
 }

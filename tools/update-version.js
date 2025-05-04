@@ -20,4 +20,4 @@ const newVersion = `${major}.${minor}.${patch}-${gitHash}`;
 packageJson.version = newVersion;
 fs.writeFileSync('package.json', JSON.stringify(packageJson, null, 2));
 
-console.log(`Updated package.json version to: ${newVersion}`);
+console.info(`Updated package.json version to: ${newVersion}`);

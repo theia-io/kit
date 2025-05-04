@@ -75,11 +75,11 @@ export class FeatTweetTweetingComponent {
   tweettingInProgress = signal(false);
 
   imageHandler() {
-    console.log('image handler');
+    console.info('[UI FeatTweetTweetingComponent] image handler');
   }
 
   reactionHandler() {
-    console.log('reaction handler');
+    console.info('[UI FeatTweetTweetingComponent] reaction handler');
   }
 
   tweetControlBlur() {

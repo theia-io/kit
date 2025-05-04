@@ -23,10 +23,12 @@ export class GeolocationService {
         const success = (pos: any) => {
           const crd = pos.coords;
 
-          console.log('Your current position is:');
-          console.log(`Latitude : ${crd.latitude}`);
-          console.log(`Longitude: ${crd.longitude}`);
-          console.log(`More or less ${crd.accuracy} meters.`);
+          console.info('[UI GeolocationService] Your current position is:');
+          console.info(`[UI GeolocationService] Latitude : ${crd.latitude}`);
+          console.info(`[UI GeolocationService] Longitude: ${crd.longitude}`);
+          console.info(
+            `[UI GeolocationService] More or less ${crd.accuracy} meters.`
+          );
 
           this.#http
             .get<string>(
@@ -37,7 +39,7 @@ export class GeolocationService {
 
         navigator.geolocation.getCurrentPosition(
           success,
-          (err) => console.log('error', err),
+          (err) => console.info('error', err),
           options
         );
       })

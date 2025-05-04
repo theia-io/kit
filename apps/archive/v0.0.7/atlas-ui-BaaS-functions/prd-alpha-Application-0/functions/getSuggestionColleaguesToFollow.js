@@ -3,14 +3,14 @@ exports = async function (user) {
   let profileCollection = db.collection('profile'),
     userCollection = db.collection('user');
 
-  console.log(user.name);
+  console.info(user.name);
   let allUsers, matchingUsers;
   try {
     allUsers = await userCollection
       .find({ _id: { $ne: BSON.ObjectId(user.id) } })
       .toArray();
   } catch (err) {
-    console.log('Error occurred while finding the match:', err.message);
+    console.info('Error occurred while finding the match:', err.message);
     return { error: err.message };
   }
 
@@ -43,7 +43,7 @@ exports = async function (user) {
     (matchingUser) => matchingUser._id
   );
 
-  console.log('matchingUsersIds', matchingUsersIds);
+  console.info('matchingUsersIds', matchingUsersIds);
 
   let matchingUserProfiles;
   try {
@@ -57,14 +57,14 @@ exports = async function (user) {
       ])
       .toArray();
   } catch (err) {
-    console.log(
+    console.info(
       'Error occurred while finding the matching profiles of matched users:',
       err.message
     );
     return { error: err.message };
   }
 
-  console.log('matchingUserProfiles', matchingUserProfiles);
+  console.info('matchingUserProfiles', matchingUserProfiles);
 
   return matchingUserProfiles;
 };

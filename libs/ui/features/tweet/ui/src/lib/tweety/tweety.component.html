@@ -16,7 +16,9 @@
 @if(tweetedProfile) {
 <ui-kit-comp-account-tile
   [primaryText]="tweetedProfile.name"
-  [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
+  [primarySecondaryText]="
+    'tweeted on ' + tweet.createdAt | date : 'MMM d, h:mm a'
+  "
   [secondaryText]="tweetedProfile.type"
   [picture]="tweetedProfile.pictures?.[0]?.url"
   [link]="profileUrlPath + tweetedProfile.id" />

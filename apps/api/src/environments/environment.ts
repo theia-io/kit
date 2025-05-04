@@ -8,7 +8,7 @@ const packageJson = JSON.parse(fs.readFileSync('./package.json', 'utf-8'));
 // Access the version property
 const version = packageJson.version;
 
-console.log('\n\nmonorepo version (API):', version, '\n\n');
+console.info('\n[ENVIRONMENT local] monorepo version (API) %s', version);
 
 export const environment: Environment = {
   production: false,

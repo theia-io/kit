@@ -10,7 +10,7 @@ exports = async function (args) {
   try {
     result = await dbCollection[executeFn](filter, query, options);
   } catch (err) {
-    console.log('Error occurred while executing findOne:', err.message);
+    console.info('Error occurred while executing findOne:', err.message);
     return { error: err.message };
   }
 

@@ -179,7 +179,6 @@ export class PageFarewellViewComponent {
   readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 
   constructor() {
-    console.log('CREATED');
     this.farewellId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
       .subscribe((id) => {

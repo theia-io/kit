@@ -19,7 +19,6 @@ export class BeFarewellReactionsController {
 
   @Get(':farewellId')
   async getReactionsFarewell(@Param('farewellId') farewellId: string) {
-    console.log('farewellId', farewellId);
     if (!farewellId) {
       throw new HttpException('farewellId is required', HttpStatus.BAD_REQUEST);
     }
@@ -29,7 +28,6 @@ export class BeFarewellReactionsController {
 
   @Post()
   async createReactionsFarewell(@Body() farewellReaction: FarewellReaction) {
-    console.log('farewellReaction', farewellReaction);
     return this.beFarewellReactionsService.createReactionsFarewell(
       farewellReaction
     );

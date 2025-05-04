@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import { auth, ConfigParams } from 'express-openid-connect';
 import session from 'express-session';
 import { AppModule } from './app/app.module';
-import { logger } from './app/middleware/logger';
+import { AppWideLogger, logger } from './app/middleware/logger';
 
 import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
@@ -31,7 +31,7 @@ async function bootstrap() {
   app.enableCors({
     origin: function (origin, callback) {
       if (!isProduction && /localhost:4200/.test(origin)) {
-        console.log('CORS origin:', origin);
+        console.info('[MAIN.ts] CORS origin:', origin);
         // Allow localhost for dev
         callback(null, true);
         return;
@@ -116,13 +116,16 @@ async function bootstrap() {
 
       // session contains the id_token, access_token, user claims
       if (!isProduction) {
-        console.log('\nSession Object:', JSON.stringify(session, null, 2)); // Log the whole session
+        console.info(
+          '\n[MAIN.ts] Session Object: %s',
+          JSON.stringify(session, null, 2)
+        ); // Log the whole session
       }
 
       // Check if authentication was actually successful (session should contain tokens)
       if (!session.id_token || !session.access_token) {
         console.error(
-          'Authentication failed before afterCallback - Missing tokens.'
+          '[MAIN.ts] Authentication failed before afterCallback - Missing tokens.'
         );
         // Redirect to an error page or login
         res.redirect(`${feUrl}?error=auth_failed`);
@@ -157,7 +160,7 @@ async function bootstrap() {
           user = userInfoReq.data;
         }
         if (!isProduction) {
-          console.log('\nUser:', user);
+          console.info('\nUser:', user);
         }
       } catch (error) {
         console.error(
@@ -205,7 +208,7 @@ async function bootstrap() {
         path: '/',
       });
 
-      console.log(
+      console.info(
         '[NEW Session set] Token: %s',
         !isProduction ? appToken : `not visible in prod`
       );
@@ -246,7 +249,7 @@ async function bootstrap() {
   const globalPrefix = configService.getEnvironment('apiPrefix');
   app.setGlobalPrefix(globalPrefix);
 
-  app.use(logger(app));
+  app.use(AppWideLogger(app));
   app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 3000;

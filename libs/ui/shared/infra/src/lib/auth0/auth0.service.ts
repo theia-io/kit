@@ -55,7 +55,11 @@ export class Auth0Service {
     /** TODO use CrossTabSyncService instead of localstorage and keep LS as fallback */
     return new Promise((resolve, reject) => {
       const storageEventHandler = (event: StorageEvent) => {
-        console.log('Storage Event Origin:', event, (event as any).origin);
+        console.info(
+          '[UI Auth0Service] Storage Event Origin:',
+          event,
+          (event as any).origin
+        );
 
         // Check if it's the key we are waiting for
         if (

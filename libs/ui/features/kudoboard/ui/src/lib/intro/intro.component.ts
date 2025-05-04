@@ -28,6 +28,6 @@ export class FeatKudoBoardIntoComponent {
   kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
 
   watchVideo() {
-    console.log('Watch video');
+    console.info('[UI FeatKudoBoardIntoComponent] Watch video');
   }
 }

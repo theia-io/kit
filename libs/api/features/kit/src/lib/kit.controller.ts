@@ -65,8 +65,6 @@ export class KitController {
   @Delete('entity/:accountId')
   @UseGuards(AuthGuard('jwt'))
   async deleteAccountUserProfiles(@Param('accountId') accountId: string) {
-    console.log('deleteAccountUserProfiles 1', accountId);
-
     const account = await this.kitService.deleteAccount(accountId);
     if (!account) {
       throw new HttpException(
@@ -79,13 +77,11 @@ export class KitController {
     if (!user) {
       throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
     }
-    console.log('user 1', user);
 
     const profiles = await this.kitService.userProfiles(user.id);
     if (!profiles || profiles.length === 0) {
       throw new HttpException('Profile not found', HttpStatus.BAD_REQUEST);
     }
-    console.log('profiles 1', profiles);
 
     return true;
   }
@@ -131,7 +127,6 @@ export class KitController {
     @Param('usedId') userId: string,
     @Param('experienceId') experienceId: string
   ) {
-    console.log('deleteUserExperience 1', userId, experienceId);
     return this.kitService.deleteUserExperience(userId, experienceId);
   }
 

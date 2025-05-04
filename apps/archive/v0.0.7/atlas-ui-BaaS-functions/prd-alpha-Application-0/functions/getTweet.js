@@ -13,14 +13,14 @@ exports = async function (arg) {
       profileId: BSON.ObjectId(arg.profileId),
     });
   } catch (err) {
-    console.log('[postTweet] Error occurred while adding tweet:', err.message);
+    console.info('[postTweet] Error occurred while adding tweet:', err.message);
     return { error: 'Error occurred while executing findOne: ' + err.message };
   }
 
   try {
     tweet = await context.functions.execute('normalizeTweet', tweet);
   } catch (err) {
-    console.log(
+    console.info(
       '[postTweet] Error occurred while normalizing tweet:',
       err.message
     );

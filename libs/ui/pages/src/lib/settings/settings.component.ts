@@ -116,7 +116,10 @@ export class PageSettingsComponent implements OnInit {
   }
 
   editExperienceHandler(experience: Experience) {
-    console.log(experience);
+    console.info(
+      '[UI PageSettingsComponent] editExperienceHandler',
+      experience
+    );
   }
 
   deleteExperienceHandler(experience: Experience) {
