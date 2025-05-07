@@ -1,6 +1,6 @@
 <div
-  class="mr-10 flex items-center justify-end text-xs font-medium text-gray-400">
-  <i class="pi pi-replay mr-2"></i>
+  class="mr-10 flex items-center justify-start text-xs font-medium text-gray-400">
+  <i class="pi pi-replay mr-1 font-semibold"></i>
 
   <img
     class="inline-block h-5 w-5 rounded-full mr-1"
@@ -10,16 +10,17 @@
     width="20"
     alt="kitouch profile picture" />
 
-  <a
-    class="mr-1 transition hover:underline"
-    (click)="$event.stopImmediatePropagation()"
-    [routerLink]="[
-      profileUrlPath + (retweetProfile().alias ?? retweetProfile().id)
-    ]">
-    {{ currentProfileId() | retweetWho : retweetProfile() : tweetProfile() }}
-  </a>
-
-  re-tweeted @if(currentProfileId() !== tweetProfile()?.id &&
+  <span>
+    <a
+      class="mr-1 transition hover:underline"
+      (click)="$event.stopImmediatePropagation()"
+      [routerLink]="[
+        profileUrlPath + (retweetProfile().alias ?? retweetProfile().id)
+      ]">
+      {{ currentProfileId() | retweetWho : retweetProfile() : tweetProfile() }}
+    </a>
+  </span>
+  <!-- @if(currentProfileId() !== tweetProfile()?.id &&
   retweetProfile().id !== tweetProfile()?.id && tweetProfile()) {
   <a
     class="ml-1 transition hover:underline"
@@ -33,5 +34,5 @@
   </a>
   } @else {
   {{ currentProfileId() | retweetFromWhom : retweetProfile() : tweetProfile() }}
-  }
+  } -->
 </div>

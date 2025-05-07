@@ -16,7 +16,9 @@
         sharedUserHint
         text="Add image"
         [side]="isMobile ? 'right' : 'left'"
-        [extraIdent]="isMobile ? { top: 5, right: 25 } : { top: 30, left: 65 }">
+        [extraIdent]="
+          isMobile ? { top: 5, right: 25 } : { top: -30, left: 25 }
+        ">
         <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
           @if((background?.length ?? 0) > 24 && isBucketUrl(background)) {
           <ng-template uiKitPicUploadableTemplate>
