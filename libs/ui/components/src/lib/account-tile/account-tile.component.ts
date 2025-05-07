@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { NgClass, NgTemplateOutlet } from '@angular/common';
 import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
   standalone: true,
   templateUrl: './account-tile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  imports: [NgTemplateOutlet, RouterModule],
+  imports: [NgClass, NgTemplateOutlet, RouterModule],
 })
 export class AccountTileComponent {
   primaryText = input<string | undefined | null>();
@@ -19,4 +19,5 @@ export class AccountTileComponent {
   picture = input<string | undefined>(undefined);
   link = input<string | undefined>(undefined);
   alt = input<string>();
+  columnOrientation = input<boolean>(false);
 }
