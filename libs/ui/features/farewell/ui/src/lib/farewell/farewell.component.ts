@@ -69,6 +69,7 @@ import {
   skipUntil,
   Subject,
   take,
+  tap,
 } from 'rxjs';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
@@ -76,6 +77,8 @@ import { FeatFarewellEditorComponent } from '../editor/editor.component';
 import { FeatFarewellInfoPanelComponent } from '../info-panel/info-panel.component';
 import { FeatFarewellStatusComponent } from '../status/status.component';
 import { FeatFarewellViewV2Component } from '../viewV2/viewV2.component';
+import { ToastModule } from 'primeng/toast';
+import { MessageService } from 'primeng/api';
 
 // import to register custom bloats
 
@@ -104,6 +107,7 @@ function extractContent(html: string) {
     ButtonModule,
     TooltipModule,
     OverlayPanelModule,
+    ToastModule,
     //
     FeatFarewellEditorComponent,
     UIKitSmallerHintTextUXDirective,
@@ -114,6 +118,7 @@ function extractContent(html: string) {
     FeatFarewellInfoPanelComponent,
     UiKitSpinnerComponent,
   ],
+  providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent implements AfterViewInit {
@@ -126,10 +131,11 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
+  #location = inject(Location);
   #router = inject(Router);
   #store = inject(Store);
   #actions$ = inject(Actions);
-  #location = inject(Location);
+  #messageService = inject(MessageService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {
@@ -276,6 +282,13 @@ export class FeatFarewellComponent implements AfterViewInit {
         return of([]);
       }
 
+      this.#messageService.add({
+        severity: 'info',
+        summary: 'Adding image',
+        detail: 'Uploading your image to farewell',
+        life: 3000,
+      });
+
       setTimeout(() => {
         const now = new Date();
         this.#store.dispatch(
@@ -297,6 +310,14 @@ export class FeatFarewellComponent implements AfterViewInit {
         take(1),
         // AWS S3 bucket has eventual consistency so need a time for it to be available
         delay(1500),
+        tap(() => {
+          this.#messageService.add({
+            severity: 'success',
+            summary: 'Image added',
+            detail: 'Farewell image has been added',
+            life: 3000,
+          });
+        }),
         map(({ items }) =>
           items.map((item) => ({
             ...item,

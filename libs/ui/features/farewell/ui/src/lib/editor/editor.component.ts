@@ -213,8 +213,9 @@ export class FeatFarewellEditorComponent
     const range = quill.getSelection(true);
     let idx = range.index;
 
-    quill.insertEmbed(idx++, 'divider', false, Quill.sources.USER);
     quill.insertText(idx++, '\n', Quill.sources.USER);
+    quill.insertEmbed(idx++, 'divider', false, Quill.sources.USER);
+    // quill.insertText(idx++, '\n', Quill.sources.USER);
     quill.insertText(idx++, '\n', Quill.sources.USER);
     quill.setSelection(idx++, Quill.sources.SILENT);
     quill.focus();
@@ -263,13 +264,14 @@ export class FeatFarewellEditorComponent
             },
           };
 
+          quill.insertText(idx++, '\n', Quill.sources.USER);
           quill.insertEmbed(
             idx++,
             'image',
             kitQuillImageBloat,
             Quill.sources.USER
           );
-          quill.insertText(idx++, '\n', Quill.sources.USER);
+          // quill.insertText(idx++, '\n', Quill.sources.USER);
           quill.insertText(idx++, '\n', Quill.sources.USER);
           quill.setSelection(idx++, Quill.sources.SILENT);
           quill.focus();
