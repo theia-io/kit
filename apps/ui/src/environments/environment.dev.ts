@@ -21,8 +21,7 @@ export const environment: Environment = {
     kudoboardAnalytics: 'https://apidev.kitouch.io/api/kudoboard-analytics',
   },
   googleTagConfig: null,
-  build: `${KIT_ENVS.development}`,
-  realmAppId: 'application-0-gwcbmrg',
+  build: `${KIT_ENVS.development}-{SCRIPT_REPLACED_PACKAGE_VERSION}`,
   environment: KIT_ENVS.development,
   production: true,
   s3Config: {
