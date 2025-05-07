@@ -64,7 +64,6 @@ import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-
   templateUrl: './actions.component.html',
   imports: [
     AsyncPipe,
-    DatePipe,
     RouterModule,
     //
     PickerComponent,
@@ -92,9 +91,6 @@ export class FeatKudoBoardActionsComponent {
   #confirmationService = inject(ConfirmationService);
 
   #kudoboardId$ = toObservable(this.kudoboardId).pipe(filter(Boolean));
-  #kudoboard$ = this.#kudoboardId$.pipe(
-    switchMap((id) => this.#store.pipe(select(selectKudoBoardById(id))))
-  );
   kudoboard = computed(() =>
     this.#store.selectSignal(selectKudoBoardById(this.kudoboardId()))()
   );
@@ -315,7 +311,7 @@ export class FeatKudoBoardActionsComponent {
           });
       },
       reject: () => {
-        console.log('User chose not to create farewell');
+        console.info('[UI User chose not to create farewell');
       },
     });
   }
@@ -323,7 +319,10 @@ export class FeatKudoBoardActionsComponent {
   claimKudoBoard() {
     const kudoBoard = this.kudoboard();
     if (!kudoBoard) {
-      console.log('[FeatKudoBoardActionsComponent][claimKudoBoard]', kudoBoard);
+      console.error(
+        '[UI FeatKudoBoardActionsComponent][claimKudoBoard]',
+        kudoBoard
+      );
       return;
     }
 

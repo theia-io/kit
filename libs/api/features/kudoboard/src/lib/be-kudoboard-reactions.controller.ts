@@ -30,7 +30,6 @@ export class BeKudoBoardReactionsController {
 
   @Post()
   async createReactionsKudoBoard(@Body() kudoBoardReaction: KudoBoardReaction) {
-    console.log('kudoBoardReaction', kudoBoardReaction);
     return this.beKudoBoardReactionsService.createReactionsKudoBoard(
       kudoBoardReaction
     );

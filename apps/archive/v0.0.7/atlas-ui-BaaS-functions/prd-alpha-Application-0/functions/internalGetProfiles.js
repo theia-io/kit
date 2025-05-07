@@ -8,7 +8,7 @@ exports = async function (args) {
   try {
     findResult = await collection.find({ userId: BSON.ObjectId(args.userId) });
   } catch (err) {
-    console.log(
+    console.info(
       '[internalGetProfiles] Error occurred while executing findOne:',
       err.message
     );
@@ -22,7 +22,7 @@ exports = async function (args) {
         await context.functions.execute('normalizeProfile', profile)
     );
   } catch (err) {
-    console.log('Error occurred while normilising profile:', err.message);
+    console.info('Error occurred while normilising profile:', err.message);
     return { error: err.message };
   }
 

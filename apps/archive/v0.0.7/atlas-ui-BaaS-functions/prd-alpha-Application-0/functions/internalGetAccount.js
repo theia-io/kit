@@ -23,7 +23,7 @@ exports = async function (userId) {
       {}
     );
   } catch (err) {
-    console.log(
+    console.info(
       '[internalGetAccount] Error occurred while executing findOne in account collection:',
       err.message
     );
@@ -36,7 +36,7 @@ exports = async function (userId) {
       findResult
     );
   } catch (err) {
-    console.log('Error occurred while normilising account:', err.message);
+    console.info('Error occurred while normilising account:', err.message);
     return { error: err.message };
   }
 

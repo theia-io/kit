@@ -31,7 +31,6 @@ export interface Environment {
   build: string;
   environment: KIT_ENVS;
   production: boolean; // when true then PRD env; does not matter if development is `true`
-  realmAppId: string; // Realm Web App ID
   // S3
   s3Config: S3Config;
 }

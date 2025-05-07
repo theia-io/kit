@@ -11,7 +11,7 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   @Redirect() // We will redirect to Auth0 logout
   logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    console.log('Executing app-logout: Clearing JWT cookie...');
+    console.info('[MAIN.ts] Executing app-logout: Clearing JWT cookie...');
 
     const isProduction = this.configService.getEnvironment('production');
     const domainBase = isProduction ? '.kitouch.io' : undefined;
@@ -38,7 +38,10 @@ export class AuthController {
     });
     logoutUrl.search = searchString.toString();
 
-    console.log('Redirecting to Auth0 logout:', logoutUrl.toString());
+    console.info(
+      '[MAIN.ts] Redirecting to Auth0 logout:',
+      logoutUrl.toString()
+    );
 
     // 3. Redirect the browser to Auth0 logout
     return { url: logoutUrl.toString() };

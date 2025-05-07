@@ -97,7 +97,6 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     this.editorControl.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe((v) => {
-        console.log('editorControl value changed', v);
         this.#disableAutoFocus();
         this.onChange(v ?? '');
       });

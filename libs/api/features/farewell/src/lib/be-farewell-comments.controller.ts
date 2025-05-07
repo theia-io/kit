@@ -30,7 +30,6 @@ export class BeFarewellCommentsController {
 
   @Post()
   async createCommentsFarewell(@Body() farewellComment: FarewellComment) {
-    console.log('farewellComment', farewellComment);
     return this.beFarewellCommentsService.createCommentFarewell(
       farewellComment
     );
@@ -40,7 +39,6 @@ export class BeFarewellCommentsController {
   async batchCreateCommentsFarewell(
     @Body() farewellComments: Array<FarewellComment>
   ) {
-    console.log('farewellComments', farewellComments);
     return this.beFarewellCommentsService.createCommentsFarewell(
       farewellComments
     );

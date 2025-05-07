@@ -22,13 +22,13 @@ export class GlobalSearchComponent {
 
   search$ = this.searchControl.valueChanges
     .pipe(takeUntilDestroyed())
-    .subscribe((v) => console.log('test inside global search', v));
+    .subscribe((v) => console.info('test inside global search', v));
 
   handleSubmitted(search: string | null) {
-    console.log('handleSubmitted', search);
+    console.info('handleSubmitted', search);
   }
 
   handleTextOnChanged(search: string | null) {
-    console.log('handleTextOnChanged', search);
+    console.info('handleTextOnChanged', search);
   }
 }

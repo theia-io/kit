@@ -25,7 +25,10 @@ export class CrossTabSyncService implements OnDestroy {
     if ('BroadcastChannel' in window) {
       this.channel = new BroadcastChannel(this.channelName);
       this.channel.onmessage = (event: MessageEvent<CrossTabMessage>) => {
-        console.log('Received cross-tab message:', event.data);
+        console.info(
+          '[UI CrossTabSyncService] Received cross-tab message:',
+          event.data
+        );
         this.messageSubject.next(event.data);
       };
       this.channel.onmessageerror = (event) => {
@@ -39,7 +42,10 @@ export class CrossTabSyncService implements OnDestroy {
 
   sendMessage(message: CrossTabMessage): void {
     if (this.channel) {
-      console.log('Sending cross-tab message:', message);
+      console.info(
+        '[UI CrossTabSyncService] Sending cross-tab message:',
+        message
+      );
       this.channel.postMessage(message);
     } else {
       console.warn(

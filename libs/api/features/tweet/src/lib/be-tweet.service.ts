@@ -239,7 +239,6 @@ export class BeTweetService {
       throw new HttpException('Tweet not found', HttpStatus.NOT_FOUND);
     }
 
-    console.log('tweet.profileId 2', tweet, tweet.profileId?.toString());
     if (
       !loggedInUserProfiles.some(
         (loggedInProfileId) => tweet.profileId?.toString() === loggedInProfileId

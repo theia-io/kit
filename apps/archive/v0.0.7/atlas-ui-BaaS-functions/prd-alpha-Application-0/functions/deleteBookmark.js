@@ -11,7 +11,7 @@ exports = async function (arg) {
       profileIdBookmarker: BSON.ObjectId(arg.profileIdBookmarker),
     });
   } catch (err) {
-    console.log(
+    console.info(
       'Error occurred while executing findOneAndDelete:',
       err.message
     );

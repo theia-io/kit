@@ -66,10 +66,6 @@ export class FeatSettingsSocialsComponent {
   });
 
   constructor() {
-    this.socialForm.valueChanges.subscribe((v) => {
-      console.log(v, this.socialForm.valid);
-    });
-
     effect(() => {
       const socials = this.profile().socials;
       if (socials) {
@@ -104,7 +100,7 @@ export class FeatSettingsSocialsComponent {
     }
 
     this.savingSocials.emit();
-    console.log(profile, this.socialForm.valid, this.socialForm.value);
+    console.info(profile, this.socialForm.valid, this.socialForm.value);
     this.#store.dispatch(
       FeatProfileApiActions.updateProfile({
         profile,
