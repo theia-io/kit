@@ -5,7 +5,7 @@ import cookieParser from 'cookie-parser';
 import { auth, ConfigParams } from 'express-openid-connect';
 import session from 'express-session';
 import { AppModule } from './app/app.module';
-import { AppWideLogger, logger } from './app/middleware/logger';
+import { AppWideLogger } from './app/middleware/logger';
 
 import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
