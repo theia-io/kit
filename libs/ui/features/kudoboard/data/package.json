@@ -1,9 +1,9 @@
 {
   "name": "@kitouch/data-kudoboard",
-  "version": "6.0.0-0",
+  "version": "7.0.0-0",
   "peerDependencies": {
-    "@kitouch/shared-models": "6.0.0-0",
-    "@kitouch/utils": "6.0.0-0",
+    "@kitouch/shared-models": "7.0.0-0",
+    "@kitouch/utils": "7.0.0-0",
     "@ngrx/store": "18.0.2"
   },
   "sideEffects": false
