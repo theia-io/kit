@@ -1,4 +1,4 @@
-import { filter } from 'rxjs';
+import { Auth0Kit } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
@@ -10,10 +10,9 @@ import {
   Post,
   Req,
 } from '@nestjs/common';
+import { Request } from 'express';
 import { BeFarewellCommentsService } from './be-farewell-comments.service';
 import { FarewellComment } from './schemas/farewell-comments.schema';
-import { Request } from 'express';
-import { Auth0Kit } from '@kitouch/shared-models';
 
 @Controller('farewell-comments')
 export class BeFarewellCommentsController {

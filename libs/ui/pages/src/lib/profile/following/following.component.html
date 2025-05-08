@@ -11,29 +11,34 @@
   [enableService]="false"
   [closable]="false" />
 
-@for (profile of followingProfiles; track $index) {
+@for (followingProfile of followingProfiles; track $index) {
 <ui-kit-comp-card class="block w-full mb-2">
   <div class="flex">
     <ui-kit-comp-account-tile
       class="grow"
-      [primaryText]="profile.name"
-      [primarySecondaryText]="profile.title"
-      [picture]="profilePicture(profile)"
-      [link]="profileUrlPath + (profile.alias ?? profile.id)" />
+      [primaryText]="followingProfile.name"
+      [primarySecondaryText]="followingProfile.title"
+      [picture]="profilePicture(followingProfile)"
+      [link]="
+        profileUrlPath + (followingProfile.alias ?? followingProfile.id)
+      " />
 
     <div class="min-w-[158px]">
-      @if(profile.id === currentProfile()?.id) {
-      <div class="flex justify-center items-center">
-        Follows you
-        <span class="ml-4 text-xl">🫂</span>
-      </div>
+      @if(followingProfile.id === currentProfile()?.id) {
+      <span class="text-sm font-semibold">{{ profile()?.name }}</span>
+      <span class="text-sm font-medium text-gray-400">
+        follows you
+        <span class="text-xl">🫂🔥</span>
+      </span>
       } @else {
       <ui-kit-follow-button
-        [alreadyFollowing]="currentProfileFollowingSet().has(profile.id)"
+        [alreadyFollowing]="
+          currentProfileFollowingSet().has(followingProfile.id)
+        "
         (click)="
-          currentProfileFollowingSet().has(profile.id)
-            ? unFollowProfileHandler(profile)
-            : followProfileHandler(profile)
+          currentProfileFollowingSet().has(followingProfile.id)
+            ? unFollowProfileHandler(followingProfile)
+            : followProfileHandler(followingProfile)
         " />
       }
     </div>

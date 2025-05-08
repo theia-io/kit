@@ -29,7 +29,11 @@ export class AWSSecretsService {
       throw error;
     }
 
-    console.info('[AWSSecretsService] success! @TODO @Danylo check me');
+    console.info(
+      '[AWSSecretsService] success! @TODO @Danylo check me: %s, %s',
+      response,
+      response.SecretString
+    );
 
     // const secretString = response.SecretString;
     // console.info('[AWSSecretsService] secretString %s, %s', secretString, response);

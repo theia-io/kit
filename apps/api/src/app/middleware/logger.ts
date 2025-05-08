@@ -8,13 +8,11 @@ export const AppWideLogger =
     const configService = app.get(ConfigService);
 
     console.info(
-      `[AppWideLogger][Request]: ${req.method}, ${req.url}, ${JSON.stringify(
-        req.query
-      )}, ${JSON.stringify(
-        req.params
-      )}, version: ${configService.getEnvironment('version')}, ${JSON.stringify(
-        configService.getEnvironment()
-      )}`
+      `[AppWideLogger][Request]: ${req.method}, ${req.url}, \n${JSON.stringify(
+        req
+      )},\nversion: ${configService.getEnvironment(
+        'version'
+      )}, ${JSON.stringify(configService.getEnvironment())}`
     );
 
     next();

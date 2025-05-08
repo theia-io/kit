@@ -10,6 +10,7 @@ import { AppWideLogger } from './app/middleware/logger';
 import { AuthService } from '@kitouch/be-auth';
 import { ConfigService } from '@kitouch/be-config';
 import { KitService } from '@kitouch/be-kit';
+import { LoggingInterceptor } from '@kitouch/infra';
 import { Auth0Kit, Auth0User } from '@kitouch/shared-models';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
@@ -250,6 +251,7 @@ async function bootstrap() {
   app.setGlobalPrefix(globalPrefix);
 
   app.use(AppWideLogger(app));
+  app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe());
 
   const port = process.env.PORT || 3000;

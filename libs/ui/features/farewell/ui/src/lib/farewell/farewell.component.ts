@@ -52,10 +52,12 @@ import { APP_PATH } from '@kitouch/shared-constants';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
@@ -77,8 +79,6 @@ import { FeatFarewellEditorComponent } from '../editor/editor.component';
 import { FeatFarewellInfoPanelComponent } from '../info-panel/info-panel.component';
 import { FeatFarewellStatusComponent } from '../status/status.component';
 import { FeatFarewellViewV2Component } from '../viewV2/viewV2.component';
-import { ToastModule } from 'primeng/toast';
-import { MessageService } from 'primeng/api';
 
 // import to register custom bloats
 
@@ -263,7 +263,7 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   saveImages(): (
     images: Array<File>
-  ) => Observable<Array<ContractUploadedMedia>> {
+  ) => Observable<Array<ContractUploadedMedia> | null> {
     const getFarewellId = () => this.farewell()?.id;
     const getProfileId = () => this.currentProfile()?.id;
 
@@ -305,29 +305,42 @@ export class FeatFarewellComponent implements AfterViewInit {
         );
       });
 
-      return this.#actions$.pipe(
-        ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
-        take(1),
-        // AWS S3 bucket has eventual consistency so need a time for it to be available
-        delay(1500),
-        tap(() => {
-          this.#messageService.add({
-            severity: 'success',
-            summary: 'Image added',
-            detail: 'Farewell image has been added',
-            life: 3000,
-          });
-        }),
-        map(({ items }) =>
-          items.map((item) => ({
-            ...item,
-            url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
-            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
-            ),
-          }))
+      return merge(
+        this.#actions$.pipe(
+          ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
+          // AWS S3 bucket has eventual consistency so need a time for it to be available
+          delay(1500),
+          tap(() => {
+            this.#messageService.add({
+              severity: 'success',
+              summary: 'Image added',
+              detail: 'Farewell image has been added',
+              life: 3000,
+            });
+          }),
+          map(({ items }) =>
+            items.map((item) => ({
+              ...item,
+              url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
+              optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
+                getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
+              ),
+            }))
+          )
+        ),
+        this.#actions$.pipe(
+          ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaFailure),
+          tap(({ message }) => {
+            this.#messageService.add({
+              severity: 'warn',
+              summary: 'Image was not added',
+              detail: message,
+              life: 3000,
+            });
+          }),
+          map(() => null)
         )
-      );
+      ).pipe(take(1));
     };
   }
 

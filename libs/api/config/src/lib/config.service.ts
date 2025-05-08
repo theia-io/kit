@@ -15,17 +15,14 @@ export class ConfigService {
     secretsService: AWSSecretsService
   ) {
     this.#environment = environment;
-    console.info('[ConfigService] setting config');
     this.#setConfig().then(() => {
       console.info('[ConfigService] setting config done Promise');
     });
-    console.info('[ConfigService] setting config done');
 
     console.info('[ConfigService] getting secrets');
     secretsService.getSecrets().then(() => {
       console.info('[ConfigService] getting secrets done Promise');
     });
-    console.info('[ConfigService] getting secrets done');
   }
 
   getEnvironment<T extends keyof Environment>(key: T): Environment[T];
@@ -104,6 +101,7 @@ export class ConfigService {
       },
     };
 
+    // if (true) {
     if (!this.#environment.production) {
       console.info(
         '\n[ConfigService] environment: %s',
@@ -113,6 +111,7 @@ export class ConfigService {
         '\n [ConfigService] config: %s',
         JSON.stringify(this.#config)
       );
+      console.info('\n [ConfigService] process: %s', process.env);
     }
   }
 }

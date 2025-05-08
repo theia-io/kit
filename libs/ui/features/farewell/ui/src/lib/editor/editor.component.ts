@@ -70,7 +70,9 @@ export class FeatFarewellEditorComponent
   implements OnDestroy, ControlValueAccessor
 {
   imageStorageProvider =
-    input<(images: Array<File>) => Observable<Array<ContractUploadedMedia>>>();
+    input<
+      (images: Array<File>) => Observable<Array<ContractUploadedMedia> | null>
+    >();
   deleteImage = input<(imageSrc: string) => void>();
   /** e.g. when user updates title we don't want to autofocus editor automatically */
   disableEditorAutoFocus = input<boolean>(false);
@@ -248,8 +250,14 @@ export class FeatFarewellEditorComponent
       );
       const insertedImageIdx = idx - 1;
 
-      imagesStorageProvider$.subscribe(
-        (urls) => {
+      imagesStorageProvider$.subscribe({
+        next: (urls) => {
+          if (urls === null) {
+            quill.deleteText(insertedImageIdx, 1, Quill.sources.USER);
+            this.#keepSideActionOpened({ quill });
+            return;
+          }
+
           this.#editorControlEnabled = true;
           const imageSrc = urls[0];
 
@@ -278,12 +286,12 @@ export class FeatFarewellEditorComponent
 
           this.quillTextChangeActive.set(true);
         },
-        () => {
+        error: () => {
           this.#editorControlEnabled = true;
           quill.deleteText(insertedImageIdx, 1, Quill.sources.USER);
           this.#keepSideActionOpened({ quill });
-        }
-      );
+        },
+      });
     } else {
       console.warn(
         'Image storage provider has not been provided, image is not loaded'
