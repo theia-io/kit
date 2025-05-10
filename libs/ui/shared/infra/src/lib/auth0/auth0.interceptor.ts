@@ -38,7 +38,8 @@ export function authInterceptor(
         router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignInSemiSilent}`]);
       }
 
-      if (httpResponseError && unauthorized) {
+      // if to do it also for `kitEndpoint` then we get into infinite loop
+      if (httpResponseError && !kitEndpoint && unauthorized) {
         console.info(
           '[authInterceptor] ->3.2: user needs authentication, started auth flow',
           req

@@ -52,7 +52,7 @@ export class Auth0Effects {
           ),
           tap(() => this.#router.navigateByUrl(this.#router.url)),
           catchError(() => {
-            this.#router.navigateByUrl('/');
+            // this.#router.navigateByUrl('/');
             return of(FeatAuth0Events.tryAuthFailure());
           })
         )
