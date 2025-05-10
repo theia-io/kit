@@ -1,7 +1,7 @@
 import { AsyncPipe } from '@angular/common';
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import {
   SharedNavBarStaticComponent,
   SharedStaticInfoComponent,
@@ -48,6 +48,7 @@ import { delay, of, switchMap, take } from 'rxjs';
 export class KitStaticComponent implements OnInit {
   #destroyRef = inject(DestroyRef);
   #store = inject(Store);
+  #router = inject(Router);
   #auth0Service = inject(Auth0Service);
 
   currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
@@ -60,18 +61,23 @@ export class KitStaticComponent implements OnInit {
 
   // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit(): void {
-    // this.#auth0Service.loggedIn$
-    //   .pipe(
-    //     take(1),
-    //     takeUntilDestroyed(this.#destroyRef),
-    //   )
-    //   .subscribe(
-    //     (loggedIn) => {
-    //       if (!loggedIn) {
-    //         this.#store.dispatch(FeatAuth0Events.tryAuth());
-    //       }
-    //     }
-    //   );
+    const currentUrl = this.#router.url;
+    console.log('\n[KitStaticComponent] ngOnInit:', currentUrl);
+    if (currentUrl.includes('/s/')) {
+      of(true)
+        .pipe(
+          delay(2000),
+          switchMap(() => this.#auth0Service.loggedIn$),
+          take(1),
+          takeUntilDestroyed(this.#destroyRef)
+        )
+        .subscribe((loggedIn) => {
+          console.log('\n[KitStaticComponent] ngOnInit 1:', currentUrl);
+          if (!loggedIn) {
+            this.#store.dispatch(FeatAuth0Events.tryAuth());
+          }
+        });
+    }
   }
 
   handleGetStarted() {

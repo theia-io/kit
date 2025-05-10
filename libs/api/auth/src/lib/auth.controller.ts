@@ -19,13 +19,13 @@ export class AuthController {
     const domainBase = isProduction ? '.kitouch.io' : undefined;
 
     // 1. Clear your application's JWT cookie
-    // res.clearCookie('jwt', {
-    //   domain: domainBase,
-    //   httpOnly: true,
-    //   secure: isProduction,
-    //   sameSite: isProduction ? 'lax' : false,
-    //   path: '/',
-    // });
+    res.clearCookie('jwt', {
+      domain: domainBase,
+      httpOnly: true,
+      secure: isProduction,
+      sameSite: isProduction ? 'lax' : false,
+      path: '/',
+    });
     (res as any)?.oidc?.logout();
 
     // --- ADD DELAY HERE ---
@@ -34,13 +34,13 @@ export class AuthController {
     console.log('DELAYED FOR 1 SECOND...');
     // --- END DELAY ---
 
-    res.clearCookie('jwt', {
-      domain: domainBase,
-      httpOnly: true,
-      secure: isProduction,
-      sameSite: isProduction ? 'lax' : false,
-      path: '/',
-    });
+    // res.clearCookie('jwt', {
+    //   domain: domainBase,
+    //   httpOnly: true,
+    //   secure: isProduction,
+    //   sameSite: isProduction ? 'lax' : false,
+    //   path: '/',
+    // });
 
     // 2. Construct the Auth0 logout URL
     const logoutUrl = new URL(

@@ -50,7 +50,7 @@ export class AuthorizedFeatureDirective implements AfterViewInit, OnDestroy {
       event.preventDefault();
 
       this.dialogRef = this.dialogService.open(SignInAuth0Component, {
-        header: 'Instant sign-in / register 🫡',
+        header: 'Instant sign-in or Sign-up 🫡',
         modal: true,
         draggable: false,
         dismissableMask: true,

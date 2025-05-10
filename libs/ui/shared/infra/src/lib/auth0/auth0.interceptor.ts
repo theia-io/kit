@@ -27,7 +27,7 @@ export function authInterceptor(
         silentSignInExpected = err.status === 428,
         kitEndpoint = req.url.includes('api/kit');
 
-      if (httpResponseError && silentSignInExpected) {
+      if (httpResponseError && kitEndpoint && silentSignInExpected) {
         console.log(
           '[authInterceptor] ->3: HTTP ERROR - silent sign in expected',
           router.url,
@@ -36,11 +36,6 @@ export function authInterceptor(
 
         auth0Service.signIn(router.url);
         router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignInSemiSilent}`]);
-      }
-
-      if (httpResponseError && kitEndpoint && unauthorized) {
-        console.info('[authInterceptor] ->3.1: User resole failed', req);
-        return throwError(() => err);
       }
 
       if (httpResponseError && unauthorized) {
