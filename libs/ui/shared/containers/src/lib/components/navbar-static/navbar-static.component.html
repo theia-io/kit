@@ -1,141 +1,147 @@
-<div class="p-4 flex items-center nav-shadow">
-  <shared-logo class="block mr-4" />
+<div class="relative">
+  <div class="fixed h-[200px] -top-[128px] w-full bg-secondary"></div>
 
-  @let desktop = (deviceService.device$ | async) === deviceTypes.Desktop; @let
-  notMobile = (deviceService.device$ | async) !== deviceTypes.Mobile;
+  <div class="relative cursor-pointer z-10 p-4 flex items-center nav-shadow">
+    <shared-logo class="block mr-4" />
 
-  <!-- Logged in user -->
-  @if(userLoggedIn()) {
-  <!-- Desktop -->
-  @if (desktop) {
-  <!-- Desktop -->
-  @for (navItem of navBarItems; track $index) {
-  <a
-    [routerLink]="navItem.routerLink"
-    routerLinkActive="bg-slate-200 rounded text-gray-900"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2">
-    {{ navItem.label }}
-  </a>
-  } }
-  <!-- Mobile  -->
-  @else {
-  <a
-    [routerLink]="homeUrl"
-    routerLinkActive="bg-slate-200 rounded text-gray-900"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2">
-    Feed
-  </a>
-  } }
-  <!-- Not logged in user -->
-  @else if(!hideLogin() && notMobile) {
-  <a
-    [routerLink]="loginUrl"
-    routerLinkActive="bg-slate-200 rounded text-gray-900"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2">
-    Sign in
-  </a>
+    @let desktop = (deviceService.device$ | async) === deviceTypes.Desktop; @let
+    notMobile = (deviceService.device$ | async) !== deviceTypes.Mobile;
 
-  } @if((deviceService.device$ | async) !== deviceTypes.Mobile) {
-  <p-button
-    [text]="true"
-    (onClick)="handleFeaturesClick($event)"
-    [styleClass]="
-      (featuresOpened() ? 'text-gray-900' : 'text-gray-500') +
-      ' duration-100 rounded-lg font-medium [text-align:_inherit] text-sm hover:text-gray-700'
-    ">
-    Features
-    <i
-      class="pi text-xs ml-1"
-      [ngClass]="[featuresOpened() ? 'pi-chevron-up' : 'pi-chevron-down']"></i>
-  </p-button>
-  <p-overlayPanel
-    #op
-    (onHide)="featuresOpened.set(false)"
-    (onShow)="featuresOpened.set(true)">
-    <ul>
-      <li>
-        <a
-          [routerLink]="featuresConnectedUrl"
-          routerLinkActive="bg-slate-200 rounded text-gray-900"
-          uiKitSmallTextTailwindClasses
-          class="block px-4 py-2">
-          Connected
+    <!-- Logged in user -->
+    @if(userLoggedIn()) {
+    <!-- Desktop -->
+    @if (desktop) {
+    <!-- Desktop -->
+    @for (navItem of navBarItems; track $index) {
+    <a
+      [routerLink]="navItem.routerLink"
+      routerLinkActive="bg-slate-200 rounded text-gray-900"
+      uiKitSmallTextTailwindClasses
+      class="px-4 py-2">
+      {{ navItem.label }}
+    </a>
+    } }
+    <!-- Mobile  -->
+    @else {
+    <a
+      [routerLink]="homeUrl"
+      routerLinkActive="bg-slate-200 rounded text-gray-900"
+      uiKitSmallTextTailwindClasses
+      class="px-4 py-2">
+      Feed
+    </a>
+    } }
+    <!-- Not logged in user -->
+    @else if(!hideLogin() && notMobile) {
+    <a
+      [routerLink]="loginUrl"
+      routerLinkActive="bg-slate-200 rounded text-gray-900"
+      uiKitSmallTextTailwindClasses
+      class="px-4 py-2">
+      Sign in
+    </a>
 
-          <br />
-          <span
+    } @if((deviceService.device$ | async) !== deviceTypes.Mobile) {
+    <p-button
+      [text]="true"
+      (onClick)="handleFeaturesClick($event)"
+      [styleClass]="
+        (featuresOpened() ? 'text-gray-900' : 'text-gray-500') +
+        ' duration-100 rounded-lg font-medium [text-align:_inherit] text-sm hover:text-gray-700'
+      ">
+      Features
+      <i
+        class="pi text-xs ml-1"
+        [ngClass]="[
+          featuresOpened() ? 'pi-chevron-up' : 'pi-chevron-down'
+        ]"></i>
+    </p-button>
+    <p-overlayPanel
+      #op
+      (onHide)="featuresOpened.set(false)"
+      (onShow)="featuresOpened.set(true)">
+      <ul>
+        <li>
+          <a
+            [routerLink]="featuresConnectedUrl"
+            routerLinkActive="bg-slate-200 rounded text-gray-900"
             uiKitSmallTextTailwindClasses
-            [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
-            Stay connected with your colleagues
-          </span>
-        </a>
-      </li>
-      <li>
-        <a
-          [routerLink]="featuresKudoboardUrl"
-          routerLinkActive="bg-slate-200 rounded text-gray-900"
-          uiKitSmallTextTailwindClasses
-          class="block px-4 py-2">
-          Kudo boards
+            class="block px-4 py-2">
+            Connected
 
-          <br />
-          <span
+            <br />
+            <span
+              uiKitSmallTextTailwindClasses
+              [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
+              Stay connected with your colleagues
+            </span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="featuresKudoboardUrl"
+            routerLinkActive="bg-slate-200 rounded text-gray-900"
             uiKitSmallTextTailwindClasses
-            [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
-            Say Kudo to your colleagues, friends or family! Manage at ease
-          </span>
-        </a>
-      </li>
-      <li>
-        <a
-          [routerLink]="featuresFarewellUrl"
-          routerLinkActive="bg-slate-200 rounded text-gray-900"
-          uiKitSmallTextTailwindClasses
-          class="block px-4 py-2">
-          Farewell
+            class="block px-4 py-2">
+            Kudo boards
 
-          <br />
-          <span
+            <br />
+            <span
+              uiKitSmallTextTailwindClasses
+              [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
+              Say Kudo to your colleagues, friends or family! Manage at ease
+            </span>
+          </a>
+        </li>
+        <li>
+          <a
+            [routerLink]="featuresFarewellUrl"
+            routerLinkActive="bg-slate-200 rounded text-gray-900"
             uiKitSmallTextTailwindClasses
-            [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
-            No more farewell hassle. Manage at your time
-          </span>
-        </a>
-      </li>
-    </ul>
-  </p-overlayPanel>
-  }
+            class="block px-4 py-2">
+            Farewell
 
-  <a
-    [routerLink]="introduceKitUrl"
-    routerLinkActive="bg-slate-200 rounded text-gray-900"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2"
-    [class.ml-4]="userLoggedIn()">
-    @if(desktop) { How it works? 🤔 } @else { About }
-  </a>
+            <br />
+            <span
+              uiKitSmallTextTailwindClasses
+              [klasses]="{ text: { size: 'text-xs', hoverColor: '' } }">
+              No more farewell hassle. Manage at your time
+            </span>
+          </a>
+        </li>
+      </ul>
+    </p-overlayPanel>
+    }
 
-  <a
-    [href]="
-      'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
-      environment.build
-    "
-    target="_blank"
-    pTooltip="Write us email to info@kitouch.io"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2 underline">
-    Help ℹ️
-  </a>
+    <a
+      [routerLink]="introduceKitUrl"
+      routerLinkActive="bg-slate-200 rounded text-gray-900"
+      uiKitSmallTextTailwindClasses
+      class="px-4 py-2">
+      @if(desktop) { How it works? 🤔 } @else { About }
+    </a>
 
-  @if(!userLoggedIn() && !hideLogin()) {
-  <a
-    (click)="handleGetStarted()"
-    uiKitSmallTextTailwindClasses
-    [klasses]="getStartedKlassOverwrite"
-    class="px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">
-    Sign in
-  </a>
-  }
+    <a
+      [href]="
+        'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
+        environment.build
+      "
+      target="_blank"
+      pTooltip="Write us email to info@kitouch.io"
+      uiKitSmallTextTailwindClasses
+      class="px-4 py-2 underline">
+      Help ℹ️
+    </a>
+
+    @if(!userLoggedIn() && !hideLogin()) {
+    <a
+      (click)="handleGetStarted()"
+      uiKitSmallTextTailwindClasses
+      [klasses]="getStartedKlassOverwrite"
+      class="flex items-center px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">
+      <i class="pi pi-sign-in mr-2 text-sm font-semibold"></i>
+      Sign in
+    </a>
+    }
+  </div>
 </div>

@@ -23,17 +23,25 @@ export class AWSSecretsService {
         })
       );
     } catch (error) {
-      console.error('getSecrets error', error);
+      console.error('[AWSSecretsService] getSecrets error', error);
       // For a list of exceptions thrown, see
       // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
-      throw error;
+      return null;
     }
 
+    const secretString = response.SecretString;
+
     console.info(
-      '[AWSSecretsService] success! @TODO @Danylo check me: %s, %s',
-      response,
-      response.SecretString
+      '[AWSSecretsService] success! @TODO @Danylo check me: \nObject:\n%s, \nString: \n%s',
+      JSON.stringify(response),
+      secretString
     );
+
+    const { 'kit-api-secrets-dev': kitApiSecrets } = JSON.parse(
+      secretString ?? '{}'
+    );
+
+    console.log('[AWSSecretsService] kitApiSecrets', kitApiSecrets);
 
     // const secretString = response.SecretString;
     // console.info('[AWSSecretsService] secretString %s, %s', secretString, response);

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { RawBodyInterceptor } from './interceptors/raw-body.interceptor';
+import { LoggingInterceptor, RawBodyInterceptor } from './interceptors';
 
 @Module({
   controllers: [],
-  providers: [RawBodyInterceptor],
-  exports: [RawBodyInterceptor],
+  providers: [RawBodyInterceptor, LoggingInterceptor],
+  exports: [RawBodyInterceptor, LoggingInterceptor],
 })
 export class InfraModule {}

@@ -1,4 +1,11 @@
-import { Directive, effect, HostBinding, input } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Directive,
+  effect,
+  HostBinding,
+  inject,
+  input,
+} from '@angular/core';
 
 export type KlassOverwrite = {
   text?: {
@@ -24,6 +31,8 @@ export class UIKitSmallerHintTextUXDirective {
   @HostBinding('class')
   className = LINK_TAILWIND_CLASSES;
 
+  #cdr = inject(ChangeDetectorRef);
+
   constructor() {
     effect(() => {
       // those classes have to be used somewhere so they are not removed from bundle by tailwind postcss bundler
@@ -43,6 +52,8 @@ export class UIKitSmallerHintTextUXDirective {
       }
           hover:${backgroundHoverColor ?? 'bg-gray-100'}
         `;
+
+      this.#cdr.detectChanges();
     });
   }
 }

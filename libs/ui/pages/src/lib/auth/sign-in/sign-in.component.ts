@@ -6,17 +6,17 @@ import {
   OnInit,
   signal,
 } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { SignInAuth0Component, slideInOutAnimation } from '@kitouch/containers';
 import { FeatFarewellIntoComponent } from '@kitouch/feat-farewell-ui';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
-import { DeviceService, RouterEventsService } from '@kitouch/shared-infra';
+import { DeviceService } from '@kitouch/shared-infra';
 import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
 import { startWith } from 'rxjs';
 
-const ANIMATION_REPEAT = 2500;
+const ANIMATION_REPEAT = 5000;
 
 @Component({
   standalone: true,
@@ -37,9 +37,6 @@ const ANIMATION_REPEAT = 2500;
   animations: [slideInOutAnimation],
 })
 export class PageSignInComponent implements OnInit {
-  #router = inject(Router);
-  #routerEventsService = inject(RouterEventsService);
-
   hintHidden$ = inject(DeviceService).isMobile$.pipe(startWith(true));
 
   kittenVisibleTimeout: NodeJS.Timeout;
@@ -66,12 +63,14 @@ export class PageSignInComponent implements OnInit {
   #animateKitten() {
     const salt = Math.random() + 0.5;
     const visible = this.kittenVisible() === 'in';
+
     this.kittenVisibleTimeout = setTimeout(
       () => {
         this.kittenVisible.set(visible ? 'out' : 'in');
         this.#animateKitten();
       },
-      !visible ? salt * ANIMATION_REPEAT * 2 : salt * ANIMATION_REPEAT
+      // !visible ? salt * ANIMATION_REPEAT * 2 :
+      salt * ANIMATION_REPEAT
     );
   }
 }

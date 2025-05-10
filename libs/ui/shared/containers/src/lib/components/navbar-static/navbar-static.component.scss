@@ -1,14 +1,3 @@
-:host {
-  background-color: var(--background-color-secondary);
-  display: block;
-  cursor: pointer;
-  transition: 1s;
-
-  &:hover {
-    background-color: var(--background-color-secondary-hover);
-  }
-}
-
 .nav-shadow {
   box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px,
     rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px,
