@@ -1,3 +1,4 @@
+import { OptionalJwtAuthGuard } from '@kitouch/be-auth';
 import {
   Auth0Kit,
   Experience,
@@ -27,11 +28,23 @@ export class KitController {
   constructor(private kitService: KitService) {}
 
   @Get()
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(OptionalJwtAuthGuard)
   async resolveSessionAccountUserProfiles(@Req() req: Request) {
     const authUser = req.user;
+
+    const isAuthenticated = (req as any).oidc?.isAuthenticated();
+    console.log('(req as any).oidc?.isAuthenticated');
+    console.log(isAuthenticated);
+
+    if (isAuthenticated && !authUser) {
+      throw new HttpException(
+        'Redirect to auth provider',
+        HttpStatus.PRECONDITION_REQUIRED
+      );
+    }
+
     if (!authUser) {
-      throw new HttpException('User not found', HttpStatus.BAD_REQUEST);
+      throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }
 
     return this.getAccountUserProfiles((authUser as Auth0Kit).email);

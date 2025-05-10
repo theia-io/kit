@@ -153,10 +153,10 @@ export class FeatFarewellCommentsComponent {
       .pipe(
         takeUntilDestroyed(),
         filter((comments) => comments.length > 0),
-        distinctUntilChanged(),
         take(1),
         // so comments can be rendered
-        delay(100)
+        delay(100),
+        distinctUntilChanged()
       )
       .subscribe(() => {
         this.#photoService.initializeGallery({
@@ -209,7 +209,6 @@ export class FeatFarewellCommentsComponent {
         ofType(
           FeatFarewellCommentActions.uploadFarewellCommentStorageMediaSuccess
         ),
-        take(1),
         // AWS S3 bucket has eventual consistency so need a time for it to be available
         delay(1500),
         map(({ items }) =>

@@ -31,7 +31,7 @@ export class LoggingInterceptor implements NestInterceptor {
       `[Request] ${method} ${url} - account id: ${
         account?.id || 'N/A'
       } User id: ${user?.id || 'N/A'}, profile id ${
-        profiles?.[0]?.id
+        profiles?.[0]?.id || 'N/A'
       }, email: ${email || 'N/A'}, IP: ${request.ip}`
     );
 

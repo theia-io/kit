@@ -173,9 +173,9 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   $hintHidden = this.#deviceService.isMobile$.pipe(startWith(true));
 
   #masonryReadyTrigger$ = this.kudoboardComments$.pipe(
-    takeUntilDestroyed(this.#destroyRef),
     filter((comments) => comments && comments.length > 0),
     delay(100),
+    takeUntilDestroyed(this.#destroyRef),
     shareReplay({
       refCount: true,
       bufferSize: 1,
@@ -239,7 +239,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
     });
 
     this.kudoboardComments$
-      .pipe(takeUntilDestroyed(this.#destroyRef), delay(1000))
+      .pipe(delay(1000), takeUntilDestroyed(this.#destroyRef))
       .subscribe(() =>
         this.#photoService.initializeGallery({
           gallery: '#kudo-posts-media-gallery',

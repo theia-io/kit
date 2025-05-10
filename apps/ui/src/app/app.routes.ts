@@ -66,6 +66,12 @@ export const appRoutes: Route[] = [
           pages.then((comp) => comp.PageRedirectAuth0Component),
       },
       {
+        path: APP_PATH_STATIC_PAGES.SignInSemiSilent,
+        title: 'Kitouch - Semi Silent Sign In',
+        loadComponent: () =>
+          pages.then((comp) => comp.PageSignInResolveSemiSilentComponent),
+      },
+      {
         path: APP_PATH_STATIC_PAGES.Join,
         title: 'Kitouch - Join',
         loadComponent: () => pages.then((comp) => comp.PageJoinComponent),

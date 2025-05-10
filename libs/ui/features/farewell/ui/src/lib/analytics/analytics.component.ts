@@ -61,10 +61,10 @@ export class FeatFarewellAnalyticsComponent {
       this.farewellAnalytics$.pipe(filter(Boolean)),
     ])
       .pipe(
-        takeUntilDestroyed(),
         take(1),
         delay(2500),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
+        withLatestFrom(this.#store.pipe(select(selectCurrentProfile))),
+        takeUntilDestroyed()
       )
       .subscribe(([[farewell, analytics], currentProfile]) =>
         this.#visitorActions(farewell.profileId, analytics, currentProfile)

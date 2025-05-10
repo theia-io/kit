@@ -59,11 +59,11 @@ export class FeatKudoBoardAnalyticsComponent {
   constructor() {
     this.kudoboardId$
       .pipe(
-        takeUntilDestroyed(),
         filter(Boolean),
         take(1),
         delay(2500),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
+        withLatestFrom(this.#store.pipe(select(selectCurrentProfile))),
+        takeUntilDestroyed()
       )
       .subscribe(([kudoboardId, currentProfile]) =>
         this.#visitorActions(kudoboardId, currentProfile)

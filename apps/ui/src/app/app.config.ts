@@ -9,6 +9,7 @@ import {
   provideRouter,
   withComponentInputBinding,
   withInMemoryScrolling,
+  withRouterConfig,
 } from '@angular/router';
 import { featKudoBoardReducer } from '@kitouch/data-kudoboard';
 import {
@@ -105,6 +106,9 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'top',
+      }),
+      withRouterConfig({
+        onSameUrlNavigation: 'reload',
       })
     ),
     // provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),

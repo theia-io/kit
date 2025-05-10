@@ -23,11 +23,12 @@ export class BeTweetController {
   @UseGuards(AuthGuard('jwt'))
   async getFeed(
     @Query('profileId') profileId: string,
-    @Query('followingProfileIds') followingProfileIds?: Array<string>
+    @Query('followingProfileIds') followingProfileIds: string
   ) {
+    console.log(followingProfileIds, JSON.parse(followingProfileIds));
     return await this.beTweetService.getFeed(
       profileId,
-      followingProfileIds ?? []
+      JSON.parse(followingProfileIds) ?? []
     );
   }
 

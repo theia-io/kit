@@ -22,6 +22,7 @@ export enum APP_PATH_ALLOW_ANONYMOUS {
 /** For everybody (not even required to be logged in *anonymous* user) */
 export enum APP_PATH_STATIC_PAGES {
   SignIn = `sign-in`,
+  SignInSemiSilent = `refresh-sign-in`,
   Features = `features`,
   FeaturesConnected = `connected`,
   FeaturesKudoboard = `kudo-board`,

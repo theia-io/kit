@@ -53,33 +53,25 @@ export class KitStaticComponent implements OnInit {
   currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
 
   constructor() {
+    console.log('\n[KitStaticComponent] constructor:\n\n');
     // inject(Auth0Service).signIn();
     // this.#store.dispatch(FeatAuth0Events.silentSignIn());
   }
 
+  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
   ngOnInit(): void {
-    of(null)
-      .pipe(
-        delay(1500),
-        takeUntilDestroyed(this.#destroyRef),
-        switchMap(() => this.#auth0Service.loggedIn$),
-        take(1)
-        // switchMap((loggedIn) =>
-        //   loggedIn
-        //     ? EMPTY
-        //     : this.#auth0Service.getCurrentSessionAccountUserProfiles()
-        // )
-      )
-      .subscribe(
-        (loggedIn) => {
-          if (!loggedIn) {
-            this.#store.dispatch(FeatAuth0Events.tryAuth());
-          }
-        }
-        // this.#store.dispatch(
-        //   FeatAuth0Events.setAuthState(currentSessionAccountUserProfiles)
-        // )
-      );
+    // this.#auth0Service.loggedIn$
+    //   .pipe(
+    //     take(1),
+    //     takeUntilDestroyed(this.#destroyRef),
+    //   )
+    //   .subscribe(
+    //     (loggedIn) => {
+    //       if (!loggedIn) {
+    //         this.#store.dispatch(FeatAuth0Events.tryAuth());
+    //       }
+    //     }
+    //   );
   }
 
   handleGetStarted() {

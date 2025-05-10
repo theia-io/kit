@@ -10,13 +10,30 @@ export class AuthController {
   @Get('logout')
   @UseGuards(AuthGuard('jwt'))
   @Redirect() // We will redirect to Auth0 logout
-  logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
-    console.info('[MAIN.ts] Executing app-logout: Clearing JWT cookie...');
+  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+    console.info(
+      '[AuthController][logout] Executing app-logout: Clearing JWT cookie...'
+    );
 
     const isProduction = this.configService.getEnvironment('production');
     const domainBase = isProduction ? '.kitouch.io' : undefined;
 
     // 1. Clear your application's JWT cookie
+    // res.clearCookie('jwt', {
+    //   domain: domainBase,
+    //   httpOnly: true,
+    //   secure: isProduction,
+    //   sameSite: isProduction ? 'lax' : false,
+    //   path: '/',
+    // });
+    (res as any)?.oidc?.logout();
+
+    // --- ADD DELAY HERE ---
+    console.log('DELAYING FOR 1 SECOND...');
+    await new Promise((resolve) => setTimeout(resolve, 1000)); // 1000 ms = 1 second
+    console.log('DELAYED FOR 1 SECOND...');
+    // --- END DELAY ---
+
     res.clearCookie('jwt', {
       domain: domainBase,
       httpOnly: true,
@@ -39,7 +56,7 @@ export class AuthController {
     logoutUrl.search = searchString.toString();
 
     console.info(
-      '[MAIN.ts] Redirecting to Auth0 logout:',
+      '[AuthController][logout] Redirecting to Auth0 logout:',
       logoutUrl.toString()
     );
 

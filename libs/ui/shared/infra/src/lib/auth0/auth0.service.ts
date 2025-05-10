@@ -21,29 +21,49 @@ export class Auth0Service {
   loggedIn$ = this.loggedInUser$.pipe(map((user) => !!user));
 
   readonly #separateWindow = 'kit.auth.separate-window';
-  readonly #beforeRedirectKey = 'kit.auth.pre-redirect';
+  readonly #beforeRedirectUrlKey = 'kit.auth.pre-redirect-url';
+
+  // #currentSessionAccountUserProfiles$ = of(true)
+  //   .pipe(
+  //     switchMap(() => {
+  //       return this.#http.get<{
+  //         account: Account;
+  //         user: User;
+  //         profiles: Array<Profile>;
+  //       }>(`${this.#environment.api.kit}`);
+  //     }),
+  //     share({resetOnRefCountZero: true})
+  //   );
 
   logout() {
     window.location.href = `${this.#environment.api.auth}/logout`; // express-openid-connect handles this
   }
 
-  // savePostRedirectUrl(beforeRedirectUrl: string) {
-  //   this.#localStoreService.setItem(this.#beforeRedirectKey, beforeRedirectUrl);
-  // }
+  getTest() {
+    const urlBeforeRedirect = this.#localStoreService.getItem(
+      this.#beforeRedirectUrlKey
+    );
 
-  // getPostRedirectUrl() {
-  //   const urlBeforeRedirect = this.#localStoreService.getItem(
-  //     this.#beforeRedirectKey
-  //   );
+    return urlBeforeRedirect;
+  }
 
-  //   if (urlBeforeRedirect) {
-  //     this.#localStoreService.removeItem(this.#beforeRedirectKey);
-  //   }
+  getPostRedirectUrl() {
+    const urlBeforeRedirect = this.#localStoreService.getItem(
+      this.#beforeRedirectUrlKey
+    );
+    this.#localStoreService.removeItem(this.#beforeRedirectUrlKey);
 
-  //   return urlBeforeRedirect;
-  // }
+    return urlBeforeRedirect;
+  }
 
-  signIn() {
+  signIn(urlToOpenAfterSignIn?: string) {
+    console.log('signIn', urlToOpenAfterSignIn);
+    if (urlToOpenAfterSignIn) {
+      this.#localStoreService.setItem(
+        this.#beforeRedirectUrlKey,
+        urlToOpenAfterSignIn
+      );
+    }
     window.location.href = `${this.#environment.api.auth}/login`; // express-openid-connect handles this
   }
 
@@ -110,5 +130,6 @@ export class Auth0Service {
       user: User;
       profiles: Array<Profile>;
     }>(`${this.#environment.api.kit}`);
+    // return this.#currentSessionAccountUserProfiles$
   }
 }

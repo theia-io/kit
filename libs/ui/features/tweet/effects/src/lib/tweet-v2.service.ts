@@ -20,7 +20,7 @@ export class TweetV2Service {
       {
         params: {
           profileId,
-          followingProfileIds: followingProfileIds ?? [],
+          followingProfileIds: JSON.stringify(followingProfileIds ?? []),
         },
       }
     );

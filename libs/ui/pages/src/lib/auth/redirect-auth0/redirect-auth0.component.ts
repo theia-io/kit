@@ -20,10 +20,13 @@ export class PageRedirectAuth0Component implements OnInit {
   #auth0Service = inject(Auth0Service);
 
   constructor() {
+    console.log('\n[PageRedirectAuth0Component] constructor:\n\n');
+
     of(true)
-      .pipe(delay(2500), takeUntilDestroyed())
+      .pipe(delay(5000), takeUntilDestroyed())
       .subscribe(() => {
-        this.#router.navigate(['']);
+        console.log('[PageRedirectAuth0Component] CULPRIT REDIRECT AUTH0');
+        this.#router.navigate(['/']);
       });
   }
 
@@ -33,7 +36,8 @@ export class PageRedirectAuth0Component implements OnInit {
       this.#auth0Service.separateWindowSignInClearAndTrigger();
       window.close();
     } else {
-      this.#store.dispatch(FeatAuth0Events.handleRedirect());
+      const postLoginUrl = this.#auth0Service.getPostRedirectUrl();
+      this.#store.dispatch(FeatAuth0Events.handleRedirect({ postLoginUrl }));
     }
   }
 }

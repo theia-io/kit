@@ -10,16 +10,7 @@ import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import {
-  catchError,
-  filter,
-  map,
-  merge,
-  of,
-  shareReplay,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { catchError, filter, map, of, shareReplay, switchMap, tap } from 'rxjs';
 
 @Injectable()
 export class Auth0Effects {
@@ -30,34 +21,25 @@ export class Auth0Effects {
   handleAuthRedirect = createEffect(() =>
     this.#actions.pipe(
       ofType(FeatAuth0Events.handleRedirect),
-      switchMap(() =>
+      switchMap(({ postLoginUrl }) =>
         this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
           map(({ user, account, profiles }) =>
             FeatAuth0Events.handleRedirectSuccess({ user, account, profiles })
           ),
-          catchError(() => of(FeatAuth0Events.handleRedirectFailure()))
+          tap(() => {
+            if (postLoginUrl) {
+              this.#router.navigateByUrl(postLoginUrl);
+            } else {
+              this.#router.navigateByUrl('/');
+            }
+          }),
+          catchError(() => {
+            this.#router.navigateByUrl('/');
+            return of(FeatAuth0Events.handleRedirectFailure());
+          })
         )
       )
     )
-  );
-
-  postAuthRedirectActions = createEffect(
-    () =>
-      merge(
-        this.#actions.pipe(
-          ofType(FeatAuth0Events.handleRedirectSuccess),
-          tap(() => this.#router.navigateByUrl('/'))
-        ),
-        this.#actions.pipe(
-          ofType(FeatAuth0Events.handleRedirectFailure),
-          tap(() =>
-            this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.SignIn}`)
-          )
-        )
-      ),
-    {
-      dispatch: false,
-    }
   );
 
   tryAuth = createEffect(() =>
@@ -66,19 +48,27 @@ export class Auth0Effects {
       switchMap(() =>
         this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
           map(({ user, account, profiles }) =>
-            FeatAuth0Events.setAuthState({ user, account, profiles })
+            FeatAuth0Events.tryAuthSuccess({ user, account, profiles })
           ),
-          catchError(() => of(FeatAuth0Events.tryAuthFailure()))
+          tap(() => this.#router.navigateByUrl(this.#router.url)),
+          catchError(() => {
+            this.#router.navigateByUrl('/');
+            return of(FeatAuth0Events.tryAuthFailure());
+          })
         )
       )
     )
   );
 
   setAuthState$ = createEffect(() =>
-    this.#actions.pipe(
-      ofType(FeatAuth0Events.handleRedirectSuccess),
-      map((data) => FeatAuth0Events.setAuthState({ ...data }))
-    )
+    this.#actions
+      .pipe(
+        ofType(
+          FeatAuth0Events.handleRedirectSuccess,
+          FeatAuth0Events.tryAuthSuccess
+        )
+      )
+      .pipe(map((data) => FeatAuth0Events.setAuthState({ ...data })))
   );
 
   #accountUserProfiles$ = this.#actions.pipe(
