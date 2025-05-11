@@ -20,7 +20,7 @@ import { filter, distinctUntilKeyChanged } from 'rxjs';
   imports: [
     RouterModule,
     //
-    SharedStaticInfoComponent,
+    // SharedStaticInfoComponent,
     FeatFollowSuggestionsComponent,
     LayoutComponent,
     NavBarComponent,
@@ -43,9 +43,9 @@ import { filter, distinctUntilKeyChanged } from 'rxjs';
           }"
         />
 
-        <div class="m-6 inline">
+        <!-- <div class="m-6 inline">
           <shared-static-info />
-        </div>
+        </div> -->
       </div>
     </shared-layout>
   `,
