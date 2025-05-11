@@ -4,7 +4,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { UiKitSpinnerComponent } from '@kitouch/ui-components';
-import { Store } from '@ngrx/store';
 import { delay, of } from 'rxjs';
 
 @Component({

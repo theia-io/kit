@@ -35,7 +35,6 @@ import {
   selectKudoBoardById,
   selectKudoBoardCommentsById,
 } from '@kitouch/data-kudoboard';
-import { getFullS3Url } from '@kitouch/effects-kudoboard';
 
 import {
   profilePicture,
@@ -318,17 +317,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
           FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess
         ),
         take(1),
-        // AWS S3 bucket has eventual consistency so need a time for it to be available
-        delay(1500),
-        map(({ items }) =>
-          items.map((item) => ({
-            ...item,
-            url: getFullS3Url(this.#s3KudoBoardBaseUrl, item.url),
-            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl)
-            ),
-          }))
-        )
+        map(({ items }) => items)
       );
     };
   }

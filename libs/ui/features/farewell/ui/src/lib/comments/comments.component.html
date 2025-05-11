@@ -13,19 +13,23 @@
       [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
     } @else {
     <p class="m-0 mb-1 text-sm text-gray-500">
-      <a (click)="signIn()" role="button" class="underline">
-        Sign-in or register
-      </a>
-      . Otherwise comments will be left anonymously
+      <a (click)="signIn()" role="button" class="underline">Click to login.</a>
+      Otherwise comments will be left anonymously
     </p>
     }
   </div>
 </ui-kit-comment-area>
 
-<ui-kit-divider class="block my-9" />
+<ui-kit-divider class="block mt-8 mb-4" />
 
-@for (comment of (farewellComments$ | async); track $index) { @let
-commentCreatedAt = comment.createdAt; @let commentCreatedAtCreatedAtLegacy =
+@let farewellComments = (farewellComments$ | async); @let commentLength =
+farewellComments?.length ?? 0; @if(commentLength > 0) {
+<p class="text-sm text-center text-gray-500 mb-4">
+  There {{ commentLength === 1 ? 'is' : 'are' }} {{ commentLength }}
+  {{ commentLength === 1 ? 'comment.' : 'comments.' }}
+</p>
+} @for (comment of farewellComments; track $index) { @let commentCreatedAt =
+comment.createdAt; @let commentCreatedAtCreatedAtLegacy =
 comment.timestamp?.createdAt; @let commentCreatedAtUpdatedAt =
 comment.createdAt; @let commentCreatedAtUpdatedAtLegacy =
 comment.timestamp?.createdAt;

@@ -12,7 +12,8 @@
     "@ngrx/store": "18.0.2",
     "@kitouch/feat-farewell-data": "7.0.0-0",
     "@kitouch/shared-infra": "7.0.0-0",
-    "@angular/common": "18.2.6"
+    "@angular/common": "18.2.6",
+    "@kitouch/shared-services": "7.0.0-0"
   },
   "sideEffects": false
 }

@@ -98,7 +98,8 @@
     <!-- Admin owner menu -->
     @if(canEdit()) {
     <p-button
-      pTooltip="Edit (Only visible for you)"
+      pTooltip="Edit (Only visible to you)"
+      tooltipPosition="left"
       styleClass="ml-2 p-1 text-gray-500"
       (onClick)="redirectToEdit()"
       [text]="true"

@@ -14,8 +14,24 @@
   severity="success">
   <span class="text-xs font-semibold">Publish</span>
 </button>
-} } @else { @if(status() === farewellStatus.Published) {
-<p-tag severity="success" value="Published" />
+} }
+<!-- view only -->
+@else { @if(status() === farewellStatus.Published) {
+<p-tag
+  [pTooltip]="
+    showTooltip()
+      ? 'Published kudoboard fully visible to everyone and it is public'
+      : ''
+  "
+  severity="success"
+  value="Published" />
 } @else if(status() === farewellStatus.Draft) {
-<p-tag severity="warning" value="Draft" />
+<p-tag
+  [pTooltip]="
+    showTooltip()
+      ? 'Draft kudoboard does not show any information and it is public'
+      : ''
+  "
+  severity="warning"
+  value="Draft" />
 } }

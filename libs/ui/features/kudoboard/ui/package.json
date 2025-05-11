@@ -22,7 +22,6 @@
     "@kitouch/shared-constants": "7.0.0-0",
     "@kitouch/shared-infra": "7.0.0-0",
     "@kitouch/shared-services": "7.0.0-0",
-    "@kitouch/effects-kudoboard": "7.0.0-0",
     "photoswipe": "^5.4.4"
   },
   "sideEffects": false

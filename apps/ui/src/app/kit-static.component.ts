@@ -36,11 +36,10 @@ import { delay, of, switchMap, take } from 'rxjs';
     <div class="flex-grow flex flex-col">
       <router-outlet></router-outlet>
     </div>
-    <div class="relative">
-      <div class="bg-secondary fixed h-[200px] w-full"></div>
+    <div class="bg-secondary">
       <shared-static-info
         [slim]="true"
-        class="relative z-10 container flex items-center justify-end gap-4 mx-auto"
+        class="container flex items-center justify-end gap-4 mx-auto bg-secondary"
       />
     </div>
   `,

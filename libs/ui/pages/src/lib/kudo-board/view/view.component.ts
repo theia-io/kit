@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -37,7 +37,10 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 
-import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import {
+  AuthorizedFeatureDirective,
+  SharedStatusLegendComponent,
+} from '@kitouch/containers';
 import {
   FeatFarewellActions,
   findProfileFarewells,
@@ -59,9 +62,7 @@ import {
   startWith,
   switchMap,
   take,
-  tap,
 } from 'rxjs';
-import ContentLoader from 'photoswipe/dist/types/slide/loader';
 
 /**
  * Component has 5 states

@@ -17,7 +17,6 @@
     "@ngrx/store": "18.0.2",
     "photoswipe": "^5.4.4",
     "rxjs": "~7.8.0",
-    "@kitouch/feat-farewell-effects": "7.0.0-0",
     "@kitouch/emoji": "7.0.0",
     "@angular/router": "18.2.6",
     "@ctrl/ngx-emoji-mart": "^9.2.0",

@@ -31,7 +31,6 @@ import {
   FeatFarewellMediaActions,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
-import { getFullS3Url } from '@kitouch/feat-farewell-effects';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import {
   ContractUploadedMedia,
@@ -62,7 +61,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
   debounceTime,
-  delay,
   filter,
   map,
   merge,
@@ -308,8 +306,6 @@ export class FeatFarewellComponent implements AfterViewInit {
       return merge(
         this.#actions$.pipe(
           ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
-          // AWS S3 bucket has eventual consistency so need a time for it to be available
-          delay(1500),
           tap(() => {
             this.#messageService.add({
               severity: 'success',
@@ -318,15 +314,7 @@ export class FeatFarewellComponent implements AfterViewInit {
               life: 3000,
             });
           }),
-          map(({ items }) =>
-            items.map((item) => ({
-              ...item,
-              url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
-              optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-                getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
-              ),
-            }))
-          )
+          map(({ items }) => items)
         ),
         this.#actions$.pipe(
           ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaFailure),

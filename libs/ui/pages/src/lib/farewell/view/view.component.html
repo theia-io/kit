@@ -2,7 +2,7 @@
 @let farewell = farewell$ | async;
 
 <!-- Breadcrumb menu -->
-@if(preview()) {
+@if(farewellOwner() && preview()) {
 <p-breadcrumb
   class="block mt-4 max-w-full"
   [model]="(breadcrumbMenuItems$ | async) ?? []">
@@ -12,7 +12,7 @@
       {{ item.label }}
     </a>
     @if(item?.label === farewell?.title && farewell?.status; as status) {
-    <feat-farewell-status class="ml-2" [status]="status" />
+    <feat-farewell-status class="ml-2" [status]="status" [showTooltip]="true" />
     }
   </ng-template>
 </p-breadcrumb>
@@ -36,13 +36,14 @@
     class="ml-auto mr-4 -mb-4 flex items-end gap-1 sm:gap-2 md:gap-12">
     <div>
       @if(!currentProfile()) {
-      <button
+      <a
         (click)="signInAndFollow(profile)"
-        type="button"
-        class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
-        <img class="inline-block h-6" src="sign-in/g-icon.png" />
-        Login to follow
-      </button>
+        uiKitSmallTextTailwindClasses
+        [klasses]="getStartedKlassOverwrite"
+        class="flex items-center px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">
+        <i class="pi pi-sign-in mr-2 text-sm font-semibold"></i>
+        Login to follow {{ profile.name }}
+      </a>
       } @else {
       <feat-follow-unfollow-profile [profileId]="profile.id" />
       }
@@ -53,19 +54,19 @@
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
   <div
-    class="container shadow-sm mx-auto py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
+    class="container shadow-sm mx-auto px-2 md:px-0 py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-farewell-actions
       class="block container"
       [farewellId]="farewellId$ | async"
       (commentsClick)="commentsSideBarVisibility.set(true)" />
   </div>
 
-  <div class="container mx-auto">
+  <div class="container mx-auto px-2 md:px-0">
     <feat-farewell-viewv2 class="grow" [farewellId]="farewellId$ | async" />
   </div>
 
   @if(farewell) {
-  <div class="container mx-auto">
+  <div class="container mx-auto px-2 md:px-0">
     <feat-farewell-info-panel
       class="float-right"
       [farewell]="farewell"
@@ -74,7 +75,7 @@
   </div>
   }
 
-  <div class="container mx-auto">
+  <div class="container mx-auto px-2 md:px-0">
     <feat-farewell-comments
       class="block max-w-xl mx-auto"
       [farewellId]="farewellId$ | async" />

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import {
   FeatSideBarPreviewComponent,
   SharedCopyClipboardComponent,
+  SharedStatusLegendComponent,
 } from '@kitouch/containers';
 import {
   FeatFarewellActions,
@@ -21,6 +22,7 @@ import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
+  UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
@@ -55,6 +57,8 @@ import { filter, map } from 'rxjs/operators';
     FeatFarewellInfoPanelComponent,
     FeatSideBarPreviewComponent,
     SharedCopyClipboardComponent,
+    SharedStatusLegendComponent,
+    UiCompCardComponent,
     //
     ButtonModule,
     ToastModule,

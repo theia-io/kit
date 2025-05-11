@@ -50,7 +50,10 @@
           </a>
 
           @if(kudoBoard && item?.label === kudoBoard?.title) {
-          <feat-kudoboard-status class="ml-2" [status]="kudoBoard.status" />
+          <feat-kudoboard-status
+            class="ml-2"
+            [status]="kudoBoard.status"
+            [showTooltip]="true" />
 
           @if(updating()) {
           <ui-kit-spinner size="ml-2 h-6 w-6" />

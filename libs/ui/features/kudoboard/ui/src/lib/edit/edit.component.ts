@@ -281,9 +281,10 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             select(selectKudoBoardById(kudoboardId)),
             take(1),
             filter(Boolean),
-            // AWS S3 bucket has eventual consistency so need a time for it to be available
-            delay(2500),
-            map((kudoBoard): [string, KudoBoard] => [items[0], kudoBoard])
+            map((kudoBoard): [string, KudoBoard] => [
+              items[0]?.optimizedUrls?.[0] ?? items[0]?.url,
+              kudoBoard,
+            ])
           )
         )
       )
@@ -368,6 +369,12 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   gotoAll(event: Event) {
+    const kudoBoardId = this.id();
+    if (!this.currentProfile() && kudoBoardId) {
+      this.gotoBoard(kudoBoardId, false, event);
+      return;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 
@@ -422,6 +429,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   #updateKudoBoardBackground(background: string, previousBackground?: string) {
+    console.log('updateKudoBoardBackground', background, previousBackground);
     this.kudoBoardFormGroup.patchValue({
       background,
     });
