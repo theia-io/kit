@@ -14,7 +14,7 @@ import {
 export class BeFarewellAnalyticsService {
   constructor(
     @InjectModel(FarewellAnalytics.name)
-    private farewellAnalyticsModel: Model<FarewellAnalyticsDocument>
+    private farewellAnalyticsModel: Model<FarewellAnalyticsDocument>,
   ) {}
 
   async getAnalyticFarewells(farewellId: Array<string>) {
@@ -32,11 +32,11 @@ export class BeFarewellAnalyticsService {
       console.error(
         `Cannot execute farewell analytics search for %s`,
         farewellId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find farewells analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -57,11 +57,11 @@ export class BeFarewellAnalyticsService {
       console.error(
         `Cannot execute farewell analytics search for %s`,
         farewellId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find farewell analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -80,11 +80,11 @@ export class BeFarewellAnalyticsService {
       console.error(
         `Cannot execute farewell analytics create for id: %s`,
         id,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot create farewell analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -93,7 +93,7 @@ export class BeFarewellAnalyticsService {
 
   async updateAnalyticsFarewell(
     analyticId: IFarewellsAnalytics['id'],
-    { id }: IFarewell
+    { id }: IFarewell,
   ) {
     let updatedFarewellAnalytics;
 
@@ -109,18 +109,18 @@ export class BeFarewellAnalyticsService {
           {
             new: true,
             upsert: true,
-          }
+          },
         );
     } catch (err) {
       console.error(
         `Cannot execute farewell analytics update for %s and %s`,
         analyticId,
         id,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot update farewell analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -140,11 +140,11 @@ export class BeFarewellAnalyticsService {
       console.error(
         `Cannot execute farewell analytics delete for %s`,
         farewellId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot delete farewell analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

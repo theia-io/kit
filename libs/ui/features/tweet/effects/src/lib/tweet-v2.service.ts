@@ -13,7 +13,7 @@ export class TweetV2Service {
 
   getFeed(
     profileId: string,
-    followingProfileIds?: string[]
+    followingProfileIds?: string[],
   ): Observable<Array<Tweety>> {
     return this.#http.get<Array<Tweety>>(
       `${this.#environment.api.tweets}/feed`,
@@ -22,7 +22,7 @@ export class TweetV2Service {
           profileId,
           followingProfileIds: followingProfileIds ?? [],
         },
-      }
+      },
     );
   }
 
@@ -32,7 +32,7 @@ export class TweetV2Service {
 
   getTweet(
     tweetId: Tweety['id'],
-    profileId: Profile['id']
+    profileId: Profile['id'],
   ): Observable<Tweety> {
     return this.#http.get<Tweety>(`${this.#environment.api.tweets}/tweet`, {
       params: {
@@ -43,7 +43,7 @@ export class TweetV2Service {
   }
 
   getTweets(
-    ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>
+    ids: Array<{ tweetId: Tweety['id']; profileId: Profile['id'] }>,
   ): Observable<Array<Tweety>> {
     return this.#http.get<Array<Tweety>>(this.#environment.api.tweets, {
       params: {
@@ -65,7 +65,7 @@ export class TweetV2Service {
         params: {
           profileId,
         },
-      }
+      },
     );
   }
 
@@ -77,21 +77,21 @@ export class TweetV2Service {
         params: {
           profileId,
         },
-      }
+      },
     );
   }
 
   commentTweet(
     tweetId: Tweety['id'],
     profileId: Profile['id'],
-    content: string
+    content: string,
   ) {
     return this.#http.post(
       `${this.#environment.api.tweets}/${tweetId}/comment`,
       {
         profileId,
         content,
-      }
+      },
     );
   }
 
@@ -103,7 +103,7 @@ export class TweetV2Service {
           profileId,
           content,
         },
-      }
+      },
     );
   }
 }

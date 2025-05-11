@@ -49,7 +49,6 @@ interface UploadEvent {
 
 @Component({
   selector: 'feat-settings-experience-add',
-  standalone: true,
   imports: [
     AsyncPipe,
     NgClass,
@@ -93,15 +92,15 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
         ...previouslyActivatedSteps,
         [activatedStep]: true,
       }),
-      {}
-    )
+      {},
+    ),
   );
   allStepsVisited$ = this.#stepsVisited$.pipe(
     map(
       (stepsVisited) =>
-        Object.values(stepsVisited).filter((visited) => visited).length === 3
+        Object.values(stepsVisited).filter((visited) => visited).length === 3,
     ),
-    startWith(false)
+    startWith(false),
   );
 
   experienceForm = this.#fb.group({
@@ -133,25 +132,25 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     startWith(''),
     switchMap(
       (typedCompany: string | null) =>
-        this.#store.select(getMatchingCompanies(typedCompany as string))
+        this.#store.select(getMatchingCompanies(typedCompany as string)),
       // (typedCompany?.length ?? 0) > 2
       // ? this.#store.select(getMatchingCompanies(typedCompany as string))
       // : of([])
-    )
+    ),
   );
 
   countries = countries.map(
-    (country: { name: string; code: string }) => country.name
+    (country: { name: string; code: string }) => country.name,
   );
   citiesInCountries = toSignal(
     this.experienceForm.get('country')!.valueChanges.pipe(
       filter((country) => !!country),
       map(
         (country) =>
-          citiesInCountries[country as keyof typeof citiesInCountries]
+          citiesInCountries[country as keyof typeof citiesInCountries],
       ),
-      startWith([])
-    )
+      startWith([]),
+    ),
   );
 
   readonly geolocationAvailable = this.#geolocationService.geolocationAvailable;
@@ -203,7 +202,7 @@ export class FeatSettingsExperienceAddComponent implements OnInit {
     const endDateFormValue = this.experienceForm.get('endDate')?.value;
 
     const startDate = new Date(
-        this.experienceForm.get('startDate')?.value ?? Date.now()
+        this.experienceForm.get('startDate')?.value ?? Date.now(),
       ),
       endDate = endDateFormValue ? new Date(endDateFormValue) : null;
 

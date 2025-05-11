@@ -10,7 +10,7 @@ import {
 export class BeFarewellCommentsService {
   constructor(
     @InjectModel(FarewellComment.name)
-    private farewellCommentsModel: Model<FarewellCommentDocument>
+    private farewellCommentsModel: Model<FarewellCommentDocument>,
   ) {}
 
   async getCommentsFarewell(farewellId: string) {
@@ -27,7 +27,7 @@ export class BeFarewellCommentsService {
       console.error(
         `Cannot execute farewell comments search for %s`,
         farewellId,
-        err
+        err,
       );
       throw new Error('Cannot find farewell comments');
     }
@@ -70,7 +70,7 @@ export class BeFarewellCommentsService {
         medias,
         farewellId,
         profileId,
-        err
+        err,
       );
       throw new Error('Cannot create farewell comment');
     }
@@ -78,7 +78,7 @@ export class BeFarewellCommentsService {
     if (!newFarewellComment) {
       throw new HttpException(
         `Cannot create farewell comment.`,
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -90,11 +90,11 @@ export class BeFarewellCommentsService {
       console.error(
         `Cannot populate farewell comment profileId for %s`,
         newFarewellComment,
-        err
+        err,
       );
       throw new HttpException(
         `Cannot populate farewell comment profileId.`,
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -122,7 +122,7 @@ export class BeFarewellCommentsService {
           medias,
           farewellId: new mongoose.Types.ObjectId(farewellId),
           profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
-        }))
+        })),
       );
     } catch (err) {
       console.error(`Cannot execute farewell comments batch create`, err);
@@ -134,7 +134,7 @@ export class BeFarewellCommentsService {
 
   async deleteFarewellComments(
     farewellCommentId: string,
-    currentProfileIds: Array<string>
+    currentProfileIds: Array<string>,
   ) {
     let farewellCommentDeleted;
 
@@ -158,18 +158,18 @@ export class BeFarewellCommentsService {
       console.error(
         `Cannot execute farewell comment delete for %s`,
         farewellCommentId,
-        err
+        err,
       );
       throw new Error('Cannot delete farewell comment');
     }
 
     if (!farewellCommentDeleted) {
       console.warn(
-        `Farewell comment ${farewellCommentId} not found or not authorized for update by provided profiles.`
+        `Farewell comment ${farewellCommentId} not found or not authorized for update by provided profiles.`,
       );
       throw new HttpException(
         `Farewell comment with ID "${farewellCommentId}" not found or you lack permission.`,
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 

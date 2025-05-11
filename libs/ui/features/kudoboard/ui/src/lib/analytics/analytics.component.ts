@@ -19,7 +19,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { delay, filter, map, switchMap, take, withLatestFrom } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-analytics',
   templateUrl: './analytics.component.html',
   imports: [
@@ -40,20 +39,20 @@ export class FeatKudoBoardAnalyticsComponent {
 
   kudoboard$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
-    )
+      this.#store.pipe(select(selectKudoBoardById(kudoboardId))),
+    ),
   );
   kudoboardAnalytics$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardAnalyticsById(kudoboardId)))
-    )
+      this.#store.pipe(select(selectKudoBoardAnalyticsById(kudoboardId))),
+    ),
   );
   viewed$ = this.kudoboardAnalytics$.pipe(
     map((analytics) =>
       analytics.filter(
-        (analytic) => analytic.event === KudoBoardEvents.PageOpened
-      )
-    )
+        (analytic) => analytic.event === KudoBoardEvents.PageOpened,
+      ),
+    ),
   );
 
   constructor() {
@@ -63,16 +62,16 @@ export class FeatKudoBoardAnalyticsComponent {
         filter(Boolean),
         take(1),
         delay(2500),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
+        withLatestFrom(this.#store.pipe(select(selectCurrentProfile))),
       )
       .subscribe(([kudoboardId, currentProfile]) =>
-        this.#visitorActions(kudoboardId, currentProfile)
+        this.#visitorActions(kudoboardId, currentProfile),
       );
   }
 
   #visitorActions(
     kudoBoardId: KudoBoard['id'],
-    currentProfile: Profile | undefined
+    currentProfile: Profile | undefined,
   ) {
     if (this.preview() && currentProfile) {
       // Only when it is current profile and its kudoboard we consider
@@ -86,7 +85,7 @@ export class FeatKudoBoardAnalyticsComponent {
           kudoBoardId,
           event: KudoBoardEvents.PageOpened,
         },
-      })
+      }),
     );
   }
 }

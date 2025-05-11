@@ -8,7 +8,7 @@ import { ReTweet, ReTweetDocument, Tweet, TweetDocument } from './schemas';
 export class BeReTweetService {
   constructor(
     @InjectModel(ReTweet.name) private retweetModel: Model<ReTweetDocument>,
-    @InjectModel(Tweet.name) private tweetModel: Model<TweetDocument>
+    @InjectModel(Tweet.name) private tweetModel: Model<TweetDocument>,
   ) {}
 
   async getReTweet(retweetId: string, profileId: string) {
@@ -26,11 +26,11 @@ export class BeReTweetService {
         `Cannot execute retweet search for %s, %s`,
         retweetId,
         profileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find retweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -50,7 +50,7 @@ export class BeReTweetService {
       console.error(`Cannot execute tweet search for %s, %s`, tweetId, err);
       throw new HttpException(
         'Cannot find tweet for retweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -63,11 +63,11 @@ export class BeReTweetService {
       console.error(
         `Cannot create new retweet %s`,
         JSON.stringify(newReTweet),
-        err
+        err,
       );
       throw new HttpException(
         'Cannot execute tweets search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -86,7 +86,7 @@ export class BeReTweetService {
   async deleteReTweet(
     retweetId: string,
     profileId: string,
-    loggedInProfiles: Array<string>
+    loggedInProfiles: Array<string>,
   ) {
     const retweet = await this.getReTweet(retweetId, profileId);
     if (!retweet) {
@@ -96,12 +96,12 @@ export class BeReTweetService {
     if (
       !loggedInProfiles.some(
         (loggedInProfileId) =>
-          retweet?.profileId.toString() === loggedInProfileId
+          retweet?.profileId.toString() === loggedInProfileId,
       )
     ) {
       throw new HttpException(
         'You can delete only yours retweet',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -115,7 +115,7 @@ export class BeReTweetService {
       console.error(`Cannot delete retweet %s, %s`, retweetId, profileId, err);
       throw new HttpException(
         'Cannot delete retweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -133,11 +133,11 @@ export class BeReTweetService {
       console.error(
         `Cannot execute retweets search and delete for %s`,
         tweetId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find and delete retweets',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

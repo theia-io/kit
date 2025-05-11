@@ -28,14 +28,14 @@ export class BeReTweetController {
   async deleteRetweet(
     @Req() req: Request,
     @Param('retweetId') retweetId: string,
-    @Query('profileId') profileId: string
+    @Query('profileId') profileId: string,
   ) {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
     return this.beReTweetService.deleteReTweet(
       retweetId,
       profileId,
-      profileIds
+      profileIds,
     );
   }
 

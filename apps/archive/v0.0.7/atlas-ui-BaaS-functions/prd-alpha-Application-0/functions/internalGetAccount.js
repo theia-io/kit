@@ -20,12 +20,12 @@ exports = async function (userId) {
     // Execute a FindOne in MongoDB
     findResult = await accountCollection.findOne(
       { userId: BSON.ObjectId(userId) },
-      {}
+      {},
     );
   } catch (err) {
     console.log(
       '[internalGetAccount] Error occurred while executing findOne in account collection:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }
@@ -33,7 +33,7 @@ exports = async function (userId) {
   try {
     findResult = await context.functions.execute(
       'normalizeAccount',
-      findResult
+      findResult,
     );
   } catch (err) {
     console.log('Error occurred while normilising account:', err.message);

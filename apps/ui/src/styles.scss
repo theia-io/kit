@@ -5,9 +5,6 @@
 @import 'primeicons/primeicons.css' layer(icons);
 @import './theme';
 @import 'tailwindcss/base' layer(tailwind-base);
-@import 'primeng/resources/primeng.css' layer(primeng);
-@import 'primeng/resources/themes/aura-light-noir/theme.css'
-  layer(primeng-theme-lara-light);
 @import 'tailwindcss/components' layer(tailwind-components);
 @import 'tailwindcss/utilities' layer(tailwind-utilities);
 
@@ -33,18 +30,24 @@ body {
 
 .login-with-google-btn {
   background-color: var(--background-color-secondary);
-  transition: background-color 0.3s, box-shadow 0.3s;
+  transition:
+    background-color 0.3s,
+    box-shadow 0.3s;
 
   padding: 12px 16px 12px 42px;
   border: none;
   border-radius: 3px;
-  box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+  box-shadow:
+    0 -1px 0 rgba(0, 0, 0, 0.04),
+    0 1px 1px rgba(0, 0, 0, 0.25);
 
   color: #757575;
   font-size: 22px;
 
   &:hover {
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25);
+    box-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 2px 4px rgba(0, 0, 0, 0.25);
     background-color: var(--background-color-secondary-hover);
   }
 
@@ -54,14 +57,18 @@ body {
 
   &:focus {
     outline: none;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 2px 4px rgba(0, 0, 0, 0.25),
+    box-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 2px 4px rgba(0, 0, 0, 0.25),
       0 0 0 3px #c8dafc;
   }
 
   &:disabled {
     filter: grayscale(100%);
     background-color: #ebebeb;
-    box-shadow: 0 -1px 0 rgba(0, 0, 0, 0.04), 0 1px 1px rgba(0, 0, 0, 0.25);
+    box-shadow:
+      0 -1px 0 rgba(0, 0, 0, 0.04),
+      0 1px 1px rgba(0, 0, 0, 0.25);
     cursor: not-allowed;
   }
 }
@@ -130,7 +137,8 @@ p-editor {
 
   .ql-toolbar.ql-snow {
     border: none;
-    box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset,
+    box-shadow:
+      rgb(204, 219, 232) 3px 3px 6px 0px inset,
       rgba(255, 255, 255, 0.5) -3px -3px 6px 1px inset;
   }
 

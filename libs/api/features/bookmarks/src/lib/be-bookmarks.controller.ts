@@ -42,7 +42,7 @@ export class BeBookmarksController {
   @UseGuards(AuthGuard('jwt'))
   async deleteBookmark(
     @Req() req: Request,
-    @Param('bookmarkId') bookmarkId: string
+    @Param('bookmarkId') bookmarkId: string,
   ) {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
@@ -54,7 +54,7 @@ export class BeBookmarksController {
   async deleteBookmarks(
     @Req() req: Request,
     @Query('tweetId') tweetId: string,
-    @Query('profileIdBookmarker') profileIdBookmarker: string
+    @Query('profileIdBookmarker') profileIdBookmarker: string,
   ) {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
@@ -62,13 +62,13 @@ export class BeBookmarksController {
     if (!profileIds.includes(profileIdBookmarker)) {
       throw new HttpException(
         'You can delete only yours bookmark',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
     return this.beBookmarksService.deleteTweetFromBookmarks(
       tweetId,
-      profileIdBookmarker
+      profileIdBookmarker,
     );
   }
 }

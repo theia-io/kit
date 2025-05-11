@@ -37,18 +37,18 @@ export class KudoBoardCommentsEffects {
           map((comments) =>
             FeatKudoBoardCommentActions.getCommentsKudoBoardSuccess({
               comments,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardCommentActions.getCommentsKudoBoardFailure({
                 message: `We were not able to get comments to kudoboard: ${kudoboardId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   createCommentKudoBoard$ = createEffect(() =>
@@ -59,18 +59,18 @@ export class KudoBoardCommentsEffects {
           map((comment) =>
             FeatKudoBoardCommentActions.postCommentKudoBoardSuccess({
               comment,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardCommentActions.postCommentKudoBoardFailure({
                 message: `We were not able to add comment to kudoboard: ${comment.kudoBoardId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteKudoBoardComment$ = createEffect(() =>
@@ -81,18 +81,18 @@ export class KudoBoardCommentsEffects {
           map(() =>
             FeatKudoBoardCommentActions.deleteCommentKudoBoardSuccess({
               id,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardCommentActions.deleteCommentKudoBoardFailure({
                 message: `We were unable to remove kudoboard Comment, ${id}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   uploadKudoBoardCommentStorageMedia$ = createEffect(() =>
@@ -101,8 +101,11 @@ export class KudoBoardCommentsEffects {
       switchMap(({ kudoBoardId, profileId, items }) =>
         forkJoin(
           items.map(({ key, blob }) =>
-            this.#kudoboardCommentService.uploadKudoBoardCommentMedia(key, blob)
-          )
+            this.#kudoboardCommentService.uploadKudoBoardCommentMedia(
+              key,
+              blob,
+            ),
+          ),
         ).pipe(
           map((res) =>
             FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess(
@@ -110,8 +113,8 @@ export class KudoBoardCommentsEffects {
                 kudoBoardId,
                 profileId,
                 items: res,
-              }
-            )
+              },
+            ),
           ),
           catchError(() =>
             of(
@@ -119,13 +122,13 @@ export class KudoBoardCommentsEffects {
                 {
                   message:
                     'We were unable to upload comment media. Try adding later.',
-                }
-              )
-            )
-          )
-        )
-      )
-    )
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteKudoBoardCommentStorageMedia$ = createEffect(() =>
@@ -134,15 +137,15 @@ export class KudoBoardCommentsEffects {
       mergeMap(({ url }) =>
         this.#kudoboardCommentService
           .deleteKudoBoardCommentMedia(
-            getImageKeyFromS3Url(url, this.#s3KudoBoardBaseUrl)
+            getImageKeyFromS3Url(url, this.#s3KudoBoardBaseUrl),
           )
           .pipe(
             map(() =>
               FeatKudoBoardCommentActions.deleteKudoBoardCommentStorageMediaSuccess(
                 {
                   url,
-                }
-              )
+                },
+              ),
             ),
             catchError(() =>
               of(
@@ -150,13 +153,13 @@ export class KudoBoardCommentsEffects {
                   {
                     message:
                       'We were unable to remove comment media from S3 bucket. Try again later.',
-                  }
-                )
-              )
-            )
-          )
-      )
-    )
+                  },
+                ),
+              ),
+            ),
+          ),
+      ),
+    ),
   );
 
   constructor() {
@@ -168,8 +171,8 @@ export class KudoBoardCommentsEffects {
           this.#store.pipe(
             select(selectKudoBoardCommentById(id)),
             take(1),
-            filter(Boolean)
-          )
+            filter(Boolean),
+          ),
         ),
         switchMap((comment) =>
           this.#actions$.pipe(
@@ -179,10 +182,10 @@ export class KudoBoardCommentsEffects {
             map(() => comment.medias),
             filter(
               (medias): medias is Array<ContractUploadedMedia> =>
-                !!medias && medias.length > 0
-            )
-          )
-        )
+                !!medias && medias.length > 0,
+            ),
+          ),
+        ),
       )
       .subscribe((medias) => {
         medias.forEach((media) => {
@@ -190,8 +193,8 @@ export class KudoBoardCommentsEffects {
             this.#store.dispatch(
               FeatKudoBoardCommentActions.deleteKudoBoardCommentStorageMedia({
                 url,
-              })
-            )
+              }),
+            ),
           );
         });
       });

@@ -6,7 +6,6 @@ import { Profile, ReTweety } from '@kitouch/shared-models';
 import { RetweetFromWhomPipe, RetweetWhoPipe } from './retweet.pipe';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-retweet-header',
   templateUrl: './retweet-header.component.html',
   imports: [

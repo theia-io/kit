@@ -30,7 +30,7 @@ export class BeFarewellController {
   @UseGuards(OptionalJwtAuthGuard)
   async getFarewell(
     @Req() req: Request,
-    @Param('farewellId') farewellId: string
+    @Param('farewellId') farewellId: string,
   ) {
     const currentProfileIds =
       (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
@@ -49,7 +49,7 @@ export class BeFarewellController {
   async updateFarewell(
     @Req() req: Request,
     @Param('farewellId') farewellId: string,
-    @Body() farewell: Omit<IFarewell, 'id'>
+    @Body() farewell: Omit<IFarewell, 'id'>,
   ) {
     const currentProfileIds =
       (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
@@ -57,7 +57,7 @@ export class BeFarewellController {
     return this.beFarewellService.updateFarewell(
       farewellId,
       farewell,
-      currentProfileIds
+      currentProfileIds,
     );
   }
 
@@ -65,7 +65,7 @@ export class BeFarewellController {
   @UseGuards(AuthGuard('jwt'))
   async deleteFarewell(
     @Req() req: Request,
-    @Param('farewellId') farewellId: string
+    @Param('farewellId') farewellId: string,
   ) {
     const currentProfileIds =
       (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];

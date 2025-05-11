@@ -3,7 +3,6 @@ import { SharedFeatureIntroComponent } from '@kitouch/containers';
 import { PagesFeatureConnectedBenefitsComponent } from './benefits.component';
 
 @Component({
-  standalone: true,
   templateUrl: './connected-page.component.html',
   imports: [
     SharedFeatureIntroComponent,

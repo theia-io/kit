@@ -26,7 +26,7 @@ export class MediaService {
       console.error(err);
 
       throw new InternalServerErrorException(
-        'error while optimizing the image'
+        'error while optimizing the image',
       );
     }
 
@@ -38,13 +38,13 @@ export class MediaService {
       const avifUploadAsync = this.s3ApiService.upload(
         bucket,
         avifFilePath,
-        avif
+        avif,
       );
 
       const defaultUploadAsync = this.s3ApiService.upload(
         bucket,
         filePath,
-        file
+        file,
       );
 
       await Promise.all([avifUploadAsync, defaultUploadAsync]);
@@ -52,7 +52,7 @@ export class MediaService {
       console.error(err);
 
       throw new InternalServerErrorException(
-        'Error while uploading optimized images to storage'
+        'Error while uploading optimized images to storage',
       );
     }
 

@@ -1,22 +1,21 @@
 <div class="card flex flex-col">
-  @if(currentProfile$ | async; as currentProfile) {
+  @if (currentProfile$ | async; as currentProfile) {
+    <div class="flex flex-col items-center justify-center h-screen">
+      <span class="text-2xl mb-24">Let's get to know each other</span>
 
-  <div class="flex flex-col items-center justify-center h-screen">
-    <span class="text-2xl mb-24">Let's get to know each other</span>
+      <ui-kit-comp-animate-ping class="p-2" [animate]="updatingProfile()">
+        <feat-settings-profile-information
+          [profile]="currentProfile"
+          [withHints]="true"
+          (updatingProfile)="updatingProfileHandler()" />
+      </ui-kit-comp-animate-ping>
 
-    <ui-kit-comp-animate-ping class="p-2" [animate]="updatingProfile()">
-      <feat-settings-profile-information
-        [profile]="currentProfile"
-        [withHints]="true"
-        (updatingProfile)="updatingProfileHandler()" />
-    </ui-kit-comp-animate-ping>
-
-    <button
-      (click)="scroll(experienceTmpl)"
-      class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">
-      <i class="pi pi-arrow-down" style="font-size: 1.5rem"></i>
-    </button>
-  </div>
+      <button
+        (click)="scroll(experienceTmpl)"
+        class="cursor-pointer mt-4 p-4 slidedown-icon h-2rem w-2rem bg-primary border-circle inline-flex items-center justify-center">
+        <i class="pi pi-arrow-down" style="font-size: 1.5rem"></i>
+      </button>
+    </div>
   }
 
   <div
@@ -26,12 +25,15 @@
     leaveClass="fadeOut"
     class="flex flex-col justify-center items-center h-screen duration-[5000ms]">
     <p class="text-2xl mb-24">
-      @if(savedExperience()) { Add
-      <span class="font-mono decoration-pink-500 decoration-2 underline">
-        even more
-      </span>
-      working experience or continue below ⚡🔥 } @else { Add your working
-      experience 😎 }
+      @if (savedExperience()) {
+        Add
+        <span class="font-mono decoration-pink-500 decoration-2 underline">
+          even more
+        </span>
+        working experience or continue below ⚡🔥
+      } @else {
+        Add your working experience 😎
+      }
     </p>
 
     <feat-settings-experience-add
@@ -58,7 +60,7 @@
     </span>
 
     <feat-follow-suggestions
-      [suggestionConfig]="{cards: true, showFollowed: true,}" />
+      [suggestionConfig]="{ cards: true, showFollowed: true }" />
 
     <div class="mt-2" sharedUserHint text="Click to start" side="bottom">
       <ui-kit-button

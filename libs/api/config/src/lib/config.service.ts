@@ -12,7 +12,7 @@ export class ConfigService {
 
   constructor(
     @Inject(EnvironmentToken) environment: Environment,
-    private secretsService: AWSSecretsService
+    private secretsService: AWSSecretsService,
   ) {
     this.#environment = environment;
     this.#setConfig();
@@ -21,7 +21,7 @@ export class ConfigService {
   getEnvironment<T extends keyof Environment>(key: T): Environment[T];
   getEnvironment(): Environment;
   getEnvironment<T extends keyof Environment>(
-    key?: T
+    key?: T,
   ): Environment[T] | Environment {
     if (!key) {
       return this.#environment;
@@ -42,7 +42,7 @@ export class ConfigService {
 
       console.log(
         'resolved env',
-        path.resolve(process.cwd(), 'config/', '.env.local')
+        path.resolve(process.cwd(), 'config/', '.env.local'),
       );
     }
 

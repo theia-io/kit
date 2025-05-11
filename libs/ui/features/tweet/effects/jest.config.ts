@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feat-tweet-effects',
   preset: '../../../../../jest.preset.js',

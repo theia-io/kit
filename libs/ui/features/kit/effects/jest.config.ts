@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'kit-effects',
   preset: '../../../../../jest.preset.js',

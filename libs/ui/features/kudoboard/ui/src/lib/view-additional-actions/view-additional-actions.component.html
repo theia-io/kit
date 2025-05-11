@@ -4,10 +4,10 @@
     (click)="copyToClipBoard(id(), true)"
     severity="success"
     class="mr-1">
-    @if(copiedGift()) {
-    <i class="pi pi-check"></i>
+    @if (copiedGift()) {
+      <i class="pi pi-check"></i>
     } @else {
-    <i class="pi pi-link"></i>
+      <i class="pi pi-link"></i>
     }
 
     <span class="ml-1 text-xs font-semibold">
@@ -16,10 +16,10 @@
   </button>
 
   <button pButton (click)="copyToClipBoard(id(), false)" severity="secondary">
-    @if(copiedShare()) {
-    <i class="pi pi-check"></i>
+    @if (copiedShare()) {
+      <i class="pi pi-check"></i>
     } @else {
-    <i class="pi pi-link"></i>
+      <i class="pi pi-link"></i>
     }
 
     <span class="ml-1 text-xs font-semibold">

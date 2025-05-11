@@ -29,7 +29,7 @@ export const profileReducer = createReducer(
     (state, { profiles }) => ({
       ...state,
       profiles: mergeArr(state.profiles || [], profiles),
-    })
+    }),
   ),
   on(FeatProfileActions.addProfilesSoftly, (state, { profiles }) => ({
     ...state,
@@ -39,5 +39,5 @@ export const profileReducer = createReducer(
     ...state,
     currentProfile: { ...state.currentProfile, ...profile },
     profiles: addOrUpdate(profile, state.profiles ?? []),
-  }))
+  })),
 );

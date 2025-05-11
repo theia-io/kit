@@ -5,26 +5,25 @@
   [enableService]="false"
   [closable]="false" />
 
-@if(currentProfile$ | async; as currentProfile) {
+@if (currentProfile$ | async; as currentProfile) {
+  <ui-kit-comp-animate-ping [animate]="updatingProfile()">
+    <feat-settings-profile-information
+      [profile]="currentProfile"
+      (updatingProfile)="updatingProfileHandler()" />
+  </ui-kit-comp-animate-ping>
 
-<ui-kit-comp-animate-ping [animate]="updatingProfile()">
-  <feat-settings-profile-information
-    [profile]="currentProfile"
-    (updatingProfile)="updatingProfileHandler()" />
-</ui-kit-comp-animate-ping>
-
-<p-messages
-  [value]="[socialsMessage()]"
-  showTransitionOptions="250ms"
-  hideTransitionOptions="0ms"
-  [enableService]="false"
-  [closable]="false" />
-<ui-kit-comp-animate-ping [animate]="updatingSocials()">
-  <h2 class="pl-4 text-lg font-bold">Your social networks</h2>
-  <feat-settings-socials
-    [profile]="currentProfile"
-    (savingSocials)="updatingSocialsHandler()" />
-</ui-kit-comp-animate-ping>
+  <p-messages
+    [value]="[socialsMessage()]"
+    showTransitionOptions="250ms"
+    hideTransitionOptions="0ms"
+    [enableService]="false"
+    [closable]="false" />
+  <ui-kit-comp-animate-ping [animate]="updatingSocials()">
+    <h2 class="pl-4 text-lg font-bold">Your social networks</h2>
+    <feat-settings-socials
+      [profile]="currentProfile"
+      (savingSocials)="updatingSocialsHandler()" />
+  </ui-kit-comp-animate-ping>
 }
 
 <p-messages
@@ -33,30 +32,33 @@
   hideTransitionOptions="0ms"
   [enableService]="false"
   [closable]="false" />
-@if((experiences$ | async); as experiences) { @if(experiences.length) {
-<div class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow">
-  <h2 class="pt-2 pl-4 text-lg font-bold">Your experiences</h2>
-  <p-accordion [activeIndex]="0">
-    @for (experience of experiences; track $index) {
-    <p-accordionTab [header]="experience.title">
-      <div class="relative">
-        <feat-settings-experience-show
-          [showRemove]="true"
-          [experience]="experience"></feat-settings-experience-show>
-        <!-- <i (click)="editHandler(experience)" role="button"
+@if (experiences$ | async; as experiences) {
+  @if (experiences.length) {
+    <div
+      class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow">
+      <h2 class="pt-2 pl-4 text-lg font-bold">Your experiences</h2>
+      <p-accordion [activeIndex]="0">
+        @for (experience of experiences; track $index) {
+          <p-accordionTab [header]="experience.title">
+            <div class="relative">
+              <feat-settings-experience-show
+                [showRemove]="true"
+                [experience]="experience"></feat-settings-experience-show>
+              <!-- <i (click)="editHandler(experience)" role="button"
                     class="pi pi-file-edit absolute top-2 right-10 hover:animate-pulse"
                     style="font-size: 1.5rem;"></i> -->
-        <i
-          (click)="deleteExperienceHandler(experience)"
-          role="button"
-          class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-          style="font-size: 1.5rem"></i>
-      </div>
-    </p-accordionTab>
-    }
-  </p-accordion>
-</div>
-} }
+              <i
+                (click)="deleteExperienceHandler(experience)"
+                role="button"
+                class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
+                style="font-size: 1.5rem"></i>
+            </div>
+          </p-accordionTab>
+        }
+      </p-accordion>
+    </div>
+  }
+}
 
 <div class="w-[full] bg-white border border-gray-200 rounded-lg shadow">
   <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>

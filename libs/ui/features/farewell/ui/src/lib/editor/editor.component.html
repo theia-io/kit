@@ -1,16 +1,16 @@
-@if(quill(); as quill) {
-<feat-farewell-quill-side-actions
-  [(show)]="sideActionsShow"
-  [bounds]="sideActionsBounds()"
-  (sideActionOpened)="sideActionOpened.set($event)"
-  (divider)="dividerHandler(quill)"
-  (imageFiles)="
-    imageFilesHandler(quill, $event)
-  "></feat-farewell-quill-side-actions>
-<feat-farewell-quill-actions
-  [(show)]="actionsShow"
-  [bounds]="actionsBounds()"
-  [quill]="quill"></feat-farewell-quill-actions>
+@if (quill(); as quill) {
+  <feat-farewell-quill-side-actions
+    [(show)]="sideActionsShow"
+    [bounds]="sideActionsBounds()"
+    (sideActionOpened)="sideActionOpened.set($event)"
+    (divider)="dividerHandler(quill)"
+    (imageFiles)="
+      imageFilesHandler(quill, $event)
+    "></feat-farewell-quill-side-actions>
+  <feat-farewell-quill-actions
+    [(show)]="actionsShow"
+    [bounds]="actionsBounds()"
+    [quill]="quill"></feat-farewell-quill-actions>
 }
 
 <p-editor
@@ -20,7 +20,7 @@
   [modules]="{}"
   [style]="{
     border: 'none',
-    fontFamily: 'var(--font-family)'
+    fontFamily: 'var(--font-family)',
   }"
   styleClass="w-full h-full custom-toolbar text-xl"
   (onInit)="quillInit($event)"

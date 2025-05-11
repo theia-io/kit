@@ -17,33 +17,33 @@ export class FarewellV2Service {
         params: {
           profileId,
         },
-      }
+      },
     );
   }
 
   getFarewell(farewellId: string): Observable<Farewell | null> {
     return this.#http.get<Farewell>(
-      `${this.#environment.api.farewells}/${farewellId}`
+      `${this.#environment.api.farewells}/${farewellId}`,
     );
   }
 
   createFarewell(farewell: ClientDataType<Farewell>): Observable<Farewell> {
     return this.#http.post<Farewell>(
       `${this.#environment.api.farewells}`,
-      farewell
+      farewell,
     );
   }
 
   putFarewell({ id, ...rest }: Farewell) {
     return this.#http.put<Farewell>(
       `${this.#environment.api.farewells}/${id}`,
-      rest
+      rest,
     );
   }
 
   deleteFarewell(id: Farewell['id']) {
     return this.#http.delete<Farewell>(
-      `${this.#environment.api.farewells}/${id}`
+      `${this.#environment.api.farewells}/${id}`,
     );
   }
 
@@ -55,7 +55,7 @@ export class FarewellV2Service {
           params: {
             farewellIds: farewellIds.join(','),
           },
-        }
+        },
       );
     }
 
@@ -64,27 +64,27 @@ export class FarewellV2Service {
 
   getAnalyticsFarewell(farewellId: string) {
     return this.#http.get<FarewellAnalytics>(
-      `${this.#environment.api.farewellAnalytics}/${farewellId}`
+      `${this.#environment.api.farewellAnalytics}/${farewellId}`,
     );
   }
 
   postAnalyticsFarewell(farewell: Farewell) {
     return this.#http.post<FarewellAnalytics>(
       `${this.#environment.api.farewellAnalytics}`,
-      farewell
+      farewell,
     );
   }
 
   putAnalytics(analytics: FarewellAnalytics) {
     return this.#http.put<FarewellAnalytics>(
       `${this.#environment.api.farewellAnalytics}/${analytics.id}`,
-      analytics
+      analytics,
     );
   }
 
   deleteAnalyticsFarewell(farewellId: string) {
     return this.#http.delete<FarewellAnalytics>(
-      `${this.#environment.api.farewellAnalytics}/${farewellId}`
+      `${this.#environment.api.farewellAnalytics}/${farewellId}`,
     );
   }
 }

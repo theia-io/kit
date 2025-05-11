@@ -22,7 +22,6 @@ import { debounceTime, distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'search',
-  standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   templateUrl: './search.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

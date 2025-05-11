@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feat-follow-effects',
   preset: '../../../../../jest.preset.js',

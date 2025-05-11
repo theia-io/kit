@@ -18,18 +18,18 @@ export class KudoBoardReactionsEffects {
           map((reactions) =>
             FeatKudoBoardReactionActions.getReactionsKudoBoardSuccess({
               reactions,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardReactionActions.getReactionsKudoBoardFailure({
                 message: `We were not able to get reactions to kudoboard: ${kudoBoardId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   createReactionKudoBoard$ = createEffect(() =>
@@ -40,18 +40,18 @@ export class KudoBoardReactionsEffects {
           map((reactionResponse) =>
             FeatKudoBoardReactionActions.postReactionKudoBoardSuccess({
               reaction: reactionResponse,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardReactionActions.postReactionKudoBoardFailure({
                 message: `We were not able to add reactions to kudoboard: ${reaction.kudoBoardId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteKudoBoardReaction$ = createEffect(() =>
@@ -62,17 +62,17 @@ export class KudoBoardReactionsEffects {
           map(() =>
             FeatKudoBoardReactionActions.deleteReactionKudoBoardSuccess({
               id,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardReactionActions.deleteReactionKudoBoardFailure({
                 message: `We were unable to remove kudoboard reaction, ${id}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }

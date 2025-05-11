@@ -4,7 +4,7 @@ exports = async function (arg) {
   const tweetsCollection = db.collection('tweet');
   const profileId = BSON.ObjectId(arg.profileId);
   const followingProfileIds = arg.following?.map((followProfileId) =>
-    BSON.ObjectId(followProfileId)
+    BSON.ObjectId(followProfileId),
   );
 
   // this will return all tweets that user follows and ALL of their retweets (?)
@@ -132,6 +132,6 @@ exports = async function (arg) {
   console.log(resultArr);
 
   return resultArr.map((tweet) =>
-    context.functions.execute('normalizeTweet', tweet)
+    context.functions.execute('normalizeTweet', tweet),
   );
 };

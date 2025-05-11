@@ -23,11 +23,11 @@ export class BeTweetController {
   @UseGuards(AuthGuard('jwt'))
   async getFeed(
     @Query('profileId') profileId: string,
-    @Query('followingProfileIds') followingProfileIds?: Array<string>
+    @Query('followingProfileIds') followingProfileIds?: Array<string>,
   ) {
     return await this.beTweetService.getFeed(
       profileId,
-      followingProfileIds ?? []
+      followingProfileIds ?? [],
     );
   }
 
@@ -35,7 +35,7 @@ export class BeTweetController {
   @UseGuards(AuthGuard('jwt'))
   async getTweet(
     @Query('tweetId') tweetId: string,
-    @Query('profileId') profileId: string
+    @Query('profileId') profileId: string,
   ) {
     return this.beTweetService.getTweet(tweetId, profileId);
   }
@@ -59,7 +59,7 @@ export class BeTweetController {
   async deleteTweet(
     @Req() req: Request,
     @Param('tweetId') tweetId: string,
-    @Query('profileId') profileId: string
+    @Query('profileId') profileId: string,
   ) {
     const authUser = req.user as Auth0Kit;
     const profileIds = authUser.profiles?.map((profile) => profile.id) ?? [];
@@ -70,7 +70,7 @@ export class BeTweetController {
   @UseGuards(AuthGuard('jwt'))
   async likeTweet(
     @Param('tweetId') tweetId: string,
-    @Query('profileId') profileId: string
+    @Query('profileId') profileId: string,
   ) {
     return this.beTweetService.likeTweet(tweetId, profileId);
   }
@@ -79,7 +79,7 @@ export class BeTweetController {
   @UseGuards(AuthGuard('jwt'))
   async addComment(
     @Param('tweetId') tweetId: string,
-    @Body() commentDto: Partial<TweetComment>
+    @Body() commentDto: Partial<TweetComment>,
   ) {
     return this.beTweetService.newTweetComment(tweetId, commentDto);
   }
@@ -90,7 +90,7 @@ export class BeTweetController {
     @Req() req: Request,
     @Param('tweetId') tweetId: string,
     @Query('profileId') profileId: string,
-    @Query('content') content: string
+    @Query('content') content: string,
   ) {
     const profileIds =
       (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
@@ -99,7 +99,7 @@ export class BeTweetController {
       tweetId,
       profileId,
       content,
-      profileIds
+      profileIds,
     );
   }
 }

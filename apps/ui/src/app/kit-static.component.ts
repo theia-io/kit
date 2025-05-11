@@ -12,7 +12,6 @@ import { select, Store } from '@ngrx/store';
 import { delay, of, switchMap, take } from 'rxjs';
 
 @Component({
-  standalone: true,
   imports: [
     AsyncPipe,
     RouterModule,
@@ -22,11 +21,11 @@ import { delay, of, switchMap, take } from 'rxjs';
   ],
   selector: 'app-kitouch-static',
   styles: `
-  :host {
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh; 
-  }
+    :host {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
   `,
   template: `
     <shared-navbar-static
@@ -62,7 +61,7 @@ export class KitStaticComponent implements OnInit {
         delay(1500),
         takeUntilDestroyed(this.#destroyRef),
         switchMap(() => this.#auth0Service.loggedIn$),
-        take(1)
+        take(1),
         // switchMap((loggedIn) =>
         //   loggedIn
         //     ? EMPTY
@@ -74,7 +73,7 @@ export class KitStaticComponent implements OnInit {
           if (!loggedIn) {
             this.#store.dispatch(FeatAuth0Events.tryAuth());
           }
-        }
+        },
         // this.#store.dispatch(
         //   FeatAuth0Events.setAuthState(currentSessionAccountUserProfiles)
         // )

@@ -48,8 +48,8 @@ export class S3Service {
         new GetObjectCommand({
           Bucket,
           Key,
-        })
-      )
+        }),
+      ),
     );
   }
 
@@ -60,8 +60,8 @@ export class S3Service {
           Bucket,
           Key,
           Body,
-        })
-      )
+        }),
+      ),
     );
   }
 
@@ -71,8 +71,8 @@ export class S3Service {
         new DeleteObjectCommand({
           Bucket,
           Key,
-        })
-      )
+        }),
+      ),
     );
   }
 }

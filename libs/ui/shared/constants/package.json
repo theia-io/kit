@@ -2,7 +2,7 @@
   "name": "@kitouch/shared-constants",
   "version": "6.0.0-0",
   "peerDependencies": {
-    "primeng": "17.18.10"
+    "primeng": "19.1.2"
   },
   "sideEffects": false
 }

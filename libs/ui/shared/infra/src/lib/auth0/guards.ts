@@ -23,13 +23,13 @@ export const onlyForNotLoggedInGuard = () => {
       }
 
       return true;
-    })
+    }),
   );
 };
 
 export const onlyForLoggedInGuard = (
   route: ActivatedRouteSnapshot,
-  state: RouterStateSnapshot
+  state: RouterStateSnapshot,
 ) => {
   const router = inject(Router);
   const authService = inject(Auth0Service);
@@ -49,8 +49,8 @@ export const onlyForLoggedInGuard = (
             catchError((err) => {
               console.info('[Auth guard] silent sing-in failed', err);
               return of(false);
-            })
-          )
+            }),
+          ),
     ),
     map((isLoggedIn: boolean) => {
       if (!isLoggedIn) {
@@ -60,6 +60,6 @@ export const onlyForLoggedInGuard = (
       }
 
       return isLoggedIn;
-    })
+    }),
   );
 };

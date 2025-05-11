@@ -39,8 +39,8 @@ export class UIKitSmallerHintTextUXDirective {
           ${LINK_TAILWIND_CLASSES} 
           ${textSize ?? 'text-sm'}
           ${textCover ?? 'text-gray-500'} hover:${
-        textHoverColor ?? 'text-gray-700'
-      }
+            textHoverColor ?? 'text-gray-700'
+          }
           hover:${backgroundHoverColor ?? 'bg-gray-100'}
         `;
     });

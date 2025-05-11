@@ -22,7 +22,7 @@ exports = async function (arg) {
   } catch (err) {
     console.log(
       '[postTweet] Error occurred while normalizing tweet:',
-      err.message
+      err.message,
     );
     return { error: 'Error occurred while executing findOne: ' + err.message };
   }

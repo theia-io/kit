@@ -11,7 +11,7 @@ import { Observable } from 'rxjs';
 export class RawBodyInterceptor implements NestInterceptor {
   async intercept(
     context: ExecutionContext,
-    next: CallHandler
+    next: CallHandler,
   ): Promise<Observable<any>> {
     const req = context.switchToHttp().getRequest();
     req.body = await getRawBody(req);

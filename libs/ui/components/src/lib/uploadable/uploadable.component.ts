@@ -50,7 +50,6 @@ export const UPLOAD_CONF_DEFAULT: UploadConf = {
 
 @Component({
   selector: 'ui-kit-pic-uploadable',
-  standalone: true,
   imports: [
     NgClass,
     NgOptimizedImage,
@@ -62,7 +61,6 @@ export const UPLOAD_CONF_DEFAULT: UploadConf = {
   ],
   templateUrl: './uploadable.component.html',
   providers: [ConfirmationService],
-  // changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiKitPicUploadableComponent {
   defaultTmplConf = input<{
@@ -125,7 +123,7 @@ export class UiKitPicUploadableComponent {
     setTimeout(() => {
       (
         (this.fileUploadCmp as any).el.nativeElement?.querySelector(
-          '.p-fileupload-choose'
+          '.p-fileupload-choose',
         ) as HTMLElement | null
       )?.click();
     }, 100);

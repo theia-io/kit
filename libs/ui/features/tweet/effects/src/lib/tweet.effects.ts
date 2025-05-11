@@ -30,7 +30,7 @@ export class TweetsEffects {
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
 
   feedTweets$ = createEffect(() =>
@@ -55,24 +55,24 @@ export class TweetsEffects {
                   }
                   return tweet;
                 }),
-              })
+              }),
             ),
             catchError((err) => {
               console.error('[TweetsEffects] allTweets ERROR', err);
               return of(TweetApiActions.getAllFailure());
-            })
-          )
-      )
-    )
+            }),
+          ),
+      ),
+    ),
   );
 
   bookmarkFeedSuccess$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatBookmarksActions.getBookmarksFeedSuccess),
       map(({ tweets }) =>
-        TweetApiActions.getTweetsForBookmarkSuccess({ tweets })
-      )
-    )
+        TweetApiActions.getTweetsForBookmarkSuccess({ tweets }),
+      ),
+    ),
   );
 
   profileTweets$ = createEffect(() =>
@@ -81,17 +81,17 @@ export class TweetsEffects {
       switchMap(({ profileId }) =>
         this.#tweetV2Service.getTweetsForProfile(profileId).pipe(
           map((tweets) =>
-            TweetApiActions.getTweetsForProfileSuccess({ tweets })
+            TweetApiActions.getTweetsForProfileSuccess({ tweets }),
           ),
           catchError((err) => {
             console.error('[TweetsEffects] profileTweets ERROR', err);
             return of(
-              TweetApiActions.getTweetsForProfileFailure({ profileId })
+              TweetApiActions.getTweetsForProfileFailure({ profileId }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   getTweet$ = createEffect(() =>
@@ -103,10 +103,10 @@ export class TweetsEffects {
           catchError((err) => {
             console.error('[TweetsEffects] getTweet ERROR', err);
             return of(TweetApiActions.getFailure({ tweetId, profileId }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   deleteTweet$ = createEffect(() =>
@@ -122,17 +122,17 @@ export class TweetsEffects {
                 return of(
                   FeatTweetActions.deleteFailure({
                     message: 'Cannot delete tweet right now.',
-                  })
+                  }),
                 );
-              })
+              }),
             )
           : of(
               FeatTweetActions.deleteFailure({
                 message: 'You can delete only your own tweets',
-              })
-            )
-      )
-    )
+              }),
+            ),
+      ),
+    ),
   );
 
   createTweet$ = createEffect(() =>
@@ -145,7 +145,7 @@ export class TweetsEffects {
             FeatTweetActions.tweetSuccess({
               uuid,
               tweet: { ...tweet, denormalization: { profile } },
-            })
+            }),
           ),
           catchError((err) => {
             console.error('TweetsEffects createTweet', err);
@@ -154,12 +154,12 @@ export class TweetsEffects {
                 uuid,
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   likeTweet$ = createEffect(() =>
@@ -176,16 +176,16 @@ export class TweetsEffects {
                       ...tweet,
                       ...likedTweet,
                     },
-                  })
+                  }),
                 )
-              : throwError(() => new Error('Cannot find such tweet to like'))
+              : throwError(() => new Error('Cannot find such tweet to like')),
           ),
           catchError((err) => {
             console.error('[TweetsEffects] likeTweet ERROR', err);
             return of(FeatTweetActions.likeFailure({ tweet }));
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 }

@@ -18,33 +18,33 @@ export class KudoBoardV2Service {
         params: {
           profileId,
         },
-      }
+      },
     );
   }
 
   getKudoBoard(kudoBoardId: string): Observable<KudoBoard | null> {
     return this.#http.get<KudoBoard>(
-      `${this.#environment.api.kudoboards}/${kudoBoardId}`
+      `${this.#environment.api.kudoboards}/${kudoBoardId}`,
     );
   }
 
   createKudoBoard(kudoBoard: ClientDataType<KudoBoard>): Observable<KudoBoard> {
     return this.#http.post<KudoBoard>(
       `${this.#environment.api.kudoboards}`,
-      kudoBoard
+      kudoBoard,
     );
   }
 
   putKudoBoard(kudoBoard: KudoBoard) {
     return this.#http.put<KudoBoard>(
       `${this.#environment.api.kudoboards}/${kudoBoard.id}`,
-      kudoBoard
+      kudoBoard,
     );
   }
 
   deleteKudoBoard(id: KudoBoard['id']) {
     return this.#http.delete<KudoBoard>(
-      `${this.#environment.api.kudoboards}/${id}`
+      `${this.#environment.api.kudoboards}/${id}`,
     );
   }
 }

@@ -33,7 +33,7 @@ export class AuthorizedFeatureDirective implements AfterViewInit, OnDestroy {
     this.#elRef.nativeElement.addEventListener(
       'click',
       (event: PointerEvent) => this.#handleClick(event),
-      { capture: true }
+      { capture: true },
     );
   }
 

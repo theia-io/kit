@@ -4,7 +4,6 @@ import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { CardModule } from 'primeng/card';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-feature-connected-page-benefits',
   template: `
     <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">

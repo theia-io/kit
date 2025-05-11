@@ -11,7 +11,7 @@ import {
 export class BeKudoBoardReactionsService {
   constructor(
     @InjectModel(KudoBoardReactions.name)
-    private kudoBoardReactionsModel: Model<KudoBoardReactionsDocument>
+    private kudoBoardReactionsModel: Model<KudoBoardReactionsDocument>,
   ) {}
 
   async getReactionsKudoBoard(kudoBoardId: string) {
@@ -27,11 +27,11 @@ export class BeKudoBoardReactionsService {
       console.error(
         `Cannot execute kudoboard reactions search for %s`,
         kudoBoardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find kudoboard reactions',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -56,11 +56,11 @@ export class BeKudoBoardReactionsService {
         `Cannot execute kudoboard reaction create for kudoBoardId: %s, profileId: %s`,
         kudoBoardId,
         profileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot create kudoboard reaction',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -82,11 +82,11 @@ export class BeKudoBoardReactionsService {
       console.error(
         `Cannot execute kudoboard reaction delete for %s`,
         kudoBoardReactionId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot delete kudoboard reactions',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

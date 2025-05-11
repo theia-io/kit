@@ -5,10 +5,10 @@
   [ngClass]="kClass()"
   [text]="true">
   <ng-content select="[extraText]" />
-  @if(visible()) {
-  <i class="pi pi-eye-slash" pTooltip="Hide preview"></i>
+  @if (visible()) {
+    <i class="pi pi-eye-slash" pTooltip="Hide preview"></i>
   } @else {
-  <i class="pi pi-eye" pTooltip="Preview"></i>
+    <i class="pi pi-eye" pTooltip="Preview"></i>
   }
 </button>
 

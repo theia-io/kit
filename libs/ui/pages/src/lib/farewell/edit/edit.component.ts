@@ -1,7 +1,7 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
 import {
   FeatFarewellActions,
@@ -27,7 +27,6 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-farewell-edit',
   templateUrl: './edit.component.html',
   imports: [
@@ -42,6 +41,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     //
     SidebarModule,
     BreadcrumbModule,
+    RouterModule,
   ],
 })
 /** @TODO @FIXME Merge PageFarewellGenerateComponent and PageFarewellEditComponent components */
@@ -54,22 +54,22 @@ export class PageFarewellEditComponent {
   farewellId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     filter(Boolean),
-    shareReplay()
+    shareReplay(),
   );
 
   farewell$ = this.farewellId$.pipe(
     switchMap((id) => this.#store.pipe(select(selectFarewellById(id)))),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   currentProfile$ = this.#store.pipe(
     select(selectCurrentProfile),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   farewellCreator$ = combineLatest([this.farewell$, this.currentProfile$]).pipe(
     map(([farewell, profile]) => farewell.profileId === profile.id),
-    startWith(false)
+    startWith(false),
   );
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
@@ -87,7 +87,7 @@ export class PageFarewellEditComponent {
       {
         label: farewell.title,
       },
-    ])
+    ]),
   );
 
   updating = signal(false);
@@ -100,7 +100,7 @@ export class PageFarewellEditComponent {
     this.farewellId$
       .pipe(takeUntilDestroyed())
       .subscribe((id) =>
-        this.#store.dispatch(FeatFarewellActions.getFarewell({ id }))
+        this.#store.dispatch(FeatFarewellActions.getFarewell({ id })),
       );
   }
 

@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-control',
   templateUrl: './tweet-control.component.html',
   imports: [ReactiveFormsModule],

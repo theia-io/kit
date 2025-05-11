@@ -11,7 +11,7 @@ import { KudoBoard, KudoBoardDocument } from './schemas';
 export class BeKudoboardService {
   constructor(
     @InjectModel(KudoBoard.name)
-    private kudoBoardModel: Model<KudoBoardDocument>
+    private kudoBoardModel: Model<KudoBoardDocument>,
   ) {}
 
   async getProfileKudoboards(profileId: string) {
@@ -27,7 +27,7 @@ export class BeKudoboardService {
       console.error(`Cannot execute kudoboard search for %s`, profileId, err);
       throw new HttpException(
         'Cannot find kudoboards',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -48,7 +48,7 @@ export class BeKudoboardService {
       console.error(`Cannot execute kudoboard search for %s`, kudoBoardId, err);
       throw new HttpException(
         'Cannot find kudoboard',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -99,7 +99,7 @@ export class BeKudoboardService {
       console.error(`Cannot execute kudoboard create for %s`, profileId, err);
       throw new HttpException(
         'Cannot create kudoboard',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -108,7 +108,7 @@ export class BeKudoboardService {
 
   async updateKudoboard(
     kudoboardId: string,
-    { profileId, title, content, recipient, background, status }: IKudoBoard
+    { profileId, title, content, recipient, background, status }: IKudoBoard,
   ) {
     let updatedKudoBoard;
 
@@ -126,14 +126,14 @@ export class BeKudoboardService {
               ? new mongoose.Types.ObjectId(profileId)
               : null,
           },
-          { new: true }
+          { new: true },
         )
         .exec();
     } catch (err) {
       console.error(`Cannot execute kudoboard update for`, err);
       throw new HttpException(
         'Cannot update kudoboard',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -153,7 +153,7 @@ export class BeKudoboardService {
       console.error(`Cannot execute kudoboard delete for %s`, kudoboardId, err);
       throw new HttpException(
         'Cannot delete kudoboard',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

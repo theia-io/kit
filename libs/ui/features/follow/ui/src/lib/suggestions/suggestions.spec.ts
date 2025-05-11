@@ -14,7 +14,7 @@ import {
 
 const getExperienceIntersection = (
   { startDate: s1, endDate: e1 }: ExperienceDates,
-  { startDate: s2, endDate: e2 }: ExperienceDates
+  { startDate: s2, endDate: e2 }: ExperienceDates,
 ) => {
   const NOW = new Date();
 
@@ -32,7 +32,7 @@ const getExperienceIntersection = (
 describe('Suggestions', () => {
   it('should return that A worked with C, D, E, F', () => {
     const result = [B, C, D, E, F, G, K, L].filter((experienceDates) =>
-      getExperienceIntersection(A, experienceDates)
+      getExperienceIntersection(A, experienceDates),
     );
 
     expect(result).toHaveLength(5);
@@ -45,7 +45,7 @@ describe('Suggestions', () => {
 
   it('should return that B worked with C, D', () => {
     const result = [A, C, D, E, F, G, K, L].filter((experienceDates) =>
-      getExperienceIntersection(B, experienceDates)
+      getExperienceIntersection(B, experienceDates),
     );
 
     expect(result).toHaveLength(2);
@@ -64,10 +64,10 @@ describe('Suggestions', () => {
           anotherUser.experiences?.some((anotherUserExperience) =>
             getExperienceIntersection(
               thisUserExperience as any,
-              anotherUserExperience as any
-            )
-          )
-        )
+              anotherUserExperience as any,
+            ),
+          ),
+        ),
       );
 
     expect(result).toHaveLength(1);

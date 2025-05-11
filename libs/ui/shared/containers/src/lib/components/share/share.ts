@@ -7,7 +7,7 @@ export const farewellLink = (origin: string, farewellId: Farewell['id']) =>
 export const kudoboardLink = (
   origin: string,
   kudoboardId: KudoBoard['id'],
-  gifting: boolean
+  gifting: boolean,
 ) =>
   [origin, 's', APP_PATH_ALLOW_ANONYMOUS.KudoBoard, kudoboardId].join('/') +
   (gifting ? '?view=true' : '');

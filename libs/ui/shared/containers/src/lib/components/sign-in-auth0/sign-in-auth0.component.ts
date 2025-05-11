@@ -11,7 +11,6 @@ import { ButtonModule } from 'primeng/button';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
-  standalone: true,
   selector: 'shared-sign-in-auth0',
   templateUrl: './sign-in-auth0.component.html',
   imports: [ButtonModule],

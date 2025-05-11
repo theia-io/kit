@@ -73,7 +73,7 @@ import Masonry from 'masonry-layout';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
 import {
   delay,
@@ -89,7 +89,6 @@ import {
 } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-comments',
   templateUrl: './comments.component.html',
   imports: [
@@ -101,7 +100,7 @@ import {
     NgStyle,
     //
     FloatLabelModule,
-    InputTextareaModule,
+    InputTextarea,
     TimelineModule,
     ButtonModule,
     //
@@ -131,15 +130,15 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
 
   #createdComment$ = this.#actions$.pipe(
     ofType(FeatKudoBoardCommentActions.postCommentKudoBoardSuccess),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
   );
 
   kudoboardId$ = toObservable(this.kudoboardId);
 
   kudoboard$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
-    )
+      this.#store.pipe(select(selectKudoBoardById(kudoboardId))),
+    ),
   );
 
   kudoboardProfile = toSignal(
@@ -149,25 +148,25 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
         profileId || profile
           ? this.#store.pipe(
               select(selectProfileById(profileId ?? profile?.id ?? '')),
-              map((resolvedProfile) => resolvedProfile ?? profile)
+              map((resolvedProfile) => resolvedProfile ?? profile),
             )
-          : of(undefined)
-      )
-    )
+          : of(undefined),
+      ),
+    ),
   );
 
   kudoboardComments$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardCommentsById(kudoboardId)))
+      this.#store.pipe(select(selectKudoBoardCommentsById(kudoboardId))),
     ),
     map((comments) =>
       comments.sort((a, b) =>
         sortByCreatedTimeDesc(
           a.createdAt ?? (a as any).timestamp?.createdAt,
-          b.createdAt ?? (b as any).timestamp?.createdAt
-        )
-      )
-    )
+          b.createdAt ?? (b as any).timestamp?.createdAt,
+        ),
+      ),
+    ),
   );
 
   $hintHidden = this.#deviceService.isMobile$.pipe(startWith(true));
@@ -179,7 +178,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
 
   placeholder = computed(() => {
@@ -189,7 +188,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   profilePictureFn = profilePicture;
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
   currentProfilePic = computed(() =>
-    this.profilePictureFn(this.currentProfile())
+    this.profilePictureFn(this.currentProfile()),
   );
 
   profileUrl = `/${APP_PATH.Profile}/`;
@@ -227,13 +226,15 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
 
     this.#createdComment$.subscribe(({ comment }) => {
       this.animatedCommentsSet.update(
-        (existingSet) => new Set([...existingSet.values(), comment.id])
+        (existingSet) => new Set([...existingSet.values(), comment.id]),
       );
 
       setTimeout(() => {
         this.animatedCommentsSet.update(
           (existingSet) =>
-            new Set([...existingSet.values()].filter((id) => id !== comment.id))
+            new Set(
+              [...existingSet.values()].filter((id) => id !== comment.id),
+            ),
         );
       }, DEFAULT_ANIMATE_TIMEOUT);
     });
@@ -245,14 +246,14 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
           gallery: '#kudo-posts-media-gallery',
           children: 'a',
           pswpModule: PhotoSwipe,
-        })
+        }),
       );
   }
 
   commentValidator() {
     return function (
       this: UIKitCommentAreaComponent,
-      control: AbstractControl
+      control: AbstractControl,
     ): ValidationErrors | null {
       const value = control.value,
         uploadedMedias = this.uploadedMedias();
@@ -276,7 +277,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   }
 
   uploadCommentMediaFiles(): (
-    images: Array<File>
+    images: Array<File>,
   ) => Observable<Array<ContractUploadedMedia>> {
     const getKudoBoardId = () => this.kudoboardId();
     const getProfileId = () => this.currentProfile()?.id;
@@ -291,7 +292,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
         console.error(
           '[saveImages] cannot upload images by unknown profile and KudoBoard',
           profileId,
-          kudoBoardId
+          kudoBoardId,
         );
         return of([]);
       }
@@ -308,14 +309,14 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
               }`,
               blob: mediaFile,
             })),
-          })
+          }),
         );
       });
 
       // TODO add error handling
       return this.#actions$.pipe(
         ofType(
-          FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess
+          FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess,
         ),
         take(1),
         // AWS S3 bucket has eventual consistency so need a time for it to be available
@@ -325,10 +326,10 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
             ...item,
             url: getFullS3Url(this.#s3KudoBoardBaseUrl, item.url),
             optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl)
+              getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl),
             ),
-          }))
-        )
+          })),
+        ),
       );
     };
   }
@@ -338,7 +339,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
       this.#store.dispatch(
         FeatKudoBoardCommentActions.deleteKudoBoardCommentStorageMedia({
           url,
-        })
+        }),
       );
       // TODO add error handling
     };
@@ -356,7 +357,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
           medias,
           content,
         },
-      })
+      }),
     );
   }
 
@@ -364,7 +365,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
     this.#store.dispatch(
       FeatKudoBoardCommentActions.deleteCommentKudoBoard({
         id: commentId,
-      })
+      }),
     );
   }
 

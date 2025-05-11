@@ -7,5 +7,5 @@ const selectAccountState = (state: { kit: { account: FeatureAccountState } }) =>
 /** Accounts */
 export const selectAccount = createSelector(
   selectAccountState,
-  (state: FeatureAccountState) => state.account
+  (state: FeatureAccountState) => state.account,
 );

@@ -11,12 +11,12 @@ const selectBookmarkState = (state: {
 
 export const selectBookmarks = createSelector(
   selectBookmarkState,
-  (state) => state.bookmarks
+  (state) => state.bookmarks,
 );
 
 export const selectIsBookmarked = ({ id }: Tweety | ReTweety) =>
   createSelector(selectBookmarks, (bookmarks) =>
-    bookmarks.some(({ tweetId }) => tweetId === id)
+    bookmarks.some(({ tweetId }) => tweetId === id),
   );
 
 // export const selectBookmarksFeed = createSelector(

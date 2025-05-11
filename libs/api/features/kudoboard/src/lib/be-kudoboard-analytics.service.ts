@@ -11,7 +11,7 @@ import {
 export class BeKudoBoardAnalyticsService {
   constructor(
     @InjectModel(KudoBoardAnalytics.name)
-    private kudoBoardAnalyticsModel: Model<KudoBoardAnalyticsDocument>
+    private kudoBoardAnalyticsModel: Model<KudoBoardAnalyticsDocument>,
   ) {}
 
   async getAnalyticsKudoBoards(kudoBoardId: Array<string>) {
@@ -29,11 +29,11 @@ export class BeKudoBoardAnalyticsService {
       console.error(
         `Cannot execute kudoboard analytics search for %s`,
         kudoBoardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find kudoboards analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -53,11 +53,11 @@ export class BeKudoBoardAnalyticsService {
       console.error(
         `Cannot execute kudoboard analytics search for %s`,
         kudoBoardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find kudoboard analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -76,11 +76,11 @@ export class BeKudoBoardAnalyticsService {
       console.error(
         `Cannot execute kudoboard analytics create for %s`,
         kudoBoardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot create kudoboard analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -100,11 +100,11 @@ export class BeKudoBoardAnalyticsService {
       console.error(
         `Cannot execute kudoboard analytics delete for %s`,
         kudoboardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot delete kudoboard analytics',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

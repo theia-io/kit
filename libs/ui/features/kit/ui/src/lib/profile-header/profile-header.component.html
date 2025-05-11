@@ -37,25 +37,26 @@
       {{ profile().name }}
     </a>
 
-    @if(profile().title) {
-    <br />
-    <span class="text-sm leading-5 font-bold text-gray-400">
-      {{ profile().title }}
-    </span>
+    @if (profile().title) {
+      <br />
+      <span class="text-sm leading-5 font-bold text-gray-400">
+        {{ profile().title }}
+      </span>
     }
   </p>
 </div>
 
-@if(profile().subtitle) {
-<p
-  data-section="subtitle"
-  class="mt-2 subtitle text-sm leading-5 font-bold text-gray-400 overflow-break-word">
-  {{ profile().subtitle }}
-</p>
-} @if(profile().description) {
-<p data-section="description" class="mt-2 description overflow-break-word">
-  {{ profile().description }}
-</p>
+@if (profile().subtitle) {
+  <p
+    data-section="subtitle"
+    class="mt-2 subtitle text-sm leading-5 font-bold text-gray-400 overflow-break-word">
+    {{ profile().subtitle }}
+  </p>
+}
+@if (profile().description) {
+  <p data-section="description" class="mt-2 description overflow-break-word">
+    {{ profile().description }}
+  </p>
 }
 
 <div data-section="socials" class="mt-4 flex justify-end items-center">
@@ -63,15 +64,15 @@
     class="block mr-auto"
     [socials]="profile().socials" />
 
-  @if(profile().following?.length) {
-  <p sharedAuthorizedFeature class="text-sm font-bold">
-    <i class="pi pi-users mr-1"></i>
-    {{ profile().following?.length }}
-    <a
-      [routerLink]="profileUrl + profile().id + '/following'"
-      class="text-sm text-gray-400 hover:underline">
-      Following
-    </a>
-  </p>
+  @if (profile().following?.length) {
+    <p sharedAuthorizedFeature class="text-sm font-bold">
+      <i class="pi pi-users mr-1"></i>
+      {{ profile().following?.length }}
+      <a
+        [routerLink]="profileUrl + profile().id + '/following'"
+        class="text-sm text-gray-400 hover:underline">
+        Following
+      </a>
+    </p>
   }
 </div>

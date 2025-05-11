@@ -16,7 +16,7 @@ exports = async function (user) {
 
   const getExperienceIntersection = (
     { startDate: s1, endDate: e1 },
-    { startDate: s2, endDate: e2 }
+    { startDate: s2, endDate: e2 },
   ) => {
     const NOW = new Date();
 
@@ -34,13 +34,13 @@ exports = async function (user) {
   matchingUsers = allUsers.filter((anotherUser) =>
     user.experiences?.some((thisUserExperience) =>
       anotherUser.experiences?.some((anotherUserExperience) =>
-        getExperienceIntersection(thisUserExperience, anotherUserExperience)
-      )
-    )
+        getExperienceIntersection(thisUserExperience, anotherUserExperience),
+      ),
+    ),
   );
 
   const matchingUsersIds = matchingUsers.map(
-    (matchingUser) => matchingUser._id
+    (matchingUser) => matchingUser._id,
   );
 
   console.log('matchingUsersIds', matchingUsersIds);
@@ -59,7 +59,7 @@ exports = async function (user) {
   } catch (err) {
     console.log(
       'Error occurred while finding the matching profiles of matched users:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }

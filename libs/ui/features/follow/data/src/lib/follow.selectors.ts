@@ -7,5 +7,5 @@ const selectFollowState = (state: { follow: FeatureFollowState }) =>
 
 export const selectColleaguesProfilesSuggestions = createSelector(
   selectFollowState,
-  (state) => state.colleaguesProfiles
+  (state) => state.colleaguesProfiles,
 );

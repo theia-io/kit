@@ -2,15 +2,15 @@
   "name": "@kitouch/feat-tweet-effects",
   "version": "6.0.0-0",
   "peerDependencies": {
-    "@angular/core": "18.2.6",
+    "@angular/core": "19.2.9",
     "@kitouch/feat-tweet-data": "6.0.0-0",
     "@kitouch/kit-data": "6.0.0-0",
-    "@ngrx/effects": "18.0.2",
-    "@ngrx/store": "18.0.2",
+    "@ngrx/effects": "19.0.0",
+    "@ngrx/store": "19.0.0",
     "rxjs": "~7.8.0",
     "@kitouch/shared-models": "6.0.0-0",
     "@kitouch/shared-infra": "6.0.0-0",
-    "@angular/common": "18.2.6"
+    "@angular/common": "19.2.9"
   },
   "sideEffects": false
 }

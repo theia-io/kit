@@ -15,34 +15,34 @@ export class FarewellCommentsService {
   #http = inject(HttpClient);
 
   getFarewellComments(
-    farewellId: Farewell['id']
+    farewellId: Farewell['id'],
   ): Observable<Array<FarewellComment>> {
     return this.#http.get<Array<FarewellComment>>(
-      `${this.#env.api.farewellComments}/${farewellId}`
+      `${this.#env.api.farewellComments}/${farewellId}`,
     );
   }
 
   postFarewellComment(
-    farewellComment: ClientDataType<FarewellComment>
+    farewellComment: ClientDataType<FarewellComment>,
   ): Observable<FarewellComment> {
     return this.#http.post<FarewellComment>(
       `${this.#env.api.farewellComments}`,
-      farewellComment
+      farewellComment,
     );
   }
 
   batchFarewellComments(
-    comments: Array<ClientDataType<FarewellComment>>
+    comments: Array<ClientDataType<FarewellComment>>,
   ): Observable<Array<FarewellComment>> {
     return this.#http.post<Array<FarewellComment>>(
       `${this.#env.api.farewellComments}/batch`,
-      comments
+      comments,
     );
   }
 
   deleteFarewellComment(id: FarewellComment['id']) {
     return this.#http.delete<Array<FarewellComment>>(
-      `${this.#env.api.farewellComments}/${id}`
+      `${this.#env.api.farewellComments}/${id}`,
     );
   }
 
@@ -59,9 +59,9 @@ export class FarewellCommentsService {
             params: {
               name: key,
             },
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 

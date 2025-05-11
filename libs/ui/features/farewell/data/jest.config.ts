@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feat-farewell-data',
   preset: '../../../../../jest.preset.js',

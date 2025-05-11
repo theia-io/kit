@@ -10,7 +10,6 @@ import { Button, ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'ui-kit-tweet-button',
-  standalone: true,
   imports: [NgClass, ButtonModule],
   styles: `
     :host {
@@ -26,15 +25,16 @@ import { Button, ButtonModule } from 'primeng/button';
       aria-label="tweet"
     >
       <span>{{ text() }}</span>
-      @if(loader()) {
-      <i class="pi pi-sync animate-spin" style="font-size: 1rem"></i>
-      } @if(icon() && !loader()) {
-      <i
-        class="pi"
-        [ngClass]="icon()"
-        [class.animate-wiggle]="iconAnimate()"
-        style="font-size: 1.5rem"
-      ></i>
+      @if (loader()) {
+        <i class="pi pi-sync animate-spin" style="font-size: 1rem"></i>
+      }
+      @if (icon() && !loader()) {
+        <i
+          class="pi"
+          [ngClass]="icon()"
+          [class.animate-wiggle]="iconAnimate()"
+          style="font-size: 1.5rem"
+        ></i>
       }
     </p-button>
   `,
@@ -51,7 +51,7 @@ export class UiKitTweetButtonComponent {
   iconAnimate = input(true);
 
   styleClass = computed(() =>
-    !this.loader() && !this.icon() ? 'justify-center' : 'justify-between'
+    !this.loader() && !this.icon() ? 'justify-center' : 'justify-between',
   );
 
   clickEvent = output<Event>();

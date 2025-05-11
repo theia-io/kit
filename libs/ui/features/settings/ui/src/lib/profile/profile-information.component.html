@@ -2,13 +2,13 @@
   class="grid items-center justify-center grid-rows-[200px_50px_130px] sm:grid-cols-1 md:grid-cols-2 gap-y-6"
   [formGroup]="profileForm">
   <div class="col-span-2">
-    @if(canEditProfile()) {
-    <feat-kit-profile-background-uploadable
-      [profileId]="profile().id"></feat-kit-profile-background-uploadable>
+    @if (canEditProfile()) {
+      <feat-kit-profile-background-uploadable
+        [profileId]="profile().id"></feat-kit-profile-background-uploadable>
     } @else {
-    <ui-kit-color-displayer
-      class="absolute left-0 top-0 w-full h-40"
-      [color]="profile().background" />
+      <ui-kit-color-displayer
+        class="absolute left-0 top-0 w-full h-40"
+        [color]="profile().background" />
     }
 
     <feat-kit-profile-picture-uploadable
@@ -40,11 +40,11 @@
           formControlName="title" />
         <label for="title">Profile title</label>
       </p-floatLabel>
-      @if(withHints()) {
-      <small id="title" class="w-full">
-        Add your current role or calling, e.g.
-        <i>professional late-drinker.</i>
-      </small>
+      @if (withHints()) {
+        <small id="title" class="w-full">
+          Add your current role or calling, e.g.
+          <i>professional late-drinker.</i>
+        </small>
       }
     </div>
 

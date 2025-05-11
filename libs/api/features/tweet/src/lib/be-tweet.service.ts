@@ -7,7 +7,7 @@ import { Tweet, TweetDocument } from './schemas';
 @Injectable()
 export class BeTweetService {
   constructor(
-    @InjectModel(Tweet.name) private tweetModel: Model<TweetDocument>
+    @InjectModel(Tweet.name) private tweetModel: Model<TweetDocument>,
   ) {}
 
   // TODO: create & migrate to "Feed" module
@@ -113,7 +113,7 @@ export class BeTweetService {
       console.error('Cannot execute tweets feed search', err);
       throw new HttpException(
         'Cannot execute tweet feed search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -140,11 +140,11 @@ export class BeTweetService {
         `Cannot execute tweet search for %s, %s`,
         tweetId,
         tweetProfileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find tweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -167,7 +167,7 @@ export class BeTweetService {
       console.error(`Cannot execute tweet search for %s`, tweetId, err);
       throw new HttpException(
         'Cannot find tweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -199,7 +199,7 @@ export class BeTweetService {
       console.error(`Cannot execute tweets search for %s`, ids, err);
       throw new HttpException(
         'Cannot execute tweets search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -222,7 +222,7 @@ export class BeTweetService {
       console.error(`Cannot create new tweet %s`, JSON.stringify(tweet), err);
       throw new HttpException(
         'Cannot execute tweets search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -232,7 +232,7 @@ export class BeTweetService {
   async deleteTweet(
     tweetId: string,
     profileId: string,
-    loggedInUserProfiles: Array<string>
+    loggedInUserProfiles: Array<string>,
   ) {
     const tweet = await this.getTweet(tweetId, profileId);
     if (!tweet) {
@@ -242,12 +242,13 @@ export class BeTweetService {
     console.log('tweet.profileId 2', tweet, tweet.profileId?.toString());
     if (
       !loggedInUserProfiles.some(
-        (loggedInProfileId) => tweet.profileId?.toString() === loggedInProfileId
+        (loggedInProfileId) =>
+          tweet.profileId?.toString() === loggedInProfileId,
       )
     ) {
       throw new HttpException(
         'You can delete only yours tweet',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -260,7 +261,7 @@ export class BeTweetService {
       console.error(`Cannot delete tweet %s, %s`, tweetId, profileId, err);
       throw new HttpException(
         'Cannot delete tweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -273,18 +274,18 @@ export class BeTweetService {
 
     try {
       updatedTweet = await this.tweetModel.findById(
-        new mongoose.Types.ObjectId(tweetId)
+        new mongoose.Types.ObjectId(tweetId),
       );
     } catch (err) {
       console.error(
         `Cannot execute find tweet %s, with %s`,
         tweetId,
         likeProfileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot search tweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -297,11 +298,11 @@ export class BeTweetService {
         updatedTweet.upProfileIds = new Array(likeProfileObjectId);
       } else if (
         updatedTweet.upProfileIds.some((upProfileId) =>
-          upProfileId.equals(likeProfileObjectId)
+          upProfileId.equals(likeProfileObjectId),
         )
       ) {
         updatedTweet.upProfileIds = updatedTweet.upProfileIds.filter(
-          (like) => !like.equals(likeProfileObjectId)
+          (like) => !like.equals(likeProfileObjectId),
         );
       } else {
         updatedTweet.upProfileIds.push(likeProfileObjectId);
@@ -313,11 +314,11 @@ export class BeTweetService {
         `Cannot update tweet %s, with %s`,
         tweetId,
         likeProfileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot like tweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -326,7 +327,7 @@ export class BeTweetService {
 
   async newTweetComment(
     tweetId: Tweety['id'],
-    { profileId, content }: Partial<TweetComment>
+    { profileId, content }: Partial<TweetComment>,
   ) {
     let updatedTweet;
 
@@ -344,7 +345,7 @@ export class BeTweetService {
         {
           upsert: true,
           new: true,
-        }
+        },
       );
     } catch (err) {
       console.error(
@@ -352,11 +353,11 @@ export class BeTweetService {
         tweetId,
         profileId,
         content,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot add new comment to tweet',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -367,7 +368,7 @@ export class BeTweetService {
     tweetId: string,
     profileId: string,
     content: string,
-    loggedInUserProfiles: Array<string>
+    loggedInUserProfiles: Array<string>,
   ) {
     const tweet = await this.#getTweetById(tweetId);
     if (!tweet) {
@@ -377,24 +378,24 @@ export class BeTweetService {
     const tweetDeletingComment = tweet.comments.find(
       (comment) =>
         comment.profileId.toString() === profileId &&
-        comment.content === content
+        comment.content === content,
     );
     if (!tweetDeletingComment) {
       throw new HttpException(
         'Cannot find such tweet comment',
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
     if (
       !loggedInUserProfiles.some(
         (loggedInProfileId) =>
-          loggedInProfileId === tweetDeletingComment.profileId.toString()
+          loggedInProfileId === tweetDeletingComment.profileId.toString(),
       )
     ) {
       throw new HttpException(
         'You can delete only yours tweet comments',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -404,7 +405,7 @@ export class BeTweetService {
           !(
             comment.profileId.toString() === profileId &&
             comment.content === content
-          )
+          ),
       );
       await tweet.save();
     } catch (err) {
@@ -413,11 +414,11 @@ export class BeTweetService {
         tweetId,
         profileId,
         content,
-        err
+        err,
       );
       throw new HttpException(
         "Cannot delete tweet's comment",
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

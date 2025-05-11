@@ -72,7 +72,6 @@ import ContentLoader from 'photoswipe/dist/types/slide/loader';
  *    3.2 just being viewed
  */
 @Component({
-  standalone: true,
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
   imports: [
@@ -112,13 +111,13 @@ export class PageKudoBoardViewComponent {
 
   kudoboardId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
-    shareReplay()
+    shareReplay(),
   );
   kudoboard$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
+      this.#store.pipe(select(selectKudoBoardById(kudoboardId))),
     ),
-    filter(Boolean)
+    filter(Boolean),
   );
   #kudoBoard = toSignal(this.kudoboard$);
 
@@ -130,20 +129,20 @@ export class PageKudoBoardViewComponent {
         actions.pipe(ofType(FeatKudoBoardActions.getKudoBoardSuccess)),
       loadingErrorAction$: (actions) =>
         actions.pipe(ofType(FeatKudoBoardActions.getKudoBoardFailure)),
-    })
+    }),
   );
 
   #kudoProfile$ = this.kudoboard$.pipe(
     filter(
       ({ profileId, profile: kudoboardSavedProfile }) =>
-        !!(profileId ?? kudoboardSavedProfile?.id)
+        !!(profileId ?? kudoboardSavedProfile?.id),
     ),
     switchMap(({ profileId, profile: kudoboardSavedProfile }) =>
       this.#store
         .select(selectProfileById((profileId ?? kudoboardSavedProfile?.id)!))
-        .pipe(map((profile) => profile ?? kudoboardSavedProfile))
+        .pipe(map((profile) => profile ?? kudoboardSavedProfile)),
     ),
-    startWith(null)
+    startWith(null),
   );
 
   kudoboardProfile = toSignal(this.#kudoProfile$);
@@ -154,8 +153,8 @@ export class PageKudoBoardViewComponent {
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
-        ({ id }) => id === this.kudoboardProfile()?.id
-      ) ?? false
+        ({ id }) => id === this.kudoboardProfile()?.id,
+      ) ?? false,
   );
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
@@ -173,7 +172,7 @@ export class PageKudoBoardViewComponent {
       {
         label: kudoboard.title,
       },
-    ])
+    ]),
   );
 
   kudoOwner = computed(() => {
@@ -224,7 +223,7 @@ export class PageKudoBoardViewComponent {
       }
 
       return '';
-    })
+    }),
   );
 
   #myFarewells$ = combineLatest([
@@ -232,8 +231,8 @@ export class PageKudoBoardViewComponent {
     this.#currentProfile$.pipe(filter(Boolean)),
   ]).pipe(
     map(([farewells, currentProfile]) =>
-      findProfileFarewells(currentProfile.id, farewells)
-    )
+      findProfileFarewells(currentProfile.id, farewells),
+    ),
   );
 
   myFarewellsKudoResponses$ = combineLatest([
@@ -242,9 +241,9 @@ export class PageKudoBoardViewComponent {
   ]).pipe(
     map(([myFarewells, kudoBoard]) =>
       myFarewells.filter(
-        (myFarewell) => myFarewell.kudoBoardId === kudoBoard?.id
-      )
-    )
+        (myFarewell) => myFarewell.kudoBoardId === kudoBoard?.id,
+      ),
+    ),
   );
 
   commentsSideBarVisibility = signal(false);
@@ -260,15 +259,15 @@ export class PageKudoBoardViewComponent {
         this.#store.dispatch(
           FeatKudoBoardAnalyticsActions.getAnalyticsKudoBoard({
             kudoBoardId: id,
-          })
+          }),
         );
         this.#store.dispatch(
           FeatKudoBoardReactionActions.getReactionsKudoBoard({
             kudoBoardId: id,
-          })
+          }),
         );
         this.#store.dispatch(
-          FeatKudoBoardCommentActions.getCommentsKudoBoard({ kudoboardId: id })
+          FeatKudoBoardCommentActions.getCommentsKudoBoard({ kudoboardId: id }),
         );
       });
 
@@ -276,8 +275,8 @@ export class PageKudoBoardViewComponent {
       .pipe(takeUntilDestroyed(), filter(Boolean), take(1))
       .subscribe((profile) =>
         this.#store.dispatch(
-          FeatFarewellActions.getProfileFarewells({ profileId: profile.id })
-        )
+          FeatFarewellActions.getProfileFarewells({ profileId: profile.id }),
+        ),
       );
 
     // Clear claim message after claimed
@@ -286,7 +285,7 @@ export class PageKudoBoardViewComponent {
         pairwise(),
         filter(([prev, curr]) => !prev && !!curr?.id),
         take(1),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe(() => this.#messageService.clear());
 
@@ -296,7 +295,7 @@ export class PageKudoBoardViewComponent {
         debounceTime(2000),
         filter((profile) => !profile?.id),
         take(1),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe(() =>
         this.#messageService.add({
@@ -305,7 +304,7 @@ export class PageKudoBoardViewComponent {
           summary: 'Claim this KudoBoard ✨',
           detail:
             'To claim this KudoBoard ✨: \n1) Click button in action panel below; \n 2) Sign-in ✅',
-        })
+        }),
       );
   }
 

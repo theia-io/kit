@@ -17,7 +17,7 @@ export class LegalService {
   addCompanies$(companies: Array<Pick<Legal, 'alias' | 'name'>>) {
     return this.#http.post<Array<Legal>>(
       `${this.#env.api.kit}/legal`,
-      companies
+      companies,
     );
   }
 }

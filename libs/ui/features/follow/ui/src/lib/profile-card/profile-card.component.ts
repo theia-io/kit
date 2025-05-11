@@ -15,7 +15,6 @@ import { FollowButtonComponent } from '@kitouch/ui-components';
 import PhotoSwipe from 'photoswipe';
 
 @Component({
-  standalone: true,
   selector: 'feat-follow-profile-card',
   templateUrl: './profile-card.component.html',
   imports: [

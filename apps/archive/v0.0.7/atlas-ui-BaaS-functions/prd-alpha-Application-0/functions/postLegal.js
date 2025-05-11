@@ -31,12 +31,12 @@ exports = async function (newTweet) {
         new: true,
         returnNewDocument: true,
         returnDocument: 'after',
-      }
+      },
     );
   } catch (err) {
     console.error(
       '[postTweet] Error occurred while adding tweet:',
-      err.message
+      err.message,
     );
     return {
       error: 'Error occurred while executing findOneAndUpdate: ' + err.message,
@@ -48,7 +48,7 @@ exports = async function (newTweet) {
   } catch (err) {
     console.error(
       '[postTweet] Error occurred while normilizing tweet:',
-      err.message
+      err.message,
     );
     return { error: 'Error occurred while normilizing tweet: ' + err.message };
   }

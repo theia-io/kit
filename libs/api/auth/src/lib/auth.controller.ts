@@ -27,7 +27,7 @@ export class AuthController {
 
     // 2. Construct the Auth0 logout URL
     const logoutUrl = new URL(
-      `${this.configService.getConfig('auth').issuerBaseUrl}/v2/logout`
+      `${this.configService.getConfig('auth').issuerBaseUrl}/v2/logout`,
     );
     const searchString = new URLSearchParams({
       client_id: this.configService.getConfig('auth').clientId,

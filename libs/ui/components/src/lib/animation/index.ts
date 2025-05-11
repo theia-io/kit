@@ -13,14 +13,14 @@ export const fadeInUpAnimation = trigger('fadeInUp', [
       opacity: 0,
       transform: 'translateY(20px)',
       display: 'none', // Hide the element initially
-    })
+    }),
   ),
   state(
     'shown',
     style({
       opacity: 1,
       transform: 'translateY(0)',
-    })
+    }),
   ),
   transition('hidden => shown', [
     // Transition from hidden to visible

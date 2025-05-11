@@ -24,7 +24,7 @@ Complex Content: If the lines contain complex content like embedded images or ot
  */
 export const quillBackspaceImageHandler = (
   removedNode: Node,
-  followingAddedNone: Node | undefined
+  followingAddedNone: Node | undefined,
 ): removedNode is HTMLImageElement => {
   return (
     removedNode.nodeName.toLowerCase() === 'img' &&

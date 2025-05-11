@@ -245,7 +245,7 @@ export const appRoutes: Route[] = [
         path: APP_PATH_DIALOG.Tweet,
         loadComponent: () =>
           import('@kitouch/feat-tweet-ui').then(
-            (feat) => feat.FeatTweetDialogComponent
+            (feat) => feat.FeatTweetDialogComponent,
           ),
       },
     ],

@@ -1,66 +1,69 @@
-@if((farewellCreator$ | async) && (farewell$ | async); as farewell) {
-<p-sidebar
-  [blockScroll]="true"
-  [visible]="true"
-  [fullScreen]="true"
-  [closeOnEscape]="false"
-  (onHide)="redirectToAll()">
-  <ng-template pTemplate="headless">
-    <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
-      <shared-navbar-static
-        [userLoggedIn]="!!(currentProfile$ | async)"
-        [_sysUpdatePrimengHighlight]="true"
-        (getStarted)="handleGetStarted()" />
-      <ui-kit-delete
-        xOffset="right-4"
-        yOffset="top-4"
-        (delete)="redirectToAll()" />
+@if ((farewellCreator$ | async) && (farewell$ | async); as farewell) {
+  <p-sidebar
+    [blockScroll]="true"
+    [visible]="true"
+    [fullScreen]="true"
+    [closeOnEscape]="false"
+    (onHide)="redirectToAll()">
+    <ng-template pTemplate="headless">
+      <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
+        <shared-navbar-static
+          [userLoggedIn]="!!(currentProfile$ | async)"
+          [_sysUpdatePrimengHighlight]="true"
+          (getStarted)="handleGetStarted()" />
+        <ui-kit-delete
+          xOffset="right-4"
+          yOffset="top-4"
+          (delete)="redirectToAll()" />
 
-      <div class="hidden sm:block absolute top-5 right-24 z-10">
-        <div class="flex justify-center gap-2">
-          @if(updating()) {
-          <ui-kit-spinner size="h-6 w-6" />
-          }
+        <div class="hidden sm:block absolute top-5 right-24 z-10">
+          <div class="flex justify-center gap-2">
+            @if (updating()) {
+              <ui-kit-spinner size="h-6 w-6" />
+            }
 
-          <!-- Preview -->
-          @if(previewTmpl) {
-          <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
-          }
-          <!-- Share -->
-          @if(shareTmpl) {
-          <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
-          }
-          <!-- Status -->
-          @if(statusTmpl) {
-          <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
-          }
+            <!-- Preview -->
+            @if (previewTmpl) {
+              <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
+            }
+            <!-- Share -->
+            @if (shareTmpl) {
+              <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
+            }
+            <!-- Status -->
+            @if (statusTmpl) {
+              <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+            }
+          </div>
         </div>
+
+        <p-breadcrumb
+          class="block mt-4 max-w-full"
+          [model]="(breadcrumbMenuItems$ | async) ?? []">
+          <ng-template pTemplate="item" #item let-item>
+            <a class="cursor-pointer" [routerLink]="item.url">
+              <i [class]="item.icon"></i>
+              {{ item.label }}
+            </a>
+            @if (item?.label === farewell?.title) {
+              <feat-farewell-status class="ml-2" [status]="farewell.status" />
+              @if (updating()) {
+                <ui-kit-spinner size="ml-2 h-6 w-6" />
+              }
+            }
+          </ng-template>
+        </p-breadcrumb>
+
+        <feat-farewell
+          class="block grow container mx-auto py-6 px-[4rem] overflow-auto"
+          [farewellId]="farewell.id"
+          (statusFarewellTmpl)="statusTmpl = $event"
+          (shareFarewellTmpl)="shareTmpl = $event"
+          (previewFarewellTmpl)="previewTmpl = $event"
+          [(updating)]="updating" />
       </div>
-
-      <p-breadcrumb
-        class="block mt-4 max-w-full"
-        [model]="(breadcrumbMenuItems$ | async) ?? []">
-        <ng-template pTemplate="item" #item let-item>
-          <a class="cursor-pointer" [routerLink]="item.url">
-            <i [class]="item.icon"></i>
-            {{ item.label }}
-          </a>
-          @if(item?.label === farewell?.title) {
-          <feat-farewell-status class="ml-2" [status]="farewell.status" />
-          @if(updating()) {
-          <ui-kit-spinner size="ml-2 h-6 w-6" />
-          } }
-        </ng-template>
-      </p-breadcrumb>
-
-      <feat-farewell
-        class="block grow container mx-auto py-6 px-[4rem] overflow-auto"
-        [farewellId]="farewell.id"
-        (statusFarewellTmpl)="statusTmpl = $event"
-        (shareFarewellTmpl)="shareTmpl = $event"
-        (previewFarewellTmpl)="previewTmpl = $event"
-        [(updating)]="updating" />
-    </div>
-  </ng-template>
-</p-sidebar>
-} @else { Cannot find such farewell }
+    </ng-template>
+  </p-sidebar>
+} @else {
+  Cannot find such farewell
+}

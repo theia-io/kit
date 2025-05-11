@@ -25,7 +25,7 @@ export const followerHandlerFn = () => {
   return (profileId: Profile['id'], toFollow: boolean) => {
     if (!profileId) {
       console.error(
-        '[followProfileHandler] Profile to follow - id was not provided'
+        '[followProfileHandler] Profile to follow - id was not provided',
       );
       return;
     }
@@ -43,7 +43,7 @@ export const followerHandlerFn = () => {
           console.info(
             'You cannot follow yourself',
             currentProfile.id,
-            profileId
+            profileId,
           );
           return;
         }
@@ -55,7 +55,7 @@ export const followerHandlerFn = () => {
           console.info(
             'You already follow this profile',
             currentProfile.id,
-            profileId
+            profileId,
           );
           return;
         } else if (
@@ -65,7 +65,7 @@ export const followerHandlerFn = () => {
           console.info(
             "You don't follow this profile",
             currentProfile.id,
-            profileId
+            profileId,
           );
           return;
         }
@@ -76,7 +76,7 @@ export const followerHandlerFn = () => {
               ...currentProfile,
               following: newFollowList(currentProfile),
             },
-          })
+          }),
         );
       });
 
@@ -85,7 +85,6 @@ export const followerHandlerFn = () => {
 };
 
 @Component({
-  standalone: true,
   selector: 'feat-follow-unfollow-profile',
   templateUrl: './follow-unfollow-profile.component.html',
   imports: [
@@ -102,15 +101,15 @@ export class FeatFollowUnfollowProfileComponent {
   #followerListHandler = followerHandlerFn();
 
   profile = computed(() =>
-    this.#store.selectSignal(selectProfileById(this.profileId()))()
+    this.#store.selectSignal(selectProfileById(this.profileId()))(),
   );
   currentProfile = toSignal(this.#store.select(selectCurrentProfile));
 
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
-        ({ id }) => id === this.profileId()
-      ) ?? false
+        ({ id }) => id === this.profileId(),
+      ) ?? false,
   );
 
   followProfileHandler(profileId: Profile['id']) {

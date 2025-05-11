@@ -5,7 +5,7 @@ import { ENVIRONMENT } from '../environments';
 
 export function credentialsInterceptor(
   req: HttpRequest<any>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<any>> {
   const environment = inject(ENVIRONMENT);
 

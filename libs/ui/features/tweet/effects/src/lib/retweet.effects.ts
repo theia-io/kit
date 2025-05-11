@@ -33,11 +33,11 @@ export class RetweetEffects {
           map((retweet) =>
             FeatReTweetActions.reTweetSuccess({
               tweet: retweet,
-            })
-          )
-        )
-      )
-    )
+            }),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteTweetSuccess$ = createEffect(
@@ -45,13 +45,13 @@ export class RetweetEffects {
       this.#actions$.pipe(
         ofType(FeatTweetActions.deleteSuccess),
         switchMap(
-          ({ tweet }) => this.#retweetV2Service.deleteRetweets(tweet.id)
+          ({ tweet }) => this.#retweetV2Service.deleteRetweets(tweet.id),
           // TODO Add handling for user to show that some of his retweets might have been deleted
-        )
+        ),
       ),
     {
       dispatch: false,
-    }
+    },
   );
 
   deleteReTweet$ = createEffect(() =>
@@ -64,7 +64,7 @@ export class RetweetEffects {
               map(() =>
                 FeatReTweetActions.deleteSuccess({
                   tweet,
-                })
+                }),
               ),
               catchError((err) => {
                 console.error('[RetweetEffects] deleteReTweet', err);
@@ -72,16 +72,16 @@ export class RetweetEffects {
                   FeatReTweetActions.deleteFailure({
                     message:
                       'It is not you, it is us. Let us know it does not work for you via support',
-                  })
+                  }),
                 );
-              })
+              }),
             )
           : of(
               FeatReTweetActions.deleteFailure({
                 message: 'You can remove only your retweets',
-              })
-            )
-      )
-    )
+              }),
+            ),
+      ),
+    ),
   );
 }

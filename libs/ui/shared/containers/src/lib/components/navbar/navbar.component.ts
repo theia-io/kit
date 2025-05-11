@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, CommonModule } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -42,7 +42,6 @@ import { SubnavComponent } from './subnav/subnav.component';
 const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
 
 @Component({
-  standalone: true,
   selector: 'shared-navbar',
   templateUrl: './navbar.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -59,6 +58,8 @@ const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
     AccountTileComponent,
     UiKitTweetButtonComponent,
     SubnavComponent,
+    CommonModule,
+    RouterModule,
   ],
 })
 export class NavBarComponent implements AfterViewInit {
@@ -91,14 +92,14 @@ export class NavBarComponent implements AfterViewInit {
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
 
   constructor() {
     this.mobileNavbar$
       .pipe(
         filter((mobile) => !mobile),
-        switchMap(() => this.#navbarService.triggerPrimengHighlight$)
+        switchMap(() => this.#navbarService.triggerPrimengHighlight$),
       )
       .subscribe(() => this.#triggerPrimengHighlight());
   }
@@ -153,7 +154,7 @@ export class NavBarComponent implements AfterViewInit {
     const shouldInitiallyFocus = DESKTOP_NAV_ITEMS.find(
       (navItem) =>
         navItem.routerLink &&
-        getFirstRoutePath(navItem.routerLink) === firstLevelRoute
+        getFirstRoutePath(navItem.routerLink) === firstLevelRoute,
     );
 
     // well, obviously this should not focus like this however p-menu
@@ -171,7 +172,7 @@ export class NavBarComponent implements AfterViewInit {
               menuItemNativeElem as HTMLLIElement;
             setTimeout(() => {
               this.#menuItemNativeElemInitiallyFocused?.classList.add(
-                'p-focus'
+                'p-focus',
               );
             }, 200);
           }

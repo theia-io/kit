@@ -39,7 +39,7 @@ import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { merge, take } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
@@ -47,7 +47,6 @@ import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-tweety',
   templateUrl: './tweety.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -58,7 +57,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     RouterModule,
     //
     OverlayPanelModule,
-    InputTextareaModule,
+    InputTextarea,
     FloatLabelModule,
     DialogModule,
     ButtonModule,
@@ -105,7 +104,7 @@ export class FeatTweetTweetyComponent {
 
     if (retweet && tweetIsRetweet(retweet)) {
       return this.#store.selectSignal(
-        selectProfileById(retweet.retweetedProfileId)
+        selectProfileById(retweet.retweetedProfileId),
       )();
     }
 
@@ -212,7 +211,7 @@ export class FeatTweetTweetyComponent {
   deleteHandler(tweet: Tweety | ReTweety) {
     merge(
       this.#actions.pipe(ofType(FeatReTweetActions.deleteSuccess)),
-      this.#actions.pipe(ofType(FeatTweetActions.deleteSuccess))
+      this.#actions.pipe(ofType(FeatTweetActions.deleteSuccess)),
     )
       .pipe(take(1), takeUntilDestroyed(this.#destroyRef))
       .subscribe(() => this.tweetDeleted.emit());
@@ -233,7 +232,7 @@ export class FeatTweetTweetyComponent {
     const tweetuuidv4 = uuidv4();
     const content: string = this.commentControl.value as string;
     this.#store.dispatch(
-      FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
+      FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content }),
     );
 
     this.commentControl.reset();
@@ -256,14 +255,14 @@ export class FeatTweetTweetyComponent {
     const bookmarked = this.tweetBookmarked();
     if (bookmarked) {
       this.#store.dispatch(
-        FeatBookmarksActions.removeBookmark({ tweetId: tweet.id })
+        FeatBookmarksActions.removeBookmark({ tweetId: tweet.id }),
       );
     } else {
       this.#store.dispatch(
         FeatBookmarksActions.bookmark({
           tweetId: tweet.id,
           profileIdTweetyOwner: tweet.profileId,
-        })
+        }),
       );
     }
   }

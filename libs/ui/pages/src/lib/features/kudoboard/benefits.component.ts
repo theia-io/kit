@@ -15,7 +15,6 @@ import { CardModule } from 'primeng/card';
 import { startWith } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-feature-kudoboard-page-benefits',
   template: `
     <div class="flex gap-4 items-center">

@@ -21,7 +21,6 @@ export class Auth0Service {
   loggedIn$ = this.loggedInUser$.pipe(map((user) => !!user));
 
   readonly #separateWindow = 'kit.auth.separate-window';
-  readonly #beforeRedirectKey = 'kit.auth.pre-redirect';
 
   logout() {
     window.location.href = `${this.#environment.api.auth}/logout`; // express-openid-connect handles this
@@ -78,7 +77,7 @@ export class Auth0Service {
         console.warn(
           `signInTab timed out after ${
             timeoutDuration / 1000
-          }s waiting for storage event.`
+          }s waiting for storage event.`,
         );
         window.removeEventListener('storage', storageEventHandler); // Clean up listener on timeout
         reject(new Error('Login window timed out or was closed.'));
@@ -88,7 +87,7 @@ export class Auth0Service {
 
   separateWindowSignIn() {
     return JSON.parse(
-      this.#localStoreService.getItem(this.#separateWindow) ?? 'false'
+      this.#localStoreService.getItem(this.#separateWindow) ?? 'false',
     );
   }
 

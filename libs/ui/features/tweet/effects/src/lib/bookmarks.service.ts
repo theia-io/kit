@@ -16,7 +16,7 @@ export class BookmarksService {
         params: {
           profileId: profileId,
         },
-      }
+      },
     );
   }
 
@@ -42,19 +42,19 @@ export class BookmarksService {
 
     return this.#http.post<Bookmark>(
       `${this.#environment.api.bookmarks}`,
-      bookmark
+      bookmark,
     );
   }
 
   deleteBookmark(id: Bookmark['id']): Observable<boolean> {
     return this.#http.delete<boolean>(
-      `${this.#environment.api.bookmarks}/${id}`
+      `${this.#environment.api.bookmarks}/${id}`,
     );
   }
 
   deleteTweetBookmark(
     tweetId: Tweety['id'],
-    profileIdBookmarker: Profile['id']
+    profileIdBookmarker: Profile['id'],
   ): Observable<boolean> {
     return this.#http.delete<boolean>(`${this.#environment.api.bookmarks}`, {
       params: {
@@ -66,7 +66,7 @@ export class BookmarksService {
 
   deleteAllTweetBookmarks(tweetId: Tweety['id']): Observable<boolean> {
     return this.#http.delete<boolean>(
-      `${this.#environment.api.bookmarks}/all/${tweetId}`
+      `${this.#environment.api.bookmarks}/all/${tweetId}`,
     );
   }
 }

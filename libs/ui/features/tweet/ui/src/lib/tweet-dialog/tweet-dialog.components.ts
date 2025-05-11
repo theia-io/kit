@@ -18,7 +18,6 @@ import { take } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-dialog',
   templateUrl: './tweet-dialog.components.html',
   imports: [
@@ -61,7 +60,7 @@ export class FeatTweetDialogComponent {
       .pipe(
         ofType(FeatTweetActions.tweetFailure),
         take(1),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(({ uuid }) => {
         if (uuid === this.tweetuuidv4()) {
@@ -83,7 +82,7 @@ export class FeatTweetDialogComponent {
 
     const content: string = this.tweetContentControl.value as string;
     this.#store.dispatch(
-      FeatTweetActions.tweet({ uuid: this.tweetuuidv4(), content })
+      FeatTweetActions.tweet({ uuid: this.tweetuuidv4(), content }),
     );
 
     this.tweettingInProgress.set(true);
@@ -95,7 +94,7 @@ export class FeatTweetDialogComponent {
       .pipe(
         ofType(FeatTweetActions.tweetSuccess),
         take(1),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(({ uuid }) => {
         if (uuid === this.tweetuuidv4()) {

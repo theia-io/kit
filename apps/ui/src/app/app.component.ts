@@ -13,7 +13,6 @@ import { environment } from '../environments/environment';
 import { KIT_ENVS } from '@kitouch/shared-infra';
 
 @Component({
-  standalone: true,
   imports: [RouterModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -35,7 +34,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     private ccService: NgcCookieConsentService,
-    private http: HttpClient
+    private http: HttpClient,
   ) {}
 
   ngOnInit() {
@@ -56,7 +55,7 @@ export class AppComponent implements OnInit, OnDestroy {
       (event: NgcInitializingEvent) => {
         // the cookieconsent is initilializing... Not yet safe to call methods like `NgcCookieConsentService.hasAnswered()`
         console.log(`initializing: ${JSON.stringify(event)}`);
-      }
+      },
     );
 
     this.initializedSubscription = this.ccService.initialized$.subscribe(() => {
@@ -70,27 +69,27 @@ export class AppComponent implements OnInit, OnDestroy {
         (event: NgcInitializationErrorEvent) => {
           // the cookieconsent has failed to initialize...
           console.log(
-            `initializationError: ${JSON.stringify(event.error?.message)}`
+            `initializationError: ${JSON.stringify(event.error?.message)}`,
           );
-        }
+        },
       );
 
     this.statusChangeSubscription = this.ccService.statusChange$.subscribe(
       (event: NgcStatusChangeEvent) => {
         // you can use this.ccService.getConfig() to do stuff...
-      }
+      },
     );
 
     this.revokeChoiceSubscription = this.ccService.revokeChoice$.subscribe(
       () => {
         // you can use this.ccService.getConfig() to do stuff...
-      }
+      },
     );
 
     this.noCookieLawSubscription = this.ccService.noCookieLaw$.subscribe(
       (event: NgcNoCookieLawEvent) => {
         // you can use this.ccService.getConfig() to do stuff...
-      }
+      },
     );
   }
 

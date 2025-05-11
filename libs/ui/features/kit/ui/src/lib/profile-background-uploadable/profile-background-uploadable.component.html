@@ -1,11 +1,11 @@
-@if(profile(); as profile) {
-<ui-kit-color-picker
-  [currentColor]="profile.background"
-  (colorAccepted)="colorAcceptedHandler($event, profile)"
-  (colorRejected)="colorRejectedHandler()" />
-<div>
-  <ui-kit-color-displayer
-    class="absolute left-0 top-0 w-full h-40"
-    [color]="profile.background" />
-</div>
+@if (profile(); as profile) {
+  <ui-kit-color-picker
+    [currentColor]="profile.background"
+    (colorAccepted)="colorAcceptedHandler($event, profile)"
+    (colorRejected)="colorRejectedHandler()" />
+  <div>
+    <ui-kit-color-displayer
+      class="absolute left-0 top-0 w-full h-40"
+      [color]="profile.background" />
+  </div>
 }

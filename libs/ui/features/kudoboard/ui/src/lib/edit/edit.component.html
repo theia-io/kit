@@ -1,15 +1,15 @@
 <form class="flex flex-col" [formGroup]="kudoBoardFormGroup">
-  @if(kudoBoard(); as kudoBoard) {
-  <feat-kudoboard-info-panel
-    class="block float-right mb-12"
-    [preview]="true"
-    [showUpdatedDate]="true"
-    [kudoboard]="kudoBoard" />
+  @if (kudoBoard(); as kudoBoard) {
+    <feat-kudoboard-info-panel
+      class="block float-right mb-12"
+      [preview]="true"
+      [showUpdatedDate]="true"
+      [kudoboard]="kudoBoard" />
   }
 
   <div>
-    @let isMobile = (deviceService.isMobile$ | async); @let background =
-    kudoBoardFormGroup.get('background')?.value;
+    @let isMobile = deviceService.isMobile$ | async;
+    @let background = kudoBoardFormGroup.get('background')?.value;
 
     <div class="flex flex-col md:flex-row gap-2 justify-center items-center">
       <div
@@ -18,10 +18,12 @@
         [side]="isMobile ? 'right' : 'left'"
         [extraIdent]="isMobile ? { top: 5, right: 25 } : { top: 30, left: 65 }">
         <ui-kit-pic-uploadable [autoUploadCb]="autoUploadBackground.bind(this)">
-          @if((background?.length ?? 0) > 24 && isBucketUrl(background)) {
-          <ng-template uiKitPicUploadableTemplate>
-            <img class="w-full object-cover max-h-[33vh]" [src]="background" />
-          </ng-template>
+          @if ((background?.length ?? 0) > 24 && isBucketUrl(background)) {
+            <ng-template uiKitPicUploadableTemplate>
+              <img
+                class="w-full object-cover max-h-[33vh]"
+                [src]="background" />
+            </ng-template>
           }
         </ui-kit-pic-uploadable>
       </div>
@@ -38,10 +40,10 @@
         <ui-kit-color-picker
           [currentColor]="isHexColor(background) ? background : undefined"
           (colorAccepted)="updateBackgroundColor($event)" />
-        @if(isHexColor(background)) {
-        <ui-kit-color-displayer
-          class="absolute left-0 top-0 w-full h-full rounded"
-          [color]="background" />
+        @if (isHexColor(background)) {
+          <ui-kit-color-displayer
+            class="absolute left-0 top-0 w-full h-full rounded"
+            [color]="background" />
         }
       </div>
     </div>
@@ -86,8 +88,8 @@
     <label class="w-full text-4xl" for="content">Message 💬</label>
   </p-floatLabel>
 
-  @let kudoBoardId = id(); @let status =
-  kudoBoardFormGroup.get('status')?.value;
+  @let kudoBoardId = id();
+  @let status = kudoBoardFormGroup.get('status')?.value;
 
   <ng-template #statusTmpl>
     <feat-kudoboard-status
@@ -97,32 +99,32 @@
   </ng-template>
 
   <ng-template #previewTmpl>
-    @if(kudoBoardId) {
-    <shared-sidebar-preview [(visible)]="previewVisible">
-      <div preview>
-        <feat-kudoboard-view [id]="kudoBoardId" />
-        <!-- <feat-kudoboard-comments
+    @if (kudoBoardId) {
+      <shared-sidebar-preview [(visible)]="previewVisible">
+        <div preview>
+          <feat-kudoboard-view [id]="kudoBoardId" />
+          <!-- <feat-kudoboard-comments
           [kudoboardId]="kudoBoardId"
           [canComment]="false" /> -->
-      </div>
-    </shared-sidebar-preview>
+        </div>
+      </shared-sidebar-preview>
     }
   </ng-template>
 
   <ng-template #shareTmpl>
-    @if(kudoBoardId) {
-    <shared-copy-clipboard
-      [id]="kudoBoardId"
-      [gifting]="false"
-      type="kudoboard" />
+    @if (kudoBoardId) {
+      <shared-copy-clipboard
+        [id]="kudoBoardId"
+        [gifting]="false"
+        type="kudoboard" />
     }
   </ng-template>
 
   <div class="flex justify-center gap-2 mt-12">
     <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
     <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
-    @if(updating()) {
-    <ui-kit-spinner size="h-6 w-6" />
+    @if (updating()) {
+      <ui-kit-spinner size="h-6 w-6" />
     }
   </div>
 

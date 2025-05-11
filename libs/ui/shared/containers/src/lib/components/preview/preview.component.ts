@@ -10,7 +10,6 @@ import { SidebarModule } from 'primeng/sidebar';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  standalone: true,
   selector: 'shared-sidebar-preview',
   templateUrl: './preview.component.html',
   imports: [NgClass, ButtonModule, SidebarModule, TooltipModule],

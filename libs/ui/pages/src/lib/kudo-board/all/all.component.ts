@@ -36,7 +36,6 @@ import { combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-kudo-boards-all',
   templateUrl: './all.component.html',
   styles: `
@@ -72,7 +71,7 @@ export class PageKudoBoardsAllComponent {
   #currentProfile$ = this.#store.pipe(
     select(selectCurrentProfile),
     filter((profile): profile is Profile => !!profile?.id),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
   );
 
   myKudos$ = combineLatest([
@@ -82,8 +81,8 @@ export class PageKudoBoardsAllComponent {
     map(([kudos, currentProfile]) =>
       kudos.filter(
         ({ profileId, profile }) =>
-          (profileId ?? profile?.id ?? null) === currentProfile.id
-      )
+          (profileId ?? profile?.id ?? null) === currentProfile.id,
+      ),
     ),
     map((kudoboards) =>
       kudoboards
@@ -91,10 +90,10 @@ export class PageKudoBoardsAllComponent {
         .sort((a, b) =>
           sortByCreatedTimeDesc(
             a.createdAt ?? (a as any).timestamp?.createdAt,
-            b.createdAt ?? (b as any).timestamp?.createdAt
-          )
-        )
-    )
+            b.createdAt ?? (b as any).timestamp?.createdAt,
+          ),
+        ),
+    ),
   );
 
   kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
@@ -104,8 +103,8 @@ export class PageKudoBoardsAllComponent {
   constructor() {
     this.#currentProfile$.subscribe(({ id }) =>
       this.#store.dispatch(
-        FeatKudoBoardActions.getProfileKudoBoards({ profileId: id })
-      )
+        FeatKudoBoardActions.getProfileKudoBoards({ profileId: id }),
+      ),
     );
   }
 
@@ -130,7 +129,7 @@ export class PageKudoBoardsAllComponent {
           detail: `${kudoboard.title} is deleted.`,
         });
         this.#store.dispatch(
-          FeatKudoBoardActions.deleteKudoBoard({ id: kudoboard.id })
+          FeatKudoBoardActions.deleteKudoBoard({ id: kudoboard.id }),
         );
       },
       reject: () => {

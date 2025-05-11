@@ -17,26 +17,26 @@ export class KudoBoardAnalyticsV2Service {
         params: {
           kudoBoardIds: kudoBoardIds.join(','),
         },
-      }
+      },
     );
   }
 
   getAnalyticsKudoBoard(kudoBoardId: string) {
     return this.#http.get<Array<KudoBoardAnalytics>>(
-      `${this.#environment.api.kudoboardAnalytics}/${kudoBoardId}`
+      `${this.#environment.api.kudoboardAnalytics}/${kudoBoardId}`,
     );
   }
 
   createAnalyticsKudoBoard(analytics: ClientDataType<KudoBoardAnalytics>) {
     return this.#http.post<KudoBoardAnalytics>(
       `${this.#environment.api.kudoboardAnalytics}`,
-      analytics
+      analytics,
     );
   }
 
   deleteAnalyticsKudoBoard(kudoBoardId: KudoBoard['id']) {
     return this.#http.delete<KudoBoard>(
-      `${this.#environment.api.kudoboardAnalytics}/${kudoBoardId}`
+      `${this.#environment.api.kudoboardAnalytics}/${kudoBoardId}`,
     );
   }
 }

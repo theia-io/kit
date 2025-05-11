@@ -41,7 +41,7 @@ export class DeviceService {
     debounceTime(1000),
     map(({ target: { innerWidth } }: any) => innerWidth),
     startWith(window.innerWidth),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   mediaBreakpoint$ = this.innerWidth$.pipe(
@@ -60,14 +60,14 @@ export class DeviceService {
         return DeviceMediaBreakpoint.xxl;
       }
     }),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   device$ = this.mediaBreakpoint$.pipe(
     takeUntilDestroyed(),
     filter(Boolean),
     map((mediaBreakPoint) => breakPointToDevice[mediaBreakPoint]),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   isMobile$ = this.device$.pipe(map((device) => device === Device.Mobile));

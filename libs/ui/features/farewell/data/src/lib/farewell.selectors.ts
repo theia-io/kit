@@ -19,47 +19,47 @@ const selectFarewellState = (state: { farewell: FeatureFarewellState }) =>
 
 export const selectFarewells = createSelector(
   selectFarewellState,
-  (state) => state.farewells
+  (state) => state.farewells,
 );
 
 export const selectAnalytics = createSelector(
   selectFarewellState,
-  (state) => state.analytics
+  (state) => state.analytics,
 );
 
 export const selectReactions = createSelector(
   selectFarewellState,
-  (state) => state.reactions
+  (state) => state.reactions,
 );
 
 export const selectComments = createSelector(
   selectFarewellState,
-  (state) => state.comments
+  (state) => state.comments,
 );
 
 export const selectFarewellById = (farewellId: string) =>
   createSelector(selectFarewells, (farewells) =>
-    findFarewellById(farewellId, farewells)
+    findFarewellById(farewellId, farewells),
   );
 
 export const selectFarewellAnalyticsById = (farewellId: string) =>
   createSelector(selectAnalytics, (analytics) =>
-    findAnalyticsFarewellById(farewellId, analytics)
+    findAnalyticsFarewellById(farewellId, analytics),
   );
 
 export const selectFarewellReactionsById = (farewellId: string) =>
   createSelector(selectReactions, (reactions) =>
-    findFarewellReactionsByFarewellId(farewellId, reactions)
+    findFarewellReactionsByFarewellId(farewellId, reactions),
   );
 
 export const selectFarewellCommentById = (commentId: string) =>
   createSelector(selectComments, (comments) =>
-    comments.find(({ id }) => id === commentId)
+    comments.find(({ id }) => id === commentId),
   );
 
 export const selectFarewellCommentsById = (farewellId: string) =>
   createSelector(selectComments, (comments) =>
-    findFarewellCommentsByFarewellId(farewellId, comments)
+    findFarewellCommentsByFarewellId(farewellId, comments),
   );
 
 export const selectFarewellFullViewById = (farewellId: string) =>
@@ -75,39 +75,39 @@ export const selectFarewellFullViewById = (farewellId: string) =>
             ...farewell,
             reactions: findFarewellReactionsByFarewellId(
               farewell.id,
-              reactions
+              reactions,
             ),
             analytics: findAnalyticsFarewellById(farewell.id, analytics),
           }
         : undefined;
-    }
+    },
   );
 
 /** utils */
 export const findFarewellById = (
   farewellId: string,
-  farewells: Array<Farewell>
+  farewells: Array<Farewell>,
 ) => farewells.find((farewell) => farewell.id === farewellId);
 
 export const findProfileFarewells = (
   profileId: Profile['id'],
-  farewells: Array<Farewell>
+  farewells: Array<Farewell>,
 ) =>
   farewells.filter(
-    (farewell) => (farewell.profileId ?? farewell.profile?.id) === profileId
+    (farewell) => (farewell.profileId ?? farewell.profile?.id) === profileId,
   );
 
 export const findFarewellReactionsByFarewellId = (
   farewellId: string,
-  reactions: Array<FarewellReaction>
+  reactions: Array<FarewellReaction>,
 ) => reactions.filter((reaction) => reaction.farewellId === farewellId);
 
 export const findFarewellCommentsByFarewellId = (
   farewellId: string,
-  comments: Array<FarewellComment>
+  comments: Array<FarewellComment>,
 ) => comments.filter((comment) => comment.farewellId === farewellId);
 
 export const findAnalyticsFarewellById = (
   farewellId: string,
-  analytics: Array<FarewellAnalytics>
+  analytics: Array<FarewellAnalytics>,
 ) => analytics.find((analytic) => analytic.farewellId === farewellId);

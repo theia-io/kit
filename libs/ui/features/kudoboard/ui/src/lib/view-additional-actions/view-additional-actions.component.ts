@@ -14,7 +14,6 @@ import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-view-additional-actions',
   templateUrl: './view-additional-actions.component.html',
   imports: [ButtonModule, ToastModule],
@@ -32,7 +31,7 @@ export class FeatKudoBoardViewAdditionalActionsComponent {
 
   copyToClipBoard(kudoboardId: string, giftLink: boolean) {
     navigator.clipboard.writeText(
-      kudoboardLink(this.#document.location.origin, kudoboardId, giftLink)
+      kudoboardLink(this.#document.location.origin, kudoboardId, giftLink),
     );
 
     const animationState = giftLink ? this.copiedGift : this.copiedShare;

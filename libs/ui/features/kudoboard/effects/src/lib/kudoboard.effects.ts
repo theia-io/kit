@@ -21,12 +21,12 @@ export class KudoBoardEffects {
     this.#actions$.pipe(
       ofType(FeatKudoBoardActions.getProfileKudoBoards),
       switchMap(({ profileId }) =>
-        this.#kudoboardService.getKudoBoards(profileId)
+        this.#kudoboardService.getKudoBoards(profileId),
       ),
       map((kudoboards) =>
-        FeatKudoBoardActions.getKudoBoardsSuccess({ kudoboards })
-      )
-    )
+        FeatKudoBoardActions.getKudoBoardsSuccess({ kudoboards }),
+      ),
+    ),
   );
 
   getKudoBoard$ = createEffect(() =>
@@ -40,19 +40,19 @@ export class KudoBoardEffects {
               : FeatKudoBoardActions.getKudoBoardFailure({
                   id,
                   message: 'Did not find this kudoboard.',
-                })
+                }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardActions.getKudoBoardFailure({
                 id,
                 message: `There hsa been an error. It is us. Try later, ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   getFarewellKudo$ = createEffect(() =>
@@ -60,8 +60,8 @@ export class KudoBoardEffects {
       ofType(FeatFarewellActions.getFarewellSuccess),
       map(({ farewell: { kudoBoardId } }) => kudoBoardId),
       filter((kudoBoardId): kudoBoardId is string => !!kudoBoardId),
-      map((id) => FeatKudoBoardActions.getKudoBoard({ id }))
-    )
+      map((id) => FeatKudoBoardActions.getKudoBoard({ id })),
+    ),
   );
 
   createKudoBoard$ = createEffect(() =>
@@ -73,12 +73,12 @@ export class KudoBoardEffects {
           ...kudoboard,
           profileId: profile?.id,
           profile,
-        })
+        }),
       ),
       map((kudoboard) =>
-        FeatKudoBoardActions.createKudoBoardSuccess({ kudoboard })
-      )
-    )
+        FeatKudoBoardActions.createKudoBoardSuccess({ kudoboard }),
+      ),
+    ),
   );
 
   putKudoBoard$ = createEffect(() =>
@@ -87,18 +87,18 @@ export class KudoBoardEffects {
       switchMap(({ kudoboard }) =>
         this.#kudoboardService.putKudoBoard(kudoboard).pipe(
           map((kudoboard) =>
-            FeatKudoBoardActions.putKudoBoardSuccess({ kudoboard })
+            FeatKudoBoardActions.putKudoBoardSuccess({ kudoboard }),
           ),
           catchError((err) =>
             of(
               FeatKudoBoardActions.putKudoBoardFailure({
                 message: `Failed to update kudoboard. Try again later or contact support. ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteKudoBoard$ = createEffect(() =>
@@ -112,18 +112,18 @@ export class KudoBoardEffects {
               : FeatKudoBoardActions.deleteKudoBoardFailure({
                   message:
                     'It seems this kudoboard cannot be deleted. Please, get in touch with us.',
-                })
+                }),
           ),
           catchError(() =>
             of(
               FeatKudoBoardActions.deleteKudoBoardFailure({
                 message:
                   'We were unable to delete kudoboard. It is not you, its us. Try again later or contact us directly',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }

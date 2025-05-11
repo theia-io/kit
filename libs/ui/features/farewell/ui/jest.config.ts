@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feat-farewell-ui',
   preset: '../../../../../jest.preset.js',

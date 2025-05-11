@@ -15,72 +15,75 @@
       cols="50"></textarea>
     <label for="comment-content">{{ placeholder() }}</label>
 
-    @if(commentContentControlRows === 2) {
-    <p-button
-      styleClass="absolute top-2/4 translate-y-[-70%] right-2"
-      [disabled]="true"
-      aria-label="comment">
-      <i class="pi pi-send"></i>
-    </p-button>
+    @if (commentContentControlRows === 2) {
+      <p-button
+        styleClass="absolute top-2/4 translate-y-[-70%] right-2"
+        [disabled]="true"
+        aria-label="comment">
+        <i class="pi pi-send"></i>
+      </p-button>
     }
   </p-floatLabel>
 
-  @if(maxMediaFiles() > 0) {
-  <p class="m-0 mb-1 text-sm text-gray-500">Images:</p>
-  <div class="flex gap-2 items-center">
-    <ui-kit-pic-uploadable
-      [conf]="{ fileUploadConf: { multiple: maxMediaFiles() !== 1 } }"
-      (files)="filesHandler($event)" />
+  @if (maxMediaFiles() > 0) {
+    <p class="m-0 mb-1 text-sm text-gray-500">Images:</p>
+    <div class="flex gap-2 items-center">
+      <ui-kit-pic-uploadable
+        [conf]="{ fileUploadConf: { multiple: maxMediaFiles() !== 1 } }"
+        (files)="filesHandler($event)" />
 
-    @if(uploadingMedia()) {
-    <ui-kit-spinner />
-    }
-
-    <div
-      id="uploaded-comment-Øedia-gallery"
-      class="flex gap-2 items-center flex-nowrap overflow-x-auto">
-      @for (media of uploadedMedias(); track media.url) {
-      <a
-        class="block relative h-16"
-        [href]="media.optimizedUrls[0]"
-        [attr.data-pswp-width]="media.width"
-        [attr.data-pswp-height]="media.height"
-        [ngStyle]="{
-          'height.px': 64,
-          'min-width.px':
-            64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
-        }"
-        target="_blank">
-        <picture>
-          @for (url of media.optimizedUrls; track url) {
-          <source [srcset]="url" [type]="'image/' + mediaType(url)" />
-          }
-          <img
-            referrerpolicy="no-referrer"
-            class="rounded"
-            [width]="64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)"
-            height="64"
-            [ngSrc]="media.url"
-            alt="Media to the comment" />
-        </picture>
-        @if(deleteMediaFilesCb()) {
-        <ui-kit-delete
-          [background]="true"
-          xOffset="right-0"
-          yOffset="top-0"
-          (delete)="deleteHandler(media)" />
-        }
-      </a>
+      @if (uploadingMedia()) {
+        <ui-kit-spinner />
       }
+
+      <div
+        id="uploaded-comment-Øedia-gallery"
+        class="flex gap-2 items-center flex-nowrap overflow-x-auto">
+        @for (media of uploadedMedias(); track media.url) {
+          <a
+            class="block relative h-16"
+            [href]="media.optimizedUrls[0]"
+            [attr.data-pswp-width]="media.width"
+            [attr.data-pswp-height]="media.height"
+            [ngStyle]="{
+              'height.px': 64,
+              'min-width.px':
+                64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1),
+            }"
+            target="_blank">
+            <picture>
+              @for (url of media.optimizedUrls; track url) {
+                <source [srcset]="url" [type]="'image/' + mediaType(url)" />
+              }
+              <img
+                referrerpolicy="no-referrer"
+                class="rounded"
+                [width]="
+                  64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+                "
+                height="64"
+                [ngSrc]="media.url"
+                alt="Media to the comment" />
+            </picture>
+            @if (deleteMediaFilesCb()) {
+              <ui-kit-delete
+                [background]="true"
+                xOffset="right-0"
+                yOffset="top-0"
+                (delete)="deleteHandler(media)" />
+            }
+          </a>
+        }
+      </div>
     </div>
-  </div>
-  } @if(commentContentControlRows !== 2) {
-  <ui-kit-tweet-button
-    class="my-2"
-    [text]="actionBtnText()"
-    [iconAnimate]="true"
-    [disabled]="!commentContentControl.valid"
-    [loader]="false"
-    (click)="commentHandler()" />
+  }
+  @if (commentContentControlRows !== 2) {
+    <ui-kit-tweet-button
+      class="my-2"
+      [text]="actionBtnText()"
+      [iconAnimate]="true"
+      [disabled]="!commentContentControl.valid"
+      [loader]="false"
+      (click)="commentHandler()" />
   }
 </div>

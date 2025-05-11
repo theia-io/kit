@@ -25,19 +25,19 @@ export class UserEffects {
                 })
               : FeatUserApiActions.getUserFailure({
                   message: 'No such user',
-                })
+                }),
           ),
           catchError((err) => {
             console.error('[UserEffects] getUser', err);
             return of(
               FeatUserApiActions.getUserFailure({
                 message: 'It is not you, its us. Cannot get user now.',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   addExperience$ = createEffect(() =>
@@ -49,19 +49,19 @@ export class UserEffects {
           map(() =>
             FeatUserApiActions.addExperienceSuccess({
               experience,
-            })
+            }),
           ),
           catchError((err) => {
             console.error('[UserEffects] addExperience', err);
             return of(
               FeatUserApiActions.addExperienceFailure({
                 message: 'Cannot add experience now',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   deleteExperience$ = createEffect(() =>
@@ -73,18 +73,18 @@ export class UserEffects {
           .deleteUserExperience$(currentUser.id, experience.id)
           .pipe(
             map(() =>
-              FeatUserApiActions.deleteExperienceSuccess({ experience })
+              FeatUserApiActions.deleteExperienceSuccess({ experience }),
             ),
             catchError((err) => {
               console.error('[UserEffects] deleteExperience', err);
               return of(
                 FeatUserApiActions.deleteExperienceFailure({
                   message: 'Cannot delete experience now',
-                })
+                }),
               );
-            })
-          )
-      )
-    )
+            }),
+          ),
+      ),
+    ),
   );
 }

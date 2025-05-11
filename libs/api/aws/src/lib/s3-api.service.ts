@@ -24,7 +24,7 @@ export class S3ApiService {
         Bucket: bucket,
         Key: url,
         Body: file,
-      })
+      }),
     );
   }
 
@@ -33,7 +33,7 @@ export class S3ApiService {
       new DeleteObjectCommand({
         Bucket: bucket,
         Key: url,
-      })
+      }),
     );
   }
 }

@@ -18,18 +18,18 @@ export class FarewellReactionsEffects {
           map((reactions) =>
             FeatFarewellReactionActions.getReactionsFarewellSuccess({
               reactions,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellReactionActions.getReactionsFarewellFailure({
                 message: `We were not able to get reactions to farewell: ${farewellId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   createReactionFarewell$ = createEffect(() =>
@@ -40,18 +40,18 @@ export class FarewellReactionsEffects {
           map((reactionResponse) =>
             FeatFarewellReactionActions.postReactionFarewellSuccess({
               reaction: reactionResponse,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellReactionActions.postReactionFarewellFailure({
                 message: `We were not able to add reactions to farewell: ${reaction.farewellId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteFarewellReaction$ = createEffect(() =>
@@ -62,17 +62,17 @@ export class FarewellReactionsEffects {
           map(() =>
             FeatFarewellReactionActions.deleteReactionFarewellSuccess({
               id,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellReactionActions.deleteReactionFarewellFailure({
                 message: `We were unable to remove farewell reaction, ${id}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 }

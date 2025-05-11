@@ -18,14 +18,14 @@ exports = async function (tweetIdArr) {
       context.functions.execute('deleteBookmark', {
         tweetId,
         profileIdBookmarker: profileId,
-      })
+      }),
     );
 
     await Promise.all([tweets, ...bookmarksDeleted]);
   } catch (err) {
     console.log(
       '[getTweets] Error occurred while deleting tweets:',
-      err.message
+      err.message,
     );
     return { error: 'Error occurred while deleting tweets: ' + err.message };
   }

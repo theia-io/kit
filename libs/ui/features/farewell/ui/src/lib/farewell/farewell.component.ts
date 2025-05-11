@@ -90,7 +90,6 @@ function extractContent(html: string) {
 }
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell',
   templateUrl: './farewell.component.html',
   imports: [
@@ -145,7 +144,7 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   linkedKudoBoard$ = this.#farewell$.pipe(
     map((farewell) => farewell?.kudoBoard),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   #beforeUnloadTrigger$$ = new Subject<void>();
@@ -225,18 +224,18 @@ export class FeatFarewellComponent implements AfterViewInit {
     merge(
       this.farewellFormGroup.valueChanges.pipe(
         takeUntilDestroyed(this.#destroyRef),
-        debounceTime(1500)
+        debounceTime(1500),
       ),
       this.#beforeUnloadTrigger$$.asObservable().pipe(
         takeUntilDestroyed(this.#destroyRef),
-        map(() => this.farewellFormGroup.valueChanges)
-      )
+        map(() => this.farewellFormGroup.valueChanges),
+      ),
     )
       .pipe(
         // when its new farewell we don't update until farewell is created
         skipUntil(
-          this.farewellId() ? of(true) : this.#farewell$.pipe(filter(Boolean))
-        )
+          this.farewellId() ? of(true) : this.#farewell$.pipe(filter(Boolean)),
+        ),
       )
       .subscribe(() => this.#updateFarewell());
 
@@ -250,13 +249,13 @@ export class FeatFarewellComponent implements AfterViewInit {
     this.#actions$
       .pipe(
         ofType(FeatFarewellActions.putFarewellSuccess),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(() => this.updating.set(false));
   }
 
   saveImages(): (
-    images: Array<File>
+    images: Array<File>,
   ) => Observable<Array<ContractUploadedMedia>> {
     const getFarewellId = () => this.farewell()?.id;
     const getProfileId = () => this.currentProfile()?.id;
@@ -271,7 +270,7 @@ export class FeatFarewellComponent implements AfterViewInit {
         console.error(
           '[saveImages] cannot upload images by unknown profile and farewell',
           profileId,
-          farewellId
+          farewellId,
         );
         return of([]);
       }
@@ -288,7 +287,7 @@ export class FeatFarewellComponent implements AfterViewInit {
               }`,
               blob: mediaFile,
             })),
-          })
+          }),
         );
       });
 
@@ -302,10 +301,10 @@ export class FeatFarewellComponent implements AfterViewInit {
             ...item,
             url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
             optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
+              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl),
             ),
-          }))
-        )
+          })),
+        ),
       );
     };
   }
@@ -316,7 +315,7 @@ export class FeatFarewellComponent implements AfterViewInit {
       this.#store.dispatch(
         FeatFarewellMediaActions.deleteFarewellStorageMedia({
           url,
-        })
+        }),
       );
     };
   }
@@ -335,7 +334,7 @@ export class FeatFarewellComponent implements AfterViewInit {
           ...farewell,
           status,
         } as Farewell,
-      })
+      }),
     );
   }
 
@@ -359,7 +358,7 @@ export class FeatFarewellComponent implements AfterViewInit {
               profile: profile,
               status: status ?? FarewellStatus.Draft,
             },
-          })
+          }),
         );
       });
 
@@ -368,7 +367,7 @@ export class FeatFarewellComponent implements AfterViewInit {
         ofType(FeatFarewellActions.createFarewellSuccess),
         takeUntilDestroyed(this.#destroyRef),
         take(1),
-        map(({ farewell }) => farewell)
+        map(({ farewell }) => farewell),
       )
       .subscribe(({ id }) => {
         this.farewellId.set(id);
@@ -391,7 +390,7 @@ export class FeatFarewellComponent implements AfterViewInit {
           content: content ?? '',
           status: status ?? FarewellStatus.Draft,
         } as Farewell,
-      })
+      }),
     );
   }
 }

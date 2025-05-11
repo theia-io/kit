@@ -2,7 +2,6 @@ import { NgClass } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'ui-kit-placeholder',
   template: '<div class="h-full w-full placeholder"></div>',
   imports: [NgClass],

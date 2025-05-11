@@ -38,7 +38,7 @@ export class BookmarkEffects {
           map((bookmarks) =>
             FeatBookmarksActions.getAllSuccess({
               bookmarks,
-            })
+            }),
           ),
           catchError((err) => {
             console.error('[BookmarkEffects] getBookmarks', err);
@@ -46,12 +46,12 @@ export class BookmarkEffects {
               FeatBookmarksActions.getAllFailure({
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   getBookmarksFeed$ = createEffect(() =>
@@ -61,14 +61,14 @@ export class BookmarkEffects {
         bookmarks.map((bookmark) => ({
           tweetId: bookmark.tweetId,
           profileId: bookmark.profileIdTweetyOwner,
-        }))
+        })),
       ),
       switchMap((tweetGetRequest) =>
         this.#tweetV2Service.getTweets(tweetGetRequest).pipe(
           map((tweets) =>
             FeatBookmarksActions.getBookmarksFeedSuccess({
               tweets,
-            })
+            }),
           ),
           catchError((err) => {
             console.error('[BookmarkEffects] getBookmarksFeed', err);
@@ -76,12 +76,12 @@ export class BookmarkEffects {
               FeatBookmarksActions.getBookmarksFeedFailure({
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   bookmark$ = createEffect(() =>
@@ -99,7 +99,7 @@ export class BookmarkEffects {
             map((bookmark) =>
               FeatBookmarksActions.bookmarkSuccess({
                 bookmark,
-              })
+              }),
             ),
             catchError((err) => {
               console.error('[BookmarkEffects] bookmark', err);
@@ -108,12 +108,12 @@ export class BookmarkEffects {
                   tweetId,
                   message:
                     'Sorry, error. We will take a look at it and meanwhile try later',
-                })
+                }),
               );
-            })
-          )
-      )
-    )
+            }),
+          ),
+      ),
+    ),
   );
 
   deleteBookmark$ = createEffect(() =>
@@ -126,7 +126,7 @@ export class BookmarkEffects {
             FeatBookmarksActions.removeBookmarkSuccess({
               tweetId,
               profileId: id,
-            })
+            }),
           ),
           catchError((err) => {
             console.error('[BookmarkEffects] deleteBookmark', err);
@@ -135,12 +135,12 @@ export class BookmarkEffects {
                 tweetId,
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   deleteBookmarkWhenTweetDeleted$ = createEffect(() =>
@@ -152,11 +152,11 @@ export class BookmarkEffects {
           map(() =>
             FeatBookmarksActions.removeBookmarkAsTweetRemoved({
               tweetId: id,
-            })
-          )
-        )
-      )
-    )
+            }),
+          ),
+        ),
+      ),
+    ),
   );
 
   constructor() {

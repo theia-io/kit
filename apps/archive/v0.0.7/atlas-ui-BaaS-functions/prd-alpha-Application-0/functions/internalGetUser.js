@@ -21,12 +21,12 @@ exports = async function (args) {
     // Execute a FindOne in MongoDB
     findResult = await collection.findOne(
       { accountId: BSON.ObjectId(args.accountId) },
-      {}
+      {},
     );
   } catch (err) {
     console.log(
       '[internalGetUser] Error occurred while executing findOne in getUser:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }

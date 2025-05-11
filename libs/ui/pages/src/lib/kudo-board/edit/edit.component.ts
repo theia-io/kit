@@ -1,7 +1,7 @@
 import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, inject, signal, TemplateRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
 import {
   FeatKudoBoardActions,
@@ -29,7 +29,6 @@ import { combineLatest, Observable } from 'rxjs';
 import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-kudo-board-edit',
   templateUrl: './edit.component.html',
   imports: [
@@ -44,6 +43,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     //
     SidebarModule,
     BreadcrumbModule,
+    RouterModule,
   ],
 })
 export class PageKudoBoardEditComponent {
@@ -55,17 +55,17 @@ export class PageKudoBoardEditComponent {
   kudoBoardId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     filter(Boolean),
-    shareReplay()
+    shareReplay(),
   );
 
   kudoBoard$ = this.kudoBoardId$.pipe(
     switchMap((id) => this.#store.pipe(select(selectKudoBoardById(id)))),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   currentProfile$ = this.#store.pipe(
     select(selectCurrentProfile),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   kudoboardCreator$ = combineLatest([
@@ -74,9 +74,9 @@ export class PageKudoBoardEditComponent {
   ]).pipe(
     map(
       ([kudoboard, profile]) =>
-        (kudoboard.profileId ?? kudoboard.profile?.id) === profile.id
+        (kudoboard.profileId ?? kudoboard.profile?.id) === profile.id,
     ),
-    startWith(false)
+    startWith(false),
   );
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
@@ -94,7 +94,7 @@ export class PageKudoBoardEditComponent {
       {
         label: kudoboard.title,
       },
-    ])
+    ]),
   );
 
   updating = signal(false);
@@ -107,7 +107,7 @@ export class PageKudoBoardEditComponent {
     this.kudoBoardId$
       .pipe(takeUntilDestroyed())
       .subscribe((id) =>
-        this.#store.dispatch(FeatKudoBoardActions.getKudoBoard({ id }))
+        this.#store.dispatch(FeatKudoBoardActions.getKudoBoard({ id })),
       );
   }
 

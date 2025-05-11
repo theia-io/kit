@@ -25,7 +25,7 @@ export class KitService {
     @InjectModel(Account.name) private accountModel: Model<AccountDocument>,
     @InjectModel(User.name) private userModel: Model<UserDocument>,
     @InjectModel(Profile.name) private profileModel: Model<ProfileDocument>,
-    @InjectModel(Legal.name) private legalModel: Model<LegalDocument>
+    @InjectModel(Legal.name) private legalModel: Model<LegalDocument>,
   ) {}
 
   async accountByEmail(email: string): Promise<AccountDocument | null> {
@@ -39,7 +39,7 @@ export class KitService {
       console.error('Cannot execute account search', err);
       throw new HttpException(
         'Cannot execute account search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -58,7 +58,7 @@ export class KitService {
       console.error('Cannot execute account deleting', err);
       throw new HttpException(
         'Cannot execute account delete',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -66,7 +66,7 @@ export class KitService {
   }
 
   async auth0AccountFindAndUpdate(
-    auth0User: Auth0User
+    auth0User: Auth0User,
   ): Promise<AccountDocument> {
     const auth0UserEmail = auth0User.email.toLowerCase();
     let account: AccountDocument | null;
@@ -96,17 +96,17 @@ export class KitService {
         .findOneAndUpdate<AccountDocument>(
           { email: auth0UserEmail },
           updateOnInsert,
-          options
+          options,
         )
         .exec();
     } catch (err) {
       console.error(
         '[auth0AccountFindAndUpdate] Cannot execute account findOneAndUpdate',
-        err
+        err,
       );
       throw new HttpException(
         'Cannot execute account search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -115,7 +115,7 @@ export class KitService {
     if (account === null) {
       throw new HttpException(
         'Account not found',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -135,7 +135,7 @@ export class KitService {
       console.error('Cannot execute user search', err);
       throw new HttpException(
         'Cannot execute user search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -155,7 +155,7 @@ export class KitService {
       console.error('Cannot execute user delete', err);
       throw new HttpException(
         'Cannot execute user delete',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -163,7 +163,7 @@ export class KitService {
   }
 
   async accountUserFindAndUpdate(
-    account: AccountDocument
+    account: AccountDocument,
   ): Promise<UserDocument> {
     let user: UserDocument | null;
 
@@ -187,17 +187,17 @@ export class KitService {
         .findOneAndUpdate<UserDocument>(
           { accountId: account._id },
           updateOnInsert,
-          options
+          options,
         )
         .exec();
     } catch (err) {
       console.error(
         '[accountUserFindAndUpdate] Cannot execute user findOneAndUpdate',
-        err
+        err,
       );
       throw new HttpException(
         'Cannot execute user search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -206,7 +206,7 @@ export class KitService {
     if (user === null) {
       throw new HttpException(
         'User not found',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -224,7 +224,7 @@ export class KitService {
       console.error(`Cannot get user %s`, userId, err);
       throw new HttpException(
         'Cannot get user',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -243,7 +243,7 @@ export class KitService {
               experiences: experience,
             },
           },
-          { new: true }
+          { new: true },
         )
         .exec();
     } catch (err) {
@@ -251,11 +251,11 @@ export class KitService {
         `Cannot add user experiences %s, %s`,
         userId,
         JSON.stringify(experience),
-        err
+        err,
       );
       throw new HttpException(
         'Cannot add user experience',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -285,7 +285,7 @@ export class KitService {
               },
             },
           },
-          { new: true }
+          { new: true },
         )
         .exec();
     } catch (err) {
@@ -293,11 +293,11 @@ export class KitService {
         `Cannot delete user experience %s, %s`,
         userId,
         experienceId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot delete user experience',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -316,7 +316,7 @@ export class KitService {
       console.error('Cannot execute profile search', err);
       throw new HttpException(
         'Cannot execute profile search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -335,7 +335,7 @@ export class KitService {
       console.error('Cannot execute profile search', err);
       throw new HttpException(
         'Cannot execute profile search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -344,10 +344,10 @@ export class KitService {
 
   async profilesFindOrInsert(
     user: UserDocument,
-    auth0Updates: Pick<Auth0User, 'name' | 'picture'>
+    auth0Updates: Pick<Auth0User, 'name' | 'picture'>,
   ): Promise<Array<ProfileDocument>> {
     const profiles: Array<ProfileDocument> | null = await this.userProfiles(
-      user.id
+      user.id,
     );
     if (profiles && profiles.length > 0) {
       return profiles;
@@ -370,7 +370,7 @@ export class KitService {
       console.error('Cannot add new profile', err);
       throw new HttpException(
         'Cannot add new profile',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -379,7 +379,7 @@ export class KitService {
     if (profile === null) {
       throw new HttpException(
         'Profile not found and not created',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -399,13 +399,13 @@ export class KitService {
       console.error('Cannot execute user search', err);
       throw new HttpException(
         'Cannot execute user search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
     const getExperienceIntersection = (
       { startDate: s1, endDate: e1 }: Omit<Experience, 'id'>,
-      { startDate: s2, endDate: e2 }: Omit<Experience, 'id'>
+      { startDate: s2, endDate: e2 }: Omit<Experience, 'id'>,
     ) => {
       const NOW = new Date();
 
@@ -423,13 +423,13 @@ export class KitService {
     const matchingUsers = allUsers.filter((anotherUser) =>
       currentUser.experiences?.some((thisUserExperience) =>
         anotherUser.experiences?.some((anotherUserExperience) =>
-          getExperienceIntersection(thisUserExperience, anotherUserExperience)
-        )
-      )
+          getExperienceIntersection(thisUserExperience, anotherUserExperience),
+        ),
+      ),
     );
 
     const matchingUsersIds = matchingUsers.map(
-      (matchingUser) => matchingUser._id
+      (matchingUser) => matchingUser._id,
     );
 
     let matchingUserProfiles;
@@ -447,7 +447,7 @@ export class KitService {
       console.error('Cannot execute profile search', err);
       throw new HttpException(
         'Cannot execute profile search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -471,7 +471,7 @@ export class KitService {
       console.error('Cannot execute profile search', err);
       throw new HttpException(
         'Cannot execute profile search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -490,14 +490,14 @@ export class KitService {
               ...profile,
             },
           },
-          { new: true }
+          { new: true },
         )
         .exec();
     } catch (err) {
       console.error('Cannot update profile', err);
       throw new HttpException(
         'Cannot update profile',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -514,7 +514,7 @@ export class KitService {
       console.error('Cannot get companies', err);
       throw new HttpException(
         'Cannot get companies',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -530,7 +530,7 @@ export class KitService {
       console.error('Cannot add company', err);
       throw new HttpException(
         'Cannot add new legal entity',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

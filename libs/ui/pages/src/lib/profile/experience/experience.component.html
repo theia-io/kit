@@ -1,47 +1,49 @@
-@if(isCurrentProfile()) {
-<p-messages
-  [value]="[
-    {
-      severity: 'secondary',
-      detail:
-        'Knowing your experience will help us to suggest you your colleagues.'
-    }
-  ]"
-  showTransitionOptions="250ms"
-  hideTransitionOptions="0ms"
-  [enableService]="false"
-  [closable]="false" />
-
-} @if(experiences()?.length && experiences(); as experiences) {
-<div class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow">
-  <h2 class="pt-2 pl-4 text-lg font-bold">
-    @if(isCurrentProfile()) { Your experience{{
-      experiences.length === 1 ? '' : 's'
-    }}
-    } @else {
-    {{ profile()?.name }} 's experience{{ experiences.length === 1 ? '' : 's' }}
-    }
-  </h2>
-  <p-accordion [activeIndex]="0">
-    @for (experience of experiences; track $index) {
-    <p-accordionTab [header]="experience.title">
-      <feat-settings-experience-show
-        (deleteExperience)="deleteExperienceHandler($event)"
-        [showRemove]="isCurrentProfile()"
-        [experience]="experience" />
-    </p-accordionTab>
-    }
-  </p-accordion>
-</div>
-} @else if(!isCurrentProfile()) {
-<div class="mt-4 flex flex-col justify-center items-center">
-  <p>{{ profile()?.name }} has not added any experience yet</p>
-</div>
-} @if(isCurrentProfile()) {
-<div class="w-[full] bg-white border border-gray-200 rounded-lg shadow">
-  <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
-  <feat-settings-experience-add
-    class="block p-[18px]"
-    (saved)="savedExperienceHandler()" />
-</div>
+@if (isCurrentProfile()) {
+  <p-messages
+    [value]="[
+      {
+        severity: 'secondary',
+        detail:
+          'Knowing your experience will help us to suggest you your colleagues.',
+      },
+    ]"
+    showTransitionOptions="250ms"
+    hideTransitionOptions="0ms"
+    [enableService]="false"
+    [closable]="false" />
+}
+@if (experiences()?.length && experiences(); as experiences) {
+  <div class="mb-2 w-[full] bg-white border border-gray-200 rounded-lg shadow">
+    <h2 class="pt-2 pl-4 text-lg font-bold">
+      @if (isCurrentProfile()) {
+        Your experience{{ experiences.length === 1 ? '' : 's' }}
+      } @else {
+        {{ profile()?.name }} 's experience{{
+          experiences.length === 1 ? '' : 's'
+        }}
+      }
+    </h2>
+    <p-accordion [activeIndex]="0">
+      @for (experience of experiences; track $index) {
+        <p-accordionTab [header]="experience.title">
+          <feat-settings-experience-show
+            (deleteExperience)="deleteExperienceHandler($event)"
+            [showRemove]="isCurrentProfile()"
+            [experience]="experience" />
+        </p-accordionTab>
+      }
+    </p-accordion>
+  </div>
+} @else if (!isCurrentProfile()) {
+  <div class="mt-4 flex flex-col justify-center items-center">
+    <p>{{ profile()?.name }} has not added any experience yet</p>
+  </div>
+}
+@if (isCurrentProfile()) {
+  <div class="w-[full] bg-white border border-gray-200 rounded-lg shadow">
+    <h2 class="pt-2 pl-4 text-lg font-bold">Add experience</h2>
+    <feat-settings-experience-add
+      class="block p-[18px]"
+      (saved)="savedExperienceHandler()" />
+  </div>
 }

@@ -10,7 +10,6 @@ import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-actions',
   templateUrl: `actions.component.html`,
   changeDetection: ChangeDetectionStrategy.OnPush,

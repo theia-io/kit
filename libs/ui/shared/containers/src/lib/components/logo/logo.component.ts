@@ -5,7 +5,6 @@ import { Device } from '@kitouch/shared-infra';
 import { UXDynamicService } from '@kitouch/shared-services';
 
 @Component({
-  standalone: true,
   selector: 'shared-logo',
   template: `<a routerLink="/" class="flex items-center hover:cursor-pointer">
     <img

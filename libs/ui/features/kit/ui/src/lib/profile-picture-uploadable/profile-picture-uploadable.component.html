@@ -1,46 +1,46 @@
 <div
   class="relative justify-self-end mr-2 p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl">
-  @if(canUploadProfilePic()) {
-  <p-toast />
-  <p-confirmPopup key="upload">
-    <ng-template pTemplate="headless" let-message>
-      <div class="w-full h-full flex items-center justify-center">
-        <p-fileUpload
-          #fileUploadCmp
-          [customUpload]="true"
-          [auto]="true"
-          [multiple]="false"
-          mode="basic"
-          chooseIcon="pi pi-upload"
-          accept="image/*"
-          maxFileSize="10000000"
-          (uploadHandler)="onBasicUploadAuto($event)"></p-fileUpload>
-      </div>
-    </ng-template>
-  </p-confirmPopup>
+  @if (canUploadProfilePic()) {
+    <p-toast />
+    <p-confirmPopup key="upload">
+      <ng-template pTemplate="headless" let-message>
+        <div class="w-full h-full flex items-center justify-center">
+          <p-fileUpload
+            #fileUploadCmp
+            [customUpload]="true"
+            [auto]="true"
+            [multiple]="false"
+            mode="basic"
+            chooseIcon="pi pi-upload"
+            accept="image/*"
+            maxFileSize="10000000"
+            (uploadHandler)="onBasicUploadAuto($event)"></p-fileUpload>
+        </div>
+      </ng-template>
+    </p-confirmPopup>
 
-  <p-confirmDialog key="confirm">
-    <ng-template pTemplate="message" let-message>
-      <div class="flex w-full items-center justify-center gap-3">
-        <img
-          class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
-          [src]="profilePic()"
-          referrerpolicy="no-referrer" />
+    <p-confirmDialog key="confirm">
+      <ng-template pTemplate="message" let-message>
+        <div class="flex w-full items-center justify-center gap-3">
+          <img
+            class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
+            [src]="profilePic()"
+            referrerpolicy="no-referrer" />
 
-        <i class="pi pi-arrow-right" style="font-size: 2rem"></i>
+          <i class="pi pi-arrow-right" style="font-size: 2rem"></i>
 
-        <img
-          class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
-          [src]="message.message"
-          referrerpolicy="no-referrer" />
-      </div>
-    </ng-template>
-  </p-confirmDialog>
+          <img
+            class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
+            [src]="message.message"
+            referrerpolicy="no-referrer" />
+        </div>
+      </ng-template>
+    </p-confirmDialog>
 
-  <i
-    role="button"
-    (click)="openPopup($event)"
-    class="pi pi-cloud-upload font-semibold text-2xl text-white cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-80 hover:opacity-100"></i>
+    <i
+      role="button"
+      (click)="openPopup($event)"
+      class="pi pi-cloud-upload font-semibold text-2xl text-white cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-80 hover:opacity-100"></i>
   }
   <img class="rounded-md" [src]="profilePic()" referrerpolicy="no-referrer" />
 </div>

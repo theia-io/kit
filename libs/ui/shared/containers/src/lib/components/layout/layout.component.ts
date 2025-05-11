@@ -5,7 +5,6 @@ import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 
 @Component({
   selector: 'shared-layout',
-  standalone: true,
   imports: [NgClass, AsyncPipe],
   templateUrl: './layout.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

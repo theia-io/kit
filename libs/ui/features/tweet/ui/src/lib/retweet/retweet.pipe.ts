@@ -10,7 +10,7 @@ export class RetweetWhoPipe implements PipeTransform {
   transform(
     currentProfileId: string | undefined,
     retweetProfile: Profile,
-    tweetProfile: Profile | undefined
+    tweetProfile: Profile | undefined,
   ) {
     if (currentProfileId === retweetProfile.id) {
       return 'You';
@@ -32,7 +32,7 @@ export class RetweetFromWhomPipe implements PipeTransform {
   transform(
     currentProfileId: string | undefined,
     retweetProfile: Profile,
-    tweetProfile: Profile | undefined
+    tweetProfile: Profile | undefined,
   ) {
     if (currentProfileId === tweetProfile?.id) {
       return 'your tweet';

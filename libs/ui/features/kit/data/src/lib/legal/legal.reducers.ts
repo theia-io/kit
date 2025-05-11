@@ -10,7 +10,7 @@ export const legalReducer = createReducer(
   featLegalInitialState,
   on(
     FeatLegalApiActions.getCompaniesSuccess,
-    (state, { companies }) => companies
+    (state, { companies }) => companies,
   ),
   on(FeatLegalApiActions.addCompaniesSuccess, (state, { companies }) => [
     ...state,
@@ -19,7 +19,7 @@ export const legalReducer = createReducer(
         ({
           ...company,
           id: company.alias ?? company.name,
-        } as Legal)
+        }) as Legal,
     ),
-  ])
+  ]),
 );

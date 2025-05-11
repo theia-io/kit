@@ -25,7 +25,6 @@ import {
 } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-analytics',
   templateUrl: './analytics.component.html',
   imports: [
@@ -46,13 +45,13 @@ export class FeatFarewellAnalyticsComponent {
 
   farewell$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellById(farewellId)))
-    )
+      this.#store.pipe(select(selectFarewellById(farewellId))),
+    ),
   );
   farewellAnalytics$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellAnalyticsById(farewellId)))
-    )
+      this.#store.pipe(select(selectFarewellAnalyticsById(farewellId))),
+    ),
   );
 
   constructor() {
@@ -64,17 +63,17 @@ export class FeatFarewellAnalyticsComponent {
         takeUntilDestroyed(),
         take(1),
         delay(2500),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile)))
+        withLatestFrom(this.#store.pipe(select(selectCurrentProfile))),
       )
       .subscribe(([[farewell, analytics], currentProfile]) =>
-        this.#visitorActions(farewell.profileId, analytics, currentProfile)
+        this.#visitorActions(farewell.profileId, analytics, currentProfile),
       );
   }
 
   #visitorActions(
     farewellProfileId: Profile['id'],
     analytics: FarewellAnalytics,
-    currentProfile: Profile | undefined
+    currentProfile: Profile | undefined,
   ) {
     if (
       this.preview() &&
@@ -92,7 +91,7 @@ export class FeatFarewellAnalyticsComponent {
           ...analytics,
           viewed: analytics.viewed + 1,
         },
-      })
+      }),
     );
   }
 }

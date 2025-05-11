@@ -93,28 +93,31 @@
         a positive lasting impression.
       </p>
 
-      @if(extraLarge$ | async) {
-      <ng-container
-        *ngTemplateOutlet="
-          butWhyTmpl;
-          context: { $implicit: false }
-        "></ng-container>
+      @if (extraLarge$ | async) {
+        <ng-container
+          *ngTemplateOutlet="
+            butWhyTmpl;
+            context: { $implicit: false }
+          "></ng-container>
       }
     </div>
   </section>
 
-  @if((extraLarge$ | async) !== true) {
-  <ng-container
-    *ngTemplateOutlet="butWhyTmpl; context: { $implicit: true }"></ng-container>
+  @if ((extraLarge$ | async) !== true) {
+    <ng-container
+      *ngTemplateOutlet="
+        butWhyTmpl;
+        context: { $implicit: true }
+      "></ng-container>
   }
 </div>
 
 <ng-template #butWhyTmpl let-standalone>
   <div
     [ngClass]="{
-    'container mx-auto': standalone,
-    '-ml-20': !standalone,
-  }"
+      'container mx-auto': standalone,
+      '-ml-20': !standalone,
+    }"
     class="mt-8 flex flex-wrap gap-1 justify-center md:justify-start lg:grid lg:grid-row-4 lg:grid-cols-4">
     <div class="row-span-2">
       <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">

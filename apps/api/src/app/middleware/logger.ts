@@ -9,12 +9,12 @@ export const logger =
 
     console.log(
       `[Request]: ${req.method}, ${req.url}, ${JSON.stringify(
-        req.query
+        req.query,
       )}, ${JSON.stringify(
-        req.params
+        req.params,
       )}, version: ${configService.getEnvironment('version')}, ${JSON.stringify(
-        configService.getEnvironment()
-      )}`
+        configService.getEnvironment(),
+      )}`,
     );
 
     next();

@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { ButtonComponent } from '@kitouch/ui-components';
 
 @Component({
-  standalone: true,
   template: `
     <div class="flex flex-col items-center justify-center h-full">
       <div class="grid px-4">

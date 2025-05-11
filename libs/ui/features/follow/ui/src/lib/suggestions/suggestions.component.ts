@@ -36,7 +36,6 @@ interface FeatFollowSuggestedProfile extends Profile {
 }
 
 @Component({
-  standalone: true,
   selector: 'feat-follow-suggestions',
   templateUrl: './suggestions.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -44,7 +43,6 @@ interface FeatFollowSuggestedProfile extends Profile {
     AsyncPipe,
     RouterModule,
     //
-
     //
     UiCompCardComponent,
     FollowButtonComponent,
@@ -81,7 +79,7 @@ export class FeatFollowSuggestionsComponent {
 
           if (!this.suggestionConfig().showFollowed) {
             resultProfiles = resultProfiles.filter(
-              (profile) => !followingProfilesMap.has(profile.id)
+              (profile) => !followingProfilesMap.has(profile.id),
             );
           }
 
@@ -90,31 +88,31 @@ export class FeatFollowSuggestionsComponent {
               notFollowingProfilesMap.has(p1.id) >
               notFollowingProfilesMap.has(p2.id)
                 ? -1
-                : 1
+                : 1,
             );
           }
 
           return resultProfiles.slice(
             0,
-            this.suggestionConfig().profilesToDisplay ?? 10
+            this.suggestionConfig().profilesToDisplay ?? 10,
           );
         }),
         // enrich with an id who is already been followed
         map((listProfilesToShowToUser) => {
           const currentProfileFollowingSet = new Set(
-            currentProfile?.following?.map(({ id }) => id)
+            currentProfile?.following?.map(({ id }) => id),
           );
           return listProfilesToShowToUser.map(
             (suggestedProfile) => ({
               ...suggestedProfile,
               followed: currentProfileFollowingSet.has(suggestedProfile.id),
             }),
-            {}
+            {},
           );
-        })
-      )
+        }),
+      ),
     ),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   followProfileHandler(profile: Profile) {

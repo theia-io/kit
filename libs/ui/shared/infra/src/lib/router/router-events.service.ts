@@ -18,17 +18,17 @@ export class RouterEventsService {
 
   lastUrlBeforeCancelled$ = this.#router.events.pipe(
     filter(
-      (event): event is NavigationCancel => event instanceof NavigationCancel
+      (event): event is NavigationCancel => event instanceof NavigationCancel,
     ),
     switchMap(({ url: urlBeforeCancel }) =>
       this.#router.events.pipe(
         filter((v) => v instanceof NavigationStart),
         map(() => urlBeforeCancel),
-        take(1)
-      )
+        take(1),
+      ),
     ),
     startWith(undefined),
-    shareReplay({ refCount: false, bufferSize: 1 })
+    shareReplay({ refCount: false, bufferSize: 1 }),
   );
 
   lastUrlSaved$ = new BehaviorSubject<string | null>(null);

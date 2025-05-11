@@ -20,7 +20,6 @@ import { ConfirmPopupModule } from 'primeng/confirmpopup';
 import { ToastModule } from 'primeng/toast';
 
 @Component({
-  standalone: true,
   selector: 'feat-kit-profile-background-uploadable',
   templateUrl: './profile-background-uploadable.component.html',
   imports: [
@@ -60,7 +59,7 @@ export class FeatKitProfileBackgroundUploadableComponent {
           ...profile,
           background: colorHex,
         },
-      })
+      }),
     );
   }
 

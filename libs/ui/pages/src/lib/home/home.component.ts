@@ -49,7 +49,6 @@ import {
 } from 'rxjs';
 
 @Component({
-  standalone: true,
   templateUrl: './home.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
@@ -74,10 +73,10 @@ export class PageHomeComponent implements OnInit {
 
   homeTweets$ = this.#store.pipe(
     select(selectAllTweets),
-    tap(() => this.tweetsLoading.set(false))
+    tap(() => this.tweetsLoading.set(false)),
   );
   followingProfiles = toSignal(
-    this.#store.pipe(select(selectCurrentProfileFollowing))
+    this.#store.pipe(select(selectCurrentProfileFollowing)),
   );
 
   constructor() {
@@ -86,7 +85,7 @@ export class PageHomeComponent implements OnInit {
         select(selectCurrentProfile),
         filter(Boolean),
         distinctUntilKeyChanged('id'),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe(() => this.#store.dispatch(TweetApiActions.getAll()));
   }
@@ -97,8 +96,8 @@ export class PageHomeComponent implements OnInit {
     this.#reloadTweetsDisabled$$.asObservable(),
     this.#reloadTweetsDisabled$$.asObservable().pipe(
       switchMap(() => timer(2500)),
-      map(() => false)
-    )
+      map(() => false),
+    ),
   );
   newlyAddedTweets = signal<Set<Tweety['id']>>(new Set());
 
@@ -106,17 +105,17 @@ export class PageHomeComponent implements OnInit {
     this.#actions
       .pipe(
         ofType(FeatTweetActions.tweetSuccess),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(({ tweet }) => {
         this.newlyAddedTweets.update(
-          (tweetsSet) => new Set([...tweetsSet.values(), tweet.id])
+          (tweetsSet) => new Set([...tweetsSet.values(), tweet.id]),
         );
 
         setTimeout(() => {
           this.newlyAddedTweets.update(
             (tweetsSet) =>
-              new Set([...tweetsSet.values()].filter((id) => id !== tweet.id))
+              new Set([...tweetsSet.values()].filter((id) => id !== tweet.id)),
           );
         }, DEFAULT_ANIMATE_TIMEOUT * 2);
       });

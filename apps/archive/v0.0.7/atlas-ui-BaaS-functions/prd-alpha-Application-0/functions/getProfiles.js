@@ -14,7 +14,7 @@ exports = async function (profiles) {
   } catch (err) {
     console.error(
       'Error occurred while executing find in profilesCollection:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }
@@ -22,7 +22,7 @@ exports = async function (profiles) {
   try {
     profilesFollowing = await profilesFollowing.toArray();
     profilesFollowing = profilesFollowing.map((profile) =>
-      context.functions.execute('normalizeProfile', profile)
+      context.functions.execute('normalizeProfile', profile),
     );
   } catch (err) {
     console.error('Error occurred while preparing data for FE:', err.message);

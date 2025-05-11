@@ -40,18 +40,18 @@ export class FarewellCommentsEffects {
           map((comments) =>
             FeatFarewellCommentActions.getCommentsFarewellSuccess({
               comments,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellCommentActions.getCommentsFarewellFailure({
                 message: `We were not able to get comments to farewell: ${farewellId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   createCommentFarewell$ = createEffect(() =>
@@ -62,18 +62,18 @@ export class FarewellCommentsEffects {
           map((updatedComment) =>
             FeatFarewellCommentActions.postCommentFarewellSuccess({
               comment: updatedComment,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellCommentActions.postCommentFarewellFailure({
                 message: `We were not able to add comment to farewell: ${comment.farewellId}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   createBatchCommentsFarewell$ = createEffect(() =>
@@ -84,18 +84,18 @@ export class FarewellCommentsEffects {
           map((comments) =>
             FeatFarewellCommentActions.batchCommentsFarewellSuccess({
               comments,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellCommentActions.batchCommentsFarewellFailure({
                 message: `We were not able to add comments to farewell. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteFarewellComment$ = createEffect(() =>
@@ -106,18 +106,18 @@ export class FarewellCommentsEffects {
           map(() =>
             FeatFarewellCommentActions.deleteCommentFarewellSuccess({
               id,
-            })
+            }),
           ),
           catchError((err) =>
             of(
               FeatFarewellCommentActions.deleteCommentFarewellFailure({
                 message: `We were unable to remove farewell Comment, ${id}. Try contacting support: ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   uploadFarewellStorageMedia$ = createEffect(() =>
@@ -126,8 +126,8 @@ export class FarewellCommentsEffects {
       switchMap(({ farewellId, profileId, items }) =>
         forkJoin(
           items.map(({ key, blob }) =>
-            this.#farewellCommentService.uploadFarewellCommentMedia(key, blob)
-          )
+            this.#farewellCommentService.uploadFarewellCommentMedia(key, blob),
+          ),
         ).pipe(
           map((res) =>
             FeatFarewellCommentActions.uploadFarewellCommentStorageMediaSuccess(
@@ -135,8 +135,8 @@ export class FarewellCommentsEffects {
                 farewellId,
                 profileId,
                 items: res,
-              }
-            )
+              },
+            ),
           ),
           catchError(() =>
             of(
@@ -144,13 +144,13 @@ export class FarewellCommentsEffects {
                 {
                   message:
                     'We were unable to upload comment media. Try adding later.',
-                }
-              )
-            )
-          )
-        )
-      )
-    )
+                },
+              ),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteFarewellCommentStorageMedia$ = createEffect(() =>
@@ -159,15 +159,15 @@ export class FarewellCommentsEffects {
       mergeMap(({ url }) =>
         this.#farewellCommentService
           .deleteFarewellCommentMedia(
-            getImageKeyFromS3Url(url, this.#s3FarewellBaseUrl)
+            getImageKeyFromS3Url(url, this.#s3FarewellBaseUrl),
           )
           .pipe(
             map(() =>
               FeatFarewellCommentActions.deleteFarewellCommentStorageMediaSuccess(
                 {
                   url,
-                }
-              )
+                },
+              ),
             ),
             catchError(() =>
               of(
@@ -175,13 +175,13 @@ export class FarewellCommentsEffects {
                   {
                     message:
                       'We were unable to remove comment media from S3 bucket. Try again later.',
-                  }
-                )
-              )
-            )
-          )
-      )
-    )
+                  },
+                ),
+              ),
+            ),
+          ),
+      ),
+    ),
   );
 
   constructor() {
@@ -193,8 +193,8 @@ export class FarewellCommentsEffects {
           this.#store$.pipe(
             select(selectFarewellCommentById(id)),
             take(1),
-            filter(Boolean)
-          )
+            filter(Boolean),
+          ),
         ),
         switchMap((comment) =>
           this.#actions$.pipe(
@@ -204,10 +204,10 @@ export class FarewellCommentsEffects {
             map(() => comment.medias),
             filter(
               (medias): medias is Array<ContractUploadedMedia> =>
-                !!medias && medias.length > 0
-            )
-          )
-        )
+                !!medias && medias.length > 0,
+            ),
+          ),
+        ),
       )
       .subscribe((medias) => {
         medias.forEach((media) => {
@@ -215,8 +215,8 @@ export class FarewellCommentsEffects {
             this.#store$.dispatch(
               FeatFarewellCommentActions.deleteFarewellCommentStorageMedia({
                 url,
-              })
-            )
+              }),
+            ),
           );
         });
       });

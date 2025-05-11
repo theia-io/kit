@@ -71,7 +71,7 @@ export class KitController {
     if (!account) {
       throw new HttpException(
         'Account was not deleted',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -100,7 +100,7 @@ export class KitController {
   @UseGuards(AuthGuard('jwt'))
   async getProfiles(@Query('profiles') profiles: string) {
     return this.kitService.profiles(
-      profiles.split(',').map((profile) => profile.trim())
+      profiles.split(',').map((profile) => profile.trim()),
     );
   }
 
@@ -120,7 +120,7 @@ export class KitController {
   @UseGuards(AuthGuard('jwt'))
   async addUserExperience(
     @Param('usedId') userId: string,
-    @Body() experience: Experience
+    @Body() experience: Experience,
   ) {
     return this.kitService.addUserExperience(userId, experience);
   }
@@ -129,7 +129,7 @@ export class KitController {
   @UseGuards(AuthGuard('jwt'))
   async deleteUserExperience(
     @Param('usedId') userId: string,
-    @Param('experienceId') experienceId: string
+    @Param('experienceId') experienceId: string,
   ) {
     console.log('deleteUserExperience 1', userId, experienceId);
     return this.kitService.deleteUserExperience(userId, experienceId);

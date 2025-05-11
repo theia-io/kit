@@ -21,19 +21,19 @@ export class LegalEffects {
       switchMap(() =>
         this.#legalService.getCompanies$().pipe(
           map((companies) =>
-            FeatLegalApiActions.getCompaniesSuccess({ companies })
+            FeatLegalApiActions.getCompaniesSuccess({ companies }),
           ),
           catchError((err) => {
             console.error('[LegalEffects] companies', err);
             return of(
               FeatLegalApiActions.getCompaniesFailure({
                 message: 'Cannot get companies now',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   /** @TODO @FIXME this eventually has to migrate to BE */
@@ -44,15 +44,15 @@ export class LegalEffects {
       switchMap(({ experience }) =>
         this.#store$.select(getMatchingCompanies(experience.company)).pipe(
           filter((v) => !v.length), // has NOT to find anything existing
-          map(() => experience.company)
-        )
+          map(() => experience.company),
+        ),
       ),
       map((company) =>
         FeatLegalApiActions.addCompanies({
           companies: [{ name: company, alias: company }],
-        })
-      )
-    )
+        }),
+      ),
+    ),
   );
 
   addCompanies$ = createEffect(() =>
@@ -67,11 +67,11 @@ export class LegalEffects {
             return of(
               FeatLegalApiActions.addCompaniesFailure({
                 message: 'Cannot insert new companies now',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 }

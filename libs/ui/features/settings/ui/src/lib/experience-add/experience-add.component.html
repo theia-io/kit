@@ -1,13 +1,13 @@
 <form [formGroup]="experienceForm">
   <div class="card flex flex-col justify-content-center">
-    <p-stepper orientation="vertical" [(activeStep)]="stepperActive">
-      <p-stepperPanel>
+    <p-stepper orientation="vertical" [(value)]="stepperActive">
+      <p-stepper>
         <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
           <button (click)="onClick.emit()">
             <span
               [ngClass]="{
                 'bg-primary border-primary': index <= stepperActive(),
-                'surface-border': index > stepperActive()
+                'surface-border': index > stepperActive(),
               }">
               <i class="pi pi-user" style="font-size: 1.5rem"></i>
             </span>
@@ -63,12 +63,12 @@
                 [checkmark]="true"></p-dropdown>
               <label for="country">Country</label>
 
-              @if(geolocationAvailable) {
-              <i
-                class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]"
-                role="button"
-                (click)="$event.stopPropagation(); setCurrentGeolocation()"
-                style="font-size: 1.5rem"></i>
+              @if (geolocationAvailable) {
+                <i
+                  class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]"
+                  role="button"
+                  (click)="$event.stopPropagation(); setCurrentGeolocation()"
+                  style="font-size: 1.5rem"></i>
               }
             </p-floatLabel>
 
@@ -80,12 +80,12 @@
                 class="w-full" />
               <label for="city">City</label>
 
-              @if(geolocationAvailable) {
-              <i
-                class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]"
-                role="button"
-                (click)="$event.stopPropagation(); setCurrentGeolocation()"
-                style="font-size: 1.5rem"></i>
+              @if (geolocationAvailable) {
+                <i
+                  class="pi pi-map-marker absolute translate-y-1/2 top--1/2 right-[12px]"
+                  role="button"
+                  (click)="$event.stopPropagation(); setCurrentGeolocation()"
+                  style="font-size: 1.5rem"></i>
               }
             </p-floatLabel>
           </div>
@@ -98,15 +98,15 @@
               iconPos="right" />
           </div>
         </ng-template>
-      </p-stepperPanel>
+      </p-stepper>
 
-      <p-stepperPanel>
+      <p-stepper>
         <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
           <button (click)="onClick.emit()">
             <span
               [ngClass]="{
                 'bg-primary border-primary': index <= stepperActive(),
-                'surface-border': index > stepperActive()
+                'surface-border': index > stepperActive(),
               }">
               <i class="pi pi-briefcase" style="font-size: 1.5rem"></i>
             </span>
@@ -171,15 +171,15 @@
               iconPos="right" />
           </div>
         </ng-template>
-      </p-stepperPanel>
+      </p-stepper>
 
-      <p-stepperPanel>
+      <p-stepper>
         <ng-template pTemplate="header" let-onClick="onClick" let-index="index">
           <button (click)="onClick.emit()">
             <span
               [ngClass]="{
                 'bg-primary border-primary': index <= stepperActive(),
-                'surface-border': index > stepperActive()
+                'surface-border': index > stepperActive(),
               }">
               <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
             </span>
@@ -216,7 +216,7 @@
               icon="pi pi-arrow-left" />
           </div>
         </ng-template>
-      </p-stepperPanel>
+      </p-stepper>
     </p-stepper>
 
     <div>

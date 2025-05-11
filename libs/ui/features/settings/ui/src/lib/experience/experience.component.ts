@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'feat-settings-experience',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './experience.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

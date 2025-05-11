@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 @Component({
   standalone: true,
   selector: 'ui-kit-page-overlay',
-  template: `@if(show()) {
+  template: `@if (show()) {
     <div class="absolute top-20 left-0 w-full h-full z-50">
       <div
         class="fixed top-0 left-0 w-full h-full opacity-95 bg-slate-800"
@@ -18,7 +18,7 @@ import { ChangeDetectionStrategy, Component, input } from '@angular/core';
         </div>
       </div>
     </div>
-    }`,
+  }`,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class UiKitPageOverlayComponent {

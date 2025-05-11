@@ -10,7 +10,7 @@ exports = async function (args) {
   } catch (err) {
     console.log(
       '[internalGetProfiles] Error occurred while executing findOne:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }
@@ -19,7 +19,7 @@ exports = async function (args) {
   try {
     findResultArr = findResultArr.map(
       async (profile) =>
-        await context.functions.execute('normalizeProfile', profile)
+        await context.functions.execute('normalizeProfile', profile),
     );
   } catch (err) {
     console.log('Error occurred while normilising profile:', err.message);

@@ -7,7 +7,6 @@ import {
 } from '@kitouch/ui-components';
 
 @Component({
-  standalone: true,
   selector: 'shared-feature-intro',
   templateUrl: './feature-intro.component.html',
   imports: [

@@ -1,28 +1,30 @@
-@if(kudoBoard$ | async; as kudoBoard) { @let background = kudoBoard.background;
+@if (kudoBoard$ | async; as kudoBoard) {
+  @let background = kudoBoard.background;
 
-<div class="flex flex-col">
-  <div class="relative flex justify-center items-center h-24">
-    @if(isBucketUrl(background)) {
-    <img class="absolute h-full w-full object-cover" [src]="background" />
-    } @else if(isHexColor(background)) {
-    <ui-kit-color-displayer
-      class="absolute left-0 top-0 w-full h-full rounded"
-      [color]="background" />
-    }
+  <div class="flex flex-col">
+    <div class="relative flex justify-center items-center h-24">
+      @if (isBucketUrl(background)) {
+        <img class="absolute h-full w-full object-cover" [src]="background" />
+      } @else if (isHexColor(background)) {
+        <ui-kit-color-displayer
+          class="absolute left-0 top-0 w-full h-full rounded"
+          [color]="background" />
+      }
 
-    <div
-      class="relative text-4xl text-center p-2 rounded"
-      [ngClass]="isBucketUrl(background) ? ' bg-[#94e0ed]' : ''">
-      {{ kudoBoard.title }}
+      <div
+        class="relative text-4xl text-center p-2 rounded"
+        [ngClass]="isBucketUrl(background) ? ' bg-[#94e0ed]' : ''">
+        {{ kudoBoard.title }}
+      </div>
     </div>
-  </div>
 
-  @if(!(smaller() && !!background) && kudoBoard.recipient) {
-  <div class="mt-4 text-2xl text-center">{{ kudoBoard.recipient }},</div>
-  } @if(!(smaller() && !!background)) {
-  <div class="mt-1 text-xl text-center">
-    {{ kudoBoard.content }}
+    @if (!(smaller() && !!background) && kudoBoard.recipient) {
+      <div class="mt-4 text-2xl text-center">{{ kudoBoard.recipient }},</div>
+    }
+    @if (!(smaller() && !!background)) {
+      <div class="mt-1 text-xl text-center">
+        {{ kudoBoard.content }}
+      </div>
+    }
   </div>
-  }
-</div>
 }

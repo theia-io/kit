@@ -7,7 +7,7 @@ import { Bookmark, BookmarkDocument } from './schemas';
 @Injectable()
 export class BeBookmarksService {
   constructor(
-    @InjectModel(Bookmark.name) private bookmarkModel: Model<BookmarkDocument>
+    @InjectModel(Bookmark.name) private bookmarkModel: Model<BookmarkDocument>,
   ) {}
 
   async getBookmarks(profileId: string) {
@@ -23,7 +23,7 @@ export class BeBookmarksService {
       console.error(`Cannot run bookmark search for %s`, profileId, err);
       throw new HttpException(
         'Cannot execute bookmark search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -43,7 +43,7 @@ export class BeBookmarksService {
       console.error(`Cannot execute bookmark find for %s`, bookmarkId, err);
       throw new HttpException(
         'Cannot execute bookmark search',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -67,11 +67,11 @@ export class BeBookmarksService {
       console.error(
         `Cannot create new bookmark for %s`,
         JSON.stringify(newBookmark),
-        err
+        err,
       );
       throw new HttpException(
         'Cannot create bew bookmark',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -87,12 +87,12 @@ export class BeBookmarksService {
     if (
       !loggedInProfiles.some(
         (loggedInProfileId) =>
-          bookmark?.profileIdBookmarker.toString() === loggedInProfileId
+          bookmark?.profileIdBookmarker.toString() === loggedInProfileId,
       )
     ) {
       throw new HttpException(
         'You can delete only yours bookmark',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
 
@@ -102,7 +102,7 @@ export class BeBookmarksService {
       console.error(`Cannot delete bookmark %s`, bookmarkId, err);
       throw new HttpException(
         'Cannot delete bookmark',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -122,11 +122,11 @@ export class BeBookmarksService {
         `Cannot delete tweet bookmark %s`,
         tweetId,
         profileIdBookmarker,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find and delete bookmark',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -144,7 +144,7 @@ export class BeBookmarksService {
       console.error(`Cannot delete tweet bookmarks %s`, tweetId, err);
       throw new HttpException(
         'Cannot find and delete bookmarks',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

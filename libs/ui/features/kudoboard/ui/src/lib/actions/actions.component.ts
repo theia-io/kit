@@ -59,7 +59,6 @@ import { kudoBoardOwner } from '../common';
 import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-actions/view-additional-actions.component';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-actions',
   templateUrl: './actions.component.html',
   imports: [
@@ -92,11 +91,8 @@ export class FeatKudoBoardActionsComponent {
   #confirmationService = inject(ConfirmationService);
 
   #kudoboardId$ = toObservable(this.kudoboardId).pipe(filter(Boolean));
-  #kudoboard$ = this.#kudoboardId$.pipe(
-    switchMap((id) => this.#store.pipe(select(selectKudoBoardById(id))))
-  );
   kudoboard = computed(() =>
-    this.#store.selectSignal(selectKudoBoardById(this.kudoboardId()))()
+    this.#store.selectSignal(selectKudoBoardById(this.kudoboardId()))(),
   );
 
   #currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
@@ -106,21 +102,21 @@ export class FeatKudoBoardActionsComponent {
     kudoBoardOwner({
       kudoboard: this.kudoboard(),
       currentProfile: this.currentProfile(),
-    })
+    }),
   );
 
   kudoBoardReactions$ = this.#kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardReactionsById(kudoboardId)))
+      this.#store.pipe(select(selectKudoBoardReactionsById(kudoboardId))),
     ),
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
   kudoBoardReactionsLength = toSignal(
     this.kudoBoardReactions$.pipe(map((reactions) => reactions.length)),
-    { initialValue: 0 }
+    { initialValue: 0 },
   );
   kudoBoardProfileReactionsMap$ = this.kudoBoardReactions$.pipe(
     map((reactions) => {
@@ -143,7 +139,7 @@ export class FeatKudoBoardActionsComponent {
 
       return kudoBoardProfileReactionsMap;
     }),
-    shareReplay({ refCount: true, bufferSize: 1 })
+    shareReplay({ refCount: true, bufferSize: 1 }),
   );
 
   resolvedReactionProfilesMap = toSignal(
@@ -153,11 +149,11 @@ export class FeatKudoBoardActionsComponent {
           select(
             selectProfilesByIds(
               [...kudoBoardProfileReactions.keys()].filter(
-                (profileId): profileId is Profile['id'] => !!profileId
-              )
-            )
-          )
-        )
+                (profileId): profileId is Profile['id'] => !!profileId,
+              ),
+            ),
+          ),
+        ),
       ),
       map((profiles) => {
         const resolvedReactionProfilesMap = new Map<
@@ -175,8 +171,8 @@ export class FeatKudoBoardActionsComponent {
 
         resolvedReactionProfilesMap.set(null, null);
         return resolvedReactionProfilesMap;
-      })
-    )
+      }),
+    ),
   );
 
   readonly profilePicture = profilePicture;
@@ -200,7 +196,7 @@ export class FeatKudoBoardActionsComponent {
           profile: this.currentProfile(),
           content: emoji,
         },
-      })
+      }),
     );
   }
 
@@ -220,7 +216,7 @@ export class FeatKudoBoardActionsComponent {
       this.#store.dispatch(
         FeatKudoBoardReactionActions.deleteReactionKudoBoard({
           id: reaction.id,
-        })
+        }),
       );
       return;
     }
@@ -231,7 +227,7 @@ export class FeatKudoBoardActionsComponent {
 
   redirectToEdit() {
     this.#router.navigateByUrl(
-      `s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${this.kudoboardId()}/edit`
+      `s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${this.kudoboardId()}/edit`,
     );
   }
 
@@ -255,11 +251,11 @@ export class FeatKudoBoardActionsComponent {
           shareReplay({
             refCount: true,
             bufferSize: 1,
-          })
+          }),
         );
 
         farewellCreated$.subscribe(({ id }) =>
-          this.#router.navigateByUrl(`${this.farewellUrlPath}edit/${id}`)
+          this.#router.navigateByUrl(`${this.farewellUrlPath}edit/${id}`),
         );
 
         farewellCreated$
@@ -270,9 +266,9 @@ export class FeatKudoBoardActionsComponent {
                 map((kudoBoardComments): [string, Array<KudoBoardComment>] => [
                   id,
                   kudoBoardComments,
-                ])
-              )
-            )
+                ]),
+              ),
+            ),
           )
           .subscribe(([farewellId, kudoBoardComments]) => {
             if (kudoBoardComments.length > 0) {
@@ -284,9 +280,9 @@ export class FeatKudoBoardActionsComponent {
                       profileId,
                       profile,
                       content,
-                    })
+                    }),
                   ),
-                })
+                }),
               );
             }
           });
@@ -296,7 +292,7 @@ export class FeatKudoBoardActionsComponent {
             select(selectCurrentProfile),
             filter(Boolean),
             take(1),
-            takeUntilDestroyed(this.#destroyRef)
+            takeUntilDestroyed(this.#destroyRef),
           )
           .subscribe((profile) => {
             this.#store.dispatch(
@@ -310,7 +306,7 @@ export class FeatKudoBoardActionsComponent {
                   kudoBoard,
                   status: FarewellStatus.Draft,
                 },
-              })
+              }),
             );
           });
       },
@@ -331,7 +327,7 @@ export class FeatKudoBoardActionsComponent {
       .pipe(
         select(selectCurrentProfile),
         takeUntilDestroyed(this.#destroyRef),
-        filter(Boolean)
+        filter(Boolean),
       )
       .subscribe((currentProfile) =>
         this.#store.dispatch(
@@ -341,8 +337,8 @@ export class FeatKudoBoardActionsComponent {
               profileId: currentProfile.id,
               profile: currentProfile,
             },
-          })
-        )
+          }),
+        ),
       );
   }
 }

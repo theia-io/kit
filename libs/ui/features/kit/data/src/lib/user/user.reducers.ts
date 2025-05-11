@@ -41,8 +41,8 @@ export const userReducer = createReducer(
               (userExperience) =>
                 !_.isEqual(
                   getExperienceEqualityObject(userExperience),
-                  getExperienceEqualityObject(experience)
-                )
+                  getExperienceEqualityObject(experience),
+                ),
             ) ?? [],
         }
       : undefined,
@@ -50,5 +50,5 @@ export const userReducer = createReducer(
   on(FeatUserApiActions.getUserSuccess, (state, { user }) => ({
     ...state,
     users: addOrUpdate(user, state.users),
-  }))
+  })),
 );

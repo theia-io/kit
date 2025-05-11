@@ -47,7 +47,6 @@ import {
   switchMap,
 } from 'rxjs';
 @Component({
-  standalone: true,
   templateUrl: './view.component.html',
   styleUrl: './view.component.scss',
   imports: [
@@ -80,14 +79,14 @@ export class PageFarewellViewComponent {
 
   farewellId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
-    shareReplay()
+    shareReplay(),
   );
 
   farewell$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellById(farewellId)))
+      this.#store.pipe(select(selectFarewellById(farewellId))),
     ),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   farewellProfile = toSignal(
@@ -95,14 +94,14 @@ export class PageFarewellViewComponent {
       switchMap(({ profile: farewellSavedProfile, profileId }) =>
         this.#store
           .select(selectProfileById(profileId))
-          .pipe(map((profile) => profile ?? farewellSavedProfile))
-      )
-    )
+          .pipe(map((profile) => profile ?? farewellSavedProfile)),
+      ),
+    ),
   );
 
   profilePictureFn = profilePicture;
   farewellProfilePic = computed(() =>
-    this.profilePictureFn(this.farewellProfile())
+    this.profilePictureFn(this.farewellProfile()),
   );
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
@@ -115,7 +114,7 @@ export class PageFarewellViewComponent {
         actions.pipe(ofType(FeatFarewellActions.getFarewellSuccess)),
       loadingErrorAction$: (actions) =>
         actions.pipe(ofType(FeatFarewellActions.getFarewellFailure)),
-    })
+    }),
   );
 
   farewellOverlayText$ = this.farewell$.pipe(
@@ -132,19 +131,19 @@ export class PageFarewellViewComponent {
       }
 
       return '';
-    })
+    }),
   );
 
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
-        ({ id }) => id === this.farewellProfile()?.id
-      ) ?? false
+        ({ id }) => id === this.farewellProfile()?.id,
+      ) ?? false,
   );
 
   linkedKudoBoard$ = this.farewell$.pipe(
     map((farewell) => farewell?.kudoBoard),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
@@ -162,7 +161,7 @@ export class PageFarewellViewComponent {
       {
         label: farewell.title,
       },
-    ])
+    ]),
   );
 
   farewellOwner = computed(() => {
@@ -185,13 +184,13 @@ export class PageFarewellViewComponent {
       .subscribe((id) => {
         this.#store.dispatch(FeatFarewellActions.getFarewell({ id }));
         this.#store.dispatch(
-          FeatFarewellActions.getAnalyticsFarewell({ farewellId: id })
+          FeatFarewellActions.getAnalyticsFarewell({ farewellId: id }),
         );
         this.#store.dispatch(
-          FeatFarewellReactionActions.getReactionsFarewell({ farewellId: id })
+          FeatFarewellReactionActions.getReactionsFarewell({ farewellId: id }),
         );
         this.#store.dispatch(
-          FeatFarewellCommentActions.getCommentsFarewell({ farewellId: id })
+          FeatFarewellCommentActions.getCommentsFarewell({ farewellId: id }),
         );
       });
   }

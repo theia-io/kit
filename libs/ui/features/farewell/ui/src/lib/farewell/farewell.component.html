@@ -1,11 +1,11 @@
 <form class="flex flex-col" [formGroup]="farewellFormGroup">
-  @if(farewell(); as farewell) {
-  <feat-farewell-info-panel
-    class="block float-right mb-12"
-    [farewell]="farewell"
-    [linkedKudoboard]="linkedKudoBoard$ | async"
-    [preview]="true"
-    [showUpdatedDate]="true" />
+  @if (farewell(); as farewell) {
+    <feat-farewell-info-panel
+      class="block float-right mb-12"
+      [farewell]="farewell"
+      [linkedKudoboard]="linkedKudoBoard$ | async"
+      [preview]="true"
+      [showUpdatedDate]="true" />
   }
 
   <p-floatLabel class="block">
@@ -56,24 +56,24 @@
   </ng-template>
 
   <ng-template #shareTmpl>
-    @if(id) {
-    <shared-copy-clipboard [id]="id" type="farewell" />
+    @if (id) {
+      <shared-copy-clipboard [id]="id" type="farewell" />
     }
   </ng-template>
 
   <ng-template #previewTmpl>
-    @if(id) {
-    <shared-sidebar-preview [(visible)]="previewVisible">
-      <feat-farewell-viewv2 preview [farewellId]="id" />
-    </shared-sidebar-preview>
+    @if (id) {
+      <shared-sidebar-preview [(visible)]="previewVisible">
+        <feat-farewell-viewv2 preview [farewellId]="id" />
+      </shared-sidebar-preview>
     }
   </ng-template>
 
   <div class="flex justify-center gap-2 mt-12">
     <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
     <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
-    @if(updating()) {
-    <ui-kit-spinner size="h-6 w-6" />
+    @if (updating()) {
+      <ui-kit-spinner size="h-6 w-6" />
     }
   </div>
 

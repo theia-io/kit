@@ -1,10 +1,10 @@
 <div class="flex gap-1 md:gap-2 items-center">
   <feat-farewell-status [status]="farewell().status" />
 
-  @let farewellCreatedAt = farewell().createdAt; @let farewellCreatedAtLegacy =
-  farewell().timestamp?.createdAt; @let farewellUpdatedAt =
-  farewell().updatedAt; @let farewellUpdatedAtLegacy =
-  farewell().timestamp?.updatedAt;
+  @let farewellCreatedAt = farewell().createdAt;
+  @let farewellCreatedAtLegacy = farewell().timestamp?.createdAt;
+  @let farewellUpdatedAt = farewell().updatedAt;
+  @let farewellUpdatedAtLegacy = farewell().timestamp?.updatedAt;
 
   <p class="text-sm text-gray-500">
     <i
@@ -13,7 +13,7 @@
         'Created on ' +
         (farewellCreatedAt ?? farewellCreatedAtLegacy | date) +
         (showUpdatedDate()
-          ? farewellUpdatedAt ?? farewellUpdatedAtLegacy
+          ? (farewellUpdatedAt ?? farewellUpdatedAtLegacy)
             ? (!!(farewellCreatedAt ?? farewellCreatedAtLegacy) ? '\n' : '') +
               'Updated on ' +
               (farewellUpdatedAt ?? farewellUpdatedAtLegacy | date)
@@ -30,14 +30,14 @@
 
   <feat-farewell-analytics [farewellId]="farewell().id" [preview]="preview()" />
 
-  @if(linkedKudoboard(); as linkedKudoboard) {
-  <a
-    class="max-w-20 whitespace-nowrap text-ellipsis overflow-auto text-sm text-gray-500 hover:text-gray-900 hover:font-semibold"
-    [pTooltip]="'Open connected \'' + linkedKudoboard.title + '\' Kudo board'"
-    [href]="kudoBoardPartialUrl + '/' + linkedKudoboard.id + '?view=true'"
-    target="_blank">
-    <i class="pi pi-link mr-1"></i>
-    {{ linkedKudoboard.title }}
-  </a>
+  @if (linkedKudoboard(); as linkedKudoboard) {
+    <a
+      class="max-w-20 whitespace-nowrap text-ellipsis overflow-auto text-sm text-gray-500 hover:text-gray-900 hover:font-semibold"
+      [pTooltip]="'Open connected \'' + linkedKudoboard.title + '\' Kudo board'"
+      [href]="kudoBoardPartialUrl + '/' + linkedKudoboard.id + '?view=true'"
+      target="_blank">
+      <i class="pi pi-link mr-1"></i>
+      {{ linkedKudoboard.title }}
+    </a>
   }
 </div>

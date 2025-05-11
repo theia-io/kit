@@ -12,22 +12,22 @@ export class KudoBoardReactionsV2Service {
 
   getKudoBoardReactions(kudoBoardId: KudoBoard['id']) {
     return this.#http.get<Array<KudoBoardReaction>>(
-      `${this.#environment.api.kudoboardReactions}/${kudoBoardId}`
+      `${this.#environment.api.kudoboardReactions}/${kudoBoardId}`,
     );
   }
 
   createKudoBoardReaction(
-    kudoBoardReaction: ClientDataType<KudoBoardReaction>
+    kudoBoardReaction: ClientDataType<KudoBoardReaction>,
   ) {
     return this.#http.post<KudoBoardReaction>(
       `${this.#environment.api.kudoboardReactions}`,
-      kudoBoardReaction
+      kudoBoardReaction,
     );
   }
 
   deleteKudoBoardReaction(kudoBoardReactionId: KudoBoardReaction['id']) {
     return this.#http.delete<KudoBoardReaction>(
-      `${this.#environment.api.kudoboardReactions}/${kudoBoardReactionId}`
+      `${this.#environment.api.kudoboardReactions}/${kudoBoardReactionId}`,
     );
   }
 }

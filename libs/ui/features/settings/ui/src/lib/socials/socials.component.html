@@ -6,20 +6,24 @@
     <input pInputText placeholder="Linkedin" formControlName="linkedin" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('linkedin')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @else if(socialForm.get('linkedin')?.valid &&
-      (socialForm.get('linkedin')?.value ?? '').length > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @else if(socialForm.get('linkedin')?.valid &&
-      (socialForm.get('linkedin')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your linkedin URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('linkedin')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      } @else if (
+        socialForm.get('linkedin')?.valid &&
+        (socialForm.get('linkedin')?.value ?? '').length > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      } @else if (
+        socialForm.get('linkedin')?.valid &&
+        (socialForm.get('linkedin')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your linkedin URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>
@@ -31,20 +35,26 @@
     <input pInputText placeholder="Github" formControlName="github" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('github')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @if(socialForm.get('github')?.valid &&
-      (socialForm.get('github')?.value?.length ?? 0) > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @if(socialForm.get('github')?.valid &&
-      (socialForm.get('github')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your github URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('github')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      }
+      @if (
+        socialForm.get('github')?.valid &&
+        (socialForm.get('github')?.value?.length ?? 0) > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      }
+      @if (
+        socialForm.get('github')?.valid &&
+        (socialForm.get('github')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your github URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>
@@ -56,20 +66,26 @@
     <input pInputText placeholder="X" formControlName="twitter" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('twitter')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @if(socialForm.get('twitter')?.valid &&
-      (socialForm.get('twitter')?.value?.length ?? 0) > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @if(socialForm.get('twitter')?.valid &&
-      (socialForm.get('twitter')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your twitter URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('twitter')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      }
+      @if (
+        socialForm.get('twitter')?.valid &&
+        (socialForm.get('twitter')?.value?.length ?? 0) > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      }
+      @if (
+        socialForm.get('twitter')?.valid &&
+        (socialForm.get('twitter')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your twitter URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>
@@ -81,20 +97,26 @@
     <input pInputText placeholder="Facebook" formControlName="facebook" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('facebook')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @if(socialForm.get('facebook')?.valid &&
-      (socialForm.get('facebook')?.value?.length ?? 0) > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @if(socialForm.get('facebook')?.valid &&
-      (socialForm.get('facebook')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your facebook URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('facebook')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      }
+      @if (
+        socialForm.get('facebook')?.valid &&
+        (socialForm.get('facebook')?.value?.length ?? 0) > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      }
+      @if (
+        socialForm.get('facebook')?.valid &&
+        (socialForm.get('facebook')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your facebook URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>
@@ -106,20 +128,26 @@
     <input pInputText placeholder="Instagram" formControlName="instagram" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('instagram')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @if(socialForm.get('instagram')?.valid &&
-      (socialForm.get('instagram')?.value?.length ?? 0) > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @if(socialForm.get('instagram')?.valid &&
-      (socialForm.get('instagram')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your instagram URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('instagram')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      }
+      @if (
+        socialForm.get('instagram')?.valid &&
+        (socialForm.get('instagram')?.value?.length ?? 0) > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      }
+      @if (
+        socialForm.get('instagram')?.valid &&
+        (socialForm.get('instagram')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your instagram URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>
@@ -131,20 +159,26 @@
     <input pInputText placeholder="WhatsApp" formControlName="whatsapp" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('whatsapp')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @if(socialForm.get('whatsapp')?.valid &&
-      (socialForm.get('whatsapp')?.value?.length ?? 0) > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @if(socialForm.get('whatsapp')?.valid &&
-      (socialForm.get('whatsapp')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your whatsapp URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('whatsapp')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      }
+      @if (
+        socialForm.get('whatsapp')?.valid &&
+        (socialForm.get('whatsapp')?.value?.length ?? 0) > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      }
+      @if (
+        socialForm.get('whatsapp')?.valid &&
+        (socialForm.get('whatsapp')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your whatsapp URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>
@@ -156,20 +190,26 @@
     <input pInputText placeholder="Youtube" formControlName="youtube" />
 
     <p-inputGroupAddon>
-      @if(socialForm.get('youtube')?.errors) {
-      <i
-        pTooltip="URL seems incorrect"
-        class="pi pi-flag"
-        style="color: red"></i>
-      } @if(socialForm.get('youtube')?.valid &&
-      (socialForm.get('youtube')?.value?.length ?? 0) > 0) {
-      <i class="pi pi-check" style="color: green"></i>
-      } @if(socialForm.get('youtube')?.valid &&
-      (socialForm.get('youtube')?.value?.length ?? 0) === 0) {
-      <i
-        pTooltip="Add your youtube URL"
-        class="pi pi-plus-circle"
-        style="color: skyblue"></i>
+      @if (socialForm.get('youtube')?.errors) {
+        <i
+          pTooltip="URL seems incorrect"
+          class="pi pi-flag"
+          style="color: red"></i>
+      }
+      @if (
+        socialForm.get('youtube')?.valid &&
+        (socialForm.get('youtube')?.value?.length ?? 0) > 0
+      ) {
+        <i class="pi pi-check" style="color: green"></i>
+      }
+      @if (
+        socialForm.get('youtube')?.valid &&
+        (socialForm.get('youtube')?.value?.length ?? 0) === 0
+      ) {
+        <i
+          pTooltip="Add your youtube URL"
+          class="pi pi-plus-circle"
+          style="color: skyblue"></i>
       }
     </p-inputGroupAddon>
   </p-inputGroup>

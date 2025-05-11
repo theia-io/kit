@@ -29,7 +29,6 @@ import { ToastModule } from 'primeng/toast';
 import { merge, take, tap } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-kit-profile-picture-uploadable',
   templateUrl: './profile-picture-uploadable.component.html',
   imports: [
@@ -57,7 +56,7 @@ export class FeatKitProfilePictureUploadableComponent {
     const profile = this.profile();
     if (profile) {
       return profilePicture(
-        this.#store.selectSignal(selectProfileById(profile.id))()
+        this.#store.selectSignal(selectProfileById(profile.id))(),
       );
     } else {
       return profilePicture(profile);
@@ -88,7 +87,7 @@ export class FeatKitProfilePictureUploadableComponent {
     setTimeout(() => {
       (
         (this.fileUploadCmp as any).el.nativeElement?.querySelector(
-          '.p-fileupload-choose'
+          '.p-fileupload-choose',
         ) as HTMLElement | null
       )?.click();
     }, 100);
@@ -118,9 +117,9 @@ export class FeatKitProfilePictureUploadableComponent {
           tap(({ url }) =>
             this.confirmNewProfilePic(
               profile,
-              `${this.#s3ProfileBaseUrl}/${url}`
-            )
-          )
+              `${this.#s3ProfileBaseUrl}/${url}`,
+            ),
+          ),
         ),
       this.#actions
         .pipe(ofType(FeatProfileApiActions.uploadProfilePictureFailure))
@@ -130,8 +129,8 @@ export class FeatKitProfilePictureUploadableComponent {
               severity: 'error',
               summary: 'Upload failed',
             });
-          })
-        )
+          }),
+        ),
     )
       .pipe(takeUntilDestroyed(this.#destroyRef), take(1))
       .subscribe(() => this.fileUploadCmp.clear());
@@ -140,7 +139,7 @@ export class FeatKitProfilePictureUploadableComponent {
       FeatProfileApiActions.uploadProfilePicture({
         id: `${profile.id}/${file.name}`,
         pic: file,
-      })
+      }),
     );
   }
 
@@ -169,7 +168,7 @@ export class FeatKitProfilePictureUploadableComponent {
                 },
               ],
             },
-          })
+          }),
         );
       },
       reject: () => {

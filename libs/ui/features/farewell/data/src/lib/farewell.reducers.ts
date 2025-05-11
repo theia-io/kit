@@ -37,7 +37,7 @@ export const featFarewellReducer = createReducer(
     (state, { farewell }) => ({
       ...state,
       farewells: addOrUpdate(farewell, state.farewells),
-    })
+    }),
   ),
   on(FeatFarewellActions.deleteFarewellSuccess, (state, { id }) => ({
     ...state,
@@ -50,21 +50,21 @@ export const featFarewellReducer = createReducer(
     (state, { reactions }) => ({
       ...state,
       reactions: mergeArr(reactions, state.reactions),
-    })
+    }),
   ),
   on(
     FeatFarewellReactionActions.postReactionFarewellSuccess,
     (state, { reaction }) => ({
       ...state,
       reactions: addOrUpdate(reaction, state.reactions),
-    })
+    }),
   ),
   on(
     FeatFarewellReactionActions.deleteReactionFarewellSuccess,
     (state, { id }) => ({
       ...state,
       reactions: remove(id, state.reactions),
-    })
+    }),
   ),
   /** Comments */
   on(
@@ -73,21 +73,21 @@ export const featFarewellReducer = createReducer(
     (state, { comments }) => ({
       ...state,
       comments: mergeArr(state.comments, comments),
-    })
+    }),
   ),
   on(
     FeatFarewellCommentActions.postCommentFarewellSuccess,
     (state, { comment }) => ({
       ...state,
       comments: addOrUpdate(comment, state.comments),
-    })
+    }),
   ),
   on(
     FeatFarewellCommentActions.deleteCommentFarewellSuccess,
     (state, { id }) => ({
       ...state,
       comments: remove(id, state.comments),
-    })
+    }),
   ),
   /** Analytics */
   on(FeatFarewellActions.getAllAnalyticsSuccess, (state, { analytics }) => ({
@@ -101,10 +101,10 @@ export const featFarewellReducer = createReducer(
     (state, { analytics }) => ({
       ...state,
       analytics: addOrUpdate(analytics, state.analytics),
-    })
+    }),
   ),
   on(FeatFarewellActions.deleteAnalyticsFarewellSuccess, (state, { id }) => ({
     ...state,
     analytics: remove(id, state.analytics),
-  }))
+  })),
 );

@@ -43,12 +43,12 @@ exports = async function (tweet) {
         new: true,
         returnNewDocument: true,
         returnDocument: 'after',
-      }
+      },
     );
 
     updatedTweetDocument = context.functions.execute(
       'normalizeTweet',
-      updatedTweetDocument
+      updatedTweetDocument,
     );
   } catch (err) {
     console.log('Error occurred while updating tweet:', err.message);

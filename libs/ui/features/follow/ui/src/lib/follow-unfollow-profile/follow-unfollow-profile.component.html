@@ -1,24 +1,25 @@
-@if(currentProfile()?.id !== profileId()) {
-<button
-  pButton
-  (click)="
-    isFollowing()
-      ? unFollowProfileHandler(profileId())
-      : followProfileHandler(profileId())
-  "
-  class="float-right mr-2 -mb-6"
-  [class.min-w-32]="!isFollowing()"
-  [class.min-h-10]="isFollowing()"
-  severity="contrast">
-  @if(!isFollowing()) { Connect
-  <img
-    class="ml-2"
-    ngSrc="logo/handshake.gif"
-    [alt]="'Follow ' + profile()?.name + ' profile'"
-    width="20"
-    height="20" />
-  } @else {
-  <i class="pi pi-user-minus"></i>
-  }
-</button>
+@if (currentProfile()?.id !== profileId()) {
+  <button
+    pButton
+    (click)="
+      isFollowing()
+        ? unFollowProfileHandler(profileId())
+        : followProfileHandler(profileId())
+    "
+    class="float-right mr-2 -mb-6"
+    [class.min-w-32]="!isFollowing()"
+    [class.min-h-10]="isFollowing()"
+    severity="contrast">
+    @if (!isFollowing()) {
+      Connect
+      <img
+        class="ml-2"
+        ngSrc="logo/handshake.gif"
+        [alt]="'Follow ' + profile()?.name + ' profile'"
+        width="20"
+        height="20" />
+    } @else {
+      <i class="pi pi-user-minus"></i>
+    }
+  </button>
 }

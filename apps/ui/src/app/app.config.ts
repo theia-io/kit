@@ -59,6 +59,8 @@ import { DynamicDialogModule } from 'primeng/dynamicdialog';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
+import { providePrimeNG } from 'primeng/config';
+import Aura from '@primeng/themes/aura';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -70,7 +72,17 @@ export const appConfig: ApplicationConfig = {
 
     // for dynamic dialog service
     importProvidersFrom(DynamicDialogModule),
-
+    //
+    providePrimeNG({
+      theme: {
+        preset: Aura,
+        options: {
+          prefix: 'p',
+          darkModeSelector: 'system',
+          cssLayer: false,
+        },
+      },
+    }),
     //
     {
       provide: ENVIRONMENT,
@@ -105,7 +117,7 @@ export const appConfig: ApplicationConfig = {
       withInMemoryScrolling({
         anchorScrolling: 'enabled',
         scrollPositionRestoration: 'top',
-      })
+      }),
     ),
     // provideRouter(appRoutes, withDebugTracing(), withComponentInputBinding()),
     provideStore({
@@ -146,7 +158,7 @@ export const appConfig: ApplicationConfig = {
     // auth
     provideNgcCookieConsent(cookieConfig),
     provideHttpClient(
-      withInterceptors([authInterceptor, credentialsInterceptor])
+      withInterceptors([authInterceptor, credentialsInterceptor]),
     ),
   ],
 };

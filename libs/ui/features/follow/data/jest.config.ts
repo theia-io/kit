@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feat-follow-data',
   preset: '../../../../../jest.preset.js',

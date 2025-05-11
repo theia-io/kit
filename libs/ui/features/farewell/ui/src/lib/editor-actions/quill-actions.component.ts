@@ -18,7 +18,6 @@ import Quill, { Bounds } from 'quill';
 const DEFAULT_LINK_PLACEHOLDER = 'Paste a link...';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-quill-actions',
   templateUrl: './quill-actions.component.html',
   imports: [

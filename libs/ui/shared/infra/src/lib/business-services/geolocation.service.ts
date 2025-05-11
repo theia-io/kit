@@ -9,6 +9,7 @@ export class GeolocationService {
   #http = inject(HttpClient);
 
   // @TODO test once activated this paid service & add feature flag
+  // eslint-disable-next-line
   readonly geolocationAvailable = false && 'geolocation' in navigator;
 
   getCurrentUserLocationCity$() {
@@ -30,7 +31,7 @@ export class GeolocationService {
 
           this.#http
             .get<string>(
-              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${crd.latitude},${crd.longitude}&key=AIzaSyCz6vnqrBfRRV1VgmhlKhcHdPGiQszD2FE`
+              `https://maps.googleapis.com/maps/api/geocode/json?latlng=${crd.latitude},${crd.longitude}&key=AIzaSyCz6vnqrBfRRV1VgmhlKhcHdPGiQszD2FE`,
             )
             .subscribe((result) => res(result));
         };
@@ -38,9 +39,9 @@ export class GeolocationService {
         navigator.geolocation.getCurrentPosition(
           success,
           (err) => console.log('error', err),
-          options
+          options,
         );
-      })
+      }),
     );
   }
 }

@@ -1,125 +1,126 @@
-@if(tweet(); as tweet) {
-<!-- tweet profile -->
-@let tweetedProfile = tweetProfile();
-<!-- retweet profile -->
-@let retweetedProfile = retweetProfile();
+@if (tweet(); as tweet) {
+  <!-- tweet profile -->
+  @let tweetedProfile = tweetProfile();
+  <!-- retweet profile -->
+  @let retweetedProfile = retweetProfile();
 
-<!-- Retweet header -->
-@if(tweetIsRetweetFn(tweet) && retweetedProfile) {
-<feat-tweet-retweet-header
-  [currentProfileId]="currentProfile()?.id"
-  [tweet]="tweet"
-  [retweetProfile]="retweetedProfile"
-  [tweetProfile]="tweetedProfile" />
-}
-<!-- Tweet profile -->
-@if(tweetedProfile) {
-<ui-kit-comp-account-tile
-  [primaryText]="tweetedProfile.name"
-  [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
-  [secondaryText]="tweetedProfile.type"
-  [picture]="tweetedProfile.pictures?.[0]?.url"
-  [link]="profileUrlPath + tweetedProfile.id" />
-} @else {
-<ui-kit-spinner size="h-10 w-10" />
-}
-
-<div class="pt-1 pl-6">
-  <p
-    class="text-base width-auto font-medium flex-shrink overflow-break-word"
-    [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"></p>
-
-  @if(tweet.type !== tweetTypes.Retweet) {
-  <feat-tweet-actions
-    [tweetUrl]="tweetUrl(tweet, true)"
-    [comments]="tweetComments()?.length ?? 0"
-    (comment)="commentOverlayTmpl.show($event)"
-    (retweet)="retweetHandler(tweet)"
-    (quote)="quoteHandler()"
-    [liked]="tweetLiked()"
-    [likes]="tweet.upProfileIds?.length ?? 0"
-    (like)="likeHandler(tweet)"
-    [bookmarked]="tweetBookmarked()"
-    (bookmark)="bookmarkHandler(tweet)" />
-
-  <p-overlayPanel
-    [showCloseIcon]="true"
-    [focusOnShow]="true"
-    (onShow)="commentOverlayVisible.set(true)"
-    (onHide)="commentOverlayVisible.set(false)"
-    #commentOverlayTmpl>
-    <div class="flex flex-col min-h-24">
-      <p-floatLabel>
-        <textarea
-          id="float-input"
-          autofocus
-          [formControl]="commentControl"
-          rows="5"
-          cols="30"
-          pInputTextarea></textarea>
-        <label for="float-input">Your comment</label>
-      </p-floatLabel>
-
-      <ui-kit-tweet-button
-        text="Comment"
-        [iconAnimate]="false"
-        [disabled]="!commentControl.valid"
-        [loader]="false"
-        (click)="commentHandler(tweet)" />
-    </div>
-  </p-overlayPanel>
+  <!-- Retweet header -->
+  @if (tweetIsRetweetFn(tweet) && retweetedProfile) {
+    <feat-tweet-retweet-header
+      [currentProfileId]="currentProfile()?.id"
+      [tweet]="tweet"
+      [retweetProfile]="retweetedProfile"
+      [tweetProfile]="tweetedProfile" />
   }
-</div>
-
-@if(tweetCanBeDeleted()) {
-<ui-kit-delete
-  (delete)="
-    $event.stopImmediatePropagation(); tweetDeleteConfirmationVisible.set(true)
-  " />
-}
-
-<p-dialog
-  [header]="tweetIsRetweetFn(tweet) ? 'Delete retweet?' : 'Delete tweet?'"
-  [modal]="true"
-  [draggable]="false"
-  [dismissableMask]="true"
-  (click)="$event.stopPropagation()"
-  [(visible)]="tweetDeleteConfirmationVisible"
-  [style]="{ width: '25rem' }">
-  @if(tweetIsRetweetFn(tweet) && retweetedProfile) {
-  <feat-tweet-retweet-header
-    [currentProfileId]="currentProfile()?.id"
-    [tweet]="tweet"
-    [retweetProfile]="retweetedProfile"
-    [tweetProfile]="tweetedProfile" />
-  } @if(tweetedProfile) {
-  <ui-kit-comp-account-tile
-    [primaryText]="$any(tweetedProfile).name"
-    [primarySecondaryText]="tweet.createdAt | date : 'MMM d, h:mm a'"
-    [secondaryText]="$any(tweetedProfile).type"
-    [picture]="$any(tweetedProfile).pictures?.[0]?.url"
-    [link]="profileUrlPath + $any(tweetedProfile).id" />
+  <!-- Tweet profile -->
+  @if (tweetedProfile) {
+    <ui-kit-comp-account-tile
+      [primaryText]="tweetedProfile.name"
+      [primarySecondaryText]="tweet.createdAt | date: 'MMM d, h:mm a'"
+      [secondaryText]="tweetedProfile.type"
+      [picture]="tweetedProfile.pictures?.[0]?.url"
+      [link]="profileUrlPath + tweetedProfile.id" />
+  } @else {
+    <ui-kit-spinner size="h-10 w-10" />
   }
 
   <div class="pt-1 pl-6">
     <p
       class="text-base width-auto font-medium flex-shrink overflow-break-word"
       [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"></p>
+
+    @if (tweet.type !== tweetTypes.Retweet) {
+      <feat-tweet-actions
+        [tweetUrl]="tweetUrl(tweet, true)"
+        [comments]="tweetComments()?.length ?? 0"
+        (comment)="commentOverlayTmpl.show($event)"
+        (retweet)="retweetHandler(tweet)"
+        (quote)="quoteHandler()"
+        [liked]="tweetLiked()"
+        [likes]="tweet.upProfileIds?.length ?? 0"
+        (like)="likeHandler(tweet)"
+        [bookmarked]="tweetBookmarked()"
+        (bookmark)="bookmarkHandler(tweet)" />
+
+      <p-overlayPanel
+        [showCloseIcon]="true"
+        [focusOnShow]="true"
+        (onShow)="commentOverlayVisible.set(true)"
+        (onHide)="commentOverlayVisible.set(false)"
+        #commentOverlayTmpl>
+        <div class="flex flex-col min-h-24">
+          <p-floatLabel>
+            <textarea
+              id="float-input"
+              autofocus
+              [formControl]="commentControl"
+              rows="5"
+              cols="30"
+              pInputTextarea></textarea>
+            <label for="float-input">Your comment</label>
+          </p-floatLabel>
+
+          <ui-kit-tweet-button
+            text="Comment"
+            [iconAnimate]="false"
+            [disabled]="!commentControl.valid"
+            [loader]="false"
+            (click)="commentHandler(tweet)" />
+        </div>
+      </p-overlayPanel>
+    }
   </div>
 
-  <div class="mt-6 flex justify-end gap-4">
-    <p-button
-      label="Cancel"
-      severity="secondary"
-      (onClick)="tweetDeleteConfirmationVisible.set(false)" />
-    <p-button
-      [label]="tweetIsRetweetFn(tweet) ? 'Delete retweet' : 'Delete tweet'"
-      severity="danger"
-      (onClick)="
-        tweetDeleteConfirmationVisible.set(false); deleteHandler(tweet)
-      "
-      aria-label="delete-tweet" />
-  </div>
-</p-dialog>
+  @if (tweetCanBeDeleted()) {
+    <ui-kit-delete
+      (delete)="
+        $event.stopImmediatePropagation();
+        tweetDeleteConfirmationVisible.set(true)
+      " />
+  }
 
+  <p-dialog
+    [header]="tweetIsRetweetFn(tweet) ? 'Delete retweet?' : 'Delete tweet?'"
+    [modal]="true"
+    [draggable]="false"
+    [dismissableMask]="true"
+    (click)="$event.stopPropagation()"
+    [(visible)]="tweetDeleteConfirmationVisible"
+    [style]="{ width: '25rem' }">
+    @if (tweetIsRetweetFn(tweet) && retweetedProfile) {
+      <feat-tweet-retweet-header
+        [currentProfileId]="currentProfile()?.id"
+        [tweet]="tweet"
+        [retweetProfile]="retweetedProfile"
+        [tweetProfile]="tweetedProfile" />
+    }
+    @if (tweetedProfile) {
+      <ui-kit-comp-account-tile
+        [primaryText]="$any(tweetedProfile).name"
+        [primarySecondaryText]="tweet.createdAt | date: 'MMM d, h:mm a'"
+        [secondaryText]="$any(tweetedProfile).type"
+        [picture]="$any(tweetedProfile).pictures?.[0]?.url"
+        [link]="profileUrlPath + $any(tweetedProfile).id" />
+    }
+
+    <div class="pt-1 pl-6">
+      <p
+        class="text-base width-auto font-medium flex-shrink overflow-break-word"
+        [innerHTML]="domSanitizer.bypassSecurityTrustHtml(tweet.content)"></p>
+    </div>
+
+    <div class="mt-6 flex justify-end gap-4">
+      <p-button
+        label="Cancel"
+        severity="secondary"
+        (onClick)="tweetDeleteConfirmationVisible.set(false)" />
+      <p-button
+        [label]="tweetIsRetweetFn(tweet) ? 'Delete retweet' : 'Delete tweet'"
+        severity="danger"
+        (onClick)="
+          tweetDeleteConfirmationVisible.set(false); deleteHandler(tweet)
+        "
+        aria-label="delete-tweet" />
+    </div>
+  </p-dialog>
 }

@@ -13,18 +13,18 @@ export const slideInOutAnimation = [
       'in',
       style({
         transform: 'translateY(-34px)',
-      })
+      }),
     ),
     state(
       'out',
       style({
         transform: 'translateY(0)',
-      })
+      }),
     ),
     transition('in => out', [
       group([
         animate(
-          '2.5s ease-in-out'
+          '2.5s ease-in-out',
           //   style({
           //     transform: 'translateY(-34px)',
           //   })
@@ -34,7 +34,7 @@ export const slideInOutAnimation = [
     transition('out => in', [
       group([
         animate(
-          '2.5s ease-in-out'
+          '2.5s ease-in-out',
           //   style({
           //     transform: 'translateY(0)',
           //   })

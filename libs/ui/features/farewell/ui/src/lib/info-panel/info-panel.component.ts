@@ -7,15 +7,12 @@ import { FeatFarewellStatusComponent } from '../status/status.component';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-info-panel',
   templateUrl: './info-panel.component.html',
   imports: [
     FeatFarewellStatusComponent,
     FeatFarewellAnalyticsComponent,
-
     TooltipModule,
-
     DatePipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,

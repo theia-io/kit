@@ -62,11 +62,11 @@ export class SharedKitUserHintDirective implements AfterContentChecked {
 
     if (
       !this.#supportedHintTmplTags.some(
-        (supportedHintTmplTag) => supportedHintTmplTag === hostElTag
+        (supportedHintTmplTag) => supportedHintTmplTag === hostElTag,
       )
     ) {
       console.error(
-        '[SharedKitUserHintDirective] sharedUserHint cannot be applied on this tag and has no effect.'
+        '[SharedKitUserHintDirective] sharedUserHint cannot be applied on this tag and has no effect.',
       );
       return;
     }
@@ -124,7 +124,7 @@ export class SharedKitUserHintDirective implements AfterContentChecked {
 
       pNativeElement.style.transform = `translate(${slideX}px, ${slideY}px) rotate(-${Math.min(
         Math.log(curvature),
-        90
+        90,
       )}deg)`;
       pNativeElement.innerHTML = textPartSection;
 
@@ -136,7 +136,7 @@ export class SharedKitUserHintDirective implements AfterContentChecked {
     pNativeElement.innerText = this.nextLineText() ?? '';
     pNativeElement.style.transform = `translate(${Math.max(
       lastX / 2,
-      60
+      60,
     )}px, 25px)`;
     pNativeElement.style.width = `${measureText(this.nextLineText()) + 80}px`;
 
@@ -178,7 +178,7 @@ export class SharedKitUserHintDirective implements AfterContentChecked {
 
     hostEl.appendChild(
       // make it Angular component and pass it through
-      hintEl
+      hintEl,
     );
 
     this.appendedNode = hintEl;

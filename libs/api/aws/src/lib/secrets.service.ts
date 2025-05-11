@@ -13,7 +13,7 @@ export class AWSSecretsService {
   constructor() {
     console.log(
       'AWSSecretsService constructor, time: %s',
-      new Date().toUTCString()
+      new Date().toUTCString(),
     );
   }
 
@@ -27,7 +27,7 @@ export class AWSSecretsService {
         new GetSecretValueCommand({
           SecretId: 'kit-api-secrets-dev',
           VersionStage: 'AWSCURRENT', // VersionStage defaults to AWSCURRENT if unspecified
-        })
+        }),
       );
     } catch (error) {
       console.error('getSecrets error', error);

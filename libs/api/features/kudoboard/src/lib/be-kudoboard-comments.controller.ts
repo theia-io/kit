@@ -21,7 +21,7 @@ export class BeKudoBoardCommentsController {
   async getCommentsKudoBoards(@Query('kudoBoardIds') kudoBoardIds: string) {
     const kudoBoardIdsArray = kudoBoardIds.split(',');
     return this.beKudoBoardCommentsService.getCommentsKudoBoards(
-      kudoBoardIdsArray
+      kudoBoardIdsArray,
     );
   }
 
@@ -33,7 +33,7 @@ export class BeKudoBoardCommentsController {
   @Post()
   async createCommentsKudoBoard(@Body() kudoBoardComment: IKudoBoardComment) {
     return this.beKudoBoardCommentsService.createCommentKudoBoard(
-      kudoBoardComment
+      kudoBoardComment,
     );
   }
 

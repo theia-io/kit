@@ -60,7 +60,7 @@ import { ButtonModule } from 'primeng/button';
 import { FileUploadHandlerEvent } from 'primeng/fileupload';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
 import {
@@ -87,7 +87,6 @@ import { FeatKudoBoardViewComponent } from '../view/view.component';
 const TITLE_MAX_LENGTH = 128;
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-edit',
   templateUrl: './edit.component.html',
   imports: [
@@ -99,7 +98,7 @@ const TITLE_MAX_LENGTH = 128;
     //
     FloatLabelModule,
     InputTextModule,
-    InputTextareaModule,
+    InputTextarea,
     ButtonModule,
     TooltipModule,
     OverlayPanelModule,
@@ -141,7 +140,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
 
   kudoBoardCreated$ = this.#actions$.pipe(
     ofType(FeatKudoBoardActions.createKudoBoardSuccess),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
   );
 
   #kudoBoard$ = combineLatest([
@@ -154,7 +153,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
   kudoBoard = toSignal(this.#kudoBoard$);
 
@@ -223,7 +222,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             content: kudoBoard.content,
             status: kudoBoard.status,
           },
-          { emitEvent: false }
+          { emitEvent: false },
         );
         this.#cdr.detectChanges();
       });
@@ -232,17 +231,17 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     merge(
       this.kudoBoardFormGroup.valueChanges.pipe(
         takeUntilDestroyed(this.#destroyRef),
-        debounceTime(1500)
+        debounceTime(1500),
       ),
       this.#beforeUnloadTrigger$$.asObservable().pipe(
         takeUntilDestroyed(this.#destroyRef),
-        map(() => this.kudoBoardFormGroup.value)
-      )
+        map(() => this.kudoBoardFormGroup.value),
+      ),
     )
       .pipe(
         // when its new farewell we don't update until farewell is created
         skipUntil(this.id() ? of(true) : this.#kudoBoard$),
-        withLatestFrom(this.#kudoBoard$)
+        withLatestFrom(this.#kudoBoard$),
       )
       .subscribe(
         ([{ title, recipient, background, content, status }, kudoBoard]) => {
@@ -254,7 +253,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             background,
             status: status ?? KudoBoardStatus.Draft,
           });
-        }
+        },
       );
 
     this.kudoBoardFormGroup.valueChanges
@@ -264,7 +263,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     this.#actions$
       .pipe(
         ofType(FeatKudoBoardActions.putKudoBoardSuccess),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(() => this.updating.set(false));
   }
@@ -283,12 +282,12 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             filter(Boolean),
             // AWS S3 bucket has eventual consistency so need a time for it to be available
             delay(2500),
-            map((kudoBoard): [string, KudoBoard] => [items[0], kudoBoard])
-          )
-        )
+            map((kudoBoard): [string, KudoBoard] => [items[0], kudoBoard]),
+          ),
+        ),
       )
       .subscribe(([background, kudoboard]) =>
-        this.#updateKudoBoardBackground(background, kudoboard.background)
+        this.#updateKudoBoardBackground(background, kudoboard.background),
       );
 
     const kudoBoardId = this.id();
@@ -296,7 +295,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       this.#uploadBackgroundMedia(
         kudoBoardId,
         images,
-        this.currentProfile()?.id
+        this.currentProfile()?.id,
       );
     } else {
       this.kudoBoardCreated$
@@ -314,7 +313,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             recipient: '',
             status: KudoBoardStatus.Draft,
           },
-        })
+        }),
       );
     }
   }
@@ -326,10 +325,10 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         .pipe(
           select(selectKudoBoardById(kudoBoardId)),
           take(1),
-          takeUntilDestroyed(this.#destroyRef)
+          takeUntilDestroyed(this.#destroyRef),
         )
         .subscribe((kudoBoard) =>
-          this.#updateKudoBoardBackground(colorHex, kudoBoard?.background)
+          this.#updateKudoBoardBackground(colorHex, kudoBoard?.background),
         );
     } else {
       this.kudoBoardCreated$.pipe(take(1)).subscribe(({ kudoboard }) => {
@@ -345,7 +344,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             recipient: '',
             status: KudoBoardStatus.Draft,
           },
-        })
+        }),
       );
     }
   }
@@ -363,7 +362,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     this.#router.navigateByUrl(
       `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}${
         preview ? '?preview=true' : ''
-      }`
+      }`,
     );
   }
 
@@ -382,12 +381,12 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       debounceTime(1500),
       filter(
         ({ recipient, background, title, status }) =>
-          !!title || !!background || !!recipient || !!status
+          !!title || !!background || !!recipient || !!status,
       ),
       shareReplay({
         refCount: true,
         bufferSize: 1,
-      })
+      }),
     );
 
     autoCreate$.subscribe(({ recipient, background, title, status }) =>
@@ -399,8 +398,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             recipient,
             status: status ?? KudoBoardStatus.Draft,
           },
-        })
-      )
+        }),
+      ),
     );
 
     autoCreate$
@@ -408,7 +407,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
         switchMap(() => this.#actions$),
         ofType(FeatKudoBoardActions.createKudoBoardSuccess),
         take(1),
-        map(({ kudoboard }) => kudoboard)
+        map(({ kudoboard }) => kudoboard),
       )
       .subscribe(({ id }) => this.#updateJustCreatedKudoBoardUrl(id));
   }
@@ -417,7 +416,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     this.#store.dispatch(
       FeatKudoBoardActions.putKudoBoard({
         kudoboard,
-      })
+      }),
     );
   }
 
@@ -433,7 +432,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
       this.#store.dispatch(
         FeatKudoBoardMediaActions.deleteKudoBoardStorageMedia({
           url: previousBackground,
-        })
+        }),
       );
     }
   }
@@ -441,7 +440,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #uploadBackgroundMedia(
     kudoboardId: KudoBoard['id'],
     images: Array<File>,
-    profileId?: string
+    profileId?: string,
   ) {
     const now = new Date();
 
@@ -453,14 +452,14 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
           key: `${kudoboardId}/${profileId}/${now.getTime()}-${mediaFile.name}`,
           blob: mediaFile,
         })),
-      })
+      }),
     );
   }
 
   #updateJustCreatedKudoBoardUrl(id: KudoBoard['id']) {
     this.id.set(id);
     this.#location.replaceState(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`
+      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`,
     );
   }
 }

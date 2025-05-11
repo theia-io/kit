@@ -15,7 +15,7 @@ export class QuotesService {
 
   getRandomQuote(): Observable<Quote> {
     return this.#quotes$.pipe(
-      map((quotes) => quotes?.[Math.floor(Math.random() * quotes.length)])
+      map((quotes) => quotes?.[Math.floor(Math.random() * quotes.length)]),
     );
   }
 

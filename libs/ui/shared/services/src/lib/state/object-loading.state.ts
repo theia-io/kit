@@ -49,7 +49,7 @@ export const objectLoadingState$ = <T extends { id?: string }>({
         ...DEFAULT_STATE,
         state: ObjectLoadingState.Loading,
         loading: true,
-      }))
+      })),
     ),
     loadedAction$(actions$).pipe(
       filter(({ id }) => (loadingId && id ? loadingId === id : true)),
@@ -58,7 +58,7 @@ export const objectLoadingState$ = <T extends { id?: string }>({
         ...DEFAULT_STATE,
         state: ObjectLoadingState.Loaded,
         loaded: true,
-      }))
+      })),
     ),
     loadingErrorAction$(actions$).pipe(
       filter(({ id }) => (loadingId && id ? loadingId === id : true)),
@@ -67,14 +67,14 @@ export const objectLoadingState$ = <T extends { id?: string }>({
         ...DEFAULT_STATE,
         state: ObjectLoadingState.LoadingError,
         loadError: true,
-      }))
-    )
+      })),
+    ),
   ).pipe(
     takeUntilDestroyed(), // to make sure this is used in injection context (usually class creation)
     startWith(DEFAULT_STATE),
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
 };

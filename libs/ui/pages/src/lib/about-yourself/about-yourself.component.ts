@@ -28,7 +28,6 @@ import { AnimateOnScrollModule } from 'primeng/animateonscroll';
 import { take } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-about-yourself',
   templateUrl: './about-yourself.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

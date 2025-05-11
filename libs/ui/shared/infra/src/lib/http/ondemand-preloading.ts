@@ -4,7 +4,7 @@ export function onDemandCSS(css: { name: string; path: string }) {
   return <T>(
     target: T,
     propertyName: keyof T,
-    descriptor: PropertyDescriptor
+    descriptor: PropertyDescriptor,
   ) => {
     // Store Original Method Impleentation
     const originalMethod = descriptor.value;

@@ -11,7 +11,7 @@ import {
 export class BeFarewellReactionsService {
   constructor(
     @InjectModel(FarewellReactions.name)
-    private farewellReactionsModel: Model<FarewellReactionsDocument>
+    private farewellReactionsModel: Model<FarewellReactionsDocument>,
   ) {}
 
   async getReactionsFarewell(farewellId: string) {
@@ -28,11 +28,11 @@ export class BeFarewellReactionsService {
       console.error(
         `Cannot execute farewell reactions search for %s`,
         farewellId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find kudoboard reactions',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -71,11 +71,11 @@ export class BeFarewellReactionsService {
         farewellId,
         profileId,
         content,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot create farewell reaction',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -84,7 +84,7 @@ export class BeFarewellReactionsService {
 
   async deleteFarewellReactions(
     farewellReactionId: string,
-    currentProfileIds: Array<string>
+    currentProfileIds: Array<string>,
   ) {
     let deletedFarewellReactions;
 
@@ -109,21 +109,21 @@ export class BeFarewellReactionsService {
       console.error(
         `Cannot execute farewell reaction delete for  %s`,
         farewellReactionId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot delete farewell reactions',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
     if (!deletedFarewellReactions) {
       console.warn(
-        `Farewell reaction ${farewellReactionId} not found or not authorized for update by provided profiles.`
+        `Farewell reaction ${farewellReactionId} not found or not authorized for update by provided profiles.`,
       );
       throw new HttpException(
         `Farewell reaction with ID "${farewellReactionId}" not found or you lack permission.`,
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 

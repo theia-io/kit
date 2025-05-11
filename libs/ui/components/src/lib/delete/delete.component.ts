@@ -7,7 +7,6 @@ import {
 } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'ui-kit-delete',
   template: `<i
     (click)="
@@ -21,7 +20,7 @@ import {
     [ngClass]="[
       xOffset() ?? 'right-2',
       yOffset() ?? 'top-2',
-      background() ? 'bg-white p-[2px] rounded-full' : ''
+      background() ? 'bg-white p-[2px] rounded-full' : '',
     ]"
     style="font-size: 1.5rem"
   ></i>`,

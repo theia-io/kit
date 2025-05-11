@@ -41,12 +41,12 @@ export class ProfileEffects {
 
   #profilesForTweets$ = this.#actions$.pipe(
     ofType(TweetApiActions.getAllSuccess),
-    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
+    map(({ tweets }) => tweets.map(({ profileId }) => profileId)),
   );
 
   #profilesForTweet$ = this.#actions$.pipe(
     ofType(TweetApiActions.get),
-    map(({ profileId }) => profileId)
+    map(({ profileId }) => profileId),
   );
 
   #profilesForTweetComments$ = this.#actions$.pipe(
@@ -54,20 +54,20 @@ export class ProfileEffects {
     map(({ tweet: { comments } }) => comments),
     filter((comments): comments is Array<TweetComment> => !!comments?.length),
     map((comments) =>
-      comments.map((comment) => comment?.profileId ?? '').filter(Boolean)
-    )
+      comments.map((comment) => comment?.profileId ?? '').filter(Boolean),
+    ),
   );
 
   #profilesForProfileTweets$ = this.#actions$.pipe(
     ofType(TweetApiActions.getTweetsForProfileSuccess),
-    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
+    map(({ tweets }) => tweets.map(({ profileId }) => profileId)),
   );
 
   #profilesForBookmarks$ = this.#actions$.pipe(
     ofType(FeatBookmarksActions.getBookmarksFeed),
     map(({ bookmarks }) =>
-      bookmarks.map(({ profileIdTweetyOwner }) => profileIdTweetyOwner)
-    )
+      bookmarks.map(({ profileIdTweetyOwner }) => profileIdTweetyOwner),
+    ),
   );
 
   // ensure profiles are resolved through the app for tweet
@@ -77,17 +77,17 @@ export class ProfileEffects {
       this.#profilesForTweet$,
       this.#profilesForTweetComments$,
       this.#profilesForTweets$,
-      this.#profilesForProfileTweets$
+      this.#profilesForProfileTweets$,
     ).pipe(
       bufferTime(1000),
       map((profileIds) => [...new Set(profileIds.flat())]),
       filter((profileIds) => profileIds.length > 0),
       switchMap((uniqueProfileIds) =>
-        this.#getUnresolvedProfileIds(uniqueProfileIds)
+        this.#getUnresolvedProfileIds(uniqueProfileIds),
       ),
       filter((uniqueProfileIds) => uniqueProfileIds.length > 0),
-      map((profileIds) => FeatProfileApiActions.getProfiles({ profileIds }))
-    )
+      map((profileIds) => FeatProfileApiActions.getProfiles({ profileIds })),
+    ),
   );
 
   profiles$ = createEffect(() =>
@@ -96,15 +96,15 @@ export class ProfileEffects {
       switchMap(({ profileIds }) =>
         this.#profileV2Service.getProfiles(profileIds).pipe(
           map((profiles) =>
-            FeatProfileApiActions.getProfilesSuccess({ profiles })
+            FeatProfileApiActions.getProfilesSuccess({ profiles }),
           ),
           catchError((err) => {
             console.error('[ProfileEffects] profiles$', err);
             return of(FeatProfileApiActions.getProfilesFailure());
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   // enriching profiles from different responses through the app
@@ -112,8 +112,8 @@ export class ProfileEffects {
     this.#actions$.pipe(
       ofType(FeatFollowActions.getSuggestionColleaguesToFollowSuccess),
       filter(({ profiles }) => profiles.length > 0),
-      map(({ profiles }) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
+      map(({ profiles }) => FeatProfileActions.addProfilesSoftly({ profiles })),
+    ),
   );
 
   enrichProfilesFromFarewellReactions$ = createEffect(() =>
@@ -121,8 +121,8 @@ export class ProfileEffects {
       ofType(FeatFarewellReactionActions.getReactionsFarewellSuccess),
       map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
       filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles })),
+    ),
   );
 
   enrichProfilesFromFarewell$ = createEffect(() =>
@@ -130,8 +130,8 @@ export class ProfileEffects {
       ofType(FeatFarewellActions.getFarewellSuccess),
       map(({ farewell }) => getRecentUniqueProfilesFromT([farewell])),
       filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles })),
+    ),
   );
 
   enrichProfilesFromKudoBoardReactions$ = createEffect(() =>
@@ -139,8 +139,8 @@ export class ProfileEffects {
       ofType(FeatKudoBoardReactionActions.getReactionsKudoBoardSuccess),
       map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
       filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles })),
+    ),
   );
 
   enrichProfilesFromFarewellComments$ = createEffect(() =>
@@ -148,8 +148,8 @@ export class ProfileEffects {
       ofType(FeatFarewellCommentActions.getCommentsFarewellSuccess),
       map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
       filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles })),
+    ),
   );
 
   enrichProfilesFromKudoBoardComments$ = createEffect(() =>
@@ -157,8 +157,8 @@ export class ProfileEffects {
       ofType(FeatKudoBoardCommentActions.getCommentsKudoBoardSuccess),
       map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
       filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles })),
+    ),
   );
 
   updateProfile$ = createEffect(() =>
@@ -172,12 +172,12 @@ export class ProfileEffects {
             return of(
               FeatProfileApiActions.updateProfileFailure({
                 message: 'Error while updating your profile',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   uploadProfilePic$ = createEffect(() =>
@@ -186,19 +186,19 @@ export class ProfileEffects {
       switchMap(({ id, pic }) =>
         this.#profileV2Service.uploadProfilePicture(id, pic).pipe(
           map(() =>
-            FeatProfileApiActions.uploadProfilePictureSuccess({ id, url: id })
+            FeatProfileApiActions.uploadProfilePictureSuccess({ id, url: id }),
           ),
           catchError((err) => {
             console.error('[ProfileEffects][uploadProfilePic$]', err);
             return of(
               FeatProfileApiActions.uploadProfilePictureFailure({
                 message: 'Cannot upload new profile picture',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   uploadProfileBackground$ = createEffect(() =>
@@ -210,19 +210,19 @@ export class ProfileEffects {
             FeatProfileApiActions.uploadProfileBackgroundSuccess({
               id,
               url: id,
-            })
+            }),
           ),
           catchError((err) => {
             console.error('[ProfileEffects][uploadProfileBackground$]', err);
             return of(
               FeatProfileApiActions.uploadProfileBackgroundFailure({
                 message: 'Cannot upload new profile picture',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   #getUnresolvedProfileIds(profileIds: Array<string>) {
@@ -232,13 +232,13 @@ export class ProfileEffects {
       select(selectProfilesByIds(uniqueProfileIds)),
       map((resolvedProfiles) => {
         const resolvedProfilesSet = new Set(
-          resolvedProfiles.filter((v) => !!v).map(({ id }) => id)
+          resolvedProfiles.filter((v) => !!v).map(({ id }) => id),
         );
         return uniqueProfileIds.filter(
-          (profileId) => !resolvedProfilesSet.has(profileId)
+          (profileId) => !resolvedProfilesSet.has(profileId),
         );
       }),
-      take(1)
+      take(1),
     );
   }
 }
@@ -249,9 +249,9 @@ const getRecentUniqueProfilesFromT = <
     profile?: Profile;
     createdAt?: KitTimestamp['createdAt'];
     timestamp?: Partial<KitTimestamp>;
-  }
+  },
 >(
-  items: Array<T>
+  items: Array<T>,
 ): Array<Profile> => {
   const profilesMap = new Map<Profile['id'], T & { profile: Profile }>();
 
@@ -274,7 +274,7 @@ const getRecentUniqueProfilesFromT = <
       new Date(
         savedProfile.createdAt ??
           savedProfile.timestamp?.createdAt ??
-          Date.now()
+          Date.now(),
       )!.getTime() -
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         new Date(createdAt ?? timestamp?.createdAt ?? Date.now())!.getTime() <

@@ -55,7 +55,7 @@ class ImageBlot extends BlockEmbed {
   }
 
   static override value(
-    node: HTMLImageElement
+    node: HTMLImageElement,
   ): Omit<ImageConfiguration, 'loadedCb'> {
     return {
       alt: node.getAttribute('alt') ?? '',

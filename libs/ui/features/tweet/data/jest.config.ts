@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'feat-tweet-data',
   preset: '../../../../../jest.preset.js',

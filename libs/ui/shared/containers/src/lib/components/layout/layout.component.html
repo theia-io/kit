@@ -11,15 +11,15 @@
       !layoutService.rightPanelClosed()
         ? 'md:max-w-sm lg:max-w-md'
         : 'md:max-w-lg lg:max-w-2xl',
-      (layoutService.mobileNavbar$ | async) ? 'mb-16' : ''
+      (layoutService.mobileNavbar$ | async) ? 'mb-16' : '',
     ]">
     <ng-content></ng-content>
   </div>
 
   <!--right -->
-  @if(!layoutService.rightPanelClosed()) {
-  <div class="max-w-48 hidden lg:block">
-    <ng-content select="[right]"></ng-content>
-  </div>
+  @if (!layoutService.rightPanelClosed()) {
+    <div class="max-w-48 hidden lg:block">
+      <ng-content select="[right]"></ng-content>
+    </div>
   }
 </div>

@@ -62,7 +62,7 @@ exports = async function onUserCreation(user) {
     });
   } catch (e) {
     console.error(
-      `Failed to create custom user data document for user:${user.id}`
+      `Failed to create custom user data document for user:${user.id}`,
     );
     throw e;
   }

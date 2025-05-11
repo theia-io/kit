@@ -13,7 +13,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { switchMap } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-claim',
   templateUrl: './claim.component.html',
   imports: [
@@ -32,7 +31,7 @@ export class FeatKudoBoardClaimComponent {
 
   kudoboard$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
-    )
+      this.#store.pipe(select(selectKudoBoardById(kudoboardId))),
+    ),
   );
 }

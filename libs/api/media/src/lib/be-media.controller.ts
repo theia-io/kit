@@ -17,7 +17,7 @@ import { MediaService } from './be-media.service';
 export class MediaController {
   constructor(
     private mediaService: MediaService,
-    private configService: ConfigService
+    private configService: ConfigService,
   ) {}
 
   @Post('kudoboard')
@@ -44,7 +44,7 @@ export class MediaController {
   async deleteKudoBoardMedia(@Query('name') url: string): Promise<boolean> {
     await this.mediaService.delete(
       this.configService.getConfig('s3').kudoBoardBucket,
-      url
+      url,
     );
     return true;
   }
@@ -53,7 +53,7 @@ export class MediaController {
   @UseInterceptors(new RawBodyInterceptor())
   async saveFarewellMedia(
     @Query('name') name: string,
-    @Body() media: Buffer
+    @Body() media: Buffer,
   ): Promise<ContractUploadedMedia> {
     const dimensions = this.#getDimensions(media);
     const { url, optimizedUrls } = await this.mediaService.upload({
@@ -76,7 +76,7 @@ export class MediaController {
   async deleteFarewellMedia(@Query('name') url: string): Promise<boolean> {
     await this.mediaService.delete(
       this.configService.getConfig('s3').farewellBucket,
-      url
+      url,
     );
     return true;
   }
@@ -93,7 +93,7 @@ export class MediaController {
       console.error(err);
 
       throw new InternalServerErrorException(
-        'Error while getting image dimensions'
+        'Error while getting image dimensions',
       );
     }
   }

@@ -21,21 +21,21 @@
 
       <div class="hidden sm:block absolute top-5 right-24 z-10">
         <div class="flex justify-center gap-2">
-          @if(updating()) {
-          <ui-kit-spinner size="h-6 w-6" />
+          @if (updating()) {
+            <ui-kit-spinner size="h-6 w-6" />
           }
 
           <!-- Preview -->
-          @if(previewTmpl) {
-          <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
+          @if (previewTmpl) {
+            <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
           }
           <!-- Share -->
-          @if(shareTmpl) {
-          <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
+          @if (shareTmpl) {
+            <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
           }
           <!-- Status -->
-          @if(statusTmpl) {
-          <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+          @if (statusTmpl) {
+            <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
           }
         </div>
       </div>
@@ -49,12 +49,13 @@
             {{ item.label }}
           </a>
 
-          @if(kudoBoard && item?.label === kudoBoard?.title) {
-          <feat-kudoboard-status class="ml-2" [status]="kudoBoard.status" />
+          @if (kudoBoard && item?.label === kudoBoard?.title) {
+            <feat-kudoboard-status class="ml-2" [status]="kudoBoard.status" />
 
-          @if(updating()) {
-          <ui-kit-spinner size="ml-2 h-6 w-6" />
-          } }
+            @if (updating()) {
+              <ui-kit-spinner size="ml-2 h-6 w-6" />
+            }
+          }
         </ng-template>
       </p-breadcrumb>
 

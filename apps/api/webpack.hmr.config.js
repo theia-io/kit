@@ -34,5 +34,5 @@ module.exports = composePlugins(
     ];
 
     return config;
-  }
+  },
 );

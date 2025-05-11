@@ -13,44 +13,44 @@
     </ng-template>
 
     @if (link()) {
-    <a
-      (click)="$event.stopImmediatePropagation()"
-      [routerLink]="link()"
-      class="hover:animate-pulse">
-      <ng-container *ngTemplateOutlet="picTmp"></ng-container>
-    </a>
+      <a
+        (click)="$event.stopImmediatePropagation()"
+        [routerLink]="link()"
+        class="hover:animate-pulse">
+        <ng-container *ngTemplateOutlet="picTmp"></ng-container>
+      </a>
     } @else {
-    <ng-container *ngTemplateOutlet="picTmp"></ng-container>
+      <ng-container *ngTemplateOutlet="picTmp"></ng-container>
     }
 
     <div class="ml-2">
       <p class="text-base leading-6 font-bold">
-        @if(primaryText()) {
-        {{
-          primaryText()!.length > 16
-            ? primaryText()!.slice(0, 16) + '...'
-            : primaryText()
-        }}
-
-        } @if(primarySecondaryText()) {
-        <span class="text-sm leading-5 font-medium text-gray-400">
+        @if (primaryText()) {
           {{
-            primarySecondaryText()!.length > 32
-              ? primarySecondaryText()!.slice(0, 32) + '...'
-              : primarySecondaryText()
+            primaryText()!.length > 16
+              ? primaryText()!.slice(0, 16) + '...'
+              : primaryText()
           }}
-        </span>
+        }
+        @if (primarySecondaryText()) {
+          <span class="text-sm leading-5 font-medium text-gray-400">
+            {{
+              primarySecondaryText()!.length > 32
+                ? primarySecondaryText()!.slice(0, 32) + '...'
+                : primarySecondaryText()
+            }}
+          </span>
         }
       </p>
-      @if(secondaryText()) {
-      <p
-        class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
-        {{
-          secondaryText()!.length > 64
-            ? secondaryText()!.slice(0, 64) + '...'
-            : secondaryText()
-        }}
-      </p>
+      @if (secondaryText()) {
+        <p
+          class="text-sm leading-5 font-medium text-gray-400 group-hover:text-gray-300 transition ease-in-out duration-150">
+          {{
+            secondaryText()!.length > 64
+              ? secondaryText()!.slice(0, 64) + '...'
+              : secondaryText()
+          }}
+        </p>
       }
     </div>
   </div>

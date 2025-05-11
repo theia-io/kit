@@ -32,17 +32,17 @@ export const featTweetBookmarkReducer = createReducer(
       bookmarks: state.bookmarks.filter(
         (bookmark) =>
           bookmark.tweetId !== tweetId &&
-          bookmark.profileIdBookmarker === profileId
+          bookmark.profileIdBookmarker === profileId,
       ),
-    })
+    }),
   ),
   on(
     FeatBookmarksActions.removeBookmarkAsTweetRemoved,
     (state, { tweetId }) => ({
       ...state,
       bookmarks: state.bookmarks.filter(
-        (bookmark) => bookmark.tweetId !== tweetId
+        (bookmark) => bookmark.tweetId !== tweetId,
       ),
-    })
-  )
+    }),
+  ),
 );

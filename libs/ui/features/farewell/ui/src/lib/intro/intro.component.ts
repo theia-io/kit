@@ -9,7 +9,6 @@ import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-intro',
   templateUrl: './intro.component.html',
   imports: [

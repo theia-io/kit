@@ -17,14 +17,13 @@ import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-tweeting',
   templateUrl: './tweeting.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -34,13 +33,12 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
     ReactiveFormsModule,
     //
     FloatLabelModule,
-    InputTextareaModule,
+    InputTextarea,
     // ToastModule,
     //
     UiKitTweetButtonComponent,
     FeatTweetTweetingActionsComponent,
   ],
-  // providers: [MessageService],
 })
 export class FeatTweetTweetingComponent {
   #destroyRef = inject(DestroyRef);
@@ -97,7 +95,7 @@ export class FeatTweetTweetingComponent {
     const tweetuuidv4 = uuidv4();
     const content: string = this.tweetContentControl.value as string;
     this.#store.dispatch(
-      FeatTweetActions.tweet({ uuid: tweetuuidv4, content })
+      FeatTweetActions.tweet({ uuid: tweetuuidv4, content }),
     );
 
     this.tweettingInProgress.set(true);
@@ -109,7 +107,7 @@ export class FeatTweetTweetingComponent {
       .pipe(
         ofType(FeatTweetActions.tweetSuccess),
         take(1),
-        takeUntilDestroyed(this.#destroyRef)
+        takeUntilDestroyed(this.#destroyRef),
       )
       .subscribe(({ uuid }) => {
         if (uuid === tweetuuidv4) {

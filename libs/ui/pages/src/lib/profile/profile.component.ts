@@ -24,7 +24,6 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { combineLatest, filter, map, shareReplay, switchMap, take } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-profile',
   templateUrl: './profile.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -47,27 +46,27 @@ export class PageProfileComponent {
 
   #profileId$ = this.#activatedRouter.params.pipe(
     map((params) => params['profileId']),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   #profile$ = this.#profileId$.pipe(
     switchMap((profileId) =>
-      this.#store.pipe(select(selectProfileById(profileId)))
+      this.#store.pipe(select(selectProfileById(profileId))),
     ),
-    shareReplay(1)
+    shareReplay(1),
   );
 
   profile = toSignal(this.#profile$);
   #currentProfile = toSignal(this.#store.select(selectCurrentProfile));
 
   isCurrentUserProfile = computed(
-    () => this.#currentProfile()?.id === this.profile()?.id
+    () => this.#currentProfile()?.id === this.profile()?.id,
   );
   isFollowing = computed(
     () =>
       this.#currentProfile()?.following?.some(
-        ({ id }) => id === this.profile()?.id
-      ) ?? false
+        ({ id }) => id === this.profile()?.id,
+      ) ?? false,
   );
 
   tabMenuItems$ = this.#deviceService.device$.pipe(
@@ -90,8 +89,8 @@ export class PageProfileComponent {
               icon: 'pi pi-users',
               routerLink: 'following',
             },
-          ]
-    )
+          ],
+    ),
   );
 
   readonly settingsUrl = `/${APP_PATH.Settings}`;
@@ -102,7 +101,7 @@ export class PageProfileComponent {
       .subscribe(([profileId, profile]) => {
         if (!profile) {
           this.#store.dispatch(
-            FeatProfileApiActions.getProfiles({ profileIds: [profileId] })
+            FeatProfileApiActions.getProfiles({ profileIds: [profileId] }),
           );
         }
       });
@@ -126,7 +125,7 @@ export class PageProfileComponent {
                 { id: profile.id },
               ],
             },
-          })
+          }),
         );
       });
     this.#uxDynamicService.updateLogo('hello', 5000);
@@ -145,10 +144,10 @@ export class PageProfileComponent {
             profile: {
               ...currentProfile,
               following: currentProfile.following?.filter(
-                ({ id }) => id !== profile.id
+                ({ id }) => id !== profile.id,
               ),
             },
-          })
+          }),
         );
       });
 

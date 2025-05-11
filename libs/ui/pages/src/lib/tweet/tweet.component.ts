@@ -29,7 +29,7 @@ import {
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
 import { combineLatest, of } from 'rxjs';
 import {
@@ -42,7 +42,6 @@ import {
 import { v4 as uuidv4 } from 'uuid';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-tweet',
   templateUrl: './tweet.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -52,7 +51,7 @@ import { v4 as uuidv4 } from 'uuid';
     ReactiveFormsModule,
     //
     FloatLabelModule,
-    InputTextareaModule,
+    InputTextarea,
     TimelineModule,
     ButtonModule,
     //
@@ -73,7 +72,7 @@ export class PageTweetComponent {
     map((params) => ({
       tweetId: params['id'],
       profileId: params['profileId'],
-    }))
+    })),
   );
 
   #currentProfile$ = this.#store
@@ -83,7 +82,7 @@ export class PageTweetComponent {
   tweet$ = this.#ids$.pipe(
     switchMap(({ tweetId }) => this.#store.select(selectTweet(tweetId))),
     filter((tweet): tweet is Tweety => !!tweet),
-    shareReplay()
+    shareReplay(),
   );
   tweet = toSignal(this.tweet$);
 
@@ -95,14 +94,14 @@ export class PageTweetComponent {
       if (!comments) return of([]);
 
       const commentProfileObservables = comments.map((comment) =>
-        this.#store.select(selectProfileById(comment.profileId!))
+        this.#store.select(selectProfileById(comment.profileId!)),
       );
 
       return combineLatest(commentProfileObservables).pipe(
         map((profiles) => {
           return comments?.map((comment) => {
             const commentProfile = profiles.find(
-              (profile) => profile?.id === comment.profileId
+              (profile) => profile?.id === comment.profileId,
             );
             return {
               ...comment,
@@ -112,9 +111,9 @@ export class PageTweetComponent {
               },
             };
           });
-        })
+        }),
       );
-    })
+    }),
   );
 
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
@@ -141,7 +140,7 @@ export class PageTweetComponent {
     this.#ids$
       .pipe(takeUntilDestroyed())
       .subscribe(({ tweetId, profileId }) =>
-        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId }))
+        this.#store.dispatch(TweetApiActions.get({ tweetId, profileId })),
       );
   }
 
@@ -158,7 +157,7 @@ export class PageTweetComponent {
     const tweetuuidv4 = uuidv4();
     const content: string = this.commentContentControl.value as string;
     this.#store.dispatch(
-      FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content })
+      FeatTweetActions.comment({ uuid: tweetuuidv4, tweet, content }),
     );
 
     this.commentContentControl.reset();

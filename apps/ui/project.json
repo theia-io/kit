@@ -23,6 +23,7 @@
           }
         ],
         "styles": [
+          "primeicons/primeicons.css",
           "apps/ui/src/styles.scss",
           "node_modules/cookieconsent/build/cookieconsent.min.css",
           {

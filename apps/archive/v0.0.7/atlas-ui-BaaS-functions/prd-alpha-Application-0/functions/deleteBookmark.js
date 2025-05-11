@@ -13,7 +13,7 @@ exports = async function (arg) {
   } catch (err) {
     console.log(
       'Error occurred while executing findOneAndDelete:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }
@@ -21,12 +21,12 @@ exports = async function (arg) {
   try {
     deletedBookmark = context.functions.execute(
       'normalizeBookmark',
-      deletedBookmark
+      deletedBookmark,
     );
   } catch (err) {
     console.error(
       '[deleteBookmark] Error occurred while normilizing deleted bookmark:',
-      err.message
+      err.message,
     );
     return {
       error:

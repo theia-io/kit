@@ -32,17 +32,17 @@ export class BeFarewellCommentsController {
   async createCommentsFarewell(@Body() farewellComment: FarewellComment) {
     console.log('farewellComment', farewellComment);
     return this.beFarewellCommentsService.createCommentFarewell(
-      farewellComment
+      farewellComment,
     );
   }
 
   @Post('batch')
   async batchCreateCommentsFarewell(
-    @Body() farewellComments: Array<FarewellComment>
+    @Body() farewellComments: Array<FarewellComment>,
   ) {
     console.log('farewellComments', farewellComments);
     return this.beFarewellCommentsService.createCommentsFarewell(
-      farewellComments
+      farewellComments,
     );
   }
 
@@ -50,7 +50,7 @@ export class BeFarewellCommentsController {
   // TODO think on having and checking a auth
   async deleteFarewellComments(
     @Req() req: Request,
-    @Param('farewellCommentId') farewellCommentId: string
+    @Param('farewellCommentId') farewellCommentId: string,
   ) {
     const currentProfileIds = ((req.user as Auth0Kit)?.profiles ?? [])
       .map((profile) => profile?.id)
@@ -58,7 +58,7 @@ export class BeFarewellCommentsController {
 
     return this.beFarewellCommentsService.deleteFarewellComments(
       farewellCommentId,
-      currentProfileIds
+      currentProfileIds,
     );
   }
 }

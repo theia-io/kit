@@ -16,7 +16,7 @@ import { PhotoService } from '@kitouch/shared-services';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { TimelineModule } from 'primeng/timeline';
 import { Observable } from 'rxjs';
 import { UiKitDeleteComponent } from '../delete/delete.component';
@@ -32,7 +32,6 @@ export interface AddComment {
 }
 
 @Component({
-  standalone: true,
   selector: 'ui-kit-comment-area',
   templateUrl: './comment-area.component.html',
   imports: [
@@ -42,7 +41,7 @@ export interface AddComment {
     NgStyle,
     //
     FloatLabelModule,
-    InputTextareaModule,
+    InputTextarea,
     TimelineModule,
     ButtonModule,
     //
@@ -93,7 +92,7 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
   constructor() {
     effect(() => {
       this.commentContentControl.setValidators(
-        this.validators().map((validator) => validator.bind(this))
+        this.validators().map((validator) => validator.bind(this)),
       );
       this.commentContentControl.updateValueAndValidity();
     });
@@ -115,7 +114,7 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
 
     if (!valid) {
       console.warn(
-        `[UIKitCommentAreaComponent] content: ${content}, validity: ${valid}.`
+        `[UIKitCommentAreaComponent] content: ${content}, validity: ${valid}.`,
       );
       return;
     }
@@ -133,7 +132,7 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
     const uploadFn = this.uploadMediaFilesCb();
     if (!uploadFn) {
       console.error(
-        '[UIKitCommentAreaComponent] upload function was not provided'
+        '[UIKitCommentAreaComponent] upload function was not provided',
       );
       return;
     }
@@ -151,7 +150,7 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
     const deleteFn = this.deleteMediaFilesCb();
     if (!deleteFn) {
       console.error(
-        'UIKitCommentAreaComponent delete function is not provided but delete is called'
+        'UIKitCommentAreaComponent delete function is not provided but delete is called',
       );
       return;
     }
@@ -161,7 +160,7 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
     });
 
     this.uploadedMedias.update((existingMedias) =>
-      existingMedias.filter((existingMedia) => existingMedia.url !== media.url)
+      existingMedias.filter((existingMedia) => existingMedia.url !== media.url),
     );
 
     this.commentControlBlur();

@@ -35,7 +35,6 @@ import { combineLatest } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-farewell-all',
   templateUrl: './all.component.html',
   styles: `
@@ -75,7 +74,7 @@ export class PageFarewellAllComponent {
   #currentProfile$ = this.#store.pipe(
     select(selectCurrentProfile),
     filter((profile): profile is Profile => !!profile?.id),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
   );
 
   farewells$ = combineLatest([
@@ -83,7 +82,7 @@ export class PageFarewellAllComponent {
     this.#currentProfile$,
   ]).pipe(
     map(([farewells, currentProfile]) =>
-      farewells.filter(({ profileId }) => profileId === currentProfile.id)
+      farewells.filter(({ profileId }) => profileId === currentProfile.id),
     ),
     map((farewells) =>
       farewells
@@ -91,10 +90,10 @@ export class PageFarewellAllComponent {
         .sort((a, b) =>
           sortByCreatedTimeDesc(
             a.createdAt ?? (a as any).timestamp?.createdAt,
-            b.createdAt ?? (b as any).timestamp?.createdAt
-          )
-        )
-    )
+            b.createdAt ?? (b as any).timestamp?.createdAt,
+          ),
+        ),
+    ),
   );
 
   farewellStatus = FarewellStatus;
@@ -113,8 +112,8 @@ export class PageFarewellAllComponent {
   constructor() {
     this.#currentProfile$.subscribe(({ id }) =>
       this.#store.dispatch(
-        FeatFarewellActions.getProfileFarewells({ profileId: id })
-      )
+        FeatFarewellActions.getProfileFarewells({ profileId: id }),
+      ),
     );
   }
 
@@ -139,7 +138,7 @@ export class PageFarewellAllComponent {
           detail: `${farewell.title} is deleted.`,
         });
         this.#store.dispatch(
-          FeatFarewellActions.deleteFarewell({ id: farewell.id })
+          FeatFarewellActions.deleteFarewell({ id: farewell.id }),
         );
       },
       reject: () => {

@@ -17,12 +17,12 @@ export class LayoutService {
   rightPanelClosed = computed(
     () =>
       this.rightPanelState() === PanelState.Closed ||
-      this.rightPanelState() === PanelState.UserClosed
+      this.rightPanelState() === PanelState.UserClosed,
   );
 
   mobileNavbar$ = inject(DeviceService).mediaBreakpoint$.pipe(
     map((breakpoint) => breakpoint === DeviceMediaBreakpoint.xs),
     shareReplay(1),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
   );
 }

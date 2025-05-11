@@ -33,7 +33,6 @@ export const URL_PATTERN =
   '(\\#[-a-z\\d_]*)?$';
 
 @Component({
-  standalone: true,
   selector: 'feat-settings-socials',
   templateUrl: './socials.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -84,7 +83,7 @@ export class FeatSettingsSocialsComponent {
         filter(Boolean),
         debounceTime(2000),
         distinctUntilChanged(),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe((updatedProfileSocials) => {
         const profile = this.profile();
@@ -108,7 +107,7 @@ export class FeatSettingsSocialsComponent {
     this.#store.dispatch(
       FeatProfileApiActions.updateProfile({
         profile,
-      })
+      }),
     );
   }
 }

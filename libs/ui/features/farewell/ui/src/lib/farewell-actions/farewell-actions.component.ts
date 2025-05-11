@@ -39,7 +39,6 @@ import { filter, map, shareReplay, switchMap } from 'rxjs';
 import { farewellOwner } from '../common';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-actions',
   templateUrl: './farewell-actions.component.html',
   styleUrl: './farewell-actions.component.scss',
@@ -68,7 +67,7 @@ export class FeatFarewellActionsComponent {
 
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
   farewell = computed(() =>
-    this.#store.selectSignal(selectFarewellById(this.farewellId()))()
+    this.#store.selectSignal(selectFarewellById(this.farewellId()))(),
   );
 
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
@@ -77,30 +76,30 @@ export class FeatFarewellActionsComponent {
     farewellOwner({
       farewell: this.farewell(),
       currentProfile: this.currentProfile(),
-    })
+    }),
   );
 
   farewellCommentsLength = toSignal(
     this.#farewellId$.pipe(
       switchMap((farewellId) =>
-        this.#store.pipe(select(selectFarewellCommentsById(farewellId)))
+        this.#store.pipe(select(selectFarewellCommentsById(farewellId))),
       ),
-      map((comments) => comments.length)
+      map((comments) => comments.length),
     ),
-    { initialValue: 0 }
+    { initialValue: 0 },
   );
   farewellReactions$ = this.#farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellReactionsById(farewellId)))
+      this.#store.pipe(select(selectFarewellReactionsById(farewellId))),
     ),
     shareReplay({
       refCount: true,
       bufferSize: 1,
-    })
+    }),
   );
   farewellReactionsLength = toSignal(
     this.farewellReactions$.pipe(map((reactions) => reactions.length)),
-    { initialValue: 0 }
+    { initialValue: 0 },
   );
   farewellProfileReactionsMap$ = this.farewellReactions$.pipe(
     map((reactions) => {
@@ -122,7 +121,7 @@ export class FeatFarewellActionsComponent {
 
       return farewellProfileReactionsMap;
     }),
-    shareReplay({ refCount: true, bufferSize: 1 })
+    shareReplay({ refCount: true, bufferSize: 1 }),
   );
 
   resolvedReactionProfilesMap = toSignal(
@@ -132,11 +131,11 @@ export class FeatFarewellActionsComponent {
           select(
             selectProfilesByIds(
               [...farewellProfileReactions.keys()].filter(
-                (profileId): profileId is Profile['id'] => !!profileId
-              )
-            )
-          )
-        )
+                (profileId): profileId is Profile['id'] => !!profileId,
+              ),
+            ),
+          ),
+        ),
       ),
       map((profiles) => {
         const resolvedReactionProfilesMap = new Map<
@@ -154,8 +153,8 @@ export class FeatFarewellActionsComponent {
 
         resolvedReactionProfilesMap.set(null, null);
         return resolvedReactionProfilesMap;
-      })
-    )
+      }),
+    ),
   );
 
   linkCopied = signal(false);
@@ -178,7 +177,7 @@ export class FeatFarewellActionsComponent {
           profile: this.currentProfile(),
           content: emoji,
         },
-      })
+      }),
     );
   }
 
@@ -196,7 +195,7 @@ export class FeatFarewellActionsComponent {
       this.currentProfile()?.id === reaction.profileId;
     if (farewellOwner || currentReactionOwner) {
       this.#store.dispatch(
-        FeatFarewellReactionActions.deleteReactionFarewell({ id: reaction.id })
+        FeatFarewellReactionActions.deleteReactionFarewell({ id: reaction.id }),
       );
       return;
     }
@@ -207,7 +206,7 @@ export class FeatFarewellActionsComponent {
 
   redirectToEdit() {
     this.#router.navigateByUrl(
-      `/${APP_PATH.Farewell}/edit/${this.farewellId()}`
+      `/${APP_PATH.Farewell}/edit/${this.farewellId()}`,
     );
   }
 }

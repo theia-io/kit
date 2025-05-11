@@ -39,9 +39,11 @@ export class CommentsEffects {
                       ...commentedTweet,
                       denormalization: { profile },
                     },
-                  })
+                  }),
                 )
-              : throwError(() => new Error('Cannot find such tweet to comment'))
+              : throwError(
+                  () => new Error('Cannot find such tweet to comment'),
+                ),
           ),
           catchError((err) => {
             console.error('[CommentsEffects] commentTweet', err);
@@ -51,12 +53,12 @@ export class CommentsEffects {
                 tweet,
                 message:
                   'Sorry, error. We will take a look at it and meanwhile try later',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   deleteCommentTweet$ = createEffect(() =>
@@ -67,9 +69,9 @@ export class CommentsEffects {
           map((tweetWithRemovedComment) =>
             FeatTweetActions.commentDeleteSuccess({
               tweet: { ...tweet, ...tweetWithRemovedComment },
-            })
-          )
-        )
+            }),
+          ),
+        ),
       ),
       catchError((err) => {
         console.error('[CommentsEffects] deleteCommentTweet', err);
@@ -77,9 +79,9 @@ export class CommentsEffects {
           FeatTweetActions.commentDeleteFailure({
             message:
               'Sorry, error. We will take a look at it and meanwhile try later.',
-          })
+          }),
         );
-      })
-    )
+      }),
+    ),
   );
 }

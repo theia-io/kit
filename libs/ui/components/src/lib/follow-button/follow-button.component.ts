@@ -7,7 +7,6 @@ import {
 import { ButtonModule } from 'primeng/button';
 
 @Component({
-  standalone: true,
   selector: 'ui-kit-follow-button',
   imports: [ButtonModule],
   templateUrl: './follow-button.component.html',
@@ -21,12 +20,12 @@ export class FollowButtonComponent {
   stopConnectText = input('Stop following');
 
   text = computed(() =>
-    this.alreadyFollowing() ? this.stopConnectText() : this.connectText()
+    this.alreadyFollowing() ? this.stopConnectText() : this.connectText(),
   );
   severity = computed(() => {
     return this.alreadyFollowing() ? 'secondary' : 'contrast';
   });
   icon = computed(() =>
-    this.alreadyFollowing() ? 'pi-user-minus' : 'pi-user-plus'
+    this.alreadyFollowing() ? 'pi-user-minus' : 'pi-user-plus',
   );
 }

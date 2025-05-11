@@ -23,7 +23,7 @@ export class KudoBoardMediaEffects {
       switchMap(({ kudoboardId, profileId, items }) =>
         forkJoin([
           items.map(({ key, blob }) =>
-            this.#kudoboardMediaService.uploadKudoBoardMedia(key, blob)
+            this.#kudoboardMediaService.uploadKudoBoardMedia(key, blob),
           ),
         ]).pipe(
           map(() =>
@@ -31,21 +31,21 @@ export class KudoBoardMediaEffects {
               kudoboardId,
               profileId,
               items: items.map((item) =>
-                getFullS3Url(this.#s3KudoBoardBaseUrl, item.key)
+                getFullS3Url(this.#s3KudoBoardBaseUrl, item.key),
               ),
-            })
+            }),
           ),
           catchError(() =>
             of(
               FeatKudoBoardMediaActions.uploadKudoBoardStorageMediaFailure({
                 message:
                   'We were unable to upload kudoboard media. Try adding later.',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteKudoBoardStorageMedia$ = createEffect(() =>
@@ -54,24 +54,24 @@ export class KudoBoardMediaEffects {
       switchMap(({ url }) =>
         this.#kudoboardMediaService
           .deleteKudoBoardMedia(
-            getImageKeyFromS3Url(url, this.#s3KudoBoardBaseUrl)
+            getImageKeyFromS3Url(url, this.#s3KudoBoardBaseUrl),
           )
           .pipe(
             map(() =>
               FeatKudoBoardMediaActions.deleteKudoBoardStorageMediaSuccess({
                 url,
-              })
+              }),
             ),
             catchError(() =>
               of(
                 FeatKudoBoardMediaActions.deleteKudoBoardStorageMediaFailure({
                   message:
                     'We were unable to remove kudoboard media from S3 bucket. Try again later.',
-                })
-              )
-            )
-          )
-      )
-    )
+                }),
+              ),
+            ),
+          ),
+      ),
+    ),
   );
 }

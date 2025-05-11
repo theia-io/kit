@@ -7,4 +7,6 @@ export const PageHomeKey = 'page.home';
 
 /** @TODO @FIXME move App state to highest level of deps */
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface AppState {}
+export interface AppState {
+  [key: string]: any;
+}

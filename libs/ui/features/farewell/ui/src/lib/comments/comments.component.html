@@ -5,94 +5,101 @@
   [deleteMediaFilesCb]="deleteCommentMedia()"
   (comment)="commentHandler($event)">
   <div profile class="mb-4">
-    @if(currentProfile(); as currentProfile) {
-    <ui-kit-comp-account-tile
-      sharedAuthorizedFeature
-      [primaryText]="currentProfile.name"
-      [picture]="currentProfilePic()"
-      [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
+    @if (currentProfile(); as currentProfile) {
+      <ui-kit-comp-account-tile
+        sharedAuthorizedFeature
+        [primaryText]="currentProfile.name"
+        [picture]="currentProfilePic()"
+        [link]="profileUrl + (currentProfile.alias ?? currentProfile.id)" />
     } @else {
-    <p class="m-0 mb-1 text-sm text-gray-500">
-      <a (click)="signIn()" role="button" class="underline">
-        Sign-in or register
-      </a>
-      . Otherwise comments will be left anonymously
-    </p>
+      <p class="m-0 mb-1 text-sm text-gray-500">
+        <a (click)="signIn()" role="button" class="underline">
+          Sign-in or register
+        </a>
+        . Otherwise comments will be left anonymously
+      </p>
     }
   </div>
 </ui-kit-comment-area>
 
 <ui-kit-divider class="block my-9" />
 
-@for (comment of (farewellComments$ | async); track $index) { @let
-commentCreatedAt = comment.createdAt; @let commentCreatedAtCreatedAtLegacy =
-comment.timestamp?.createdAt; @let commentCreatedAtUpdatedAt =
-comment.createdAt; @let commentCreatedAtUpdatedAtLegacy =
-comment.timestamp?.createdAt;
-
-<div
-  [class.mb-9]="!$last"
-  class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl">
-  <div profile class="mb-4">
-    <ui-kit-comp-account-tile
-      sharedAuthorizedFeature
-      [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
-      [primarySecondaryText]="
-        commentCreatedAtUpdatedAt ??
-          commentCreatedAtUpdatedAtLegacy ??
-          commentCreatedAt ??
-          commentCreatedAtCreatedAtLegacy | date : 'MMM d, h:mm a'
-      "
-      [picture]="profilePictureFn(comment.profile)"
-      [link]="
-        comment.profileId
-          ? profileUrl +
-            (comment.profile?.alias ?? comment.profile?.id ?? comment.profileId)
-          : undefined
-      " />
-  </div>
-
-  <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
+@for (comment of farewellComments$ | async; track $index) {
+  @let commentCreatedAt = comment.createdAt;
+  @let commentCreatedAtCreatedAtLegacy = comment.timestamp?.createdAt;
+  @let commentCreatedAtUpdatedAt = comment.createdAt;
+  @let commentCreatedAtUpdatedAtLegacy = comment.timestamp?.createdAt;
 
   <div
-    id="uploaded-comment-media-gallery"
-    class="flex gap-2 items-center flex-nowrap overflow-x-auto">
-    @for (media of comment.medias; track media.url) {
-    <a
-      class="block h-16"
-      [href]="media.optimizedUrls[0]"
-      [attr.data-pswp-width]="media.width"
-      [attr.data-pswp-height]="media.height"
-      [ngStyle]="{
-        'height.px': 64,
-        'min-width.px':
-          64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
-      }"
-      target="_blank">
-      <picture>
-        @for (url of media.optimizedUrls; track url) {
-        <source [srcset]="url" [type]="'image/' + mediaType(url)" />
-        }
-        <img
-          referrerpolicy="no-referrer"
-          class="rounded"
-          [width]="64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)"
-          height="64"
-          [ngSrc]="media.url"
-          alt="Media to the comment" />
-      </picture>
-    </a>
-    <!-- <img [ngSrc]="media" width="64" height="64" alt="Media to the comment" /> -->
+    [class.mb-9]="!$last"
+    class="relative p-1 sm:p-2 md:p-4 rounded transition shadow-md hover:shadow-xl">
+    <div profile class="mb-4">
+      <ui-kit-comp-account-tile
+        sharedAuthorizedFeature
+        [primaryText]="comment.profile ? comment.profile.name : 'Anonymous'"
+        [primarySecondaryText]="
+          commentCreatedAtUpdatedAt ??
+            commentCreatedAtUpdatedAtLegacy ??
+            commentCreatedAt ??
+            commentCreatedAtCreatedAtLegacy | date: 'MMM d, h:mm a'
+        "
+        [picture]="profilePictureFn(comment.profile)"
+        [link]="
+          comment.profileId
+            ? profileUrl +
+              (comment.profile?.alias ??
+                comment.profile?.id ??
+                comment.profileId)
+            : undefined
+        " />
+    </div>
+
+    <div class="w-full font-semibold text-xl">{{ comment.content }}</div>
+
+    <div
+      id="uploaded-comment-media-gallery"
+      class="flex gap-2 items-center flex-nowrap overflow-x-auto">
+      @for (media of comment.medias; track media.url) {
+        <a
+          class="block h-16"
+          [href]="media.optimizedUrls[0]"
+          [attr.data-pswp-width]="media.width"
+          [attr.data-pswp-height]="media.height"
+          [ngStyle]="{
+            'height.px': 64,
+            'min-width.px':
+              64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1),
+          }"
+          target="_blank">
+          <picture>
+            @for (url of media.optimizedUrls; track url) {
+              <source [srcset]="url" [type]="'image/' + mediaType(url)" />
+            }
+            <img
+              referrerpolicy="no-referrer"
+              class="rounded"
+              [width]="
+                64 * mediaWidthRatio(media.height ?? 1, media.width ?? 1)
+              "
+              height="64"
+              [ngSrc]="media.url"
+              alt="Media to the comment" />
+          </picture>
+        </a>
+        <!-- <img [ngSrc]="media" width="64" height="64" alt="Media to the comment" /> -->
+      }
+    </div>
+
+    @if (
+      currentProfile()?.id &&
+      (currentProfile()?.id === farewellProfile()?.id ||
+        currentProfile()?.id === comment.profileId)
+    ) {
+      <ui-kit-delete (delete)="deleteHandler(comment.id)" />
     }
   </div>
-
-  @if(currentProfile()?.id && (currentProfile()?.id === farewellProfile()?.id ||
-  currentProfile()?.id === comment.profileId)) {
-  <ui-kit-delete (delete)="deleteHandler(comment.id)" />
-  }
-</div>
 } @empty {
-<p class="text-center italic text-gray-500">
-  There are currently no responses. Be the first.
-</p>
+  <p class="text-center italic text-gray-500">
+    There are currently no responses. Be the first.
+  </p>
 }

@@ -8,7 +8,6 @@ import {
 import { Experience } from '@kitouch/shared-models';
 
 @Component({
-  standalone: true,
   selector: 'feat-settings-experience-show',
   templateUrl: './experience-show.component.html',
   imports: [DatePipe],

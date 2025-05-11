@@ -10,14 +10,14 @@ export class KudoBoardMediaService {
     return this.#s3Service.setBucketItem(
       this.#env.s3Config.kudoBoardBucket,
       key,
-      media
+      media,
     );
   }
   /** Media, S3 */
   deleteKudoBoardMedia(key: string) {
     return this.#s3Service.deleteBucketItem(
       this.#env.s3Config.kudoBoardBucket,
-      key
+      key,
     );
   }
 }

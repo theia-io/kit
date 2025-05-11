@@ -27,13 +27,12 @@ import { Experience } from '@kitouch/shared-models';
 import { UiKitCompAnimatePingComponent } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { AccordionModule } from 'primeng/accordion';
-import { Message } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { MessagesModule } from 'primeng/messages';
 import { filter, take } from 'rxjs';
+import { Message } from '../messages/message';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-settings',
   templateUrl: './settings.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -131,7 +130,7 @@ export class PageSettingsComponent implements OnInit {
     const currentAccount = this.currentAccount();
     if (currentAccount) {
       this.#store.dispatch(
-        FeatAccountApiActions.delete({ account: currentAccount })
+        FeatAccountApiActions.delete({ account: currentAccount }),
       );
     }
   }

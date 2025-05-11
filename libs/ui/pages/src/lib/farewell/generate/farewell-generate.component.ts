@@ -15,7 +15,6 @@ import { SidebarModule } from 'primeng/sidebar';
 import { take } from 'rxjs';
 
 @Component({
-  standalone: true,
   templateUrl: './farewell-generate.component.html',
   imports: [
     NgTemplateOutlet,

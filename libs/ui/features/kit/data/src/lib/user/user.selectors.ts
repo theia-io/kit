@@ -21,18 +21,18 @@ const selectUserState = (state: { kit: { user: FeatureUserState } }) =>
 /** User */
 export const selectCurrentUser = createSelector(
   selectUserState,
-  (state: FeatureUserState) => state.user
+  (state: FeatureUserState) => state.user,
 );
 
 export const getUserById = (userId: string) =>
   createSelector(selectUserState, ({ users }) =>
-    users.find((user) => user.id === userId)
+    users.find((user) => user.id === userId),
   );
 
 /** Experience */
 export const selectCurrentUserExperiences = createSelector(
   selectCurrentUser,
-  (currentUser) => currentUser?.experiences
+  (currentUser) => currentUser?.experiences,
 );
 
 export const selectUserExperience = (userId: string) =>

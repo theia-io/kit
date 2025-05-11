@@ -7,7 +7,6 @@ import { ENVIRONMENT, RouterEventsService } from '@kitouch/shared-infra';
 import { SharedStaticInfoComponent } from '../../static-info/static-info.component';
 
 @Component({
-  standalone: true,
   selector: 'shared-sub-navbar',
   templateUrl: './subnav.component.html',
   imports: [

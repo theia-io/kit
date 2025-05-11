@@ -11,7 +11,6 @@ import { select, Store } from '@ngrx/store';
 import { switchMap } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-follow-suggest-profile-by-id',
   templateUrl: './suggestion.component.html',
   imports: [],
@@ -25,7 +24,7 @@ export class FeatFollowSuggestionByIdComponent {
   profileId$ = toObservable(this.profileId);
   profileToSuggest$ = this.profileId$.pipe(
     switchMap((profileId) =>
-      this.#store.pipe(select(selectProfileById(profileId)))
-    )
+      this.#store.pipe(select(selectProfileById(profileId))),
+    ),
   );
 }

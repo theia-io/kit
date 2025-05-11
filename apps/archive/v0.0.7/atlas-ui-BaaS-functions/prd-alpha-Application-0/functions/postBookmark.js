@@ -37,12 +37,12 @@ exports = async function (newBookmark) {
         new: true,
         returnNewDocument: true,
         returnDocument: 'after',
-      }
+      },
     );
   } catch (err) {
     console.error(
       '[postTweet] Error occurred while adding bookmark:',
-      err.message
+      err.message,
     );
     return {
       error: 'Error occurred while executing findOneAndUpdate: ' + err.message,
@@ -54,7 +54,7 @@ exports = async function (newBookmark) {
   } catch (err) {
     console.error(
       '[postTweet] Error occurred while normilizing bookmark:',
-      err.message
+      err.message,
     );
     return {
       error: 'Error occurred while normilizing bookmark: ' + err.message,

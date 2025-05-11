@@ -5,7 +5,6 @@ import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 
 @Component({
   selector: 'shared-static-info',
-  standalone: true,
   imports: [RouterModule, NgClass],
   templateUrl: './static-info.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,

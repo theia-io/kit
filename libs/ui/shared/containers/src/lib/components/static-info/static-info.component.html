@@ -20,8 +20,10 @@
 </div>
 <div [ngClass]="[!slim() ? 'flex-2 mt-2' : '']">
   <p class="text-sm leading-6 font-medium text-gray-600">
-    © {{ year }} Theia B.V. @if(!slim()) {
-    <br />
-    } All rights reserved.
+    © {{ year }} Theia B.V.
+    @if (!slim()) {
+      <br />
+    }
+    All rights reserved.
   </p>
 </div>

@@ -15,25 +15,25 @@ export class KudoBoardCommentsService {
   #http = inject(HttpClient);
 
   getKudoBoardComments(
-    kudoBoardId: KudoBoard['id']
+    kudoBoardId: KudoBoard['id'],
   ): Observable<Array<KudoBoardComment>> {
     return this.#http.get<Array<KudoBoardComment>>(
-      `${this.#environment.api.kudoboardComments}/${kudoBoardId}`
+      `${this.#environment.api.kudoboardComments}/${kudoBoardId}`,
     );
   }
 
   createKudoBoardComment(
-    kudoBoardComment: ClientDataType<KudoBoardComment>
+    kudoBoardComment: ClientDataType<KudoBoardComment>,
   ): Observable<KudoBoardComment> {
     return this.#http.post<KudoBoardComment>(
       `${this.#environment.api.kudoboardComments}`,
-      kudoBoardComment
+      kudoBoardComment,
     );
   }
 
   deleteKudoBoardComment(id: KudoBoardComment['id']) {
     return this.#http.delete<KudoBoard>(
-      `${this.#environment.api.kudoboardComments}/${id}`
+      `${this.#environment.api.kudoboardComments}/${id}`,
     );
   }
 
@@ -50,9 +50,9 @@ export class KudoBoardCommentsService {
             params: {
               name: key,
             },
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 

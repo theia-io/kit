@@ -5,12 +5,12 @@ exports = async function (googleUserId) {
   try {
     accountRes = await context.functions.execute(
       'internalGetAccount',
-      googleUserId
+      googleUserId,
     );
   } catch (err) {
     console.log(
       '[getAccountUserProfiles] Error occurred while quering account:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }
@@ -24,7 +24,7 @@ exports = async function (googleUserId) {
   } catch (err) {
     console.log(
       '[getAccountUserProfiles] Error occurred while quering user:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }
@@ -37,7 +37,7 @@ exports = async function (googleUserId) {
   } catch (err) {
     console.log(
       '[getAccountUserProfiles] Error occurred while quering profiles:',
-      err.message
+      err.message,
     );
     return { error: err.message };
   }

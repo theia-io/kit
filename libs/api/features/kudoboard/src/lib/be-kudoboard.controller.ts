@@ -30,7 +30,7 @@ export class BeKudoboardController {
   @UseGuards(OptionalJwtAuthGuard)
   async getKudoboard(
     @Req() req: Request,
-    @Param('kudoboardId') kudoboardId: string
+    @Param('kudoboardId') kudoboardId: string,
   ) {
     const currentProfileIds =
       (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
@@ -47,7 +47,7 @@ export class BeKudoboardController {
   @UseGuards(AuthGuard('jwt'))
   async updateKudoboard(
     @Param('kudoboardId') kudoboardId: string,
-    @Body() kudoBoard: IKudoBoard
+    @Body() kudoBoard: IKudoBoard,
   ) {
     return this.beKudoboardService.updateKudoboard(kudoboardId, kudoBoard);
   }

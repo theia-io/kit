@@ -31,14 +31,14 @@ export class BeFarewellReactionsController {
   async createReactionsFarewell(@Body() farewellReaction: FarewellReaction) {
     console.log('farewellReaction', farewellReaction);
     return this.beFarewellReactionsService.createReactionsFarewell(
-      farewellReaction
+      farewellReaction,
     );
   }
 
   @Delete(':farewellReactionId')
   async deleteFarewellReactions(
     @Req() req: Request,
-    @Param('farewellReactionId') farewellReactionId: string
+    @Param('farewellReactionId') farewellReactionId: string,
   ) {
     const currentProfileIds = ((req.user as Auth0Kit)?.profiles ?? [])
       .map((profile) => profile?.id)
@@ -46,7 +46,7 @@ export class BeFarewellReactionsController {
 
     return this.beFarewellReactionsService.deleteFarewellReactions(
       farewellReactionId,
-      currentProfileIds
+      currentProfileIds,
     );
   }
 }

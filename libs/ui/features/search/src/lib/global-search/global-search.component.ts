@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router';
 import { SearchComponent } from '../search/search.component';
 
 @Component({
-  standalone: true,
   selector: 'global-search',
   templateUrl: './global-search.component.html',
   imports: [

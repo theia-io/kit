@@ -14,7 +14,7 @@ import { BeKudoBoardReactionsService } from './be-kudoboard-reactions.service';
 @Controller('kudoboard-reactions')
 export class BeKudoBoardReactionsController {
   constructor(
-    private beKudoBoardReactionsService: BeKudoBoardReactionsService
+    private beKudoBoardReactionsService: BeKudoBoardReactionsService,
   ) {}
 
   @Get(':kudoBoardId')
@@ -22,7 +22,7 @@ export class BeKudoBoardReactionsController {
     if (!kudoBoardId) {
       throw new HttpException(
         'kudoboardId is required',
-        HttpStatus.BAD_REQUEST
+        HttpStatus.BAD_REQUEST,
       );
     }
     return this.beKudoBoardReactionsService.getReactionsKudoBoard(kudoBoardId);
@@ -32,16 +32,16 @@ export class BeKudoBoardReactionsController {
   async createReactionsKudoBoard(@Body() kudoBoardReaction: KudoBoardReaction) {
     console.log('kudoBoardReaction', kudoBoardReaction);
     return this.beKudoBoardReactionsService.createReactionsKudoBoard(
-      kudoBoardReaction
+      kudoBoardReaction,
     );
   }
 
   @Delete(':kudoBoardReactionId')
   async deleteKudoboardReactions(
-    @Param('kudoBoardReactionId') kudoBoardReactionId: string
+    @Param('kudoBoardReactionId') kudoBoardReactionId: string,
   ) {
     return this.beKudoBoardReactionsService.deleteKudoboardReactions(
-      kudoBoardReactionId
+      kudoBoardReactionId,
     );
   }
 }

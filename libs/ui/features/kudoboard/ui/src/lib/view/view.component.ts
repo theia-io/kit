@@ -16,7 +16,6 @@ import { combineLatest, filter, map } from 'rxjs';
 import { isHexColor, isValidBucketUrl } from '../common';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-view',
   templateUrl: './view.component.html',
   imports: [
@@ -42,7 +41,7 @@ export class FeatKudoBoardViewComponent {
   ]).pipe(
     map(([id, kudoBoards]) => findKudoBoardById(id, kudoBoards)),
     filter(Boolean),
-    takeUntilDestroyed()
+    takeUntilDestroyed(),
   );
 
   isBucketUrl = isValidBucketUrl();

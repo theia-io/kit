@@ -14,7 +14,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import { farewellLink, kudoboardLink } from './share';
 
 @Component({
-  standalone: true,
   selector: 'shared-copy-clipboard',
   templateUrl: './share.component.html',
   imports: [ButtonModule, TooltipModule, ToastModule],

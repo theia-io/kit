@@ -9,7 +9,6 @@ import { FeatKudoBoardAnalyticsComponent } from '../analytics/analytics.componen
 import { FeatKudoBoardStatusComponent } from '../status/status.component';
 
 @Component({
-  standalone: true,
   selector: 'feat-kudoboard-info-panel',
   templateUrl: './info-panel.component.html',
   imports: [

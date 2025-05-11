@@ -14,27 +14,27 @@ export class FarewellEffects {
   #farewellService = inject(FarewellV2Service);
   #currentProfile = this.#store.pipe(
     select(selectCurrentProfile),
-    filter((profile) => !!profile)
+    filter((profile) => !!profile),
   );
 
   getFarewells$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getProfileFarewells),
       switchMap(({ profileId }) =>
-        this.#farewellService.getFarewells(profileId)
+        this.#farewellService.getFarewells(profileId),
       ),
       map((farewells) =>
-        FeatFarewellActions.getFarewellsSuccess({ farewells })
+        FeatFarewellActions.getFarewellsSuccess({ farewells }),
       ),
       catchError(() =>
         of(
           FeatFarewellActions.getFarewellsFailure({
             message:
               'It is not you, it is us. Cannot load profile farewells, try again later.',
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   getFarewell$ = createEffect(() =>
@@ -46,9 +46,9 @@ export class FarewellEffects {
           ? FeatFarewellActions.getFarewellSuccess({ farewell })
           : FeatFarewellActions.getFarewellFailure({
               message: 'Did not find this farewell.',
-            })
-      )
-    )
+            }),
+      ),
+    ),
   );
 
   createFarewell$ = createEffect(() =>
@@ -60,10 +60,12 @@ export class FarewellEffects {
           ...farewell,
           profileId: profile.id,
           profile,
-        })
+        }),
       ),
-      map((farewell) => FeatFarewellActions.createFarewellSuccess({ farewell }))
-    )
+      map((farewell) =>
+        FeatFarewellActions.createFarewellSuccess({ farewell }),
+      ),
+    ),
   );
   //to here
   putFarewell$ = createEffect(() =>
@@ -72,18 +74,18 @@ export class FarewellEffects {
       switchMap(({ farewell }) =>
         this.#farewellService.putFarewell(farewell).pipe(
           map((farewell) =>
-            FeatFarewellActions.putFarewellSuccess({ farewell })
+            FeatFarewellActions.putFarewellSuccess({ farewell }),
           ),
           catchError((err) =>
             of(
               FeatFarewellActions.putFarewellFailure({
                 message: `Failed to update farewell. Try again later or contact support. ${err.message}`,
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteFarewell$ = createEffect(() =>
@@ -97,19 +99,19 @@ export class FarewellEffects {
               : FeatFarewellActions.deleteFarewellFailure({
                   message:
                     'It seems this farewell cannot be deleted. Please, get in touch with us.',
-                })
+                }),
           ),
           catchError(() =>
             of(
               FeatFarewellActions.deleteFarewellFailure({
                 message:
                   'We were unable to delete farewell. It is not you, its us. Try again later or contact us directly',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   /** Analytics */
@@ -118,7 +120,7 @@ export class FarewellEffects {
     this.#actions$.pipe(
       ofType(FeatFarewellActions.createFarewellSuccess),
       switchMap(({ farewell }) =>
-        this.#farewellService.postAnalyticsFarewell(farewell)
+        this.#farewellService.postAnalyticsFarewell(farewell),
       ),
       map((analytics) =>
         analytics
@@ -126,9 +128,9 @@ export class FarewellEffects {
           : FeatFarewellActions.postAnalyticsFarewellFailure({
               message:
                 'We were not able to create farewell analytics. Let us know so we can get it fixed for you. Otherwise no analytics will be available for created farewell.',
-            })
-      )
-    )
+            }),
+      ),
+    ),
   );
 
   deleteFarewellAnalytics$ = createEffect(() =>
@@ -142,19 +144,19 @@ export class FarewellEffects {
               : FeatFarewellActions.deleteAnalyticsFarewellFailure({
                   message:
                     'Farewell analytics were not deleted. Reach out to support.',
-                })
+                }),
           ),
           catchError((err) =>
             of(
               FeatFarewellActions.deleteAnalyticsFarewellFailure({
                 message:
                   'Network issue, did not delete farewell analytics. Reach out to support.',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   getAnalyticsFarewells$ = createEffect(() =>
@@ -162,29 +164,29 @@ export class FarewellEffects {
       ofType(FeatFarewellActions.getFarewellsSuccess),
       switchMap(({ farewells }) =>
         this.#farewellService.getAnalyticsFarewells(
-          farewells.map(({ id }) => id)
-        )
+          farewells.map(({ id }) => id),
+        ),
       ),
       map((analytics) =>
-        FeatFarewellActions.getAllAnalyticsSuccess({ analytics })
-      )
-    )
+        FeatFarewellActions.getAllAnalyticsSuccess({ analytics }),
+      ),
+    ),
   );
 
   getAnalyticsFarewell$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatFarewellActions.getAnalyticsFarewell),
       switchMap(({ farewellId }) =>
-        this.#farewellService.getAnalyticsFarewell(farewellId)
+        this.#farewellService.getAnalyticsFarewell(farewellId),
       ),
       map((analytics) =>
         analytics
           ? FeatFarewellActions.getAnalyticsFarewellSuccess({ analytics })
           : FeatFarewellActions.getAnalyticsFarewellFailure({
               message: 'Analytics for this farewell was not find',
-            })
-      )
-    )
+            }),
+      ),
+    ),
   );
 
   putAnalyticsFarewell$ = createEffect(() =>
@@ -195,10 +197,10 @@ export class FarewellEffects {
           map((updatedAnalytics) =>
             FeatFarewellActions.putAnalyticsFarewellSuccess({
               analytics: updatedAnalytics,
-            })
-          )
-        )
-      )
-    )
+            }),
+          ),
+        ),
+      ),
+    ),
   );
 }

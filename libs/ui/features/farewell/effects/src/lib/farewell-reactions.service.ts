@@ -11,25 +11,25 @@ export class FarewellReactionsService {
   #http = inject(HttpClient);
 
   getFarewellReactions(
-    farewellId: Farewell['id']
+    farewellId: Farewell['id'],
   ): Observable<Array<FarewellReaction>> {
     return this.#http.get<Array<FarewellReaction>>(
-      `${this.#env.api.farewellReactions}/${farewellId}`
+      `${this.#env.api.farewellReactions}/${farewellId}`,
     );
   }
 
   postFarewellReaction(
-    reactionData: ClientDataType<FarewellReaction>
+    reactionData: ClientDataType<FarewellReaction>,
   ): Observable<FarewellReaction> {
     return this.#http.post<FarewellReaction>(
       `${this.#env.api.farewellReactions}`,
-      reactionData
+      reactionData,
     );
   }
 
   deleteFarewellReaction(id: FarewellReaction['id']) {
     return this.#http.delete<FarewellReaction>(
-      `${this.#env.api.farewellReactions}/${id}`
+      `${this.#env.api.farewellReactions}/${id}`,
     );
   }
 }

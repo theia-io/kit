@@ -43,7 +43,7 @@ export class CrossTabSyncService implements OnDestroy {
       this.channel.postMessage(message);
     } else {
       console.warn(
-        'Cannot send message: BroadcastChannel not supported or initialized.'
+        'Cannot send message: BroadcastChannel not supported or initialized.',
       );
     }
   }

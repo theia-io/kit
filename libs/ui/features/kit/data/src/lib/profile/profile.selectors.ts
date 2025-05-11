@@ -19,22 +19,22 @@ const selectProfileState = (state: { kit: { profile: FeatureProfileState } }) =>
 /** Profiles */
 export const selectCurrentProfile = createSelector(
   selectProfileState,
-  (state: FeatureProfileState) => state.currentProfile
+  (state: FeatureProfileState) => state.currentProfile,
 );
 
 export const selectCurrentProfileFollowing = createSelector(
   selectCurrentProfile,
-  (currentProfile: Profile | undefined) => currentProfile?.following ?? []
+  (currentProfile: Profile | undefined) => currentProfile?.following ?? [],
 );
 
 export const selectProfilePicture = createSelector(
   selectCurrentProfile,
-  (currentProfile) => profilePicture(currentProfile ?? {})
+  (currentProfile) => profilePicture(currentProfile ?? {}),
 );
 
 export const selectProfiles = createSelector(
   selectProfileState,
-  (state: FeatureProfileState) => state.profiles ?? []
+  (state: FeatureProfileState) => state.profiles ?? [],
 );
 
 /** Utilities */
@@ -49,7 +49,7 @@ export const selectProfileById = (profileId: string) =>
 export const selectProfilesByIds = (profileIds: Array<Profile['id']>) =>
   createSelector(selectProfiles, (profiles) => {
     const profilesMap = new Map(
-      profiles.map((profile) => [profile.id, profile])
+      profiles.map((profile) => [profile.id, profile]),
     );
 
     return profileIds.map((profileId) => profilesMap.get(profileId));
@@ -61,7 +61,7 @@ export const selectProfilesByIds = (profileIds: Array<Profile['id']>) =>
 export const selectFollowingAndNotProfilesMap = (profiles: Array<Profile>) =>
   createSelector(selectCurrentProfile, (currentProfile) => {
     const currentProfileFollowingSet = new Set(
-      currentProfile?.following?.map(({ id }) => id)
+      currentProfile?.following?.map(({ id }) => id),
     );
 
     const followingProfiles: Map<Profile['id'], Profile> = new Map(),

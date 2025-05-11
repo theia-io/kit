@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'ui-kit-comp-gradient-card',
   template: ` <!--
   Heads up! 👋

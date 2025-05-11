@@ -16,7 +16,6 @@ import { select, Store } from '@ngrx/store';
 import { filter, distinctUntilKeyChanged } from 'rxjs';
 
 @Component({
-  standalone: true,
   imports: [
     RouterModule,
     //
@@ -39,7 +38,7 @@ import { filter, distinctUntilKeyChanged } from 'rxjs';
           [suggestionConfig]="{
             cards: false,
             showFollowed: true,
-            showRandomOrder: false
+            showRandomOrder: false,
           }"
         />
 
@@ -64,12 +63,12 @@ export class KitComponent {
         select(selectCurrentProfile),
         filter(Boolean),
         distinctUntilKeyChanged('id'),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe(() =>
         this.#store.dispatch(
-          FeatFollowActions.getSuggestionColleaguesToFollow()
-        )
+          FeatFollowActions.getSuggestionColleaguesToFollow(),
+        ),
       );
   }
 }

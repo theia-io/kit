@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
 
 @Component({
-  standalone: true,
   selector: 'feat-tweet-tweeting-actions',
   template: `
     <div class="flex items-center">

@@ -7,7 +7,7 @@ const selectLegalState = (state: { kit: { companies: FeatureLegalState } }) =>
 /** Profiles */
 export const selectCompaniesState = createSelector(
   selectLegalState,
-  (companies: FeatureLegalState) => companies
+  (companies: FeatureLegalState) => companies,
 );
 
 /** Helpers */
@@ -16,8 +16,8 @@ export const getMatchingCompanies = (companyName: string) =>
     companies
       .filter(
         ({ alias, name }) =>
-          alias.includes(companyName) || name.includes(companyName)
+          alias.includes(companyName) || name.includes(companyName),
       )
       .splice(-10)
-      .map(({ alias, name }) => alias ?? name ?? '')
+      .map(({ alias, name }) => alias ?? name ?? ''),
   );

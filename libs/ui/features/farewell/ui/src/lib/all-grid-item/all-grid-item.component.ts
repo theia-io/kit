@@ -6,7 +6,6 @@ import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardViewComponent } from '@kitouch/ui-kudoboard';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-all-grid-item',
   templateUrl: './all-grid-item.component.html',
   imports: [

@@ -23,19 +23,19 @@ exports = async function (tweetIdArr) {
   } catch (err) {
     console.log(
       '[getTweets] Error occurred while finding tweets:',
-      err.message
+      err.message,
     );
     return { error: 'Error occurred while finding tweets: ' + err.message };
   }
 
   try {
     tweets = tweets.map((tweet) =>
-      context.functions.execute('normalizeTweet', tweet)
+      context.functions.execute('normalizeTweet', tweet),
     );
   } catch (err) {
     console.log(
       '[postTweet] Error occurred while normalizing tweets:',
-      err.message
+      err.message,
     );
     return { error: 'Error occurred while normalizing tweets: ' + err.message };
   }

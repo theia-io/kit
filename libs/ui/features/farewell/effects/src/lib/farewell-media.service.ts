@@ -22,9 +22,9 @@ export class FarewellMediaService {
             params: {
               name: key,
             },
-          }
-        )
-      )
+          },
+        ),
+      ),
     );
   }
 

@@ -25,12 +25,12 @@ export class AccountsEffects {
               FeatAccountApiActions.deleteFailure({
                 account,
                 message: 'Cannot delete account now. Try later',
-              })
+              }),
             );
-          })
-        )
-      )
-    )
+          }),
+        ),
+      ),
+    ),
   );
 
   deleteAccountSuccess$ = createEffect(
@@ -41,10 +41,10 @@ export class AccountsEffects {
           console.log('logout and redirect to home');
           this.#auth0Service.logout();
           this.#router.navigateByUrl('/');
-        })
+        }),
       ),
     {
       dispatch: false,
-    }
+    },
   );
 }

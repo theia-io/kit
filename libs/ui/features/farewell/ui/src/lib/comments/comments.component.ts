@@ -48,7 +48,7 @@ import { select, Store } from '@ngrx/store';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea'; // Ensure this path is correct
 import { TimelineModule } from 'primeng/timeline';
 import {
   delay,
@@ -62,7 +62,6 @@ import {
 } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-comments',
   templateUrl: './comments.component.html',
   imports: [
@@ -74,7 +73,7 @@ import {
     NgOptimizedImage,
     //
     FloatLabelModule,
-    InputTextareaModule,
+    InputTextarea,
     TimelineModule,
     ButtonModule,
     //
@@ -100,8 +99,8 @@ export class FeatFarewellCommentsComponent {
 
   farewell$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellById(farewellId)))
-    )
+      this.#store.pipe(select(selectFarewellById(farewellId))),
+    ),
   );
   farewellProfile = toSignal(
     this.farewell$.pipe(
@@ -109,24 +108,24 @@ export class FeatFarewellCommentsComponent {
       switchMap(({ profile, profileId }) =>
         this.#store.pipe(
           select(selectProfileById(profileId)),
-          map((resolvedProfile) => resolvedProfile ?? profile)
-        )
-      )
-    )
+          map((resolvedProfile) => resolvedProfile ?? profile),
+        ),
+      ),
+    ),
   );
 
   farewellComments$ = this.farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellCommentsById(farewellId)))
+      this.#store.pipe(select(selectFarewellCommentsById(farewellId))),
     ),
     map((comments) =>
       comments.sort((a, b) =>
         sortByCreatedTimeDesc(
           a.createdAt ?? (a as any).timestamp?.createdAt,
-          b.createdAt ?? (b as any).timestamp?.createdAt
-        )
-      )
-    )
+          b.createdAt ?? (b as any).timestamp?.createdAt,
+        ),
+      ),
+    ),
   );
 
   placeholder = computed(() => {
@@ -143,7 +142,7 @@ export class FeatFarewellCommentsComponent {
   profilePictureFn = profilePicture;
   currentProfile = this.#store.selectSignal(selectCurrentProfile);
   currentProfilePic = computed(() =>
-    this.profilePictureFn(this.currentProfile())
+    this.profilePictureFn(this.currentProfile()),
   );
 
   profileUrl = `/${APP_PATH.Profile}/`;
@@ -156,7 +155,7 @@ export class FeatFarewellCommentsComponent {
         distinctUntilChanged(),
         take(1),
         // so comments can be rendered
-        delay(100)
+        delay(100),
       )
       .subscribe(() => {
         this.#photoService.initializeGallery({
@@ -168,7 +167,7 @@ export class FeatFarewellCommentsComponent {
   }
 
   uploadCommentMediaFiles(): (
-    images: Array<File>
+    images: Array<File>,
   ) => Observable<Array<ContractUploadedMedia>> {
     const getFarewellId = () => this.farewellId();
     const getProfileId = () => this.currentProfile()?.id;
@@ -183,7 +182,7 @@ export class FeatFarewellCommentsComponent {
         console.error(
           '[saveImages] cannot upload images by unknown profile and farewell',
           profileId,
-          farewellId
+          farewellId,
         );
         return of([]);
       }
@@ -200,14 +199,14 @@ export class FeatFarewellCommentsComponent {
               }`,
               blob: mediaFile,
             })),
-          })
+          }),
         );
       });
 
       // TODO add error handling
       return this.#actions$.pipe(
         ofType(
-          FeatFarewellCommentActions.uploadFarewellCommentStorageMediaSuccess
+          FeatFarewellCommentActions.uploadFarewellCommentStorageMediaSuccess,
         ),
         take(1),
         // AWS S3 bucket has eventual consistency so need a time for it to be available
@@ -217,10 +216,10 @@ export class FeatFarewellCommentsComponent {
             ...item,
             url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
             optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl)
+              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl),
             ),
-          }))
-        )
+          })),
+        ),
       );
     };
   }
@@ -230,7 +229,7 @@ export class FeatFarewellCommentsComponent {
       this.#store.dispatch(
         FeatFarewellCommentActions.deleteFarewellCommentStorageMedia({
           url,
-        })
+        }),
       );
       // TODO add error handling
     };
@@ -247,7 +246,7 @@ export class FeatFarewellCommentsComponent {
           content,
           medias,
         },
-      })
+      }),
     );
   }
 
@@ -255,7 +254,7 @@ export class FeatFarewellCommentsComponent {
     this.#store.dispatch(
       FeatFarewellCommentActions.deleteCommentFarewell({
         id: commentId,
-      })
+      }),
     );
   }
 

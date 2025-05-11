@@ -25,7 +25,7 @@ export class ReTweetV2Service {
         params: {
           profileId,
         },
-      }
+      },
     );
   }
 

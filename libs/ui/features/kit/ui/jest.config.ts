@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'kit-ui',
   preset: '../../../../../jest.preset.js',

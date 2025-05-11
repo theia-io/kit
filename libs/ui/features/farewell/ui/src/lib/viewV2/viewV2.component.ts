@@ -16,7 +16,6 @@ import PhotoSwipe from 'photoswipe';
 import { filter, switchMap } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-viewv2',
   templateUrl: './viewV2.component.html',
   imports: [
@@ -36,9 +35,9 @@ export class FeatFarewellViewV2Component implements AfterViewInit {
   #farewellId$ = toObservable(this.farewellId).pipe(filter(Boolean));
   farewell$ = this.#farewellId$.pipe(
     switchMap((farewellId) =>
-      this.#store.pipe(select(selectFarewellById(farewellId)))
+      this.#store.pipe(select(selectFarewellById(farewellId))),
     ),
-    filter(Boolean)
+    filter(Boolean),
   );
 
   ngAfterViewInit() {

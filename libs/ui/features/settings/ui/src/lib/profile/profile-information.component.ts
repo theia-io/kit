@@ -21,11 +21,10 @@ import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 import { Store } from '@ngrx/store';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
-import { InputTextareaModule } from 'primeng/inputtextarea';
+import { InputTextarea } from 'primeng/inputtextarea';
 import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'feat-settings-profile-information',
   templateUrl: 'profile-information.component.html',
   imports: [
@@ -38,7 +37,7 @@ import { debounceTime, distinctUntilChanged, filter } from 'rxjs';
     //
     InputTextModule,
     FloatLabelModule,
-    InputTextareaModule,
+    InputTextarea,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -82,7 +81,7 @@ export class FeatSettingsProfileInformationComponent {
         filter(Boolean),
         debounceTime(2000),
         distinctUntilChanged(),
-        takeUntilDestroyed()
+        takeUntilDestroyed(),
       )
       .subscribe((updatedProfile) => {
         this.#saveProfileHandler({
@@ -102,7 +101,7 @@ export class FeatSettingsProfileInformationComponent {
             subtitle: profile.subtitle ?? '',
             description: profile.description ?? '',
           },
-          { emitEvent: false }
+          { emitEvent: false },
         );
         /** @FIXME should it be handled better? Likely. However
          * it is said that changedetection is not called in effect
@@ -120,7 +119,7 @@ export class FeatSettingsProfileInformationComponent {
     this.#store.dispatch(
       FeatProfileApiActions.updateProfile({
         profile,
-      })
+      }),
     );
   }
 }

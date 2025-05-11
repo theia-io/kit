@@ -16,5 +16,5 @@ export const accountReducer = createReducer(
   on(FeatAccountApiActions.setAccount, (state, { account }) => ({
     ...state,
     account,
-  }))
+  })),
 );

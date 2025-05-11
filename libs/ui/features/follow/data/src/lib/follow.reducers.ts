@@ -18,6 +18,6 @@ export const featFollowReducer = createReducer(
     (state, { profiles }) => ({
       ...state,
       colleaguesProfiles: mergeArr(state.colleaguesProfiles, profiles),
-    })
-  )
+    }),
+  ),
 );

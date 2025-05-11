@@ -19,7 +19,7 @@ exports = async function (profileIdBookmarker) {
   } catch (err) {
     console.error(
       '[getBookmarks][bookmarkCollection.find] Error occurred while getting bookmarks:',
-      err.message
+      err.message,
     );
     return {
       error: 'Error occurred while getting bookmarks: ' + err.message,
@@ -28,12 +28,12 @@ exports = async function (profileIdBookmarker) {
 
   try {
     bookmarksArr = bookmarksArr.map((bookmark) =>
-      context.functions.execute('normalizeBookmark', bookmark)
+      context.functions.execute('normalizeBookmark', bookmark),
     );
   } catch (err) {
     console.error(
       '[postTweet] Error occurred while normilizing bookmarks:',
-      err.message
+      err.message,
     );
     return {
       error: 'Error occurred while normilizing bookmarks: ' + err.message,

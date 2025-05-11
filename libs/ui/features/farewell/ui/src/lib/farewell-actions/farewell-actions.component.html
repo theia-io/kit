@@ -1,46 +1,64 @@
 <div class="flex gap-2 justify-end items-center">
   <div class="flex gap-2 mr-auto">
-    @for (profileReaction of (farewellProfileReactionsMap$ | async); track
-    $index) {
-    <div class="min-h-10 relative">
-      <p class="absolute top-1 right-0 font-bold text-xs">
-        {{ randomReaction(profileReaction[1]) }} {{ profileReaction[1].length }}
-      </p>
-      <ui-kit-comp-account-tile
-        class="cursor-pointer"
-        (click)="op.toggle($event)"
-        [alt]="
-          resolvedReactionProfilesMap()?.get(profileReaction[0])?.name +
-          ' profile picture'
-        "
-        [picture]="
-          profilePicture(resolvedReactionProfilesMap()?.get(profileReaction[0]))
-        "></ui-kit-comp-account-tile>
-      <p-overlayPanel #op>
-        @if (resolvedReactionProfilesMap()?.get(profileReaction[0]); as profile)
-        {
-        <a
-          class="font-bold hover:underline"
-          sharedAuthorizedFeature
-          [routerLink]="profileUrlPath + (profile.alias ?? profile.id)">
-          @if(currentProfile()?.id === profile.id) {
-          @if(profileReaction[1].length > 1) { These are your emojis } @else {
-          This is your emoji. } } @else { See {{ profile.name }}'s profile }
-        </a>
-        } @else { From anonymous users 👤 }
-
-        <div class="flex gap-2 mt-2">
-          @for (reaction of profileReaction[1]; track innerIdx; let innerIdx =
-          $index){
-          <span
-            (click)="removeReactionHandler(reaction)"
-            class="cursor-pointer text-4xl">
-            {{ reaction.content }}
-          </span>
+    @for (
+      profileReaction of farewellProfileReactionsMap$ | async;
+      track $index
+    ) {
+      <div class="min-h-10 relative">
+        <p class="absolute top-1 right-0 font-bold text-xs">
+          {{ randomReaction(profileReaction[1]) }}
+          {{ profileReaction[1].length }}
+        </p>
+        <ui-kit-comp-account-tile
+          class="cursor-pointer"
+          (click)="op.toggle($event)"
+          [alt]="
+            resolvedReactionProfilesMap()?.get(profileReaction[0])?.name +
+            ' profile picture'
+          "
+          [picture]="
+            profilePicture(
+              resolvedReactionProfilesMap()?.get(profileReaction[0])
+            )
+          "></ui-kit-comp-account-tile>
+        <p-overlayPanel #op>
+          @if (
+            resolvedReactionProfilesMap()?.get(profileReaction[0]);
+            as profile
+          ) {
+            <a
+              class="font-bold hover:underline"
+              sharedAuthorizedFeature
+              [routerLink]="profileUrlPath + (profile.alias ?? profile.id)">
+              @if (currentProfile()?.id === profile.id) {
+                @if (profileReaction[1].length > 1) {
+                  These are your emojis
+                } @else {
+                  This is your emoji.
+                }
+              } @else {
+                See {{ profile.name }}'s profile
+              }
+            </a>
+          } @else {
+            From anonymous users 👤
           }
-        </div>
-      </p-overlayPanel>
-    </div>
+
+          <div class="flex gap-2 mt-2">
+            @for (
+              reaction of profileReaction[1];
+              track innerIdx;
+              let innerIdx = $index
+            ) {
+              <span
+                (click)="removeReactionHandler(reaction)"
+                class="cursor-pointer text-4xl">
+                {{ reaction.content }}
+              </span>
+            }
+          </div>
+        </p-overlayPanel>
+      </div>
     }
   </div>
 
@@ -71,13 +89,13 @@
     <shared-copy-clipboard [id]="farewellId()" type="farewell" />
 
     <!-- Admin owner menu -->
-    @if(canEdit()) {
-    <p-button
-      pTooltip="Edit (Only visible for you)"
-      styleClass="ml-2 p-1 text-gray-500"
-      (onClick)="redirectToEdit()"
-      [text]="true"
-      icon="pi pi-file-edit" />
+    @if (canEdit()) {
+      <p-button
+        pTooltip="Edit (Only visible for you)"
+        styleClass="ml-2 p-1 text-gray-500"
+        (onClick)="redirectToEdit()"
+        [text]="true"
+        icon="pi pi-file-edit" />
     }
   </div>
 </div>

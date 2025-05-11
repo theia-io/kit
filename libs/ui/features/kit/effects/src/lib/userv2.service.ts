@@ -17,13 +17,13 @@ export class UserV2Service {
   addUserExperience$(userId: string, experience: Experience) {
     return this.#http.put(
       `${this.#env.api.kit}/user/${userId}/experience`,
-      experience
+      experience,
     );
   }
 
   deleteUserExperience$(userId: string, experienceId: Experience['id']) {
     return this.#http.delete(
-      `${this.#env.api.kit}/user/${userId}/experience/${experienceId}`
+      `${this.#env.api.kit}/user/${userId}/experience/${experienceId}`,
     );
   }
 }

@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'follow-ui',
   preset: '../../../../../jest.preset.js',

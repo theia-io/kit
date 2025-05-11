@@ -21,7 +21,6 @@ import { ToggleButtonModule } from 'primeng/togglebutton';
 import { Bounds } from 'quill';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-quill-side-actions',
   templateUrl: './quill-side-actions.component.html',
   imports: [
@@ -58,7 +57,7 @@ export class FeatFarewellQuillSideActionsComponent {
       },
       {
         allowSignalWrites: true,
-      }
+      },
     );
 
     effect(() => {

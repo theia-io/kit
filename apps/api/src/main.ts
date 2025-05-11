@@ -77,7 +77,7 @@ async function bootstrap() {
         maxAge: 3600000, // Session duration (e.g., 1 hour)
         sameSite: isProduction ? 'lax' : false, // could be changed to 'strict' once docker will have both API and Web on the same domain
       },
-    })
+    }),
   );
 
   // Configure express-openid-connect
@@ -122,7 +122,7 @@ async function bootstrap() {
       // Check if authentication was actually successful (session should contain tokens)
       if (!session.id_token || !session.access_token) {
         console.error(
-          'Authentication failed before afterCallback - Missing tokens.'
+          'Authentication failed before afterCallback - Missing tokens.',
         );
         // Redirect to an error page or login
         res.redirect(`${feUrl}?error=auth_failed`);
@@ -162,7 +162,7 @@ async function bootstrap() {
       } catch (error) {
         console.error(
           'Error fetching from /userinfo:',
-          error.response?.data || error.message
+          error.response?.data || error.message,
         );
         // Handle the error - maybe redirect to login with an error flag
         res.redirect(`${feUrl}?error=userinfo_failed`);
@@ -184,7 +184,7 @@ async function bootstrap() {
       const kitUser = await kitService.accountUserFindAndUpdate(kitAccount);
       const kitProfiles = await kitService.profilesFindOrInsert(
         kitUser,
-        auth0User
+        auth0User,
       );
 
       const authKit: Auth0Kit = {
@@ -207,7 +207,7 @@ async function bootstrap() {
 
       console.log(
         '[NEW Session set] Token: %s',
-        !isProduction ? appToken : `not visible in prod`
+        !isProduction ? appToken : `not visible in prod`,
       );
       // Return the session object (required by afterCallback)
       return {
@@ -257,7 +257,7 @@ async function bootstrap() {
   }
 
   Logger.log(
-    `🚀 Application is running on: http://localhost:${port}${globalPrefix}`
+    `🚀 Application is running on: http://localhost:${port}${globalPrefix}`,
   );
 }
 

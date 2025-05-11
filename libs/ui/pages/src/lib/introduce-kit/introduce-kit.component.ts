@@ -16,7 +16,6 @@ import { PagesFeatureFarewellBenefitsComponent } from '../features/farewell/bene
 import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/benefits.component';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-introduce-kit',
   styleUrls: ['./introduce-kit.component.scss'],
   templateUrl: './introduce-kit.component.html',
@@ -37,7 +36,7 @@ import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/be
 })
 export class KitPagesIntroduceKitComponent {
   extraLarge$ = inject(DeviceService).innerWidth$.pipe(
-    map((width) => width >= 1320)
+    map((width) => width >= 1320),
   );
 
   getStartedKlassOverwrite: KlassOverwrite = {

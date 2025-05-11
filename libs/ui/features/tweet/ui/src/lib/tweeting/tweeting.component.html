@@ -1,20 +1,20 @@
 <div class="flex gap-2">
   <div class="w-10">
-    @if(profilePic$ | async) {
-    <img
-      class="inline-block h-10 w-10 rounded-full"
-      referrerpolicy="no-referrer"
-      [src]="profilePic$ | async"
-      height="40"
-      width="40"
-      alt="kitouch profile picture" />
+    @if (profilePic$ | async) {
+      <img
+        class="inline-block h-10 w-10 rounded-full"
+        referrerpolicy="no-referrer"
+        [src]="profilePic$ | async"
+        height="40"
+        width="40"
+        alt="kitouch profile picture" />
     } @else {
-    <img
-      class="inline-block h-10 w-10 rounded-full"
-      ngSrc="/account/placeholder-small.jpeg"
-      height="40"
-      width="40"
-      alt="kitouch profile picture placeholder" />
+      <img
+        class="inline-block h-10 w-10 rounded-full"
+        ngSrc="/account/placeholder-small.jpeg"
+        height="40"
+        width="40"
+        alt="kitouch profile picture placeholder" />
     }
   </div>
   <div class="flex-1">

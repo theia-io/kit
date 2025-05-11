@@ -8,7 +8,7 @@ import { Farewell, FarewellDocument } from './schemas';
 export class BeFarewellService {
   constructor(
     @InjectModel(Farewell.name)
-    private farewellModel: Model<FarewellDocument>
+    private farewellModel: Model<FarewellDocument>,
   ) {}
 
   async getProfileFarewells(profileId: string) {
@@ -26,7 +26,7 @@ export class BeFarewellService {
       console.error(`Cannot execute farewell search for %s`, profileId, err);
       throw new HttpException(
         'Cannot find farewells',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -66,7 +66,7 @@ export class BeFarewellService {
       console.error(`Cannot execute farewell search for %s`, farewellId, err);
       throw new HttpException(
         'Cannot run farewell search correctly',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -132,11 +132,11 @@ export class BeFarewellService {
         status,
         kudoBoardId,
         profileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot run create farewell',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -144,7 +144,7 @@ export class BeFarewellService {
       console.warn(`Farewell was not created.`);
       throw new HttpException(
         `Farewell was not created.`,
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -154,7 +154,7 @@ export class BeFarewellService {
   async updateFarewell(
     farewellId: string,
     { title, content, status, kudoBoardId }: Omit<IFarewell, 'id'>,
-    currentProfileIds: Array<string>
+    currentProfileIds: Array<string>,
   ) {
     let updatedFarewell;
 
@@ -166,7 +166,7 @@ export class BeFarewellService {
             profileId: {
               $in: currentProfileIds.map(
                 (currentProfileId) =>
-                  new mongoose.Types.ObjectId(currentProfileId)
+                  new mongoose.Types.ObjectId(currentProfileId),
               ),
             },
           },
@@ -178,24 +178,24 @@ export class BeFarewellService {
               ? new mongoose.Types.ObjectId(kudoBoardId)
               : null,
           },
-          { new: true }
+          { new: true },
         )
         .exec();
     } catch (err) {
       console.error(`Cannot execute farewell update for %s`, farewellId, err);
       throw new HttpException(
         'Cannot update farewell',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
     if (!updatedFarewell) {
       console.warn(
-        `Farewell ${farewellId} not found or not authorized for update by provided profiles.`
+        `Farewell ${farewellId} not found or not authorized for update by provided profiles.`,
       );
       throw new HttpException(
         `Farewell message with ID "${farewellId}" not found or you lack permission.`,
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 
@@ -204,7 +204,7 @@ export class BeFarewellService {
 
   async deleteFarewell(
     farewellId: string,
-    currentCallerProfileIds: Array<string>
+    currentCallerProfileIds: Array<string>,
   ) {
     let deletedFarewell;
 
@@ -214,7 +214,7 @@ export class BeFarewellService {
         profileId: {
           $in: currentCallerProfileIds.map(
             (currentCallerProfileId) =>
-              new mongoose.Types.ObjectId(currentCallerProfileId)
+              new mongoose.Types.ObjectId(currentCallerProfileId),
           ),
         },
       });
@@ -222,7 +222,7 @@ export class BeFarewellService {
       console.error(`Cannot execute farewell delete for %s`, farewellId, err);
       throw new HttpException(
         'Cannot delete farewell',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -230,11 +230,11 @@ export class BeFarewellService {
       // This means EITHER the farewellId didn't exist OR its profileId wasn't in the requestingProfileObjectIds array.
       // Throwing NotFound is generally safer than Forbidden.
       console.warn(
-        `Farewell ${farewellId} not found or not authorized for deletion by provided profiles.`
+        `Farewell ${farewellId} not found or not authorized for deletion by provided profiles.`,
       );
       throw new HttpException(
         `Farewell message with ID "${farewellId}" not found or you lack permission.`,
-        HttpStatus.NOT_FOUND
+        HttpStatus.NOT_FOUND,
       );
     }
 

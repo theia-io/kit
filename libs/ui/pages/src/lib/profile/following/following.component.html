@@ -1,54 +1,55 @@
-@if(followingProfiles$ | async; as followingProfiles) {
-<p-messages
-  [value]="[
-    {
-      severity: 'info',
-      detail: 'Profiles ' + profile()?.name + ' follows'
-    }
-  ]"
-  showTransitionOptions="250ms"
-  hideTransitionOptions="0ms"
-  [enableService]="false"
-  [closable]="false" />
+@if (followingProfiles$ | async; as followingProfiles) {
+  <p-messages
+    [value]="[
+      {
+        severity: 'info',
+        detail: 'Profiles ' + profile()?.name + ' follows',
+      },
+    ]"
+    showTransitionOptions="250ms"
+    hideTransitionOptions="0ms"
+    [enableService]="false"
+    [closable]="false" />
 
-@for (profile of followingProfiles; track $index) {
-<ui-kit-comp-card class="block w-full mb-2">
-  <div class="flex">
-    <ui-kit-comp-account-tile
-      class="grow"
-      [primaryText]="profile.name"
-      [primarySecondaryText]="profile.title"
-      [picture]="profilePicture(profile)"
-      [link]="profileUrlPath + (profile.alias ?? profile.id)" />
+  @for (profile of followingProfiles; track $index) {
+    <ui-kit-comp-card class="block w-full mb-2">
+      <div class="flex">
+        <ui-kit-comp-account-tile
+          class="grow"
+          [primaryText]="profile.name"
+          [primarySecondaryText]="profile.title"
+          [picture]="profilePicture(profile)"
+          [link]="profileUrlPath + (profile.alias ?? profile.id)" />
 
-    <div class="min-w-[158px]">
-      @if(profile.id === currentProfile()?.id) {
-      <div class="flex justify-center items-center">
-        Follows you
-        <span class="ml-4 text-xl">🫂</span>
+        <div class="min-w-[158px]">
+          @if (profile.id === currentProfile()?.id) {
+            <div class="flex justify-center items-center">
+              Follows you
+              <span class="ml-4 text-xl">🫂</span>
+            </div>
+          } @else {
+            <ui-kit-follow-button
+              [alreadyFollowing]="currentProfileFollowingSet().has(profile.id)"
+              (click)="
+                currentProfileFollowingSet().has(profile.id)
+                  ? unFollowProfileHandler(profile)
+                  : followProfileHandler(profile)
+              " />
+          }
+        </div>
       </div>
-      } @else {
-      <ui-kit-follow-button
-        [alreadyFollowing]="currentProfileFollowingSet().has(profile.id)"
-        (click)="
-          currentProfileFollowingSet().has(profile.id)
-            ? unFollowProfileHandler(profile)
-            : followProfileHandler(profile)
-        " />
-      }
-    </div>
-  </div>
-</ui-kit-comp-card>
-} } @else {
-<p-messages
-  [value]="[
-    {
-      severity: 'info',
-      detail: profile()?.name + ' does not follow anyone yet'
-    }
-  ]"
-  showTransitionOptions="250ms"
-  hideTransitionOptions="0ms"
-  [enableService]="false"
-  [closable]="false" />
+    </ui-kit-comp-card>
+  }
+} @else {
+  <p-messages
+    [value]="[
+      {
+        severity: 'info',
+        detail: profile()?.name + ' does not follow anyone yet',
+      },
+    ]"
+    showTransitionOptions="250ms"
+    hideTransitionOptions="0ms"
+    [enableService]="false"
+    [closable]="false" />
 }

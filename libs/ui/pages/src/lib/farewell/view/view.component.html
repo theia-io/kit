@@ -2,53 +2,54 @@
 @let farewell = farewell$ | async;
 
 <!-- Breadcrumb menu -->
-@if(preview()) {
-<p-breadcrumb
-  class="block mt-4 max-w-full"
-  [model]="(breadcrumbMenuItems$ | async) ?? []">
-  <ng-template pTemplate="item" #item let-item>
-    <a class="cursor-pointer" [routerLink]="item.url">
-      <i [class]="item.icon"></i>
-      {{ item.label }}
-    </a>
-    @if(item?.label === farewell?.title && farewell?.status; as status) {
-    <feat-farewell-status class="ml-2" [status]="status" />
-    }
-  </ng-template>
-</p-breadcrumb>
+@if (preview()) {
+  <p-breadcrumb
+    class="block mt-4 max-w-full"
+    [model]="(breadcrumbMenuItems$ | async) ?? []">
+    <ng-template pTemplate="item" #item let-item>
+      <a class="cursor-pointer" [routerLink]="item.url">
+        <i [class]="item.icon"></i>
+        {{ item.label }}
+      </a>
+      @if (item?.label === farewell?.title && farewell?.status; as status) {
+        <feat-farewell-status class="ml-2" [status]="status" />
+      }
+    </ng-template>
+  </p-breadcrumb>
 }
 
 <!-- Overlay for draft -->
-@if(!farewellOwner() && farewellLoadingState()?.loaded) {
-<ui-kit-page-overlay
-  [show]="farewell?.status !== farewellStatus.Published"
-  [text]="(farewellOverlayText$ | async) ?? ''">
-  @if(farewellProfile(); as profile) {
-  <feat-kit-profile-header
-    class="block relative p-2 bg-white"
-    [profile]="profile"></feat-kit-profile-header>
-  }
-</ui-kit-page-overlay>
-} @if(farewellProfile(); as profile) {
-<feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
-  <div
-    profileExtensionTwo
-    class="ml-auto mr-4 -mb-4 flex items-end gap-1 sm:gap-2 md:gap-12">
-    <div>
-      @if(!currentProfile()) {
-      <button
-        (click)="signInAndFollow(profile)"
-        type="button"
-        class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
-        <img class="inline-block h-6" src="sign-in/g-icon.png" />
-        Sign in to follow
-      </button>
-      } @else {
-      <feat-follow-unfollow-profile [profileId]="profile.id" />
-      }
+@if (!farewellOwner() && farewellLoadingState()?.loaded) {
+  <ui-kit-page-overlay
+    [show]="farewell?.status !== farewellStatus.Published"
+    [text]="(farewellOverlayText$ | async) ?? ''">
+    @if (farewellProfile(); as profile) {
+      <feat-kit-profile-header
+        class="block relative p-2 bg-white"
+        [profile]="profile"></feat-kit-profile-header>
+    }
+  </ui-kit-page-overlay>
+}
+@if (farewellProfile(); as profile) {
+  <feat-kit-profile-header class="block mt-8 mx-2" [profile]="profile">
+    <div
+      profileExtensionTwo
+      class="ml-auto mr-4 -mb-4 flex items-end gap-1 sm:gap-2 md:gap-12">
+      <div>
+        @if (!currentProfile()) {
+          <button
+            (click)="signInAndFollow(profile)"
+            type="button"
+            class="flex justify-center items-center gap-4 px-4 py-2 rounded duration-300 bg-secondary hover:bg-secondary-hover">
+            <img class="inline-block h-6" src="sign-in/g-icon.png" />
+            Sign in to follow
+          </button>
+        } @else {
+          <feat-follow-unfollow-profile [profileId]="profile.id" />
+        }
+      </div>
     </div>
-  </div>
-</feat-kit-profile-header>
+  </feat-kit-profile-header>
 }
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
@@ -64,14 +65,14 @@
     <feat-farewell-viewv2 class="grow" [farewellId]="farewellId$ | async" />
   </div>
 
-  @if(farewell) {
-  <div class="container mx-auto">
-    <feat-farewell-info-panel
-      class="float-right"
-      [farewell]="farewell"
-      [linkedKudoboard]="linkedKudoBoard$ | async"
-      [preview]="preview()" />
-  </div>
+  @if (farewell) {
+    <div class="container mx-auto">
+      <feat-farewell-info-panel
+        class="float-right"
+        [farewell]="farewell"
+        [linkedKudoboard]="linkedKudoBoard$ | async"
+        [preview]="preview()" />
+    </div>
   }
 
   <div class="container mx-auto">

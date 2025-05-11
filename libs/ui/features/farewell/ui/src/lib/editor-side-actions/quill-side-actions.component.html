@@ -3,7 +3,7 @@
   [ngStyle]="{
     left: device() === currentDevice.Mobile ? '25px' : '-55px',
     transform: show() ? 'translateX(0)' : 'translateX(-100000px)',
-    top: (bounds()?.top ?? 0) - (36 / 2) + 4 + 'px',
+    top: (bounds()?.top ?? 0) - 36 / 2 + 4 + 'px',
   }">
   <div class="p-1 rounded bg-secondary shadow-xl">
     <div class="flex items-center justify-between gap-2">
@@ -14,31 +14,31 @@
         offIcon="pi pi-plus-circle font-semibold text-2xl k-bg-transparent shadow-none text-gray-950 p-0 animate-pulse"
         ariaLabel="View embedded content" />
 
-      @if(opened()) {
-      <button
-        class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
-        <ui-kit-pic-uploadable
-          class="d-block h-[16px]"
-          [conf]="{ withIcon: false }"
-          [autoUploadCb]="onBasicUploadAuto.bind(this)">
-          <ng-template uiKitPicUploadableTemplate>
-            <i class="pi pi-image"></i>
-          </ng-template>
-        </ui-kit-pic-uploadable>
-      </button>
-      <!-- <button
+      @if (opened()) {
+        <button
+          class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
+          <ui-kit-pic-uploadable
+            class="d-block h-[16px]"
+            [conf]="{ withIcon: false }"
+            [autoUploadCb]="onBasicUploadAuto.bind(this)">
+            <ng-template uiKitPicUploadableTemplate>
+              <i class="pi pi-image"></i>
+            </ng-template>
+          </ui-kit-pic-uploadable>
+        </button>
+        <!-- <button
         class="flex p-2 border rounded-full px-2 duration-150 hover:bg-slate-200">
         <i class="pi pi-video font-semibold text-xl"></i>
       </button> -->
-      <!-- <button
+        <!-- <button
         class="flex p-2 border rounded-full px-2 duration-150 hover:bg-slate-200">
         <i class="pi pi-twitter font-semibold text-xl"></i>
       </button> -->
-      <button
-        (click)="onDivider()"
-        class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
-        <i class="pi pi-ellipsis-h"></i>
-      </button>
+        <button
+          (click)="onDivider()"
+          class="flex p-2 border rounded-full duration-150 hover:bg-slate-200">
+          <i class="pi pi-ellipsis-h"></i>
+        </button>
       }
     </div>
   </div>

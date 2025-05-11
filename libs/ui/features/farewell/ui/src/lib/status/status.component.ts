@@ -9,7 +9,6 @@ import { ButtonModule } from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-status',
   templateUrl: './status.component.html',
   imports: [ButtonModule, TagModule],

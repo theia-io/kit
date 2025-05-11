@@ -28,7 +28,7 @@ export class ProfileV2Service {
     return this.#s3Service.setBucketItem(
       this.#env.s3Config.profileBucket,
       key,
-      media
+      media,
     );
   }
 }

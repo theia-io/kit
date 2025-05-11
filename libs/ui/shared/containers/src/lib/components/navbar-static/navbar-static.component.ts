@@ -27,7 +27,6 @@ import { NavbarService } from '../navbar/navbar.service';
 import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
-  standalone: true,
   imports: [
     RouterModule,
     AsyncPipe,
@@ -63,8 +62,8 @@ export class SharedNavBarStaticComponent implements OnDestroy {
     (navItem) =>
       !navItem.separator &&
       ![`/${APP_PATH.Settings}`, `/${APP_PATH.Bookmarks}`].includes(
-        navItem.routerLink
-      )
+        navItem.routerLink,
+      ),
   );
   featuresOpened = signal(false);
 

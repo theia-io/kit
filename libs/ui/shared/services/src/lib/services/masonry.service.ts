@@ -12,7 +12,7 @@ export class MasonryService {
    */
   async initializeMasonry(
     el: HTMLElement | string,
-    options?: Partial<Masonry.Options>
+    options?: Partial<Masonry.Options>,
   ) {
     const masonry = new Masonry(el, {
       ...DEFAULT_MASONRY,

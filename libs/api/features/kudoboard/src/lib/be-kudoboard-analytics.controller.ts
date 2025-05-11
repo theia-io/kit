@@ -15,7 +15,7 @@ import { BeKudoBoardAnalyticsService } from './be-kudoboard-analytics.service';
 @Controller('kudoboard-analytics')
 export class BeKudoBoardAnalyticsController {
   constructor(
-    private beKudoBoardAnalyticsService: BeKudoBoardAnalyticsService
+    private beKudoBoardAnalyticsService: BeKudoBoardAnalyticsService,
   ) {}
 
   @Get()
@@ -23,7 +23,7 @@ export class BeKudoBoardAnalyticsController {
   async getAnalyticsKudoBoards(@Query('kudoBoardIds') kudoBoardIds: string) {
     const kudoBoardIdsArray = kudoBoardIds.split(',');
     return this.beKudoBoardAnalyticsService.getAnalyticsKudoBoards(
-      kudoBoardIdsArray
+      kudoBoardIdsArray,
     );
   }
 
@@ -34,10 +34,10 @@ export class BeKudoBoardAnalyticsController {
 
   @Post()
   async createAnalyticsKudoBoard(
-    @Body() kudoBoardAnalytics: KudoBoardAnalytics
+    @Body() kudoBoardAnalytics: KudoBoardAnalytics,
   ) {
     return this.beKudoBoardAnalyticsService.createAnalyticsKudoBoard(
-      kudoBoardAnalytics
+      kudoBoardAnalytics,
     );
   }
 
@@ -45,7 +45,7 @@ export class BeKudoBoardAnalyticsController {
   @UseGuards(AuthGuard('jwt'))
   async deleteKudoboardAnalytics(@Param('kudoboardId') kudoboardId: string) {
     return this.beKudoBoardAnalyticsService.deleteKudoboardAnalytics(
-      kudoboardId
+      kudoboardId,
     );
   }
 }

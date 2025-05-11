@@ -1,4 +1,3 @@
-/* eslint-disable */
 export default {
   displayName: 'kit-data',
   preset: '../../../../../jest.preset.js',

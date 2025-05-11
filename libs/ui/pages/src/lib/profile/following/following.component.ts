@@ -26,7 +26,6 @@ import { MessagesModule } from 'primeng/messages';
 import { filter, map, shareReplay, switchMap, take, throwError } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-profile-following',
   templateUrl: './following.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,43 +44,43 @@ export class PageProfileFollowingComponent {
   #activatedRouter = inject(ActivatedRoute);
 
   #profileId$ = this.#activatedRouter.parent?.params.pipe(
-    map((params) => params['profileId'])
+    map((params) => params['profileId']),
   );
 
   #profile$ = this.#profileId$
     ? this.#profileId$.pipe(
         switchMap((profileId) =>
-          this.#store.select(selectProfileById(profileId))
+          this.#store.select(selectProfileById(profileId)),
         ),
         filter(Boolean),
-        shareReplay(1)
+        shareReplay(1),
       )
     : throwError(
         () =>
-          'Cannot continue without profile id. likely component is used incorrectly'
+          'Cannot continue without profile id. likely component is used incorrectly',
       );
 
   profile = toSignal(this.#profile$);
   profilePic = computed(() => profilePicture(this.profile() ?? {}));
 
   currentProfile = toSignal(
-    this.#store.pipe(select(selectCurrentProfile), filter(Boolean))
+    this.#store.pipe(select(selectCurrentProfile), filter(Boolean)),
   );
   currentProfileFollowingSet = computed(
-    () => new Set(this.currentProfile()?.following?.map(({ id }) => id))
+    () => new Set(this.currentProfile()?.following?.map(({ id }) => id)),
   );
 
   followingProfiles$ = this.#profile$.pipe(
     switchMap((profile) =>
       this.#store.pipe(
         select(
-          selectProfilesByIds(profile.following?.map(({ id }) => id) ?? [])
+          selectProfilesByIds(profile.following?.map(({ id }) => id) ?? []),
         ),
-        map((profiles) => profiles.filter((profile) => !!profile))
-      )
+        map((profiles) => profiles.filter((profile) => !!profile)),
+      ),
     ),
     filter((profiles) => profiles.length > 0),
-    take(1)
+    take(1),
   );
 
   #followerHandlerFn = followerHandlerFn();

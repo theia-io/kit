@@ -17,34 +17,35 @@
     </ng-template>
   </p-confirmPopup>
 
-  @if(customTmpl) {
-  <div (click)="uploadInstantly($event)">
-    <ng-container *ngTemplateOutlet="customTmpl.template"></ng-container>
-  </div>
+  @if (customTmpl) {
+    <div (click)="uploadInstantly($event)">
+      <ng-container *ngTemplateOutlet="customTmpl.template"></ng-container>
+    </div>
   } @else {
-  <img
-    class="rounded-md"
-    [ngSrc]="
-      defaultTmplConf()?.imageConf?.src ??
-      '/farewell/farewell-page-logo-small.jpeg'
-    "
-    width="64"
-    height="64"
-    [alt]="
-      defaultTmplConf()?.imageConf?.alt ?? 'Container to instantly upload media'
-    "
-    referrerpolicy="no-referrer" />
-
-  } @if(conf().withIcon) {
-  <i
-    role="button"
-    (click)="uploadInstantly($event)"
-    class="pi pi-cloud-upload font-extrabold text-2xl cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2"
-    [ngClass]="
-      (customTmpl
-        ? 'p-2 bg-slate-800 rounded-full border-1 border-slate-100 text-slate-100'
-        : 'opacity-80 hover:opacity-100') +
-      (defaultTmplConf()?.iconConf?.ngClass ?? '')
-    "></i>
+    <img
+      class="rounded-md"
+      [ngSrc]="
+        defaultTmplConf()?.imageConf?.src ??
+        '/farewell/farewell-page-logo-small.jpeg'
+      "
+      width="64"
+      height="64"
+      [alt]="
+        defaultTmplConf()?.imageConf?.alt ??
+        'Container to instantly upload media'
+      "
+      referrerpolicy="no-referrer" />
+  }
+  @if (conf().withIcon) {
+    <i
+      role="button"
+      (click)="uploadInstantly($event)"
+      class="pi pi-cloud-upload font-extrabold text-2xl cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2"
+      [ngClass]="
+        (customTmpl
+          ? 'p-2 bg-slate-800 rounded-full border-1 border-slate-100 text-slate-100'
+          : 'opacity-80 hover:opacity-100') +
+        (defaultTmplConf()?.iconConf?.ngClass ?? '')
+      "></i>
   }
 </div>

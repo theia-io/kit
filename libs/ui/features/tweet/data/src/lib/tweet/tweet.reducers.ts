@@ -26,7 +26,7 @@ export const featTweetTweetsReducer = createReducer(
     ({ tweets: stateTweets, ...restState }, { tweet }) => ({
       ...restState,
       tweets: addOrUpdate(tweet, stateTweets),
-    })
+    }),
   ),
   on(
     TweetApiActions.getAllSuccess,
@@ -35,7 +35,7 @@ export const featTweetTweetsReducer = createReducer(
     (state, { tweets }) => ({
       ...state,
       tweets: mergeArr(tweets, state.tweets),
-    })
+    }),
   ),
   on(FeatTweetActions.deleteSuccess, (state, { tweet: { id } }) => ({
     ...state,
@@ -63,5 +63,5 @@ export const featTweetTweetsReducer = createReducer(
 
       return stateTweet;
     }),
-  }))
+  })),
 );

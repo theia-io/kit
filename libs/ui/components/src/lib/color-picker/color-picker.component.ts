@@ -12,10 +12,9 @@ import { FormsModule } from '@angular/forms';
 import { ConfirmationService } from 'primeng/api';
 import { ColorPicker, ColorPickerModule } from 'primeng/colorpicker';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
-
+import { ButtonModule } from 'primeng/button';
 @Component({
   selector: 'ui-kit-color-picker',
-  standalone: true,
   imports: [
     //
     FormsModule,
@@ -24,6 +23,7 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
     //
     ColorPickerModule,
     ConfirmDialogModule,
+    ButtonModule,
   ],
   templateUrl: './color-picker.component.html',
   providers: [ConfirmationService],

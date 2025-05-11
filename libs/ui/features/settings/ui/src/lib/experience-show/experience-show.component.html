@@ -10,10 +10,14 @@
     </p>
 
     <p class="text-sm text-gray-500">
-      @if(experience().city) {
-      {{ experience().city }}, } @if(experience().country) {
-      {{ experience().country }}. } @if(experience().locationType) {
-      {{ experience().locationType }}
+      @if (experience().city) {
+        {{ experience().city }},
+      }
+      @if (experience().country) {
+        {{ experience().country }}.
+      }
+      @if (experience().locationType) {
+        {{ experience().locationType }}
       }
     </p>
 
@@ -22,11 +26,11 @@
     </p>
   </section>
 
-  @if(showRemove()) {
-  <i
-    (click)="deleteExperience.emit(experience())"
-    role="button"
-    class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
-    style="font-size: 1.5rem"></i>
+  @if (showRemove()) {
+    <i
+      (click)="deleteExperience.emit(experience())"
+      role="button"
+      class="pi pi-times-circle absolute top-2 right-2 hover:animate-pulse"
+      style="font-size: 1.5rem"></i>
   }
 </div>

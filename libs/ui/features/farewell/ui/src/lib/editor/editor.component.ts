@@ -35,7 +35,6 @@ export interface Range {
 }
 
 @Component({
-  standalone: true,
   selector: 'feat-farewell-editor',
   templateUrl: './editor.component.html',
   styles: [
@@ -109,12 +108,12 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
           this.sideActionOpened(),
           this.editorControl.value ?? '',
           this.quill(),
-          this.quillPlaceholderShown()
+          this.quillPlaceholderShown(),
         );
       },
       {
         allowSignalWrites: true,
-      }
+      },
     );
   }
 
@@ -158,7 +157,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
                 if (
                   quillBackspaceImageHandler(
                     removedNode,
-                    mutationsList[idx + 1]?.addedNodes?.[0]
+                    mutationsList[idx + 1]?.addedNodes?.[0],
                   )
                 ) {
                   deleteImageCb(removedNode.src);
@@ -221,7 +220,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
           idx++,
           'image',
           kitQuillImageBloat,
-          Quill.sources.USER
+          Quill.sources.USER,
         );
         quill.insertText(idx++, '\n', Quill.sources.USER);
         quill.insertText(idx++, '\n', Quill.sources.USER);
@@ -232,7 +231,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
       });
     } else {
       console.warn(
-        'Image storage provider has not been provided, image is not loaded'
+        'Image storage provider has not been provided, image is not loaded',
       );
     }
   }
@@ -363,7 +362,7 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     sideActionOpened: boolean,
     editorContent: string,
     quill: Quill | null,
-    placeholderAlreadyShown: boolean
+    placeholderAlreadyShown: boolean,
   ) {
     if (!quill) {
       return;

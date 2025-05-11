@@ -1,28 +1,30 @@
 @if (!suggestionConfig().cards) {
-<div class="flex flex-col justify-center items-center gap-2">
-  @for (profile of (suggestedExColleaguesProfilesConfigured$ | async); track
-  $index) {
-  <ui-kit-comp-card class="block w-full">
-    <ui-kit-comp-account-tile
-      [primaryText]="profile.name"
-      [primarySecondaryText]="profile.title"
-      [picture]="profilePicture(profile)"
-      [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)" />
+  <div class="flex flex-col justify-center items-center gap-2">
+    @for (
+      profile of suggestedExColleaguesProfilesConfigured$ | async;
+      track $index
+    ) {
+      <ui-kit-comp-card class="block w-full">
+        <ui-kit-comp-account-tile
+          [primaryText]="profile.name"
+          [primarySecondaryText]="profile.title"
+          [picture]="profilePicture(profile)"
+          [link]="profileUrlPath + '/' + (profile.alias ?? profile.id)" />
 
-    <div class="flex mt-1 md:mt-2">
-      <ui-kit-follow-button
-        class="block w-full"
-        [alreadyFollowing]="profile.followed"
-        (click)="
-          profile.followed
-            ? unFollowProfileHandler(profile)
-            : followProfileHandler(profile)
-        " />
-    </div>
-  </ui-kit-comp-card>
-  } @empty {
-  <!-- TODO Implement better suggestion mechanism -->
-  <!-- <ui-kit-comp-card>
+        <div class="flex mt-1 md:mt-2">
+          <ui-kit-follow-button
+            class="block w-full"
+            [alreadyFollowing]="profile.followed"
+            (click)="
+              profile.followed
+                ? unFollowProfileHandler(profile)
+                : followProfileHandler(profile)
+            " />
+        </div>
+      </ui-kit-comp-card>
+    } @empty {
+      <!-- TODO Implement better suggestion mechanism -->
+      <!-- <ui-kit-comp-card>
     <span>
       Add your working experience to see who to follow on
       <a class="font-bold underline" [routerLink]="'/' + settingsPageUrl">
@@ -30,25 +32,27 @@
       </a>
     </span>
   </ui-kit-comp-card> -->
-  }
-</div>
+    }
+  </div>
 } @else {
-<div class="flex flex-wrap justify-center gap-2">
-  @for (profile of (suggestedExColleaguesProfilesConfigured$ | async); track
-  $index) {
-  <feat-follow-profile-card
-    [profile]="profile"
-    [followed]="profile.followed"
-    (followProfile)="followProfileHandler($event)"
-    (stopFollowProfile)="unFollowProfileHandler($event)" />
-  } @empty {
-  <span>
-    We cannot suggest anyone to follow. Add your working experience above. Add
-    experience on
-    <a class="font-bold underline" [routerLink]="'/' + settingsPageUrl">
-      Settings page.
-    </a>
-  </span>
-  }
-</div>
+  <div class="flex flex-wrap justify-center gap-2">
+    @for (
+      profile of suggestedExColleaguesProfilesConfigured$ | async;
+      track $index
+    ) {
+      <feat-follow-profile-card
+        [profile]="profile"
+        [followed]="profile.followed"
+        (followProfile)="followProfileHandler($event)"
+        (stopFollowProfile)="unFollowProfileHandler($event)" />
+    } @empty {
+      <span>
+        We cannot suggest anyone to follow. Add your working experience above.
+        Add experience on
+        <a class="font-bold underline" [routerLink]="'/' + settingsPageUrl">
+          Settings page.
+        </a>
+      </span>
+    }
+  </div>
 }

@@ -13,7 +13,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 
 export function authInterceptor(
   req: HttpRequest<any>,
-  next: HttpHandlerFn
+  next: HttpHandlerFn,
 ): Observable<HttpEvent<any>> {
   const router = inject(Router);
   const store = inject(Store);
@@ -28,7 +28,7 @@ export function authInterceptor(
       ) {
         console.info(
           '[AuthInterceptor] silent logged in FAILED, PASS THROUGH',
-          req
+          req,
         );
         return throwError(() => err);
       }
@@ -40,6 +40,6 @@ export function authInterceptor(
       }
 
       return throwError(() => err);
-    })
+    }),
   );
 }

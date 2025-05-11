@@ -22,7 +22,7 @@ export class BeFarewellAnalyticsController {
   async getAnalyticsFarewells(@Query('farewellIds') farewellIds: string) {
     const farewellIdsArray = farewellIds.split(',');
     return this.beFarewellAnalyticsService.getAnalyticFarewells(
-      farewellIdsArray
+      farewellIdsArray,
     );
   }
 
@@ -39,11 +39,11 @@ export class BeFarewellAnalyticsController {
   @Put(':analyticId')
   async updateFarewellAnalytics(
     @Param('analyticId') analyticId: string,
-    @Body() farewell: IFarewell
+    @Body() farewell: IFarewell,
   ) {
     return this.beFarewellAnalyticsService.updateAnalyticsFarewell(
       analyticId,
-      farewell
+      farewell,
     );
   }
 

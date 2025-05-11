@@ -23,15 +23,15 @@ export class FarewellMediaEffects {
       switchMap(({ farewellId, profileId, items }) =>
         forkJoin(
           items.map(({ key, blob }) =>
-            this.#farewellMediaService.uploadFarewellMedia(key, blob)
-          )
+            this.#farewellMediaService.uploadFarewellMedia(key, blob),
+          ),
         ).pipe(
           map((res) =>
             FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess({
               farewellId,
               profileId,
               items: res,
-            })
+            }),
           ),
           // AWW S3 takes time to handle and make image available. It has eventual consistency so need a time for it to be available
           delay(2500),
@@ -40,12 +40,12 @@ export class FarewellMediaEffects {
               FeatFarewellMediaActions.uploadFarewellStorageMediaFailure({
                 message:
                   'We were unable to upload farewell media. Try adding later.',
-              })
-            )
-          )
-        )
-      )
-    )
+              }),
+            ),
+          ),
+        ),
+      ),
+    ),
   );
 
   deleteFarewellStorageMedia$ = createEffect(() =>
@@ -54,24 +54,24 @@ export class FarewellMediaEffects {
       switchMap(({ url }) =>
         this.#farewellMediaService
           .deleteFarewellMedia(
-            getImageKeyFromS3Url(url, this.#s3FarewellBaseUrl)
+            getImageKeyFromS3Url(url, this.#s3FarewellBaseUrl),
           )
           .pipe(
             map(() =>
               FeatFarewellMediaActions.deleteFarewellStorageMediaSuccess({
                 url,
-              })
+              }),
             ),
             catchError(() =>
               of(
                 FeatFarewellMediaActions.deleteFarewellStorageMediaFailure({
                   message:
                     'We were unable to remove farewell media from S3 bucket. Try again later.',
-                })
-              )
-            )
-          )
-      )
-    )
+                }),
+              ),
+            ),
+          ),
+      ),
+    ),
   );
 }

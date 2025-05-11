@@ -7,7 +7,6 @@ export enum ButtonComponentType {
 }
 
 @Component({
-  standalone: true,
   selector: 'ui-kit-button',
   template: ` <!-- Base -->
     <button

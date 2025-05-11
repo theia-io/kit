@@ -11,7 +11,7 @@ import {
 export class BeKudoBoardCommentsService {
   constructor(
     @InjectModel(KudoBoardComments.name)
-    private kudoBoardCommentsModel: Model<KudoBoardCommentsDocument>
+    private kudoBoardCommentsModel: Model<KudoBoardCommentsDocument>,
   ) {}
 
   async getCommentsKudoBoards(kudoBoardId: Array<string>) {
@@ -29,11 +29,11 @@ export class BeKudoBoardCommentsService {
       console.error(
         `Cannot execute kudoboard comments search for %s`,
         kudoBoardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find kudoboards comments',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -54,11 +54,11 @@ export class BeKudoBoardCommentsService {
       console.error(
         `Cannot execute kudoboard comments search for %s`,
         kudoBoardId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot find kudoboard comments',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -98,18 +98,18 @@ export class BeKudoBoardCommentsService {
         medias,
         kudoBoardId,
         profileId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot create kudoboard comments',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
     if (!newKudoBoardComments) {
       throw new HttpException(
         `Cannot create kudoboard comment.`,
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -121,11 +121,11 @@ export class BeKudoBoardCommentsService {
       console.error(
         `Cannot populate kudoboard comment profileId for %s`,
         newKudoBoardComments._id,
-        err
+        err,
       );
       throw new HttpException(
         `Cannot populate kudoboard comment profileId.`,
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 
@@ -156,11 +156,11 @@ export class BeKudoBoardCommentsService {
       console.error(
         `Cannot execute kudoboard comments delete for %s`,
         commentId,
-        err
+        err,
       );
       throw new HttpException(
         'Cannot delete kudoboard comments',
-        HttpStatus.INTERNAL_SERVER_ERROR
+        HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
 

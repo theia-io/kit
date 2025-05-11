@@ -1,21 +1,21 @@
 <div class="flex gap-1 md:gap-2 items-center">
   <feat-kudoboard-status [status]="kudoboard().status" />
 
-  @let kudoboardCreatedAt = kudoboard().createdAt; @let kudoboardCreatedAtLegacy
-  = kudoboard().timestamp?.createdAt; @let kudoboardUpdatedAt =
-  kudoboard().updatedAt; @let kudoboardUpdatedAtLegacy =
-  kudoboard().timestamp?.updatedAt;
+  @let kudoboardCreatedAt = kudoboard().createdAt;
+  @let kudoboardCreatedAtLegacy = kudoboard().timestamp?.createdAt;
+  @let kudoboardUpdatedAt = kudoboard().updatedAt;
+  @let kudoboardUpdatedAtLegacy = kudoboard().timestamp?.updatedAt;
 
   <p class="text-sm text-gray-500">
     <i
       class="pi pi-calendar mr-1"
       [pTooltip]="
-        (kudoboardCreatedAt ?? kudoboardCreatedAtLegacy
+        ((kudoboardCreatedAt ?? kudoboardCreatedAtLegacy)
           ? 'Created on ' +
             (kudoboardCreatedAt ?? kudoboardCreatedAtLegacy | date)
           : '') +
         (showUpdatedDate()
-          ? kudoboardUpdatedAt ?? kudoboardUpdatedAtLegacy
+          ? (kudoboardUpdatedAt ?? kudoboardUpdatedAtLegacy)
             ? (!!(kudoboardCreatedAt ?? kudoboardCreatedAtLegacy) ? '\n' : '') +
               'Updated on ' +
               (kudoboardUpdatedAt ?? kudoboardUpdatedAtLegacy | date)
@@ -34,35 +34,40 @@
     [kudoboardId]="kudoboard().id"
     [preview]="preview()" />
 
-  @if(myLinkedFarewells(); as myLinkedFarewells) { @if(myLinkedFarewells.length
-  > 0) {
-  <button
-    pButton
-    class="p-0 text-sm text-gray-500 hover:text-gray-900 k-bg-transparent-hover"
-    (click)="responsesTmpl.toggle($event)"
-    [text]="true">
-    <i
-      class="mr-1 pi"
-      [ngClass]="
-        responsesTmpl.overlayVisible ? 'pi-sort-up-fill' : 'pi-sort-down-fill'
-      "></i>
-    <span>Farewells</span>
-  </button>
-  <p-overlayPanel #responsesTmpl>
-    <ul>
-      @for (response of myLinkedFarewells; track $index) {
-      <li [class.mt-4]="!$first">
-        <a
-          class="text-sm text-gray-500 hover:text-gray-900 hover:font-semibold"
-          [pTooltip]="'Open connected \'' + response.title + '\' Farewell'"
-          [href]="farewellViewUrlPath + response.id"
-          target="_blank">
-          <i class="pi pi-link mr-1"></i>
-          {{ response.title }}
-        </a>
-      </li>
-      }
-    </ul>
-  </p-overlayPanel>
-  } }
+  @if (myLinkedFarewells(); as myLinkedFarewells) {
+    @if (myLinkedFarewells.length > 0) {
+      <button
+        pButton
+        class="p-0 text-sm text-gray-500 hover:text-gray-900 k-bg-transparent-hover"
+        (click)="responsesTmpl.toggle($event)"
+        [text]="true">
+        <i
+          class="mr-1 pi"
+          [ngClass]="
+            responsesTmpl.overlayVisible
+              ? 'pi-sort-up-fill'
+              : 'pi-sort-down-fill'
+          "></i>
+        <span>Farewells</span>
+      </button>
+      <p-overlayPanel #responsesTmpl>
+        <ul>
+          @for (response of myLinkedFarewells; track $index) {
+            <li [class.mt-4]="!$first">
+              <a
+                class="text-sm text-gray-500 hover:text-gray-900 hover:font-semibold"
+                [pTooltip]="
+                  'Open connected \'' + response.title + '\' Farewell'
+                "
+                [href]="farewellViewUrlPath + response.id"
+                target="_blank">
+                <i class="pi pi-link mr-1"></i>
+                {{ response.title }}
+              </a>
+            </li>
+          }
+        </ul>
+      </p-overlayPanel>
+    }
+  }
 </div>

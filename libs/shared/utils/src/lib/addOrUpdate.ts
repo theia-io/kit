@@ -1,12 +1,12 @@
 type IdKeyString = string;
 export const remove = <T extends { id: IdKeyString }>(
   id: IdKeyString,
-  arrItems: Array<T>
+  arrItems: Array<T>,
 ) => arrItems.filter((arrItem) => arrItem.id !== id);
 
 export const addOrUpdate = <T extends { id: string }>(
   item: T,
-  arrItems: Array<T>
+  arrItems: Array<T>,
 ) => {
   let updated = false;
 

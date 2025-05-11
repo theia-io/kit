@@ -19,20 +19,20 @@ export const selectTweetState = (state: {
 
 export const selectAllTweets = createSelector(
   selectTweetState,
-  (state: FeatureTweetState) => state.tweets
+  (state: FeatureTweetState) => state.tweets,
 );
 
 export const selectTweetsProfileAndRetweets = (
   profileId: string,
-  tweets: Array<Tweety | ReTweety>
+  tweets: Array<Tweety | ReTweety>,
 ) =>
   tweets.filter(
     (tweet) =>
       tweet.profileId === profileId ||
-      (tweetIsRetweet(tweet) && tweet.retweetedProfileId === profileId)
+      (tweetIsRetweet(tweet) && tweet.retweetedProfileId === profileId),
   );
 
 export const selectTweet = (id: string) =>
   createSelector(selectAllTweets, (tweets: Array<Tweety | ReTweety>) =>
-    tweets.find((tweet) => tweet.id === id)
+    tweets.find((tweet) => tweet.id === id),
   );

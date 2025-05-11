@@ -1,25 +1,25 @@
-@for (tweet of (tweets$ | async); track $index) {
-<!-- if not first -->
-@if(!$first) {
-<ui-kit-divider class="block my-2" />
-}
-
-<ui-kit-comp-card class="block p-2">
-  <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
-</ui-kit-comp-card>
-} @empty {
-<div class="mt-4 flex flex-col justify-center items-center">
-  @if(isCurrentUserProfile()) {
-  <p>You have not tweeted anything yet! Try post something</p>
-  <ui-kit-tweet-button
-    [iconAnimate]="true"
-    text="Tweet"
-    (click)="tweetButtonHandler()"
-    class="w-48 mt-4" />
-  } @else {
-  <p>{{ profile()?.name }} has not tweeted anything yet</p>
+@for (tweet of tweets$ | async; track $index) {
+  <!-- if not first -->
+  @if (!$first) {
+    <ui-kit-divider class="block my-2" />
   }
-</div>
+
+  <ui-kit-comp-card class="block p-2">
+    <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
+  </ui-kit-comp-card>
+} @empty {
+  <div class="mt-4 flex flex-col justify-center items-center">
+    @if (isCurrentUserProfile()) {
+      <p>You have not tweeted anything yet! Try post something</p>
+      <ui-kit-tweet-button
+        [iconAnimate]="true"
+        text="Tweet"
+        (click)="tweetButtonHandler()"
+        class="w-48 mt-4" />
+    } @else {
+      <p>{{ profile()?.name }} has not tweeted anything yet</p>
+    }
+  </div>
 }
 
 <p-button

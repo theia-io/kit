@@ -36,7 +36,6 @@ import {
 } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-profile-tweets',
   templateUrl: './tweets.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -57,20 +56,20 @@ export class PageProfileTweetsComponent {
   #activatedRouter = inject(ActivatedRoute);
 
   #profileId$ = this.#activatedRouter.parent?.params.pipe(
-    map((params) => params['profileId'])
+    map((params) => params['profileId']),
   );
 
   #profile$ = this.#profileId$
     ? this.#profileId$.pipe(
         switchMap((profileId) =>
-          this.#store.select(selectProfileById(profileId))
+          this.#store.select(selectProfileById(profileId)),
         ),
         filter(Boolean),
-        shareReplay(1)
+        shareReplay(1),
       )
     : throwError(
         () =>
-          'Cannot continue without profile id. likely component is used incorrectly'
+          'Cannot continue without profile id. likely component is used incorrectly',
       );
 
   profile = toSignal(this.#profile$);
@@ -80,15 +79,15 @@ export class PageProfileTweetsComponent {
     this.#profile$,
     this.#store.select(selectAllTweets),
   ]).pipe(
-    map(([{ id }, allTweets]) => selectTweetsProfileAndRetweets(id, allTweets))
+    map(([{ id }, allTweets]) => selectTweetsProfileAndRetweets(id, allTweets)),
   );
 
   currentProfile = toSignal(
-    this.#store.pipe(select(selectCurrentProfile), filter(Boolean))
+    this.#store.pipe(select(selectCurrentProfile), filter(Boolean)),
   );
 
   isCurrentUserProfile = computed(
-    () => this.currentProfile()?.id === this.profile()?.id
+    () => this.currentProfile()?.id === this.profile()?.id,
   );
 
   constructor() {
@@ -96,8 +95,8 @@ export class PageProfileTweetsComponent {
       .pipe(takeUntilDestroyed())
       .subscribe(({ id }) =>
         this.#store.dispatch(
-          TweetApiActions.getTweetsForProfile({ profileId: id })
-        )
+          TweetApiActions.getTweetsForProfile({ profileId: id }),
+        ),
       );
   }
 

@@ -31,7 +31,6 @@ import { MessagesModule } from 'primeng/messages';
 import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
 
 @Component({
-  standalone: true,
   selector: 'kit-page-profile-experience',
   templateUrl: './experience.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -50,30 +49,30 @@ export class PageProfileExperienceComponent {
   #activatedRouter = inject(ActivatedRoute);
 
   #profileId$ = this.#activatedRouter.parent?.params.pipe(
-    map((params) => params['profileId'])
+    map((params) => params['profileId']),
   );
 
   #profile$ = this.#profileId$
     ? this.#profileId$.pipe(
         switchMap((profileId) =>
-          this.#store.select(selectProfileById(profileId))
+          this.#store.select(selectProfileById(profileId)),
         ),
         filter(Boolean),
-        shareReplay(1)
+        shareReplay(1),
       )
     : throwError(
         () =>
-          'Cannot continue without profile id. likely component is used incorrectly'
+          'Cannot continue without profile id. likely component is used incorrectly',
       );
 
   profile = toSignal(this.#profile$);
 
   currentProfile = toSignal(
-    this.#store.pipe(select(selectCurrentProfile), filter(Boolean))
+    this.#store.pipe(select(selectCurrentProfile), filter(Boolean)),
   );
 
   isCurrentProfile = computed(
-    () => this.profile()?.id === this.currentProfile()?.id
+    () => this.profile()?.id === this.currentProfile()?.id,
   );
   experiences = computed(() => {
     if (this.isCurrentProfile()) {
@@ -92,16 +91,16 @@ export class PageProfileExperienceComponent {
       .pipe(
         takeUntilDestroyed(),
         map(({ userId }) => userId),
-        filter(Boolean)
+        filter(Boolean),
       )
       .subscribe((userId) =>
-        this.#store.dispatch(FeatUserApiActions.getUser({ userId }))
+        this.#store.dispatch(FeatUserApiActions.getUser({ userId })),
       );
 
     toObservable(this.isCurrentProfile)
       .pipe(takeUntilDestroyed(), filter(Boolean))
       .subscribe(() =>
-        this.#store.dispatch(FeatLegalApiActions.getCompanies())
+        this.#store.dispatch(FeatLegalApiActions.getCompanies()),
       );
   }
 
