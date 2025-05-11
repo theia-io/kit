@@ -39,7 +39,7 @@ import { delay, of, switchMap, take } from 'rxjs';
     <div class="bg-secondary">
       <shared-static-info
         [slim]="true"
-        class="container flex items-center justify-end gap-4 mx-auto bg-secondary"
+        class="container flex items-center justify-end gap-4 mx-2 md:mx-auto bg-secondary my-4 md:my-2"
       />
     </div>
   `,

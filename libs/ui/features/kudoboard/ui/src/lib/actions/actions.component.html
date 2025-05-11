@@ -1,5 +1,5 @@
 <div class="flex gap-2 justify-end items-center">
-  <div class="flex gap-2 mr-auto">
+  <div class="flex gap-2 mr-auto overflow-auto">
     @for (profileReaction of (kudoBoardProfileReactionsMap$ | async); track
     $index) {
     <div class="min-h-10 relative">

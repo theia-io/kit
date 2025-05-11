@@ -4,7 +4,9 @@ import { Component } from '@angular/core';
   standalone: true,
   selector: 'ui-kit-comp-card',
   template: `
-    <article class="sm:p-2 md:p-4 rounded-[10px] transition hover:shadow-xl">
+    <article
+      class="p-1 sm:p-2 md:p-4 rounded-[10px] transition hover:shadow-xl"
+    >
       <ng-content />
     </article>
   `,

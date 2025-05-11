@@ -126,7 +126,6 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   #photoService = inject(PhotoService);
   #deviceService = inject(DeviceService);
   #masonryService = inject(MasonryService);
-  #s3KudoBoardBaseUrl = inject(S3_KUDOBOARD_BUCKET_BASE_URL);
 
   #createdComment$ = this.#actions$.pipe(
     ofType(FeatKudoBoardCommentActions.postCommentKudoBoardSuccess),
