@@ -2,15 +2,15 @@ import { MenuItem } from 'primeng/api';
 
 /** For logged in users only */
 export enum APP_PATH {
-  Feed = 'feed',
-  Profile = 'profile',
-  Tweet = 'tweet',
-  Messages = 'messages',
-  Bookmarks = 'bookmarks',
-  Settings = 'settings',
-  AboutYourself = 'tell-us-about-yourself',
-  Farewell = 'farewell',
-  Suggestion = 'suggestion',
+  Feed = 'app/feed',
+  Profile = 'app/profile',
+  Tweet = 'app/tweet',
+  Messages = 'app/messages',
+  Bookmarks = 'app/bookmarks',
+  Settings = 'app/settings',
+  AboutYourself = 'app/tell-us-about-yourself',
+  Farewell = 'app/farewell',
+  Suggestion = 'app/suggestion',
 }
 
 /** For anonymous users also */
@@ -58,7 +58,7 @@ export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
   },
   {
     label: 'Kudo boards',
-    routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+    routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
     icon: 'pi pi-sparkles',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
@@ -92,7 +92,7 @@ export const MOBILE_NAV_ITEMS: Array<MenuItem> = [
   },
   {
     label: 'Kudoboards',
-    routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+    routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
     icon: 'pi pi-sparkles',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',

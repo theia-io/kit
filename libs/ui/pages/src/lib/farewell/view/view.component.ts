@@ -188,7 +188,7 @@ export class PageFarewellViewComponent {
   commentsSideBarVisibility = signal(false);
   farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 
   constructor() {
     this.farewellId$

@@ -35,7 +35,7 @@ export function authInterceptor(
         );
 
         auth0Service.signIn(router.url);
-        router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignInSemiSilent}`]);
+        router.navigate([`/${APP_PATH_STATIC_PAGES.SignInSemiSilent}`]);
       }
 
       // if to do it also for `kitEndpoint` then we get into infinite loop
@@ -46,7 +46,6 @@ export function authInterceptor(
         );
         store.dispatch(FeatUserApiActions.setUser({ user: undefined }));
         store.dispatch(FeatAuth0Events.tryAuth());
-        // router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }
 
       return throwError(() => err);

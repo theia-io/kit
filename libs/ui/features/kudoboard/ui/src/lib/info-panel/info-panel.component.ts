@@ -32,5 +32,5 @@ export class FeatKudoboardInfoPanelComponent {
 
   showUpdatedDate = input<boolean>(false);
 
-  readonly farewellViewUrlPath = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/`;
+  readonly farewellViewUrlPath = `/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/`;
 }

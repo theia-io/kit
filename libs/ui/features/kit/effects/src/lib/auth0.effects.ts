@@ -30,11 +30,11 @@ export class Auth0Effects {
             if (postLoginUrl) {
               this.#router.navigateByUrl(postLoginUrl);
             } else {
-              this.#router.navigateByUrl('/');
+              this.#router.navigateByUrl('/app');
             }
           }),
           catchError(() => {
-            this.#router.navigateByUrl('/');
+            this.#router.navigateByUrl('/app');
             return of(FeatAuth0Events.handleRedirectFailure());
           })
         )
@@ -51,10 +51,7 @@ export class Auth0Effects {
             FeatAuth0Events.tryAuthSuccess({ user, account, profiles })
           ),
           tap(() => this.#router.navigateByUrl(this.#router.url)),
-          catchError(() => {
-            // this.#router.navigateByUrl('/');
-            return of(FeatAuth0Events.tryAuthFailure());
-          })
+          catchError(() => of(FeatAuth0Events.tryAuthFailure()))
         )
       )
     )
@@ -82,7 +79,7 @@ export class Auth0Effects {
   redirectNewUser$ = this.#accountUserProfiles$.pipe(
     tap(({ account, user, profiles }) => {
       if (!account || !user || !profiles) {
-        this.#router.navigateByUrl(`/s/${APP_PATH_STATIC_PAGES.Join}`);
+        this.#router.navigateByUrl(`/${APP_PATH_STATIC_PAGES.Join}`);
       }
     })
   );

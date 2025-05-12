@@ -362,7 +362,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     event.preventDefault();
 
     this.#router.navigateByUrl(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}${
+      `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}${
         preview ? '?preview=true' : ''
       }`
     );
@@ -378,7 +378,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     event.stopPropagation();
     event.preventDefault();
 
-    this.#router.navigateByUrl(`/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
+    this.#router.navigateByUrl(`/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
   }
 
   #autoCreateKudoBoard() {
@@ -429,7 +429,6 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   }
 
   #updateKudoBoardBackground(background: string, previousBackground?: string) {
-    console.log('updateKudoBoardBackground', background, previousBackground);
     this.kudoBoardFormGroup.patchValue({
       background,
     });
@@ -468,7 +467,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #updateJustCreatedKudoBoardUrl(id: KudoBoard['id']) {
     this.id.set(id);
     this.#location.replaceState(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`
+      `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`
     );
   }
 }

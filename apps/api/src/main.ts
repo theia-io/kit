@@ -229,7 +229,7 @@ async function bootstrap() {
     getLoginState(req, options) {
       return {
         ...options,
-        returnTo: `${feUrl}/s/redirect`, //options.returnTo
+        returnTo: `${feUrl}/redirect`, //options.returnTo
       };
     },
   };

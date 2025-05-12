@@ -72,7 +72,7 @@ export class PageFarewellAllComponent {
   #confirmationService = inject(ConfirmationService);
   #messageService = inject(MessageService);
 
-  farewellUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
+  farewellUrl = `/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewellEdit = `/${APP_PATH.Farewell}/edit`;
 

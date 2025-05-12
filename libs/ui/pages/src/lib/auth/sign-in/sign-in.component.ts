@@ -44,7 +44,7 @@ export class PageSignInComponent implements OnInit {
 
   clickedIntro = signal<null | 'kudo' | 'farewell'>(null);
 
-  readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  readonly introducingKitFarewell = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 
   ngOnInit(): void {
     this.#animateKitten();

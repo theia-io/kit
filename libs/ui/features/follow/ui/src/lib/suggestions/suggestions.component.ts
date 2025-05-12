@@ -62,8 +62,8 @@ export class FeatFollowSuggestionsComponent {
 
   #store = inject(Store);
 
-  readonly settingsPageUrl = APP_PATH.Settings;
-  readonly profileUrlPath = APP_PATH.Profile;
+  readonly settingsPageUrl = `/${APP_PATH.Settings}`;
+  readonly profileUrlPath = `/${APP_PATH.Profile}`;
   readonly profilePicture = profilePicture;
   #followerHandlerFn = followerHandlerFn();
 

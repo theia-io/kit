@@ -62,7 +62,7 @@ export class KitStaticComponent implements OnInit {
   ngOnInit(): void {
     const currentUrl = this.#router.url;
     console.log('\n[KitStaticComponent] ngOnInit:', currentUrl);
-    if (currentUrl.includes('/s/')) {
+    if (!currentUrl.includes('app/')) {
       of(true)
         .pipe(
           delay(2000),

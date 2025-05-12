@@ -39,7 +39,7 @@ export class AccountsEffects {
         ofType(FeatAccountApiActions.deleteSuccess),
         tap(() => {
           this.#auth0Service.logout();
-          this.#router.navigateByUrl('/');
+          this.#router.navigateByUrl('/app');
         })
       ),
     {

@@ -101,8 +101,8 @@ export class PageKudoBoardsAllComponent {
     )
   );
 
-  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  kudoBoardGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
+  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly kudoBoardStatus = KudoBoardStatus;
 
   constructor() {

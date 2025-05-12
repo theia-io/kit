@@ -24,8 +24,8 @@ import { ButtonModule } from 'primeng/button';
 export class FeatKudoBoardIntoComponent {
   withHint = input(false);
 
-  featuresKudoBoardUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesKudoboard}`;
-  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
+  featuresKudoBoardUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesKudoboard}`;
+  kudoBoardGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
 
   watchVideo() {
     console.info('[UI FeatKudoBoardIntoComponent] Watch video');

@@ -27,5 +27,5 @@ export class FeatFarewellInfoPanelComponent {
 
   showUpdatedDate = input<boolean>(false);
 
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 }

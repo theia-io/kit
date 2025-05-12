@@ -166,7 +166,7 @@ export class PageKudoBoardViewComponent {
     map(([_, kudoboard]) => [
       {
         label: 'All KudoBoards',
-        routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
         icon: 'pi pi-send mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',
