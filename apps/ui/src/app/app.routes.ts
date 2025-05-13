@@ -16,15 +16,8 @@ import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/pages');
 
-const pathWithAppPrefix = (path: string) => {
-  console.log(
-    'path',
-    path,
-    path.split('app'),
-    path.split('app').slice(1).join('').slice(1)
-  );
-  return path.split('app').slice(1).join('').slice(1);
-};
+const pathWithAppPrefix = (path: string) =>
+  path.split('app').slice(1).join('').slice(1);
 
 export const appRoutes: Route[] = [
   {

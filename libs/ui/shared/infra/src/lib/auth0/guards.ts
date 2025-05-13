@@ -71,7 +71,7 @@ export const onlyForLoggedInGuard = (
         console.info(
           '[onlyForLoggedInGuard] ->3: No user, redirecting to sign in'
         );
-        store.dispatch(FeatUserApiActions.setUser({ user: undefined }));
+        store.dispatch(FeatUserApiActions.setUser({ user: null }));
         return router.navigate([`/${APP_PATH_STATIC_PAGES.SignIn}`]);
       }
 

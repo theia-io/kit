@@ -14,11 +14,19 @@ export const getExperienceEqualityObject = ({
 });
 
 /** selectors */
-
 const selectUserState = (state: { kit: { user: FeatureUserState } }) =>
   state.kit.user;
 
-/** User */
+/**
+ * (selectCurrentUser) user should not be used anyone & anything but by
+ * `Auth0Service.loggedInUser$`;
+ *
+ * Note!
+ * All other usages are incorrect and should be avoided.
+ * When you need user:
+ * 1. #auth0Service = inject(Auth0Service)
+ * 2. and use `#auth0Service.loggedInUser$`
+ **/
 export const selectCurrentUser = createSelector(
   selectUserState,
   (state: FeatureUserState) => state.user

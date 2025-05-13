@@ -4,7 +4,7 @@ import { FeatAccountApiActions } from './account.actions';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureAccountState {
-  account?: Account;
+  account?: Account | null;
 }
 
 const featAccountInitialState: FeatureAccountState = {

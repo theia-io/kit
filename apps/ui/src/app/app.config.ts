@@ -1,5 +1,6 @@
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import {
+  APP_INITIALIZER,
   ApplicationConfig,
   importProvidersFrom,
   provideZoneChangeDetection,
@@ -8,7 +9,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   provideRouter,
   withComponentInputBinding,
-  withDebugTracing,
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
@@ -43,8 +43,12 @@ import {
   RetweetEffects,
   TweetsEffects,
 } from '@kitouch/feat-tweet-effects';
-import { featReducer as accountFeatureReducer } from '@kitouch/kit-data';
 import {
+  featReducer as accountFeatureReducer,
+  FeatAuth0Events,
+} from '@kitouch/kit-data';
+import {
+  Auth0Service,
   authInterceptor,
   credentialsInterceptor,
   ENVIRONMENT,
@@ -54,13 +58,41 @@ import {
   S3_PROFILE_BUCKET_BASE_URL,
 } from '@kitouch/shared-infra';
 import { provideEffects } from '@ngrx/effects';
-import { provideStore } from '@ngrx/store';
+import { provideStore, Store } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { provideNgcCookieConsent } from 'ngx-cookieconsent';
 import { DynamicDialogModule } from 'primeng/dynamicdialog';
+import { filter, map, Observable, take } from 'rxjs';
 import { environment } from '../environments/environment';
 import { appRoutes } from './app.routes';
 import { cookieConfig } from './cookie.config';
+
+/**
+ * Once app is initialized, we want to wait until the user was tried to
+ * be resolved.
+ *
+ * This flow starts as `FeatAuth0Events.resolveUserForApp`.
+ * - if it is successful, we dispatch
+ * `FeatAuth0Events resolveUserForAppSuccess` which handled
+ * inside `Auth0Effects.setAuthState$` and ultimately either sets user
+ * and passed ultimately to `auth0Service.loggedInUser$`
+ * - if it us unsuccessful, we dispatch
+ * `FeatAuth0Events.resolveUserForAppFailure` and handled by
+ * `Auth0Effects.resolveUserForAppFailure` which sets user to null and
+ * also passes through to `auth0Service.loggedInUser$`
+ *
+ */
+function initializeApp(store: Store, auth0Service: Auth0Service) {
+  setTimeout(() => {
+    store.dispatch(FeatAuth0Events.resolveUserForApp());
+  });
+  return (): Observable<boolean> =>
+    auth0Service.loggedInUser$.pipe(
+      filter((v) => v !== undefined),
+      take(1),
+      map(() => true)
+    );
+}
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -99,10 +131,22 @@ export const appConfig: ApplicationConfig = {
       },
       deps: [ENVIRONMENT],
     },
+    // resolve user if it exists straight away
+    // provideAppInitializer(() => {
+    //   const store = inject(Store);
+    //   store.dispatch(FeatAuth0Events.resolveUserForApp());
+    //   return of(true);
+    // }),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [Store, Auth0Service],
+      multi: true,
+    },
 
     provideRouter(
       appRoutes,
-      withDebugTracing(),
+      // withDebugTracing(),
       withComponentInputBinding(),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',

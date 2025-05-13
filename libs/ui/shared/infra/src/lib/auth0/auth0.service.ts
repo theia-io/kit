@@ -72,7 +72,13 @@ export class Auth0Service {
 
     window.open(`${this.#environment.api.auth}/login`, '_blank')?.focus();
 
-    /** TODO use CrossTabSyncService instead of localstorage and keep LS as fallback */
+    /**
+     * Currently used as login-in into separate window,
+     *
+     * @TODO (check)
+     * should we use CrossTabSyncService instead of localstorage
+     * and keep LS as fallback?
+     **/
     return new Promise((resolve, reject) => {
       const storageEventHandler = (event: StorageEvent) => {
         console.info(

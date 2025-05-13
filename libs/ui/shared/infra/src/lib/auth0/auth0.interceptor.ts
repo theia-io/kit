@@ -6,7 +6,7 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FeatAuth0Events, FeatUserApiActions } from '@kitouch/kit-data';
+import { FeatAuth0Events } from '@kitouch/kit-data';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, throwError } from 'rxjs';
@@ -44,7 +44,14 @@ export function authInterceptor(
           '[authInterceptor] ->3.2: user needs authentication, started auth flow',
           req
         );
-        store.dispatch(FeatUserApiActions.setUser({ user: undefined }));
+        store.dispatch(
+          FeatAuth0Events.setAuthState({
+            user: null,
+            account: null,
+            profiles: [],
+          })
+        );
+        // store.dispatch(FeatUserApiActions.setUser({ user: null }));
         store.dispatch(FeatAuth0Events.tryAuth());
       }
 

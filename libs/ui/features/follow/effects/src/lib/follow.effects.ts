@@ -1,10 +1,9 @@
 import { Injectable, inject } from '@angular/core';
-import { selectCurrentUser } from '@kitouch/kit-data';
 
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, filter, map, of, switchMap } from 'rxjs';
+import { catchError, map, of, switchMap } from 'rxjs';
 import { FollowService } from './follow.service';
 
 @Injectable()
@@ -12,8 +11,6 @@ export class FollowEffects {
   #actions$ = inject(Actions);
   #store = inject(Store);
   #followService = inject(FollowService);
-
-  #currentUser = this.#store.select(selectCurrentUser).pipe(filter(Boolean));
 
   getSuggestionColleaguesToFollow$ = createEffect(() =>
     this.#actions$.pipe(

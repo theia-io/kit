@@ -18,6 +18,57 @@ export class Auth0Effects {
   #actions = inject(Actions);
   #auth0Service = inject(Auth0Service);
 
+  resolveUserForApp = createEffect(() =>
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.resolveUserForApp),
+      switchMap(() =>
+        this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
+          map(({ user, account, profiles }) =>
+            FeatAuth0Events.resolveUserForAppSuccess({
+              user,
+              account,
+              profiles,
+            })
+          ),
+          catchError(() => of(FeatAuth0Events.resolveUserForAppFailure()))
+        )
+      )
+    )
+  );
+
+  resolveUserForAppFailure = createEffect(() =>
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.resolveUserForAppFailure),
+      map(() => FeatUserApiActions.setUser({ user: null }))
+    )
+  );
+
+  tryAuth = createEffect(() =>
+    this.#actions.pipe(
+      ofType(FeatAuth0Events.tryAuth),
+      switchMap(() =>
+        this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
+          map(({ user, account, profiles }) =>
+            FeatAuth0Events.tryAuthSuccess({ user, account, profiles })
+          ),
+          tap(() => this.#router.navigateByUrl(this.#router.url)),
+          catchError(() => of(FeatAuth0Events.tryAuthFailure()))
+        )
+      )
+    )
+  );
+
+  tryAuthFailure = createEffect(
+    () =>
+      this.#actions.pipe(
+        ofType(FeatAuth0Events.tryAuthFailure),
+        tap(() =>
+          this.#router.navigateByUrl(`/${APP_PATH_STATIC_PAGES.SignIn}`)
+        )
+      ),
+    { dispatch: false }
+  );
+
   handleAuthRedirect = createEffect(() =>
     this.#actions.pipe(
       ofType(FeatAuth0Events.handleRedirect),
@@ -42,27 +93,13 @@ export class Auth0Effects {
     )
   );
 
-  tryAuth = createEffect(() =>
-    this.#actions.pipe(
-      ofType(FeatAuth0Events.tryAuth),
-      switchMap(() =>
-        this.#auth0Service.getCurrentSessionAccountUserProfiles().pipe(
-          map(({ user, account, profiles }) =>
-            FeatAuth0Events.tryAuthSuccess({ user, account, profiles })
-          ),
-          tap(() => this.#router.navigateByUrl(this.#router.url)),
-          catchError(() => of(FeatAuth0Events.tryAuthFailure()))
-        )
-      )
-    )
-  );
-
   setAuthState$ = createEffect(() =>
     this.#actions
       .pipe(
         ofType(
-          FeatAuth0Events.handleRedirectSuccess,
-          FeatAuth0Events.tryAuthSuccess
+          FeatAuth0Events.resolveUserForAppSuccess,
+          FeatAuth0Events.tryAuthSuccess,
+          FeatAuth0Events.handleRedirectSuccess
         )
       )
       .pipe(map((data) => FeatAuth0Events.setAuthState({ ...data })))
@@ -76,6 +113,12 @@ export class Auth0Effects {
     })
   );
 
+  /**
+   * @deprecated
+   * TODO, this should not worked and be removed because when user
+   * doest not have an account, user or profile we will get autocreated
+   * by NestJS app.
+   **/
   redirectNewUser$ = this.#accountUserProfiles$.pipe(
     tap(({ account, user, profiles }) => {
       if (!account || !user || !profiles) {

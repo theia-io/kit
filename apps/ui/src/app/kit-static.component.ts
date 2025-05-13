@@ -1,15 +1,13 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, inject, OnInit } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, DestroyRef, inject } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import {
   SharedNavBarStaticComponent,
   SharedStaticInfoComponent,
 } from '@kitouch/containers';
-import { FeatAuth0Events, selectCurrentProfile } from '@kitouch/kit-data';
+import { selectCurrentProfile } from '@kitouch/kit-data';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { select, Store } from '@ngrx/store';
-import { delay, of, switchMap, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -44,7 +42,7 @@ import { delay, of, switchMap, take } from 'rxjs';
     </div>
   `,
 })
-export class KitStaticComponent implements OnInit {
+export class KitStaticComponent {
   #destroyRef = inject(DestroyRef);
   #store = inject(Store);
   #router = inject(Router);
@@ -54,29 +52,6 @@ export class KitStaticComponent implements OnInit {
 
   constructor() {
     console.log('\n[KitStaticComponent] constructor:\n\n');
-    // inject(Auth0Service).signIn();
-    // this.#store.dispatch(FeatAuth0Events.silentSignIn());
-  }
-
-  // eslint-disable-next-line @angular-eslint/no-empty-lifecycle-method
-  ngOnInit(): void {
-    const currentUrl = this.#router.url;
-    console.log('\n[KitStaticComponent] ngOnInit:', currentUrl);
-    if (!currentUrl.includes('app/')) {
-      of(true)
-        .pipe(
-          delay(2000),
-          switchMap(() => this.#auth0Service.loggedIn$),
-          take(1),
-          takeUntilDestroyed(this.#destroyRef)
-        )
-        .subscribe((loggedIn) => {
-          console.log('\n[KitStaticComponent] ngOnInit 1:', currentUrl);
-          if (!loggedIn) {
-            this.#store.dispatch(FeatAuth0Events.tryAuth());
-          }
-        });
-    }
   }
 
   handleGetStarted() {
