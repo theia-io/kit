@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -66,6 +66,7 @@ export class NavBarComponent implements AfterViewInit {
 
   sanitizer: DomSanitizer = inject(DomSanitizer);
   #elemRef = inject(ElementRef);
+  #route = inject(ActivatedRoute);
   #router = inject(Router);
   //
   #auth0Service = inject(Auth0Service);
@@ -75,7 +76,6 @@ export class NavBarComponent implements AfterViewInit {
 
   #menuItemNativeElemInitiallyFocused: HTMLLIElement | undefined;
 
-  readonly outletSecondary = OUTLET_DIALOG;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly farewellUrl = `/${APP_PATH.Farewell}`;
   readonly kudoBoardAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
@@ -114,9 +114,13 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   tweetButtonHandler() {
-    this.#router.navigate([
-      { outlets: { [this.outletSecondary]: APP_PATH_DIALOG.Tweet } },
-    ]);
+    console.log('Tweet button clicked NAVBAR', this.#router.config);
+    this.#router.navigate(
+      [{ outlets: { [OUTLET_DIALOG]: `${APP_PATH_DIALOG.Tweet}` } }],
+      {
+        relativeTo: this.#route,
+      }
+    );
   }
 
   createFarewellHandler() {

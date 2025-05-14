@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
@@ -7,13 +8,18 @@ import { CardModule } from 'primeng/card';
   standalone: true,
   selector: 'kit-page-feature-connected-page-benefits',
   template: `
-    <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-      <a [routerLink]="featuresConnectedUrl">
-        <i class="pi pi-link font-semibold text-3xl"></i>
-        Connected
-      </a>
+    <h2
+      class="flex items-center gap-2 text-slate-800 font-semibold text-2xl lg:text-3xl dark:text-white"
+    >
+      <a [routerLink]="featuresConnectedUrl"> Connections. More </a>
+      <img
+        ngSrc="/material-icons/open_in_new.svg"
+        alt="Open connections explore, link"
+        width="30"
+        height="300"
+      />
     </h2>
-    <p class="mt-2">Stay connected with your colleagues.</p>
+    <p class="mt-1">Stay connected with your network and friends.</p>
 
     <div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6">
       <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
@@ -26,7 +32,20 @@ import { CardModule } from 'primeng/card';
 
         <p class="m-0 text-lg font-semibold">Follow</p>
 
-        <p class="m-0">Follow people you know.</p>
+        <p class="m-0">Follow your network and friends.</p>
+      </p-card>
+
+      <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+        <img
+          ngSrc="/material-icons/rss_feed.svg"
+          alt="Feed"
+          width="24"
+          height="24"
+        />
+
+        <p class="m-0 text-lg font-semibold">Feed</p>
+
+        <p class="m-0">Comment, re-tweet, like, share and bookmark.</p>
       </p-card>
 
       <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
@@ -35,23 +54,27 @@ import { CardModule } from 'primeng/card';
         <p class="m-0 text-lg font-semibold">Tweet</p>
 
         <p class="m-0">
-          Tweet your thoughts, updates and more with KIT platform.
+          Tweet your thoughts and more for followers. Share updates.
         </p>
       </p-card>
 
       <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
-        <i class="pi pi-comments" style="font-size: 1.5rem"></i>
+        <img
+          ngSrc="/material-icons/connect_without_contact.svg"
+          alt="Interact"
+          width="24"
+          height="24"
+        />
 
         <p class="m-0 text-lg font-semibold">Interact</p>
 
-        <p class="m-0">
-          Leave comments, like and bookmark tweets across the platform.
-        </p>
+        <p class="m-0">Comment, re-tweet, like, share and bookmark.</p>
       </p-card>
     </div>
   `,
   imports: [
     RouterModule,
+    NgOptimizedImage,
     //
     CardModule,
   ],

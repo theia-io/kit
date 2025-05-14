@@ -22,17 +22,13 @@ export const AppWideLogger =
       // user: req.user ? { sub: (req.user as Auth0Kit)?.sub, email: (req.user as Auth0Kit)?.email } : undefined,
     };
 
+    console.info(`\n[AppWideLogger] ${req.method}, ${req.url}`);
     console.info(
-      `\n[AppWideLogger] ${req.method}, ${
-        req.url
-      }, \n[AppWideLogger Req]:\n${JSON.stringify(
-        requestInfoToLog,
-        getCircularReplacer(),
-        2
-      )},\n[Version]:${configService.getEnvironment(
-        'version'
-      )},\n[Env]:\n${JSON.stringify(configService.getEnvironment())}`
+      '\n[AppWideLogger Req]:',
+      JSON.stringify(requestInfoToLog, getCircularReplacer(), 2)
     );
+    console.info(`\n[Version]:${configService.getEnvironment('version')}`);
+    console.info('\n[Env]:\n', configService.getEnvironment());
 
     next();
   };

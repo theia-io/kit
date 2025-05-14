@@ -129,8 +129,9 @@ export class PageHomeComponent implements OnInit {
   }
 
   tweetButtonHandler() {
+    console.log('Tweet button clicked', this.#router.config);
     this.#router.navigate([
-      { outlets: { [OUTLET_DIALOG]: APP_PATH_DIALOG.Tweet } },
+      { outlets: { [OUTLET_DIALOG]: `app/${APP_PATH_DIALOG.Tweet}` } },
     ]);
   }
 }

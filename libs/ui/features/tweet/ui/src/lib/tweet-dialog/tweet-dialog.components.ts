@@ -7,11 +7,12 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { OUTLET_DIALOG } from '@kitouch/shared-constants';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
+import { relative } from 'path';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { take } from 'rxjs';
@@ -31,6 +32,7 @@ import { v4 as uuidv4 } from 'uuid';
 export class FeatTweetDialogComponent {
   #destroyRef = inject(DestroyRef);
   #actions = inject(Actions);
+  #route = inject(ActivatedRoute);
   #router = inject(Router);
   #store = inject(Store);
 
@@ -58,11 +60,7 @@ export class FeatTweetDialogComponent {
 
   constructor() {
     this.#actions
-      .pipe(
-        ofType(FeatTweetActions.tweetFailure),
-        take(1),
-        takeUntilDestroyed(this.#destroyRef)
-      )
+      .pipe(ofType(FeatTweetActions.tweetFailure), take(1))
       .subscribe(({ uuid }) => {
         if (uuid === this.tweetuuidv4()) {
           this.tweettingInProgress.set(false);
@@ -108,6 +106,10 @@ export class FeatTweetDialogComponent {
   }
 
   onDialogFinalizeCb() {
-    this.#router.navigate([{ outlets: { [OUTLET_DIALOG]: null } }]);
+    console.log('onDialogFinalizeCb');
+    this.#router.navigate([
+      '',
+      { relative: this.#route, outlets: { [OUTLET_DIALOG]: null } },
+    ]);
   }
 }

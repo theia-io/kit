@@ -6,11 +6,11 @@
 
 FE & UX:
 
-1. [primeng](https://primeng.org/autocomplete) & its icons,
+1. [primeng](https://primeng.org/autocomplete) & its icons. We also use [material icons](https://fonts.google.com/icons),
 1. [tailwind](https://tailwindcss.com/docs/installation/using-vite),
 1. [Angular](https://angular.dev/),
 1. [Quill](https://quilljs.com/) editor,
-1. [photoswipe](https://photoswipe.com/) for image interactions
+1. [photoswipe](https://photoswipe.com/) for image interactions,
 
 BE & Data:
 

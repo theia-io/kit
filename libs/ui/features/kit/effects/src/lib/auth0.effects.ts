@@ -62,6 +62,7 @@ export class Auth0Effects {
     () =>
       this.#actions.pipe(
         ofType(FeatAuth0Events.tryAuthFailure),
+        tap(() => console.log('tryAuthFailure')),
         tap(() =>
           this.#router.navigateByUrl(`/${APP_PATH_STATIC_PAGES.SignIn}`)
         )

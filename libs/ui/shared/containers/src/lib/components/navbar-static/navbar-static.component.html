@@ -30,7 +30,7 @@
   </a>
   } }
   <!-- Not logged in user -->
-  @else if(!hideLogin() && notMobile) {
+  <!-- @else if(!hideLogin() && notMobile) {
   <a
     [routerLink]="loginUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
@@ -38,8 +38,18 @@
     class="px-4 py-2">
     Login
   </a>
+  }  -->
 
-  } @if((deviceService.device$ | async) !== deviceTypes.Mobile) {
+  <a
+    [routerLink]="introduceKitUrl"
+    routerLinkActive="bg-slate-200 rounded text-gray-900"
+    uiKitSmallTextTailwindClasses
+    class="px-4 py-2">
+    Product
+  </a>
+
+  <!-- Features -->
+  @if((deviceService.device$ | async) !== deviceTypes.Mobile) {
   <p-button
     [text]="true"
     (onClick)="handleFeaturesClick($event)"
@@ -110,14 +120,6 @@
   }
 
   <a
-    [routerLink]="introduceKitUrl"
-    routerLinkActive="bg-slate-200 rounded text-gray-900"
-    uiKitSmallTextTailwindClasses
-    class="px-4 py-2">
-    @if(desktop) { How it works? 🤔 } @else { About }
-  </a>
-
-  <a
     [href]="
       'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
       environment.build
@@ -125,13 +127,19 @@
     target="_blank"
     pTooltip="Write us email to info@kitouch.io"
     uiKitSmallTextTailwindClasses
-    class="px-4 py-2 underline">
-    Help ℹ️
+    class="px-4 py-2 flex gap-2 items-center hover:bg-slate-200 hover:rounded hover:text-gray-900">
+    Email us
+    <img
+      ngSrc="/material-icons/mail.svg"
+      alt="Email us, external link"
+      width="20"
+      height="20" />
   </a>
 
   @if(!userLoggedIn() && !hideLogin()) {
   <a
     (click)="handleGetStarted()"
+    role="button"
     uiKitSmallTextTailwindClasses
     [klasses]="getStartedKlassOverwrite"
     class="flex items-center px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">

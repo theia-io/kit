@@ -1,5 +1,5 @@
 import { ConfigService } from '@kitouch/be-config';
-import { Controller, Get, Redirect, Req, Res, UseGuards } from '@nestjs/common';
+import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 
@@ -10,7 +10,7 @@ export class AuthController {
   @Get('logout')
   @UseGuards(AuthGuard('jwt'))
   // @Redirect() // We will redirect to Auth0 logout
-  async logout(@Req() req: Request, @Res({ passthrough: true }) res: Response) {
+  logout(@Req() req: Request, @Res() res: Response) {
     console.info(
       '[AuthController][logout] Executing app-logout: Clearing JWT cookie...'
     );
@@ -26,7 +26,7 @@ export class AuthController {
       sameSite: isProduction ? 'lax' : false,
       path: '/',
     });
-    (res as any)?.oidc?.logout();
+    // (res as any)?.oidc?.logout();
 
     const feUrl = this.configService.getEnvironment('feUrl');
 

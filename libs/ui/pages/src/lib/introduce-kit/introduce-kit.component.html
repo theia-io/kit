@@ -1,42 +1,49 @@
-<div class="w-full mt-12 px-2 py-12">
+<div class="w-full px-2 py-12">
   <section
-    class="container flex flex-col md:flex-row items-center gap-2 mx-auto">
-    <div class="text-center md:text-left md:w-1/3">
-      <h1
-        class="text-slate-900 font-extrabold text-4xl sm:text-5xl lg:text-6xl dark:text-white">
-        Your next steps partner.
-      </h1>
-      <h2 class="text-slate-900 text-2xl sm:text-5xl dark:text-white">
-        <span class="font-extrabold">Offboarding experience</span>
-        re-imagined.
+    class="container flex flex-col lg:flex-row items-center gap-2 mx-auto">
+    <div class="flex flex-col items-center lg:items-start gap-2 lg:gap-4">
+      <h2
+        class="w-full text-center lg:text-left text-slate-800 font-semibold text-3xl lg:text-4xl dark:text-white">
+        Offboarding experience re-imagined.
       </h2>
+      <!-- Your next steps partner. -->
 
-      <div class="mt-8">
-        <a class="font-bold" routerLink="./" fragment="connected">Connected</a>
-        <a class="font-bold ml-4" routerLink="./" fragment="kudoboard">
-          Kudo board ✨
+      <div class="my-2 w-full flex justify-center lg:justify-start gap-2">
+        <a class="block font-bold" routerLink="./" fragment="connections">
+          Connections
         </a>
-        <a class="font-bold ml-4" routerLink="./" fragment="farewell">
-          Farewell 🗒️
+        <a class="block font-bold" routerLink="./" fragment="kudoboards">
+          Kudo boards
+        </a>
+        <a class="block font-bold" routerLink="./" fragment="farewells">
+          Farewells
         </a>
       </div>
 
       <h2
-        class="mt-8 text-slate-800 font-semibold text-3xl sm:text-3xl lg:text-4xl dark:text-white">
+        class="w-full text-center lg:text-left text-slate-800 font-semibold text-3xl lg:text-4xl dark:text-white">
         For individuals, teams and organizations.
       </h2>
 
-      <a
-        [routerLink]="homeUrl"
-        uiKitSmallTextTailwindClasses
-        [klasses]="getStartedKlassOverwrite"
-        class="inline-block mt-8 px-10 py-5 ml-auto bg-slate-700 rounded text-gray-900">
-        Get Started
-      </a>
+      <div class="my-8 w-100 flex flex-col gap-1 items-center lg:items-start">
+        <a
+          (click)="handleGetStarted()"
+          role="button"
+          uiKitSmallTextTailwindClasses
+          [klasses]="getStartedKlassOverwrite"
+          class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900">
+          Join. Explore for free.
+        </a>
+        <p class="text-gray-500 text-sm font-semibold">
+          You will be redirected to login or register page.
+          <br />
+          Fast. Secure. See yourself.
+        </p>
+      </div>
     </div>
 
     <div
-      class="mt-6 md:mt-0 md:w-2/3 flex flex-col md:flex-row justify-center relative">
+      class="mt-12 md:mt-0 md:w-2/3 flex flex-col md:flex-row justify-center relative">
       <img
         class="md:w-3/4 rounded-xl"
         src="/introducing/presentingv2.gif"
@@ -50,165 +57,26 @@
   </section>
 </div>
 
-<div class="w-full mt-12 bg-secondary px-2 py-12">
+<div class="w-full px-2 py-12 bg-secondary">
   <section
-    id="connected"
+    id="connections"
     class="container flex flex-col items-center md:items-start mx-auto">
     <kit-page-feature-connected-page-benefits />
   </section>
 </div>
 
-<div class="mt-12 w-full px-2 py-12">
+<div class="w-full px-2 py-12">
   <section
-    id="kudoboard"
+    id="kudoboards"
     class="container flex flex-col items-center md:items-start mx-auto">
     <kit-page-feature-kudoboard-page-benefits />
   </section>
 </div>
 
-<div class="mt-12 w-full px-2 py-12">
+<div class="w-full px-2 py-12 bg-secondary">
   <section
-    id="farewell"
+    id="farewells"
     class="container flex flex-col items-center md:items-start mx-auto">
     <kit-page-feature-farewell-page-benefits />
   </section>
 </div>
-
-<div class="mt-12 w-full bg-secondary px-2 py-12">
-  <section
-    id="benefits"
-    class="flex flex-col md:flex-row text-center md:text-left gap-6">
-    <div class="md:w-1/3">
-      <img class="ml-auto rounded" src="/introducing/farewell.gif" />
-    </div>
-
-    <div class="md:w-2/3 z-10 lg:max-w-5xl">
-      <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-        But Why?
-      </h2>
-      <p class="mt-2">
-        Farewell messages hold significant value within the workplace for both
-        the departing employee and the remaining team. They can convey
-        gratitude, acknowledge accomplishments, maintain connections, and leave
-        a positive lasting impression.
-      </p>
-
-      @if(extraLarge$ | async) {
-      <ng-container
-        *ngTemplateOutlet="
-          butWhyTmpl;
-          context: { $implicit: false }
-        "></ng-container>
-      }
-    </div>
-  </section>
-
-  @if((extraLarge$ | async) !== true) {
-  <ng-container
-    *ngTemplateOutlet="butWhyTmpl; context: { $implicit: true }"></ng-container>
-  }
-</div>
-
-<ng-template #butWhyTmpl let-standalone>
-  <div
-    [ngClass]="{
-    'container mx-auto': standalone,
-    '-ml-20': !standalone,
-  }"
-    class="mt-8 flex flex-wrap gap-1 justify-center md:justify-start lg:grid lg:grid-row-4 lg:grid-cols-4">
-    <div class="row-span-2">
-      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
-        <i class="pi pi-heart-fill" style="font-size: 1.5rem"></i>
-
-        <p class="m-0 text-lg font-semibold">Show Appreciation</p>
-
-        <p class="m-0">Express gratitude to colleagues and the company.</p>
-      </p-card>
-    </div>
-
-    <div class="row-span-2">
-      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
-        <img
-          src="logo/handshake.gif"
-          alt="'Follow profile'"
-          width="24"
-          height="24" />
-
-        <p class="m-0 text-lg font-semibold">Keep Connections</p>
-
-        <p class="m-0">Share contact information for future networking.</p>
-      </p-card>
-    </div>
-
-    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
-      <i class="pi pi-book"></i>
-      <span class="ml-2 text-md font-semibold">High Read Rate</span>
-    </p-card>
-
-    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
-      <i class="pi pi-eye"></i>
-      <span class="ml-2 text-md font-semibold">Engagement Varies</span>
-    </p-card>
-
-    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
-      <i class="pi pi-wrench"></i>
-      <span class="ml-2 text-md font-semibold">Any Format</span>
-    </p-card>
-
-    <p-card
-      pTooltip="A few days before the last day of work is generally appropriate."
-      styleClass="small-tile-h-22 w-60 hover:shadow-xl"
-      header="">
-      <i class="pi pi-clock"></i>
-      <span class="ml-2 text-md font-semibold">Your own timing</span>
-    </p-card>
-
-    <div class="row-span-2">
-      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
-        <i class="pi pi-database" style="font-size: 1.5rem"></i>
-
-        <p class="m-0 text-lg font-semibold">Knowledge Transfer</p>
-
-        <p class="m-0">
-          Highlight key projects and responsibilities for a smooth transition.
-        </p>
-      </p-card>
-    </div>
-
-    <div class="row-span-2">
-      <p-card styleClass="h-44 w-60 hover:shadow-xl" header="">
-        <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
-
-        <p class="m-0 text-lg font-semibold">Boost Morale</p>
-
-        <p class="m-0">Celebrate contributions and wish the employee well.</p>
-      </p-card>
-    </div>
-
-    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
-      <i class="pi pi-folder-open"></i>
-      <span class="ml-2 text-md font-semibold">High Open</span>
-    </p-card>
-
-    <p-card
-      pTooltip="Can be sent to the whole company, a team, or individuals."
-      styleClass="small-tile-h-22 w-60 hover:shadow-xl"
-      header="">
-      <i class="pi pi-cloud-upload"></i>
-      <span class="ml-2 text-md font-semibold">Distribution</span>
-    </p-card>
-
-    <p-card
-      pTooltip="Farewell messages can also be shared on platforms like LinkedIn."
-      styleClass="small-tile-h-22 w-60 hover:shadow-xl"
-      header="">
-      <i class="pi pi-linkedin"></i>
-      <span class="ml-2 text-md font-semibold">Social Media</span>
-    </p-card>
-
-    <p-card styleClass="small-tile-h-22 w-60 hover:shadow-xl" header="">
-      <i class="pi pi-microphone"></i>
-      <span class="ml-2 text-md font-semibold">Make your voice heard</span>
-    </p-card>
-  </div>
-</ng-template>

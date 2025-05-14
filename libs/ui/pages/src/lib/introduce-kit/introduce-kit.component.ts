@@ -1,8 +1,7 @@
-import { AsyncPipe, NgClass, NgTemplateOutlet } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { DeviceService } from '@kitouch/shared-infra';
+import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
 import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,
@@ -21,10 +20,7 @@ import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/be
   styleUrls: ['./introduce-kit.component.scss'],
   templateUrl: './introduce-kit.component.html',
   imports: [
-    AsyncPipe,
     RouterModule,
-    NgClass,
-    NgTemplateOutlet,
     //
     CardModule,
     TooltipModule,
@@ -36,6 +32,8 @@ import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/be
   ],
 })
 export class KitPagesIntroduceKitComponent {
+  #auth0Service = inject(Auth0Service);
+
   extraLarge$ = inject(DeviceService).innerWidth$.pipe(
     map((width) => width >= 1320)
   );
@@ -75,4 +73,8 @@ export class KitPagesIntroduceKitComponent {
       url: '/introducing/shaking-hands.gif',
     },
   };
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
+  }
 }

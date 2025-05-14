@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { SharedKitUserHintDirective } from '@kitouch/containers';
@@ -18,36 +18,37 @@ import { startWith } from 'rxjs';
   standalone: true,
   selector: 'kit-page-feature-kudoboard-page-benefits',
   template: `
-    <div class="flex gap-4 items-center">
-      <h2 class="text-slate-900 font-bold text-3xl sm:text-4xl lg:text-5xl">
-        <a [routerLink]="featuresKudoBoardUrl">
-          <i class="pi pi-link font-semibold text-3xl"></i>
-          Kudo boards ✨
-        </a>
-      </h2>
+    <h2
+      class="flex items-center gap-2 text-slate-800 font-semibold text-2xl lg:text-3xl dark:text-white"
+    >
+      <a [routerLink]="featuresKudoBoardUrl"> Kudo boards. More </a>
+      <img
+        ngSrc="/material-icons/open_in_new.svg"
+        alt="Open kudo boards explore, link"
+        width="30"
+        height="300"
+      />
+    </h2>
 
-      <div
-        sharedUserHint
-        [enabled]="!(($hintHidden | async) === true)"
-        text="No registration"
-        nextLineText="Free"
-        side="right"
-        [extraIdent]="{ top: -10, right: 35 }"
-      >
-        <a
-          [routerLink]="kudoBoardGenerateUrl"
-          uiKitSmallTextTailwindClasses
-          [klasses]="getStartedKlassOverwrite"
-          class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900"
-        >
-          Create Kudo board
-        </a>
-      </div>
-    </div>
-
-    <p class="mt-2">
+    <p class="mt-1">
       Say Kudo to your colleagues, friends or family! Manage at ease
     </p>
+
+    <div class="my-4 w-100 flex flex-col gap-1 items-center lg:items-start">
+      <a
+        [routerLink]="kudoBoardGenerateUrl"
+        uiKitSmallTextTailwindClasses
+        [klasses]="getStartedKlassOverwrite"
+        class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900"
+      >
+        Create Kudo board. Yours
+      </a>
+      <p class="text-gray-500 text-sm font-semibold">
+        Create kudo board yourself.
+        <br />
+        Even anonymously.
+      </p>
+    </div>
 
     <div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6">
       <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
@@ -92,6 +93,7 @@ import { startWith } from 'rxjs';
   imports: [
     RouterModule,
     AsyncPipe,
+    NgOptimizedImage,
     //
     CardModule,
     //

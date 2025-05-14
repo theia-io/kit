@@ -5,6 +5,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { ButtonModule } from 'primeng/button';
 import { ENVIRONMENT, RouterEventsService } from '@kitouch/shared-infra';
 import { SharedStaticInfoComponent } from '../../static-info/static-info.component';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -12,6 +13,7 @@ import { SharedStaticInfoComponent } from '../../static-info/static-info.compone
   templateUrl: './subnav.component.html',
   imports: [
     RouterModule,
+    NgOptimizedImage,
     //
     TooltipModule,
     ButtonModule,

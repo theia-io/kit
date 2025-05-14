@@ -42,7 +42,8 @@ export function authInterceptor(
           })
         );
         // store.dispatch(FeatUserApiActions.setUser({ user: null }));
-        store.dispatch(FeatAuth0Events.tryAuth());
+        // store.dispatch(FeatAuth0Events.tryAuth());
+        store.dispatch(FeatAuth0Events.resolveUserForApp());
       }
 
       return throwError(() => err);

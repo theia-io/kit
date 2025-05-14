@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
-import { Component, DestroyRef, inject } from '@angular/core';
-import { Router, RouterModule } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { RouterModule } from '@angular/router';
 import {
   SharedNavBarStaticComponent,
   SharedStaticInfoComponent,
@@ -43,9 +43,7 @@ import { select, Store } from '@ngrx/store';
   `,
 })
 export class KitStaticComponent {
-  #destroyRef = inject(DestroyRef);
   #store = inject(Store);
-  #router = inject(Router);
   #auth0Service = inject(Auth0Service);
 
   currentProfile$ = this.#store.pipe(select(selectCurrentProfile));

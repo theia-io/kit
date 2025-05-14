@@ -147,6 +147,15 @@ export const appRoutes: Route[] = [
     canActivate: [onlyForLoggedInGuard],
     canActivateChild: [onlyForLoggedInGuard],
     children: [
+      // // Outlet
+      // {
+      //   outlet: OUTLET_DIALOG,
+      //   path: APP_PATH_DIALOG.Tweet,
+      //   loadComponent: () =>
+      //     import('@kitouch/feat-tweet-ui').then(
+      //       (feat) => feat.FeatTweetDialogComponent
+      //     ),
+      // },
       {
         path: '',
         pathMatch: 'full',
@@ -248,7 +257,6 @@ export const appRoutes: Route[] = [
           },
         ],
       },
-
       // Outlet
       {
         outlet: OUTLET_DIALOG,

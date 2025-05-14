@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import {
   Component,
   inject,
@@ -32,6 +32,7 @@ import { TooltipModule } from 'primeng/tooltip';
     RouterModule,
     AsyncPipe,
     NgClass,
+    NgOptimizedImage,
     OverlayPanelModule,
     ButtonModule,
     TooltipModule,

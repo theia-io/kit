@@ -1,11 +1,7 @@
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
-import {
-  LayoutComponent,
-  NavBarComponent,
-  SharedStaticInfoComponent,
-} from '@kitouch/containers';
+import { LayoutComponent, NavBarComponent } from '@kitouch/containers';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 
 import { FeatFollowSuggestionsComponent } from '@kitouch/follow-ui';
@@ -13,14 +9,13 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { OUTLET_DIALOG } from '@kitouch/shared-constants';
 
 import { select, Store } from '@ngrx/store';
-import { filter, distinctUntilKeyChanged } from 'rxjs';
+import { distinctUntilKeyChanged, filter } from 'rxjs';
 
 @Component({
   standalone: true,
   imports: [
     RouterModule,
     //
-    // SharedStaticInfoComponent,
     FeatFollowSuggestionsComponent,
     LayoutComponent,
     NavBarComponent,
@@ -30,9 +25,8 @@ import { filter, distinctUntilKeyChanged } from 'rxjs';
     <shared-layout>
       <shared-navbar navbar [profile]="profile()" class="block"></shared-navbar>
 
+      <router-outlet name="tweet-dialog"></router-outlet>
       <router-outlet></router-outlet>
-
-      <router-outlet [name]="outletSecondary"></router-outlet>
 
       <div right>
         <feat-follow-suggestions
@@ -42,10 +36,6 @@ import { filter, distinctUntilKeyChanged } from 'rxjs';
             showRandomOrder: false
           }"
         />
-
-        <!-- <div class="m-6 inline">
-          <shared-static-info />
-        </div> -->
       </div>
     </shared-layout>
   `,
@@ -58,6 +48,7 @@ export class KitComponent {
   readonly outletSecondary = OUTLET_DIALOG;
 
   constructor() {
+    console.log('KitComponent constructor');
     this.#store
       .pipe(
         select(selectCurrentProfile),
