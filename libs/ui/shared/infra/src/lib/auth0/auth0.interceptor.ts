@@ -28,22 +28,12 @@ export function authInterceptor(
         kitEndpoint = req.url.includes('api/kit');
 
       if (httpResponseError && kitEndpoint && silentSignInExpected) {
-        console.log(
-          '[authInterceptor] ->3: HTTP ERROR - silent sign in expected',
-          router.url,
-          auth0Service.getTest()
-        );
-
         auth0Service.signIn(router.url);
         router.navigate([`/${APP_PATH_STATIC_PAGES.SignInSemiSilent}`]);
       }
 
       // if to do it also for `kitEndpoint` then we get into infinite loop
       if (httpResponseError && !kitEndpoint && unauthorized) {
-        console.info(
-          '[authInterceptor] ->3.2: user needs authentication, started auth flow',
-          req
-        );
         store.dispatch(
           FeatAuth0Events.setAuthState({
             user: null,

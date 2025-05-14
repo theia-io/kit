@@ -33,8 +33,7 @@ export class KitController {
     const authUser = req.user;
 
     const isAuthenticated = (req as any).oidc?.isAuthenticated();
-    console.log('(req as any).oidc?.isAuthenticated');
-    console.log(isAuthenticated);
+    console.log('(req as any).oidc?.isAuthenticated', isAuthenticated);
 
     if (isAuthenticated && !authUser) {
       throw new HttpException(

@@ -1,7 +1,11 @@
 {
   "name": "@kitouch/source",
-  "version": "7.0.18-79269cff",
+  "version": "7.0.19-74e2d87e",
   "license": "MIT",
+  "engines": {
+    "npm": ">=10.8.0",
+    "node": ">=20.1.0"
+  },
   "scripts": {
     "graph": "nx graph",
     "start:ui": "nx run ui:serve",

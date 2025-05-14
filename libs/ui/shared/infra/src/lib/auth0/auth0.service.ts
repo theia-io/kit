@@ -39,14 +39,6 @@ export class Auth0Service {
     window.location.href = `${this.#environment.api.auth}/logout`; // express-openid-connect handles this
   }
 
-  getTest() {
-    const urlBeforeRedirect = this.#localStoreService.getItem(
-      this.#beforeRedirectUrlKey
-    );
-
-    return urlBeforeRedirect;
-  }
-
   getPostRedirectUrl() {
     const urlBeforeRedirect = this.#localStoreService.getItem(
       this.#beforeRedirectUrlKey
