@@ -39,7 +39,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     if (environment.environment !== KIT_ENVS.production) {
-      console.log('ENVs:', environment);
+      console.info('ENVs:', environment);
     }
 
     // subscribe to cookieconsent observables to react to main events
@@ -54,21 +54,21 @@ export class AppComponent implements OnInit, OnDestroy {
     this.initializingSubscription = this.ccService.initializing$.subscribe(
       (event: NgcInitializingEvent) => {
         // the cookieconsent is initilializing... Not yet safe to call methods like `NgcCookieConsentService.hasAnswered()`
-        console.log(`initializing: ${JSON.stringify(event)}`);
+        console.info(`initializing: ${JSON.stringify(event)}`);
       },
     );
 
     this.initializedSubscription = this.ccService.initialized$.subscribe(() => {
       // the cookieconsent has been successfully initialized.
       // It's now safe to use methods on NgcCookieConsentService that require it, like `hasAnswered()` for eg...
-      console.log(`initialized: ${JSON.stringify(event)}`);
+      console.info(`initialized: ${JSON.stringify(event)}`);
     });
 
     this.initializationErrorSubscription =
       this.ccService.initializationError$.subscribe(
         (event: NgcInitializationErrorEvent) => {
           // the cookieconsent has failed to initialize...
-          console.log(
+          console.info(
             `initializationError: ${JSON.stringify(event.error?.message)}`,
           );
         },

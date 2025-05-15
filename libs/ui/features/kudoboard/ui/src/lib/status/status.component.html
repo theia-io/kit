@@ -18,8 +18,22 @@
   }
 } @else {
   @if (status() === kudoBoardStatus.Published) {
-    <p-tag severity="success" value="Published" />
+    <p-tag
+      [pTooltip]="
+        showTooltip()
+          ? 'Published kudoboard fully visible to everyone and it is public'
+          : ''
+      "
+      severity="success"
+      value="Published" />
   } @else if (status() === kudoBoardStatus.Draft) {
-    <p-tag severity="warn" value="Draft" />
+    <p-tag
+      [pTooltip]="
+        showTooltip()
+          ? 'Draft kudoboard does not show any information and it is public'
+          : ''
+      "
+      severity="warning"
+      value="Draft" />
   }
 }

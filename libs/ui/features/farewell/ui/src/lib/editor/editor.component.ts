@@ -4,8 +4,10 @@ import {
   effect,
   forwardRef,
   input,
+  OnDestroy,
   output,
   signal,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
@@ -16,6 +18,7 @@ import {
 } from '@angular/forms';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
 import {
+  Editor,
   EditorInitEvent,
   EditorModule,
   EditorSelectionChangeEvent,
@@ -34,6 +37,7 @@ export interface Range {
   length: number;
 }
 
+/** Note! This component has to be covered with unit tests before major refactoring  */
 @Component({
   selector: 'feat-farewell-editor',
   templateUrl: './editor.component.html',
@@ -61,19 +65,27 @@ export interface Range {
     },
   ],
 })
-export class FeatFarewellEditorComponent implements ControlValueAccessor {
+export class FeatFarewellEditorComponent
+  implements OnDestroy, ControlValueAccessor
+{
   imageStorageProvider =
-    input<(images: Array<File>) => Observable<Array<ContractUploadedMedia>>>();
+    input<
+      (images: Array<File>) => Observable<Array<ContractUploadedMedia> | null>
+    >();
   deleteImage = input<(imageSrc: string) => void>();
   /** e.g. when user updates title we don't want to autofocus editor automatically */
   disableEditorAutoFocus = input<boolean>(false);
   editorTextChange = output<string>();
 
+  editorComponent = viewChild(Editor);
+
+  #editorControlEnabled = true;
   editorControl = new FormControl<string>('');
 
   quill = signal<Quill | null>(null);
   /** Extra state to limit number of calls to DOM API. Default is true */
   quillPlaceholderShown = signal(true);
+  /** Likely is replaced by `#editorControlEnabled` and should be @deprecated */
   quillTextChangeActive = signal(true);
 
   actionsShow = signal<boolean>(false);
@@ -84,7 +96,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   sideActionOpened = signal<boolean>(this.sideActionsShow()); // default value same as initial value `show`
 
   /** Used to auto focus quill to then end on initial page load  */
-  autoFocusToEndTimeout: NodeJS.Timeout | null = null;
+  #autoFocusToEndTimeout: NodeJS.Timeout | null = null;
+  /** when component is destroyed all ongoing timeout have to be cleared */
+  #clearSetTimeouts: Array<NodeJS.Timeout> = [];
 
   constructor() {
     effect(() => {
@@ -96,7 +110,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     this.editorControl.valueChanges
       .pipe(takeUntilDestroyed())
       .subscribe((v) => {
-        console.log('editorControl value changed', v);
+        if (!this.#editorControlEnabled) {
+          return;
+        }
         this.#disableAutoFocus();
         this.onChange(v ?? '');
       });
@@ -117,6 +133,13 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     );
   }
 
+  ngOnDestroy(): void {
+    this.#clearSetTimeouts.forEach((timeout) => {
+      clearTimeout(timeout);
+    });
+    this.#clearSetTimeouts = [];
+  }
+
   // eslint-disable-next-line @typescript-eslint/no-empty-function -- Implemented
   onChange = (value: string) => {};
   // eslint-disable-next-line @typescript-eslint/no-empty-function -- Implemented
@@ -125,9 +148,10 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   writeValue(value: string): void {
     this.editorControl.setValue(value);
     // has to be done after quill sets value
-    this.autoFocusToEndTimeout = setTimeout(() => {
+    this.#autoFocusToEndTimeout = setTimeout(() => {
       this.#setFocusToEnd(this.quill());
-    }, 1000);
+    }, 2000);
+    this.#clearSetTimeouts.push(this.#autoFocusToEndTimeout);
   }
 
   registerOnChange(fn: any): void {
@@ -144,35 +168,43 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     const deleteImageCb = this.deleteImage();
     if (deleteImageCb) {
       const testedChromex20Throttle = 1250; // come up with better solution
-      setTimeout(() => {
-        const quillObserver = new MutationObserver((mutationsList) => {
-          mutationsList.forEach((mutation, idx) => {
-            if (
-              mutation.type === 'childList' &&
-              mutation.removedNodes.length > 0
-            ) {
-              mutation.removedNodes.forEach((removedNode) => {
-                // Check if the removed node is an image
-
-                if (
-                  quillBackspaceImageHandler(
-                    removedNode,
-                    mutationsList[idx + 1]?.addedNodes?.[0],
-                  )
-                ) {
-                  deleteImageCb(removedNode.src);
-                  // Do something with the removed image element
-                }
-              });
-            }
+      this.#clearSetTimeouts.push(
+        setTimeout(() => {
+          const quillObserver = new MutationObserver((mutationsList) => {
+            mutationsList.forEach((mutation, idx) => {
+              if (
+                mutation.type === 'childList' &&
+                mutation.removedNodes.length > 0
+              ) {
+                mutation.removedNodes.forEach((removedNode) => {
+                  if (
+                    (removedNode as HTMLImageElement).dataset?.['id'] ===
+                    'loading-gif'
+                  ) {
+                    console.info('loading gif removed', removedNode);
+                  } else {
+                    // Check if the removed node is an image
+                    if (
+                      quillBackspaceImageHandler(
+                        removedNode,
+                        mutationsList[idx + 1]?.addedNodes?.[0],
+                      )
+                    ) {
+                      deleteImageCb(removedNode.src);
+                      // Do something with the removed image element
+                    }
+                  }
+                });
+              }
+            });
           });
-        });
 
-        quillObserver.observe((editor as Quill).root, {
-          childList: true,
-          subtree: true,
-        });
-      }, testedChromex20Throttle);
+          quillObserver.observe((editor as Quill).root, {
+            childList: true,
+            subtree: true,
+          });
+        }, testedChromex20Throttle),
+      );
     }
   }
 
@@ -182,8 +214,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     const range = quill.getSelection(true);
     let idx = range.index;
 
-    quill.insertEmbed(idx++, 'divider', false, Quill.sources.USER);
     quill.insertText(idx++, '\n', Quill.sources.USER);
+    quill.insertEmbed(idx++, 'divider', false, Quill.sources.USER);
+    // quill.insertText(idx++, '\n', Quill.sources.USER);
     quill.insertText(idx++, '\n', Quill.sources.USER);
     quill.setSelection(idx++, Quill.sources.SILENT);
     quill.focus();
@@ -200,34 +233,63 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
 
       this.quillTextChangeActive.set(false);
 
-      imagesStorageProvider$.subscribe((urls) => {
-        const imageSrc = urls[0];
+      const range = quill.getSelection(true);
+      let idx = range.index;
 
-        const kitQuillImageBloat: ImageConfiguration = {
-          alt: 'KIT kitouch farewell image',
-          src: imageSrc.optimizedUrls[0] ?? imageSrc.url,
-          width: imageSrc.width ?? 300,
-          height: imageSrc.height ?? 300,
-          loadedCb: () => {
+      this.#editorControlEnabled = false;
+      quill.insertEmbed(
+        idx++,
+        'image',
+        {
+          alt: 'KIT kitouch farewell image placeholder',
+          src: '/loading.gif',
+          dataId: 'loading-gif',
+        },
+        Quill.sources.USER,
+      );
+      const insertedImageIdx = idx - 1;
+
+      imagesStorageProvider$.subscribe({
+        next: (urls) => {
+          if (urls === null) {
+            quill.deleteText(insertedImageIdx, 1, Quill.sources.USER);
             this.#keepSideActionOpened({ quill });
-          },
-        };
+            return;
+          }
 
-        const range = quill.getSelection(true);
-        let idx = range.index;
+          this.#editorControlEnabled = true;
+          const imageSrc = urls[0];
 
-        quill.insertEmbed(
-          idx++,
-          'image',
-          kitQuillImageBloat,
-          Quill.sources.USER,
-        );
-        quill.insertText(idx++, '\n', Quill.sources.USER);
-        quill.insertText(idx++, '\n', Quill.sources.USER);
-        quill.setSelection(idx++, Quill.sources.SILENT);
-        quill.focus();
+          const kitQuillImageBloat: ImageConfiguration = {
+            alt: 'KIT kitouch farewell image',
+            src: imageSrc.optimizedUrls[0] ?? imageSrc.url,
+            width: imageSrc.width ?? 300,
+            height: imageSrc.height ?? 300,
+            loadedCb: () => {
+              quill.deleteText(insertedImageIdx, 1, Quill.sources.USER);
+              this.#keepSideActionOpened({ quill });
+            },
+          };
 
-        this.quillTextChangeActive.set(true);
+          quill.insertText(idx++, '\n', Quill.sources.USER);
+          quill.insertEmbed(
+            idx++,
+            'image',
+            kitQuillImageBloat,
+            Quill.sources.USER,
+          );
+          // quill.insertText(idx++, '\n', Quill.sources.USER);
+          quill.insertText(idx++, '\n', Quill.sources.USER);
+          quill.setSelection(idx++, Quill.sources.SILENT);
+          quill.focus();
+
+          this.quillTextChangeActive.set(true);
+        },
+        error: () => {
+          this.#editorControlEnabled = true;
+          quill.deleteText(insertedImageIdx, 1, Quill.sources.USER);
+          this.#keepSideActionOpened({ quill });
+        },
       });
     } else {
       console.warn(
@@ -298,9 +360,9 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
   }
 
   #disableAutoFocus() {
-    if (this.autoFocusToEndTimeout) {
-      clearTimeout(this.autoFocusToEndTimeout);
-      this.autoFocusToEndTimeout = null;
+    if (this.#autoFocusToEndTimeout) {
+      clearTimeout(this.#autoFocusToEndTimeout);
+      this.#autoFocusToEndTimeout = null;
     }
   }
 
@@ -311,12 +373,25 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
     }
 
     let length = quill.getLength();
-    quill.insertText(length++, '\n', Quill.sources.USER);
-    quill.setSelection(length, Quill.sources.SILENT);
-    quill.focus();
+    if (length > 100) {
+      (this.editorComponent()?.el.nativeElement as HTMLElement).scrollIntoView({
+        behavior: 'smooth',
+        block: 'end',
+        inline: 'start',
+      });
+    }
 
-    this.sideActionsShow.set(true);
-    this.#keepSideActionOpened({ quill, updateBoundOnly: true });
+    this.#clearSetTimeouts.push(
+      setTimeout(() => {
+        if (length > 1) {
+          quill.insertText(length++, '\n', Quill.sources.USER);
+        }
+        quill.setSelection(length, Quill.sources.SILENT);
+        quill.focus();
+        this.sideActionsShow.set(true);
+        this.#keepSideActionOpened({ quill, updateBoundOnly: true });
+      }, 750),
+    ); // come up with better delay (should happen just after scroll above `scrollIntoView`)
   }
 
   #checkActionShow(quill: Quill, { index, length }: Range) {
@@ -410,18 +485,20 @@ export class FeatFarewellEditorComponent implements ControlValueAccessor {
       this.sideActionsBounds.set(quill.getBounds(newRange));
     };
 
-    setTimeout(() => {
-      if (updateBoundOnly) {
+    this.#clearSetTimeouts.push(
+      setTimeout(() => {
+        if (updateBoundOnly) {
+          updateBounds();
+          return;
+        }
+
+        this.sideActionsShow.set(true);
         updateBounds();
-        return;
-      }
 
-      this.sideActionsShow.set(true);
-      updateBounds();
-
-      if (autofocus) {
-        quill.focus();
-      }
-    }, 0);
+        if (autofocus) {
+          quill.focus();
+        }
+      }, 0),
+    );
   }
 }

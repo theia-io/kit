@@ -7,7 +7,7 @@ import { getExperienceEqualityObject } from './user.selectors';
 // import { mongooseEqual } from '@kitouch/shared-utils';
 
 export interface FeatureUserState {
-  user?: User;
+  user?: User | null;
   users: Array<User>;
 }
 

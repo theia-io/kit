@@ -1,10 +1,11 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import {
   FeatSideBarPreviewComponent,
   SharedCopyClipboardComponent,
+  SharedStatusLegendComponent,
 } from '@kitouch/containers';
 import {
   FeatKudoBoardActions,
@@ -17,6 +18,7 @@ import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
 import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
+  UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
@@ -52,6 +54,8 @@ import { filter, map } from 'rxjs/operators';
     FeatSideBarPreviewComponent,
     FeatKudoboardInfoPanelComponent,
     SharedCopyClipboardComponent,
+    SharedStatusLegendComponent,
+    UiCompCardComponent,
     //
     AsyncPipe,
     RouterModule,
@@ -96,8 +100,8 @@ export class PageKudoBoardsAllComponent {
     ),
   );
 
-  kudoBoardGenerateUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  kudoBoardGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
+  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly kudoBoardStatus = KudoBoardStatus;
 
   constructor() {

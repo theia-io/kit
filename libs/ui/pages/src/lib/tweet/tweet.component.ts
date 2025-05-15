@@ -172,7 +172,7 @@ export class PageTweetComponent {
   }
 
   tweetDeletedHandler() {
-    this.#router.navigateByUrl('/');
+    this.#router.navigateByUrl('/app');
   }
 
   commentDeleteHandler(tweet: Tweety, comment: TweetComment) {

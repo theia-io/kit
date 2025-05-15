@@ -8,6 +8,7 @@ import {
   signal,
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { SharedStaticInfoComponent } from '@kitouch/containers';
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import {
   FeatSettingsExperienceAddComponent,
@@ -48,6 +49,7 @@ import { Message } from '../messages/message';
     FeatSettingsSocialsComponent,
     FeatSettingsExperienceAddComponent,
     FeatSettingsExperienceShowComponent,
+    SharedStaticInfoComponent,
   ],
 })
 export class PageSettingsComponent implements OnInit {
@@ -115,7 +117,10 @@ export class PageSettingsComponent implements OnInit {
   }
 
   editExperienceHandler(experience: Experience) {
-    console.log(experience);
+    console.info(
+      '[UI PageSettingsComponent] editExperienceHandler',
+      experience,
+    );
   }
 
   deleteExperienceHandler(experience: Experience) {

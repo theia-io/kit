@@ -1,5 +1,9 @@
 @let kudoboardOwner = kudoboardProfile();
+<!-- who is getting this Kudoboard -->
 @let recipient = (kudoboard$ | async)?.recipient;
+<!-- Comments -->
+@let kudoboardComments = kudoboardComments$ | async;
+
 <!-- Comment -->
 @if (canComment()) {
   <div
@@ -32,16 +36,24 @@
         } @else {
           <p class="m-0 mb-1 text-sm text-gray-500">
             <a (click)="signIn()" role="button" class="underline">
-              Sign-in or register
+              Click to login.
             </a>
-            . Otherwise comments will be left anonymously
+            Otherwise comments will be left anonymously
           </p>
         }
       </div>
     </ui-kit-comment-area>
   </div>
 
-  <ui-kit-divider class="block my-9" />
+  <ui-kit-divider class="block mt-8 mb-4" />
+
+  @let commentLength = kudoboardComments?.length ?? 0;
+  @if (commentLength > 0) {
+    <p class="text-sm text-center text-gray-500 mb-4">
+      There {{ commentLength === 1 ? 'is' : 'are' }} {{ commentLength }}
+      {{ commentLength === 1 ? 'comment.' : 'comments.' }}
+    </p>
+  }
 }
 
 <div #commentsTmpl class="masonry mx-auto">

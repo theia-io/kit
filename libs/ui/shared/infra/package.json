@@ -1,16 +1,16 @@
 {
   "name": "@kitouch/shared-infra",
-  "version": "6.0.0-0",
+  "version": "7.0.0-0",
   "peerDependencies": {
     "@angular/common": "19.2.9",
     "@angular/core": "19.2.9",
     "@angular/router": "19.2.9",
     "rxjs": "~7.8.0",
-    "@kitouch/shared-models": "6.0.0-0",
+    "@kitouch/shared-models": "7.0.0-0",
     "@aws-sdk/client-s3": "^3.627.0",
     "@aws-sdk/credential-providers": "^3.631.0",
-    "@kitouch/shared-constants": "6.0.0-0",
-    "@kitouch/kit-data": "6.0.0-0",
+    "@kitouch/shared-constants": "7.0.0-0",
+    "@kitouch/kit-data": "7.0.0-0",
     "@ngrx/store": "19.0.0"
   },
   "sideEffects": false

@@ -86,7 +86,7 @@ export class PageKudoBoardEditComponent {
     map(([_, kudoboard]) => [
       {
         label: 'All KudoBoards',
-        routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
         icon: 'pi pi-send mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',
@@ -112,7 +112,7 @@ export class PageKudoBoardEditComponent {
   }
 
   redirectToAll() {
-    this.#router.navigateByUrl(`/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
+    this.#router.navigateByUrl(`/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
   }
 
   handleGetStarted() {

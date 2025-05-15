@@ -21,28 +21,41 @@ export class Auth0Service {
   loggedIn$ = this.loggedInUser$.pipe(map((user) => !!user));
 
   readonly #separateWindow = 'kit.auth.separate-window';
+  readonly #beforeRedirectUrlKey = 'kit.auth.pre-redirect-url';
+
+  // #currentSessionAccountUserProfiles$ = of(true)
+  //   .pipe(
+  //     switchMap(() => {
+  //       return this.#http.get<{
+  //         account: Account;
+  //         user: User;
+  //         profiles: Array<Profile>;
+  //       }>(`${this.#environment.api.kit}`);
+  //     }),
+  //     share({resetOnRefCountZero: true})
+  //   );
 
   logout() {
     window.location.href = `${this.#environment.api.auth}/logout`; // express-openid-connect handles this
   }
 
-  // savePostRedirectUrl(beforeRedirectUrl: string) {
-  //   this.#localStoreService.setItem(this.#beforeRedirectKey, beforeRedirectUrl);
-  // }
+  getPostRedirectUrl() {
+    const urlBeforeRedirect = this.#localStoreService.getItem(
+      this.#beforeRedirectUrlKey,
+    );
+    this.#localStoreService.removeItem(this.#beforeRedirectUrlKey);
 
-  // getPostRedirectUrl() {
-  //   const urlBeforeRedirect = this.#localStoreService.getItem(
-  //     this.#beforeRedirectKey
-  //   );
+    return urlBeforeRedirect;
+  }
 
-  //   if (urlBeforeRedirect) {
-  //     this.#localStoreService.removeItem(this.#beforeRedirectKey);
-  //   }
-
-  //   return urlBeforeRedirect;
-  // }
-
-  signIn() {
+  signIn(urlToOpenAfterSignIn?: string) {
+    console.log('signIn', urlToOpenAfterSignIn);
+    if (urlToOpenAfterSignIn) {
+      this.#localStoreService.setItem(
+        this.#beforeRedirectUrlKey,
+        urlToOpenAfterSignIn,
+      );
+    }
     window.location.href = `${this.#environment.api.auth}/login`; // express-openid-connect handles this
   }
 
@@ -51,10 +64,20 @@ export class Auth0Service {
 
     window.open(`${this.#environment.api.auth}/login`, '_blank')?.focus();
 
-    /** TODO use CrossTabSyncService instead of localstorage and keep LS as fallback */
+    /**
+     * Currently used as login-in into separate window,
+     *
+     * @TODO (check)
+     * should we use CrossTabSyncService instead of localstorage
+     * and keep LS as fallback?
+     **/
     return new Promise((resolve, reject) => {
       const storageEventHandler = (event: StorageEvent) => {
-        console.log('Storage Event Origin:', event, (event as any).origin);
+        console.info(
+          '[UI Auth0Service] Storage Event Origin:',
+          event,
+          (event as any).origin,
+        );
 
         // Check if it's the key we are waiting for
         if (
@@ -105,5 +128,6 @@ export class Auth0Service {
       user: User;
       profiles: Array<Profile>;
     }>(`${this.#environment.api.kit}`);
+    // return this.#currentSessionAccountUserProfiles$
   }
 }

@@ -1,5 +1,5 @@
 <div class="flex gap-2 justify-end items-center">
-  <div class="flex gap-2 mr-auto">
+  <div class="flex gap-2 mr-auto overflow-auto">
     @for (
       profileReaction of kudoBoardProfileReactionsMap$ | async;
       track $index
@@ -104,7 +104,7 @@
       <ui-kit-comp-animate-ping [animate]="true">
         <p-button
           sharedAuthorizedFeature
-          pTooltip="Claim Kudoboard to always have it at hand and be its admin"
+          pTooltip="Claim Kudoboard to be have it at hand, edit and control it. You will be the owner of this Kudo board."
           styleClass="p-1"
           [text]="true"
           (onClick)="claimKudoBoard()"
@@ -116,7 +116,8 @@
     <!-- Admin owner menu -->
     @if (canEdit()) {
       <p-button
-        pTooltip="Edit (Only visible for you)"
+        pTooltip="Edit (Only visible to you)"
+        tooltipPosition="left"
         styleClass="ml-2 p-1 text-gray-500"
         (onClick)="redirectToEdit()"
         [text]="true"

@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 
 import { FeatFollowActions } from '@kitouch/feat-follow-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap } from 'rxjs';
 import { FollowService } from './follow.service';
 

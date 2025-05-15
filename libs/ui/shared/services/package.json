@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/shared-services",
-  "version": "6.0.0-0",
+  "version": "7.0.0-0",
   "peerDependencies": {
     "@angular/common": "19.2.9",
     "@angular/core": "19.2.9",
@@ -9,8 +9,8 @@
     "rxjs": "~7.8.0",
     "intro.js": "^7.2.0",
     "@ngrx/effects": "19.0.0",
-    "@kitouch/shared-infra": "6.0.0-0",
-    "@kitouch/shared-models": "6.0.0-0"
+    "@kitouch/shared-infra": "7.0.0-0",
+    "@kitouch/shared-models": "7.0.0-0"
   },
   "sideEffects": false
 }

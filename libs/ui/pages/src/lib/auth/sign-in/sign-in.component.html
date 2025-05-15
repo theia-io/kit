@@ -29,15 +29,15 @@
     <p-tag
       [@slideInOut]="kittenVisible()"
       severity="info"
-      class="absolute -top-7 left-14"
+      class="absolute -top-5 left-14"
       value="KIT"
       [rounded]="true" />
 
     <img
       [@slideInOut]="kittenVisible()"
-      class="absolute -top-7"
+      class="absolute -top-8"
       src="/logo/cat-tr-removespacebg-small.png" />
   </div>
 
-  <shared-sign-in-auth0 />
+  <shared-sign-in-auth0 class="relative" />
 </div>

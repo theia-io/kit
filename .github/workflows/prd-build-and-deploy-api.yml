@@ -30,7 +30,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     permissions:
-      contents: write # Grant write permissions to the repository's contents
+      contents: write
 
     steps:
       - uses: actions/checkout@v4

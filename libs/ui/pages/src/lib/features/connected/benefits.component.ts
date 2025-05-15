@@ -56,5 +56,5 @@ import { CardModule } from 'primeng/card';
   ],
 })
 export class PagesFeatureConnectedBenefitsComponent {
-  featuresConnectedUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
+  featuresConnectedUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
 }

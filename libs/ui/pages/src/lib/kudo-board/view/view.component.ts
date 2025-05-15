@@ -1,4 +1,4 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -37,7 +37,10 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 
-import { AuthorizedFeatureDirective } from '@kitouch/containers';
+import {
+  AuthorizedFeatureDirective,
+  SharedStatusLegendComponent,
+} from '@kitouch/containers';
 import {
   FeatFarewellActions,
   findProfileFarewells,
@@ -59,9 +62,7 @@ import {
   startWith,
   switchMap,
   take,
-  tap,
 } from 'rxjs';
-import ContentLoader from 'photoswipe/dist/types/slide/loader';
 
 /**
  * Component has 5 states
@@ -164,7 +165,7 @@ export class PageKudoBoardViewComponent {
     map(([_, kudoboard]) => [
       {
         label: 'All KudoBoards',
-        routerLink: `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
         icon: 'pi pi-send mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',

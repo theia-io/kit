@@ -6,10 +6,11 @@ import {
 } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
-import { FeatUserApiActions } from '@kitouch/kit-data';
+import { FeatAuth0Events } from '@kitouch/kit-data';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 import { Store } from '@ngrx/store';
 import { Observable, catchError, throwError } from 'rxjs';
+import { Auth0Service } from './auth0.service';
 
 export function authInterceptor(
   req: HttpRequest<any>,
@@ -17,26 +18,31 @@ export function authInterceptor(
 ): Observable<HttpEvent<any>> {
   const router = inject(Router);
   const store = inject(Store);
+  const auth0Service = inject(Auth0Service);
 
   return next(req).pipe(
     catchError((err) => {
-      console.error('[AuthInterceptor]: ', err);
-      if (
-        err instanceof HttpErrorResponse &&
-        err.status === 401 &&
-        req.url.includes('api/kit')
-      ) {
-        console.info(
-          '[AuthInterceptor] silent logged in FAILED, PASS THROUGH',
-          req,
-        );
-        return throwError(() => err);
+      const httpResponseError = err instanceof HttpErrorResponse,
+        unauthorized = err.status === 401,
+        silentSignInExpected = err.status === 428,
+        kitEndpoint = req.url.includes('api/kit');
+
+      if (httpResponseError && kitEndpoint && silentSignInExpected) {
+        auth0Service.signIn(router.url);
+        router.navigate([`/${APP_PATH_STATIC_PAGES.SignInSemiSilent}`]);
       }
 
-      if (err instanceof HttpErrorResponse && err.status === 401) {
-        console.info('[AuthInterceptor] FAILED, REDIRECT', req);
-        store.dispatch(FeatUserApiActions.setUser({ user: undefined }));
-        router.navigate([`/s/${APP_PATH_STATIC_PAGES.SignIn}`]);
+      // if to do it also for `kitEndpoint` then we get into infinite loop
+      if (httpResponseError && !kitEndpoint && unauthorized) {
+        store.dispatch(
+          FeatAuth0Events.setAuthState({
+            user: null,
+            account: null,
+            profiles: [],
+          }),
+        );
+        // store.dispatch(FeatUserApiActions.setUser({ user: null }));
+        store.dispatch(FeatAuth0Events.tryAuth());
       }
 
       return throwError(() => err);

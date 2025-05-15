@@ -1,12 +1,18 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FeatKudoBoardCommentActions,
   selectKudoBoardCommentById,
 } from '@kitouch/data-kudoboard';
+import { S3_KUDOBOARD_BUCKET_BASE_URL } from '@kitouch/shared-infra';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
+import { getFullS3Url, getImageKeyFromS3Url } from '@kitouch/shared-services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import {
   catchError,
+  delay,
   filter,
   forkJoin,
   map,
@@ -16,11 +22,6 @@ import {
   take,
 } from 'rxjs';
 import { KudoBoardCommentsService } from './kudoboard-comments.service';
-import { getImageKeyFromS3Url } from './kudoboard-media.effects';
-import { S3_KUDOBOARD_BUCKET_BASE_URL } from '@kitouch/shared-infra';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { select, Store } from '@ngrx/store';
-import { ContractUploadedMedia } from '@kitouch/shared-models';
 
 @Injectable()
 export class KudoBoardCommentsEffects {
@@ -107,15 +108,27 @@ export class KudoBoardCommentsEffects {
             ),
           ),
         ).pipe(
-          map((res) =>
+          map((items) =>
+            items.map((item) => ({
+              ...item,
+              url: getFullS3Url(this.#s3KudoBoardBaseUrl, item.url),
+              optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
+                getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl),
+              ),
+            })),
+          ),
+          map((items) =>
             FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess(
               {
                 kudoBoardId,
                 profileId,
-                items: res,
+                items,
               },
             ),
           ),
+
+          // AWS S3 bucket has eventual consistency so need a time for it to be available
+          delay(1500),
           catchError(() =>
             of(
               FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaFailure(

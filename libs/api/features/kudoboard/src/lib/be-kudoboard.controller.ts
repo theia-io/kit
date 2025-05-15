@@ -44,7 +44,6 @@ export class BeKudoboardController {
   }
 
   @Put(':kudoboardId')
-  @UseGuards(AuthGuard('jwt'))
   async updateKudoboard(
     @Param('kudoboardId') kudoboardId: string,
     @Body() kudoBoard: IKudoBoard,

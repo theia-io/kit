@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { Profile, ReTweety } from '@kitouch/shared-models';
+import { Profile } from '@kitouch/shared-models';
 
 @Pipe({
   pure: true,
@@ -13,9 +13,9 @@ export class RetweetWhoPipe implements PipeTransform {
     tweetProfile: Profile | undefined,
   ) {
     if (currentProfileId === retweetProfile.id) {
-      return 'You';
+      return 'You re-tweeted';
     } else if (retweetProfile.id === tweetProfile?.id) {
-      return retweetProfile.name;
+      return `${retweetProfile.name} re-tweeted`;
       //   return `${retweetProfile.name} (Tweet owner)`;
     } else {
       return retweetProfile.name;

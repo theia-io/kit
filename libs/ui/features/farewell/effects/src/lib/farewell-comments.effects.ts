@@ -1,13 +1,15 @@
-import { Injectable, inject } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FeatFarewellCommentActions,
-  selectFarewellById,
   selectFarewellCommentById,
-  selectFarewellCommentsById,
 } from '@kitouch/feat-farewell-data';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
+import { ContractUploadedMedia } from '@kitouch/shared-models';
+import { getImageKeyFromS3Url } from '@kitouch/shared-services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { select, Store } from '@ngrx/store';
 import {
   catchError,
   filter,
@@ -17,13 +19,8 @@ import {
   of,
   switchMap,
   take,
-  takeUntil,
 } from 'rxjs';
 import { FarewellCommentsService } from './farewell-comments.service';
-import { getImageKeyFromS3Url } from './farewell-media.effects';
-import { select, Store } from '@ngrx/store';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ContractUploadedMedia } from '@kitouch/shared-models';
 
 @Injectable()
 export class FarewellCommentsEffects {

@@ -29,7 +29,11 @@ import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import { objectLoadingState$ } from '@kitouch/shared-services';
-import { UiKitPageOverlayComponent } from '@kitouch/ui-components';
+import {
+  KlassOverwrite,
+  UiKitPageOverlayComponent,
+  UIKitSmallerHintTextUXDirective,
+} from '@kitouch/ui-components';
 
 import { ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
@@ -65,6 +69,7 @@ import {
     FeatFollowUnfollowProfileComponent,
     FeatFarewellStatusComponent,
     FeatFarewellInfoPanelComponent,
+    UIKitSmallerHintTextUXDirective,
   ],
 })
 export class PageFarewellViewComponent {
@@ -172,13 +177,19 @@ export class PageFarewellViewComponent {
     );
   });
 
+  getStartedKlassOverwrite: KlassOverwrite = {
+    text: {
+      color: 'text-white',
+      hoverColor: 'text-slate-700',
+    },
+  };
+
   commentsSideBarVisibility = signal(false);
   farewellStatus = FarewellStatus;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 
   constructor() {
-    console.log('CREATED');
     this.farewellId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
       .subscribe((id) => {

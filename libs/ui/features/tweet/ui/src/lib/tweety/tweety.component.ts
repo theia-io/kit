@@ -1,15 +1,15 @@
-import { DOCUMENT, DatePipe } from '@angular/common';
+import { DatePipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   DestroyRef,
   HostListener,
-  ViewChild,
-  computed,
   inject,
   input,
   output,
   signal,
+  ViewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -53,7 +53,6 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
   styles: [':host { position: relative; cursor: pointer; }'],
   imports: [
     ReactiveFormsModule,
-    DatePipe,
     RouterModule,
     //
     OverlayPanelModule,
@@ -69,6 +68,7 @@ import { FeatTweetActionsComponent } from './actions/actions.component';
     UiKitDeleteComponent,
     UiKitSpinnerComponent,
   ],
+  providers: [DatePipe],
 })
 export class FeatTweetTweetyComponent {
   tweetId = input<Tweety['id']>();
@@ -78,9 +78,9 @@ export class FeatTweetTweetyComponent {
   #document = inject(DOCUMENT);
   #destroyRef = inject(DestroyRef);
   #router = inject(Router);
-  #store = inject(Store);
   #actions = inject(Actions);
-  //
+  #store = inject(Store);
+  #datePipe = inject(DatePipe);
   domSanitizer = inject(DomSanitizer);
 
   tweetTypes = TweetyType;
@@ -113,6 +113,27 @@ export class FeatTweetTweetyComponent {
 
   // Component logic
   commentOverlayVisible = signal(false);
+
+  tweetHeaderSecondaryText = computed(() => {
+    const tweet = this.tweet();
+
+    if (!tweet) {
+      return 'loading...';
+    }
+
+    const tweetCreatedDate = tweet.createdAt;
+    if (tweetCreatedDate) {
+      const secondaryText = tweetIsRetweet(tweet)
+        ? 'retweeted on ' +
+          this.#datePipe.transform(tweet.createdAt, 'MMM d, h:mm a')
+        : 'tweeted on ' +
+          this.#datePipe.transform(tweet.createdAt, 'MMM d, h:mm a');
+
+      return secondaryText;
+    }
+
+    return '';
+  });
 
   tweetComments = computed(() => {
     const tweet = this.tweet();

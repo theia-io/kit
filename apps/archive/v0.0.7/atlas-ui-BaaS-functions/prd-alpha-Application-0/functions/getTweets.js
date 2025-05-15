@@ -21,7 +21,7 @@ exports = async function (tweetIdArr) {
       })
       .toArray();
   } catch (err) {
-    console.log(
+    console.info(
       '[getTweets] Error occurred while finding tweets:',
       err.message,
     );
@@ -33,7 +33,7 @@ exports = async function (tweetIdArr) {
       context.functions.execute('normalizeTweet', tweet),
     );
   } catch (err) {
-    console.log(
+    console.info(
       '[postTweet] Error occurred while normalizing tweets:',
       err.message,
     );

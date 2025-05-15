@@ -38,9 +38,8 @@ export class AccountsEffects {
       this.#actions$.pipe(
         ofType(FeatAccountApiActions.deleteSuccess),
         tap(() => {
-          console.log('logout and redirect to home');
           this.#auth0Service.logout();
-          this.#router.navigateByUrl('/');
+          this.#router.navigateByUrl('/app');
         }),
       ),
     {

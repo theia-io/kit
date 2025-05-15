@@ -109,6 +109,6 @@ export class PagesFeatureFarewellBenefitsComponent {
     },
   };
 
-  featuresFarewellUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
+  featuresFarewellUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
   farewellGenerateUrl = `/${APP_PATH.Farewell}/generate`;
 }

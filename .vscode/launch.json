@@ -10,7 +10,17 @@
       "runtimeArgs": ["run", "start:api", "--verbose"],
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
-      "type": "node"
+      "type": "node",
+      "runtimeVersion": "20.15.0"
+    },
+    {
+      "name": "start:ui",
+      "request": "launch",
+      "runtimeArgs": ["run", "start:ui", "--verbose"],
+      "runtimeExecutable": "npm",
+      "skipFiles": ["<node_internals>/**"],
+      "type": "node",
+      "runtimeVersion": "20.15.0"
     },
     {
       "name": "Attach by Process ID",

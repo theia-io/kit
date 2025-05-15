@@ -1,4 +1,8 @@
-<feat-farewell-intro class="block mb-6 mx-12" />
+<feat-farewell-intro class="block mb-2 mx-12" />
+
+<ui-kit-comp-card class="block mt-4 mb-6">
+  <shared-status-legend />
+</ui-kit-comp-card>
 
 @for (farewell of farewells$ | async; track $index) {
   <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
@@ -25,14 +29,14 @@
 
     <ui-kit-divider class="block mt-8" />
 
-    <div class="flex flex-col md:flex-row gap-4 md:gap-2 items-center mt-4">
+    <div class="flex flex-col lg:flex-row gap-4 md:gap-2 items-center mt-4">
       <feat-farewell-info-panel
         [farewell]="farewell"
         [linkedKudoboard]="farewell.kudoBoard"
         [showUpdatedDate]="true"
         [preview]="true" />
 
-      <div class="md:ml-auto text-sm text-gray-500">
+      <div class="lg:ml-auto text-sm text-gray-500">
         <shared-sidebar-preview
           class="mr-2"
           kClass="text-gray-500 hover:text-gray-900 k-bg-transparent duration-0">

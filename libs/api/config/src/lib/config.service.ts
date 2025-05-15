@@ -12,10 +12,17 @@ export class ConfigService {
 
   constructor(
     @Inject(EnvironmentToken) environment: Environment,
-    private secretsService: AWSSecretsService,
+    secretsService: AWSSecretsService,
   ) {
     this.#environment = environment;
-    this.#setConfig();
+    this.#setConfig().then(() => {
+      console.info('[ConfigService] setting config done Promise');
+    });
+
+    console.info('[ConfigService] getting secrets');
+    secretsService.getSecrets().then(() => {
+      console.info('[ConfigService] getting secrets done Promise');
+    });
   }
 
   getEnvironment<T extends keyof Environment>(key: T): Environment[T];
@@ -40,55 +47,25 @@ export class ConfigService {
         path: path.resolve(process.cwd(), 'config/', '.env.local'),
       });
 
-      console.log(
-        'resolved env',
+      console.info(
+        '[ConfigService] resolved env',
         path.resolve(process.cwd(), 'config/', '.env.local'),
       );
     }
 
     const clientId = process.env['AUTH0_CLIENT_ID'],
-      issuerBaseUrl = process.env['AUTH0_ISSUER'],
-      awsSecret = process.env['AWS_SECRET_NAME'];
+      issuerBaseUrl = process.env['AUTH0_ISSUER'];
 
-    console.log('awsSecret', awsSecret, process.env['TEST_DAN'], process.env);
-
-    if (
-      // !sessionSecret ||
-      // !jwtSecret ||
-      // !authSecret ||
-      // !clientSecret ||
-      !clientId ||
-      !issuerBaseUrl
-    ) {
+    if (!clientId || !issuerBaseUrl) {
       console.error('missing env variable(s)');
       process.exit(1);
     }
 
-    let sessionSecret, jwtSecret, authSecret, clientSecret, atlasUri;
-    // if (!this.#environment.production) {
-    sessionSecret = process.env['SESSION_SECRET'];
-    jwtSecret = process.env['JWT_SECRET'];
-    authSecret = process.env['AUTH0_SECRET'];
-    clientSecret = process.env['AUTH0_CLIENT_SECRET'];
-    atlasUri = process.env['ATLAS_URI'];
-    // } else {
-    //   console.log(
-    //     'RESOLVING SECRETS FROM AWS MANAGER',
-    //     process.env,
-    //     process.env['env-kit-api-secrets-dev']
-    //   );
-    //   const secrets = await this.secretsService.getSecrets();
-    //   console.log('RESOLVED secrets', secrets);
-
-    //   sessionSecret = secrets?.sessionSecret ?? process.env['SESSION_SECRET'];
-    //   jwtSecret = secrets?.jwtSecret ?? process.env['JWT_SECRET'];
-    //   authSecret = secrets?.authSecret ?? process.env['AUTH0_SECRET'];
-    //   clientSecret =
-    //     secrets?.clientSecret ?? process.env['AUTH0_CLIENT_SECRET'];
-    //   atlasUri = secrets?.atlasUri ?? process.env['ATLAS_URI'];
-    // }
-
-    console.log('SECRETS', sessionSecret, jwtSecret, authSecret, clientSecret);
+    let sessionSecret = process.env['SESSION_SECRET'],
+      jwtSecret = process.env['JWT_SECRET'],
+      authSecret = process.env['AUTH0_SECRET'],
+      clientSecret = process.env['AUTH0_CLIENT_SECRET'],
+      atlasUri = process.env['ATLAS_URI'];
 
     if (!sessionSecret || !jwtSecret || !authSecret || !clientSecret) {
       console.error('missing secret variable(s)');
@@ -124,10 +101,17 @@ export class ConfigService {
       },
     };
 
-    // TODO remove this after debugging
-    if (true) {
-      console.log('\nenvironment:\n', JSON.stringify(this.#environment));
-      console.log('\nconfig:\n', JSON.stringify(this.#config));
+    // if (true) {
+    if (!this.#environment.production) {
+      console.info(
+        '\n[ConfigService] environment: %s',
+        JSON.stringify(this.#environment),
+      );
+      console.info(
+        '\n [ConfigService] config: %s',
+        JSON.stringify(this.#config),
+      );
+      console.info('\n [ConfigService] process: %s', process.env);
     }
   }
 }

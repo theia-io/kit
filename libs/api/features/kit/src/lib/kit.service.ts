@@ -89,8 +89,6 @@ export class KitService {
         runValidators: true,
       };
 
-      console.log(auth0UserEmail, updateOnInsert);
-
       // check if will find many or INFORCE it with something
       account = await this.accountModel
         .findOneAndUpdate<AccountDocument>(
@@ -258,8 +256,6 @@ export class KitService {
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
-
-    console.log('updatedUser', updatedUser);
 
     return updatedUser;
   }

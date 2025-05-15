@@ -12,7 +12,7 @@ export const slideInOutAnimation = [
     state(
       'in',
       style({
-        transform: 'translateY(-34px)',
+        transform: 'translateY(-32px)',
       }),
     ),
     state(

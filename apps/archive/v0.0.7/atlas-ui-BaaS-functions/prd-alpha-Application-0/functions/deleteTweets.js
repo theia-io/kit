@@ -23,7 +23,7 @@ exports = async function (tweetIdArr) {
 
     await Promise.all([tweets, ...bookmarksDeleted]);
   } catch (err) {
-    console.log(
+    console.info(
       '[getTweets] Error occurred while deleting tweets:',
       err.message,
     );

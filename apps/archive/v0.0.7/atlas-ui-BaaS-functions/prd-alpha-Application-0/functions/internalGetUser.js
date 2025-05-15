@@ -24,7 +24,7 @@ exports = async function (args) {
       {},
     );
   } catch (err) {
-    console.log(
+    console.info(
       '[internalGetUser] Error occurred while executing findOne in getUser:',
       err.message,
     );
@@ -34,7 +34,7 @@ exports = async function (args) {
   try {
     findResult = await context.functions.execute('normalizeUser', findResult);
   } catch (err) {
-    console.log('Error occurred while normilising user:', err.message);
+    console.info('Error occurred while normilising user:', err.message);
     return { error: err.message };
   }
 

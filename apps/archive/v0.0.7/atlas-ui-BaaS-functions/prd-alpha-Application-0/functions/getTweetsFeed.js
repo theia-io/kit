@@ -129,7 +129,7 @@ exports = async function (arg) {
 
   const resultArr = await result.toArray();
 
-  console.log(resultArr);
+  console.info(resultArr);
 
   return resultArr.map((tweet) =>
     context.functions.execute('normalizeTweet', tweet),

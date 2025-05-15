@@ -64,8 +64,6 @@ export class BeKudoBoardReactionsService {
       );
     }
 
-    console.log('RES', newKudoBoardReaction);
-
     return newKudoBoardReaction;
   }
 

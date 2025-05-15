@@ -12,9 +12,9 @@ import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
 export class LayoutComponent {
   layoutService = inject(LayoutService);
 
-  termsAndConditionsUrl = `/s/${APP_PATH_STATIC_PAGES.TermsAndConditions}`;
-  privacyUrl = `/s/${APP_PATH_STATIC_PAGES.PrivacyPolicy}`;
-  cookiesUrl = `/s/${APP_PATH_STATIC_PAGES.Cookie}`;
+  termsAndConditionsUrl = `/${APP_PATH_STATIC_PAGES.TermsAndConditions}`;
+  privacyUrl = `/${APP_PATH_STATIC_PAGES.PrivacyPolicy}`;
+  cookiesUrl = `/${APP_PATH_STATIC_PAGES.Cookie}`;
 
   year = new Date().getFullYear();
 }

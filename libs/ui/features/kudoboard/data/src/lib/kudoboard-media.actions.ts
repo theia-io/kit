@@ -1,4 +1,8 @@
-import { KudoBoard, Profile } from '@kitouch/shared-models';
+import {
+  ContractUploadedMedia,
+  KudoBoard,
+  Profile,
+} from '@kitouch/shared-models';
 import { createActionGroup, props } from '@ngrx/store';
 
 export const FeatKudoBoardMediaActions = createActionGroup({
@@ -12,7 +16,7 @@ export const FeatKudoBoardMediaActions = createActionGroup({
     UploadKudoBoardStorageMediaSuccess: props<{
       kudoboardId: KudoBoard['id'];
       profileId: Profile['id'];
-      items: Array<string>;
+      items: Array<ContractUploadedMedia>;
     }>(),
     UploadKudoBoardStorageMediaFailure: props<{ message: string }>(),
     //

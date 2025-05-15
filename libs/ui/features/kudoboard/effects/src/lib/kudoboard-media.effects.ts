@@ -2,13 +2,10 @@ import { Injectable, inject } from '@angular/core';
 
 import { FeatKudoBoardMediaActions } from '@kitouch/data-kudoboard';
 import { S3_KUDOBOARD_BUCKET_BASE_URL } from '@kitouch/shared-infra';
+import { getFullS3Url, getImageKeyFromS3Url } from '@kitouch/shared-services';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, forkJoin, map, of, switchMap } from 'rxjs';
+import { catchError, delay, forkJoin, map, of, switchMap } from 'rxjs';
 import { KudoBoardMediaService } from './kudoboard-media.service';
-
-export const getFullS3Url = (s3Url: string, key: string) => `${s3Url}/${key}`;
-export const getImageKeyFromS3Url = (url: string, s3Url: string) =>
-  url.replace(`${s3Url}/`, '');
 
 @Injectable()
 export class KudoBoardMediaEffects {
@@ -21,20 +18,29 @@ export class KudoBoardMediaEffects {
     this.#actions$.pipe(
       ofType(FeatKudoBoardMediaActions.uploadKudoBoardStorageMedia),
       switchMap(({ kudoboardId, profileId, items }) =>
-        forkJoin([
+        forkJoin(
           items.map(({ key, blob }) =>
             this.#kudoboardMediaService.uploadKudoBoardMedia(key, blob),
           ),
-        ]).pipe(
-          map(() =>
+        ).pipe(
+          map((items) =>
+            items.map((item) => ({
+              ...item,
+              url: getFullS3Url(this.#s3KudoBoardBaseUrl, item.url),
+              optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
+                getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl),
+              ),
+            })),
+          ),
+          map((items) =>
             FeatKudoBoardMediaActions.uploadKudoBoardStorageMediaSuccess({
               kudoboardId,
               profileId,
-              items: items.map((item) =>
-                getFullS3Url(this.#s3KudoBoardBaseUrl, item.key),
-              ),
+              items,
             }),
           ),
+          // AWS S3 bucket has eventual consistency so need a time for it to be available
+          delay(2500),
           catchError(() =>
             of(
               FeatKudoBoardMediaActions.uploadKudoBoardStorageMediaFailure({

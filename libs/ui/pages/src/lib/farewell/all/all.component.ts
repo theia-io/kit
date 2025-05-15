@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import {
   FeatSideBarPreviewComponent,
   SharedCopyClipboardComponent,
+  SharedStatusLegendComponent,
 } from '@kitouch/containers';
 import {
   FeatFarewellActions,
@@ -21,6 +22,7 @@ import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
 import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
+  UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
 } from '@kitouch/ui-components';
@@ -54,6 +56,8 @@ import { filter, map } from 'rxjs/operators';
     FeatFarewellInfoPanelComponent,
     FeatSideBarPreviewComponent,
     SharedCopyClipboardComponent,
+    SharedStatusLegendComponent,
+    UiCompCardComponent,
     //
     ButtonModule,
     ToastModule,
@@ -67,7 +71,7 @@ export class PageFarewellAllComponent {
   #confirmationService = inject(ConfirmationService);
   #messageService = inject(MessageService);
 
-  farewellUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
+  farewellUrl = `/${APP_PATH_ALLOW_ANONYMOUS.Farewell}`;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
   farewellEdit = `/${APP_PATH.Farewell}/edit`;
 

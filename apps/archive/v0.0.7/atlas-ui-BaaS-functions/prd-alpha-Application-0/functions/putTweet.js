@@ -51,7 +51,7 @@ exports = async function (tweet) {
       updatedTweetDocument,
     );
   } catch (err) {
-    console.log('Error occurred while updating tweet:', err.message);
+    console.info('Error occurred while updating tweet:', err.message);
     return {
       error: 'Error occurred while performing the operation: ' + err.message,
     };

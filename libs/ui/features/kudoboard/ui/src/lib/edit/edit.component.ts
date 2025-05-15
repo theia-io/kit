@@ -280,9 +280,10 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
             select(selectKudoBoardById(kudoboardId)),
             take(1),
             filter(Boolean),
-            // AWS S3 bucket has eventual consistency so need a time for it to be available
-            delay(2500),
-            map((kudoBoard): [string, KudoBoard] => [items[0], kudoBoard]),
+            map((kudoBoard): [string, KudoBoard] => [
+              items[0]?.optimizedUrls?.[0] ?? items[0]?.url,
+              kudoBoard,
+            ]),
           ),
         ),
       )
@@ -360,17 +361,23 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
     event.preventDefault();
 
     this.#router.navigateByUrl(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}${
+      `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${kudoboardId}${
         preview ? '?preview=true' : ''
       }`,
     );
   }
 
   gotoAll(event: Event) {
+    const kudoBoardId = this.id();
+    if (!this.currentProfile() && kudoBoardId) {
+      this.gotoBoard(kudoBoardId, false, event);
+      return;
+    }
+
     event.stopPropagation();
     event.preventDefault();
 
-    this.#router.navigateByUrl(`/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
+    this.#router.navigateByUrl(`/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
   }
 
   #autoCreateKudoBoard() {
@@ -459,7 +466,7 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   #updateJustCreatedKudoBoardUrl(id: KudoBoard['id']) {
     this.id.set(id);
     this.#location.replaceState(
-      `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`,
+      `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${id}/edit`,
     );
   }
 }

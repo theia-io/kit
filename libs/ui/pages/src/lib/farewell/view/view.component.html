@@ -54,14 +54,14 @@
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
   <div
-    class="container shadow-sm mx-auto py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
+    class="container shadow-sm mx-auto px-2 md:px-0 py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
     <feat-farewell-actions
       class="block container"
       [farewellId]="farewellId$ | async"
       (commentsClick)="commentsSideBarVisibility.set(true)" />
   </div>
 
-  <div class="container mx-auto">
+  <div class="container mx-auto px-2 md:px-0">
     <feat-farewell-viewv2 class="grow" [farewellId]="farewellId$ | async" />
   </div>
 
@@ -75,7 +75,7 @@
     </div>
   }
 
-  <div class="container mx-auto">
+  <div class="container mx-auto px-2 md:px-0">
     <feat-farewell-comments
       class="block max-w-xl mx-auto"
       [farewellId]="farewellId$ | async" />

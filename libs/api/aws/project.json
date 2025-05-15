@@ -3,7 +3,7 @@
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "libs/api/aws/src",
   "projectType": "library",
-  "tags": ["scope:api", "scope:api-feature"],
+  "tags": ["scope:api", "scope:api-shared"],
   "targets": {
     "build": {
       "executor": "@nx/js:tsc",

@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -6,20 +7,30 @@ import {
   output,
 } from '@angular/core';
 import { Auth0Service } from '@kitouch/shared-infra';
-import { Store } from '@ngrx/store';
-import { ButtonModule } from 'primeng/button';
+import {
+  KlassOverwrite,
+  UIKitSmallerHintTextUXDirective,
+} from '@kitouch/ui-components';
 import { DynamicDialogRef } from 'primeng/dynamicdialog';
 
 @Component({
   selector: 'shared-sign-in-auth0',
   templateUrl: './sign-in-auth0.component.html',
-  imports: [ButtonModule],
+  imports: [UIKitSmallerHintTextUXDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SignInAuth0Component {
   #auth0Service = inject(Auth0Service);
 
   signedIn = output<boolean>();
+
+  getStartedKlassOverwrite: KlassOverwrite = {
+    text: {
+      color: 'text-white',
+      size: 'text-xl',
+      hoverColor: 'text-slate-700',
+    },
+  };
 
   // When SignInGoogleComponent opened as dynamic dialog it Dialog will expect close event. However component is also used in other places not as dynamic dialog thus dynamicDialogRef will not be provided (is not expected)
   constructor(@Optional() private dynamicDialogRef: DynamicDialogRef) {

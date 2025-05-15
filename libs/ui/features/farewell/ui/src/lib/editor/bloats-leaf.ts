@@ -1,17 +1,6 @@
 import Quill from 'quill';
 import BlockEmbed from 'quill/blots/embed';
 
-function onElementRemoved(element: any, callback: any) {
-  const observer = new MutationObserver(function (mutations) {
-    if (!document.body.contains(element)) {
-      callback();
-      observer.disconnect();
-    }
-  });
-
-  observer.observe(element);
-}
-
 class DividerBlot extends BlockEmbed {
   static override blotName = 'divider';
   static override tagName = 'hr';
@@ -25,11 +14,12 @@ class DividerBlot extends BlockEmbed {
 }
 
 export interface ImageConfiguration {
+  dataId?: string;
   alt: string;
   // ngSrc: string | any; // Angular ngSrc. Note! that `NgOptimizedImage` has to be imported
   src: string | any;
-  width: number;
-  height: number;
+  width?: number;
+  height?: number;
   loadedCb: () => void;
 }
 
@@ -37,12 +27,15 @@ class ImageBlot extends BlockEmbed {
   static override blotName = 'image';
   static override tagName = 'img';
 
-  static override create({ alt, src, loadedCb }: ImageConfiguration) {
+  static override create({ alt, src, dataId, loadedCb }: ImageConfiguration) {
     const node = super.create() as HTMLImageElement;
 
     node.setAttribute('contenteditable', 'false');
     node.setAttribute('alt', alt);
     node.setAttribute('src', src);
+    if (dataId) {
+      node.setAttribute('data-id', dataId);
+    }
 
     node.addEventListener('load', () => {
       if (loadedCb) loadedCb();

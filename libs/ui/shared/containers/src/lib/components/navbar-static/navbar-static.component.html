@@ -1,4 +1,5 @@
-<div class="p-4 flex items-center nav-shadow">
+<div
+  class="w-full cursor-pointer p-4 flex items-center nav-shadow bg-secondary">
   <shared-logo class="block mr-4" />
 
   @let desktop = (deviceService.device$ | async) === deviceTypes.Desktop;
@@ -37,7 +38,7 @@
       routerLinkActive="bg-slate-200 rounded text-gray-900"
       uiKitSmallTextTailwindClasses
       class="px-4 py-2">
-      Sign in
+      Login
     </a>
   }
   @if ((deviceService.device$ | async) !== deviceTypes.Mobile) {
@@ -67,7 +68,6 @@
             uiKitSmallTextTailwindClasses
             class="block px-4 py-2">
             Connected
-
             <br />
             <span
               uiKitSmallTextTailwindClasses
@@ -116,8 +116,7 @@
     [routerLink]="introduceKitUrl"
     routerLinkActive="bg-slate-200 rounded text-gray-900"
     uiKitSmallTextTailwindClasses
-    class="px-4 py-2"
-    [class.ml-4]="userLoggedIn()">
+    class="px-4 py-2">
     @if (desktop) {
       How it works? 🤔
     } @else {
@@ -142,8 +141,9 @@
       (click)="handleGetStarted()"
       uiKitSmallTextTailwindClasses
       [klasses]="getStartedKlassOverwrite"
-      class="px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">
-      Sign in
+      class="flex items-center px-4 py-2 ml-auto bg-slate-700 rounded text-gray-900">
+      <i class="pi pi-sign-in mr-2 text-sm font-semibold"></i>
+      Login
     </a>
   }
 </div>

@@ -22,7 +22,6 @@ export const environment: Environment = {
   },
   googleTagConfig: null,
   build: KIT_ENVS.localhost,
-  realmAppId: 'application-0-gwcbmrg',
   environment: KIT_ENVS.localhost,
   production: false,
   s3Config: {

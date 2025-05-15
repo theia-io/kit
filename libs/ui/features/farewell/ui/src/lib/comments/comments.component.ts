@@ -23,7 +23,6 @@ import {
   selectFarewellById,
   selectFarewellCommentsById,
 } from '@kitouch/feat-farewell-data';
-import { getFullS3Url } from '@kitouch/feat-farewell-effects';
 import {
   profilePicture,
   selectCurrentProfile,
@@ -35,7 +34,11 @@ import {
   S3_FAREWELL_BUCKET_BASE_URL,
 } from '@kitouch/shared-infra';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
-import { PhotoService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
+import {
+  getFullS3Url,
+  PhotoService,
+  sortByCreatedTimeDesc,
+} from '@kitouch/shared-services';
 import {
   AccountTileComponent,
   AddComment,
@@ -152,10 +155,10 @@ export class FeatFarewellCommentsComponent {
       .pipe(
         takeUntilDestroyed(),
         filter((comments) => comments.length > 0),
-        distinctUntilChanged(),
         take(1),
         // so comments can be rendered
         delay(100),
+        distinctUntilChanged(),
       )
       .subscribe(() => {
         this.#photoService.initializeGallery({
@@ -208,7 +211,6 @@ export class FeatFarewellCommentsComponent {
         ofType(
           FeatFarewellCommentActions.uploadFarewellCommentStorageMediaSuccess,
         ),
-        take(1),
         // AWS S3 bucket has eventual consistency so need a time for it to be available
         delay(1500),
         map(({ items }) =>

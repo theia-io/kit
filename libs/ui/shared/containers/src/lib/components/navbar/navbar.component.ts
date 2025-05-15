@@ -39,7 +39,7 @@ import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from './navbar.service';
 import { SubnavComponent } from './subnav/subnav.component';
 
-const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[0];
+const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[1];
 
 @Component({
   selector: 'shared-navbar',
@@ -78,9 +78,9 @@ export class NavBarComponent implements AfterViewInit {
 
   readonly outletSecondary = OUTLET_DIALOG;
   readonly profileUrl = `/${APP_PATH.Profile}/`;
-  readonly farewellUrl = APP_PATH.Farewell;
-  readonly kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
-  readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  readonly farewellUrl = `/${APP_PATH.Farewell}`;
+  readonly kudoBoardAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly introducingKitFarewell = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   readonly suggestionUrl = APP_PATH.Suggestion;
 
   desktopItems = DESKTOP_NAV_ITEMS;
@@ -125,11 +125,7 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   createKudoBoardHandler() {
-    this.#router.navigate([
-      's',
-      APP_PATH_ALLOW_ANONYMOUS.KudoBoard,
-      'generate',
-    ]);
+    this.#router.navigate([APP_PATH_ALLOW_ANONYMOUS.KudoBoard, 'generate']);
   }
 
   toggleSideBar(openOrClose?: boolean) {
@@ -145,7 +141,7 @@ export class NavBarComponent implements AfterViewInit {
     await this.#auth0Service.logout();
   }
 
-  onFocusHandler(event: Event) {
+  onFocusHandler() {
     this.#menuItemNativeElemInitiallyFocused?.classList.remove('p-focus');
   }
 

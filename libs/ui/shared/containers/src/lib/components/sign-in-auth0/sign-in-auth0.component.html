@@ -1,9 +1,9 @@
-<button
-  pButton
+<a
+  role="button"
   (click)="handleSignIn()"
-  [rounded]="true"
-  class="px-8 py-4 text-sm font-semibold text-white border-gray-50"
-  severity="info"
-  icon="pi pi-sparkles">
-  <span class="ml-1 text-xs">Sign In</span>
-</button>
+  uiKitSmallTextTailwindClasses
+  [klasses]="getStartedKlassOverwrite"
+  class="flex items-center px-6 py-4 bg-slate-700 rounded">
+  <i class="pi pi-sign-in mr-4 text-xl font-semibold"></i>
+  Sign-in or Sign-up
+</a>

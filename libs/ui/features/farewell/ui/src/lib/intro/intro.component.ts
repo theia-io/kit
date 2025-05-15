@@ -24,10 +24,10 @@ import { ButtonModule } from 'primeng/button';
 export class FeatFarewellIntoComponent {
   withHint = input(false);
 
-  featuresFarewellUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
+  featuresFarewellUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
   farewellGenerate = `/${APP_PATH.Farewell}/generate`;
 
   watchVideo() {
-    console.log('Watch video');
+    console.info('[ UI FeatFarewellIntoComponent] Watch video');
   }
 }

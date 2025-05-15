@@ -12,3 +12,4 @@ export * from './share/share.component';
 export * from './share/share';
 export * from './sign-in-auth0/sign-in-auth0.component';
 export * from './static-info/static-info.component';
+export * from './status-legend/status-legend.component';

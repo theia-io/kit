@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/shared-models",
-  "version": "6.0.0-0",
+  "version": "7.0.0-0",
   "peerDependencies": {
     "@angular/common": "^18.0.0",
     "@angular/core": "^18.0.0"

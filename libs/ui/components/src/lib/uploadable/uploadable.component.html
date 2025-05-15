@@ -18,9 +18,9 @@
   </p-confirmPopup>
 
   @if (customTmpl) {
-    <div (click)="uploadInstantly($event)">
+    <button (click)="uploadInstantly($event)">
       <ng-container *ngTemplateOutlet="customTmpl.template"></ng-container>
-    </div>
+    </button>
   } @else {
     <img
       class="rounded-md"

@@ -16,7 +16,7 @@ import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';
 import { startWith } from 'rxjs';
 
-const ANIMATION_REPEAT = 2500;
+const ANIMATION_REPEAT = 5000;
 
 @Component({
   templateUrl: './sign-in.component.html',
@@ -43,7 +43,7 @@ export class PageSignInComponent implements OnInit {
 
   clickedIntro = signal<null | 'kudo' | 'farewell'>(null);
 
-  readonly introducingKitFarewell = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  readonly introducingKitFarewell = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
 
   ngOnInit(): void {
     this.#animateKitten();
@@ -62,12 +62,14 @@ export class PageSignInComponent implements OnInit {
   #animateKitten() {
     const salt = Math.random() + 0.5;
     const visible = this.kittenVisible() === 'in';
+
     this.kittenVisibleTimeout = setTimeout(
       () => {
         this.kittenVisible.set(visible ? 'out' : 'in');
         this.#animateKitten();
       },
-      !visible ? salt * ANIMATION_REPEAT * 2 : salt * ANIMATION_REPEAT,
+      // !visible ? salt * ANIMATION_REPEAT * 2 :
+      salt * ANIMATION_REPEAT,
     );
   }
 }

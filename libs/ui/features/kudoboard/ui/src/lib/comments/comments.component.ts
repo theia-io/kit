@@ -35,7 +35,6 @@ import {
   selectKudoBoardById,
   selectKudoBoardCommentsById,
 } from '@kitouch/data-kudoboard';
-import { getFullS3Url } from '@kitouch/effects-kudoboard';
 
 import {
   profilePicture,
@@ -126,7 +125,6 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   #photoService = inject(PhotoService);
   #deviceService = inject(DeviceService);
   #masonryService = inject(MasonryService);
-  #s3KudoBoardBaseUrl = inject(S3_KUDOBOARD_BUCKET_BASE_URL);
 
   #createdComment$ = this.#actions$.pipe(
     ofType(FeatKudoBoardCommentActions.postCommentKudoBoardSuccess),
@@ -172,9 +170,9 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   $hintHidden = this.#deviceService.isMobile$.pipe(startWith(true));
 
   #masonryReadyTrigger$ = this.kudoboardComments$.pipe(
-    takeUntilDestroyed(this.#destroyRef),
     filter((comments) => comments && comments.length > 0),
     delay(100),
+    takeUntilDestroyed(this.#destroyRef),
     shareReplay({
       refCount: true,
       bufferSize: 1,
@@ -240,7 +238,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
     });
 
     this.kudoboardComments$
-      .pipe(takeUntilDestroyed(this.#destroyRef), delay(1000))
+      .pipe(delay(1000), takeUntilDestroyed(this.#destroyRef))
       .subscribe(() =>
         this.#photoService.initializeGallery({
           gallery: '#kudo-posts-media-gallery',
@@ -319,17 +317,7 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
           FeatKudoBoardCommentActions.uploadKudoBoardCommentStorageMediaSuccess,
         ),
         take(1),
-        // AWS S3 bucket has eventual consistency so need a time for it to be available
-        delay(1500),
-        map(({ items }) =>
-          items.map((item) => ({
-            ...item,
-            url: getFullS3Url(this.#s3KudoBoardBaseUrl, item.url),
-            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3KudoBoardBaseUrl, optimizedUrl),
-            ),
-          })),
-        ),
+        map(({ items }) => items),
       );
     };
   }

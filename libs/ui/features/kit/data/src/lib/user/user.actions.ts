@@ -7,7 +7,7 @@ export const FeatUserApiActions = createActionGroup({
     GetUser: props<{ userId: User['id'] }>(),
     GetUserSuccess: props<{ user: User }>(),
     GetUserFailure: props<{ message: string }>(),
-    SetUser: props<{ user: User | undefined }>(),
+    SetUser: props<{ user: User | undefined | null }>(),
     AddExperience: props<{ experience: Experience }>(),
     AddExperienceSuccess: props<{ experience: Experience }>(),
     AddExperienceFailure: props<{ message: string }>(),

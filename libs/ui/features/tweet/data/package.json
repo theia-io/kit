@@ -1,9 +1,9 @@
 {
   "name": "@kitouch/feat-tweet-data",
-  "version": "6.0.0-0",
+  "version": "7.0.0-0",
   "peerDependencies": {
-    "@kitouch/shared-models": "6.0.0-0",
-    "@kitouch/utils": "6.0.0-0",
+    "@kitouch/shared-models": "7.0.0-0",
+    "@kitouch/utils": "7.0.0-0",
     "@ngrx/store": "19.0.0"
   },
   "sideEffects": false

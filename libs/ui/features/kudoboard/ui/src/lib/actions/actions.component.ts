@@ -63,7 +63,6 @@ import { FeatKudoBoardViewAdditionalActionsComponent } from '../view-additional-
   templateUrl: './actions.component.html',
   imports: [
     AsyncPipe,
-    DatePipe,
     RouterModule,
     //
     PickerComponent,
@@ -178,7 +177,7 @@ export class FeatKudoBoardActionsComponent {
   readonly profilePicture = profilePicture;
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;
   readonly farewellUrlPath = `/${APP_PATH.Farewell}/`;
-  readonly farewellViewUrlPath = `/s/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/`;
+  readonly farewellViewUrlPath = `/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/`;
 
   readonly emojiMap = emojiNameMap;
 
@@ -227,7 +226,7 @@ export class FeatKudoBoardActionsComponent {
 
   redirectToEdit() {
     this.#router.navigateByUrl(
-      `s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${this.kudoboardId()}/edit`,
+      `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/${this.kudoboardId()}/edit`,
     );
   }
 
@@ -311,7 +310,7 @@ export class FeatKudoBoardActionsComponent {
           });
       },
       reject: () => {
-        console.log('User chose not to create farewell');
+        console.info('[UI User chose not to create farewell');
       },
     });
   }
@@ -319,7 +318,10 @@ export class FeatKudoBoardActionsComponent {
   claimKudoBoard() {
     const kudoBoard = this.kudoboard();
     if (!kudoBoard) {
-      console.log('[FeatKudoBoardActionsComponent][claimKudoBoard]', kudoBoard);
+      console.error(
+        '[UI FeatKudoBoardActionsComponent][claimKudoBoard]',
+        kudoBoard,
+      );
       return;
     }
 

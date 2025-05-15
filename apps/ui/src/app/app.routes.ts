@@ -16,17 +16,21 @@ import { KitComponent } from './kit.component';
 
 const pages = import('@kitouch/pages');
 
+const pathWithAppPrefix = (path: string) =>
+  path.split('app').slice(1).join('').slice(1);
+
 export const appRoutes: Route[] = [
   {
-    path: 's',
+    path: '',
     loadComponent: () =>
       import('./kit-static.component').then((comp) => comp.KitStaticComponent),
     children: [
       {
         path: '',
         pathMatch: 'full',
-        title: 'Introduce Kit',
-        redirectTo: APP_PATH_STATIC_PAGES.IntroduceKit,
+        title: 'Introducing Kitouch',
+        loadComponent: () =>
+          pages.then((comp) => comp.KitPagesIntroduceKitComponent),
       },
       {
         path: APP_PATH_STATIC_PAGES.Features,
@@ -64,6 +68,12 @@ export const appRoutes: Route[] = [
         title: 'Kitouch - Redirect',
         loadComponent: () =>
           pages.then((comp) => comp.PageRedirectAuth0Component),
+      },
+      {
+        path: APP_PATH_STATIC_PAGES.SignInSemiSilent,
+        title: 'Kitouch - Semi Silent Sign In',
+        loadComponent: () =>
+          pages.then((comp) => comp.PageSignInResolveSemiSilentComponent),
       },
       {
         path: APP_PATH_STATIC_PAGES.Join,
@@ -119,7 +129,7 @@ export const appRoutes: Route[] = [
       },
       {
         path: APP_PATH_STATIC_PAGES.IntroduceKit,
-        title: 'Kitouch - Introduce Kit',
+        title: 'Introducing Kitouch',
         loadComponent: () =>
           pages.then((comp) => comp.KitPagesIntroduceKitComponent),
       },
@@ -132,7 +142,7 @@ export const appRoutes: Route[] = [
     loadComponent: () => pages.then((comp) => comp.PageAboutYourselfComponent),
   },
   {
-    path: '',
+    path: 'app',
     component: KitComponent,
     canActivate: [onlyForLoggedInGuard],
     canActivateChild: [onlyForLoggedInGuard],
@@ -140,10 +150,10 @@ export const appRoutes: Route[] = [
       {
         path: '',
         pathMatch: 'full',
-        redirectTo: APP_PATH.Feed,
+        redirectTo: pathWithAppPrefix(APP_PATH.Feed),
       },
       {
-        path: APP_PATH.Feed,
+        path: pathWithAppPrefix(APP_PATH.Feed),
         title: 'Kitouch - Feed',
         loadComponent: () => pages.then((comp) => comp.PageHomeComponent),
         providers: [
@@ -152,7 +162,7 @@ export const appRoutes: Route[] = [
         ],
       },
       {
-        path: APP_PATH.Profile,
+        path: pathWithAppPrefix(APP_PATH.Profile),
         title: 'Kitouch - Profile',
         children: [
           {
@@ -167,18 +177,13 @@ export const appRoutes: Route[] = [
           },
         ],
       },
-      // {
-      //   path: APP_PATH.Messages,
-      //   title: 'Kitouch - Messages',
-      //   loadComponent: () => pages.then((comp) => comp.PageMessagesComponent),
-      // },
       {
-        path: APP_PATH.Bookmarks,
+        path: pathWithAppPrefix(APP_PATH.Bookmarks),
         title: 'Kitouch - Bookmarks',
         loadComponent: () => pages.then((comp) => comp.PageBookmarksComponent),
       },
       {
-        path: APP_PATH.Settings,
+        path: pathWithAppPrefix(APP_PATH.Settings),
         title: 'Kitouch - Settings',
         loadComponent: () => pages.then((comp) => comp.PageSettingsComponent),
         children: [
@@ -191,12 +196,12 @@ export const appRoutes: Route[] = [
         ],
       },
       {
-        path: APP_PATH.Suggestion,
+        path: pathWithAppPrefix(APP_PATH.Suggestion),
         title: 'Kitouch - Follow Suggestions',
         loadComponent: () => pages.then((comp) => comp.PageSuggestionComponent),
       },
       {
-        path: APP_PATH.Farewell,
+        path: pathWithAppPrefix(APP_PATH.Farewell),
         title: 'Kitouch - Farewell',
         canActivate: [
           () => inject(LayoutService).rightPanelState.set(PanelState.Closed),
@@ -235,8 +240,13 @@ export const appRoutes: Route[] = [
         canDeactivate: [
           () => inject(LayoutService).rightPanelState.set(PanelState.Opened),
         ],
-        loadComponent: () =>
-          pages.then((comp) => comp.PageKudoBoardsAllComponent),
+        children: [
+          {
+            path: '',
+            loadComponent: () =>
+              pages.then((comp) => comp.PageKudoBoardsAllComponent),
+          },
+        ],
       },
 
       // Outlet

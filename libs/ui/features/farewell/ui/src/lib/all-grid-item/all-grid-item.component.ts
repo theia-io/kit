@@ -20,6 +20,6 @@ export class FeatFarewellAllGridItemComponent {
   kudoboard = input.required<KudoBoard>();
   smaller = input<boolean>(false);
 
-  readonly kudoBoardAllUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
-  readonly kudoBoardPartialUrl = `/s/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly kudoBoardAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
 }

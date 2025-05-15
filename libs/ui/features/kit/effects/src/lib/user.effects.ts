@@ -1,8 +1,8 @@
 import { Injectable, inject } from '@angular/core';
-import { FeatUserApiActions, selectCurrentUser } from '@kitouch/kit-data';
+import { FeatUserApiActions } from '@kitouch/kit-data';
 
+import { Auth0Service } from '@kitouch/shared-infra';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
 import { catchError, filter, map, of, switchMap, withLatestFrom } from 'rxjs';
 import { UserV2Service } from './userv2.service';
 
@@ -10,8 +10,9 @@ import { UserV2Service } from './userv2.service';
 export class UserEffects {
   #actions$ = inject(Actions);
   #userV2Service = inject(UserV2Service);
+  #auth0Service = inject(Auth0Service);
 
-  currentUser$ = inject(Store).select(selectCurrentUser).pipe(filter(Boolean));
+  currentUser$ = this.#auth0Service.loggedInUser$.pipe(filter(Boolean));
 
   getUser$ = createEffect(() =>
     this.#actions$.pipe(

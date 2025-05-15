@@ -69,11 +69,11 @@ export class SharedNavBarStaticComponent implements OnDestroy {
 
   deviceTypes = Device;
   homeUrl = `/${APP_PATH.Feed}`;
-  loginUrl = `/s/${APP_PATH_STATIC_PAGES.SignIn}`;
-  introduceKitUrl = `/s/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
-  featuresConnectedUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
-  featuresKudoboardUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesKudoboard}`;
-  featuresFarewellUrl = `/s/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
+  loginUrl = `/${APP_PATH_STATIC_PAGES.SignIn}`;
+  introduceKitUrl = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  featuresConnectedUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesConnected}`;
+  featuresKudoboardUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesKudoboard}`;
+  featuresFarewellUrl = `/${APP_PATH_STATIC_PAGES.Features}/${APP_PATH_STATIC_PAGES.FeaturesFarewell}`;
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {

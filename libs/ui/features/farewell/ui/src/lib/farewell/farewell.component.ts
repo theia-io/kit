@@ -31,7 +31,6 @@ import {
   FeatFarewellMediaActions,
   selectFarewellFullViewById,
 } from '@kitouch/feat-farewell-data';
-import { getFullS3Url } from '@kitouch/feat-farewell-effects';
 import { profilePicture, selectCurrentProfile } from '@kitouch/kit-data';
 import {
   ContractUploadedMedia,
@@ -52,15 +51,16 @@ import { APP_PATH } from '@kitouch/shared-constants';
 import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import Quill from 'quill';
 import {
   debounceTime,
-  delay,
   filter,
   map,
   merge,
@@ -69,6 +69,7 @@ import {
   skipUntil,
   Subject,
   take,
+  tap,
 } from 'rxjs';
 import { registerKitEditorHandlers } from '../editor/bloats';
 import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
@@ -103,6 +104,7 @@ function extractContent(html: string) {
     ButtonModule,
     TooltipModule,
     OverlayPanelModule,
+    ToastModule,
     //
     FeatFarewellEditorComponent,
     UIKitSmallerHintTextUXDirective,
@@ -113,6 +115,7 @@ function extractContent(html: string) {
     FeatFarewellInfoPanelComponent,
     UiKitSpinnerComponent,
   ],
+  providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatFarewellComponent implements AfterViewInit {
@@ -125,10 +128,11 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   #cdr = inject(ChangeDetectorRef);
   #destroyRef = inject(DestroyRef);
+  #location = inject(Location);
   #router = inject(Router);
   #store = inject(Store);
   #actions$ = inject(Actions);
-  #location = inject(Location);
+  #messageService = inject(MessageService);
   #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {
@@ -256,7 +260,7 @@ export class FeatFarewellComponent implements AfterViewInit {
 
   saveImages(): (
     images: Array<File>,
-  ) => Observable<Array<ContractUploadedMedia>> {
+  ) => Observable<Array<ContractUploadedMedia> | null> {
     const getFarewellId = () => this.farewell()?.id;
     const getProfileId = () => this.currentProfile()?.id;
 
@@ -275,6 +279,13 @@ export class FeatFarewellComponent implements AfterViewInit {
         return of([]);
       }
 
+      this.#messageService.add({
+        severity: 'info',
+        summary: 'Adding image',
+        detail: 'Uploading your image to farewell',
+        life: 3000,
+      });
+
       setTimeout(() => {
         const now = new Date();
         this.#store.dispatch(
@@ -291,21 +302,32 @@ export class FeatFarewellComponent implements AfterViewInit {
         );
       });
 
-      return this.#actions$.pipe(
-        ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
-        take(1),
-        // AWS S3 bucket has eventual consistency so need a time for it to be available
-        delay(1500),
-        map(({ items }) =>
-          items.map((item) => ({
-            ...item,
-            url: getFullS3Url(this.#s3FarewellBaseUrl, item.url),
-            optimizedUrls: item.optimizedUrls.map((optimizedUrl) =>
-              getFullS3Url(this.#s3FarewellBaseUrl, optimizedUrl),
-            ),
-          })),
+      return merge(
+        this.#actions$.pipe(
+          ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaSuccess),
+          tap(() => {
+            this.#messageService.add({
+              severity: 'success',
+              summary: 'Image added',
+              detail: 'Farewell image has been added',
+              life: 3000,
+            });
+          }),
+          map(({ items }) => items),
         ),
-      );
+        this.#actions$.pipe(
+          ofType(FeatFarewellMediaActions.uploadFarewellStorageMediaFailure),
+          tap(({ message }) => {
+            this.#messageService.add({
+              severity: 'warn',
+              summary: 'Image was not added',
+              detail: message,
+              life: 3000,
+            });
+          }),
+          map(() => null),
+        ),
+      ).pipe(take(1));
     };
   }
 
