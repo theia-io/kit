@@ -133,7 +133,6 @@ export class FeatFarewellComponent implements AfterViewInit {
   #store = inject(Store);
   #actions$ = inject(Actions);
   #messageService = inject(MessageService);
-  #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {
     const id = this.farewellId();
