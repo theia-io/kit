@@ -13,8 +13,7 @@
     "@kitouch/shared-constants": "7.0.0-0",
     "@kitouch/shared-infra": "7.0.0-0",
     "@kitouch/shared-services": "7.0.0-0",
-    "@kitouch/shared-models": "7.0.0-0",
-    "@ngrx/store": "19.0.0"
+    "@kitouch/shared-models": "7.0.0-0"
   },
   "sideEffects": false
 }
