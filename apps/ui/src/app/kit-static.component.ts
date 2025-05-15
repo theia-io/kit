@@ -42,9 +42,7 @@ import { select, Store } from '@ngrx/store';
   `,
 })
 export class KitStaticComponent {
-  #destroyRef = inject(DestroyRef);
   #store = inject(Store);
-  #router = inject(Router);
   #auth0Service = inject(Auth0Service);
 
   currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
