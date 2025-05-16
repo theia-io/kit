@@ -106,10 +106,12 @@ export class FeatTweetDialogComponent {
   }
 
   onDialogFinalizeCb() {
-    console.log('onDialogFinalizeCb');
-    this.#router.navigate([
-      '',
-      { relative: this.#route, outlets: { [OUTLET_DIALOG]: null } },
-    ]);
+    console.log('\nonDialogFinalizeCb', this.#router.url, this.#route);
+    this.#router.navigate([{ outlets: { [OUTLET_DIALOG]: null } }], {
+      // relativeTo: this.#route,
+      // skipLocationChange: true,
+    });
   }
 }
+
+// http://localhost:4200/app/feed

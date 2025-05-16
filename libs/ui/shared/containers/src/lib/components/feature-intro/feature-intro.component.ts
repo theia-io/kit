@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { APP_PATH } from '@kitouch/shared-constants';
 import {
@@ -20,6 +20,8 @@ export class SharedFeatureIntroComponent {
   name = input.required<string>();
 
   title = input.required<string>();
+
+  getStarted = output<void>();
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {

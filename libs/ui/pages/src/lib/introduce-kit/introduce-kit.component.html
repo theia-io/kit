@@ -25,6 +25,7 @@
         For individuals, teams and organizations.
       </h2>
 
+      @if(!loggedIn()) {
       <div class="my-8 w-100 flex flex-col gap-1 items-center lg:items-start">
         <a
           (click)="handleGetStarted()"
@@ -40,17 +41,18 @@
           Fast. Secure. See yourself.
         </p>
       </div>
+      }
     </div>
 
     <div
-      class="mt-12 md:mt-0 md:w-2/3 flex flex-col md:flex-row justify-center relative">
+      class="mt-12 lg:mt-0 lg:w-2/3 flex flex-col lg:flex-row justify-center relative">
       <img
-        class="md:w-3/4 rounded-xl"
+        class="lg:w-3/4 rounded-xl"
         src="/introducing/presentingv2.gif"
         alt="kit feed and follow colleagues" />
 
       <img
-        class="md:absolute md:right-8 md:-bottom-5 md:w-72 rounded-xl"
+        class="lg:absolute lg:right-8 lg:-bottom-5 lg:w-72 rounded-xl"
         src="/introducing/farewells-screenshot.png"
         alt="kitouch farewells" />
     </div>
@@ -60,7 +62,7 @@
 <div class="w-full px-2 py-12 bg-secondary">
   <section
     id="connections"
-    class="container flex flex-col items-center md:items-start mx-auto">
+    class="container flex flex-col items-center lg:items-start mx-auto">
     <kit-page-feature-connected-page-benefits />
   </section>
 </div>
@@ -68,7 +70,7 @@
 <div class="w-full px-2 py-12">
   <section
     id="kudoboards"
-    class="container flex flex-col items-center md:items-start mx-auto">
+    class="container flex flex-col items-center lg:items-start mx-auto">
     <kit-page-feature-kudoboard-page-benefits />
   </section>
 </div>
@@ -76,7 +78,7 @@
 <div class="w-full px-2 py-12 bg-secondary">
   <section
     id="farewells"
-    class="container flex flex-col items-center md:items-start mx-auto">
+    class="container flex flex-col items-center lg:items-start mx-auto">
     <kit-page-feature-farewell-page-benefits />
   </section>
 </div>

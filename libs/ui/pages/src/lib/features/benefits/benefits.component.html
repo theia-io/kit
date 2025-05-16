@@ -1,0 +1,16 @@
+<h2
+  class="flex items-center gap-2 text-slate-800 font-semibold text-2xl lg:text-3xl dark:text-white">
+  <p>{{ header() }}</p>
+  @if(!isAtFeaturePage()) {
+  <a class="text-gray-500 hover:text-gray-900" [routerLink]="featuresPageUrl()">
+    More
+    <img
+      class="inline-block"
+      ngSrc="/material-icons/open_in_new.svg"
+      [alt]="'Open ' + header() + '; explore, internal link'"
+      width="30"
+      height="30" />
+  </a>
+  }
+</h2>
+<p class="mt-1">{{ description() }}</p>

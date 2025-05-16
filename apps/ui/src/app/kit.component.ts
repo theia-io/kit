@@ -25,7 +25,7 @@ import { distinctUntilKeyChanged, filter } from 'rxjs';
     <shared-layout>
       <shared-navbar navbar [profile]="profile()" class="block"></shared-navbar>
 
-      <router-outlet name="tweet-dialog"></router-outlet>
+      <router-outlet [name]="outletSecondary"></router-outlet>
       <router-outlet></router-outlet>
 
       <div right>

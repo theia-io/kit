@@ -10,7 +10,6 @@ import { Store } from '@ngrx/store';
 import { catchError, map, of, switchMap, take, tap } from 'rxjs';
 import { Auth0Service } from './auth0.service';
 
-// TODO @FIXME is not resolved in time
 export const onlyForNotLoggedInGuard = () => {
   const router = inject(Router);
 
@@ -18,10 +17,9 @@ export const onlyForNotLoggedInGuard = () => {
     take(1),
     map((user) => !!user),
     map((isLoggedIn: boolean) => {
-      console.info('onlyForNotLoggedInGuard', isLoggedIn);
       if (isLoggedIn) {
         // we might want to get a last valid route in a future?
-        return router.createUrlTree(['']);
+        return router.createUrlTree(['app']);
       }
 
       return true;

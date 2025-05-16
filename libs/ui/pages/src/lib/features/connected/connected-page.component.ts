@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { SharedFeatureIntroComponent } from '@kitouch/containers';
-import { PagesFeatureConnectedBenefitsComponent } from './benefits.component';
+import { Auth0Service } from '@kitouch/shared-infra';
+import { PagesFeatureConnectedBenefitsComponent } from './connected-benefits.component';
 
 @Component({
   standalone: true,
@@ -10,4 +11,10 @@ import { PagesFeatureConnectedBenefitsComponent } from './benefits.component';
     PagesFeatureConnectedBenefitsComponent,
   ],
 })
-export class PagesFeatureConnectedComponent {}
+export class PagesFeatureConnectedComponent {
+  #auth0Service = inject(Auth0Service);
+
+  handleGetStarted() {
+    this.#auth0Service.signIn();
+  }
+}

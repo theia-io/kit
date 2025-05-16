@@ -1,5 +1,8 @@
 <shared-feature-intro
+  (getStarted)="handleGetStarted()"
   name="Farewell"
   title="No more farewell hassle. Manage at your time" />
 
-<kit-page-feature-farewell-page-benefits class="block mt-20" />
+<kit-page-feature-farewell-page-benefits
+  [isAtFeaturePage]="true"
+  class="block" />

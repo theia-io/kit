@@ -1,5 +1,8 @@
 <shared-feature-intro
-  name="Kudo boards ✨"
-  title="Say Kudo to your colleagues, friends or family! Manage at ease" />
+  (getStarted)="handleGetStarted()"
+  name="Kudo boards"
+  title="Collect and send kudos to your network, friends or family. Manage at ease" />
 
-<kit-page-feature-kudoboard-page-benefits class="block mt-20" />
+<kit-page-feature-kudoboard-page-benefits
+  [isAtFeaturePage]="true"
+  class="block" />

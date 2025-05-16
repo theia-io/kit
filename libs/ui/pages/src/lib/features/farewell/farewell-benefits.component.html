@@ -1,0 +1,63 @@
+<kit-page-feature-benefits
+  header="Farewells."
+  [isAtFeaturePage]="isAtFeaturePage()"
+  [featuresPageUrl]="featuresFarewellUrl"
+  description="No more farewell hassle. Manage at your time." />
+
+<div class="my-4 w-100 flex flex-col gap-1 items-center lg:items-start">
+  <a
+    sharedAuthorizedFeature
+    [routerLink]="farewellGenerateUrl"
+    uiKitSmallTextTailwindClasses
+    [klasses]="getStartedKlassOverwrite"
+    class="inline-block p-4 bg-slate-700 rounded text-gray-900">
+    Create powerful farewell.
+  </a>
+  <p class="text-gray-500 text-sm font-semibold">
+    Create farewell yourself.
+    <br />
+    Instant registration or login.
+  </p>
+</div>
+
+<div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6">
+  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+    <i class="pi pi-face-smile" style="font-size: 1.5rem"></i>
+
+    <p class="m-0 text-lg font-semibold">Better</p>
+
+    <p class="m-0">
+      Create better farewell. Share memorable moments. Manage with media.
+    </p>
+  </p-card>
+
+  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+    <i class="pi pi-bolt" style="font-size: 1.5rem"></i>
+
+    <p class="m-0 text-lg font-semibold">Flexible</p>
+
+    <p class="m-0">Changed your mind? Update or delete at your wish</p>
+  </p-card>
+
+  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+    <i class="pi pi-wave-pulse" style="font-size: 1.5rem"></i>
+
+    <p class="m-0 text-lg font-semibold">Powerful</p>
+
+    <p class="m-0">Publish, keep drafts</p>
+  </p-card>
+
+  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+    <i class="pi pi-wrench" style="font-size: 1.5rem"></i>
+
+    <p class="m-0 text-lg font-semibold">You are in control</p>
+
+    <p class="m-0">Farewell owners can delete any farewell comments</p>
+  </p-card>
+
+  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+    <i class="pi pi-search" style="font-size: 1.5rem"></i>
+
+    <p class="m-0 text-lg font-semibold">Analyze</p>
+  </p-card>
+</div>

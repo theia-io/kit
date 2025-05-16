@@ -9,7 +9,7 @@ import {
   signal,
 } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 
 import { ButtonModule } from 'primeng/button';
 import { MenuModule } from 'primeng/menu';
@@ -48,6 +48,7 @@ const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[1];
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
+    RouterModule,
     //
     MenuModule,
     ButtonModule,
@@ -114,9 +115,14 @@ export class NavBarComponent implements AfterViewInit {
   }
 
   tweetButtonHandler() {
-    console.log('Tweet button clicked NAVBAR', this.#router.config);
     this.#router.navigate(
-      [{ outlets: { [OUTLET_DIALOG]: `${APP_PATH_DIALOG.Tweet}` } }],
+      [
+        {
+          outlets: {
+            [OUTLET_DIALOG]: [APP_PATH_DIALOG.Tweet],
+          },
+        },
+      ],
       {
         relativeTo: this.#route,
       }

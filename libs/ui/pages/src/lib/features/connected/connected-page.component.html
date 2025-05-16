@@ -1,5 +1,9 @@
 <shared-feature-intro
+  (getStarted)="handleGetStarted()"
+  class="block bg-secondary"
   name="Connected"
-  title="Stay connected with your colleagues" />
+  title="Stay connected with your network and friends." />
 
-<kit-page-feature-connected-page-benefits class="block mt-20" />
+<kit-page-feature-connected-page-benefits
+  [isAtFeaturePage]="true"
+  class="block" />

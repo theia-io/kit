@@ -9,7 +9,6 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import {
   provideRouter,
   withComponentInputBinding,
-  withDebugTracing,
   withInMemoryScrolling,
   withRouterConfig,
 } from '@angular/router';
@@ -147,7 +146,7 @@ export const appConfig: ApplicationConfig = {
 
     provideRouter(
       appRoutes,
-      withDebugTracing(),
+      // withDebugTracing(),
       withComponentInputBinding(),
       withInMemoryScrolling({
         anchorScrolling: 'enabled',

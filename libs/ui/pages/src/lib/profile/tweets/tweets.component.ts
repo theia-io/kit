@@ -103,7 +103,7 @@ export class PageProfileTweetsComponent {
 
   tweetButtonHandler() {
     this.#router.navigate([
-      { outlets: { [OUTLET_DIALOG]: APP_PATH_DIALOG.Tweet } },
+      { outlets: { [OUTLET_DIALOG]: [APP_PATH_DIALOG.Tweet] } },
     ]);
   }
 }

@@ -35,10 +35,10 @@ export enum APP_PATH_STATIC_PAGES {
   IntroduceKit = `introducing-kit`,
 }
 
-export const OUTLET_DIALOG = 'tweet-dialog';
+export const OUTLET_DIALOG = 'dialog';
 
 export enum APP_PATH_DIALOG {
-  Tweet = `tweet-thoughts`,
+  Tweet = `tweet`,
 }
 
 export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
