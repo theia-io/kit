@@ -1,9 +1,4 @@
-import {
-  AsyncPipe,
-  CommonModule,
-  NgClass,
-  NgOptimizedImage,
-} from '@angular/common';
+import { AsyncPipe, NgClass, NgOptimizedImage } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -18,6 +13,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { selectProfilePicture } from '@kitouch/kit-data';
+import { DeviceService } from '@kitouch/shared-services';
 import { UiKitTweetButtonComponent } from '@kitouch/ui-components';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
@@ -27,7 +23,6 @@ import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
-import { DeviceService } from '@kitouch/shared-infra';
 
 @Component({
   standalone: true,

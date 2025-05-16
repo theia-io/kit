@@ -12,7 +12,7 @@ import {
 } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ContractUploadedMedia, FarewellComment } from '@kitouch/shared-models';
-import { PhotoService } from '@kitouch/shared-services';
+import { DeviceService, PhotoService } from '@kitouch/shared-services';
 import PhotoSwipe from 'photoswipe';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
@@ -23,7 +23,6 @@ import { UiKitDeleteComponent } from '../delete/delete.component';
 import { UiKitSpinnerComponent } from '../spinner/spinner.component';
 import { UiKitTweetButtonComponent } from '../tweet-button/tweet-button.component';
 import { UiKitPicUploadableComponent } from '../uploadable/uploadable.component';
-import { DeviceService } from '@kitouch/shared-infra';
 
 const CONTROL_INITIAL_ROWS = 2;
 

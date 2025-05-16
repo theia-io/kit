@@ -1,13 +1,14 @@
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Component, inject } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
+import { Auth0Service } from '@kitouch/shared-infra';
 import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 
+import { DeviceService } from '@kitouch/shared-services';
 import { CardModule } from 'primeng/card';
 import { TooltipModule } from 'primeng/tooltip';
 import { map } from 'rxjs';

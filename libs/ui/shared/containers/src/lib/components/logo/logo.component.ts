@@ -1,8 +1,7 @@
 import { NgOptimizedImage } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { Device } from '@kitouch/shared-infra';
-import { UXDynamicService } from '@kitouch/shared-services';
+import { Device, UXDynamicService } from '@kitouch/shared-services';
 
 @Component({
   standalone: true,

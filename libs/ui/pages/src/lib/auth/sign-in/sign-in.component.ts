@@ -10,7 +10,7 @@ import { RouterModule } from '@angular/router';
 import { SignInAuth0Component, slideInOutAnimation } from '@kitouch/containers';
 import { FeatFarewellIntoComponent } from '@kitouch/feat-farewell-ui';
 import { APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
-import { DeviceService } from '@kitouch/shared-infra';
+import { DeviceService } from '@kitouch/shared-services';
 import { UiCompGradientCardComponent } from '@kitouch/ui-components';
 import { FeatKudoBoardIntoComponent } from '@kitouch/ui-kudoboard';
 import { TagModule } from 'primeng/tag';

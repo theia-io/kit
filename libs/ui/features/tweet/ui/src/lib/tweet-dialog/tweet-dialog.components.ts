@@ -11,7 +11,7 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { OUTLET_DIALOG } from '@kitouch/shared-constants';
-import { DeviceService } from '@kitouch/shared-infra';
+import { DeviceService } from '@kitouch/shared-services';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';

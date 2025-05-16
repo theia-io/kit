@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -37,18 +37,15 @@ import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 
-import {
-  AuthorizedFeatureDirective,
-  SharedStatusLegendComponent,
-} from '@kitouch/containers';
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
 import {
   FeatFarewellActions,
   findProfileFarewells,
   selectFarewells,
 } from '@kitouch/feat-farewell-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
-import { objectLoadingState$ } from '@kitouch/shared-services';
+import { Auth0Service } from '@kitouch/shared-infra';
+import { DeviceService, objectLoadingState$ } from '@kitouch/shared-services';
 import { ToastModule } from 'primeng/toast';
 import {
   combineLatest,

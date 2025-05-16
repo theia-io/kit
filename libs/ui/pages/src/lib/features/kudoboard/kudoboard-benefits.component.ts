@@ -1,11 +1,10 @@
-import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import {
   APP_PATH_ALLOW_ANONYMOUS,
   APP_PATH_STATIC_PAGES,
 } from '@kitouch/shared-constants';
-import { DeviceService } from '@kitouch/shared-infra';
+import { DeviceService } from '@kitouch/shared-services';
 import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,
@@ -20,7 +19,6 @@ import { PagesFeatureBenefitsComponent } from '../benefits/benefits.component';
   templateUrl: './kudoboard-benefits.component.html',
   imports: [
     RouterModule,
-    NgOptimizedImage,
     //
     CardModule,
     //

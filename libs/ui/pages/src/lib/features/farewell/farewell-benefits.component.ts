@@ -1,12 +1,8 @@
-import { AsyncPipe } from '@angular/common';
 import { Component, inject, input } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import {
-  AuthorizedFeatureDirective,
-  SharedKitUserHintDirective,
-} from '@kitouch/containers';
+import { AuthorizedFeatureDirective } from '@kitouch/containers';
 import { APP_PATH, APP_PATH_STATIC_PAGES } from '@kitouch/shared-constants';
-import { DeviceService } from '@kitouch/shared-infra';
+import { DeviceService } from '@kitouch/shared-services';
 import {
   KlassOverwrite,
   UIKitSmallerHintTextUXDirective,

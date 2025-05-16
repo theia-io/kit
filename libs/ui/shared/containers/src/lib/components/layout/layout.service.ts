@@ -1,6 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DeviceMediaBreakpoint, DeviceService } from '@kitouch/shared-infra';
+import { DeviceService, DeviceMediaBreakpoint } from '@kitouch/shared-services';
 import { map, shareReplay } from 'rxjs';
 
 export enum PanelState {

@@ -15,9 +15,12 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { Device, DeviceService } from '@kitouch/shared-infra';
 import { Profile } from '@kitouch/shared-models';
-import { UXDynamicService } from '@kitouch/shared-services';
+import {
+  Device,
+  DeviceService,
+  UXDynamicService,
+} from '@kitouch/shared-services';
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';

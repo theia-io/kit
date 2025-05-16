@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { Device, DeviceService } from '@kitouch/shared-infra';
+import { Device, DeviceService } from '@kitouch/shared-services';
 import {
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,

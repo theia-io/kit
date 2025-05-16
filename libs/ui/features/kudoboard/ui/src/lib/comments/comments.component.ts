@@ -1,7 +1,6 @@
 import {
   AsyncPipe,
   DatePipe,
-  NgClass,
   NgOptimizedImage,
   NgStyle,
 } from '@angular/common';
@@ -43,16 +42,13 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
-import {
-  Auth0Service,
-  DeviceService,
-  S3_KUDOBOARD_BUCKET_BASE_URL,
-} from '@kitouch/shared-infra';
+import { Auth0Service } from '@kitouch/shared-infra';
 import {
   ContractUploadedMedia,
   KudoBoardComment,
 } from '@kitouch/shared-models';
 import {
+  DeviceService,
   MasonryService,
   PhotoService,
   sortByCreatedTimeDesc,

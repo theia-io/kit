@@ -26,9 +26,9 @@ import {
   selectProfileById,
 } from '@kitouch/kit-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { Auth0Service, DeviceService } from '@kitouch/shared-infra';
+import { Auth0Service } from '@kitouch/shared-infra';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
-import { objectLoadingState$ } from '@kitouch/shared-services';
+import { DeviceService, objectLoadingState$ } from '@kitouch/shared-services';
 import {
   KlassOverwrite,
   UiKitPageOverlayComponent,

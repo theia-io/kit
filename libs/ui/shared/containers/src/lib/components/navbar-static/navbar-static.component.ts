@@ -20,11 +20,12 @@ import {
   APP_PATH_STATIC_PAGES,
   DESKTOP_NAV_ITEMS,
 } from '@kitouch/shared-constants';
-import { Device, DeviceService, ENVIRONMENT } from '@kitouch/shared-infra';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
+import { Device, DeviceService } from '@kitouch/shared-services';
 import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from '../navbar/navbar.service';
-import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   standalone: true,
