@@ -12,7 +12,6 @@ import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { OUTLET_DIALOG } from '@kitouch/shared-constants';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { relative } from 'path';
 import { ButtonModule } from 'primeng/button';
 import { DialogModule } from 'primeng/dialog';
 import { take } from 'rxjs';
@@ -106,12 +105,6 @@ export class FeatTweetDialogComponent {
   }
 
   onDialogFinalizeCb() {
-    console.log('\nonDialogFinalizeCb', this.#router.url, this.#route);
-    this.#router.navigate([{ outlets: { [OUTLET_DIALOG]: null } }], {
-      // relativeTo: this.#route,
-      // skipLocationChange: true,
-    });
+    this.#router.navigate([{ outlets: { [OUTLET_DIALOG]: null } }]);
   }
 }
-
-// http://localhost:4200/app/feed
