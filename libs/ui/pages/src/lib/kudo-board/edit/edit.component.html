@@ -37,6 +37,10 @@
           @if(statusTmpl) {
           <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
           }
+          <!-- Done -->
+          @if(doneTmpl) {
+          <ng-container *ngTemplateOutlet="doneTmpl"></ng-container>
+          }
         </div>
       </div>
 
@@ -64,6 +68,7 @@
       <feat-kudoboard-edit
         class="block grow container mx-auto p-6"
         [id]="kudoBoardId$ | async"
+        (doneKudoTmpl)="doneTmpl = $event"
         (statusKudoTmpl)="statusTmpl = $event"
         (shareKudoTmpl)="shareTmpl = $event"
         (previewKudoTmpl)="previewTmpl = $event"

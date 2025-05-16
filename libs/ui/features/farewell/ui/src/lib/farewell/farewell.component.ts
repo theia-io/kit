@@ -48,7 +48,6 @@ import {
   SharedCopyClipboardComponent,
 } from '@kitouch/containers';
 import { APP_PATH } from '@kitouch/shared-constants';
-import { S3_FAREWELL_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
@@ -122,6 +121,7 @@ function extractContent(html: string) {
 export class FeatFarewellComponent implements AfterViewInit {
   farewellId = model<string | null>(null);
 
+  doneFarewellTmpl = output<TemplateRef<unknown>>();
   statusFarewellTmpl = output<TemplateRef<unknown>>();
   shareFarewellTmpl = output<TemplateRef<unknown>>();
   previewFarewellTmpl = output<TemplateRef<unknown>>();
@@ -134,7 +134,6 @@ export class FeatFarewellComponent implements AfterViewInit {
   #store = inject(Store);
   #actions$ = inject(Actions);
   #messageService = inject(MessageService);
-  #s3FarewellBaseUrl = inject(S3_FAREWELL_BUCKET_BASE_URL);
 
   farewell = computed(() => {
     const id = this.farewellId();
@@ -178,6 +177,8 @@ export class FeatFarewellComponent implements AfterViewInit {
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   profilePictureFn = profilePicture;
 
+  @ViewChild('doneTmpl', { read: TemplateRef })
+  doneTmpl?: TemplateRef<any>;
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<any>;
   @ViewChild('shareTmpl', { read: TemplateRef })
@@ -193,6 +194,9 @@ export class FeatFarewellComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
     setTimeout(() => {
+      if (this.doneTmpl) {
+        this.doneFarewellTmpl.emit(this.doneTmpl);
+      }
       if (this.statusTmpl) {
         this.statusFarewellTmpl.emit(this.statusTmpl);
       }

@@ -1,3 +1,4 @@
+import { AsyncPipe, NgClass } from '@angular/common';
 import {
   Component,
   DestroyRef,
@@ -7,9 +8,10 @@ import {
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { FeatTweetActions } from '@kitouch/feat-tweet-data';
 import { OUTLET_DIALOG } from '@kitouch/shared-constants';
+import { DeviceService } from '@kitouch/shared-infra';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
@@ -22,6 +24,8 @@ import { v4 as uuidv4 } from 'uuid';
   selector: 'feat-tweet-dialog',
   templateUrl: './tweet-dialog.components.html',
   imports: [
+    AsyncPipe,
+    NgClass,
     ReactiveFormsModule,
     //
     DialogModule,
@@ -31,13 +35,19 @@ import { v4 as uuidv4 } from 'uuid';
 export class FeatTweetDialogComponent {
   #destroyRef = inject(DestroyRef);
   #actions = inject(Actions);
-  #route = inject(ActivatedRoute);
   #router = inject(Router);
   #store = inject(Store);
+  deviceService = inject(DeviceService);
 
-  @HostListener('window:keydown.enter', ['$event'])
-  keyDownEnterHandler() {
-    this.tweetingHandle();
+  @HostListener('window:keydown', ['$event'])
+  keyDownEnterHandler(event: KeyboardEvent) {
+    if (
+      this.tweetContentControl.valid &&
+      event.key === 'Enter' &&
+      (event.metaKey || event.ctrlKey) // Check for Cmd/Ctrl key
+    ) {
+      this.tweetingHandle();
+    }
   }
 
   tweetuuidv4 = signal('');

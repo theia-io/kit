@@ -34,6 +34,10 @@
           @if(statusTmpl) {
           <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
           }
+          <!-- Done -->
+          @if(doneTmpl) {
+          <ng-container *ngTemplateOutlet="doneTmpl"></ng-container>
+          }
         </div>
       </div>
 
@@ -59,6 +63,7 @@
       <feat-farewell
         class="block grow container mx-auto py-6 px-[4rem] overflow-auto"
         [farewellId]="farewell.id"
+        (doneFarewellTmpl)="doneTmpl = $event"
         (statusFarewellTmpl)="statusTmpl = $event"
         (shareFarewellTmpl)="shareTmpl = $event"
         (previewFarewellTmpl)="previewTmpl = $event"

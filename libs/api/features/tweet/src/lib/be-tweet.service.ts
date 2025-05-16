@@ -226,7 +226,10 @@ export class BeTweetService {
       );
     }
 
-    return newTweet;
+    return {
+      ...newTweet.toObject(),
+      type: 'tweet',
+    };
   }
 
   async deleteTweet(

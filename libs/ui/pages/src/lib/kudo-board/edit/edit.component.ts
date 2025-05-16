@@ -99,8 +99,9 @@ export class PageKudoBoardEditComponent {
 
   updating = signal(false);
 
-  previewTmpl?: TemplateRef<unknown>;
+  doneTmpl?: TemplateRef<unknown>;
   statusTmpl?: TemplateRef<unknown>;
+  previewTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;
 
   constructor() {

@@ -91,6 +91,12 @@
   @let kudoBoardId = id(); @let status =
   kudoBoardFormGroup.get('status')?.value;
 
+  <ng-template #doneTmpl>
+    <button pButton (click)="gotoAll($event)" [rounded]="true" styleClass="p-1">
+      <span class="ml-1 text-xs">Done</span>
+    </button>
+  </ng-template>
+
   <ng-template #statusTmpl>
     <feat-kudoboard-status
       [status]="status ?? kudoBoardStatus.Draft"
@@ -130,15 +136,6 @@
 
   <div class="flex justify-center items-center gap-2 mt-2">
     <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
-
-    <button
-      pButton
-      (click)="gotoAll($event)"
-      [rounded]="true"
-      styleClass="p-1"
-      severity="info"
-      icon="pi pi-sparkles">
-      <span class="ml-1 text-xs">Done</span>
-    </button>
+    <ng-container *ngTemplateOutlet="doneTmpl"></ng-container>
   </div>
 </form>

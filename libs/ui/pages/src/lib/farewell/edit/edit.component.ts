@@ -80,7 +80,7 @@ export class PageFarewellEditComponent {
       {
         label: 'All Farewells',
         routerLink: `/${APP_PATH.Farewell}`,
-        icon: 'pi pi-send mr-2',
+        icon: 'pi pi-file-edit mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',
       },
@@ -92,6 +92,7 @@ export class PageFarewellEditComponent {
 
   updating = signal(false);
 
+  doneTmpl?: TemplateRef<unknown>;
   statusTmpl?: TemplateRef<unknown>;
   shareTmpl?: TemplateRef<unknown>;
   previewTmpl?: TemplateRef<unknown>;

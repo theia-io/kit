@@ -1,6 +1,7 @@
 import {
   AsyncPipe,
   DatePipe,
+  NgClass,
   NgOptimizedImage,
   NgStyle,
 } from '@angular/common';

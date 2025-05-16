@@ -37,7 +37,7 @@
     }
 
     <div
-      id="uploaded-comment-Øedia-gallery"
+      id="uploaded-comment-media-gallery"
       class="flex gap-2 items-center flex-nowrap overflow-x-auto">
       @for (media of uploadedMedias(); track media.url) {
       <a
@@ -74,13 +74,28 @@
       }
     </div>
   </div>
-  } @if(commentContentControlRows !== 2) {
-  <ui-kit-tweet-button
-    class="my-2"
-    [text]="actionBtnText()"
-    [iconAnimate]="true"
-    [disabled]="!commentContentControl.valid"
-    [loader]="false"
-    (click)="commentHandler()" />
+  }
+
+  <!-- Comment create  -->
+  @if(commentContentControlRows !== 2) {
+  <div
+    class="my-2 flex gap-1 flex-col"
+    [ngClass]="
+      (deviceService.isMobile$ | async) === false ? 'min-h-[62px]' : ''
+    ">
+    <ui-kit-tweet-button
+      [text]="actionBtnText()"
+      [iconAnimate]="true"
+      [disabled]="!commentContentControl.valid"
+      [loader]="false"
+      (click)="commentHandler()" />
+    @if((deviceService.isMobile$ | async) === false &&
+    commentContentControl.valid) {
+    <p class="text-xs text-gray-400">
+      or press
+      <strong>Ctrl + Enter</strong>
+    </p>
+    }
+  </div>
   }
 </div>

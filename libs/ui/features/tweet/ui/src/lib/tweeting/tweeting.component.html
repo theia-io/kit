@@ -40,11 +40,24 @@
     (imageClick)="imageHandler()"
     (reactionClick)="reactionHandler()" />
 
-  <ui-kit-tweet-button
-    [disabled]="!tweetContentControl.valid || tweettingInProgress()"
-    [loader]="tweettingInProgress()"
-    (click)="tweetingHandle()"
-    class="min-w-28 float-right" />
+  <div
+    class="flex gap-1 flex-col w-[152px]"
+    [ngClass]="
+      (deviceService.isMobile$ | async) === false ? 'min-h-[62px]' : ''
+    ">
+    <ui-kit-tweet-button
+      [disabled]="!tweetContentControl.valid || tweettingInProgress()"
+      [loader]="tweettingInProgress()"
+      (click)="tweetingHandle()"
+      class="min-w-28 float-right" />
+    @if((deviceService.isMobile$ | async) === false &&
+    tweetContentControl.valid) {
+    <p class="text-xs text-gray-400">
+      or press
+      <strong>Ctrl + Enter</strong>
+    </p>
+    }
+  </div>
 </div>
 
 <!-- <p-toast #toast (click)="successMessageClickHandler()" (onClose)="successMessageCloseHandler()"

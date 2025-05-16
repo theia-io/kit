@@ -18,9 +18,22 @@
       label="Clear"
       severity="secondary"
       (onClick)="tweetContentControl.setValue('')" />
-    <p-button (onClick)="tweetingHandle()" aria-label="tweet">
-      <span class="px-3">Tweet</span>
-      <i class="pi pi-send animate-wiggle" style="font-size: 1.5rem"></i>
-    </p-button>
+    <div
+      class="flex gap-1 flex-col w-[152px]"
+      [ngClass]="
+        (deviceService.isMobile$ | async) === false ? 'min-h-[62px]' : ''
+      ">
+      <p-button (onClick)="tweetingHandle()" aria-label="tweet">
+        <span class="px-3">Tweet</span>
+        <i class="pi pi-send animate-wiggle" style="font-size: 1.5rem"></i>
+      </p-button>
+      @if((deviceService.isMobile$ | async) === false &&
+      tweetContentControl.valid) {
+      <p class="text-xs text-gray-400">
+        or press
+        <strong>Ctrl + Enter</strong>
+      </p>
+      }
+    </div>
   </div>
 </p-dialog>

@@ -303,9 +303,9 @@ export class PageKudoBoardViewComponent {
         this.#messageService.add({
           sticky: true,
           severity: 'info',
-          summary: 'Claim this KudoBoard ✨',
+          summary: 'Claim this Kudo board',
           detail:
-            'To claim this KudoBoard ✨: \n1) Click button in action panel below; \n 2) Sign-in ✅',
+            'This Kudo board is not claimed yet. To own it click on "Claim".',
         })
       );
   }

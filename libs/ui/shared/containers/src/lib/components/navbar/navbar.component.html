@@ -18,7 +18,8 @@
     </div>
 
     <p-button (onClick)="toggleSideBar(true)" [text]="true">
-      <ui-kit-comp-account-tile [picture]="profile()?.pictures?.[0]?.url" />
+      <!-- <ui-kit-comp-account-tile [picture]="profile()?.pictures?.[0]?.url" /> -->
+      <i class="pi pi-align-justify text-xl"></i>
     </p-button>
   </div>
 </div>
@@ -69,13 +70,13 @@
   (onFocus)="onFocusHandler()"></p-menu>
 
 <ui-kit-tweet-button
-  icon="pi-file-edit"
+  icon="pi-send"
   [iconAnimate]="false"
   text="Tweet Thoughts"
   (click)="tweetButtonHandler()"
   class="w-48 mt-6" />
 <ui-kit-tweet-button
-  icon="pi-send"
+  icon="pi-file-edit"
   [iconAnimate]="false"
   text="New Farewell"
   (click)="createFarewellHandler()"

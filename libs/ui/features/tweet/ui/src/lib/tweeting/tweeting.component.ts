@@ -1,4 +1,9 @@
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import {
+  AsyncPipe,
+  CommonModule,
+  NgClass,
+  NgOptimizedImage,
+} from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
@@ -22,6 +27,7 @@ import { take } from 'rxjs/operators';
 import { v4 as uuidv4 } from 'uuid';
 import { TWEET_CONTROL_INITIAL_ROWS } from '../tweet-control/constants';
 import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
+import { DeviceService } from '@kitouch/shared-infra';
 
 @Component({
   standalone: true,
@@ -29,7 +35,8 @@ import { FeatTweetTweetingActionsComponent } from './actions/actions.component';
   templateUrl: './tweeting.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
+    AsyncPipe,
+    NgClass,
     NgOptimizedImage,
     ReactiveFormsModule,
     //
@@ -46,6 +53,7 @@ export class FeatTweetTweetingComponent {
   #destroyRef = inject(DestroyRef);
   #actions = inject(Actions);
   #store = inject(Store);
+  deviceService = inject(DeviceService);
   // #messageService = inject(MessageService);
   // #snackBar = inject(MatSnackBar);
 

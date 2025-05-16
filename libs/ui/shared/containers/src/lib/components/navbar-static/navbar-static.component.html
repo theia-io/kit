@@ -2,8 +2,7 @@
   class="w-full cursor-pointer p-4 flex items-center nav-shadow bg-secondary">
   <shared-logo class="block mr-4" />
 
-  @let desktop = (deviceService.device$ | async) === deviceTypes.Desktop; @let
-  notMobile = (deviceService.device$ | async) !== deviceTypes.Mobile;
+  @let desktop = (deviceService.device$ | async) === deviceTypes.Desktop;
 
   <!-- Logged in user -->
   @if(userLoggedIn()) {
@@ -128,7 +127,7 @@
     target="_blank"
     pTooltip="Write us email to info@kitouch.io"
     uiKitSmallTextTailwindClasses
-    class="px-4 py-2 flex gap-2 items-center hover:bg-slate-200 hover:rounded hover:text-gray-900">
+    class="px-4 py-2 flex gap-1 items-center hover:bg-slate-200 hover:rounded hover:text-gray-900">
     Email us
     <img
       ngSrc="/material-icons/mail.svg"

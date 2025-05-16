@@ -1,4 +1,4 @@
-import { NgOptimizedImage, NgStyle } from '@angular/common';
+import { AsyncPipe, NgClass, NgOptimizedImage, NgStyle } from '@angular/common';
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
@@ -23,6 +23,7 @@ import { UiKitDeleteComponent } from '../delete/delete.component';
 import { UiKitSpinnerComponent } from '../spinner/spinner.component';
 import { UiKitTweetButtonComponent } from '../tweet-button/tweet-button.component';
 import { UiKitPicUploadableComponent } from '../uploadable/uploadable.component';
+import { DeviceService } from '@kitouch/shared-infra';
 
 const CONTROL_INITIAL_ROWS = 2;
 
@@ -37,6 +38,8 @@ export interface AddComment {
   templateUrl: './comment-area.component.html',
   imports: [
     //
+    AsyncPipe,
+    NgClass,
     ReactiveFormsModule,
     NgOptimizedImage,
     NgStyle,
@@ -70,6 +73,7 @@ export class UIKitCommentAreaComponent implements AfterViewInit {
   comment = output<AddComment>();
 
   #photoService = inject(PhotoService);
+  deviceService = inject(DeviceService);
 
   @HostListener('window:keydown', ['$event'])
   keyDownEnterHandler(event: KeyboardEvent) {

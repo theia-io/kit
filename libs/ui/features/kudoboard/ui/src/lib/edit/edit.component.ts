@@ -66,7 +66,6 @@ import { TooltipModule } from 'primeng/tooltip';
 import {
   combineLatest,
   debounceTime,
-  delay,
   filter,
   map,
   merge,
@@ -121,6 +120,7 @@ const TITLE_MAX_LENGTH = 128;
 export class FeatKudoBoardEditComponent implements AfterViewInit {
   id = model<KudoBoard['id']>();
 
+  doneKudoTmpl = output<TemplateRef<unknown>>();
   statusKudoTmpl = output<TemplateRef<unknown>>();
   previewKudoTmpl = output<TemplateRef<unknown>>();
   asUserKudoTmpl = output<TemplateRef<unknown>>();
@@ -179,6 +179,8 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   readonly kudoBoardStatus = KudoBoardStatus;
   previewVisible = signal(false);
 
+  @ViewChild('doneTmpl', { read: TemplateRef })
+  doneTmpl?: TemplateRef<unknown>;
   @ViewChild('statusTmpl', { read: TemplateRef })
   statusTmpl?: TemplateRef<unknown>;
   @ViewChild('previewTmpl', { read: TemplateRef })
@@ -196,6 +198,10 @@ export class FeatKudoBoardEditComponent implements AfterViewInit {
   ngAfterViewInit(): void {
     // non essential task to provide parent status update functionality
     setTimeout(() => {
+      if (this.doneTmpl) {
+        this.doneKudoTmpl.emit(this.doneTmpl);
+      }
+
       if (this.statusTmpl) {
         this.statusKudoTmpl.emit(this.statusTmpl);
       }
