@@ -4,7 +4,14 @@
   <shared-status-legend />
 </ui-kit-comp-card>
 
-@for (farewell of farewells$ | async; track $index) {
+@let farewells = farewells$ | async; @if((farewells?.length ?? 0) > 0) {
+<ui-kit-tweet-button
+  [routerLink]="farewellGenerate"
+  icon="pi-file-edit"
+  [iconAnimate]="true"
+  text="Create new Farewell"
+  class="w-full mb-4" />
+} @for (farewell of farewells; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <div class="relative block max-h-96 overflow-hidden">
     <feat-farewell-viewv2 [farewellId]="farewell.id" />

@@ -72,7 +72,7 @@
   </ng-template>
 
   <ng-template pTemplate="opposite" let-comment>
-    @let name = comment?.denormalization?.profile?.name;
+    @let name = comment?.denormalization?.profile?.name ?? '';
     <ui-kit-comp-account-tile
       [picture]="comment?.denormalization?.profile?.pictures?.[0]?.url"
       [secondaryText]="name.length > 16 ? name.slice(0, 16) + '...' : name"

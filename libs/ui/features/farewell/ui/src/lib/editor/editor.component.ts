@@ -3,6 +3,7 @@ import {
   Component,
   effect,
   forwardRef,
+  HostListener,
   input,
   OnDestroy,
   output,
@@ -79,6 +80,10 @@ export class FeatFarewellEditorComponent
   editorTextChange = output<string>();
 
   editorComponent = viewChild(Editor);
+  @HostListener('click', ['$event'])
+  editorClickListener() {
+    this.#disableAutoFocus();
+  }
 
   #editorControlEnabled = true;
   editorControl = new FormControl<string>('');

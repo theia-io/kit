@@ -25,6 +25,7 @@ import {
   UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
+  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -59,6 +60,7 @@ import { filter, map } from 'rxjs/operators';
     SharedCopyClipboardComponent,
     SharedStatusLegendComponent,
     UiCompCardComponent,
+    UiKitTweetButtonComponent,
     //
     ButtonModule,
     ToastModule,
