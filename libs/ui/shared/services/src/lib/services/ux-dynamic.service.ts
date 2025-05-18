@@ -7,7 +7,7 @@ type LogoMedia = 'static' | 'handshake' | 'hello' | 'ok' | 'done';
   providedIn: 'root',
 })
 export class UXDynamicService {
-  #logoPathTimeoutId?: NodeJS.Timeout;
+  #logoPathTimeoutId?: number;
   logoPath = signal(STATIC_MEDIA);
 
   updateLogo(logo: LogoMedia, revertTimeout?: number) {

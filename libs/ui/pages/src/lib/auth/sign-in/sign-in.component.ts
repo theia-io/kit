@@ -39,7 +39,7 @@ const ANIMATION_REPEAT = 5000;
 export class PageSignInComponent implements OnInit {
   hintHidden$ = inject(DeviceService).isMobile$.pipe(startWith(true));
 
-  kittenVisibleTimeout: NodeJS.Timeout;
+  kittenVisibleTimeout: number;
   kittenVisible = signal<'in' | 'out'>('out');
 
   clickedIntro = signal<null | 'kudo' | 'farewell'>(null);

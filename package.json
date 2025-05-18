@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "7.0.27-f4029a4a",
+  "version": "7.0.28-4f0f0572",
   "license": "MIT",
   "engines": {
     "npm": ">=10.8.0",
@@ -41,7 +41,6 @@
     "@angular/ssr": "18.2.6",
     "@aws-sdk/client-s3": "^3.627.0",
     "@aws-sdk/client-secrets-manager": "^3.796.0",
-    "@aws-sdk/credential-providers": "^3.631.0",
     "@ctrl/ngx-emoji-mart": "^9.2.0",
     "@module-federation/node": "2.5.9",
     "@nestjs/axios": "^3.1.3",

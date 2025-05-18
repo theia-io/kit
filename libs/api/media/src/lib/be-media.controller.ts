@@ -82,8 +82,23 @@ export class MediaController {
   }
 
   @Post('profile')
+  @UseInterceptors(new RawBodyInterceptor())
   async saveProfileMedia(@Query('name') name: string, @Body() media: Buffer) {
-    console.info('[MediaController] %s, %s', name, media);
+    const dimensions = this.#getDimensions(media);
+    const { url, optimizedUrls } = await this.mediaService.upload({
+      bucket: this.configService.getConfig('s3').profileBucket,
+      file: media,
+      filePath: name,
+      fileType: dimensions.type ?? name.split('.').reverse()[0],
+    });
+
+    const { height, width } = dimensions;
+    return {
+      height,
+      width,
+      url,
+      optimizedUrls,
+    };
   }
 
   #getDimensions(media: Buffer) {

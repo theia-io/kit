@@ -24,12 +24,6 @@ export class KudoBoardMediaService {
         )
       )
     );
-
-    // return this.#s3Service.setBucketItem(
-    //   this.#env.s3Config.kudoBoardBucket,
-    //   key,
-    //   media
-    // );
   }
 
   deleteKudoBoardMedia(key: string) {
@@ -40,10 +34,5 @@ export class KudoBoardMediaService {
         name: key,
       },
     });
-
-    // return this.#s3Service.deleteBucketItem(
-    //   this.#env.s3Config.kudoBoardBucket,
-    //   key
-    // );
   }
 }

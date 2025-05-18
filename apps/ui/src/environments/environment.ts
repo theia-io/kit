@@ -26,7 +26,6 @@ export const environment: Environment = {
   production: false,
   s3Config: {
     region: 'eu-north-1',
-    identityPoolId: 'eu-north-1:0d7df556-9796-4d53-8387-aed1c71f8aec',
     profileBucket: 'kitouch-public-profiles-dev',
     farewellBucket: 'kitouch-public-farewell-dev',
     kudoBoardBucket: 'kitouch-public-kudoboard-dev',
