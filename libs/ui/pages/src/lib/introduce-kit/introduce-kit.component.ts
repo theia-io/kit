@@ -15,6 +15,8 @@ import { map } from 'rxjs';
 import { PagesFeatureConnectedBenefitsComponent } from '../features/connected/connected-benefits.component';
 import { PagesFeatureFarewellBenefitsComponent } from '../features/farewell/farewell-benefits.component';
 import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/kudoboard-benefits.component';
+import { ButtonModule } from 'primeng/button';
+import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -22,10 +24,12 @@ import { PagesFeatureKudoBoardBenefitsComponent } from '../features/kudoboard/ku
   styleUrls: ['./introduce-kit.component.scss'],
   templateUrl: './introduce-kit.component.html',
   imports: [
+    NgOptimizedImage,
     RouterModule,
     //
     CardModule,
     TooltipModule,
+    ButtonModule,
     //
     PagesFeatureConnectedBenefitsComponent,
     PagesFeatureFarewellBenefitsComponent,
@@ -43,9 +47,9 @@ export class KitPagesIntroduceKitComponent {
 
   getStartedKlassOverwrite: KlassOverwrite = {
     text: {
-      size: 'text-lg',
+      size: 'text-xl',
       color: 'text-white',
-      hoverColor: 'text-slate-700',
+      // hoverColor: 'text-slate-700',
     },
   };
 

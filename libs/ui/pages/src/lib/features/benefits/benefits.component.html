@@ -1,5 +1,15 @@
 <h2
   class="flex items-center gap-2 text-slate-800 font-semibold text-2xl lg:text-3xl dark:text-white">
+  @if(headerUrl(); as headerUrl) {
+
+  <img
+    class="inline-block mr-1"
+    priority
+    [ngSrc]="headerUrl"
+    width="36"
+    height="36" />
+  }
+
   <p>{{ header() }}</p>
   @if(!isAtFeaturePage()) {
   <a class="text-gray-500 hover:text-gray-900" [routerLink]="featuresPageUrl()">

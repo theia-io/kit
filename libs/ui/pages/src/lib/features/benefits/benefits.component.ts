@@ -10,6 +10,7 @@ import { RouterModule } from '@angular/router';
 })
 export class PagesFeatureBenefitsComponent {
   header = input.required<string>();
+  headerUrl = input<string>();
   isAtFeaturePage = input(false);
   featuresPageUrl = input.required<string>();
   description = input.required<string>();

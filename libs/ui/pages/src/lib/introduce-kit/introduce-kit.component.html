@@ -8,14 +8,48 @@
       </h2>
       <!-- Your next steps partner. -->
 
-      <div class="my-2 w-full flex justify-center lg:justify-start gap-2">
-        <a class="block font-bold" routerLink="./" fragment="connections">
+      <div
+        class="my-2 w-full flex items-center justify-center lg:justify-start gap-3 lg:gap-6 2xl:gap-12">
+        <a
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2"
+          routerLink="./"
+          fragment="connections">
+          <img
+            class="inline-block mr-1"
+            priority
+            ngSrc="/material-icons/connections.svg"
+            alt=""
+            width="24"
+            height="24" />
+
           Connections
         </a>
-        <a class="block font-bold" routerLink="./" fragment="kudoboards">
+        <a
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2"
+          routerLink="./"
+          fragment="kudoboards">
+          <img
+            class="inline-block mr-1"
+            priority
+            ngSrc="/material-icons/celebration.svg"
+            alt=""
+            width="24"
+            height="24" />
+
           Kudo boards
         </a>
-        <a class="block font-bold" routerLink="./" fragment="farewells">
+        <a
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2"
+          routerLink="./"
+          fragment="farewells">
+          <img
+            class="inline-block mr-1"
+            priority
+            ngSrc="/material-icons/public.svg"
+            alt=""
+            width="24"
+            height="24" />
+
           Farewells
         </a>
       </div>
@@ -27,14 +61,15 @@
 
       @if(!loggedIn()) {
       <div class="my-8 w-100 flex flex-col gap-1 items-center lg:items-start">
-        <a
+        <button
+          pButton
+          severity="success"
           (click)="handleGetStarted()"
-          role="button"
           uiKitSmallTextTailwindClasses
           [klasses]="getStartedKlassOverwrite"
-          class="inline-block px-10 py-5 bg-slate-700 rounded text-gray-900">
+          class="inline-block px-10 py-5">
           Join. Explore for free.
-        </a>
+        </button>
         <p class="text-gray-500 text-sm font-semibold">
           You will be redirected to login or register page.
           <br />
