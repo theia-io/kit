@@ -19,6 +19,12 @@ export class ProfileV2Service {
     });
   }
 
+  getProfileFollowers(profile: Profile['id']): Observable<Array<Profile>> {
+    return this.#http.get<Array<Profile>>(
+      `${this.#env.api.kit}/followers/${profile}`
+    );
+  }
+
   put(profile: Profile): Observable<Profile> {
     return this.#http.put<Profile>(`${this.#env.api.kit}/profiles`, profile);
   }

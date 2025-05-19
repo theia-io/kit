@@ -4,7 +4,14 @@
   <shared-status-legend />
 </ui-kit-comp-card>
 
-@for (kudoboard of myKudos$ | async; track $index) {
+@let kudos = myKudos$ | async; @if((kudos?.length ?? 0) > 0) {
+<ui-kit-tweet-button
+  [routerLink]="kudoBoardGenerateUrl"
+  icon="pi-sparkles"
+  [iconAnimate]="true"
+  text="Create new Kudo"
+  class="w-full mb-4" />
+} @for (kudoboard of kudos; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <div class="relative block max-h-96 overflow-hidden">
     <feat-kudoboard-view [id]="kudoboard.id" />

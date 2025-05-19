@@ -33,7 +33,6 @@ export class KitController {
     const authUser = req.user;
 
     const isAuthenticated = (req as any).oidc?.isAuthenticated();
-    console.log('(req as any).oidc?.isAuthenticated', isAuthenticated);
 
     if (isAuthenticated && !authUser) {
       throw new HttpException(
@@ -116,6 +115,12 @@ export class KitController {
   @UseGuards(AuthGuard('jwt'))
   async update(@Body() profile: IProfile) {
     return this.kitService.updateProfile(profile);
+  }
+
+  @Get('followers/:profile')
+  @UseGuards(AuthGuard('jwt'))
+  async getProfileFollowers(@Param('profile') profile: string) {
+    return this.kitService.profileFollowers(profile);
   }
 
   @Get('user/:usedId')

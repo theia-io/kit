@@ -1,13 +1,14 @@
-import { NgOptimizedImage, NgStyle } from '@angular/common';
+import { NgOptimizedImage } from '@angular/common';
 import {
   AfterViewInit,
   Component,
   computed,
+  effect,
   inject,
   input,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { profilePicture } from '@kitouch/kit-data';
+import { profilePicture, selectProfileFollowers } from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 
@@ -16,6 +17,9 @@ import { APP_PATH } from '@kitouch/shared-constants';
 import { PhotoService } from '@kitouch/shared-services';
 import PhotoSwipe from 'photoswipe';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
+import { Store } from '@ngrx/store';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { switchMap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -24,7 +28,6 @@ import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socia
   styleUrls: ['./profile-header.component.scss'],
   imports: [
     NgOptimizedImage,
-    NgStyle,
     RouterModule,
     //
     UiKitColorDisplayerComponent,
@@ -35,9 +38,30 @@ import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socia
 export class FeatKitProfileHeaderComponent implements AfterViewInit {
   profile = input.required<Profile>();
 
-  profilePic = computed(() => profilePicture(this.profile()));
-
+  #store = inject(Store);
   #photoService = inject(PhotoService);
+
+  #profile$ = toObservable(this.profile);
+  #profileFollowers = toSignal(
+    this.#profile$.pipe(
+      switchMap((profile) =>
+        this.#store.select(selectProfileFollowers(profile.id))
+      )
+    )
+  );
+  profileNetwork = computed(() => {
+    const followers = this.#profileFollowers();
+    const following = this.profile().following;
+
+    const networkUniqueProfiles = new Set<string>([
+      ...(following?.map((f) => f.id) ?? []),
+      ...(followers?.map((f) => f.id) ?? []),
+    ]);
+
+    return networkUniqueProfiles.size ?? 0;
+  });
+
+  profilePic = computed(() => profilePicture(this.profile()));
 
   readonly profileUrl = `/${APP_PATH.Profile}/`;
 

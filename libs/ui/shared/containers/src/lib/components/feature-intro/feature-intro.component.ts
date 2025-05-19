@@ -18,8 +18,8 @@ import {
 })
 export class SharedFeatureIntroComponent {
   name = input.required<string>();
-
   title = input.required<string>();
+  isLoggedIn = input.required<boolean>();
 
   getStarted = output<void>();
 

@@ -39,61 +39,13 @@ export class ProfileEffects {
   #actions$ = inject(Actions);
   #profileV2Service = inject(ProfileV2Service);
 
-  #profilesForTweets$ = this.#actions$.pipe(
-    ofType(TweetApiActions.getAllSuccess),
-    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
-  );
-
-  #profilesForTweet$ = this.#actions$.pipe(
-    ofType(TweetApiActions.get),
-    map(({ profileId }) => profileId)
-  );
-
-  #profilesForTweetComments$ = this.#actions$.pipe(
-    ofType(TweetApiActions.getSuccess),
-    map(({ tweet: { comments } }) => comments),
-    filter((comments): comments is Array<TweetComment> => !!comments?.length),
-    map((comments) =>
-      comments.map((comment) => comment?.profileId ?? '').filter(Boolean)
-    )
-  );
-
-  #profilesForProfileTweets$ = this.#actions$.pipe(
-    ofType(TweetApiActions.getTweetsForProfileSuccess),
-    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
-  );
-
-  #profilesForBookmarks$ = this.#actions$.pipe(
-    ofType(FeatBookmarksActions.getBookmarksFeed),
-    map(({ bookmarks }) =>
-      bookmarks.map(({ profileIdTweetyOwner }) => profileIdTweetyOwner)
-    )
-  );
-
-  // ensure profiles are resolved through the app for tweet
-  resolveProfiles$ = createEffect(() =>
-    merge(
-      this.#profilesForBookmarks$,
-      this.#profilesForTweet$,
-      this.#profilesForTweetComments$,
-      this.#profilesForTweets$,
-      this.#profilesForProfileTweets$
-    ).pipe(
-      bufferTime(1000),
-      map((profileIds) => [...new Set(profileIds.flat())]),
-      filter((profileIds) => profileIds.length > 0),
-      switchMap((uniqueProfileIds) =>
-        this.#getUnresolvedProfileIds(uniqueProfileIds)
-      ),
-      filter((uniqueProfileIds) => uniqueProfileIds.length > 0),
-      map((profileIds) => FeatProfileApiActions.getProfiles({ profileIds }))
-    )
-  );
-
+  /** PROFILES API */
   profiles$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(FeatProfileApiActions.getProfiles),
-      switchMap(({ profileIds }) =>
+      map(({ profileIds }) => profileIds.filter((id) => !!id)),
+      filter((profileIds) => !!profileIds.length),
+      switchMap((profileIds) =>
         this.#profileV2Service.getProfiles(profileIds).pipe(
           map((profiles) =>
             FeatProfileApiActions.getProfilesSuccess({ profiles })
@@ -107,57 +59,20 @@ export class ProfileEffects {
     )
   );
 
-  // enriching profiles from different responses through the app
-  enrichProfilesFromSuggestions$ = createEffect(() =>
+  profileFollowers$ = createEffect(() =>
     this.#actions$.pipe(
-      ofType(FeatFollowActions.getSuggestionColleaguesToFollowSuccess),
-      filter(({ profiles }) => profiles.length > 0),
-      map(({ profiles }) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
-  );
-
-  enrichProfilesFromFarewellReactions$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatFarewellReactionActions.getReactionsFarewellSuccess),
-      map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
-      filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
-  );
-
-  enrichProfilesFromFarewell$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatFarewellActions.getFarewellSuccess),
-      map(({ farewell }) => getRecentUniqueProfilesFromT([farewell])),
-      filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
-  );
-
-  enrichProfilesFromKudoBoardReactions$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatKudoBoardReactionActions.getReactionsKudoBoardSuccess),
-      map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
-      filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
-  );
-
-  enrichProfilesFromFarewellComments$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatFarewellCommentActions.getCommentsFarewellSuccess),
-      map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
-      filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
-    )
-  );
-
-  enrichProfilesFromKudoBoardComments$ = createEffect(() =>
-    this.#actions$.pipe(
-      ofType(FeatKudoBoardCommentActions.getCommentsKudoBoardSuccess),
-      map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
-      filter((profiles) => profiles.length > 0),
-      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+      ofType(FeatProfileApiActions.getProfileFollowers),
+      switchMap(({ profileId }) =>
+        this.#profileV2Service.getProfileFollowers(profileId).pipe(
+          map((profiles) =>
+            FeatProfileApiActions.getProfileFollowersSuccess({ profiles })
+          ),
+          catchError((err) => {
+            console.error('[ProfileEffects] profileFollowers$', err);
+            return of(FeatProfileApiActions.getProfileFollowersFailure());
+          })
+        )
+      )
     )
   );
 
@@ -224,6 +139,128 @@ export class ProfileEffects {
       )
     )
   );
+
+  /**
+   * ENRICH APIs
+   * Update localstore (NgRx) in memory data.
+   *
+   * Usually come from outside.
+   *
+   **/
+
+  #profilesForTweets$ = this.#actions$.pipe(
+    ofType(TweetApiActions.getAllSuccess),
+    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
+  );
+
+  #profilesForTweet$ = this.#actions$.pipe(
+    ofType(TweetApiActions.get),
+    map(({ profileId }) => profileId)
+  );
+
+  #profilesForTweetComments$ = this.#actions$.pipe(
+    ofType(TweetApiActions.getSuccess),
+    map(({ tweet: { comments } }) => comments),
+    filter((comments): comments is Array<TweetComment> => !!comments?.length),
+    map((comments) =>
+      comments.map((comment) => comment?.profileId ?? '').filter(Boolean)
+    )
+  );
+
+  #profilesForProfileTweets$ = this.#actions$.pipe(
+    ofType(TweetApiActions.getTweetsForProfileSuccess),
+    map(({ tweets }) => tweets.map(({ profileId }) => profileId))
+  );
+
+  #profilesForBookmarks$ = this.#actions$.pipe(
+    ofType(FeatBookmarksActions.getBookmarksFeed),
+    map(({ bookmarks }) =>
+      bookmarks.map(({ profileIdTweetyOwner }) => profileIdTweetyOwner)
+    )
+  );
+
+  // ensure profiles are resolved through the app for tweet
+  resolveProfiles$ = createEffect(() =>
+    merge(
+      this.#profilesForBookmarks$,
+      this.#profilesForTweet$,
+      this.#profilesForTweetComments$,
+      this.#profilesForTweets$,
+      this.#profilesForProfileTweets$
+    ).pipe(
+      bufferTime(1000),
+      map((profileIds) => [...new Set(profileIds.flat())]),
+      filter((profileIds) => profileIds.length > 0),
+      switchMap((uniqueProfileIds) =>
+        this.#getUnresolvedProfileIds(uniqueProfileIds)
+      ),
+      filter((uniqueProfileIds) => uniqueProfileIds.length > 0),
+      map((profileIds) => FeatProfileApiActions.getProfiles({ profileIds }))
+    )
+  );
+
+  enrichProfilesFromFollowers$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatProfileApiActions.getProfileFollowersSuccess),
+      filter(({ profiles }) => profiles.length > 0),
+      map(({ profiles }) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromSuggestions$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFollowActions.getSuggestionColleaguesToFollowSuccess),
+      filter(({ profiles }) => profiles.length > 0),
+      map(({ profiles }) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromFarewellReactions$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellReactionActions.getReactionsFarewellSuccess),
+      map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
+      filter((profiles) => profiles.length > 0),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromFarewell$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellActions.getFarewellSuccess),
+      map(({ farewell }) => getRecentUniqueProfilesFromT([farewell])),
+      filter((profiles) => profiles.length > 0),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromKudoBoardReactions$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatKudoBoardReactionActions.getReactionsKudoBoardSuccess),
+      map(({ reactions }) => getRecentUniqueProfilesFromT(reactions)),
+      filter((profiles) => profiles.length > 0),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromFarewellComments$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatFarewellCommentActions.getCommentsFarewellSuccess),
+      map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
+      filter((profiles) => profiles.length > 0),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  enrichProfilesFromKudoBoardComments$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatKudoBoardCommentActions.getCommentsKudoBoardSuccess),
+      map(({ comments }) => getRecentUniqueProfilesFromT(comments)),
+      filter((profiles) => profiles.length > 0),
+      map((profiles) => FeatProfileActions.addProfilesSoftly({ profiles }))
+    )
+  );
+
+  /** UTILITIES */
 
   #getUnresolvedProfileIds(profileIds: Array<string>) {
     const uniqueProfileIds = [...new Set(profileIds)];

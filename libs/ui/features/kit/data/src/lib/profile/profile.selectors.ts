@@ -27,6 +27,20 @@ export const selectCurrentProfileFollowing = createSelector(
   (currentProfile: Profile | undefined) => currentProfile?.following ?? []
 );
 
+export const selectFollowingProfiles = (profile: Profile) => {
+  const followingIds = new Set(profile.following?.map(({ id }) => id) ?? []);
+  return createSelector(selectProfiles, (profiles: Profile[]) => {
+    return profiles.filter((profile) => followingIds.has(profile.id));
+  });
+};
+
+export const selectProfileFollowers = (profileId: Profile['id']) =>
+  createSelector(selectProfiles, (profiles: Profile[]) => {
+    return profiles.filter(({ following }) =>
+      following?.some(({ id }) => id === profileId)
+    );
+  });
+
 export const selectProfilePicture = createSelector(
   selectCurrentProfile,
   (currentProfile) => profilePicture(currentProfile ?? {})

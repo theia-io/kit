@@ -1,0 +1,63 @@
+@if(profileFollowers$ | async; as followers) {
+<p-messages
+  [value]="[
+    {
+      severity: 'info',
+      detail:
+        'All follower profiles who connected with \'' + profile()?.name + '\'.'
+    }
+  ]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false" />
+
+@for (followingProfile of followers; track $index) {
+<ui-kit-comp-card class="block w-full mb-2">
+  <div class="flex">
+    <ui-kit-comp-account-tile
+      class="grow"
+      [primaryText]="followingProfile.name"
+      [primarySecondaryText]="followingProfile.title"
+      [picture]="profilePicture(followingProfile)"
+      [link]="
+        profileUrlPath + (followingProfile.alias ?? followingProfile.id)
+      " />
+
+    <div class="min-w-[158px]">
+      @if(followingProfile.id === currentProfile()?.id) {
+      <div
+        class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2">
+        <!-- <span class="text-sm font-semibold">{{ profile()?.name }}</span> -->
+        <span class="text-sm font-medium text-gray-400">
+          You
+          <span class="text-xl">🫂🔥</span>
+        </span>
+      </div>
+      } @else {
+      <ui-kit-follow-button
+        [alreadyFollowing]="
+          currentProfileFollowingSet().has(followingProfile.id)
+        "
+        (click)="
+          currentProfileFollowingSet().has(followingProfile.id)
+            ? unFollowProfileHandler(followingProfile)
+            : followProfileHandler(followingProfile)
+        " />
+      }
+    </div>
+  </div>
+</ui-kit-comp-card>
+} } @else {
+<p-messages
+  [value]="[
+    {
+      severity: 'info',
+      detail: profile()?.name + ' does not have any followers yet'
+    }
+  ]"
+  showTransitionOptions="250ms"
+  hideTransitionOptions="0ms"
+  [enableService]="false"
+  [closable]="false" />
+}

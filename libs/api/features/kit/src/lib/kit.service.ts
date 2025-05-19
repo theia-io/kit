@@ -476,6 +476,7 @@ export class KitService {
 
   async updateProfile(profile: IProfile) {
     let updatedProfile: ProfileDocument | null;
+    const { following, type, status, ...restSafeProfile } = profile;
 
     try {
       updatedProfile = await this.profileModel
@@ -483,7 +484,8 @@ export class KitService {
           { _id: new mongoose.Types.ObjectId(profile.id) },
           {
             $set: {
-              ...profile,
+              ...restSafeProfile,
+              following,
             },
           },
           { new: true }
@@ -498,6 +500,26 @@ export class KitService {
     }
 
     return updatedProfile;
+  }
+
+  async profileFollowers(profileId: string) {
+    let profiles: Array<ProfileDocument> | null;
+
+    try {
+      profiles = await this.profileModel
+        .find<ProfileDocument>({
+          following: { id: profileId },
+        })
+        .exec();
+    } catch (err) {
+      console.error('Cannot execute followers search', err);
+      throw new HttpException(
+        'Cannot find followers',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    return profiles;
   }
 
   async companies() {

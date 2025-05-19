@@ -24,7 +24,15 @@ import {
 import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
-import { combineLatest, filter, map, shareReplay, switchMap, take } from 'rxjs';
+import {
+  combineLatest,
+  filter,
+  map,
+  shareReplay,
+  switchMap,
+  take,
+  tap,
+} from 'rxjs';
 
 @Component({
   standalone: true,
@@ -89,9 +97,9 @@ export class PageProfileComponent {
               routerLink: 'experience',
             },
             {
-              label: 'Following',
+              label: 'Connections',
               icon: 'pi pi-users',
-              routerLink: 'following',
+              routerLink: 'connections',
             },
           ]
     )
@@ -108,6 +116,14 @@ export class PageProfileComponent {
             FeatProfileApiActions.getProfiles({ profileIds: [profileId] })
           );
         }
+      });
+
+    this.#profileId$
+      ?.pipe(takeUntilDestroyed(), take(1))
+      .subscribe((profileId) => {
+        this.#store.dispatch(
+          FeatProfileApiActions.getProfileFollowers({ profileId })
+        );
       });
   }
 

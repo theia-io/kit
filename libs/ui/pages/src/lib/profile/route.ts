@@ -1,6 +1,8 @@
 import { Routes } from '@angular/router';
+import { PageProfileConnectionsComponent } from './connections/connections.component';
+import { PageProfileFollowersComponent } from './connections/followers/followers.component';
+import { PageProfileFollowingComponent } from './connections/following/following.component';
 import { PageProfileExperienceComponent } from './experience/experience.component';
-import { PageProfileFollowingComponent } from './following/following.component';
 import { PageProfileTweetsComponent } from './tweets/tweets.component';
 
 export const PROFILE_ROUTES: Routes = [
@@ -20,9 +22,26 @@ export const PROFILE_ROUTES: Routes = [
         title: 'Profile Experience',
       },
       {
-        path: 'following',
-        component: PageProfileFollowingComponent,
-        title: 'Profile Connections',
+        path: 'connections',
+        component: PageProfileConnectionsComponent,
+        title: 'Profile connections',
+        children: [
+          {
+            path: '',
+            pathMatch: 'full',
+            redirectTo: 'following',
+          },
+          {
+            path: 'following',
+            component: PageProfileFollowingComponent,
+            title: 'Following profiles',
+          },
+          {
+            path: 'followers',
+            component: PageProfileFollowersComponent,
+            title: 'Followers',
+          },
+        ],
       },
       {
         path: '',

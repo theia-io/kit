@@ -63,14 +63,14 @@
     class="block mr-auto"
     [socials]="profile().socials" />
 
-  @if(profile().following?.length) {
+  @if(profileNetwork(); as profileNetwork) {
   <p sharedAuthorizedFeature class="text-sm font-bold">
     <i class="pi pi-users mr-1"></i>
-    {{ profile().following?.length }}
+    {{ profileNetwork }}
     <a
-      [routerLink]="profileUrl + profile().id + '/following'"
+      [routerLink]="profileUrl + profile().id + '/connections'"
       class="text-sm text-gray-400 hover:underline">
-      Following
+      Connections
     </a>
   </p>
   }

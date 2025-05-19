@@ -29,4 +29,7 @@ export class FollowButtonComponent {
   icon = computed(() =>
     this.alreadyFollowing() ? 'pi-user-minus' : 'pi-user-plus'
   );
+  klass = computed(() => {
+    return this.text() === this.connectText() ? 'font-semibold' : '';
+  });
 }

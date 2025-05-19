@@ -21,6 +21,11 @@ env:
   # API_PREFIX: /api
   # FE_URL: https://dev.kitouch.io
 
+# Will cancel any running 'instances' of this workflow on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   dev_build_and_deploy_api:
     runs-on: ubuntu-latest

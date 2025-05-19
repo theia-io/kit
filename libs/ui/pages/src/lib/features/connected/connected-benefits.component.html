@@ -5,8 +5,24 @@
   [featuresPageUrl]="featuresConnectedUrl"
   description="Stay connected with your network and friends." />
 
+<div class="my-4 w-100 flex flex-col gap-1 items-center lg:items-start">
+  <a
+    sharedAuthorizedFeature
+    [routerLink]="feedUrl"
+    uiKitSmallTextTailwindClasses
+    [klasses]="getStartedKlassOverwrite"
+    class="inline-block p-4 bg-slate-700 rounded text-gray-900">
+    Feed. Your network.
+  </a>
+  <p class="text-gray-500 text-sm font-semibold">
+    Read what your network is up to.
+    <br />
+    Tweet your thoughts.
+  </p>
+</div>
+
 <div class="mt-8 flex flex-wrap flex-col md:flex-row gap-6 items-center">
-  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+  <p-card styleClass="h-40 w-72 hover:shadow-md" header="">
     <img
       src="logo/handshake.gif"
       alt="'Follow profile'"
@@ -18,7 +34,7 @@
     <p class="m-0">Follow your network and friends.</p>
   </p-card>
 
-  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+  <p-card styleClass="h-40 w-72 hover:shadow-md" header="">
     <img
       ngSrc="/material-icons/rss_feed.svg"
       alt="Feed"
@@ -30,7 +46,7 @@
     <p class="m-0">Comment, re-tweet, like, share and bookmark.</p>
   </p-card>
 
-  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+  <p-card styleClass="h-40 w-72 hover:shadow-md" header="">
     <i class="pi pi-send" style="font-size: 1.5rem"></i>
 
     <p class="m-0 text-lg font-semibold">Tweet</p>
@@ -40,7 +56,7 @@
     </p>
   </p-card>
 
-  <p-card styleClass="h-40 w-72 hover:shadow-xl" header="">
+  <p-card styleClass="h-40 w-72 hover:shadow-md" header="">
     <img
       ngSrc="/material-icons/connect_without_contact.svg"
       alt="Interact"

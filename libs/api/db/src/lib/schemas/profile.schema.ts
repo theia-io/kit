@@ -34,6 +34,7 @@ export type ProfileDocument = HydratedDocument<Profile>;
     virtuals: true,
     versionKey: false,
     transform(doc, ret) {
+      // ret['following'] = ret['following']?.map((f: any) => ({ id: f._id?.toString() }));
       delete ret['_id'];
     },
   },
@@ -52,22 +53,15 @@ export class Profile {
   @Prop({ type: [PictureSchema], default: [] })
   pictures: Picture[];
 
-  // Assuming followers/following store IDs of OTHER User documents
-  // @Prop({
-  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-  //   default: [],
-  // })
-  // followers: Types.ObjectId[];
-  @Prop()
-  followers: [{ id: string }];
-
-  // @Prop({
-  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' }],
-  //   default: [],
-  // })
-  // following: Types.ObjectId[];
   @Prop()
   following: [{ id: string }];
+
+  // TODO migrate following [{ id: string }] to followingV2 Types.ObjectId[]. For this we will need to use https://www.npmjs.com/package/migrate-mongo or similar.
+  // @Prop({
+  //   type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Profile' } ],
+  //   default: [],
+  // })
+  // followingV2: Types.ObjectId[];
 
   @Prop({ unique: true, sparse: true, index: true })
   alias: string;

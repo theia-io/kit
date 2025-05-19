@@ -40,6 +40,7 @@ export interface Profile {
   background?: string;
   links?: Link[];
   // meta
-  followers?: Array<{ id: Profile['id'] }>;
+  // TODO @Danylo check & remove
+  // followers?: Array<{ id: Profile['id'] }>;
   following?: Array<{ id: Profile['id'] }>;
 }

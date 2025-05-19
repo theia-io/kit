@@ -13,6 +13,11 @@ on:
 env:
   NX_DISABLE_DB: true
 
+  # Will cancel any running 'instances' of this workflow on the same branch
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build_ui:
     runs-on: ubuntu-latest

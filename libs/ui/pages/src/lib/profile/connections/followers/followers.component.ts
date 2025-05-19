@@ -12,7 +12,7 @@ import {
   profilePicture,
   selectCurrentProfile,
   selectProfileById,
-  selectProfilesByIds,
+  selectProfileFollowers,
 } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
 import { Profile } from '@kitouch/shared-models';
@@ -23,12 +23,12 @@ import {
 } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
 import { MessagesModule } from 'primeng/messages';
-import { filter, map, shareReplay, switchMap, take, throwError } from 'rxjs';
+import { filter, map, shareReplay, switchMap, throwError } from 'rxjs';
 
 @Component({
   standalone: true,
-  selector: 'kit-page-profile-following',
-  templateUrl: './following.component.html',
+  selector: 'kit-page-profile-followers',
+  templateUrl: './followers.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
     AsyncPipe,
@@ -40,11 +40,11 @@ import { filter, map, shareReplay, switchMap, take, throwError } from 'rxjs';
     AccountTileComponent,
   ],
 })
-export class PageProfileFollowingComponent {
+export class PageProfileFollowersComponent {
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
 
-  #profileId$ = this.#activatedRouter.parent?.params.pipe(
+  #profileId$ = this.#activatedRouter.parent?.parent?.params.pipe(
     map((params) => params['profileId'])
   );
 
@@ -71,17 +71,14 @@ export class PageProfileFollowingComponent {
     () => new Set(this.currentProfile()?.following?.map(({ id }) => id))
   );
 
-  followingProfiles$ = this.#profile$.pipe(
+  profileFollowers$ = this.#profile$.pipe(
     switchMap((profile) =>
       this.#store.pipe(
-        select(
-          selectProfilesByIds(profile.following?.map(({ id }) => id) ?? [])
-        ),
+        select(selectProfileFollowers(profile.id)),
         map((profiles) => profiles.filter((profile) => !!profile))
       )
     ),
-    filter((profiles) => profiles.length > 0),
-    take(1)
+    filter((profiles) => profiles.length > 0)
   );
 
   #followerHandlerFn = followerHandlerFn();

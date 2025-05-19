@@ -1,4 +1,4 @@
-import { AsyncPipe, NgClass } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { Component, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterModule } from '@angular/router';
@@ -21,6 +21,7 @@ import {
   UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitDeleteComponent,
+  UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import {
   FeatKudoboardInfoPanelComponent,
@@ -57,6 +58,7 @@ import { filter, map } from 'rxjs/operators';
     SharedCopyClipboardComponent,
     SharedStatusLegendComponent,
     UiCompCardComponent,
+    UiKitTweetButtonComponent,
     //
     AsyncPipe,
     RouterModule,
