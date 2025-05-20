@@ -88,24 +88,6 @@ export class PageProfileFollowingComponent {
     startWith([])
   );
 
-  // followingProfiles$ = combineLatest([
-  //   this.#profile$,
-  //   this.#store.pipe(select(selectProfiles)),
-  // ]).pipe(
-  //   map(([profile, profiles]) => {
-  //     const followingIds = new Set(profile.following?.map(({ id }) => id) ?? []);
-  //     console.log(
-  //       'followingIds',
-  //       followingIds,
-  //       profiles,
-  //       profiles.filter((profile) => followingIds.has(profile.id))
-  //     );
-  //     return profiles.filter((profile) => followingIds.has(profile.id))
-  //   }),
-  //   filter((profiles) => profiles.length > 0),
-  //   take(1)
-  // );
-
   #followerHandlerFn = followerHandlerFn();
   readonly settingsPageUrl = APP_PATH.Settings;
   readonly profileUrlPath = `/${APP_PATH.Profile}/`;

@@ -3,7 +3,7 @@ import { RouterModule } from '@angular/router';
 import { profilePicture } from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
 import { Profile, ReTweety } from '@kitouch/shared-models';
-import { RetweetFromWhomPipe, RetweetWhoPipe } from './retweet.pipe';
+import { RetweetWhoPipe } from './retweet.pipe';
 
 @Component({
   standalone: true,
@@ -13,7 +13,6 @@ import { RetweetFromWhomPipe, RetweetWhoPipe } from './retweet.pipe';
     RouterModule,
     //
     RetweetWhoPipe,
-    RetweetFromWhomPipe,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

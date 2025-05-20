@@ -1,5 +1,10 @@
-import { AsyncPipe, CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { AsyncPipe, CommonModule, DatePipe, NgClass } from '@angular/common';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  inject,
+  signal,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import {
   FeatBookmarksActions,
@@ -21,8 +26,9 @@ import { filter, map, switchMap, take } from 'rxjs/operators';
   templateUrl: './bookmarks.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [
-    CommonModule,
+    DatePipe,
     AsyncPipe,
+    NgClass,
     //
     UiCompCardComponent,
     FeatTweetTweetyComponent,
@@ -35,11 +41,10 @@ export class PageBookmarksComponent {
 
   bookmarkFeedTweets$ = combineLatest([
     this.#store.select(selectBookmarks),
-    this.#store
-      .select(selectAllTweets)
-      .pipe
-      // filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
-      (),
+    this.#store.select(selectAllTweets),
+    // .pipe
+    // // filter((tweets): tweets is Array<Tweety> => tweets.length > 0)
+    // (),
   ]).pipe(
     map(([bookmarks, tweets]) => {
       /** @TODO @FIXME */
@@ -58,6 +63,8 @@ export class PageBookmarksComponent {
     switchMap(() => this.#quotesService.getRandomQuote())
   );
 
+  bookmarkIconOver = signal<any>({});
+
   constructor() {
     this.#store
       .select(selectBookmarks)
@@ -74,5 +81,23 @@ export class PageBookmarksComponent {
           FeatBookmarksActions.getBookmarksFeed({ bookmarks })
         );
       });
+  }
+
+  mouseOver(bookmarkId: Bookmark['id']) {
+    this.bookmarkIconOver.update((prev: object) => {
+      return {
+        ...prev,
+        [bookmarkId]: true,
+      };
+    });
+  }
+
+  mouseLeave(bookmarkId: Bookmark['id']) {
+    this.bookmarkIconOver.update((prev: object) => {
+      return {
+        ...prev,
+        [bookmarkId]: false,
+      };
+    });
   }
 }

@@ -22,6 +22,14 @@ export const selectAllTweets = createSelector(
   (state: FeatureTweetState) => state.tweets
 );
 
+export const selectTweetsLazyState = createSelector(
+  selectTweetState,
+  (state: FeatureTweetState) => ({
+    hasNextPage: state.hasNextPage,
+    nextCursor: state.nextCursor,
+  })
+);
+
 export const selectTweetsProfileAndRetweets = (
   profileId: string,
   tweets: Array<Tweety | ReTweety>

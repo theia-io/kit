@@ -53,8 +53,15 @@ export const FeatReTweetActions = createActionGroup({
 export const TweetApiActions = createActionGroup({
   source: 'TweetApiActions',
   events: {
-    GetAll: emptyProps(),
-    GetAllSuccess: props<{ tweets: Tweety[] }>(),
+    GetAll: props<{
+      nextCursor: string | null;
+      hasNextPage: boolean | null;
+    }>(),
+    GetAllSuccess: props<{
+      tweets: Tweety[];
+      nextCursor: string;
+      hasNextPage: boolean;
+    }>(),
     GetAllFailure: emptyProps(),
     //
     Get: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
@@ -63,9 +70,15 @@ export const TweetApiActions = createActionGroup({
     //
     //
     GetTweetsForProfile: props<{ profileId: string }>(),
-    GetTweetsForProfileSuccess: props<{ tweets: Tweety[] }>(),
+    GetTweetsForProfileSuccess: props<{
+      tweets: Tweety[];
+      nextCursor: string;
+      hasNextPage: boolean;
+    }>(),
     GetTweetsForProfileFailure: props<{ profileId: string }>(),
-    GetTweetsForBookmarkSuccess: props<{ tweets: Tweety[] }>(),
+    GetTweetsForBookmarkSuccess: props<{
+      tweets: Tweety[];
+    }>(),
     //
     Post: props<{ tweet: Tweety }>(),
     Update: props<{ tweet: Tweety }>(),

@@ -17,21 +17,15 @@ export class PageSignInResolveSemiSilentComponent {
   #auth0Service = inject(Auth0Service);
 
   constructor() {
-    console.log('\n[PageSignInResolveSemiSilentComponent] constructor:\n\n');
     of(true)
       .pipe(delay(5000), takeUntilDestroyed())
       .subscribe(() => {
-        console.log('[PageSignInResolveSemiSilentComponent] CULPRIT REDIRECT');
         this.#router.navigate(['/']);
       });
 
     this.#auth0Service.loggedIn$
       .pipe(takeUntilDestroyed())
       .subscribe((loggedIn) => {
-        console.log(
-          '\n[PageSignInResolveSemiSilentComponent] loggedIn:',
-          loggedIn
-        );
         if (loggedIn) {
           this.#router.navigate(['/']);
         }

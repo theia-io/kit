@@ -49,7 +49,6 @@ export class Auth0Service {
   }
 
   signIn(urlToOpenAfterSignIn?: string) {
-    console.log('signIn', urlToOpenAfterSignIn);
     if (urlToOpenAfterSignIn) {
       this.#localStoreService.setItem(
         this.#beforeRedirectUrlKey,

@@ -36,14 +36,19 @@ export class TweetsEffects {
   feedTweets$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.getAll),
-      switchMap(() => this.#currentProfile$.pipe(take(1))),
-      switchMap((profile) =>
-        // this.#tweetApi
+      withLatestFrom(this.#currentProfile$.pipe(take(1))),
+      switchMap(([{ nextCursor }, profile]) =>
         this.#tweetV2Service
-          .getFeed(profile.id, profile.following?.map(({ id }) => id) ?? [])
+          .getFeed(
+            profile.id,
+            profile.following?.map(({ id }) => id) ?? [],
+            nextCursor ?? ''
+          )
           .pipe(
-            map((tweets) =>
+            map(({ tweets, nextCursor, hasNextPage }) =>
               TweetApiActions.getAllSuccess({
+                nextCursor,
+                hasNextPage,
                 tweets: tweets.map((tweet) => {
                   if (tweet.profileId === profile.id) {
                     return {
@@ -70,7 +75,9 @@ export class TweetsEffects {
     this.#actions$.pipe(
       ofType(FeatBookmarksActions.getBookmarksFeedSuccess),
       map(({ tweets }) =>
-        TweetApiActions.getTweetsForBookmarkSuccess({ tweets })
+        TweetApiActions.getTweetsForBookmarkSuccess({
+          tweets,
+        })
       )
     )
   );
@@ -80,8 +87,12 @@ export class TweetsEffects {
       ofType(TweetApiActions.getTweetsForProfile),
       switchMap(({ profileId }) =>
         this.#tweetV2Service.getTweetsForProfile(profileId).pipe(
-          map((tweets) =>
-            TweetApiActions.getTweetsForProfileSuccess({ tweets })
+          map(({ tweets, hasNextPage, nextCursor }) =>
+            TweetApiActions.getTweetsForProfileSuccess({
+              tweets,
+              hasNextPage,
+              nextCursor,
+            })
           ),
           catchError((err) => {
             console.error('[TweetsEffects] profileTweets ERROR', err);

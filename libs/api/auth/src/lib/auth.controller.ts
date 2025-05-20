@@ -26,7 +26,6 @@ export class AuthController {
       sameSite: isProduction ? 'lax' : false,
       path: '/',
     });
-    // (res as any)?.oidc?.logout();
 
     const feUrl = this.configService.getEnvironment('feUrl');
 

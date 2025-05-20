@@ -9,10 +9,14 @@ import {
 
 export interface FeatureTweetState {
   tweets: Array<Tweety | ReTweety>;
+  nextCursor?: string;
+  hasNextPage?: boolean;
 }
 
 const featTweetInitialState: FeatureTweetState = {
   tweets: [],
+  nextCursor: undefined,
+  hasNextPage: undefined,
 };
 
 export const featTweetTweetsReducer = createReducer(
@@ -28,15 +32,25 @@ export const featTweetTweetsReducer = createReducer(
       tweets: addOrUpdate(tweet, stateTweets),
     })
   ),
+  on(TweetApiActions.getAll, TweetApiActions.getTweetsForProfile, (state) => ({
+    ...state,
+    hasNextPage: undefined,
+    nextCursor: undefined,
+  })),
   on(
     TweetApiActions.getAllSuccess,
     TweetApiActions.getTweetsForProfileSuccess,
-    TweetApiActions.getTweetsForBookmarkSuccess,
-    (state, { tweets }) => ({
+    (state, { tweets, hasNextPage, nextCursor }) => ({
       ...state,
       tweets: mergeArr(tweets, state.tweets),
+      hasNextPage,
+      nextCursor,
     })
   ),
+  on(TweetApiActions.getTweetsForBookmarkSuccess, (state, { tweets }) => ({
+    ...state,
+    tweets: mergeArr(tweets, state.tweets),
+  })),
   on(FeatTweetActions.deleteSuccess, (state, { tweet: { id } }) => ({
     ...state,
     tweets: state.tweets.filter((stateTweet) => {

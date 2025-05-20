@@ -57,3 +57,9 @@ export interface ReTweety extends Tweety {
   // profile who retweeted it
   retweetedProfileId: Profile['id'];
 }
+
+export interface FeedResponse {
+  tweets: Tweety[];
+  nextCursor: string;
+  hasNextPage: boolean;
+}

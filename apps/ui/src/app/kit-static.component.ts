@@ -48,10 +48,6 @@ export class KitStaticComponent {
 
   currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
 
-  constructor() {
-    console.log('\n[KitStaticComponent] constructor:\n\n');
-  }
-
   handleGetStarted() {
     this.#auth0Service.signIn();
   }

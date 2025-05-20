@@ -43,7 +43,7 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanel, OverlayPanelModule } from 'primeng/overlaypanel';
 import { merge, take } from 'rxjs';
 import { v4 as uuidv4 } from 'uuid';
-import { RetweetHeaderComponent } from '../retweet/retweet-header.component';
+import { RetweetHeaderComponent } from '../retweet-header/retweet-header.component';
 import { FeatTweetActionsComponent } from './actions/actions.component';
 
 @Component({

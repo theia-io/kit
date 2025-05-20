@@ -35,6 +35,19 @@
 <ui-kit-divider class="block my-2" [class.mt-12]="$first" />
 
 <ui-kit-comp-card class="cursor-pointer">
+  <div
+    class="mb-1 flex items-center justify-start text-xs text-gray-400 font-medium">
+    <i
+      (mouseover)="mouseOver(tweet.id)"
+      (mouseleave)="mouseLeave(tweet.id)"
+      class="pi pi-bookmark mr-1 font-semibold"></i>
+    @if(tweet.createdAt; as createdAt) {
+    <span
+      [ngClass]="[bookmarkIconOver()?.[tweet.id] ? 'visible' : 'invisible']">
+      Bookmarked on {{ createdAt | date : 'MMM d, h:mm a' }}
+    </span>
+    }
+  </div>
   <feat-tweet-tweety class="block w-full" [tweetId]="tweet.id" />
 </ui-kit-comp-card>
 } @empty {

@@ -2,9 +2,11 @@ import { Auth0Kit, TweetComment, Tweety } from '@kitouch/shared-models';
 import {
   Body,
   Controller,
+  DefaultValuePipe,
   Delete,
   Get,
   Param,
+  ParseIntPipe,
   Post,
   Put,
   Query,
@@ -19,16 +21,33 @@ import { BeTweetService } from './be-tweet.service';
 export class BeTweetController {
   constructor(private beTweetService: BeTweetService) {}
 
-  @Get('feed')
+  @Get('feed/:profileId')
   @UseGuards(AuthGuard('jwt'))
   async getFeed(
-    @Query('profileId') profileId: string,
-    @Query('followingProfileIds') followingProfileIds: string
+    @Param('profileId') profileId: string,
+    @Query('followingProfileIds') followingProfileIds: string,
+    @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
+    @Query('cursor') cursor: string
   ) {
-    console.log(followingProfileIds, JSON.parse(followingProfileIds));
     return await this.beTweetService.getFeed(
       profileId,
-      JSON.parse(followingProfileIds) ?? []
+      JSON.parse(followingProfileIds) ?? [],
+      limit,
+      cursor
+    );
+  }
+
+  @Get('feed/:profileId/updates')
+  @UseGuards(AuthGuard('jwt'))
+  async getFeedUpdates(
+    @Param('profileId') profileId: string,
+    @Query('followingProfileIds') followingProfileIds: string,
+    @Query('cursor') cursor: string
+  ) {
+    return await this.beTweetService.getFeedUpdates(
+      profileId,
+      JSON.parse(followingProfileIds) ?? [],
+      cursor
     );
   }
 

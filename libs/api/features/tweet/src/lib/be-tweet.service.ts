@@ -1,7 +1,7 @@
 import { Profile, TweetComment, Tweety } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model, PipelineStage } from 'mongoose';
+import mongoose, { Model, PipelineStage, Types } from 'mongoose';
 import { Tweet, TweetDocument } from './schemas';
 
 @Injectable()
@@ -11,7 +11,76 @@ export class BeTweetService {
   ) {}
 
   // TODO: create & migrate to "Feed" module
-  async getFeed(profileId: string, followingProfileIds?: Array<string>) {
+  async getFeed(
+    profileId: string,
+    followingProfileIds: Array<string>,
+    limit = 20,
+    cursorString?: string
+  ) {
+    const queryLimit = limit + 1;
+    const sortOrder = -1; // Descending for newest first
+
+    const cursorPipeline: PipelineStage[] = [];
+
+    // Handle Cursor for Pagination
+    if (cursorString) {
+      try {
+        const [timestampStr, idStr] = cursorString.split('_');
+        const cursorTimestamp = new Date(parseInt(timestampStr, 10));
+        if (
+          !Types.ObjectId.isValid(idStr) ||
+          isNaN(cursorTimestamp.getTime())
+        ) {
+          throw new Error('Invalid cursor components');
+        }
+        const cursorId = new Types.ObjectId(idStr);
+
+        cursorPipeline.push({
+          $match: {
+            $or: [
+              { createdAt: { $lt: cursorTimestamp } },
+              { createdAt: cursorTimestamp, _id: { $lt: cursorId } },
+              {
+                'timestamp.createdAt': cursorTimestamp,
+                _id: { $lt: cursorId },
+              },
+            ],
+          },
+        });
+      } catch (error) {
+        console.error(
+          `Invalid cursor string for aggregation: ${cursorString}`,
+          error
+        );
+        throw new HttpException(
+          'Invalid cursor format.',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    //  Sort (Primary sort for pagination, _id for tie-breaking)
+    cursorPipeline.push({
+      $sort: { createdAt: sortOrder, _id: sortOrder },
+    });
+
+    // Limit (Fetch one extra to check for next page)
+    cursorPipeline.push({ $limit: queryLimit });
+
+    // 5. Add Lookups / Projections for final feed item shape
+    // Example: Populate profile information
+    // pipeline.push({
+    //   $lookup: {
+    //     from: 'profiles', // Actual name of your profiles collection
+    //     localField: 'profileId',
+    //     foreignField: '_id',
+    //     as: 'authorProfile'
+    //   }
+    // });
+    // pipeline.push({
+    //   $unwind: { path: '$authorProfile', preserveNullAndEmptyArrays: true }
+    // });
+
     let tweets;
 
     try {
@@ -66,7 +135,7 @@ export class BeTweetService {
                   preserveNullAndEmptyArrays: false, // Remove retweets if original tweet deleted
                 },
               },
-              // 3d: Project the desired structure for retweet feed items
+              // 3d: Project the desired structure for retweet feed tweets
               {
                 $project: {
                   _id: '$_id', // Use the retweet's ID
@@ -106,6 +175,206 @@ export class BeTweetService {
             activityTimestamp: 0, // Remove the temporary sort field
           },
         },
+
+        // Stage 7: Cursor pipeline if applicable
+        ...cursorPipeline,
+      ];
+
+      tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
+    } catch (err) {
+      console.error('Cannot execute tweets feed search', err);
+      throw new HttpException(
+        'Cannot execute tweet feed search',
+        HttpStatus.INTERNAL_SERVER_ERROR
+      );
+    }
+
+    let hasNextPage = false;
+    let nextCursor: string | null = null;
+
+    if (tweets.length === queryLimit) {
+      hasNextPage = true;
+      tweets.pop();
+    }
+
+    console.log('TWEETS RESULT', tweets, hasNextPage);
+
+    if (tweets.length > 0 && hasNextPage) {
+      const lastTweet = tweets[tweets.length - 1] as any;
+      const createdAt = (
+        lastTweet.createdAt ??
+        lastTweet.timestamp?.createdAt ??
+        lastTweet.updatedAt ??
+        lastTweet.timestamp?.updatedAt
+      )?.toString();
+      console.log('LAST ITEM', lastTweet, createdAt);
+      // Ensure createdAt is handled correctly (might be string from aggregation if not cast)
+      // const lastTweet = lastItem.toJSON() as unknown as Tweety;
+      const lastItemTimestamp = new Date(createdAt).getTime();
+      nextCursor = `${lastItemTimestamp}_${lastTweet._id.toString()}`;
+    }
+
+    console.log('RESULT', tweets, nextCursor, hasNextPage);
+
+    return {
+      nextCursor,
+      hasNextPage,
+      tweets:
+        tweets?.map(({ _id, __v, ...tweet }) => ({
+          ...tweet,
+          id: _id,
+        })) ?? [],
+    };
+  }
+
+  async getFeedUpdates(
+    profileId: string,
+    followingProfileIds: Array<string>,
+    cursorString: string
+  ) {
+    const sortOrder = -1; // Descending for newest first
+
+    const cursorPipeline: PipelineStage[] = [];
+
+    // Handle Cursor for Pagination
+    if (cursorString) {
+      try {
+        const [timestampStr, idStr] = cursorString.split('_');
+        const cursorTimestamp = new Date(parseInt(timestampStr, 10));
+        if (
+          !Types.ObjectId.isValid(idStr) ||
+          isNaN(cursorTimestamp.getTime())
+        ) {
+          throw new Error('Invalid cursor components');
+        }
+        const cursorId = new Types.ObjectId(idStr);
+
+        cursorPipeline.push({
+          $match: {
+            $or: [
+              { createdAt: { $rt: cursorTimestamp } },
+              { createdAt: cursorTimestamp, _id: { $rt: cursorId } },
+              {
+                'timestamp.createdAt': cursorTimestamp,
+                _id: { $rt: cursorId },
+              },
+            ],
+          },
+        });
+      } catch (error) {
+        console.error(
+          `Invalid cursor string for aggregation: ${cursorString}`,
+          error
+        );
+        throw new HttpException(
+          'Invalid cursor format.',
+          HttpStatus.BAD_REQUEST
+        );
+      }
+    }
+
+    //  Sort (Primary sort for pagination, _id for tie-breaking)
+    cursorPipeline.push({
+      $sort: { createdAt: sortOrder, _id: sortOrder },
+    });
+
+    let tweets;
+
+    try {
+      const profileIdObject = new mongoose.Types.ObjectId(profileId);
+      // Ensure the user's own ID is always included for matching their own tweets/retweets
+      const relevantProfileIds = [
+        new mongoose.Types.ObjectId(profileIdObject),
+        ...(followingProfileIds?.map((id) => new mongoose.Types.ObjectId(id)) ??
+          []),
+      ];
+
+      const agg: Array<PipelineStage> = [
+        // Stage 1: Match original tweets by relevant profiles
+        {
+          $match: {
+            profileId: { $in: relevantProfileIds },
+          },
+        },
+        // Stage 2: Add fields to identify as a tweet and set the activity timestamp
+        {
+          $addFields: {
+            type: 'tweet',
+            // Use createdAt of the tweet as the timestamp for sorting
+            activityTimestamp: '$createdAt',
+          },
+        },
+        // Stage 3: Union with retweets from relevant profiles
+        {
+          $unionWith: {
+            coll: 'retweet', // <<< Your actual retweet collection name
+            pipeline: [
+              // --- Pipeline within unionWith starts here ---
+              // 3a: Match retweets made by relevant profiles
+              {
+                $match: {
+                  profileId: { $in: relevantProfileIds },
+                },
+              },
+              // 3b: Lookup the original tweet data for each retweet
+              {
+                $lookup: {
+                  from: 'tweet', // <<< Your actual tweet collection name
+                  localField: 'tweetId',
+                  foreignField: '_id',
+                  as: 'originalTweetData',
+                },
+              },
+              // 3c: Unwind the original tweet data (should always be one)
+              {
+                $unwind: {
+                  path: '$originalTweetData',
+                  preserveNullAndEmptyArrays: false, // Remove retweets if original tweet deleted
+                },
+              },
+              // 3d: Project the desired structure for retweet feed tweets
+              {
+                $project: {
+                  _id: '$_id', // Use the retweet's ID
+                  type: 'retweet',
+                  retweetedProfileId: '$profileId', // Who performed the retweet
+                  tweetId: '$tweetId', // ID of the original tweet
+                  createdAt: '$createdAt', // Timestamp of the retweet
+                  updatedAt: '$updatedAt',
+                  // --- Include data from the original tweet ---
+                  profileId: '$originalTweetData.profileId', // Original author
+                  content: '$originalTweetData.content',
+                  comments: '$originalTweetData.comments',
+                  upProfileIds: '$originalTweetData.upProfileIds',
+                  downProfileIds: '$originalTweetData.downProfileIds',
+
+                  activityTimestamp: '$createdAt', // Use createdAt of the retweet for sorting
+                },
+              },
+              // --- Pipeline within unionWith ends here ---
+            ],
+          },
+        },
+        // Stage 4: Sort the combined feed by the activity timestamp (descending)
+        {
+          $sort: {
+            activityTimestamp: -1,
+          },
+        },
+
+        // Stage 5: (Optional) Add limit/skip for pagination
+        // { $skip: 0 },
+        // { $limit: 20 },
+
+        // Stage 6: (Optional) Project final fields, remove activityTimestamp if not needed
+        {
+          $project: {
+            activityTimestamp: 0, // Remove the temporary sort field
+          },
+        },
+
+        // Stage 7: Cursor pipeline if applicable
+        ...cursorPipeline,
       ];
 
       tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();

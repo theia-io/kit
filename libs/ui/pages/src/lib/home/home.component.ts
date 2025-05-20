@@ -4,9 +4,13 @@ import {
   ChangeDetectionStrategy,
   Component,
   DestroyRef,
+  ElementRef,
   OnInit,
+  effect,
   inject,
   signal,
+  untracked,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
@@ -14,6 +18,7 @@ import {
   FeatTweetActions,
   TweetApiActions,
   selectAllTweets,
+  selectTweetsLazyState,
 } from '@kitouch/feat-tweet-data';
 import {
   FeatTweetTweetingComponent,
@@ -26,12 +31,14 @@ import {
 } from '@kitouch/kit-data';
 import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/shared-constants';
 import { Tweety } from '@kitouch/shared-models';
+import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DEFAULT_ANIMATE_TIMEOUT,
   DividerComponent,
   UiCompCardComponent,
   UiCompGradientCardComponent,
   UiKitCompAnimatePingComponent,
+  UiKitSpinnerComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { Actions, ofType } from '@ngrx/effects';
@@ -43,6 +50,7 @@ import {
   filter,
   map,
   merge,
+  shareReplay,
   switchMap,
   tap,
   timer,
@@ -64,6 +72,7 @@ import {
     FeatTweetTweetingComponent,
     FeatTweetTweetyComponent,
     UiKitTweetButtonComponent,
+    UiKitSpinnerComponent,
   ],
 })
 export class PageHomeComponent implements OnInit {
@@ -72,13 +81,30 @@ export class PageHomeComponent implements OnInit {
   #router = inject(Router);
   #actions = inject(Actions);
 
+  loadMoreTmpl = viewChild<ElementRef<HTMLButtonElement>>('loadMoreTmpl');
+
   homeTweets$ = this.#store.pipe(
     select(selectAllTweets),
-    tap(() => this.tweetsLoading.set(false))
+    tap(() => this.tweetsLoading.set(false)),
+    map((tweets) =>
+      tweets
+        ?.slice()
+        ?.sort((a, b) =>
+          sortByCreatedTimeDesc(
+            a.createdAt ?? (a as any).timestamp?.createdAt,
+            b.createdAt ?? (b as any).timestamp?.createdAt
+          )
+        )
+    ),
+    tap((v) => console.log('homeTweets$', v)),
+    shareReplay({ refCount: true, bufferSize: 1 })
   );
   followingProfiles = toSignal(
     this.#store.pipe(select(selectCurrentProfileFollowing))
   );
+  homeTweetsLazyState = this.#store.selectSignal(selectTweetsLazyState);
+
+  #loadingTweetsIntersectionObserver: IntersectionObserver | null = null;
 
   constructor() {
     this.#store
@@ -88,7 +114,50 @@ export class PageHomeComponent implements OnInit {
         distinctUntilKeyChanged('id'),
         takeUntilDestroyed()
       )
-      .subscribe(() => this.#store.dispatch(TweetApiActions.getAll()));
+      .subscribe(() =>
+        this.#store.dispatch(
+          TweetApiActions.getAll({ nextCursor: null, hasNextPage: null })
+        )
+      );
+
+    effect(() => {
+      const loadMoreTmpl = this.loadMoreTmpl();
+      if (this.#loadingTweetsIntersectionObserver) {
+        this.#loadingTweetsIntersectionObserver.disconnect();
+      }
+      if (!loadMoreTmpl) {
+        return;
+      }
+
+      const { nextCursor, hasNextPage } = untracked(this.homeTweetsLazyState);
+
+      if (!hasNextPage || !nextCursor) {
+        return;
+      }
+
+      console.log('loadMoreTmpl', loadMoreTmpl, nextCursor, hasNextPage);
+
+      this.#loadingTweetsIntersectionObserver = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0].isIntersecting) {
+            return;
+          }
+
+          this.tweetsLoading.set(true);
+          this.#store.dispatch(
+            TweetApiActions.getAll({
+              nextCursor,
+              hasNextPage,
+            })
+          );
+        }
+      );
+
+      // start observing
+      this.#loadingTweetsIntersectionObserver.observe(
+        loadMoreTmpl.nativeElement
+      );
+    });
   }
 
   tweetsLoading = signal(true);
@@ -125,11 +194,12 @@ export class PageHomeComponent implements OnInit {
   reloadTweets() {
     this.tweetsLoading.set(true);
     this.#reloadTweetsDisabled$$.next(true);
-    this.#store.dispatch(TweetApiActions.getAll());
+    this.#store.dispatch(
+      TweetApiActions.getAll({ nextCursor: null, hasNextPage: null })
+    );
   }
 
   tweetButtonHandler() {
-    console.log('Tweet button clicked', this.#router.config);
     this.#router.navigate([
       { outlets: { [OUTLET_DIALOG]: [APP_PATH_DIALOG.Tweet] } },
     ]);
