@@ -39,10 +39,10 @@ export class BeTweetService {
           $match: {
             $or: [
               { createdAt: { $lt: cursorTimestamp } },
-              { createdAt: cursorTimestamp, _id: { $lt: cursorId } },
+              // { createdAt: cursorTimestamp, _id: { $lt: cursorId } },
               {
                 'timestamp.createdAt': cursorTimestamp,
-                _id: { $lt: cursorId },
+                // _id: { $lt: cursorId },
               },
             ],
           },
