@@ -2,13 +2,14 @@ import { ConfigService } from '@kitouch/be-config';
 import { Controller, Get, Req, Res, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
+import { OptionalJwtAuthGuard } from './optional-jwt-auth.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private configService: ConfigService) {}
 
   @Get('logout')
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(OptionalJwtAuthGuard)
   // @Redirect() // We will redirect to Auth0 logout
   logout(@Req() req: Request, @Res() res: Response) {
     console.info(

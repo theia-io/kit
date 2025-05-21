@@ -28,7 +28,7 @@ import { select, Store } from '@ngrx/store';
   `,
   template: `
     <shared-navbar-static
-      [userLoggedIn]="!!(currentProfile$ | async)"
+      [userLoggedIn]="!!(loggedIn$ | async)"
       (getStarted)="handleGetStarted()"
     />
     <div class="flex-grow flex flex-col">
@@ -43,10 +43,9 @@ import { select, Store } from '@ngrx/store';
   `,
 })
 export class KitStaticComponent {
-  #store = inject(Store);
   #auth0Service = inject(Auth0Service);
 
-  currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
+  loggedIn$ = this.#auth0Service.loggedIn$;
 
   handleGetStarted() {
     this.#auth0Service.signIn();

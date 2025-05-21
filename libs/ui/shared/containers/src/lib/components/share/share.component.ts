@@ -49,7 +49,7 @@ export class SharedCopyClipboardComponent {
     this.#messageService.clear();
     this.#messageService.add({
       severity: 'info',
-      summary: `${capitalizeFirstLetter(this.type())} link saved to clipboard`,
+      summary: `${capitalizeFirstLetter(this.type())} link copied`,
       detail: `You can share this ${this.type()} link with your (ex-) colleagues and friends!`,
       life: 5000,
     });

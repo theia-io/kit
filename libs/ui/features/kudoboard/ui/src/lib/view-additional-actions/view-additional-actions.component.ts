@@ -51,7 +51,7 @@ export class FeatKudoBoardViewAdditionalActionsComponent {
     this.#messageService.clear();
     this.#messageService.add({
       severity: 'info',
-      summary: `${capitalizeFirstLetter(summaryText)} link saved to clipboard`,
+      summary: `${capitalizeFirstLetter(summaryText)} link copied`,
       detail,
       life: 5000,
     });

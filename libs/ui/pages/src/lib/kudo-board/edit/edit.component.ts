@@ -52,6 +52,8 @@ export class PageKudoBoardEditComponent {
   #store = inject(Store);
   #auth0Service = inject(Auth0Service);
 
+  loggedIn$ = this.#auth0Service.loggedIn$;
+
   kudoBoardId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     filter(Boolean),

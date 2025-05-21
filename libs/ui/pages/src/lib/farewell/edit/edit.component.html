@@ -8,7 +8,7 @@
   <ng-template pTemplate="headless">
     <div class="h-full w-full max-h-screen overflow-auto flex flex-col">
       <shared-navbar-static
-        [userLoggedIn]="!!(currentProfile$ | async)"
+        [userLoggedIn]="!!(loggedIn$ | async)"
         [_sysUpdatePrimengHighlight]="true"
         (getStarted)="handleGetStarted()" />
       <ui-kit-delete

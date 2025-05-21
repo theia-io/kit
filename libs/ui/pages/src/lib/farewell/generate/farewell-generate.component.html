@@ -6,7 +6,7 @@
   (onHide)="redirectToLatest()">
   <ng-template pTemplate="headless">
     <shared-navbar-static
-      [userLoggedIn]="!!currentProfile()"
+      [userLoggedIn]="!!(loggedIn$ | async)"
       [_sysUpdatePrimengHighlight]="true"
       (getStarted)="handleGetStarted()" />
     <ui-kit-delete

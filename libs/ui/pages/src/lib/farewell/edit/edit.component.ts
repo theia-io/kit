@@ -51,6 +51,8 @@ export class PageFarewellEditComponent {
   #auth0Service = inject(Auth0Service);
   #store = inject(Store);
 
+  loggedIn$ = this.#auth0Service.loggedIn$;
+
   farewellId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     filter(Boolean),

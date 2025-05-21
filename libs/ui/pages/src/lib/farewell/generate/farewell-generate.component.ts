@@ -1,4 +1,4 @@
-import { NgTemplateOutlet } from '@angular/common';
+import { AsyncPipe, NgTemplateOutlet } from '@angular/common';
 import { Component, inject, TemplateRef } from '@angular/core';
 import { Router } from '@angular/router';
 import {
@@ -19,6 +19,7 @@ import { take } from 'rxjs';
   templateUrl: './farewell-generate.component.html',
   imports: [
     NgTemplateOutlet,
+    AsyncPipe,
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
@@ -34,7 +35,7 @@ export class PageFarewellGenerateComponent {
   #navbarService = inject(NavbarService);
   #auth0Service = inject(Auth0Service);
 
-  currentProfile = inject(Store).selectSignal(selectCurrentProfile);
+  loggedIn$ = this.#auth0Service.loggedIn$;
 
   statusTmpl?: TemplateRef<any>;
 
