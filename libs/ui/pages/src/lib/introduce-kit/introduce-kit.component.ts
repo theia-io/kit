@@ -5,6 +5,7 @@ import { APP_PATH } from '@kitouch/shared-constants';
 import { Auth0Service } from '@kitouch/shared-infra';
 import {
   KlassOverwrite,
+  UiCompGradientCardComponent,
   UIKitSmallerHintTextUXDirective,
 } from '@kitouch/ui-components';
 
@@ -35,6 +36,7 @@ import { NgOptimizedImage } from '@angular/common';
     PagesFeatureFarewellBenefitsComponent,
     PagesFeatureKudoBoardBenefitsComponent,
     UIKitSmallerHintTextUXDirective,
+    UiCompGradientCardComponent,
   ],
 })
 export class KitPagesIntroduceKitComponent {

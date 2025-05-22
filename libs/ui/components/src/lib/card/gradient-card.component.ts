@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 @Component({
@@ -17,6 +16,6 @@ import { Component } from '@angular/core';
         <ng-content></ng-content>
       </div>
     </article>`,
-  imports: [CommonModule],
+  imports: [],
 })
 export class UiCompGradientCardComponent {}
