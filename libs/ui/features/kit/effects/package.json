@@ -15,7 +15,8 @@
     "@angular/router": "18.2.6",
     "@kitouch/shared-constants": "7.0.0-0",
     "@kitouch/feat-tweet-data": "7.0.0-0",
-    "@angular/common": "18.2.6"
+    "@angular/common": "18.2.6",
+    "@kitouch/shared-services": "7.0.0-0"
   },
   "sideEffects": false
 }
