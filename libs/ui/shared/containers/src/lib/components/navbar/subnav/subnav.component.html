@@ -1,10 +1,8 @@
-<ul class="flex flex-col space-y-2">
+<ul class="flex flex-col space-y-4">
   <li>
-    <strong class="block text-xs font-extrabold uppercase text-gray-400">
-      Farewells
-    </strong>
+    <strong class="block text-xs font-semibold uppercase">Farewells</strong>
 
-    <ul class="mt-2 space-y-1">
+    <ul>
       <li>
         <a
           uiKitSmallTextTailwindClasses
@@ -17,25 +15,22 @@
         </a>
       </li>
 
-      <li>
+      <li class="px-4 py-2 transition hover:shadow-xl">
         <ui-kit-tweet-button
-          icon="pi-file-edit"
-          [iconAnimate]="false"
+          icon=""
           text="New Farewell"
           severity="secondary"
-          kClass="border-2 border-[#020617]"
+          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
           (click)="createFarewellHandler()"
-          class="w-48 mt-2" />
+          class="w-full" />
       </li>
     </ul>
   </li>
 
   <li>
-    <strong class="block text-xs font-extrabold uppercase text-gray-400">
-      Kudo Boards
-    </strong>
+    <strong class="block text-xs font-semibold uppercase">Kudo Boards</strong>
 
-    <ul class="mt-2 space-y-1">
+    <ul>
       <li>
         <a
           uiKitSmallTextTailwindClasses
@@ -48,25 +43,22 @@
         </a>
       </li>
 
-      <li>
+      <li class="px-4 py-2 transition hover:shadow-xl">
         <ui-kit-tweet-button
-          icon="pi-sparkles"
-          [iconAnimate]="false"
+          icon=""
           text="New Kudo board"
           severity="secondary"
-          kClass="border-2 border-[#020617]"
+          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
           (click)="createKudoBoardHandler()"
-          class="w-48 mt-2" />
+          class="w-full" />
       </li>
     </ul>
   </li>
 
   <li>
-    <strong class="block text-xs font-medium uppercase text-gray-400">
-      Support
-    </strong>
+    <strong class="block text-xs font-semibold uppercase">Support</strong>
 
-    <ul class="mt-2 space-y-1">
+    <ul>
       <li>
         <a
           [href]="
@@ -98,10 +90,8 @@
   </li>
 
   <li>
-    <strong class="block text-xs font-medium uppercase text-gray-400">
-      Profile
-    </strong>
-    <ul class="mt-2 space-y-1">
+    <strong class="block text-xs font-semibold uppercase">Profile</strong>
+    <ul class="space-y-1">
       <!-- TODO Implement better suggestion mechanism -->
       <!-- <li>
         <a
@@ -126,7 +116,7 @@
   </li>
 
   <li class="mt-12 block">
-    <ul class="mt-2 space-y-1">
+    <ul class="space-y-1">
       <li>
         <shared-static-info />
       </li>

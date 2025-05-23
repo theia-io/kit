@@ -3,7 +3,6 @@ import {
   AfterViewInit,
   Component,
   computed,
-  effect,
   inject,
   input,
 } from '@angular/core';
@@ -16,14 +15,14 @@ import {
 import { Profile } from '@kitouch/shared-models';
 import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { AuthorizedFeatureDirective } from '@kitouch/containers';
 import { APP_PATH } from '@kitouch/shared-constants';
 import { PhotoService } from '@kitouch/shared-services';
-import PhotoSwipe from 'photoswipe';
-import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 import { Store } from '@ngrx/store';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { combineLatest, map, switchMap } from 'rxjs';
+import PhotoSwipe from 'photoswipe';
+import { switchMap } from 'rxjs';
+import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 
 @Component({
   standalone: true,

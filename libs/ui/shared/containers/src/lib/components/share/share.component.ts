@@ -13,6 +13,9 @@ import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import { farewellLink, kudoboardLink } from './share';
 
+/**
+ * @deprecated until refactored. refactor so that can provide anything to share as well as look & feel can be configured from outside
+ * not possible to use For profile url sharing in `libs/ui/pages/src/lib/profile/profile.component.html` */
 @Component({
   standalone: true,
   selector: 'shared-copy-clipboard',

@@ -4,16 +4,31 @@
   <div class="grow" profileExtensionTwo>
     <feat-follow-unfollow-profile [profileId]="profile.id" />
   </div>
-  } @else {
-  <a
-    profileExtensionOne
-    [routerLink]="settingsUrl"
-    class="absolute top-4 right-4 border-2 border-white rounded-full flex py-1 px-2 z-10"
-    severity="contrast">
-    <i class="pi pi-cog text-xl"></i>
-  </a>
   }
+
+  <div profileExtensionOne class="absolute top-4 right-4 flex gap-1 z-10">
+    @if(isCurrentUserProfile()) {
+    <a
+      [routerLink]="settingsUrl"
+      class="border-2 border-white rounded-full py-1 px-2">
+      <i class="pi pi-cog text-xl"></i>
+    </a>
+    }
+    <button
+      pButton
+      variant="text"
+      (click)="copyToClipBoard(profile.id)"
+      class="border-2 border-white rounded-full py-1 px-2">
+      @if(linkCopied()) {
+      <i class="pi pi-check text-xl" pTooltip="Profile link copied"></i>
+      } @else {
+      <i class="pi pi-share-alt text-xl" pTooltip="Copy profile link"></i>
+      }
+    </button>
+  </div>
 </feat-kit-profile-header>
+
+<p-toast />
 }
 
 <p-tabMenu styleClass="my-4" [model]="(tabMenuItems$ | async) ?? []" />

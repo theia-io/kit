@@ -197,8 +197,6 @@ export class BeTweetService {
       tweets.pop();
     }
 
-    console.log('TWEETS RESULT', tweets, hasNextPage);
-
     if (tweets.length > 0 && hasNextPage) {
       const lastTweet = tweets[tweets.length - 1] as any;
       const createdAt = (
@@ -213,8 +211,6 @@ export class BeTweetService {
       const lastItemTimestamp = new Date(createdAt).getTime();
       nextCursor = `${lastItemTimestamp}_${lastTweet._id.toString()}`;
     }
-
-    console.log('RESULT', tweets, nextCursor, hasNextPage);
 
     return {
       nextCursor,

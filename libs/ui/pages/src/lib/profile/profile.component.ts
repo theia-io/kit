@@ -1,9 +1,10 @@
-import { AsyncPipe } from '@angular/common';
+import { AsyncPipe, DOCUMENT } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   inject,
+  signal,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
@@ -22,17 +23,12 @@ import {
   UXDynamicService,
 } from '@kitouch/shared-services';
 import { select, Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { TabMenuModule } from 'primeng/tabmenu';
-import {
-  combineLatest,
-  filter,
-  map,
-  shareReplay,
-  switchMap,
-  take,
-  tap,
-} from 'rxjs';
+import { ToastModule } from 'primeng/toast';
+import { TooltipModule } from 'primeng/tooltip';
+import { combineLatest, filter, map, shareReplay, switchMap, take } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -45,12 +41,17 @@ import {
     //
     TabMenuModule,
     ButtonModule,
+    TooltipModule,
+    ToastModule,
     //
     FeatKitProfileHeaderComponent,
     FeatFollowUnfollowProfileComponent,
   ],
+  providers: [MessageService],
 })
 export class PageProfileComponent {
+  #document = inject(DOCUMENT);
+  #messageService = inject(MessageService);
   #store = inject(Store);
   #activatedRouter = inject(ActivatedRoute);
   #uxDynamicService = inject(UXDynamicService);
@@ -106,6 +107,8 @@ export class PageProfileComponent {
   );
 
   readonly settingsUrl = `/${APP_PATH.Settings}`;
+
+  linkCopied = signal(false);
 
   constructor() {
     combineLatest([this.#profileId$, this.#profile$])
@@ -172,5 +175,27 @@ export class PageProfileComponent {
       });
 
     this.#uxDynamicService.updateLogo('done', 2000);
+  }
+
+  copyToClipBoard(profileId: Profile['id']) {
+    const url = [
+      this.#document.location.origin,
+      APP_PATH.Profile,
+      profileId,
+    ].join('/');
+    navigator.clipboard.writeText(url);
+
+    this.linkCopied.set(true);
+    setTimeout(() => {
+      this.linkCopied.set(false);
+    }, 5000);
+
+    this.#messageService.clear();
+    this.#messageService.add({
+      severity: 'info',
+      summary: `Profile link copied`,
+      detail: `You can share this profile link with your (ex-) colleagues and friends!`,
+      life: 5000,
+    });
   }
 }
