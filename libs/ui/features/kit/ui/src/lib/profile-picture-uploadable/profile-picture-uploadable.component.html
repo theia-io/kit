@@ -23,14 +23,14 @@
     <ng-template pTemplate="message" let-message>
       <div class="flex w-full items-center justify-center gap-3">
         <img
-          class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
+          class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl object-cover"
           [src]="profilePic()"
           referrerpolicy="no-referrer" />
 
         <i class="pi pi-arrow-right" style="font-size: 2rem"></i>
 
         <img
-          class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl"
+          class="rounded-md p-avatar p-component p-avatar-image p-avatar-circle p-avatar-xl object-cover"
           [src]="message.message"
           referrerpolicy="no-referrer" />
       </div>
@@ -42,5 +42,8 @@
     (click)="openPopup($event)"
     class="pi pi-cloud-upload font-semibold text-2xl text-white cursor-pointer absolute top-1/2 right-1/2 -translate-y-1/2 translate-x-1/2 opacity-80 hover:opacity-100"></i>
   }
-  <img class="rounded-md" [src]="profilePic()" referrerpolicy="no-referrer" />
+  <img
+    class="rounded-md h-full object-cover"
+    [src]="profilePic()"
+    referrerpolicy="no-referrer" />
 </div>

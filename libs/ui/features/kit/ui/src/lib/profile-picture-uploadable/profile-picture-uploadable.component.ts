@@ -13,8 +13,7 @@ import {
   profilePicture,
   selectProfileById,
 } from '@kitouch/kit-data';
-import { S3_PROFILE_BUCKET_BASE_URL } from '@kitouch/shared-infra';
-import { Profile } from '@kitouch/shared-models';
+import { ContractUploadedMedia, Profile } from '@kitouch/shared-models';
 import { Actions, ofType } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -68,7 +67,6 @@ export class FeatKitProfilePictureUploadableComponent {
   #store = inject(Store);
   #actions = inject(Actions);
 
-  #s3ProfileBaseUrl = inject(S3_PROFILE_BUCKET_BASE_URL);
   #messageService = inject(MessageService);
   #confirmationService = inject(ConfirmationService);
 
@@ -115,12 +113,7 @@ export class FeatKitProfilePictureUploadableComponent {
             });
             this.#confirmationService.close();
           }),
-          tap(({ url }) =>
-            this.confirmNewProfilePic(
-              profile,
-              `${this.#s3ProfileBaseUrl}/${url}`
-            )
-          )
+          tap(({ media }) => this.#confirmNewProfilePic(profile, media))
         ),
       this.#actions
         .pipe(ofType(FeatProfileApiActions.uploadProfilePictureFailure))
@@ -144,9 +137,9 @@ export class FeatKitProfilePictureUploadableComponent {
     );
   }
 
-  confirmNewProfilePic(currentProfile: Profile, url: string) {
+  #confirmNewProfilePic(currentProfile: Profile, media: ContractUploadedMedia) {
     this.#confirmationService.confirm({
-      message: url,
+      message: media.url,
       key: 'confirm',
       header: 'Confirm new profile picture',
       acceptIcon: 'none',
@@ -162,12 +155,7 @@ export class FeatKitProfilePictureUploadableComponent {
           FeatProfileApiActions.updateProfile({
             profile: {
               ...currentProfile,
-              pictures: [
-                {
-                  url,
-                  isPrimary: true,
-                },
-              ],
+              pictures: [media],
             },
           })
         );

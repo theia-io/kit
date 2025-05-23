@@ -1,4 +1,4 @@
-import { Profile } from '@kitouch/shared-models';
+import { ContractUploadedMedia, Profile } from '@kitouch/shared-models';
 import {
   createAction,
   createActionGroup,
@@ -25,7 +25,10 @@ export const FeatProfileApiActions = createActionGroup({
     UpdateProfileFailure: props<{ message: string }>(),
     // Update picture
     UploadProfilePicture: props<{ id: Profile['id']; pic: Blob }>(),
-    UploadProfilePictureSuccess: props<{ id: Profile['id']; url: string }>(),
+    UploadProfilePictureSuccess: props<{
+      id: Profile['id'];
+      media: ContractUploadedMedia;
+    }>(),
     UploadProfilePictureFailure: props<{ message: string }>(),
     // Update background
     UploadProfileBackground: props<{ id: Profile['id']; pic: Blob }>(),

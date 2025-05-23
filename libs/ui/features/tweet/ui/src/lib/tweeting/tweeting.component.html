@@ -2,7 +2,7 @@
   <div class="w-10">
     @if(profilePic$ | async) {
     <img
-      class="inline-block h-10 w-10 rounded-full"
+      class="inline-block h-10 w-10 rounded-full object-cover"
       referrerpolicy="no-referrer"
       [src]="profilePic$ | async"
       height="40"
@@ -10,7 +10,7 @@
       alt="kitouch profile picture" />
     } @else {
     <img
-      class="inline-block h-10 w-10 rounded-full"
+      class="inline-block h-10 w-10 rounded-full object-cover"
       ngSrc="/account/placeholder-small.jpeg"
       height="40"
       width="40"

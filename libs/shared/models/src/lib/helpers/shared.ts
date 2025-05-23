@@ -8,8 +8,3 @@ export interface Languages {
   code: string;
   isPrimary?: boolean;
 }
-
-export interface Picture {
-  url: string;
-  isPrimary?: boolean;
-}

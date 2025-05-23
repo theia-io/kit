@@ -19,7 +19,7 @@
   [primaryText]="tweetedProfile.name"
   [primarySecondaryText]="tweetHeaderSecondaryText()"
   [secondaryText]="tweetedProfile.type"
-  [picture]="tweetedProfile.pictures?.[0]?.url"
+  [picture]="profilePicture(tweetedProfile)"
   [link]="profileUrlPath + tweetedProfile.id" />
 } @else {
 <ui-kit-spinner size="h-10 w-10" />

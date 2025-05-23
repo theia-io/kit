@@ -1,4 +1,5 @@
-import { Link, Picture } from '../helpers';
+import { ContractUploadedMedia } from '../contracts';
+import { Link } from '../helpers';
 /** @FIXME include into TS itself (so not importing) */
 
 export enum ProfileType {
@@ -36,7 +37,7 @@ export interface Profile {
   title?: string;
   subtitle?: string;
   description?: string;
-  pictures?: Array<Picture>;
+  pictures?: Array<ContractUploadedMedia>;
   background?: string;
   links?: Link[];
   // meta

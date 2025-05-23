@@ -82,7 +82,7 @@
   <ui-kit-comp-card>
     <ui-kit-comp-account-tile
       [primaryText]="profile()?.name ?? 'N/A'"
-      [picture]="profile()?.pictures?.[0]?.url" />
+      [picture]="profilePicture(profile())" />
   </ui-kit-comp-card>
 </a>
 

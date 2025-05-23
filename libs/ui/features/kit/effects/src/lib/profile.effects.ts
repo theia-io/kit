@@ -32,12 +32,15 @@ import {
   take,
 } from 'rxjs';
 import { ProfileV2Service } from './profilev2.service';
+import { getFullS3Url, getImageKeyFromS3Url } from '@kitouch/shared-services';
+import { S3_PROFILE_BUCKET_BASE_URL } from '@kitouch/shared-infra';
 
 @Injectable()
 export class ProfileEffects {
   #store = inject(Store);
   #actions$ = inject(Actions);
   #profileV2Service = inject(ProfileV2Service);
+  #s3ProfileBaseUrl = inject(S3_PROFILE_BUCKET_BASE_URL);
 
   /** PROFILES API */
   profiles$ = createEffect(() =>
@@ -100,8 +103,15 @@ export class ProfileEffects {
       ofType(FeatProfileApiActions.uploadProfilePicture),
       switchMap(({ id, pic }) =>
         this.#profileV2Service.uploadProfilePicture(id, pic).pipe(
-          map(() =>
-            FeatProfileApiActions.uploadProfilePictureSuccess({ id, url: id })
+          map((media) => ({
+            ...media,
+            url: getFullS3Url(this.#s3ProfileBaseUrl, media.url),
+            optimizedUrls: media.optimizedUrls.map((optimizedUrl) =>
+              getFullS3Url(this.#s3ProfileBaseUrl, optimizedUrl)
+            ),
+          })),
+          map((media) =>
+            FeatProfileApiActions.uploadProfilePictureSuccess({ id, media })
           ),
           catchError((err) => {
             console.error('[ProfileEffects][uploadProfilePic$]', err);

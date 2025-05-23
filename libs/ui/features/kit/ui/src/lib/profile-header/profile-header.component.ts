@@ -8,7 +8,11 @@ import {
   input,
 } from '@angular/core';
 import { RouterModule } from '@angular/router';
-import { profilePicture, selectProfileFollowers } from '@kitouch/kit-data';
+import {
+  profilePicture,
+  profilePictureDimensions,
+  selectProfileFollowers,
+} from '@kitouch/kit-data';
 import { Profile } from '@kitouch/shared-models';
 import { UiKitColorDisplayerComponent } from '@kitouch/ui-components';
 
@@ -19,7 +23,7 @@ import PhotoSwipe from 'photoswipe';
 import { FeatKitProfileSocialsComponent } from '../profile-socials/profile-socials.component';
 import { Store } from '@ngrx/store';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
+import { combineLatest, map, switchMap } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -62,6 +66,9 @@ export class FeatKitProfileHeaderComponent implements AfterViewInit {
   });
 
   profilePic = computed(() => profilePicture(this.profile()));
+  profilePicDimensions = computed(() =>
+    profilePictureDimensions(this.profile())
+  );
 
   readonly profileUrl = `/${APP_PATH.Profile}/`;
 

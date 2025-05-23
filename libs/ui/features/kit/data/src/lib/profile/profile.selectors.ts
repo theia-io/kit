@@ -6,9 +6,16 @@ import { FeatureProfileState } from './profile.reducers';
  * Utilities
  */
 export const profilePicture = (profile: Partial<Profile> | undefined | null) =>
-  profile?.pictures?.find((pic) => pic.isPrimary)?.url ??
+  profile?.pictures?.[0]?.optimizedUrls?.[0] ??
   profile?.pictures?.[0]?.url ??
   '/john-dou.png';
+
+export const profilePictureDimensions = (
+  profile: Partial<Profile> | undefined | null
+) => ({
+  height: profile?.pictures?.[0]?.height,
+  width: profile?.pictures?.[0]?.width,
+});
 
 /**
  * Selectors

@@ -38,6 +38,7 @@ import { LayoutService } from '../layout/layout.service';
 import { UiLogoComponent } from '../logo/logo.component';
 import { NavbarService } from './navbar.service';
 import { SubnavComponent } from './subnav/subnav.component';
+import { profilePicture } from '@kitouch/kit-data';
 
 const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[1];
 
@@ -94,6 +95,8 @@ export class NavBarComponent implements AfterViewInit {
       bufferSize: 1,
     })
   );
+
+  profilePicture = profilePicture;
 
   constructor() {
     this.mobileNavbar$

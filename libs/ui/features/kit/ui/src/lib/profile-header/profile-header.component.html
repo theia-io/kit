@@ -11,8 +11,8 @@
       <a
         class="block h-20 w-20 -mb-4 ml-4"
         [href]="profilePic()"
-        data-pswp-width="100"
-        data-pswp-height="100"
+        [attr.data-pswp-width]="profilePicDimensions().width ?? 100"
+        [attr.data-pswp-height]="profilePicDimensions().height ?? 100"
         target="_blank">
         <img
           referrerpolicy="no-referrer"

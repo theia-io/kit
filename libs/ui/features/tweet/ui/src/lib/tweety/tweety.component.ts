@@ -25,7 +25,11 @@ import {
   tweetIsRetweet,
   tweetIsTweet,
 } from '@kitouch/feat-tweet-data';
-import { selectCurrentProfile, selectProfileById } from '@kitouch/kit-data';
+import {
+  profilePicture,
+  selectCurrentProfile,
+  selectProfileById,
+} from '@kitouch/kit-data';
 import { APP_PATH } from '@kitouch/shared-constants';
 import { ReTweety, Tweety, TweetyType } from '@kitouch/shared-models';
 import {
@@ -213,6 +217,8 @@ export class FeatTweetTweetyComponent {
   ]);
 
   tweetIsRetweetFn = tweetIsRetweet;
+
+  profilePicture = profilePicture;
 
   tweetUrl(tweet: Tweety | ReTweety, absolute?: boolean) {
     return [

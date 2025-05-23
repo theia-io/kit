@@ -1,16 +1,7 @@
+import { ContractUploadedMedia } from '@kitouch/shared-models';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { HydratedDocument, Types } from 'mongoose';
-
-// Subdocument for Picture
-@Schema({ _id: false })
-export class Picture {
-  @Prop({ required: true })
-  url: string;
-
-  @Prop({ default: false })
-  primary: boolean;
-}
-export const PictureSchema = SchemaFactory.createForClass(Picture);
+import { UploadedMedia } from './shared.schema';
 
 // Subdocument for Socials (can also be done inline)
 @Schema({ _id: false })
@@ -50,8 +41,8 @@ export class Profile {
   @Prop()
   name: string;
 
-  @Prop({ type: [PictureSchema], default: [] })
-  pictures: Picture[];
+  @Prop({ type: [UploadedMedia], default: [] })
+  pictures: ContractUploadedMedia[];
 
   @Prop()
   following: [{ id: string }];
