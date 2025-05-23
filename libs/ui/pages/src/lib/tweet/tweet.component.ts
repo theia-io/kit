@@ -10,8 +10,8 @@ import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   FeatTweetActions,
-  TweetApiActions,
   selectTweet,
+  TweetApiActions,
 } from '@kitouch/feat-tweet-data';
 import {
   FeatTweetTweetyComponent,
@@ -26,7 +26,7 @@ import {
   UiCompCardComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import { Store } from '@ngrx/store';
+import { select, Store } from '@ngrx/store';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
@@ -92,10 +92,10 @@ export class PageTweetComponent {
     filter(Boolean),
     withLatestFrom(this.#currentProfile$),
     switchMap(([comments, currentProfile]) => {
-      if (!comments) return of([]);
+      if (!comments || comments.length === 0) return of([]);
 
       const commentProfileObservables = comments.map((comment) =>
-        this.#store.select(selectProfileById(comment.profileId!))
+        this.#store.pipe(select(selectProfileById(comment.profileId!)))
       );
 
       return combineLatest(commentProfileObservables).pipe(
