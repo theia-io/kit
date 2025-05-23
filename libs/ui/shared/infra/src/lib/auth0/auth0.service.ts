@@ -48,13 +48,14 @@ export class Auth0Service {
     return urlBeforeRedirect;
   }
 
-  signIn(urlToOpenAfterSignIn?: string) {
-    if (urlToOpenAfterSignIn) {
-      this.#localStoreService.setItem(
-        this.#beforeRedirectUrlKey,
-        urlToOpenAfterSignIn
-      );
+  setPostRedirectUrl(url?: string) {
+    if (url) {
+      this.#localStoreService.setItem(this.#beforeRedirectUrlKey, url);
     }
+  }
+
+  signIn(urlToOpenAfterSignIn?: string) {
+    this.setPostRedirectUrl(urlToOpenAfterSignIn);
     window.location.href = `${this.#environment.api.auth}/login`; // express-openid-connect handles this
   }
 

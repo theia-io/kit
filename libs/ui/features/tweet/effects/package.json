@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/feat-tweet-effects",
-  "version": "7.0.0-0",
+  "version": "7.1.0-0",
   "peerDependencies": {
     "@angular/core": "18.2.6",
     "@kitouch/feat-tweet-data": "7.0.0-0",

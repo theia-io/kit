@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/effects-kudoboard",
-  "version": "7.0.0-0",
+  "version": "7.1.0-0",
   "peerDependencies": {
     "@angular/core": "^18.2.0",
     "@kitouch/data-kudoboard": "7.0.0-0",
