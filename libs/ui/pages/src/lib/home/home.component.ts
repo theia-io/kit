@@ -96,7 +96,6 @@ export class PageHomeComponent implements OnInit {
           )
         )
     ),
-    tap((v) => console.log('homeTweets$', v)),
     shareReplay({ refCount: true, bufferSize: 1 })
   );
   followingProfiles = toSignal(
@@ -134,8 +133,6 @@ export class PageHomeComponent implements OnInit {
       if (!hasNextPage || !nextCursor) {
         return;
       }
-
-      console.log('loadMoreTmpl', loadMoreTmpl, nextCursor, hasNextPage);
 
       this.#loadingTweetsIntersectionObserver = new IntersectionObserver(
         (entries) => {

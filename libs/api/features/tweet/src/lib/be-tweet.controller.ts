@@ -37,19 +37,19 @@ export class BeTweetController {
     );
   }
 
-  @Get('feed/:profileId/updates')
-  @UseGuards(AuthGuard('jwt'))
-  async getFeedUpdates(
-    @Param('profileId') profileId: string,
-    @Query('followingProfileIds') followingProfileIds: string,
-    @Query('cursor') cursor: string
-  ) {
-    return await this.beTweetService.getFeedUpdates(
-      profileId,
-      JSON.parse(followingProfileIds) ?? [],
-      cursor
-    );
-  }
+  // @Get('feed/:profileId/updates')
+  // @UseGuards(AuthGuard('jwt'))
+  // async getFeedUpdates(
+  //   @Param('profileId') profileId: string,
+  //   @Query('followingProfileIds') followingProfileIds: string,
+  //   @Query('cursor') cursor: string
+  // ) {
+  //   return await this.beTweetService.getFeedUpdates(
+  //     profileId,
+  //     JSON.parse(followingProfileIds) ?? [],
+  //     cursor
+  //   );
+  // }
 
   @Get('tweet')
   @UseGuards(AuthGuard('jwt'))

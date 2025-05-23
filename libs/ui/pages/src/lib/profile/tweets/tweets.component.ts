@@ -3,12 +3,17 @@ import {
   ChangeDetectionStrategy,
   Component,
   computed,
+  effect,
+  ElementRef,
   inject,
+  untracked,
+  viewChild,
 } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import {
   selectAllTweets,
+  selectTweetsLazyState,
   selectTweetsProfileAndRetweets,
   TweetApiActions,
 } from '@kitouch/feat-tweet-data';
@@ -22,6 +27,7 @@ import { APP_PATH_DIALOG, OUTLET_DIALOG } from '@kitouch/shared-constants';
 import {
   DividerComponent,
   UiCompCardComponent,
+  UiKitSpinnerComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
 import { select, Store } from '@ngrx/store';
@@ -49,12 +55,15 @@ import {
     FeatTweetTweetyComponent,
     DividerComponent,
     UiKitTweetButtonComponent,
+    UiKitSpinnerComponent,
   ],
 })
 export class PageProfileTweetsComponent {
   #store = inject(Store);
   #router = inject(Router);
   #activatedRouter = inject(ActivatedRoute);
+
+  loadMoreTmpl = viewChild<ElementRef<HTMLButtonElement>>('loadMoreTmpl');
 
   #profileId$ = this.#activatedRouter.parent?.params.pipe(
     map((params) => params['profileId'])
@@ -91,14 +100,59 @@ export class PageProfileTweetsComponent {
     () => this.currentProfile()?.id === this.profile()?.id
   );
 
+  tweetsLazyState = this.#store.selectSignal(selectTweetsLazyState);
+
+  #loadingTweetsIntersectionObserver: IntersectionObserver | null = null;
+
   constructor() {
-    this.#profile$
-      .pipe(takeUntilDestroyed())
-      .subscribe(({ id }) =>
-        this.#store.dispatch(
-          TweetApiActions.getTweetsForProfile({ profileId: id })
-        )
+    this.#profile$.pipe(takeUntilDestroyed()).subscribe(({ id }) =>
+      this.#store.dispatch(
+        TweetApiActions.getTweetsForProfile({
+          profileId: id,
+          nextCursor: null,
+          hasNextPage: null,
+        })
+      )
+    );
+
+    effect(() => {
+      const loadMoreTmpl = this.loadMoreTmpl();
+      if (this.#loadingTweetsIntersectionObserver) {
+        this.#loadingTweetsIntersectionObserver.disconnect();
+      }
+      if (!loadMoreTmpl) {
+        return;
+      }
+
+      const profileId = this.profile()?.id;
+
+      const { nextCursor, hasNextPage } = untracked(this.tweetsLazyState);
+
+      if (!hasNextPage || !nextCursor || !profileId) {
+        return;
+      }
+
+      this.#loadingTweetsIntersectionObserver = new IntersectionObserver(
+        (entries) => {
+          if (!entries[0].isIntersecting) {
+            return;
+          }
+
+          this.#store.dispatch(
+            TweetApiActions.getTweetsForProfile({
+              profileId: profileId,
+              nextCursor,
+              hasNextPage,
+            })
+          );
+        }
       );
+
+      // start observing
+      this.#loadingTweetsIntersectionObserver.observe(
+        loadMoreTmpl.nativeElement
+      );
+    });
   }
 
   tweetButtonHandler() {

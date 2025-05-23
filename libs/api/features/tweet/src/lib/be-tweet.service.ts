@@ -38,11 +38,23 @@ export class BeTweetService {
         cursorPipeline.push({
           $match: {
             $or: [
-              { createdAt: { $lt: cursorTimestamp } },
-              // { createdAt: cursorTimestamp, _id: { $lt: cursorId } },
+              // { createdAt: { $lt: cursorTimestamp } },
+              { createdAt: cursorTimestamp, _id: { $lt: cursorId } },
+              {
+                createdAt: cursorTimestamp,
+                retweetedProfileId: { $lt: cursorId },
+              },
+              // {
+              //   'timestamp.createdAt': cursorTimestamp,
+              //   // _id: { $lt: cursorId },
+              // },
               {
                 'timestamp.createdAt': cursorTimestamp,
-                // _id: { $lt: cursorId },
+                _id: { $lt: cursorId },
+              },
+              {
+                'timestamp.createdAt': cursorTimestamp,
+                retweetedProfileId: { $lt: cursorId },
               },
             ],
           },
@@ -61,7 +73,8 @@ export class BeTweetService {
 
     //  Sort (Primary sort for pagination, _id for tie-breaking)
     cursorPipeline.push({
-      $sort: { createdAt: sortOrder, _id: sortOrder },
+      // $sort: { createdAt: sortOrder, _id: sortOrder },
+      $sort: { createdAt: sortOrder },
     });
 
     // Limit (Fetch one extra to check for next page)
@@ -104,13 +117,13 @@ export class BeTweetService {
           $addFields: {
             type: 'tweet',
             // Use createdAt of the tweet as the timestamp for sorting
-            activityTimestamp: '$createdAt',
+            // activityTimestamp: '$createdAt',
           },
         },
         // Stage 3: Union with retweets from relevant profiles
         {
           $unionWith: {
-            coll: 'retweet', // <<< Your actual retweet collection name
+            coll: 'retweet', // <<< actual retweet collection name
             pipeline: [
               // --- Pipeline within unionWith starts here ---
               // 3a: Match retweets made by relevant profiles
@@ -151,7 +164,7 @@ export class BeTweetService {
                   upProfileIds: '$originalTweetData.upProfileIds',
                   downProfileIds: '$originalTweetData.downProfileIds',
 
-                  activityTimestamp: '$createdAt', // Use createdAt of the retweet for sorting
+                  // activityTimestamp: '$createdAt', // Use createdAt of the retweet for sorting
                 },
               },
               // --- Pipeline within unionWith ends here ---
@@ -159,22 +172,22 @@ export class BeTweetService {
           },
         },
         // Stage 4: Sort the combined feed by the activity timestamp (descending)
-        {
-          $sort: {
-            activityTimestamp: -1,
-          },
-        },
+        // {
+        //   $sort: {
+        //     activityTimestamp: -1,
+        //   },
+        // },
 
         // Stage 5: (Optional) Add limit/skip for pagination
         // { $skip: 0 },
         // { $limit: 20 },
 
         // Stage 6: (Optional) Project final fields, remove activityTimestamp if not needed
-        {
-          $project: {
-            activityTimestamp: 0, // Remove the temporary sort field
-          },
-        },
+        // {
+        //   $project: {
+        //     activityTimestamp: 0, // Remove the temporary sort field
+        //   },
+        // },
 
         // Stage 7: Cursor pipeline if applicable
         ...cursorPipeline,
@@ -197,8 +210,6 @@ export class BeTweetService {
       tweets.pop();
     }
 
-    console.log('TWEETS RESULT', tweets, hasNextPage);
-
     if (tweets.length > 0 && hasNextPage) {
       const lastTweet = tweets[tweets.length - 1] as any;
       const createdAt = (
@@ -207,14 +218,13 @@ export class BeTweetService {
         lastTweet.updatedAt ??
         lastTweet.timestamp?.updatedAt
       )?.toString();
-      console.log('LAST ITEM', lastTweet, createdAt);
       // Ensure createdAt is handled correctly (might be string from aggregation if not cast)
       // const lastTweet = lastItem.toJSON() as unknown as Tweety;
       const lastItemTimestamp = new Date(createdAt).getTime();
       nextCursor = `${lastItemTimestamp}_${lastTweet._id.toString()}`;
     }
 
-    console.log('RESULT', tweets, nextCursor, hasNextPage);
+    console.log('RESULT 3', tweets, nextCursor, hasNextPage);
 
     return {
       nextCursor,
@@ -225,173 +235,6 @@ export class BeTweetService {
           id: _id,
         })) ?? [],
     };
-  }
-
-  async getFeedUpdates(
-    profileId: string,
-    followingProfileIds: Array<string>,
-    cursorString: string
-  ) {
-    const sortOrder = -1; // Descending for newest first
-
-    const cursorPipeline: PipelineStage[] = [];
-
-    // Handle Cursor for Pagination
-    if (cursorString) {
-      try {
-        const [timestampStr, idStr] = cursorString.split('_');
-        const cursorTimestamp = new Date(parseInt(timestampStr, 10));
-        if (
-          !Types.ObjectId.isValid(idStr) ||
-          isNaN(cursorTimestamp.getTime())
-        ) {
-          throw new Error('Invalid cursor components');
-        }
-        const cursorId = new Types.ObjectId(idStr);
-
-        cursorPipeline.push({
-          $match: {
-            $or: [
-              { createdAt: { $rt: cursorTimestamp } },
-              { createdAt: cursorTimestamp, _id: { $rt: cursorId } },
-              {
-                'timestamp.createdAt': cursorTimestamp,
-                _id: { $rt: cursorId },
-              },
-            ],
-          },
-        });
-      } catch (error) {
-        console.error(
-          `Invalid cursor string for aggregation: ${cursorString}`,
-          error
-        );
-        throw new HttpException(
-          'Invalid cursor format.',
-          HttpStatus.BAD_REQUEST
-        );
-      }
-    }
-
-    //  Sort (Primary sort for pagination, _id for tie-breaking)
-    cursorPipeline.push({
-      $sort: { createdAt: sortOrder, _id: sortOrder },
-    });
-
-    let tweets;
-
-    try {
-      const profileIdObject = new mongoose.Types.ObjectId(profileId);
-      // Ensure the user's own ID is always included for matching their own tweets/retweets
-      const relevantProfileIds = [
-        new mongoose.Types.ObjectId(profileIdObject),
-        ...(followingProfileIds?.map((id) => new mongoose.Types.ObjectId(id)) ??
-          []),
-      ];
-
-      const agg: Array<PipelineStage> = [
-        // Stage 1: Match original tweets by relevant profiles
-        {
-          $match: {
-            profileId: { $in: relevantProfileIds },
-          },
-        },
-        // Stage 2: Add fields to identify as a tweet and set the activity timestamp
-        {
-          $addFields: {
-            type: 'tweet',
-            // Use createdAt of the tweet as the timestamp for sorting
-            activityTimestamp: '$createdAt',
-          },
-        },
-        // Stage 3: Union with retweets from relevant profiles
-        {
-          $unionWith: {
-            coll: 'retweet', // <<< Your actual retweet collection name
-            pipeline: [
-              // --- Pipeline within unionWith starts here ---
-              // 3a: Match retweets made by relevant profiles
-              {
-                $match: {
-                  profileId: { $in: relevantProfileIds },
-                },
-              },
-              // 3b: Lookup the original tweet data for each retweet
-              {
-                $lookup: {
-                  from: 'tweet', // <<< Your actual tweet collection name
-                  localField: 'tweetId',
-                  foreignField: '_id',
-                  as: 'originalTweetData',
-                },
-              },
-              // 3c: Unwind the original tweet data (should always be one)
-              {
-                $unwind: {
-                  path: '$originalTweetData',
-                  preserveNullAndEmptyArrays: false, // Remove retweets if original tweet deleted
-                },
-              },
-              // 3d: Project the desired structure for retweet feed tweets
-              {
-                $project: {
-                  _id: '$_id', // Use the retweet's ID
-                  type: 'retweet',
-                  retweetedProfileId: '$profileId', // Who performed the retweet
-                  tweetId: '$tweetId', // ID of the original tweet
-                  createdAt: '$createdAt', // Timestamp of the retweet
-                  updatedAt: '$updatedAt',
-                  // --- Include data from the original tweet ---
-                  profileId: '$originalTweetData.profileId', // Original author
-                  content: '$originalTweetData.content',
-                  comments: '$originalTweetData.comments',
-                  upProfileIds: '$originalTweetData.upProfileIds',
-                  downProfileIds: '$originalTweetData.downProfileIds',
-
-                  activityTimestamp: '$createdAt', // Use createdAt of the retweet for sorting
-                },
-              },
-              // --- Pipeline within unionWith ends here ---
-            ],
-          },
-        },
-        // Stage 4: Sort the combined feed by the activity timestamp (descending)
-        {
-          $sort: {
-            activityTimestamp: -1,
-          },
-        },
-
-        // Stage 5: (Optional) Add limit/skip for pagination
-        // { $skip: 0 },
-        // { $limit: 20 },
-
-        // Stage 6: (Optional) Project final fields, remove activityTimestamp if not needed
-        {
-          $project: {
-            activityTimestamp: 0, // Remove the temporary sort field
-          },
-        },
-
-        // Stage 7: Cursor pipeline if applicable
-        ...cursorPipeline,
-      ];
-
-      tweets = await this.tweetModel.aggregate<TweetDocument>(agg).exec();
-    } catch (err) {
-      console.error('Cannot execute tweets feed search', err);
-      throw new HttpException(
-        'Cannot execute tweet feed search',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
-    }
-
-    return (
-      tweets?.map(({ _id, __v, ...tweet }) => ({
-        ...tweet,
-        id: _id,
-      })) ?? []
-    );
   }
 
   async getTweet(tweetId: string, tweetProfileId: string) {

@@ -85,22 +85,24 @@ export class TweetsEffects {
   profileTweets$ = createEffect(() =>
     this.#actions$.pipe(
       ofType(TweetApiActions.getTweetsForProfile),
-      switchMap(({ profileId }) =>
-        this.#tweetV2Service.getTweetsForProfile(profileId).pipe(
-          map(({ tweets, hasNextPage, nextCursor }) =>
-            TweetApiActions.getTweetsForProfileSuccess({
-              tweets,
-              hasNextPage,
-              nextCursor,
+      switchMap(({ profileId, nextCursor }) =>
+        this.#tweetV2Service
+          .getTweetsForProfile(profileId, nextCursor ?? '')
+          .pipe(
+            map(({ tweets, hasNextPage, nextCursor }) =>
+              TweetApiActions.getTweetsForProfileSuccess({
+                tweets,
+                hasNextPage,
+                nextCursor,
+              })
+            ),
+            catchError((err) => {
+              console.error('[TweetsEffects] profileTweets ERROR', err);
+              return of(
+                TweetApiActions.getTweetsForProfileFailure({ profileId })
+              );
             })
-          ),
-          catchError((err) => {
-            console.error('[TweetsEffects] profileTweets ERROR', err);
-            return of(
-              TweetApiActions.getTweetsForProfileFailure({ profileId })
-            );
-          })
-        )
+          )
       )
     )
   );
