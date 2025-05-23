@@ -3,16 +3,16 @@
   "version": "7.1.0-0",
   "peerDependencies": {
     "@angular/core": "18.2.6",
-    "@kitouch/feat-farewell-data": "7.0.0-0",
+    "@kitouch/feat-farewell-data": "7.1.0-0",
     "@ngrx/effects": "18.0.2",
     "rxjs": "~7.8.0",
     "@ngrx/store": "18.0.2",
-    "@kitouch/shared-models": "7.0.0-0",
-    "@kitouch/utils": "7.0.0-0",
+    "@kitouch/shared-models": "7.1.0-0",
+    "@kitouch/utils": "7.1.0-0",
     "@angular/common": "18.2.6",
-    "@kitouch/shared-infra": "7.0.0-0",
-    "@kitouch/kit-data": "7.0.0-0",
-    "@kitouch/shared-services": "7.0.0-0"
+    "@kitouch/shared-infra": "7.1.0-0",
+    "@kitouch/kit-data": "7.1.0-0",
+    "@kitouch/shared-services": "7.1.0-0"
   },
   "sideEffects": false
 }

@@ -9,8 +9,8 @@
     "rxjs": "~7.8.0",
     "intro.js": "^7.2.0",
     "@ngrx/effects": "18.0.2",
-    "@kitouch/shared-infra": "7.0.0-0",
-    "@kitouch/shared-models": "7.0.0-0"
+    "@kitouch/shared-infra": "7.1.0-0",
+    "@kitouch/shared-models": "7.1.0-0"
   },
   "sideEffects": false
 }

@@ -4,17 +4,17 @@
   "peerDependencies": {
     "@angular/common": "18.2.6",
     "@angular/core": "18.2.6",
-    "@kitouch/kit-data": "7.0.0-0",
-    "@kitouch/shared-models": "7.0.0-0",
-    "@kitouch/ui-components": "7.0.0-0",
+    "@kitouch/kit-data": "7.1.0-0",
+    "@kitouch/shared-models": "7.1.0-0",
+    "@kitouch/ui-components": "7.1.0-0",
     "photoswipe": "^5.4.4",
     "@ngrx/store": "18.0.2",
     "rxjs": "~7.8.0",
     "@angular/router": "18.2.6",
-    "@kitouch/feat-follow-data": "7.0.0-0",
+    "@kitouch/feat-follow-data": "7.1.0-0",
     "primeng": "^17.18.1",
-    "@kitouch/shared-services": "7.0.0-0",
-    "@kitouch/shared-constants": "7.0.0-0"
+    "@kitouch/shared-services": "7.1.0-0",
+    "@kitouch/shared-constants": "7.1.0-0"
   },
   "sideEffects": false
 }

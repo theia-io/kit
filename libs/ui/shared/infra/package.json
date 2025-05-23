@@ -6,9 +6,9 @@
     "@angular/core": "^18.2.0",
     "@angular/router": "18.2.6",
     "rxjs": "~7.8.0",
-    "@kitouch/shared-models": "7.0.0-0",
-    "@kitouch/shared-constants": "7.0.0-0",
-    "@kitouch/kit-data": "7.0.0-0",
+    "@kitouch/shared-models": "7.1.0-0",
+    "@kitouch/shared-constants": "7.1.0-0",
+    "@kitouch/kit-data": "7.1.0-0",
     "@ngrx/store": "18.0.2"
   },
   "sideEffects": false
