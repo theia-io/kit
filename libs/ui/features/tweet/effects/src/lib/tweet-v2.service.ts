@@ -19,14 +19,15 @@ export class TweetV2Service {
   getFeed(
     profileId: string,
     followingProfileIds: string[],
-    cursor: string
+    cursor: string,
+    limit = 10
   ): Observable<FeedResponse> {
     return this.#http.get<FeedResponse>(
       `${this.#environment.api.tweets}/feed/${profileId}`,
       {
         params: {
           followingProfileIds: JSON.stringify(followingProfileIds),
-          limit: '10',
+          limit,
           cursor,
         },
       }
@@ -34,7 +35,7 @@ export class TweetV2Service {
   }
 
   getTweetsForProfile(profileId: Profile['id']) {
-    return this.getFeed(profileId, [], '');
+    return this.getFeed(profileId, [], '', 999);
   }
 
   getTweet(
