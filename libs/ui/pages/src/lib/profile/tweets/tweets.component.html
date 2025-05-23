@@ -1,4 +1,15 @@
-@for (tweet of (tweets$ | async); track $index) {
+@let tweets = tweets$ | async;
+
+{{ tweetsLazyState().hasNextPage ? 'Loading...' : 'No more tweets' }}
+
+{{
+  tweetsLazyState().hasNextPage && tweets && tweets.length > 0
+    ? 'Loading the feed items ...'
+    : 'No'
+}}
+
+<!-- tweets view -->
+@for (tweet of tweets; track $index) {
 <!-- if not first -->
 @if(!$first) {
 <ui-kit-divider class="block my-2" />
@@ -19,6 +30,21 @@
   } @else {
   <p>{{ profile()?.name }} has not tweeted anything yet</p>
   }
+</div>
+}
+
+<!-- lazyLoader -->
+@if(tweetsLazyState().hasNextPage && tweets && tweets.length > 0) {
+<div
+  #loadMoreTmpl
+  class="w-full flex flex-col justify-center items-center gap-2">
+  <ui-kit-spinner />
+  <p class="text-sm text-gray-400 font-semibold">Loading the feed items ...</p>
+</div>
+
+} @else if(!tweetsLazyState().hasNextPage && tweets && tweets.length > 0) {
+<div class="w-full flex justify-center items-center">
+  <p class="text-sm text-gray-400 font-semibold">That's the feed end.</p>
 </div>
 }
 

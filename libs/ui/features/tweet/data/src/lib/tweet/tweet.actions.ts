@@ -69,7 +69,11 @@ export const TweetApiActions = createActionGroup({
     GetFailure: props<{ tweetId: Tweety['id']; profileId: Profile['id'] }>(),
     //
     //
-    GetTweetsForProfile: props<{ profileId: string }>(),
+    GetTweetsForProfile: props<{
+      profileId: string;
+      nextCursor: string | null;
+      hasNextPage: boolean | null;
+    }>(),
     GetTweetsForProfileSuccess: props<{
       tweets: Tweety[];
       nextCursor: string;

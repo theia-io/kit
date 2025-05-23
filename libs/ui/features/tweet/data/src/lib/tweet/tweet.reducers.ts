@@ -9,14 +9,14 @@ import {
 
 export interface FeatureTweetState {
   tweets: Array<Tweety | ReTweety>;
-  nextCursor?: string;
-  hasNextPage?: boolean;
+  nextCursor: string | null;
+  hasNextPage: boolean | null;
 }
 
 const featTweetInitialState: FeatureTweetState = {
   tweets: [],
-  nextCursor: undefined,
-  hasNextPage: undefined,
+  nextCursor: null,
+  hasNextPage: null,
 };
 
 export const featTweetTweetsReducer = createReducer(
@@ -32,11 +32,15 @@ export const featTweetTweetsReducer = createReducer(
       tweets: addOrUpdate(tweet, stateTweets),
     })
   ),
-  on(TweetApiActions.getAll, TweetApiActions.getTweetsForProfile, (state) => ({
-    ...state,
-    hasNextPage: undefined,
-    nextCursor: undefined,
-  })),
+  on(
+    TweetApiActions.getAll,
+    TweetApiActions.getTweetsForProfile,
+    (state, { hasNextPage, nextCursor }) => ({
+      ...state,
+      hasNextPage: hasNextPage,
+      nextCursor: nextCursor,
+    })
+  ),
   on(
     TweetApiActions.getAllSuccess,
     TweetApiActions.getTweetsForProfileSuccess,

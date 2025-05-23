@@ -33,8 +33,8 @@ export class TweetV2Service {
     );
   }
 
-  getTweetsForProfile(profileId: Profile['id']) {
-    return this.getFeed(profileId, [], '');
+  getTweetsForProfile(profileId: Profile['id'], cursor: string) {
+    return this.getFeed(profileId, [], cursor);
   }
 
   getTweet(
