@@ -18,25 +18,14 @@
       </li>
 
       <li>
-        <a
-          (click)="onGenerateHandler()"
-          [routerLink]="farewellUrl() + '/generate'"
-          routerLinkActive="bg-slate-200 rounded text-gray-900"
-          pTooltip="New farewell"
-          uiKitSmallTextTailwindClasses
-          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
-          <i class="pi pi-file-edit mr-1 font-semibold"></i>
-          New farewell
-
-          <p-button
-            class="ml-auto"
-            styleClass="rounded-full p-0"
-            aria-label="create farewell">
-            <i
-              class="pi pi-plus p-1 duration-300 hover:rotate-180"
-              style="font-size: 0.5rem"></i>
-          </p-button>
-        </a>
+        <ui-kit-tweet-button
+          icon="pi-file-edit"
+          [iconAnimate]="false"
+          text="New Farewell"
+          severity="secondary"
+          kClass="border-2 border-[#020617]"
+          (click)="createFarewellHandler()"
+          class="w-48 mt-2" />
       </li>
     </ul>
   </li>
@@ -60,25 +49,14 @@
       </li>
 
       <li>
-        <a
-          [routerLink]="'/' + kudoBoardUrl() + '/generate'"
-          routerLinkActive="bg-slate-200 rounded text-gray-900"
-          pTooltip="New kudo board"
-          uiKitSmallTextTailwindClasses
-          [routerLinkActiveOptions]="{ exact: true }"
-          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
-          <i class="pi pi-sparkles mr-1 font-bold"></i>
-          New kudo board
-
-          <p-button
-            class="ml-auto"
-            styleClass="rounded-full p-0"
-            aria-label="create kudo board">
-            <i
-              class="pi pi-plus p-1 duration-300 hover:rotate-180"
-              style="font-size: 0.5rem"></i>
-          </p-button>
-        </a>
+        <ui-kit-tweet-button
+          icon="pi-sparkles"
+          [iconAnimate]="false"
+          text="New Kudo board"
+          severity="secondary"
+          kClass="border-2 border-[#020617]"
+          (click)="createKudoBoardHandler()"
+          class="w-48 mt-2" />
       </li>
     </ul>
   </li>

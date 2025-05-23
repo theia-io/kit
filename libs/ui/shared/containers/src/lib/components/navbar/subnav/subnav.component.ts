@@ -1,11 +1,15 @@
+import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
-import { UIKitSmallerHintTextUXDirective } from '@kitouch/ui-components';
-import { TooltipModule } from 'primeng/tooltip';
-import { ButtonModule } from 'primeng/button';
+import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { ENVIRONMENT, RouterEventsService } from '@kitouch/shared-infra';
+import {
+  UIKitSmallerHintTextUXDirective,
+  UiKitTweetButtonComponent,
+} from '@kitouch/ui-components';
+import { ButtonModule } from 'primeng/button';
+import { TooltipModule } from 'primeng/tooltip';
 import { SharedStaticInfoComponent } from '../../static-info/static-info.component';
-import { NgOptimizedImage } from '@angular/common';
 
 @Component({
   standalone: true,
@@ -20,6 +24,7 @@ import { NgOptimizedImage } from '@angular/common';
     //
     SharedStaticInfoComponent,
     UIKitSmallerHintTextUXDirective,
+    UiKitTweetButtonComponent,
   ],
 })
 export class SubnavComponent {
@@ -33,6 +38,14 @@ export class SubnavComponent {
   environment = inject(ENVIRONMENT);
   routerEventsService = inject(RouterEventsService);
   #router = inject(Router);
+
+  createFarewellHandler() {
+    this.#router.navigate([APP_PATH.Farewell, 'generate']);
+  }
+
+  createKudoBoardHandler() {
+    this.#router.navigate([APP_PATH_ALLOW_ANONYMOUS.KudoBoard, 'generate']);
+  }
 
   onGenerateHandler() {
     this.routerEventsService.saveUrlLatest(this.#router.url);

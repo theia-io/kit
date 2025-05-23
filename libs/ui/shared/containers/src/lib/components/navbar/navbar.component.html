@@ -74,24 +74,12 @@
   [iconAnimate]="false"
   text="Tweet Thoughts"
   (click)="tweetButtonHandler()"
-  class="w-48 mt-6" />
-<ui-kit-tweet-button
-  icon="pi-file-edit"
-  [iconAnimate]="false"
-  text="New Farewell"
-  (click)="createFarewellHandler()"
-  class="w-48 mt-2" />
-<ui-kit-tweet-button
-  icon="pi-sparkles"
-  [iconAnimate]="false"
-  text="New Kudo board"
-  (click)="createKudoBoardHandler()"
-  class="w-48 mt-2" />
+  class="w-48 my-6" />
 
 <a
   [routerLink]="profileUrl + '/' + profile()?.id"
   routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
-  <ui-kit-comp-card class="block mt-12">
+  <ui-kit-comp-card>
     <ui-kit-comp-account-tile
       [primaryText]="profile()?.name ?? 'N/A'"
       [picture]="profile()?.pictures?.[0]?.url" />
