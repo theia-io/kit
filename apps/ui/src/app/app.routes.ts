@@ -1,4 +1,3 @@
-import { PageOffboardingAllComponent } from './../../../../libs/ui/pages/src/lib/offboarding/all/all.component';
 import { inject } from '@angular/core';
 import { Route } from '@angular/router';
 import { LayoutService, PanelState } from '@kitouch/containers';
