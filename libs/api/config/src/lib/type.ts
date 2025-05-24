@@ -29,6 +29,8 @@ export interface S3Config {
   farewellBucket: string;
   //
   kudoBoardBucket: string;
+  //
+  offboardingBucket: string;
 }
 export interface Auth0Config {
   issuerBaseUrl: string;

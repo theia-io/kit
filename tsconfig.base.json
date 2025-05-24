@@ -30,6 +30,7 @@
       "@kitouch/be-offboardings": [
         "libs/api/features/offboardings/src/index.ts"
       ],
+      "@kitouch/be-shared": ["libs/api/shared/src/index.ts"],
       "@kitouch/be-tweet": ["libs/api/features/tweet/src/index.ts"],
       "@kitouch/containers": ["libs/ui/shared/containers/src/index.ts"],
       "@kitouch/data-kudoboard": [
@@ -59,6 +60,15 @@
         "libs/ui/features/kit/effects/src/index.ts"
       ],
       "@kitouch/feat-kit-ui": ["libs/ui/features/kit/ui/src/index.ts"],
+      "@kitouch/feat-offboarding-data": [
+        "libs/ui/features/offboarding/data/src/index.ts"
+      ],
+      "@kitouch/feat-offboarding-effects": [
+        "libs/ui/features/offboarding/effects/src/index.ts"
+      ],
+      "@kitouch/feat-offboarding-ui": [
+        "libs/ui/features/offboarding/ui/src/index.ts"
+      ],
       "@kitouch/feat-search": ["libs/ui/features/search/src/index.ts"],
       "@kitouch/feat-settings-data": [
         "libs/ui/features/settings/data/src/index.ts"

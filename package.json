@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "7.1.13-69b72dff",
+  "version": "7.1.14-c244aede",
   "license": "MIT",
   "engines": {
     "npm": ">=10.8.0",
@@ -54,6 +54,7 @@
     "@nestjs/terminus": "^10.2.3",
     "@nestjs/typeorm": "^10.0.2",
     "@ngrx/effects": "18.0.2",
+    "@ngrx/entity": "^18.0.2",
     "@ngrx/operators": "18.0.2",
     "@ngrx/router-store": "18.0.2",
     "@ngrx/signals": "18.0.2",

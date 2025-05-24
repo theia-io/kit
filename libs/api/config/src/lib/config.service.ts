@@ -97,6 +97,9 @@ export class ConfigService {
           process.env?.['S3_BUCKET_FAREWELL'] ?? 'kitouch-public-farewell',
         kudoBoardBucket:
           process.env?.['S3_BUCKET_KUDOBOARD'] ?? 'kitouch-public-kudoboard',
+        offboardingBucket:
+          process.env?.['S3_BUCKET_OFFBOARDING'] ??
+          'kitouch-public-offboarding',
       },
       auth: {
         issuerBaseUrl,

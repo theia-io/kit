@@ -1,24 +1,17 @@
+import {
+  ExpOffboardingStatus,
+  ExpOffboarding as IExpOffboarding,
+} from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { ExpOffboarding, ExpOffboardingDocument } from './schemas';
-import {
-  ExpOffboardingStatus,
-  ExpOffboarding as IExpOffboarding,
-  ExpOffboardingAnalytics as IExpOffboardingAnalytics,
-} from '@kitouch/shared-models';
-import {
-  ExpOffboardingAnalytics,
-  ExpOffboardingAnalyticsDocument,
-} from './schemas/offboarding-analytics.schema';
 
 @Injectable()
 export class BeExpOffboardingsService {
   constructor(
     @InjectModel(ExpOffboarding.name)
-    private offboardingModel: Model<ExpOffboardingDocument>,
-    @InjectModel(ExpOffboardingAnalytics.name)
-    private offboardingAnalyticsModel: Model<ExpOffboardingAnalyticsDocument>
+    private offboardingModel: Model<ExpOffboardingDocument>
   ) {}
 
   async getProfileOffboardings(profileId: string) {
@@ -114,8 +107,8 @@ export class BeExpOffboardingsService {
     offboardingId: string,
     {
       profileId,
-      kudoboardIds,
-      farewellIds,
+      kudoboardIds: __,
+      farewellIds: _,
       profileIdsNetwork,
       ...restOffboarding
     }: IExpOffboarding,
@@ -138,12 +131,12 @@ export class BeExpOffboardingsService {
           {
             ...restOffboarding,
             profileId: new mongoose.Types.ObjectId(profileId),
-            kudoboardIds: kudoboardIds?.map(
-              (id) => new mongoose.Types.ObjectId(id)
-            ),
-            farewellIds: farewellIds?.map(
-              (id) => new mongoose.Types.ObjectId(id)
-            ),
+            // kudoboardIds: kudoboardIds?.map(
+            //   (id) => new mongoose.Types.ObjectId(id)
+            // ),
+            // farewellIds: farewellIds?.map(
+            //   (id) => new mongoose.Types.ObjectId(id)
+            // ),
             profileIdsNetwork: profileIdsNetwork?.map(
               (id) => new mongoose.Types.ObjectId(id)
             ),
@@ -221,32 +214,5 @@ export class BeExpOffboardingsService {
     }
 
     return offboardingContentWithStatus;
-  }
-
-  async createAnalyticsOffboarding(
-    offboardingId: string,
-    {
-      offboardingId: _,
-      profileId,
-      ...restOffboardingAnalytics
-    }: IExpOffboardingAnalytics
-  ) {
-    let updatedOffboarding;
-
-    try {
-      updatedOffboarding = await this.offboardingAnalyticsModel.create({
-        ...restOffboardingAnalytics,
-        offboardingId: new mongoose.Types.ObjectId(offboardingId),
-        profileId: profileId ? new mongoose.Types.ObjectId(profileId) : null,
-      });
-    } catch (err) {
-      console.error(`Cannot execute Offboarding update for`, err);
-      throw new HttpException(
-        'Cannot update Offboarding',
-        HttpStatus.INTERNAL_SERVER_ERROR
-      );
-    }
-
-    return updatedOffboarding;
   }
 }

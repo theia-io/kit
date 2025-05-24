@@ -36,6 +36,11 @@ import {
   ProfileEffects,
   UserEffects,
 } from '@kitouch/feat-kit-effects';
+import { featExpOffboardingReducer } from '@kitouch/feat-offboarding-data';
+import {
+  OffboardingAnalyticsEffects,
+  OffboardingEffects,
+} from '@kitouch/feat-offboarding-effects';
 import { featTweetReducer } from '@kitouch/feat-tweet-data';
 import {
   BookmarkEffects,
@@ -163,8 +168,12 @@ export const appConfig: ApplicationConfig = {
       kit: accountFeatureReducer,
       tweet: featTweetReducer,
       kudoboard: featKudoBoardReducer,
+      onboarding: featExpOffboardingReducer,
     }),
     provideEffects([
+      // offboarding
+      OffboardingEffects,
+      OffboardingAnalyticsEffects,
       // kudoboard
       KudoBoardAnalyticsEffects,
       KudoBoardCommentsEffects,

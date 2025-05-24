@@ -19,6 +19,9 @@ export const environment: Environment = {
     kudoboardComments: 'https://apidev.kitouch.io/api/kudoboard-comments',
     kudoboardReactions: 'https://apidev.kitouch.io/api/kudoboard-reactions',
     kudoboardAnalytics: 'https://apidev.kitouch.io/api/kudoboard-analytics',
+    offboardings: 'https://apidev.kitouch.io/api/offboardings',
+    offboardingsAnalytics:
+      'https://apidev.kitouch.io/api/offboarding-analytics',
   },
   googleTagConfig: null,
   // IF `SCRIPT_REPLACED_PACKAGE_VERSION` is not found make sure to add it to the `build` so that it can be auto-replaced

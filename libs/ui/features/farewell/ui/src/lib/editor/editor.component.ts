@@ -102,9 +102,9 @@ export class FeatFarewellEditorComponent
   sideActionOpened = signal<boolean>(this.sideActionsShow()); // default value same as initial value `show`
 
   /** Used to auto focus quill to then end on initial page load  */
-  #autoFocusToEndTimeout: number | null = null;
+  #autoFocusToEndTimeout: any | null = null;
   /** when component is destroyed all ongoing timeout have to be cleared */
-  #clearSetTimeouts: Array<number> = [];
+  #clearSetTimeouts: Array<any> = [];
 
   constructor() {
     effect(() => {

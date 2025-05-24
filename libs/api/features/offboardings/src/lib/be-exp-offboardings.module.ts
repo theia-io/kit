@@ -2,6 +2,8 @@ import { Global, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { BeExpOffboardingsController } from './be-exp-offboardings.controller';
 import { BeExpOffboardingsService } from './be-exp-offboardings.service';
+import { BeOffboardingAnalyticsController } from './be-offboardings-analytics.controller';
+import { BeOffboardingAnalyticsService } from './be-offboardings-analytics.service';
 import { ExpOffboarding, ExpOffboardingSchema } from './schemas';
 import {
   ExpOffboardingAnalytics,
@@ -10,7 +12,7 @@ import {
 
 @Global()
 @Module({
-  controllers: [BeExpOffboardingsController],
+  controllers: [BeExpOffboardingsController, BeOffboardingAnalyticsController],
   imports: [
     MongooseModule.forFeatureAsync([
       {
@@ -23,7 +25,7 @@ import {
       },
     ]),
   ],
-  providers: [BeExpOffboardingsService],
-  exports: [BeExpOffboardingsService],
+  providers: [BeExpOffboardingsService, BeOffboardingAnalyticsService],
+  exports: [BeExpOffboardingsService, BeOffboardingAnalyticsService],
 })
 export class BeExpOffboardingsModule {}

@@ -1,7 +1,6 @@
 import { OptionalJwtAuthGuard } from '@kitouch/be-auth';
 import {
   Auth0Kit,
-  ExpOffboardingAnalytics,
   ExpOffboarding as IExpOffboarding,
 } from '@kitouch/shared-models';
 import {
@@ -19,20 +18,14 @@ import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
 import { BeExpOffboardingsService } from './be-exp-offboardings.service';
 
-@Controller('be-exp-offboardings')
+@Controller('offboardings')
 export class BeExpOffboardingsController {
   constructor(private beExpOffboardingsService: BeExpOffboardingsService) {}
 
-  @Get()
+  @Get('profile/:profileId')
   @UseGuards(AuthGuard('jwt'))
-  async getProfileOffboardings(@Req() req: Request) {
-    const currentProfileIds = ((req.user as Auth0Kit)?.profiles ?? [])
-      .map((profile) => profile?.id)
-      .filter(Boolean);
-
-    return this.beExpOffboardingsService.getProfileOffboardings(
-      currentProfileIds[0]
-    );
+  async getProfileOffboardings(@Param('profileId') profileId: string) {
+    return this.beExpOffboardingsService.getProfileOffboardings(profileId);
   }
 
   @Get(':offboardingId')
@@ -71,18 +64,6 @@ export class BeExpOffboardingsController {
       offboardingId,
       offboarding,
       currentProfileIds
-    );
-  }
-
-  @Post('analytics/:offboardingId')
-  @UseGuards(OptionalJwtAuthGuard)
-  async createAnalyticsOffboarding(
-    @Param('offboardingId') offboardingId: string,
-    @Body() offboarding: ExpOffboardingAnalytics
-  ) {
-    return this.beExpOffboardingsService.createAnalyticsOffboarding(
-      offboardingId,
-      offboarding
     );
   }
 

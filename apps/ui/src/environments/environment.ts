@@ -19,6 +19,8 @@ export const environment: Environment = {
     kudoboardComments: '/api/kudoboard-comments',
     kudoboardReactions: '/api/kudoboard-reactions',
     kudoboardAnalytics: '/api/kudoboard-analytics',
+    offboardings: '/api/offboardings',
+    offboardingsAnalytics: '/api/offboarding-analytics',
   },
   googleTagConfig: null,
   build: KIT_ENVS.localhost,

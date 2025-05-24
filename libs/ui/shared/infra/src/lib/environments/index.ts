@@ -26,6 +26,8 @@ export interface Environment {
     kudoboardComments: string;
     kudoboardReactions: string;
     kudoboardAnalytics: string;
+    offboardings: string;
+    offboardingsAnalytics: string;
   };
   googleTagConfig: string | null;
   build: string;

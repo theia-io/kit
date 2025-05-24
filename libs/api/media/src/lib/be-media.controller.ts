@@ -1,5 +1,6 @@
-import { RawBodyInterceptor } from '@kitouch/infra';
 import { ConfigService } from '@kitouch/be-config';
+import { getFullS3Url, getImageKeyFromS3Url } from '@kitouch/be-shared';
+import { RawBodyInterceptor } from '@kitouch/infra';
 import { ContractUploadedMedia } from '@kitouch/shared-models';
 import {
   Body,
@@ -99,6 +100,44 @@ export class MediaController {
       url,
       optimizedUrls,
     };
+  }
+
+  @Post('offboarding')
+  @UseInterceptors(new RawBodyInterceptor())
+  async saveOffboardingMedia(
+    @Query('name') name: string,
+    @Body() media: Buffer
+  ): Promise<ContractUploadedMedia> {
+    const dimensions = this.#getDimensions(media);
+
+    const bucketUrl = this.configService.getConfig('s3').offboardingBucket;
+
+    const { url, optimizedUrls } = await this.mediaService.upload({
+      bucket: bucketUrl,
+      file: media,
+      filePath: name,
+      fileType: dimensions.type ?? name.split('.').reverse()[0],
+    });
+
+    const { height, width } = dimensions;
+    return {
+      height,
+      width,
+      url: getFullS3Url(bucketUrl, url),
+      optimizedUrls: optimizedUrls.map((url) => getFullS3Url(bucketUrl, url)),
+    };
+  }
+
+  @Delete('offboarding')
+  async deleteOffboardingMedia(@Query('name') url: string): Promise<boolean> {
+    await this.mediaService.delete(
+      this.configService.getConfig('s3').offboardingBucket,
+      getImageKeyFromS3Url(
+        url,
+        this.configService.getConfig('s3').offboardingBucket
+      )
+    );
+    return true;
   }
 
   #getDimensions(media: Buffer) {

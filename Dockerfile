@@ -30,6 +30,7 @@ ENV S3_IDENTITY_POOL_ID=eu-north-1:0d7df556-9796-4d53-8387-aed1c71f8aec
 ENV S3_BUCKET_PROFILE=kitouch-public-profiles
 ENV S3_BUCKET_FAREWELL=kitouch-public-farewell
 ENV S3_BUCKET_KUDOBOARD=kitouch-public-kudoboard
+ENV S3_BUCKET_KUDOBOARD=kitouch-public-offboarding
 
 RUN npm run build:api
 
