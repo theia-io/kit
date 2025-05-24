@@ -15,6 +15,7 @@ export enum APP_PATH {
 
 /** For anonymous users also */
 export enum APP_PATH_ALLOW_ANONYMOUS {
+  Offboarding = `offboarding-reimagined`,
   Farewell = `keep-in-touch`,
   KudoBoard = `kudo-board`,
 }
@@ -60,6 +61,16 @@ export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
     separator: true,
   },
   {
+    label: 'Offboarding experience',
+    routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`,
+    icon: 'pi pi-heart-fill',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+  {
+    separator: true,
+  },
+  {
     label: 'Farewells',
     routerLink: `/${APP_PATH.Farewell}`,
     icon: 'pi pi-file-edit',
@@ -94,9 +105,9 @@ export const MOBILE_NAV_ITEMS: Array<MenuItem> = [
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
   {
-    label: 'Kudoboards',
-    routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
-    icon: 'pi pi-sparkles',
+    label: 'Offboarding',
+    routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`,
+    icon: 'pi pi-heart-fill',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
@@ -104,6 +115,13 @@ export const MOBILE_NAV_ITEMS: Array<MenuItem> = [
     label: 'Farewells',
     routerLink: `/${APP_PATH.Farewell}`,
     icon: 'pi pi-send',
+    iconClass: 'text-lg font-semibold',
+    styleClass: 'text-lg font-semibold ml-[-12px]',
+  },
+  {
+    label: 'Kudoboards',
+    routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
+    icon: 'pi pi-sparkles',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },

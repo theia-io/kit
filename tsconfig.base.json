@@ -18,6 +18,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
+      "@kitouch/aws": ["libs/api/aws/src/index.ts"],
       "@kitouch/be-auth": ["libs/api/auth/src/index.ts"],
       "@kitouch/be-bookmarks": ["libs/api/features/bookmarks/src/index.ts"],
       "@kitouch/be-config": ["libs/api/config/src/index.ts"],
@@ -26,6 +27,9 @@
       "@kitouch/be-kit": ["libs/api/features/kit/src/index.ts"],
       "@kitouch/be-kudoboard": ["libs/api/features/kudoboard/src/index.ts"],
       "@kitouch/be-media": ["libs/api/media/src/index.ts"],
+      "@kitouch/be-offboardings": [
+        "libs/api/features/offboardings/src/index.ts"
+      ],
       "@kitouch/be-tweet": ["libs/api/features/tweet/src/index.ts"],
       "@kitouch/containers": ["libs/ui/shared/containers/src/index.ts"],
       "@kitouch/data-kudoboard": [
@@ -74,7 +78,6 @@
       "@kitouch/infra": ["libs/api/infra/src/index.ts"],
       "@kitouch/kit-data": ["libs/ui/features/kit/data/src/index.ts"],
       "@kitouch/pages": ["libs/ui/pages/src/index.ts"],
-      "@kitouch/aws": ["libs/api/aws/src/index.ts"],
       "@kitouch/shared-constants": ["libs/ui/shared/constants/src/index.ts"],
       "@kitouch/shared-infra": ["libs/ui/shared/infra/src/index.ts"],
       "@kitouch/shared-models": ["libs/shared/models/src/index.ts"],

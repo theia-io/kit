@@ -34,6 +34,7 @@ export class KitController {
 
     const isAuthenticated = (req as any).oidc?.isAuthenticated();
 
+    // TODO FIXME @danylo: This to be refactored so it is trying to get our JWT token?
     if (isAuthenticated && !authUser) {
       throw new HttpException(
         'Redirect to auth provider',

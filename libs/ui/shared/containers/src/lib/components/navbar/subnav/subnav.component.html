@@ -1,5 +1,39 @@
 <ul class="flex flex-col space-y-4">
   <li>
+    <strong class="block text-xs font-semibold uppercase">Support</strong>
+
+    <ul>
+      <li>
+        <a
+          [routerLink]="introducingKitFarewell()"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
+          Explore product
+        </a>
+      </li>
+      <li>
+        <a
+          [href]="
+            'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
+            environment.build
+          "
+          target="_blank"
+          pTooltip="Write us email to info@kitouch.io"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
+          Email us
+          <img
+            ngSrc="/material-icons/mail.svg"
+            alt="Email us, external link"
+            class="ml-auto"
+            width="20"
+            height="20" />
+        </a>
+      </li>
+    </ul>
+  </li>
+
+  <li>
     <strong class="block text-xs font-semibold uppercase">Farewells</strong>
 
     <ul>
@@ -15,7 +49,7 @@
         </a>
       </li>
 
-      <li class="px-4 py-2 transition hover:shadow-xl">
+      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
         <ui-kit-tweet-button
           icon=""
           text="New Farewell"
@@ -43,7 +77,7 @@
         </a>
       </li>
 
-      <li class="px-4 py-2 transition hover:shadow-xl">
+      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
         <ui-kit-tweet-button
           icon=""
           text="New Kudo board"
@@ -51,40 +85,6 @@
           kClass="border-2 border-[#020617] py-1 text-sm font-medium"
           (click)="createKudoBoardHandler()"
           class="w-full" />
-      </li>
-    </ul>
-  </li>
-
-  <li>
-    <strong class="block text-xs font-semibold uppercase">Support</strong>
-
-    <ul>
-      <li>
-        <a
-          [href]="
-            'mailto:info@kitouch.io?subject=kitouch support&body=%0D%0A%0D%0A========%0A%0AExtra Information (for kitouch.io):%0A - version: ' +
-            environment.build
-          "
-          target="_blank"
-          pTooltip="Write us email to info@kitouch.io"
-          uiKitSmallTextTailwindClasses
-          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
-          Email us
-          <img
-            ngSrc="/material-icons/mail.svg"
-            alt="Email us, external link"
-            class="ml-auto"
-            width="20"
-            height="20" />
-        </a>
-      </li>
-      <li>
-        <a
-          [routerLink]="introducingKitFarewell()"
-          uiKitSmallTextTailwindClasses
-          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
-          Explore product
-        </a>
       </li>
     </ul>
   </li>

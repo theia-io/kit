@@ -14,6 +14,18 @@
     [placeholder]="placeholderText"></textarea>
 
   <div class="flex justify-end gap-4">
+    @let tweetLength = tweetContentControl.value?.length ?? 0;
+    <p class="mr-auto text-xs text-gray-400">
+      <span
+        [ngClass]="
+          tweetLength < 2 || tweetLength > 1000
+            ? 'text-red-400 font-semibold'
+            : ''
+        ">
+        {{ tweetLength }}
+      </span>
+      / 1000
+    </p>
     <p-button
       label="Clear"
       severity="secondary"
@@ -23,7 +35,10 @@
       [ngClass]="
         (deviceService.isMobile$ | async) === false ? 'min-h-[62px]' : ''
       ">
-      <p-button (onClick)="tweetingHandle()" aria-label="tweet">
+      <p-button
+        [disabled]="!this.tweetContentControl.valid"
+        (onClick)="tweetingHandle()"
+        aria-label="tweet">
         <span class="px-3">Tweet</span>
         <i class="pi pi-send animate-wiggle" style="font-size: 1.5rem"></i>
       </p-button>

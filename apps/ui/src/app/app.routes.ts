@@ -1,3 +1,4 @@
+import { PageOffboardingAllComponent } from './../../../../libs/ui/pages/src/lib/offboarding/all/all.component';
 import { inject } from '@angular/core';
 import { Route } from '@angular/router';
 import { LayoutService, PanelState } from '@kitouch/containers';
@@ -13,11 +14,10 @@ import {
   onlyForNotLoggedInGuard,
 } from '@kitouch/shared-infra';
 import { KitComponent } from './kit.component';
-
-const pages = import('@kitouch/pages');
-
-const pathWithAppPrefix = (path: string) =>
-  path.split('app').slice(1).join('').slice(1);
+import { LOGIN_ROUTES } from './routes/login.routes';
+import { pages, pathWithAppPrefix } from './routes/shared';
+import { STATIC_FEATURES_ROUTE } from './routes/static-features.route';
+import { STATIC_LEGAL_ROUTES } from './routes/static-legal.routes';
 
 export const appRoutes: Route[] = [
   {
@@ -38,70 +38,14 @@ export const appRoutes: Route[] = [
           },
         ],
       },
+      STATIC_FEATURES_ROUTE,
+      ...LOGIN_ROUTES,
+      ...STATIC_LEGAL_ROUTES,
       {
-        path: APP_PATH_STATIC_PAGES.Features,
-        title: 'Features',
-        loadComponent: () => pages.then((comp) => comp.PagesFeatureComponent),
-        children: [
-          {
-            path: APP_PATH_STATIC_PAGES.FeaturesConnected,
-            title: 'Features - Connected',
-            loadComponent: () =>
-              pages.then((comp) => comp.PagesFeatureConnectedComponent),
-          },
-          {
-            path: APP_PATH_STATIC_PAGES.FeaturesFarewell,
-            title: 'Features - Farewell',
-            loadComponent: () =>
-              pages.then((comp) => comp.PagesFeatureFarewellComponent),
-          },
-          {
-            path: APP_PATH_STATIC_PAGES.FeaturesKudoboard,
-            title: 'Features - Kudo Board',
-            loadComponent: () =>
-              pages.then((comp) => comp.PagesFeatureKudoBoardComponent),
-          },
-        ],
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.SignIn,
-        title: 'Kitouch - Sign In',
-        loadComponent: () => pages.then((comp) => comp.PageSignInComponent),
-        canActivate: [onlyForNotLoggedInGuard],
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.Redirect,
-        title: 'Kitouch - Redirect',
+        path: `${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/:id`,
+        title: 'Kitouch - Offboarding reimagined',
         loadComponent: () =>
-          pages.then((comp) => comp.PageRedirectAuth0Component),
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.SignInSemiSilent,
-        title: 'Kitouch - Semi Silent Sign In',
-        loadComponent: () =>
-          pages.then((comp) => comp.PageSignInResolveSemiSilentComponent),
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.Join,
-        title: 'Kitouch - Join',
-        loadComponent: () => pages.then((comp) => comp.PageJoinComponent),
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.TermsAndConditions,
-        title: 'Kitouch - Terms and Conditions',
-        loadComponent: () =>
-          pages.then((comp) => comp.PageTermsConditionsComponent),
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.PrivacyPolicy,
-        title: 'Kitouch - Privacy Policy',
-        loadComponent: () =>
-          pages.then((comp) => comp.PagePrivacyPolicyComponent),
-      },
-      {
-        path: APP_PATH_STATIC_PAGES.Cookie,
-        title: 'Kitouch - Cookie',
-        loadComponent: () => pages.then((comp) => comp.PageCookiesComponent),
+          pages.then((comp) => comp.PageFarewellViewComponent),
       },
       {
         path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
@@ -140,12 +84,6 @@ export const appRoutes: Route[] = [
           pages.then((comp) => comp.KitPagesIntroduceKitComponent),
       },
     ],
-  },
-  {
-    path: APP_PATH.AboutYourself,
-    title: 'Kitouch - About yourself',
-    canActivate: [onlyForLoggedInGuard],
-    loadComponent: () => pages.then((comp) => comp.PageAboutYourselfComponent),
   },
   {
     path: '',
@@ -221,6 +159,25 @@ export const appRoutes: Route[] = [
             title: 'Kitouch - Follow Suggestions',
             loadComponent: () =>
               pages.then((comp) => comp.PageSuggestionComponent),
+          },
+          {
+            path: APP_PATH_ALLOW_ANONYMOUS.Offboarding,
+            title: 'Kitouch - All Offboardings',
+            canActivate: [
+              () =>
+                inject(LayoutService).rightPanelState.set(PanelState.Closed),
+            ],
+            canDeactivate: [
+              () =>
+                inject(LayoutService).rightPanelState.set(PanelState.Opened),
+            ],
+            children: [
+              {
+                path: '',
+                loadComponent: () =>
+                  pages.then((comp) => comp.PageOffboardingAllComponent),
+              },
+            ],
           },
           {
             path: pathWithAppPrefix(APP_PATH.Farewell),

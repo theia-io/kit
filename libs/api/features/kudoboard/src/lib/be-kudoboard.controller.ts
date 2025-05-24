@@ -22,6 +22,7 @@ export class BeKudoboardController {
 
   @Get()
   @UseGuards(AuthGuard('jwt'))
+  // todo take profileid from req.user
   async getProfileKudoboards(@Query('profileId') profileId: string) {
     return this.beKudoboardService.getProfileKudoboards(profileId);
   }

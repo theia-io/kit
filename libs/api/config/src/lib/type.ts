@@ -16,6 +16,8 @@ export interface Config {
   s3: S3Config;
   // Auth0
   auth: Auth0Config;
+  // sec
+  csrfSec: string;
 }
 //
 export interface S3Config {

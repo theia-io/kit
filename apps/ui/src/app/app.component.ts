@@ -23,7 +23,8 @@ export class AppComponent implements OnInit {
   #activitySessionCheckService = inject(ActivitySessionCheckService);
 
   constructor() {
-    this.#activitySessionCheckService.keepSessionAlive();
+    /** @fixme @todo broken, keeps infinite redirects and kills tab */
+    // this.#activitySessionCheckService.keepSessionAlive();
   }
 
   ngOnInit() {

@@ -77,8 +77,15 @@ export class ConfigService {
       process.exit(1);
     }
 
+    const csrfSec = process.env['CSRF_SECRET'];
+    if (!csrfSec) {
+      console.error('missing CSRF secret');
+      process.exit(1);
+    }
+
     this.#config = {
       atlasUri,
+      csrfSec,
       s3: {
         region: process.env?.['S3_REGION'] ?? 'eu-north-1',
         identityPoolId:

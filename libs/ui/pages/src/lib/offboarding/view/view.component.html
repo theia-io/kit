@@ -1,0 +1,85 @@
+<!-- Kudoboard -->
+@let kudoboard = (kudoboard$ | async);
+<!-- status -->
+@let status= kudoboard?.status;
+
+<!-- Breadcrumb menu -->
+@if(kudoOwner() && preview()) {
+<p-breadcrumb
+  class="block mt-4 max-w-full"
+  [model]="(breadcrumbMenuItems$ | async) ?? []">
+  <ng-template pTemplate="item" #item let-item>
+    <a class="cursor-pointer" [routerLink]="item.url">
+      <i [class]="item.icon"></i>
+      {{ item.label }}
+    </a>
+    @if(item?.label === kudoboard?.title && status) {
+    <feat-kudoboard-status
+      class="ml-2"
+      [status]="status"
+      [showTooltip]="true" />
+    }
+  </ng-template>
+</p-breadcrumb>
+}
+
+<!-- Overlay for draft -->
+@if(!kudoOwner() && kudoboardLoadingState()?.loaded) {
+<ui-kit-page-overlay
+  [show]="kudoboard?.status !== kudoBoardStatus.Published"
+  [text]="(kudoBoardOverlayText$ | async) ?? ''">
+  @if(kudoboardProfile(); as profile) {
+  <feat-kit-profile-header
+    class="block relative p-2 bg-white"
+    [profile]="profile"></feat-kit-profile-header>
+  }
+</ui-kit-page-overlay>
+}
+
+<div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
+  @if(kudoboardProfile(); as profile) {
+  <ui-kit-comp-account-tile
+    sharedAuthorizedFeature
+    [primaryText]="kudoBoardProfileTexts().primaryText"
+    [secondaryText]="kudoBoardProfileTexts().secondaryText"
+    [picture]="kudoboardProfilePic()"
+    [link]="profileUrl + (profile.alias ?? profile.id)" />
+  }
+
+  <div
+    class="container shadow-sm mx-auto px-2 md:px-0 py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
+    <feat-kudoboard-actions
+      class="block container mx-auto"
+      [kudoboardId]="kudoboardId$ | async" />
+  </div>
+
+  <div class="container mx-auto px-2 md:px-0">
+    <feat-kudoboard-view class="grow" [id]="kudoboardId$ | async" />
+  </div>
+
+  <div class="container mx-auto px-2 md:px-0">
+    @if(kudoboard) {
+    <feat-kudoboard-info-panel
+      class="float-right"
+      [kudoboard]="kudoboard"
+      [myLinkedFarewells]="myFarewellsKudoResponses$ | async"
+      [preview]="preview()" />
+    }
+  </div>
+
+  <!-- Comments if collecting -->
+  <div class="container mx-auto px-2 md:px-0">
+    <feat-kudoboard-comments
+      [kudoboardId]="kudoboardId$ | async"
+      [canComment]="!view()" />
+  </div>
+
+  <!-- Additional CTA actions -->
+  @if(!view() && kudoboard) {
+  <feat-kudoboard-view-additional-actions
+    class="block mb-8"
+    [id]="kudoboard.id" />
+  }
+
+  <p-toast />
+</div>

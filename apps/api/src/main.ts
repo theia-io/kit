@@ -14,6 +14,8 @@ import { LoggingInterceptor } from '@kitouch/infra';
 import { Auth0Kit, Auth0User } from '@kitouch/shared-models';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
+import helmet from 'helmet';
+import { doubleCsrf } from 'csrf-csrf';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -253,6 +255,35 @@ async function bootstrap() {
   app.use(AppWideLogger(app));
   app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalPipes(new ValidationPipe());
+
+  const {
+    doubleCsrfProtection, // This is the default CSRF protection middleware.
+  } = doubleCsrf({
+    getSecret: () => configService.getConfig('csrfSec'), // A function that optionally takes the request and returns a secret
+    getSessionIdentifier: (req) => req.session.id, // A function that returns the unique identifier for the request
+  });
+  app.use(doubleCsrfProtection);
+
+  app.use(
+    helmet({
+      crossOriginEmbedderPolicy: false,
+      contentSecurityPolicy: {
+        directives: {
+          imgSrc: [
+            `'self'`,
+            'data:',
+            'apollo-server-landing-page.cdn.apollographql.com',
+          ],
+          scriptSrc: [`'self'`, `https: 'unsafe-inline'`],
+          manifestSrc: [
+            `'self'`,
+            'apollo-server-landing-page.cdn.apollographql.com',
+          ],
+          frameSrc: [`'self'`, 'sandbox.embed.apollographql.com'],
+        },
+      },
+    })
+  );
 
   const port = process.env.PORT || 3000;
   await app.listen(port);

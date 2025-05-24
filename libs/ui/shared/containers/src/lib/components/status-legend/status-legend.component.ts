@@ -1,6 +1,6 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
-import { FarewellStatus, KudoBoardStatus } from '@kitouch/shared-models';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { FarewellStatus } from '@kitouch/shared-models';
 import { Tag, TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
 

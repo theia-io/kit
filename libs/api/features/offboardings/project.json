@@ -1,0 +1,27 @@
+{
+  "name": "be-exp-offboardings",
+  "$schema": "../../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/api/features/offboardings/src",
+  "projectType": "library",
+  "tags": ["scope:api"],
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/api/features/offboardings",
+        "tsConfig": "libs/api/features/offboardings/tsconfig.lib.json",
+        "packageJson": "libs/api/features/offboardings/package.json",
+        "main": "libs/api/features/offboardings/src/index.ts",
+        "assets": ["libs/api/features/offboardings/*.md"]
+      }
+    },
+    "test": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{workspaceRoot}/coverage/{projectRoot}"],
+      "options": {
+        "jestConfig": "libs/api/features/offboardings/jest.config.ts"
+      }
+    }
+  }
+}

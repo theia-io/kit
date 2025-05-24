@@ -2,7 +2,7 @@ import { Bookmark as IBookmark } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
-import { Bookmark, BookmarkDocument } from './schemas';
+import { Bookmark, BookmarkDocument } from './schemas/bookmarks.schema';
 
 @Injectable()
 export class BeBookmarksService {
