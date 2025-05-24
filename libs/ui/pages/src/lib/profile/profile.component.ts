@@ -88,7 +88,7 @@ export class PageProfileComponent {
         ? [
             { label: '', icon: 'pi pi-inbox', routerLink: 'activity' },
             { label: '', icon: 'pi pi-briefcase', routerLink: 'experience' },
-            { label: '', icon: 'pi pi-users', routerLink: 'following' },
+            { label: '', icon: 'pi pi-users', routerLink: 'connections' },
           ]
         : [
             { label: 'Activity', icon: 'pi pi-inbox', routerLink: 'activity' },
