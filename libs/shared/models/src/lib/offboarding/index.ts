@@ -1,12 +1,11 @@
-import { KitTimestamp } from '../helpers';
+import { AnalyticsEvent, KitTimestamp } from '../helpers';
 
 export enum ExpOffboardingStatus {
-  Created = 'created',
   Draft = 'draft',
   Collecting = 'collecting',
   Shared = 'shared',
   Responded = 'responded',
-  Closed = 'closed',
+  Deleted = 'deleted',
 }
 
 export interface ExpOffboarding extends Partial<KitTimestamp> {
@@ -18,4 +17,12 @@ export interface ExpOffboarding extends Partial<KitTimestamp> {
   receiverEmail: string;
   content: string;
   status: ExpOffboardingStatus;
+  profileIdsNetwork: Array<string>;
+}
+
+export interface ExpOffboardingAnalytics extends Partial<KitTimestamp> {
+  id: string;
+  offboardingId: string;
+  profileId: string;
+  event: AnalyticsEvent;
 }

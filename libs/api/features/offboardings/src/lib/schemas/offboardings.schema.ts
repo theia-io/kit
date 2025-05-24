@@ -54,6 +54,13 @@ export class ExpOffboarding {
     enum: ExpOffboardingStatus,
   })
   status: ExpOffboardingStatus;
+
+  @Prop({
+    type: [mongoose.Schema.Types.ObjectId],
+    ref: 'Profile',
+    required: true,
+  })
+  profilesIdsNetwork: Types.ObjectId[];
 }
 
 export const ExpOffboardingSchema =
