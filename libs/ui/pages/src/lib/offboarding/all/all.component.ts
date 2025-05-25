@@ -25,7 +25,6 @@ import {
 } from '@kitouch/ui-components';
 import {
   FeatKudoboardInfoPanelComponent,
-  FeatKudoBoardIntoComponent,
   FeatKudoBoardViewComponent,
 } from '@kitouch/ui-kudoboard';
 import { select, Store } from '@ngrx/store';

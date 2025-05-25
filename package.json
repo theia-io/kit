@@ -1,6 +1,6 @@
 {
   "name": "@kitouch/source",
-  "version": "7.1.14-c244aede",
+  "version": "7.1.15-c27f27ee",
   "license": "MIT",
   "engines": {
     "npm": ">=10.8.0",

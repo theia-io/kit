@@ -44,7 +44,7 @@ export const appRoutes: Route[] = [
         path: `${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/:id`,
         title: 'Kitouch - Offboarding reimagined',
         loadComponent: () =>
-          pages.then((comp) => comp.PageFarewellViewComponent),
+          pages.then((comp) => comp.PageOffboardingViewComponent),
       },
       {
         path: `${APP_PATH_ALLOW_ANONYMOUS.Farewell}/:id`,
@@ -173,8 +173,21 @@ export const appRoutes: Route[] = [
             children: [
               {
                 path: '',
+                title: 'Kitouch - All offboarding experiences',
                 loadComponent: () =>
                   pages.then((comp) => comp.PageOffboardingAllComponent),
+              },
+              {
+                path: 'edit/:id',
+                title: 'Kitouch - Edit offboarding experience',
+                loadComponent: () =>
+                  pages.then((comp) => comp.PageOffboardingViewComponent),
+              },
+              {
+                path: 'generate',
+                title: 'Kitouch - New offboarding experience',
+                loadComponent: () =>
+                  pages.then((comp) => comp.PageOffboardingEditComponent),
               },
             ],
           },

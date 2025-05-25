@@ -40,6 +40,7 @@ import { featExpOffboardingReducer } from '@kitouch/feat-offboarding-data';
 import {
   OffboardingAnalyticsEffects,
   OffboardingEffects,
+  OffboardingMediaEffects,
 } from '@kitouch/feat-offboarding-effects';
 import { featTweetReducer } from '@kitouch/feat-tweet-data';
 import {
@@ -174,6 +175,7 @@ export const appConfig: ApplicationConfig = {
       // offboarding
       OffboardingEffects,
       OffboardingAnalyticsEffects,
+      OffboardingMediaEffects,
       // kudoboard
       KudoBoardAnalyticsEffects,
       KudoBoardCommentsEffects,
