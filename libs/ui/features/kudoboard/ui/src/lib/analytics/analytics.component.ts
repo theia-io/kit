@@ -62,19 +62,22 @@ export class FeatKudoBoardAnalyticsComponent {
         filter(Boolean),
         take(1),
         delay(2500),
-        withLatestFrom(this.#store.pipe(select(selectCurrentProfile))),
+        withLatestFrom(
+          this.#store.pipe(select(selectCurrentProfile)),
+          this.kudoboard$
+        ),
         takeUntilDestroyed()
       )
-      .subscribe(([kudoboardId, currentProfile]) =>
-        this.#visitorActions(kudoboardId, currentProfile)
+      .subscribe(([kudoboardId, currentProfile, kudoboard]) =>
+        this.#visitorActions(
+          kudoboardId,
+          (currentProfile?.id ?? 'X') === (kudoboard?.profileId ?? 'Y')
+        )
       );
   }
 
-  #visitorActions(
-    kudoBoardId: KudoBoard['id'],
-    currentProfile: Profile | undefined
-  ) {
-    if (this.preview() && currentProfile) {
+  #visitorActions(kudoBoardId: KudoBoard['id'], owner: boolean) {
+    if (this.preview() && owner) {
       // Only when it is current profile and its kudoboard we consider
       // such users real previewers
       return;

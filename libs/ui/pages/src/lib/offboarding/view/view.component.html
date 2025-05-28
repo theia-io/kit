@@ -1,7 +1,7 @@
 <!-- Kudoboard -->
-@let kudoboard = (kudoboard$ | async);
+@let offboarding = (offboarding$ | async);
 <!-- status -->
-@let status= kudoboard?.status;
+@let status= offboarding?.status;
 
 <!-- Breadcrumb menu -->
 @if(kudoOwner() && preview()) {
@@ -13,8 +13,8 @@
       <i [class]="item.icon"></i>
       {{ item.label }}
     </a>
-    @if(item?.label === kudoboard?.title && status) {
-    <feat-kudoboard-status
+    @if(item?.label === offboarding?.title && status) {
+    <feat-offboarding-status
       class="ml-2"
       [status]="status"
       [showTooltip]="true" />
@@ -26,7 +26,7 @@
 <!-- Overlay for draft -->
 @if(!kudoOwner() && kudoboardLoadingState()?.loaded) {
 <ui-kit-page-overlay
-  [show]="kudoboard?.status !== kudoBoardStatus.Published"
+  [show]="offboarding?.status !== kudoBoardStatus.Published"
   [text]="(kudoBoardOverlayText$ | async) ?? ''">
   @if(kudoboardProfile(); as profile) {
   <feat-kit-profile-header
@@ -48,20 +48,20 @@
 
   <div
     class="container shadow-sm mx-auto px-2 md:px-0 py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
-    <feat-kudoboard-actions
+    <feat-offboarding-actions
       class="block container mx-auto"
       [kudoboardId]="kudoboardId$ | async" />
   </div>
 
   <div class="container mx-auto px-2 md:px-0">
-    <feat-kudoboard-view class="grow" [id]="kudoboardId$ | async" />
+    <feat-offboarding-view class="grow" [id]="kudoboardId$ | async" />
   </div>
 
   <div class="container mx-auto px-2 md:px-0">
-    @if(kudoboard) {
-    <feat-kudoboard-info-panel
+    @if(offboarding) {
+    <feat-offboarding-info-panel
       class="float-right"
-      [kudoboard]="kudoboard"
+      [offboarding]="offboarding"
       [myLinkedFarewells]="myFarewellsKudoResponses$ | async"
       [preview]="preview()" />
     }
@@ -69,16 +69,16 @@
 
   <!-- Comments if collecting -->
   <div class="container mx-auto px-2 md:px-0">
-    <feat-kudoboard-comments
+    <feat-offboarding-comments
       [kudoboardId]="kudoboardId$ | async"
       [canComment]="!view()" />
   </div>
 
   <!-- Additional CTA actions -->
-  @if(!view() && kudoboard) {
-  <feat-kudoboard-view-additional-actions
+  @if(!view() && offboarding) {
+  <feat-offboarding-view-additional-actions
     class="block mb-8"
-    [id]="kudoboard.id" />
+    [id]="offboarding.id" />
   }
 
   <p-toast />

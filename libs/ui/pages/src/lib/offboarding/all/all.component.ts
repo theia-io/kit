@@ -7,14 +7,20 @@ import {
   SharedCopyClipboardComponent,
   SharedStatusLegendComponent,
 } from '@kitouch/containers';
+
 import {
-  FeatKudoBoardActions,
-  selectKudoBoards,
-} from '@kitouch/data-kudoboard';
+  FeatExpOffboardingActions,
+  selectExpOffboardings,
+} from '@kitouch/feat-offboarding-data';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
+import {
+  ExpOffboarding,
+  ExpOffboardingStatus,
+  Profile,
+} from '@kitouch/shared-models';
+
 import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
@@ -27,6 +33,7 @@ import {
   FeatKudoboardInfoPanelComponent,
   FeatKudoBoardViewComponent,
 } from '@kitouch/ui-kudoboard';
+
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -79,47 +86,39 @@ export class PageOffboardingAllComponent {
     takeUntilDestroyed()
   );
 
-  myKudos$ = combineLatest([
-    this.#store.pipe(select(selectKudoBoards)),
+  myOffboardings$ = combineLatest([
+    this.#store.pipe(select(selectExpOffboardings)),
     this.#currentProfile$,
   ]).pipe(
-    map(([kudos, currentProfile]) =>
-      kudos.filter(
-        ({ profileId, profile }) =>
-          (profileId ?? profile?.id ?? null) === currentProfile.id
-      )
+    map(([offboardings, currentProfile]) =>
+      offboardings.filter(({ profileId }) => profileId === currentProfile.id)
     ),
-    map((kudoboards) =>
-      kudoboards
+    map((offboardings) =>
+      offboardings
         .slice()
-        .sort((a, b) =>
-          sortByCreatedTimeDesc(
-            a.createdAt ?? (a as any).timestamp?.createdAt,
-            b.createdAt ?? (b as any).timestamp?.createdAt
-          )
-        )
+        .sort((a, b) => sortByCreatedTimeDesc(a.createdAt, b.createdAt))
     )
   );
 
-  kudoBoardGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
-  readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
-  readonly kudoBoardStatus = KudoBoardStatus;
+  offboardingGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/generate`;
+  readonly offboardingPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`;
+  readonly offboardingStatus = ExpOffboardingStatus;
 
   constructor() {
     this.#currentProfile$.subscribe(({ id }) =>
       this.#store.dispatch(
-        FeatKudoBoardActions.getProfileKudoBoards({ profileId: id })
+        FeatExpOffboardingActions.getProfileExpOffboardings({ profileId: id })
       )
     );
   }
 
-  onDeleteHandler(kudoboard: KudoBoard, event: Event) {
+  onDeleteHandler({ title, id }: ExpOffboarding, event: Event) {
     this.#confirmationService.confirm({
       target: event.target as EventTarget,
       // TODO Add functionality to show analytics (and possibly prevent unneeded or unintended deletions)
-      //  `It has ${kudoboard.viewed} views.`
+      //  `It has ${offboarding.viewed} views.`
       message: `
-        Do you want to delete "${kudoboard.title}"?`,
+        Do you want to delete "${title}"?`,
       header: 'Delete Confirmation',
       icon: 'pi pi-info-circle',
       acceptButtonStyleClass: 'p-button-danger p-button-text',
@@ -131,17 +130,17 @@ export class PageOffboardingAllComponent {
         this.#messageService.add({
           severity: 'success',
           summary: 'Confirmed',
-          detail: `${kudoboard.title} is deleted.`,
+          detail: `${title} is deleted.`,
         });
         this.#store.dispatch(
-          FeatKudoBoardActions.deleteKudoBoard({ id: kudoboard.id })
+          FeatExpOffboardingActions.deleteExpOffboarding({ id })
         );
       },
       reject: () => {
         this.#messageService.add({
           severity: 'info',
           summary: 'Was not deleted',
-          detail: `${kudoboard.title} was not deleted.`,
+          detail: `${title} was not deleted.`,
         });
       },
     });

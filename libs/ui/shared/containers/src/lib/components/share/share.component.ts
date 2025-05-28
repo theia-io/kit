@@ -11,7 +11,7 @@ import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import { farewellLink, kudoboardLink } from './share';
+import { farewellLink, kudoboardLink, offboardingLink } from './share';
 
 /**
  * @deprecated until refactored. refactor so that can provide anything to share as well as look & feel can be configured from outside
@@ -26,7 +26,7 @@ import { farewellLink, kudoboardLink } from './share';
 })
 export class SharedCopyClipboardComponent {
   id = input.required<string>();
-  type = input.required<'farewell' | 'kudoboard'>();
+  type = input.required<'farewell' | 'kudoboard' | 'offboarding'>();
   gifting = input<boolean>(false);
   bigger = input<boolean>(false);
 
@@ -37,24 +37,34 @@ export class SharedCopyClipboardComponent {
 
   copyToClipBoard() {
     const originalUrl = this.#document.location.origin;
-    const url =
-      this.type() === 'farewell'
-        ? farewellLink(originalUrl, this.id())
-        : kudoboardLink(originalUrl, this.id(), this.gifting());
-    navigator.clipboard.writeText(url);
+    let url = null;
 
-    this.linkCopied.set(true);
-    // TODO add also bubbling text saying that copied
-    setTimeout(() => {
-      this.linkCopied.set(false);
-    }, 5000);
+    switch (this.type()) {
+      case 'farewell':
+        url = farewellLink(originalUrl, this.id());
+        break;
+      case 'kudoboard':
+        url = kudoboardLink(originalUrl, this.id(), this.gifting());
+        break;
+      case 'offboarding':
+        url = offboardingLink(originalUrl, this.id());
+    }
 
-    this.#messageService.clear();
-    this.#messageService.add({
-      severity: 'info',
-      summary: `${capitalizeFirstLetter(this.type())} link copied`,
-      detail: `You can share this ${this.type()} link with your (ex-) colleagues and friends!`,
-      life: 5000,
-    });
+    if (!url) {
+      navigator.clipboard.writeText(url);
+      this.linkCopied.set(true);
+      // TODO add also bubbling text saying that copied
+      setTimeout(() => {
+        this.linkCopied.set(false);
+      }, 5000);
+
+      this.#messageService.clear();
+      this.#messageService.add({
+        severity: 'info',
+        summary: `${capitalizeFirstLetter(this.type())} link copied`,
+        detail: `You can share this ${this.type()} link with your (ex-) colleagues and friends!`,
+        life: 5000,
+      });
+    }
   }
 }

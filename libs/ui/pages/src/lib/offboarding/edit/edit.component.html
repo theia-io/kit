@@ -54,7 +54,7 @@
           </a>
 
           @if(kudoBoard && item?.label === kudoBoard?.title) {
-          <feat-kudoboard-status
+          <feat-offboarding-status
             class="ml-2"
             [status]="kudoBoard.status"
             [showTooltip]="true" />
@@ -65,7 +65,7 @@
         </ng-template>
       </p-breadcrumb>
 
-      <feat-kudoboard-edit
+      <feat-offboarding-edit
         class="block grow container mx-auto p-6"
         [id]="kudoBoardId$ | async"
         (doneKudoTmpl)="doneTmpl = $event"

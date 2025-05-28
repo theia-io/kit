@@ -3,12 +3,12 @@ import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
-  FeatKudoBoardActions,
+  FeatExpOffboardingActions,
   FeatKudoBoardAnalyticsActions,
   FeatKudoBoardCommentActions,
   FeatKudoBoardReactionActions,
   selectKudoBoardById,
-} from '@kitouch/data-kudoboard';
+} from '@kitouch/data-offboarding';
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { ofType } from '@ngrx/effects';
 
@@ -24,13 +24,13 @@ import {
   UiKitPageOverlayComponent,
 } from '@kitouch/ui-components';
 import {
-  FeatKudoBoardActionsComponent,
+  FeatExpOffboardingActionsComponent,
   FeatKudoBoardCommentsComponent,
   FeatKudoboardInfoPanelComponent,
   FeatKudoBoardStatusComponent,
   FeatKudoBoardViewAdditionalActionsComponent,
   FeatKudoBoardViewComponent,
-} from '@kitouch/ui-kudoboard';
+} from '@kitouch/ui-offboarding';
 
 import { select, Store } from '@ngrx/store';
 import { MenuItem, MessageService } from 'primeng/api';
@@ -84,7 +84,7 @@ import {
     //
     AccountTileComponent,
     FeatKitProfileHeaderComponent,
-    FeatKudoBoardActionsComponent,
+    FeatExpOffboardingActionsComponent,
     FeatKudoBoardViewComponent,
     FeatKudoBoardCommentsComponent,
     UiKitPageOverlayComponent,
@@ -113,26 +113,26 @@ export class PageOffboardingViewComponent {
     map((params) => params['id']),
     shareReplay()
   );
-  kudoboard$ = this.kudoboardId$.pipe(
+  offboarding$ = this.kudoboardId$.pipe(
     switchMap((kudoboardId) =>
       this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
     ),
     filter(Boolean)
   );
-  #kudoBoard = toSignal(this.kudoboard$);
+  #kudoBoard = toSignal(this.offboarding$);
 
   kudoboardLoadingState = toSignal(
     objectLoadingState$<KudoBoard>({
       loadingAction$: (actions) =>
-        actions.pipe(ofType(FeatKudoBoardActions.getKudoBoard)),
+        actions.pipe(ofType(FeatExpOffboardingActions.getKudoBoard)),
       loadedAction$: (actions) =>
-        actions.pipe(ofType(FeatKudoBoardActions.getKudoBoardSuccess)),
+        actions.pipe(ofType(FeatExpOffboardingActions.getKudoBoardSuccess)),
       loadingErrorAction$: (actions) =>
-        actions.pipe(ofType(FeatKudoBoardActions.getKudoBoardFailure)),
+        actions.pipe(ofType(FeatExpOffboardingActions.getKudoBoardFailure)),
     })
   );
 
-  #kudoProfile$ = this.kudoboard$.pipe(
+  #kudoProfile$ = this.offboarding$.pipe(
     filter(
       ({ profileId, profile: kudoboardSavedProfile }) =>
         !!(profileId ?? kudoboardSavedProfile?.id)
@@ -159,9 +159,9 @@ export class PageOffboardingViewComponent {
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
     this.#activatedRouter.url,
-    this.kudoboard$,
+    this.offboarding$,
   ]).pipe(
-    map(([_, kudoboard]) => [
+    map(([_, offboarding]) => [
       {
         label: 'All KudoBoards',
         routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
@@ -170,7 +170,7 @@ export class PageOffboardingViewComponent {
         styleClass: 'text-lg font-semibold',
       },
       {
-        label: kudoboard.title,
+        label: offboarding.title,
       },
     ])
   );
@@ -209,7 +209,7 @@ export class PageOffboardingViewComponent {
     };
   });
 
-  kudoBoardOverlayText$ = this.kudoboard$.pipe(
+  kudoBoardOverlayText$ = this.offboarding$.pipe(
     map(({ status, profile }) => {
       const profileContact = profile?.name
         ? `Contact owner: ${profile.name}`
@@ -237,7 +237,7 @@ export class PageOffboardingViewComponent {
 
   myFarewellsKudoResponses$ = combineLatest([
     this.#myFarewells$,
-    this.kudoboard$,
+    this.offboarding$,
   ]).pipe(
     map(([myFarewells, kudoBoard]) =>
       myFarewells.filter(
@@ -255,7 +255,7 @@ export class PageOffboardingViewComponent {
     this.kudoboardId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
       .subscribe((id) => {
-        this.#store.dispatch(FeatKudoBoardActions.getKudoBoard({ id }));
+        this.#store.dispatch(FeatExpOffboardingActions.getKudoBoard({ id }));
         this.#store.dispatch(
           FeatKudoBoardAnalyticsActions.getAnalyticsKudoBoard({
             kudoBoardId: id,

@@ -47,6 +47,12 @@ export class ExpOffboarding {
     default: '',
     trim: true,
   })
+  title: string;
+
+  @Prop({
+    default: '',
+    trim: true,
+  })
   content: string;
 
   @Prop({

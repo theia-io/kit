@@ -8,19 +8,20 @@ export enum ExpOffboardingStatus {
   Deleted = 'deleted',
 }
 
-export interface ExpOffboarding extends Partial<KitTimestamp> {
+export interface ExpOffboarding extends KitTimestamp {
   id: string;
   kudoboardIds: Array<string>;
   farewellIds: Array<string>;
   profileId: string;
   collaboratorEmails: Array<string>;
   receiverEmail: string;
+  title: string;
   content: string;
   status: ExpOffboardingStatus;
   profileIdsNetwork: Array<string>;
 }
 
-export interface ExpOffboardingAnalytics extends Partial<KitTimestamp> {
+export interface ExpOffboardingAnalytics extends KitTimestamp {
   id: string;
   offboardingId: string;
   profileId: string;

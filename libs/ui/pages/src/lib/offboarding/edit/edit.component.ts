@@ -4,9 +4,9 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
 import {
-  FeatKudoBoardActions,
+  FeatExpOffboardingActions,
   selectKudoBoardById,
-} from '@kitouch/data-kudoboard';
+} from '@kitouch/data-offboarding';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
@@ -18,7 +18,7 @@ import {
 import {
   FeatKudoBoardEditComponent,
   FeatKudoBoardStatusComponent,
-} from '@kitouch/ui-kudoboard';
+} from '@kitouch/ui-offboarding';
 
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
@@ -75,8 +75,8 @@ export class PageOffboardingEditComponent {
     this.currentProfile$,
   ]).pipe(
     map(
-      ([kudoboard, profile]) =>
-        (kudoboard.profileId ?? kudoboard.profile?.id) === profile.id
+      ([offboarding, profile]) =>
+        (offboarding.profileId ?? offboarding.profile?.id) === profile.id
     ),
     startWith(false)
   );
@@ -85,7 +85,7 @@ export class PageOffboardingEditComponent {
     this.#activatedRouter.url,
     this.kudoBoard$,
   ]).pipe(
-    map(([_, kudoboard]) => [
+    map(([_, offboarding]) => [
       {
         label: 'All KudoBoards',
         routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
@@ -94,7 +94,7 @@ export class PageOffboardingEditComponent {
         styleClass: 'text-lg font-semibold',
       },
       {
-        label: kudoboard.title,
+        label: offboarding.title,
       },
     ])
   );
@@ -110,7 +110,7 @@ export class PageOffboardingEditComponent {
     this.kudoBoardId$
       .pipe(takeUntilDestroyed())
       .subscribe((id) =>
-        this.#store.dispatch(FeatKudoBoardActions.getKudoBoard({ id }))
+        this.#store.dispatch(FeatExpOffboardingActions.getKudoBoard({ id }))
       );
   }
 
