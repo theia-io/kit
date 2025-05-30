@@ -66,7 +66,7 @@ export class ExpOffboarding {
     ref: 'Profile',
     required: true,
   })
-  profilesIdsNetwork: Types.ObjectId[];
+  profileIdsNetwork: Types.ObjectId[];
 }
 
 export const ExpOffboardingSchema =

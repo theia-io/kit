@@ -2,13 +2,7 @@ import { AsyncPipe } from '@angular/common';
 import { Component, computed, inject, input, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterModule } from '@angular/router';
-import {
-  FeatExpOffboardingActions,
-  FeatKudoBoardAnalyticsActions,
-  FeatKudoBoardCommentActions,
-  FeatKudoBoardReactionActions,
-  selectKudoBoardById,
-} from '@kitouch/data-offboarding';
+
 import { FeatKitProfileHeaderComponent } from '@kitouch/feat-kit-ui';
 import { ofType } from '@ngrx/effects';
 
@@ -18,47 +12,40 @@ import {
   selectCurrentProfile,
   selectProfileById,
 } from '@kitouch/kit-data';
-import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
 import {
-  AccountTileComponent,
-  UiKitPageOverlayComponent,
-} from '@kitouch/ui-components';
-import {
-  FeatExpOffboardingActionsComponent,
-  FeatKudoBoardCommentsComponent,
-  FeatKudoboardInfoPanelComponent,
-  FeatKudoBoardStatusComponent,
-  FeatKudoBoardViewAdditionalActionsComponent,
-  FeatKudoBoardViewComponent,
-} from '@kitouch/ui-offboarding';
+  ExpOffboardingStatus,
+  KudoBoard,
+  Profile,
+} from '@kitouch/shared-models';
+import { UiKitPageOverlayComponent } from '@kitouch/ui-components';
 
 import { select, Store } from '@ngrx/store';
 import { MenuItem, MessageService } from 'primeng/api';
 import { BreadcrumbModule } from 'primeng/breadcrumb';
 import { ButtonModule } from 'primeng/button';
 
-import { AuthorizedFeatureDirective } from '@kitouch/containers';
 import {
-  FeatFarewellActions,
-  findProfileFarewells,
-  selectFarewells,
-} from '@kitouch/feat-farewell-data';
+  FeatExpOffboardingActions,
+  FeatExpOffboardingAnalyticsActions,
+  selectExpOffboardingById,
+} from '@kitouch/feat-offboarding-data';
+import {
+  FeatOffboardingInfoPanelComponent,
+  FeatOffboardingStatusComponent,
+} from '@kitouch/feat-offboarding-ui';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Auth0Service } from '@kitouch/shared-infra';
 import { DeviceService, objectLoadingState$ } from '@kitouch/shared-services';
 import { ToastModule } from 'primeng/toast';
 import {
   combineLatest,
-  debounceTime,
   distinctUntilChanged,
   filter,
   map,
   Observable,
-  pairwise,
   shareReplay,
   startWith,
   switchMap,
-  take,
 } from 'rxjs';
 
 /**
@@ -73,7 +60,6 @@ import {
   standalone: true,
   selector: 'kit-page-offboarding-view',
   templateUrl: './view.component.html',
-  styleUrl: './view.component.scss',
   imports: [
     AsyncPipe,
     RouterModule,
@@ -82,16 +68,10 @@ import {
     BreadcrumbModule,
     ToastModule,
     //
-    AccountTileComponent,
     FeatKitProfileHeaderComponent,
-    FeatExpOffboardingActionsComponent,
-    FeatKudoBoardViewComponent,
-    FeatKudoBoardCommentsComponent,
+    FeatOffboardingInfoPanelComponent,
+    FeatOffboardingStatusComponent,
     UiKitPageOverlayComponent,
-    FeatKudoBoardViewAdditionalActionsComponent,
-    AuthorizedFeatureDirective,
-    FeatKudoBoardStatusComponent,
-    FeatKudoboardInfoPanelComponent,
   ],
   providers: [MessageService],
 })
@@ -102,58 +82,60 @@ export class PageOffboardingViewComponent {
   view = input(false);
 
   #activatedRouter = inject(ActivatedRoute);
+  #messageService = inject(MessageService);
   #store = inject(Store);
   #auth0Service = inject(Auth0Service);
   device$ = inject(DeviceService).device$;
-  #messageService = inject(MessageService);
 
   #followerHandlerFn = followerHandlerFn();
 
-  kudoboardId$ = this.#activatedRouter.params.pipe(
+  offboardingId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     shareReplay()
   );
-  offboarding$ = this.kudoboardId$.pipe(
-    switchMap((kudoboardId) =>
-      this.#store.pipe(select(selectKudoBoardById(kudoboardId)))
+  offboarding$ = this.offboardingId$.pipe(
+    switchMap((offboardingId) =>
+      this.#store.pipe(select(selectExpOffboardingById(offboardingId)))
     ),
     filter(Boolean)
   );
-  #kudoBoard = toSignal(this.offboarding$);
 
-  kudoboardLoadingState = toSignal(
+  offboardingLoadingState = toSignal(
     objectLoadingState$<KudoBoard>({
       loadingAction$: (actions) =>
-        actions.pipe(ofType(FeatExpOffboardingActions.getKudoBoard)),
+        actions.pipe(ofType(FeatExpOffboardingActions.getExpOffboarding)),
       loadedAction$: (actions) =>
-        actions.pipe(ofType(FeatExpOffboardingActions.getKudoBoardSuccess)),
+        actions.pipe(
+          ofType(FeatExpOffboardingActions.getExpOffboardingSuccess)
+        ),
       loadingErrorAction$: (actions) =>
-        actions.pipe(ofType(FeatExpOffboardingActions.getKudoBoardFailure)),
+        actions.pipe(
+          ofType(FeatExpOffboardingActions.getExpOffboardingFailure)
+        ),
     })
   );
 
-  #kudoProfile$ = this.offboarding$.pipe(
-    filter(
-      ({ profileId, profile: kudoboardSavedProfile }) =>
-        !!(profileId ?? kudoboardSavedProfile?.id)
-    ),
-    switchMap(({ profileId, profile: kudoboardSavedProfile }) =>
+  #offboardingProfile$ = this.offboarding$.pipe(
+    filter(({ profileId }) => !!profileId),
+    switchMap(({ profileId }) =>
       this.#store
-        .select(selectProfileById((profileId ?? kudoboardSavedProfile?.id)!))
-        .pipe(map((profile) => profile ?? kudoboardSavedProfile))
+        .select(selectProfileById(profileId))
+        .pipe(map((profile) => profile))
     ),
     startWith(null)
   );
 
-  kudoboardProfile = toSignal(this.#kudoProfile$);
-  kudoboardProfilePic = computed(() => profilePicture(this.kudoboardProfile()));
+  offboardingProfile = toSignal(this.#offboardingProfile$);
+  offboardingProfilePic = computed(() =>
+    profilePicture(this.offboardingProfile())
+  );
 
   #currentProfile$ = this.#store.pipe(select(selectCurrentProfile));
   currentProfile = toSignal(this.#currentProfile$);
   isFollowing = computed(
     () =>
       this.currentProfile()?.following?.some(
-        ({ id }) => id === this.kudoboardProfile()?.id
+        ({ id }) => id === this.offboardingProfile()?.id
       ) ?? false
   );
 
@@ -163,9 +145,9 @@ export class PageOffboardingViewComponent {
   ]).pipe(
     map(([_, offboarding]) => [
       {
-        label: 'All KudoBoards',
-        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
-        icon: 'pi pi-send mr-2',
+        label: 'All Offboardings',
+        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`,
+        icon: 'pi pi-heart-fill mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',
       },
@@ -175,137 +157,49 @@ export class PageOffboardingViewComponent {
     ])
   );
 
-  kudoOwner = computed(() => {
+  offboardingOwner = computed(() => {
     return (
-      this.kudoboardProfile() &&
+      this.offboardingProfile() &&
       this.currentProfile() &&
-      this.kudoboardProfile()?.id === this.currentProfile()?.id
+      this.offboardingProfile()?.id === this.currentProfile()?.id
     );
   });
 
-  kudoBoardProfileTexts = computed(() => {
-    const kudoboardProfile = this.kudoboardProfile();
-    if (!kudoboardProfile) {
-      return {
-        primaryText: '',
-        secondaryText: '',
-      };
-    }
-
-    if (this.view()) {
-      return {
-        primaryText: `${kudoboardProfile.name}`,
-        secondaryText: `collected people's thoughts for ${
-          this.#kudoBoard()?.recipient ?? ''
-        })`,
-      };
-    }
-
-    return {
-      primaryText: `Join ${kudoboardProfile.name}`,
-      secondaryText: `... in collecting your thoughts for ${
-        this.#kudoBoard()?.recipient ?? 'someone'
-      })`,
-    };
-  });
-
-  kudoBoardOverlayText$ = this.offboarding$.pipe(
+  offboardingOverlayText$ = this.offboarding$.pipe(
     map(({ status, profile }) => {
-      const profileContact = profile?.name
+      const profileContact = profile.name
         ? `Contact owner: ${profile.name}`
         : '';
-      if (status === KudoBoardStatus.Draft) {
-        return `This Kudo is still in Draft. ${profileContact}`;
+      if (status === ExpOffboardingStatus.Draft) {
+        return `This offboarding is still in Draft. ${profileContact}`;
       }
 
-      if (status === KudoBoardStatus.Removed) {
-        return `This Kudo is removed. ${profileContact}`;
+      if (status === ExpOffboardingStatus.Deleted) {
+        return `This offboarding is removed. ${profileContact}`;
       }
 
       return '';
     })
   );
 
-  #myFarewells$ = combineLatest([
-    this.#store.pipe(select(selectFarewells), filter(Boolean)),
-    this.#currentProfile$.pipe(filter(Boolean)),
-  ]).pipe(
-    map(([farewells, currentProfile]) =>
-      findProfileFarewells(currentProfile.id, farewells)
-    )
-  );
-
-  myFarewellsKudoResponses$ = combineLatest([
-    this.#myFarewells$,
-    this.offboarding$,
-  ]).pipe(
-    map(([myFarewells, kudoBoard]) =>
-      myFarewells.filter(
-        (myFarewell) => myFarewell.kudoBoardId === kudoBoard?.id
-      )
-    )
-  );
-
   commentsSideBarVisibility = signal(false);
-  kudoBoardStatus = KudoBoardStatus;
+  offboardingStatus = ExpOffboardingStatus;
 
   readonly profileUrl = `/${APP_PATH.Profile}/`;
 
   constructor() {
-    this.kudoboardId$
+    this.offboardingId$
       .pipe(takeUntilDestroyed(), distinctUntilChanged())
       .subscribe((id) => {
-        this.#store.dispatch(FeatExpOffboardingActions.getKudoBoard({ id }));
         this.#store.dispatch(
-          FeatKudoBoardAnalyticsActions.getAnalyticsKudoBoard({
-            kudoBoardId: id,
-          })
+          FeatExpOffboardingActions.getExpOffboarding({ id })
         );
         this.#store.dispatch(
-          FeatKudoBoardReactionActions.getReactionsKudoBoard({
-            kudoBoardId: id,
+          FeatExpOffboardingAnalyticsActions.getAnalyticsExpOffboarding({
+            offboardingId: id,
           })
-        );
-        this.#store.dispatch(
-          FeatKudoBoardCommentActions.getCommentsKudoBoard({ kudoboardId: id })
         );
       });
-
-    this.#currentProfile$
-      .pipe(takeUntilDestroyed(), filter(Boolean), take(1))
-      .subscribe((profile) =>
-        this.#store.dispatch(
-          FeatFarewellActions.getProfileFarewells({ profileId: profile.id })
-        )
-      );
-
-    // Clear claim message after claimed
-    this.#kudoProfile$
-      .pipe(
-        pairwise(),
-        filter(([prev, curr]) => !prev && !!curr?.id),
-        take(1),
-        takeUntilDestroyed()
-      )
-      .subscribe(() => this.#messageService.clear());
-
-    // Show claim message
-    this.#kudoProfile$
-      .pipe(
-        debounceTime(2000),
-        filter((profile) => !profile?.id),
-        take(1),
-        takeUntilDestroyed()
-      )
-      .subscribe(() =>
-        this.#messageService.add({
-          sticky: true,
-          severity: 'info',
-          summary: 'Claim this Kudo board',
-          detail:
-            'This Kudo board is not claimed yet. To own it click on "Claim".',
-        })
-      );
   }
 
   signInAndFollow(profileToFollow: Profile) {

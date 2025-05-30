@@ -12,6 +12,7 @@ import {
   FeatExpOffboardingActions,
   selectExpOffboardings,
 } from '@kitouch/feat-offboarding-data';
+import { FeatOffboardingInfoPanelComponent } from '@kitouch/feat-offboarding-ui';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
@@ -29,10 +30,6 @@ import {
   UiKitDeleteComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
-import {
-  FeatKudoboardInfoPanelComponent,
-  FeatKudoBoardViewComponent,
-} from '@kitouch/ui-kudoboard';
 
 import { select, Store } from '@ngrx/store';
 import { ConfirmationService, MessageService } from 'primeng/api';
@@ -56,10 +53,9 @@ import { filter, map } from 'rxjs/operators';
   imports: [
     DividerComponent,
     UiKitDeleteComponent,
-    FeatKudoBoardViewComponent,
     UiCompGradientCardComponent,
     FeatSideBarPreviewComponent,
-    FeatKudoboardInfoPanelComponent,
+    FeatOffboardingInfoPanelComponent,
     SharedCopyClipboardComponent,
     SharedStatusLegendComponent,
     UiCompCardComponent,

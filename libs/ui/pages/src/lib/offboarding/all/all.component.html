@@ -13,7 +13,7 @@
 } @for (offboarding of offboardings; track $index) {
 <ui-kit-comp-gradient-card class="relative block" [class.mt-12]="!$first">
   <div class="relative block max-h-96 overflow-hidden">
-    <feat-offboarding-view [id]="offboarding.id" />
+    <!-- <feat-offboarding-view [id]="offboarding.id" /> -->
 
     <div class="absolute top-80 h-16 left-0 w-full">
       <div class="h-full w-full relative flex justify-center items-end pb-2">
@@ -50,7 +50,7 @@
           class="text-sm mr-1 hover:text-gray-900 hover:font-semibold">
           Preview
         </span>
-        <feat-offboarding-view preview [id]="offboarding.id" />
+        <!-- <feat-offboarding-view preview [id]="offboarding.id" /> -->
       </shared-sidebar-preview>
 
       <a
@@ -87,7 +87,7 @@
     role="link"
     [routerLink]="offboardingGenerateUrl"
     aria-label="create offboarding">
-    Create Kudo board
+    Create Offboarding Experience
   </p-button>
 </div>
 }

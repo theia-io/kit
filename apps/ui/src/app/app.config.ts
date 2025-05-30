@@ -169,7 +169,7 @@ export const appConfig: ApplicationConfig = {
       kit: accountFeatureReducer,
       tweet: featTweetReducer,
       kudoboard: featKudoBoardReducer,
-      onboarding: featExpOffboardingReducer,
+      offboarding: featExpOffboardingReducer,
     }),
     provideEffects([
       // offboarding

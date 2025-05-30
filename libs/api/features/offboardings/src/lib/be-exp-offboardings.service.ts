@@ -1,6 +1,7 @@
 import {
   ExpOffboardingStatus,
   ExpOffboarding as IExpOffboarding,
+  Profile,
 } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -22,6 +23,7 @@ export class BeExpOffboardingsService {
         .find<ExpOffboardingDocument>({
           profileId: new mongoose.Types.ObjectId(profileId),
         })
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(
@@ -35,7 +37,9 @@ export class BeExpOffboardingsService {
       );
     }
 
-    return offboardings;
+    return offboardings.map((offboarding) =>
+      populatedProfile(offboarding.toObject() as any)
+    ) as Array<IExpOffboarding>;
   }
 
   async getOffboarding(
@@ -63,9 +67,15 @@ export class BeExpOffboardingsService {
       );
     }
 
-    return this.#filterOffboardingContentForStatus(
-      currentProfileIds,
-      offboarding?.toObject() as any as IExpOffboarding
+    if (!offboarding) {
+      throw new HttpException('Cannot find offboarding', HttpStatus.NOT_FOUND);
+    }
+
+    return populatedProfile(
+      filterOffboardingContentForStatus(
+        currentProfileIds,
+        offboarding.toObject() as any
+      ) as any
     );
   }
 
@@ -143,6 +153,7 @@ export class BeExpOffboardingsService {
           },
           { new: true }
         )
+        .populate('profileId')
         .exec();
     } catch (err) {
       console.error(`Cannot execute Offboarding update for`, err);
@@ -152,7 +163,7 @@ export class BeExpOffboardingsService {
       );
     }
 
-    return updatedOffboarding;
+    return populatedProfile(updatedOffboarding as any);
   }
 
   async deleteOffboarding(
@@ -187,32 +198,49 @@ export class BeExpOffboardingsService {
 
     return deletedOffboarding;
   }
-
-  // TODO IMPLEMENT ME
-  #filterOffboardingContentForStatus(
-    currentProfileIds: Array<string>,
-    offboarding?: IExpOffboarding
-  ) {
-    console.log(
-      `Filtering offboarding content for status, currentProfileIds: ${currentProfileIds}, offboarding: ${JSON.stringify(
-        offboarding
-      )}`
-    );
-
-    let offboardingContentWithStatus;
-    switch (offboarding?.status) {
-      case ExpOffboardingStatus.Draft:
-        offboardingContentWithStatus = {
-          ...offboarding,
-          content: '',
-          OffboardingIds: [],
-          farewellIds: [],
-        };
-        break;
-      default:
-        offboardingContentWithStatus = offboarding;
-    }
-
-    return offboardingContentWithStatus;
-  }
 }
+
+// TODO IMPLEMENT ME
+const filterOffboardingContentForStatus = (
+  currentProfileIds: Array<string>,
+  offboarding: IExpOffboarding
+) => {
+  console.log(
+    `Filtering offboarding content for status, currentProfileIds: ${currentProfileIds}, offboarding: ${JSON.stringify(
+      offboarding
+    )}`
+  );
+
+  let offboardingContentWithStatus = offboarding;
+  switch (offboarding?.status) {
+    case ExpOffboardingStatus.Draft:
+      offboardingContentWithStatus = {
+        ...offboarding,
+        content: '',
+        farewellIds: [],
+        kudoboardIds: [],
+        collaboratorEmails: [],
+        receiverEmail: '',
+        profileIdsNetwork: [],
+      };
+      break;
+    default:
+      offboardingContentWithStatus = offboarding;
+  }
+
+  return offboardingContentWithStatus;
+};
+
+// TODO move to utils
+const populatedProfile = (
+  offboarding: Omit<IExpOffboarding, 'profile' | 'profileId'> & {
+    profileId: Profile;
+  }
+): IExpOffboarding => {
+  const { profileId } = offboarding;
+  return {
+    ...offboarding,
+    profileId: profileId.id,
+    profile: profileId,
+  };
+};

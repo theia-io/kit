@@ -87,7 +87,7 @@ export class SharedNavBarStaticComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     if (this._sysUpdatePrimengHighlight()) {
-      this.#navbarService.triggerPrimengHighlight$.next();
+      this.#navbarService.triggerPrimengHighlight$$.next();
     }
   }
 

@@ -45,7 +45,7 @@ export class PageFarewellGenerateComponent {
       .subscribe((latestUrl) => {
         this.#router
           .navigateByUrl(latestUrl ?? APP_PATH.Farewell)
-          .then(() => this.#navbarService.triggerPrimengHighlight$.next());
+          .then(() => this.#navbarService.triggerPrimengHighlight$$.next());
       });
   }
 

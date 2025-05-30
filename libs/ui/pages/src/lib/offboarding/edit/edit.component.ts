@@ -5,8 +5,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { SharedNavBarStaticComponent } from '@kitouch/containers';
 import {
   FeatExpOffboardingActions,
-  selectKudoBoardById,
-} from '@kitouch/data-offboarding';
+  selectExpOffboardingById,
+} from '@kitouch/feat-offboarding-data';
+import { FeatOffboardingStatusComponent } from '@kitouch/feat-offboarding-ui';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
@@ -15,10 +16,6 @@ import {
   UiKitDeleteComponent,
   UiKitSpinnerComponent,
 } from '@kitouch/ui-components';
-import {
-  FeatKudoBoardEditComponent,
-  FeatKudoBoardStatusComponent,
-} from '@kitouch/ui-offboarding';
 
 import { select, Store } from '@ngrx/store';
 import { MenuItem } from 'primeng/api';
@@ -38,9 +35,8 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     //
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
-    FeatKudoBoardEditComponent,
-    FeatKudoBoardStatusComponent,
     UiKitSpinnerComponent,
+    FeatOffboardingStatusComponent,
     //
     SidebarModule,
     BreadcrumbModule,
@@ -54,14 +50,14 @@ export class PageOffboardingEditComponent {
 
   loggedIn$ = this.#auth0Service.loggedIn$;
 
-  kudoBoardId$ = this.#activatedRouter.params.pipe(
+  offboardingId$ = this.#activatedRouter.params.pipe(
     map((params) => params['id']),
     filter(Boolean),
     shareReplay()
   );
 
-  kudoBoard$ = this.kudoBoardId$.pipe(
-    switchMap((id) => this.#store.pipe(select(selectKudoBoardById(id)))),
+  offboarding$ = this.offboardingId$.pipe(
+    switchMap((id) => this.#store.pipe(select(selectExpOffboardingById(id)))),
     filter(Boolean)
   );
 
@@ -70,8 +66,8 @@ export class PageOffboardingEditComponent {
     filter(Boolean)
   );
 
-  kudoboardCreator$ = combineLatest([
-    this.kudoBoard$,
+  offboardingCreator$ = combineLatest([
+    this.offboarding$,
     this.currentProfile$,
   ]).pipe(
     map(
@@ -83,13 +79,13 @@ export class PageOffboardingEditComponent {
 
   breadcrumbMenuItems$: Observable<Array<MenuItem>> = combineLatest([
     this.#activatedRouter.url,
-    this.kudoBoard$,
+    this.offboarding$,
   ]).pipe(
     map(([_, offboarding]) => [
       {
-        label: 'All KudoBoards',
-        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
-        icon: 'pi pi-send mr-2',
+        label: 'All Offboardings',
+        routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`,
+        icon: 'pi pi-heart-fill mr-2',
         iconClass: 'text-lg font-semibold',
         styleClass: 'text-lg font-semibold',
       },
@@ -107,15 +103,17 @@ export class PageOffboardingEditComponent {
   shareTmpl?: TemplateRef<unknown>;
 
   constructor() {
-    this.kudoBoardId$
+    this.offboardingId$
       .pipe(takeUntilDestroyed())
       .subscribe((id) =>
-        this.#store.dispatch(FeatExpOffboardingActions.getKudoBoard({ id }))
+        this.#store.dispatch(
+          FeatExpOffboardingActions.getExpOffboarding({ id })
+        )
       );
   }
 
   redirectToAll() {
-    this.#router.navigateByUrl(`/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`);
+    this.#router.navigateByUrl(`/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`);
   }
 
   handleGetStarted() {

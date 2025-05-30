@@ -2,7 +2,7 @@ import { NgOptimizedImage } from '@angular/common';
 import { Component, inject, input, output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { ENVIRONMENT, RouterEventsService } from '@kitouch/shared-infra';
+import { ENVIRONMENT } from '@kitouch/shared-infra';
 import {
   UIKitSmallerHintTextUXDirective,
   UiKitTweetButtonComponent,
@@ -10,6 +10,7 @@ import {
 import { ButtonModule } from 'primeng/button';
 import { TooltipModule } from 'primeng/tooltip';
 import { SharedStaticInfoComponent } from '../../static-info/static-info.component';
+import { NavbarService } from '../navbar.service';
 
 @Component({
   standalone: true,
@@ -28,6 +29,7 @@ import { SharedStaticInfoComponent } from '../../static-info/static-info.compone
   ],
 })
 export class SubnavComponent {
+  offboardingUrl = input.required<string>();
   farewellUrl = input.required<string>();
   kudoBoardUrl = input.required<string>();
   introducingKitFarewell = input.required<string>();
@@ -36,18 +38,21 @@ export class SubnavComponent {
   logout = output<void>();
 
   environment = inject(ENVIRONMENT);
-  routerEventsService = inject(RouterEventsService);
+  navbarService = inject(NavbarService);
   #router = inject(Router);
 
+  createOffboardingHandler() {
+    this.navbarService.triggerPrimengHighlight$$.next();
+    this.#router.navigate([APP_PATH_ALLOW_ANONYMOUS.Offboarding, 'generate']);
+  }
+
   createFarewellHandler() {
+    this.navbarService.triggerPrimengHighlight$$.next();
     this.#router.navigate([APP_PATH.Farewell, 'generate']);
   }
 
   createKudoBoardHandler() {
+    this.navbarService.triggerPrimengHighlight$$.next();
     this.#router.navigate([APP_PATH_ALLOW_ANONYMOUS.KudoBoard, 'generate']);
-  }
-
-  onGenerateHandler() {
-    this.routerEventsService.saveUrlLatest(this.#router.url);
   }
 }

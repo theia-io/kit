@@ -23,7 +23,10 @@ export class AWSSecretsService {
         })
       );
     } catch (error) {
-      console.error('[AWSSecretsService] getSecrets error', error);
+      console.error(
+        '[THIS IS HANDLED ERROR, API WORKS AS NORMAL][AWSSecretsService] getSecrets error',
+        error
+      );
       // For a list of exceptions thrown, see
       // https://docs.aws.amazon.com/secretsmanager/latest/apireference/API_GetSecretValue.html
       return null;

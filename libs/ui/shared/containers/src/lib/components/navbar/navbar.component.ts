@@ -81,6 +81,7 @@ export class NavBarComponent implements AfterViewInit {
   readonly profileUrl = `/${APP_PATH.Profile}/`;
   readonly farewellUrl = `/${APP_PATH.Farewell}`;
   readonly kudoBoardAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
+  readonly offboardingAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`;
   readonly introducingKitFarewell = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
   readonly suggestionUrl = APP_PATH.Suggestion;
 
@@ -175,6 +176,8 @@ export class NavBarComponent implements AfterViewInit {
                 'p-focus'
               );
             }, 200);
+          } else {
+            (menuItemNativeElem as HTMLLIElement).classList.remove('p-focus');
           }
         });
     }

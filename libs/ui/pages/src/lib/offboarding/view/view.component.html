@@ -1,10 +1,10 @@
-<!-- Kudoboard -->
+<!-- Offboarding -->
 @let offboarding = (offboarding$ | async);
 <!-- status -->
 @let status= offboarding?.status;
 
 <!-- Breadcrumb menu -->
-@if(kudoOwner() && preview()) {
+@if(offboardingOwner() && preview()) {
 <p-breadcrumb
   class="block mt-4 max-w-full"
   [model]="(breadcrumbMenuItems$ | async) ?? []">
@@ -24,11 +24,11 @@
 }
 
 <!-- Overlay for draft -->
-@if(!kudoOwner() && kudoboardLoadingState()?.loaded) {
+@if(!offboardingOwner() && offboardingLoadingState()?.loaded) {
 <ui-kit-page-overlay
-  [show]="offboarding?.status !== kudoBoardStatus.Published"
-  [text]="(kudoBoardOverlayText$ | async) ?? ''">
-  @if(kudoboardProfile(); as profile) {
+  [show]="status === offboardingStatus.Draft"
+  [text]="(offboardingOverlayText$ | async) ?? ''">
+  @if(offboardingProfile(); as profile) {
   <feat-kit-profile-header
     class="block relative p-2 bg-white"
     [profile]="profile"></feat-kit-profile-header>
@@ -37,24 +37,8 @@
 }
 
 <div class="mt-6 w-full flex flex-col gap-4 items-center justify-center">
-  @if(kudoboardProfile(); as profile) {
-  <ui-kit-comp-account-tile
-    sharedAuthorizedFeature
-    [primaryText]="kudoBoardProfileTexts().primaryText"
-    [secondaryText]="kudoBoardProfileTexts().secondaryText"
-    [picture]="kudoboardProfilePic()"
-    [link]="profileUrl + (profile.alias ?? profile.id)" />
-  }
-
-  <div
-    class="container shadow-sm mx-auto px-2 md:px-0 py-1 md:py-2 border-solid border-2 border-l-0 border-r-0">
-    <feat-offboarding-actions
-      class="block container mx-auto"
-      [kudoboardId]="kudoboardId$ | async" />
-  </div>
-
   <div class="container mx-auto px-2 md:px-0">
-    <feat-offboarding-view class="grow" [id]="kudoboardId$ | async" />
+    <!-- <feat-offboarding-view class="grow" [id]="kudoboardId$ | async" /> -->
   </div>
 
   <div class="container mx-auto px-2 md:px-0">
@@ -62,24 +46,9 @@
     <feat-offboarding-info-panel
       class="float-right"
       [offboarding]="offboarding"
-      [myLinkedFarewells]="myFarewellsKudoResponses$ | async"
       [preview]="preview()" />
     }
   </div>
-
-  <!-- Comments if collecting -->
-  <div class="container mx-auto px-2 md:px-0">
-    <feat-offboarding-comments
-      [kudoboardId]="kudoboardId$ | async"
-      [canComment]="!view()" />
-  </div>
-
-  <!-- Additional CTA actions -->
-  @if(!view() && offboarding) {
-  <feat-offboarding-view-additional-actions
-    class="block mb-8"
-    [id]="offboarding.id" />
-  }
 
   <p-toast />
 </div>

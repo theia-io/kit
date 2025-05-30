@@ -1,3 +1,4 @@
+import { Profile } from '../entities-kitouch';
 import { AnalyticsEvent, KitTimestamp } from '../helpers';
 
 export enum ExpOffboardingStatus {
@@ -13,6 +14,7 @@ export interface ExpOffboarding extends KitTimestamp {
   kudoboardIds: Array<string>;
   farewellIds: Array<string>;
   profileId: string;
+  profile: Profile;
   collaboratorEmails: Array<string>;
   receiverEmail: string;
   title: string;

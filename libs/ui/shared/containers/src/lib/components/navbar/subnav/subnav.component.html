@@ -34,13 +34,43 @@
   </li>
 
   <li>
-    <strong class="block text-xs font-semibold uppercase">Farewells</strong>
+    <strong class="block text-xs font-semibold uppercase">Experience</strong>
 
     <ul>
       <li>
         <a
           uiKitSmallTextTailwindClasses
           class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="navbarService.triggerPrimengHighlight$$.next()"
+          [routerLink]="offboardingUrl()"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <i class="pi pi-heart-fill mr-1"></i>
+          Offboarding
+        </a>
+      </li>
+
+      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
+        <ui-kit-tweet-button
+          icon=""
+          text="New Offboarding experience"
+          severity="secondary"
+          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
+          (click)="createOffboardingHandler()"
+          class="w-full" />
+      </li>
+    </ul>
+  </li>
+
+  <li>
+    <strong class="block text-xs font-semibold uppercase">Features</strong>
+
+    <ul>
+      <li>
+        <a
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="navbarService.triggerPrimengHighlight$$.next()"
           [routerLink]="farewellUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
@@ -59,16 +89,13 @@
           class="w-full" />
       </li>
     </ul>
-  </li>
-
-  <li>
-    <strong class="block text-xs font-semibold uppercase">Kudo Boards</strong>
 
     <ul>
       <li>
         <a
           uiKitSmallTextTailwindClasses
           class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="navbarService.triggerPrimengHighlight$$.next()"
           [routerLink]="kudoBoardUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
@@ -88,6 +115,35 @@
       </li>
     </ul>
   </li>
+
+  <!-- <li>
+    <strong class="block text-xs font-semibold uppercase">Kudo Boards</strong>
+
+    <ul>
+      <li>
+        <a
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="navbarService.triggerPrimengHighlight$$.next()"
+          [routerLink]="kudoBoardUrl()"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          [routerLinkActiveOptions]="{ exact: true }">
+          <i class="pi pi-sparkles mr-1"></i>
+          My kudo boards
+        </a>
+      </li>
+
+      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
+        <ui-kit-tweet-button
+          icon=""
+          text="New Kudo board"
+          severity="secondary"
+          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
+          (click)="createKudoBoardHandler()"
+          class="w-full" />
+      </li>
+    </ul>
+  </li> -->
 
   <li>
     <strong class="block text-xs font-semibold uppercase">Profile</strong>
