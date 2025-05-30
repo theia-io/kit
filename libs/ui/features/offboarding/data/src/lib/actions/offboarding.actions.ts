@@ -1,7 +1,6 @@
-import { ExpOffboarding } from '@kitouch/shared-models';
+import { ExpOffboarding, Profile } from '@kitouch/shared-models';
 import { ClientDataType } from '@kitouch/utils';
 import { createActionGroup, props } from '@ngrx/store';
-import { Profile } from 'passport';
 
 export const FeatExpOffboardingActions = createActionGroup({
   source: 'FeatExpOffboardingActions',

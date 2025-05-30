@@ -27,7 +27,9 @@
     "@kitouch/containers": "7.1.0-0",
     "@kitouch/shared-services": "7.1.0-0",
     "@kitouch/shared-infra": "7.1.0-0",
-    "@kitouch/shared-constants": "7.1.0-0"
+    "@kitouch/shared-constants": "7.1.0-0",
+    "@kitouch/feat-offboarding-data": "0.0.1",
+    "@kitouch/feat-offboarding-ui": "0.0.1"
   },
   "sideEffects": false
 }
