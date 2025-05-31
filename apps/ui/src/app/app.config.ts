@@ -1,4 +1,8 @@
-import { provideHttpClient, withInterceptors } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors,
+  withXsrfConfiguration,
+} from '@angular/common/http';
 import {
   APP_INITIALIZER,
   ApplicationConfig,
@@ -102,7 +106,14 @@ function initializeApp(store: Store, auth0Service: Auth0Service) {
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(
+      withXsrfConfiguration({
+        cookieName: 'csrf-token',
+        // cookieName: 'XSRF-TOKEN',
+        headerName: 'x-csrf-token',
+      })
+    ),
+
     //
     provideAnimationsAsync(),
     // provideClientHydration(),

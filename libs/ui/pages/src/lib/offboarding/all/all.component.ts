@@ -22,7 +22,7 @@ import {
   Profile,
 } from '@kitouch/shared-models';
 
-import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
+import { DeviceService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
   UiCompCardComponent,
@@ -96,7 +96,9 @@ export class PageOffboardingAllComponent {
     )
   );
 
-  offboardingGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/generate`;
+  isMobile$ = inject(DeviceService).isMobile$;
+
+  offboardingGenerateUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/generate`;
   readonly offboardingPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`;
   readonly offboardingStatus = ExpOffboardingStatus;
 

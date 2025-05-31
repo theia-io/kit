@@ -15,7 +15,7 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { KudoBoard, KudoBoardStatus, Profile } from '@kitouch/shared-models';
-import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
+import { DeviceService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
   UiCompCardComponent,
@@ -102,6 +102,8 @@ export class PageKudoBoardsAllComponent {
         )
     )
   );
+
+  isMobile$ = inject(DeviceService).isMobile$;
 
   kudoBoardGenerateUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}/generate`;
   readonly kudoBoardPartialUrl = `/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;

@@ -64,6 +64,10 @@ export class OffboardingEffects {
         this.#offboardingService.createOffboarding({
           ...offboarding,
           profileId: profile.id,
+          profile,
+          farewellIds: [],
+          kudoboardIds: [],
+          profileIdsNetwork: [],
         })
       ),
       map((offboarding) =>

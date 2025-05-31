@@ -178,14 +178,14 @@ export const appRoutes: Route[] = [
                   pages.then((comp) => comp.PageOffboardingAllComponent),
               },
               {
-                path: 'edit/:id',
-                title: 'Kitouch - Edit offboarding experience',
-                loadComponent: () =>
-                  pages.then((comp) => comp.PageOffboardingViewComponent),
-              },
-              {
                 path: 'generate',
                 title: 'Kitouch - New offboarding experience',
+                loadComponent: () =>
+                  pages.then((comp) => comp.PageOffboardingEditComponent),
+              },
+              {
+                path: 'edit/:id',
+                title: 'Kitouch - Edit offboarding experience',
                 loadComponent: () =>
                   pages.then((comp) => comp.PageOffboardingEditComponent),
               },

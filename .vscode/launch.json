@@ -11,7 +11,7 @@
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
-      "runtimeVersion": "20.15.0"
+      "runtimeVersion": "20.15.1"
     },
     {
       "name": "start:ui",
@@ -20,7 +20,7 @@
       "runtimeExecutable": "npm",
       "skipFiles": ["<node_internals>/**"],
       "type": "node",
-      "runtimeVersion": "20.15.0"
+      "runtimeVersion": "20.15.1"
     },
     {
       "name": "Attach by Process ID",

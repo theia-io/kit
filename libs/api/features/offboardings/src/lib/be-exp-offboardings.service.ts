@@ -205,12 +205,6 @@ const filterOffboardingContentForStatus = (
   currentProfileIds: Array<string>,
   offboarding: IExpOffboarding
 ) => {
-  console.log(
-    `Filtering offboarding content for status, currentProfileIds: ${currentProfileIds}, offboarding: ${JSON.stringify(
-      offboarding
-    )}`
-  );
-
   let offboardingContentWithStatus = offboarding;
   switch (offboarding?.status) {
     case ExpOffboardingStatus.Draft:

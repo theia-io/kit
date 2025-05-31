@@ -19,7 +19,7 @@ import {
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH, APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
 import { Farewell, FarewellStatus, Profile } from '@kitouch/shared-models';
-import { sortByCreatedTimeDesc } from '@kitouch/shared-services';
+import { DeviceService, sortByCreatedTimeDesc } from '@kitouch/shared-services';
 import {
   DividerComponent,
   UiCompCardComponent,
@@ -102,6 +102,8 @@ export class PageFarewellAllComponent {
         )
     )
   );
+
+  isMobile$ = inject(DeviceService).isMobile$;
 
   farewellStatus = FarewellStatus;
 

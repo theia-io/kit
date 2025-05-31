@@ -1,5 +1,5 @@
 <ui-kit-comp-card class="block mt-4 mb-6">
-  <shared-status-legend />
+  <shared-status-legend [isMobile]="(isMobile$ | async) ?? false" />
 </ui-kit-comp-card>
 
 @let offboardings = myOffboardings$ | async; @if((offboardings?.length ?? 0) >

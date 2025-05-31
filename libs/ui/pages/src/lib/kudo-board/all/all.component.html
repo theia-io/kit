@@ -1,7 +1,7 @@
 <feat-kudoboard-intro class="block mb-2 mx-12" />
 
 <ui-kit-comp-card class="block mt-4 mb-6">
-  <shared-status-legend />
+  <shared-status-legend [isMobile]="(isMobile$ | async) ?? false" />
 </ui-kit-comp-card>
 
 @let kudos = myKudos$ | async; @if((kudos?.length ?? 0) > 0) {

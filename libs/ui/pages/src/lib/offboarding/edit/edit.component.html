@@ -64,6 +64,15 @@
           } }
         </ng-template>
       </p-breadcrumb>
+
+      <feat-offboarding-edit
+        class="block grow container mx-auto p-6"
+        [id]="offboardingId$ | async"
+        (doneKudoTmpl)="doneTmpl = $event"
+        (statusKudoTmpl)="statusTmpl = $event"
+        (shareKudoTmpl)="shareTmpl = $event"
+        (previewKudoTmpl)="previewTmpl = $event"
+        [(updating)]="updating" />
     </div>
   </ng-template>
 </p-sidebar>

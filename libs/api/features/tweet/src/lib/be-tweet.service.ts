@@ -205,7 +205,6 @@ export class BeTweetService {
         lastTweet.updatedAt ??
         lastTweet.timestamp?.updatedAt
       )?.toString();
-      console.log('LAST ITEM', lastTweet, createdAt);
       // Ensure createdAt is handled correctly (might be string from aggregation if not cast)
       // const lastTweet = lastItem.toJSON() as unknown as Tweety;
       const lastItemTimestamp = new Date(createdAt).getTime();

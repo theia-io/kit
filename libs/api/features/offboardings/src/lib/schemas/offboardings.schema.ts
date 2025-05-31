@@ -19,14 +19,16 @@ export class ExpOffboarding {
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'KudoBoard',
-    required: true,
+    default: [],
+    // required: true,
   })
   kudoboardIds: Types.ObjectId[];
 
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Farewell',
-    required: true,
+    default: [],
+    // required: true,
   })
   farewellIds: Types.ObjectId[];
 
@@ -64,7 +66,8 @@ export class ExpOffboarding {
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Profile',
-    required: true,
+    // required: true,
+    default: [],
   })
   profileIdsNetwork: Types.ObjectId[];
 }

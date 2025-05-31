@@ -61,14 +61,11 @@ export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
     separator: true,
   },
   {
-    label: 'Offboarding experience',
+    label: 'Offboardings',
     routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`,
     icon: 'pi pi-heart-fill',
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
-  },
-  {
-    separator: true,
   },
   {
     label: 'Farewells',

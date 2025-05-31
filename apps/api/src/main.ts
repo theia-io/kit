@@ -14,8 +14,8 @@ import { LoggingInterceptor } from '@kitouch/infra';
 import { Auth0Kit, Auth0User } from '@kitouch/shared-models';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
-import helmet from 'helmet';
 import { doubleCsrf } from 'csrf-csrf';
+import helmet from 'helmet';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -66,6 +66,13 @@ async function bootstrap() {
 
   const domainBase = isProduction ? '.kitouch.io' : undefined;
 
+  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
+  // if (!isProduction) {
+  app.set('trust proxy', 1);
+  // }
+
+  app.use(cookieParser(sessionSecret));
+
   app.use(
     session({
       secret: sessionSecret,
@@ -78,7 +85,8 @@ async function bootstrap() {
         secure: isProduction,
         httpOnly: true,
         maxAge: 3600000, // Session duration (e.g., 1 hour)
-        sameSite: isProduction ? 'lax' : false, // could be changed to 'strict' once docker will have both API and Web on the same domain
+        sameSite: 'lax',
+        // sameSite: isProduction ? 'lax' : false, // could be changed to 'strict' once docker will have both API and Web on the same domain
       },
     })
   );
@@ -113,7 +121,8 @@ async function bootstrap() {
         domain: domainBase,
         httpOnly: true,
         secure: isProduction,
-        sameSite: isProduction ? 'lax' : false,
+        // sameSite: isProduction ? 'lax' : false,
+        sameSite: 'lax',
         path: '/',
       });
 
@@ -207,7 +216,8 @@ async function bootstrap() {
         httpOnly: true,
         secure: isProduction,
         maxAge: 3600 * 1000,
-        sameSite: isProduction ? 'lax' : false,
+        // sameSite: isProduction ? 'lax' : false,
+        sameSite: 'lax',
         path: '/',
       });
 
@@ -242,13 +252,6 @@ async function bootstrap() {
   //   sess.cookie.secure = true; // serve secure cookies, requires https
   // }
 
-  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
-  // if (!isProduction) {
-  app.set('trust proxy', 1);
-  // }
-
-  app.use(cookieParser());
-
   const globalPrefix = configService.getEnvironment('apiPrefix');
   app.setGlobalPrefix(globalPrefix);
 
@@ -259,10 +262,28 @@ async function bootstrap() {
   const {
     doubleCsrfProtection, // This is the default CSRF protection middleware.
   } = doubleCsrf({
+    cookieName: 'csrf-token', // The name of the CSRF token cookie
+    cookieOptions: {
+      domain: domainBase,
+      httpOnly: false,
+      secure: isProduction,
+      maxAge: 3600 * 1000,
+      sameSite: 'lax',
+      // sameSite: isProduction ? 'lax' : false,
+      path: '/',
+    },
     getSecret: () => configService.getConfig('csrfSec'), // A function that optionally takes the request and returns a secret
-    getSessionIdentifier: (req) => req.session.id, // A function that returns the unique identifier for the request
+    getSessionIdentifier: (req) => {
+      console.log('MAIN XSRF 3', req.session.id);
+      return req.session.id;
+      // return 'TEST'
+    }, // A function that returns the unique identifier for the request
   });
-  app.use(doubleCsrfProtection);
+
+  app.use((req, res, next) => {
+    console.log('TEST', req.session.id);
+    return doubleCsrfProtection(req, res, next);
+  });
 
   app.use(
     helmet({

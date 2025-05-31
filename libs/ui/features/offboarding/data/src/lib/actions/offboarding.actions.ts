@@ -17,7 +17,14 @@ export const FeatExpOffboardingActions = createActionGroup({
 
     //
     CreateExpOffboarding: props<{
-      offboarding: ClientDataType<ExpOffboarding>;
+      offboarding: Omit<
+        ClientDataType<ExpOffboarding>,
+        | 'profile'
+        | 'profileId'
+        | 'profileIdsNetwork'
+        | 'kudoboardIds'
+        | 'farewellIds'
+      >;
     }>(),
     CreateExpOffboardingSuccess: props<{ offboarding: ExpOffboarding }>(),
     CreateExpOffboardingFailure: props<{ message: string }>(),

@@ -1,39 +1,42 @@
 @if(canBeChanged()) {
 <!-- can be changed -->
 
-@if(status() !== offboardingStatus.Draft) {
-<button
-  pButton
-  (click)="updateStatus(offboardingStatus.Draft)"
-  [rounded]="true"
-  severity="warning">
-  <span class="text-xs font-semibold">Set to draft</span>
-</button>
-} @if(status() !== offboardingStatus.Collecting) {
-<button
-  pButton
-  (click)="updateStatus(offboardingStatus.Collecting)"
-  [rounded]="true"
-  severity="info">
-  <span class="text-xs font-semibold">Collect kudos</span>
-</button>
-} @if(status() !== offboardingStatus.Shared) {
-<button
-  pButton
-  (click)="updateStatus(offboardingStatus.Shared)"
-  [rounded]="true"
-  severity="success">
-  <span class="text-xs font-semibold">Share with leaver</span>
-</button>
-} @if(status() !== offboardingStatus.Deleted) {
-<button
-  pButton
-  (click)="updateStatus(offboardingStatus.Deleted)"
-  [rounded]="true"
-  severity="danger">
-  <span class="text-xs font-semibold">Delete</span>
-</button>
-} } @else {
+<div class="flex gap-2">
+  @if(status() !== offboardingStatus.Draft) {
+  <button
+    pButton
+    (click)="updateStatus(offboardingStatus.Draft)"
+    [rounded]="true"
+    severity="warning">
+    <span class="text-xs font-semibold">Set to draft</span>
+  </button>
+  } @if(status() !== offboardingStatus.Collecting) {
+  <button
+    pButton
+    (click)="updateStatus(offboardingStatus.Collecting)"
+    [rounded]="true"
+    severity="info">
+    <span class="text-xs font-semibold">Collect kudos</span>
+  </button>
+  } @if(status() !== offboardingStatus.Shared) {
+  <button
+    pButton
+    (click)="updateStatus(offboardingStatus.Shared)"
+    [rounded]="true"
+    severity="success">
+    <span class="text-xs font-semibold">Share with leaver</span>
+  </button>
+  } @if(status() !== offboardingStatus.Deleted) {
+  <button
+    pButton
+    (click)="updateStatus(offboardingStatus.Deleted)"
+    [rounded]="true"
+    severity="danger">
+    <span class="text-xs font-semibold">Delete</span>
+  </button>
+  }
+</div>
+} @else {
 <!-- Cannot be changed -->
 @if(status() === offboardingStatus.Shared) {
 <p-tag

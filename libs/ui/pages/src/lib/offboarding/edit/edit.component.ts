@@ -7,7 +7,10 @@ import {
   FeatExpOffboardingActions,
   selectExpOffboardingById,
 } from '@kitouch/feat-offboarding-data';
-import { FeatOffboardingStatusComponent } from '@kitouch/feat-offboarding-ui';
+import {
+  FeatOffboardingEditComponent,
+  FeatOffboardingStatusComponent,
+} from '@kitouch/feat-offboarding-ui';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
@@ -33,6 +36,7 @@ import { filter, map, shareReplay, startWith, switchMap } from 'rxjs/operators';
     AsyncPipe,
     NgTemplateOutlet,
     //
+    FeatOffboardingEditComponent,
     UiKitDeleteComponent,
     SharedNavBarStaticComponent,
     UiKitSpinnerComponent,

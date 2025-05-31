@@ -1,5 +1,5 @@
 import { NgClass } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { FarewellStatus } from '@kitouch/shared-models';
 import { Tag, TagModule } from 'primeng/tag';
 import { TooltipModule } from 'primeng/tooltip';
@@ -11,8 +11,9 @@ import { TooltipModule } from 'primeng/tooltip';
     <div class="flex items-center gap-2">
       <i class="pi pi-info-circle text-xl"></i>
       <span
-        >Legend
+        >Legend @if(!isMobile()) {
         <span class="text-sm text-gray-500">(Hover for description)</span>
+        }
       </span>
       <i class="pi pi-chevron-right text-gray-400"></i>
 
@@ -35,6 +36,7 @@ import { TooltipModule } from 'primeng/tooltip';
 // <T extends KudoBoardStatus | FarewellStatus>
 export class SharedStatusLegendComponent {
   // status = input<T>();
+  isMobile = input.required<boolean>();
 
   statuses = Object.values(FarewellStatus).filter(
     (v) => v !== FarewellStatus.Removed
