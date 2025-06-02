@@ -16,6 +16,9 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import axios from 'axios';
 import { doubleCsrf } from 'csrf-csrf';
 import helmet from 'helmet';
+import MongoStore from 'connect-mongo';
+import { getConnectionToken } from '@nestjs/mongoose';
+import { Connection } from 'mongoose';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule, {
@@ -30,6 +33,49 @@ async function bootstrap() {
   const baseUrl = configService.getEnvironment('baseUrl'),
     feUrl = configService.getEnvironment('feUrl'),
     isProduction = configService.getEnvironment('production');
+
+  const { sessionSecret, clientSecret, authSecret, clientId, issuerBaseUrl } =
+    configService.getConfig('auth');
+
+  const domainBase = isProduction ? '.kitouch.io' : undefined;
+
+  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
+  app.set('trust proxy', 1);
+
+  app.use(cookieParser(sessionSecret));
+
+  const mongooseConnection = app.get<Connection>(getConnectionToken());
+  const connectionStr =
+    configService.getConfig('atlasUri') + '&appName=kit-dev';
+  console.log(connectionStr, mongooseConnection.getClient(), 'mongoUrl');
+  const sessionName = 'kitouch.sid';
+  app.use(
+    session({
+      name: sessionName,
+      secret: sessionSecret,
+      resave: false,
+      saveUninitialized: false,
+      proxy: true, // !isProduction,
+      store: MongoStore.create({
+        // mongoUrl: connectionStr,
+        clientPromise: Promise.resolve(mongooseConnection.getClient()),
+        collectionName: 'app_sessions',
+        ttl: 7 * 24 * 60 * 60, // e.g., 7 days in seconds
+        autoRemove: 'disabled',
+        crypto: {
+          secret: authSecret,
+        },
+      }),
+      cookie: {
+        path: '/',
+        domain: domainBase,
+        secure: isProduction,
+        httpOnly: true,
+        maxAge: 3600000, // Session duration (e.g., 1 hour)
+        sameSite: 'lax', // could be changed to 'strict' once docker will have both API and Web on the same domain
+      },
+    })
+  );
 
   app.enableCors({
     origin: function (origin, callback) {
@@ -61,36 +107,6 @@ async function bootstrap() {
     credentials: true,
   });
 
-  const { sessionSecret, clientSecret, authSecret, clientId, issuerBaseUrl } =
-    configService.getConfig('auth');
-
-  const domainBase = isProduction ? '.kitouch.io' : undefined;
-
-  // https://github.com/auth0/passport-auth0/issues/70#issuecomment-480771614s
-  // if (!isProduction) {
-  app.set('trust proxy', 1);
-  // }
-
-  app.use(cookieParser(sessionSecret));
-
-  app.use(
-    session({
-      secret: sessionSecret,
-      resave: false,
-      saveUninitialized: false,
-      proxy: true, // !isProduction,
-      cookie: {
-        path: '/',
-        domain: domainBase,
-        secure: isProduction,
-        httpOnly: true,
-        maxAge: 3600000, // Session duration (e.g., 1 hour)
-        sameSite: 'lax',
-        // sameSite: isProduction ? 'lax' : false, // could be changed to 'strict' once docker will have both API and Web on the same domain
-      },
-    })
-  );
-
   // Configure express-openid-connect
   const config: ConfigParams = {
     authRequired: false, // Don't require auth for all routes
@@ -110,7 +126,7 @@ async function bootstrap() {
       cookie: {
         httpOnly: true, // Keep HttpOnly
         secure: isProduction, // Use dynamic secure flag
-        sameSite: 'Lax', // <<< Use 'lax' for compatibility with redirects
+        sameSite: 'Lax',
         domain: domainBase, // <<< ADD domain for cross-subdomain function
         path: '/', // Usually root path is fine
         // maxAge can be set, but library often manages based on OIDC flow duration
@@ -121,27 +137,16 @@ async function bootstrap() {
         domain: domainBase,
         httpOnly: true,
         secure: isProduction,
-        // sameSite: isProduction ? 'lax' : false,
         sameSite: 'lax',
         path: '/',
       });
-
-      // session contains the id_token, access_token, user claims
-      if (!isProduction) {
-        console.info(
-          '\n[MAIN.ts] Session Object: %s',
-          JSON.stringify(session, null, 2)
-        ); // Log the whole session
-      }
 
       // Check if authentication was actually successful (session should contain tokens)
       if (!session.id_token || !session.access_token) {
         console.error(
           '[MAIN.ts] Authentication failed before afterCallback - Missing tokens.'
         );
-        // Redirect to an error page or login
         res.redirect(`${feUrl}?error=auth_failed`);
-        // MUST return session even on error to avoid hanging
         return session;
       }
 
@@ -154,19 +159,6 @@ async function bootstrap() {
             Authorization: `Bearer ${session.access_token}`,
           },
         });
-        // const { email } = authService.decode(session.id_token);
-        // const auth0UserUrl = new URL(`${issuerBaseUrl}/api/v2/users`);
-        // auth0UserUrl.search = new URLSearchParams({
-        //   search_engine: 'v3',
-        //   q: email,
-        // }).toString();
-
-        // const userInfoReq = await axios(auth0UserUrl.toString(), {
-        //   headers: {
-        //     Authorization:
-        //       'Bearer',
-        //   },
-        // });
 
         if (userInfoReq.status === 200 && userInfoReq.data) {
           user = userInfoReq.data;
@@ -216,10 +208,10 @@ async function bootstrap() {
         httpOnly: true,
         secure: isProduction,
         maxAge: 3600 * 1000,
-        // sameSite: isProduction ? 'lax' : false,
         sameSite: 'lax',
         path: '/',
       });
+      // (req.session as any).loggedIn = true;
 
       console.info(
         '[NEW Session set] Token: %s',
@@ -247,11 +239,6 @@ async function bootstrap() {
   };
   app.use(auth(config));
 
-  // if (process.env.NODE_ENV === 'production') {
-  //   app.set('trust proxy', 1); // trust first proxy
-  //   sess.cookie.secure = true; // serve secure cookies, requires https
-  // }
-
   const globalPrefix = configService.getEnvironment('apiPrefix');
   app.setGlobalPrefix(globalPrefix);
 
@@ -269,19 +256,14 @@ async function bootstrap() {
       secure: isProduction,
       maxAge: 3600 * 1000,
       sameSite: 'lax',
-      // sameSite: isProduction ? 'lax' : false,
       path: '/',
     },
     getSecret: () => configService.getConfig('csrfSec'), // A function that optionally takes the request and returns a secret
     getSessionIdentifier: (req) => {
-      console.log('MAIN XSRF 3', req.session.id);
       return req.session.id;
-      // return 'TEST'
-    }, // A function that returns the unique identifier for the request
+    },
   });
-
   app.use((req, res, next) => {
-    console.log('TEST', req.session.id);
     return doubleCsrfProtection(req, res, next);
   });
 

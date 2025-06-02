@@ -46,7 +46,7 @@ export class KitController {
       throw new HttpException('User not found', HttpStatus.UNAUTHORIZED);
     }
 
-    console.log('GENERATE TOKEN');
+    (req as any).session.loggedIn = true;
     (req as any).csrfToken();
 
     return this.getAccountUserProfiles((authUser as Auth0Kit).email);
