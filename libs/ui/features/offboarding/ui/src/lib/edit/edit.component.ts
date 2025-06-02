@@ -170,7 +170,6 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log('CREATED');
     // non essential task to provide parent status update functionality
     setTimeout(() => {
       if (this.doneTmpl) {

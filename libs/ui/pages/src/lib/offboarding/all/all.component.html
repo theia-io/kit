@@ -21,7 +21,7 @@
         <div
           class="relative z-10 flex items-center justify-center text-cyan-200">
           <a
-            class="text-8xl hover:textØ-cyan-100"
+            class="text-8xl hover:text-cyan-100"
             [routerLink]="[
               offboardingPartialUrl + '/' + offboarding.id,
               { preview: true }
@@ -55,7 +55,7 @@
 
       <a
         class="mr-2 hover:text-gray-900 hover:font-semibold"
-        [routerLink]="[offboardingPartialUrl + '/' + offboarding.id + '/edit']">
+        [routerLink]="['edit', offboarding.id]">
         Edit
         <i class="ml-1 pi pi-file-edit"></i>
       </a>

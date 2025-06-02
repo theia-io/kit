@@ -47,14 +47,16 @@ async function bootstrap() {
   const mongooseConnection = app.get<Connection>(getConnectionToken());
   const connectionStr =
     configService.getConfig('atlasUri') + '&appName=kit-dev';
-  console.log(connectionStr, mongooseConnection.getClient(), 'mongoUrl');
+
+  // console.log(connectionStr, mongooseConnection.getClient(), 'mongoUrl');
+
   const sessionName = 'kitouch.sid';
   app.use(
     session({
       name: sessionName,
       secret: sessionSecret,
-      resave: false,
-      saveUninitialized: false,
+      resave: true,
+      saveUninitialized: true,
       proxy: true, // !isProduction,
       store: MongoStore.create({
         // mongoUrl: connectionStr,

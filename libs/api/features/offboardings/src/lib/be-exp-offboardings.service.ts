@@ -163,7 +163,7 @@ export class BeExpOffboardingsService {
       );
     }
 
-    return populatedProfile(updatedOffboarding as any);
+    return populatedProfile(updatedOffboarding?.toObject() as any);
   }
 
   async deleteOffboarding(
@@ -228,13 +228,13 @@ const filterOffboardingContentForStatus = (
 // TODO move to utils
 const populatedProfile = (
   offboarding: Omit<IExpOffboarding, 'profile' | 'profileId'> & {
-    profileId: Profile;
+    profileId: any;
   }
 ): IExpOffboarding => {
   const { profileId } = offboarding;
   return {
     ...offboarding,
-    profileId: profileId.id,
+    profileId: profileId._id,
     profile: profileId,
   };
 };

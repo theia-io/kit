@@ -14,6 +14,13 @@ export type ExpOffboardingDocument = HydratedDocument<ExpOffboarding>;
       delete ret['_id'];
     },
   },
+  toObject: {
+    virtuals: true,
+    versionKey: false,
+    transform(doc, ret) {
+      delete ret['_id'];
+    },
+  },
 })
 export class ExpOffboarding {
   @Prop({
