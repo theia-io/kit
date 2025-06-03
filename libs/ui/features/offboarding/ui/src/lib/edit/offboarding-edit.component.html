@@ -1,0 +1,151 @@
+<form class="flex flex-col" [formGroup]="offboardingFormGroup">
+  @if(offboarding(); as offboarding) {
+  <feat-offboarding-info-panel
+    class="block float-right mb-12"
+    [preview]="true"
+    [showUpdatedDate]="true"
+    [offboarding]="offboarding" />
+  }
+
+  <div class="flex flex-col justify-center items-center gap-4 mt-8">
+    <p class="text-xl">Add your company logo</p>
+    <img
+      class="rounded shadow-sm cursor-pointer"
+      src="/logo/lorenz-system.png" />
+  </div>
+  <div class="block w-full underline">
+    <p-floatLabel>
+      <input
+        class="w-full text-center border-none shadow-none text-4xl focus:outline-none underline"
+        id="Offoboarding title"
+        type="text"
+        pInputText
+        (onChange)="disableEditorAutoFocus.set(true)"
+        formControlName="title" />
+      <label class="w-full text-4xl" for="title">Title</label>
+    </p-floatLabel>
+  </div>
+
+  <section class="relative">
+    <strong
+      uiKitSmallTextTailwindClasses
+      class="absolute right-6 bottom-6 text-xs">
+      {{ offboardingFormGroup.get('title')?.value?.length }} /
+      {{ titleMaxLength }}
+    </strong>
+  </section>
+
+  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+    <i class="pi pi-info-circle text-xl"></i>
+    <span>
+      This offboarding message will be sent to the employee when they leave the
+      company.
+    </span>
+  </div>
+
+  <shared-editor-quill
+    class="block mt-1 min-h-[33vh]"
+    formControlName="content"
+    editorPlaceholder="Create bespoke offboarding message here..."
+    [imageStorageProvider]="saveImages()"
+    [deleteImage]="deleteImage()"
+    [disableEditorAutoFocus]="disableEditorAutoFocus()"
+    (editorTextChange)="
+      editorTextValue.set($event); disableEditorAutoFocus.set(true)
+    "></shared-editor-quill>
+  <section class="relative">
+    <strong
+      uiKitSmallTextTailwindClasses
+      class="absolute right-6 bottom-6 text-xs">
+      {{ editorTextValue().length }} /
+      {{ CONTENT_MAX_LENGTH }}
+    </strong>
+  </section>
+
+  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+    <i class="pi pi-info-circle text-xl"></i>
+    <span>
+      This is kudoboard for you and collagues to write farewell messages for the
+      employee. You can add images to the board. Create your own space for your
+      ex-colleague!
+    </span>
+  </div>
+
+  //
+
+  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+    <i class="pi pi-info-circle text-xl"></i>
+    <span>
+      Here an employee can write a farewell message to their colleagues. This
+      message will be sent to the employee when they leave the company. They
+      will be creative, they will be able to add images, videos, and gifs to the
+      message. Change it as employee wishes and so much more.
+    </span>
+  </div>
+  //
+
+  <div class="flex flex-col justify-center items-center gap-4 mt-8">
+    <p class="text-xl">Ask employee to add review on</p>
+    <img
+      class="rounded shadow-sm cursor-pointer"
+      src="/offboarding/glassdoor.webp" />
+  </div>
+
+  <div class="flex flex-col justify-center items-center gap-4 mt-8">
+    <p class="text-xl">
+      Join community to
+      <span class="font-semibold">Keep in touch</span>
+    </p>
+    <img
+      class="rounded shadow-sm cursor-pointer"
+      src="/offboarding/together.jpg" />
+  </div>
+
+  <!-- id -->
+  @let offboardingId = id();
+  <!-- status -->
+  @let status = offboardingFormGroup.get('status')?.value;
+
+  <ng-template #doneTmpl>
+    <button pButton (click)="gotoAll($event)" [rounded]="true" styleClass="p-1">
+      <span class="ml-1 text-xs">Done</span>
+    </button>
+  </ng-template>
+
+  <ng-template #statusTmpl>
+    <feat-offboarding-status
+      [status]="status ?? offboardingStatus.Draft"
+      [canBeChanged]="true"
+      (updatedStatus)="updateStatus($event)" />
+  </ng-template>
+
+  <ng-template #previewTmpl>
+    @if(offboardingId) {
+    <shared-sidebar-preview [(visible)]="previewVisible" />
+    }
+  </ng-template>
+
+  <ng-template #shareTmpl>
+    @if(offboardingId) {
+    <shared-copy-clipboard
+      [id]="offboardingId"
+      [gifting]="false"
+      type="offboarding" />
+    }
+  </ng-template>
+
+  <div class="flex justify-center gap-2 mt-12">
+    <ng-container *ngTemplateOutlet="previewTmpl"></ng-container>
+    <ng-container *ngTemplateOutlet="shareTmpl"></ng-container>
+    @if(updating()) {
+    <ui-kit-spinner size="h-6 w-6" />
+    }
+  </div>
+
+  <div class="flex justify-center items-center gap-2 mt-2">
+    <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
+    <ng-container *ngTemplateOutlet="doneTmpl"></ng-container>
+  </div>
+</form>
+
+<p-toast />

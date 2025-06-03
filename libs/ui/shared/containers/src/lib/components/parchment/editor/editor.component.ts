@@ -28,10 +28,26 @@ import {
 import Quill, { Bounds } from 'quill';
 import { Delta } from 'quill/core';
 import { Observable } from 'rxjs';
-import { FeatFarewellQuillActionsComponent } from '../editor-actions/quill-actions.component';
-import { FeatFarewellQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
-import { ImageConfiguration } from './bloats-leaf';
+import { SharedQuillActionsComponent } from '../editor-actions/quill-actions.component';
+import { SharedQuillSideActionsComponent } from '../editor-side-actions/quill-side-actions.component';
+import {
+  ImageConfiguration,
+  registerKitEditorLeafBloatsHandlers,
+} from './bloats-leaf';
 import { quillBackspaceImageHandler } from './quill';
+import { registerKitEditorHandlers } from './bloats';
+
+// import to register custom bloats
+
+Quill.debug(false);
+registerKitEditorHandlers();
+registerKitEditorLeafBloatsHandlers();
+
+export function extractContent(html: string) {
+  const span = document.createElement('span');
+  span.innerHTML = html;
+  return span.textContent || span.innerText;
+}
 
 export interface Range {
   index: number;
@@ -41,7 +57,7 @@ export interface Range {
 /** Note! This component has to be covered with unit tests before major refactoring  */
 @Component({
   standalone: true,
-  selector: 'feat-farewell-editor',
+  selector: 'shared-editor-quill',
   templateUrl: './editor.component.html',
   styles: [
     `
@@ -53,8 +69,8 @@ export interface Range {
   imports: [
     ReactiveFormsModule,
     //
-    FeatFarewellQuillActionsComponent,
-    FeatFarewellQuillSideActionsComponent,
+    SharedQuillActionsComponent,
+    SharedQuillSideActionsComponent,
     //
     EditorModule,
   ],
@@ -62,12 +78,12 @@ export interface Range {
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
-      useExisting: forwardRef(() => FeatFarewellEditorComponent),
+      useExisting: forwardRef(() => SharedEditorQuillComponent),
       multi: true,
     },
   ],
 })
-export class FeatFarewellEditorComponent
+export class SharedEditorQuillComponent
   implements OnDestroy, ControlValueAccessor
 {
   imageStorageProvider =
@@ -77,6 +93,7 @@ export class FeatFarewellEditorComponent
   deleteImage = input<(imageSrc: string) => void>();
   /** e.g. when user updates title we don't want to autofocus editor automatically */
   disableEditorAutoFocus = input<boolean>(false);
+  editorPlaceholder = input<string>('Add farewell to your (ex-) colleagues 🔥');
   editorTextChange = output<string>();
 
   editorComponent = viewChild(Editor);

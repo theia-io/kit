@@ -12,7 +12,7 @@ import { TooltipModule } from 'primeng/tooltip';
 @Component({
   standalone: true,
   selector: 'feat-offboarding-status',
-  templateUrl: './status.component.html',
+  templateUrl: './offboarding-status.component.html',
   imports: [ButtonModule, TagModule, TooltipModule],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

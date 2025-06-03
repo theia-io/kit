@@ -31,24 +31,33 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 import { UiKitSpinnerComponent } from '@kitouch/ui-components';
 
 import {
+  extractContent,
   FeatSideBarPreviewComponent,
   SharedCopyClipboardComponent,
+  SharedEditorQuillComponent,
 } from '@kitouch/containers';
 import {
   FeatExpOffboardingActions,
+  FeatOffboardingMediaActions,
   findExpOffboardingById,
   selectExpOffboardings,
 } from '@kitouch/feat-offboarding-data';
 import { APP_PATH_ALLOW_ANONYMOUS } from '@kitouch/shared-constants';
-import { ExpOffboarding, ExpOffboardingStatus } from '@kitouch/shared-models';
+import {
+  ContractUploadedMedia,
+  ExpOffboarding,
+  ExpOffboardingStatus,
+} from '@kitouch/shared-models';
 import { DeviceService } from '@kitouch/shared-services';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
+import { MessageService } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import {
   combineLatest,
@@ -56,6 +65,7 @@ import {
   filter,
   map,
   merge,
+  Observable,
   of,
   shareReplay,
   skipUntil,
@@ -63,17 +73,18 @@ import {
   switchMap,
   take,
   takeUntil,
+  tap,
   withLatestFrom,
 } from 'rxjs';
-import { FeatOffboardingInfoPanelComponent } from '../info-panel/info-panel.component';
-import { FeatOffboardingStatusComponent } from '../status/status.component';
+import { FeatOffboardingInfoPanelComponent } from '../info-panel/offboarding-info-panel.component';
+import { FeatOffboardingStatusComponent } from '../status/offboarding-status.component';
 
 const TITLE_MAX_LENGTH = 128;
 
 @Component({
   standalone: true,
   selector: 'feat-offboarding-edit',
-  templateUrl: './edit.component.html',
+  templateUrl: './offboarding-edit.component.html',
   imports: [
     //
     ReactiveFormsModule,
@@ -85,6 +96,7 @@ const TITLE_MAX_LENGTH = 128;
     ButtonModule,
     TooltipModule,
     OverlayPanelModule,
+    ToastModule,
     //
     FeatOffboardingStatusComponent,
     FeatSideBarPreviewComponent,
@@ -92,7 +104,9 @@ const TITLE_MAX_LENGTH = 128;
     SharedCopyClipboardComponent,
     FeatOffboardingInfoPanelComponent,
     UiKitSpinnerComponent,
+    SharedEditorQuillComponent,
   ],
+  providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FeatOffboardingEditComponent implements AfterViewInit {
@@ -112,6 +126,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   #store = inject(Store);
   #actions$ = inject(Actions);
   deviceService = inject(DeviceService);
+  #messageService = inject(MessageService);
 
   #beforeUnloadTrigger$$ = new Subject<void>();
 
@@ -150,8 +165,11 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   });
 
   readonly titleMaxLength = TITLE_MAX_LENGTH;
+  readonly CONTENT_MAX_LENGTH = 8_092;
   readonly offboardingStatus = ExpOffboardingStatus;
   previewVisible = signal(false);
+  editorTextValue = signal<string>('');
+  disableEditorAutoFocus = signal(false);
 
   @ViewChild('doneTmpl', { read: TemplateRef })
   doneTmpl?: TemplateRef<unknown>;
@@ -195,6 +213,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
       this.#autoCreateOffboarding();
     } else {
       this.#offboarding$.pipe(take(1)).subscribe((offboarding) => {
+        console.log('[OffboardingEditComponent] offboarding', offboarding);
         this.offboardingFormGroup.patchValue(
           {
             collaboratorEmails: offboarding.collaboratorEmails.join(', '),
@@ -205,6 +224,8 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
           },
           { emitEvent: false }
         );
+
+        this.editorTextValue.set(extractContent(offboarding.content));
         this.#cdr.detectChanges();
       });
     }
@@ -220,7 +241,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
       )
     )
       .pipe(
-        // when its new farewell we don't update until farewell is created
+        // when its new offboarding we don't update until offboarding is created
         skipUntil(this.id() ? of(true) : this.#offboarding$),
         withLatestFrom(this.#offboarding$)
       )
@@ -242,13 +263,9 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
         }
       );
 
-    this.offboardingFormGroup.valueChanges
-      .pipe(takeUntilDestroyed(this.#destroyRef))
-      .subscribe(() => this.updating.set(true));
-
     this.#actions$
       .pipe(
-        ofType(FeatExpOffboardingActions.putExpOffboarding),
+        ofType(FeatExpOffboardingActions.putExpOffboardingSuccess),
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(() => this.updating.set(false));
@@ -332,6 +349,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   }
 
   #updateOffboarding(offboarding: ExpOffboarding) {
+    this.updating.set(true);
     this.#store.dispatch(
       FeatExpOffboardingActions.putExpOffboarding({
         offboarding,
@@ -344,5 +362,93 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
     this.#location.replaceState(
       `/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/${id}/edit`
     );
+  }
+
+  saveImages(): (
+    images: Array<File>
+  ) => Observable<Array<ContractUploadedMedia> | null> {
+    const getOffboardingId = () => this.offboarding()?.id;
+    const getProfileId = () => this.currentProfile()?.id;
+
+    return (images: Array<File>) => {
+      const profileId = getProfileId(),
+        offboardingId = getOffboardingId();
+
+      const mediaFiles = images;
+
+      if (!profileId || !offboardingId) {
+        console.error(
+          '[saveImages] cannot upload images by unknown profile and offboarding',
+          profileId,
+          offboardingId
+        );
+        return of([]);
+      }
+
+      this.#messageService.add({
+        severity: 'info',
+        summary: 'Adding image',
+        detail: 'Uploading your image to offboarding',
+        life: 3000,
+      });
+
+      setTimeout(() => {
+        const now = new Date();
+        this.#store.dispatch(
+          FeatOffboardingMediaActions.uploadOffboardingStorageMedia({
+            offboardingId,
+            profileId,
+            items: mediaFiles.map((mediaFile) => ({
+              key: `${offboardingId}/${profileId}/${now.getTime()}-${
+                mediaFile.name
+              }`,
+              blob: mediaFile,
+            })),
+          })
+        );
+      });
+
+      return merge(
+        this.#actions$.pipe(
+          ofType(
+            FeatOffboardingMediaActions.uploadOffboardingStorageMediaSuccess
+          ),
+          tap(() => {
+            this.#messageService.add({
+              severity: 'success',
+              summary: 'Image added',
+              detail: 'Farewell image has been added',
+              life: 3000,
+            });
+          }),
+          map(({ items }) => items)
+        ),
+        this.#actions$.pipe(
+          ofType(
+            FeatOffboardingMediaActions.uploadOffboardingStorageMediaFailure
+          ),
+          tap(({ message }) => {
+            this.#messageService.add({
+              severity: 'warn',
+              summary: 'Image was not added',
+              detail: message,
+              life: 3000,
+            });
+          }),
+          map(() => null)
+        )
+      ).pipe(take(1));
+    };
+  }
+
+  deleteImage() {
+    // S3
+    return (url: string) => {
+      this.#store.dispatch(
+        FeatOffboardingMediaActions.deleteOffboardingStorageMedia({
+          url,
+        })
+      );
+    };
   }
 }

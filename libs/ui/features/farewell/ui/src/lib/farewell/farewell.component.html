@@ -27,13 +27,13 @@
     </strong>
   </section>
 
-  <feat-farewell-editor
+  <shared-editor-quill
     class="block mt-4 min-h-[33vh]"
     formControlName="content"
     [imageStorageProvider]="saveImages()"
     [deleteImage]="deleteImage()"
     [disableEditorAutoFocus]="disableEditorAutoFocus()"
-    (editorTextChange)="editorTextValue.set($event)"></feat-farewell-editor>
+    (editorTextChange)="editorTextValue.set($event)"></shared-editor-quill>
   <section class="relative">
     <strong
       uiKitSmallTextTailwindClasses

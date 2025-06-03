@@ -1,22 +1,20 @@
 @if(quill(); as quill) {
-<feat-farewell-quill-side-actions
+<shared-quill-side-actions
   [(show)]="sideActionsShow"
   [bounds]="sideActionsBounds()"
   (sideActionOpened)="sideActionOpened.set($event)"
   (divider)="dividerHandler(quill)"
-  (imageFiles)="
-    imageFilesHandler(quill, $event)
-  "></feat-farewell-quill-side-actions>
-<feat-farewell-quill-actions
+  (imageFiles)="imageFilesHandler(quill, $event)"></shared-quill-side-actions>
+<shared-quill-actions
   [(show)]="actionsShow"
   [bounds]="actionsBounds()"
-  [quill]="quill"></feat-farewell-quill-actions>
+  [quill]="quill"></shared-quill-actions>
 }
 
 <p-editor
   [formControl]="editorControl"
   aria-describedby="farewell-rich-text-editor"
-  placeholder="Add farewell to your (ex-) colleagues 🔥"
+  [placeholder]="editorPlaceholder()"
   [modules]="{}"
   [style]="{
     border: 'none',

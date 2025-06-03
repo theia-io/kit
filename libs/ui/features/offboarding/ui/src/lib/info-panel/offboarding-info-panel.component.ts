@@ -5,13 +5,13 @@ import { ExpOffboarding } from '@kitouch/shared-models';
 import { ButtonModule } from 'primeng/button';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { TooltipModule } from 'primeng/tooltip';
-import { FeatOffBoardingAnalyticsComponent } from '../analytics/analytics.component';
-import { FeatOffboardingStatusComponent } from '../status/status.component';
+import { FeatOffBoardingAnalyticsComponent } from '../analytics/offboarding-analytics.component';
+import { FeatOffboardingStatusComponent } from '../status/offboarding-status.component';
 
 @Component({
   standalone: true,
   selector: 'feat-offboarding-info-panel',
-  templateUrl: './info-panel.component.html',
+  templateUrl: './offboarding-info-panel.component.html',
   imports: [
     FeatOffboardingStatusComponent,
     FeatOffBoardingAnalyticsComponent,

@@ -22,7 +22,7 @@ import { Bounds } from 'quill';
 
 @Component({
   standalone: true,
-  selector: 'feat-farewell-quill-side-actions',
+  selector: 'shared-quill-side-actions',
   templateUrl: './quill-side-actions.component.html',
   imports: [
     NgStyle,
@@ -35,7 +35,7 @@ import { Bounds } from 'quill';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellQuillSideActionsComponent {
+export class SharedQuillSideActionsComponent {
   bounds = input.required<Bounds | null>();
   show = model.required<boolean>();
 

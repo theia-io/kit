@@ -24,7 +24,7 @@ import { delay, filter, map, switchMap, take, withLatestFrom } from 'rxjs';
 @Component({
   standalone: true,
   selector: 'feat-offboarding-analytics',
-  templateUrl: './analytics.component.html',
+  templateUrl: './offboarding-analytics.component.html',
   imports: [
     AsyncPipe,
     //

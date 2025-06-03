@@ -19,7 +19,7 @@ const DEFAULT_LINK_PLACEHOLDER = 'Paste a link...';
 
 @Component({
   standalone: true,
-  selector: 'feat-farewell-quill-actions',
+  selector: 'shared-quill-actions',
   templateUrl: './quill-actions.component.html',
   imports: [
     NgStyle,
@@ -30,7 +30,7 @@ const DEFAULT_LINK_PLACEHOLDER = 'Paste a link...';
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class FeatFarewellQuillActionsComponent {
+export class SharedQuillActionsComponent {
   quill = input.required<Quill>();
   bounds = input.required<Bounds | null>();
   show = model.required<boolean>();

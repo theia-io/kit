@@ -44,8 +44,10 @@ import {
 } from '@kitouch/ui-components';
 
 import {
+  extractContent,
   FeatSideBarPreviewComponent,
   SharedCopyClipboardComponent,
+  SharedEditorQuillComponent,
 } from '@kitouch/containers';
 import { APP_PATH } from '@kitouch/shared-constants';
 import { Actions, ofType } from '@ngrx/effects';
@@ -57,7 +59,6 @@ import { InputTextModule } from 'primeng/inputtext';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
-import Quill from 'quill';
 import {
   debounceTime,
   filter,
@@ -70,24 +71,9 @@ import {
   take,
   tap,
 } from 'rxjs';
-import { registerKitEditorHandlers } from '../editor/bloats';
-import { registerKitEditorLeafBloatsHandlers } from '../editor/bloats-leaf';
-import { FeatFarewellEditorComponent } from '../editor/editor.component';
 import { FeatFarewellInfoPanelComponent } from '../info-panel/info-panel.component';
 import { FeatFarewellStatusComponent } from '../status/status.component';
 import { FeatFarewellViewV2Component } from '../viewV2/viewV2.component';
-
-// import to register custom bloats
-
-Quill.debug(false);
-registerKitEditorHandlers();
-registerKitEditorLeafBloatsHandlers();
-
-function extractContent(html: string) {
-  const span = document.createElement('span');
-  span.innerHTML = html;
-  return span.textContent || span.innerText;
-}
 
 @Component({
   standalone: true,
@@ -106,7 +92,7 @@ function extractContent(html: string) {
     OverlayPanelModule,
     ToastModule,
     //
-    FeatFarewellEditorComponent,
+    SharedEditorQuillComponent,
     UIKitSmallerHintTextUXDirective,
     SharedCopyClipboardComponent,
     FeatSideBarPreviewComponent,

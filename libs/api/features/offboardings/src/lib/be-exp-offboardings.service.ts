@@ -71,11 +71,9 @@ export class BeExpOffboardingsService {
       throw new HttpException('Cannot find offboarding', HttpStatus.NOT_FOUND);
     }
 
-    return populatedProfile(
-      filterOffboardingContentForStatus(
-        currentProfileIds,
-        offboarding.toObject() as any
-      ) as any
+    return filterOffboardingContentForStatus(
+      currentProfileIds,
+      populatedProfile(offboarding.toObject() as any)
     );
   }
 
@@ -205,6 +203,14 @@ const filterOffboardingContentForStatus = (
   currentProfileIds: Array<string>,
   offboarding: IExpOffboarding
 ) => {
+  console.log(currentProfileIds, offboarding.profileId);
+  if (
+    offboarding.profileId &&
+    currentProfileIds.includes(offboarding.profileId)
+  ) {
+    return offboarding;
+  }
+
   let offboardingContentWithStatus = offboarding;
   switch (offboarding?.status) {
     case ExpOffboardingStatus.Draft:
