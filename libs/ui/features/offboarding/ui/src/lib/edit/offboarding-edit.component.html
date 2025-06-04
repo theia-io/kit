@@ -7,12 +7,17 @@
     [offboarding]="offboarding" />
   }
 
-  <div class="flex flex-col justify-center items-center gap-4 mt-8">
-    <p class="text-xl">Add your company logo</p>
+  <div
+    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
+    <i class="pi pi-info-circle text-xl"></i>
+    <span>Welcome to the offboarding process!</span>
+  </div>
+  <div class="flex flex-col justify-center items-center gap-4">
     <img
       class="rounded shadow-sm cursor-pointer"
-      src="/logo/lorenz-system.png" />
+      src="/logo/lorenz-system-120x120.png" />
   </div>
+
   <div class="block w-full underline">
     <p-floatLabel>
       <input
@@ -20,7 +25,6 @@
         id="Offoboarding title"
         type="text"
         pInputText
-        (onChange)="disableEditorAutoFocus.set(true)"
         formControlName="title" />
       <label class="w-full text-4xl" for="title">Title</label>
     </p-floatLabel>
@@ -35,24 +39,23 @@
     </strong>
   </section>
 
-  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+  <div
+    class="mt-4 flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
     <span>
-      This offboarding message will be sent to the employee when they leave the
-      company.
+      Here below you can create a bespoke offboarding message for an employee
+      who is leaving the company.
     </span>
   </div>
 
   <shared-editor-quill
     class="block mt-1 min-h-[33vh]"
     formControlName="content"
-    editorPlaceholder="Create bespoke offboarding message here..."
+    editorPlaceholder="Add bespoke offboarding message for your departing colleague here..."
     [imageStorageProvider]="saveImages()"
     [deleteImage]="deleteImage()"
     [disableEditorAutoFocus]="disableEditorAutoFocus()"
-    (editorTextChange)="
-      editorTextValue.set($event); disableEditorAutoFocus.set(true)
-    "></shared-editor-quill>
+    (editorTextChange)="editorTextValue.set($event)"></shared-editor-quill>
   <section class="relative">
     <strong
       uiKitSmallTextTailwindClasses
@@ -62,44 +65,119 @@
     </strong>
   </section>
 
-  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+  <ui-kit-divider class="my-4" />
+
+  <div
+    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
+    <p class="text-xl">Create collaborative space</p>
     <span>
-      This is kudoboard for you and collagues to write farewell messages for the
+      This is kudoboard for you and colleagues to write kudo messages for an
       employee. You can add images to the board. Create your own space for your
       ex-colleague!
+      <br />
+      Collaborative, Flexible, Powerful.
     </span>
   </div>
 
   //
 
-  <div class="mt-4 flex items-center gap-2 text-sm text-gray-500">
+  <!-- Kudoboard -->
+  @if(offboarding()?.kudoboardIds?.[0]; as kudoboardId) {
+  <feat-kudoboard-view class="grow" [id]="kudoboardId" />
+
+  <feat-kudoboard-comments [kudoboardId]="kudoboardId" [canComment]="true" />
+  } @else {
+  <ui-kit-tweet-button
+    (clickEvent)="createKudoBoard()"
+    icon="pi-sparkles"
+    [iconAnimate]="true"
+    text="Create collaborative space"
+    class="w-full mb-4" />
+  }
+
+  <ui-kit-divider class="my-4" />
+
+  <div
+    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
     <span>
-      Here an employee can write a farewell message to their colleagues. This
-      message will be sent to the employee when they leave the company. They
-      will be creative, they will be able to add images, videos, and gifs to the
-      message. Change it as employee wishes and so much more.
+      Here below an employee will write a farewell message to their colleagues.
+      This message will be sent to the employee when they leave the company.
+      They can be creative, it is possible to add images, videos, and gifs to
+      the message.
+      <br />
+      Better, Flexible, Powerful. Employee is in control.
     </span>
   </div>
-  //
 
-  <div class="flex flex-col justify-center items-center gap-4 mt-8">
-    <p class="text-xl">Ask employee to add review on</p>
-    <img
-      class="rounded shadow-sm cursor-pointer"
-      src="/offboarding/glassdoor.webp" />
+  <!-- Farewell view -->
+  <p-floatLabel>
+    <input
+      class="w-full text-center border-none shadow-none text-4xl focus:outline-none underline"
+      id="Your departing colleague's email"
+      type="text"
+      pInputText
+      formControlName="receiverEmail" />
+    <label class="w-full text-4xl" for="receiverEmail">
+      Enter departing colleague's email
+    </label>
+  </p-floatLabel>
+  <p class="text-sm text-gray-500">
+    Once you shared it with employee who leaves he will be able to create
+    farewell
+  </p>
+
+  <ui-kit-divider class="my-6" />
+
+  <div
+    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
+    <i class="pi pi-info-circle text-xl"></i>
+    <span>(optional) Ask employee to add review on</span>
+  </div>
+  <div class="flex flex-col md:flex-row justify-center items-center gap-4">
+    <div>
+      <img
+        class="rounded shadow-sm hover:shadow-md cursor-pointer max-w-72"
+        src="/offboarding/glassdoor.webp" />
+    </div>
+    <div>
+      <img
+        class="rounded shadow-sm hover:shadow-md cursor-pointer max-w-72"
+        src="/offboarding/google-maps.png" />
+    </div>
+    <div>
+      <img
+        class="rounded shadow-sm hover:shadow-md cursor-pointer max-w-72"
+        src="/offboarding/empty-image.jpg" />
+    </div>
+  </div>
+  <div class="flex flex-col gap-2">
+    <label for="companyReviews">
+      Add link where employee can give your company a fair review
+    </label>
+    <input
+      pInputText
+      id="companyReviews"
+      aria-describedby="companyReviews"
+      formControlName="companyReviews" />
+    <small id="companyReviews">
+      This can be anything - think off glassdoor, google maps or anything at
+      all.
+    </small>
   </div>
 
-  <div class="flex flex-col justify-center items-center gap-4 mt-8">
+  <ui-kit-divider class="my-6" />
+
+  <!-- <div class="flex flex-col justify-center items-center gap-4">
     <p class="text-xl">
       Join community to
       <span class="font-semibold">Keep in touch</span>
     </p>
     <img
-      class="rounded shadow-sm cursor-pointer"
+      class="rounded shadow-sm cursor-pointer h-36 w-36"
       src="/offboarding/together.jpg" />
-  </div>
+  </div> -->
 
   <!-- id -->
   @let offboardingId = id();

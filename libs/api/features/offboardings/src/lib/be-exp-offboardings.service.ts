@@ -1,7 +1,6 @@
 import {
   ExpOffboardingStatus,
   ExpOffboarding as IExpOffboarding,
-  Profile,
 } from '@kitouch/shared-models';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
@@ -42,10 +41,7 @@ export class BeExpOffboardingsService {
     ) as Array<IExpOffboarding>;
   }
 
-  async getOffboarding(
-    offboardingId: string,
-    currentProfileIds: Array<string>
-  ) {
+  async getOffboarding(offboardingId: string) {
     let offboarding;
 
     try {
@@ -71,10 +67,7 @@ export class BeExpOffboardingsService {
       throw new HttpException('Cannot find offboarding', HttpStatus.NOT_FOUND);
     }
 
-    return filterOffboardingContentForStatus(
-      currentProfileIds,
-      populatedProfile(offboarding.toObject() as any)
-    );
+    return populatedProfile(offboarding.toObject() as any);
   }
 
   async createOffboarding({
@@ -115,7 +108,7 @@ export class BeExpOffboardingsService {
     offboardingId: string,
     {
       profileId,
-      kudoboardIds: __,
+      kudoboardIds,
       farewellIds: _,
       profileIdsNetwork,
       ...restOffboarding
@@ -139,9 +132,9 @@ export class BeExpOffboardingsService {
           {
             ...restOffboarding,
             profileId: new mongoose.Types.ObjectId(profileId),
-            // kudoboardIds: kudoboardIds?.map(
-            //   (id) => new mongoose.Types.ObjectId(id)
-            // ),
+            kudoboardIds: kudoboardIds?.map(
+              (id) => new mongoose.Types.ObjectId(id)
+            ),
             // farewellIds: farewellIds?.map(
             //   (id) => new mongoose.Types.ObjectId(id)
             // ),
@@ -199,14 +192,14 @@ export class BeExpOffboardingsService {
 }
 
 // TODO IMPLEMENT ME
-const filterOffboardingContentForStatus = (
+export const filterSensitiveOffboardingData = (
   currentProfileIds: Array<string>,
   offboarding: IExpOffboarding
 ) => {
-  console.log(currentProfileIds, offboarding.profileId);
+  console.log('CHECK', currentProfileIds, offboarding.profileId);
   if (
     offboarding.profileId &&
-    currentProfileIds.includes(offboarding.profileId)
+    currentProfileIds.includes(offboarding.profileId.toString())
   ) {
     return offboarding;
   }
@@ -240,7 +233,7 @@ const populatedProfile = (
   const { profileId } = offboarding;
   return {
     ...offboarding,
-    profileId: profileId._id,
+    profileId: profileId?._id,
     profile: profileId,
   };
 };

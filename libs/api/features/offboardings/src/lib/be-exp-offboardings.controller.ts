@@ -16,7 +16,10 @@ import {
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Request } from 'express';
-import { BeExpOffboardingsService } from './be-exp-offboardings.service';
+import {
+  BeExpOffboardingsService,
+  filterSensitiveOffboardingData,
+} from './be-exp-offboardings.service';
 
 @Controller('offboardings')
 export class BeExpOffboardingsController {
@@ -37,10 +40,11 @@ export class BeExpOffboardingsController {
     const currentProfileIds =
       (req.user as Auth0Kit).profiles?.map((profile) => profile.id) ?? [];
 
-    return this.beExpOffboardingsService.getOffboarding(
-      offboardingId,
-      currentProfileIds
+    const offboarding = await this.beExpOffboardingsService.getOffboarding(
+      offboardingId
     );
+
+    return filterSensitiveOffboardingData(currentProfileIds, offboarding);
   }
 
   @Post()

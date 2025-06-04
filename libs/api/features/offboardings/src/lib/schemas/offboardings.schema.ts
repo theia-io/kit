@@ -70,6 +70,9 @@ export class ExpOffboarding {
   })
   status: ExpOffboardingStatus;
 
+  @Prop()
+  companyReviews: Array<string>;
+
   @Prop({
     type: [mongoose.Schema.Types.ObjectId],
     ref: 'Profile',

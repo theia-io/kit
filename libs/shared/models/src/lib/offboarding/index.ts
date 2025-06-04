@@ -19,6 +19,7 @@ export interface ExpOffboarding extends KitTimestamp {
   receiverEmail: string;
   title: string;
   content: string;
+  companyReviews: Array<string>;
   status: ExpOffboardingStatus;
   profileIdsNetwork: Array<string>;
 }

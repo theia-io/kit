@@ -110,10 +110,10 @@ export class MediaController {
   ): Promise<ContractUploadedMedia> {
     const dimensions = this.#getDimensions(media);
 
-    const bucketUrl = this.configService.getConfig('s3').offboardingBucket;
+    const { region, offboardingBucket } = this.configService.getConfig('s3');
 
     const { url, optimizedUrls } = await this.mediaService.upload({
-      bucket: bucketUrl,
+      bucket: offboardingBucket,
       file: media,
       filePath: name,
       fileType: dimensions.type ?? name.split('.').reverse()[0],
@@ -123,19 +123,20 @@ export class MediaController {
     return {
       height,
       width,
-      url: getFullS3Url(bucketUrl, url),
-      optimizedUrls: optimizedUrls.map((url) => getFullS3Url(bucketUrl, url)),
+      url: getFullS3Url(region, offboardingBucket, url),
+      optimizedUrls: optimizedUrls.map((url) =>
+        getFullS3Url(region, offboardingBucket, url)
+      ),
     };
   }
 
   @Delete('offboarding')
   async deleteOffboardingMedia(@Query('name') url: string): Promise<boolean> {
+    const { region, offboardingBucket } = this.configService.getConfig('s3');
+
     await this.mediaService.delete(
-      this.configService.getConfig('s3').offboardingBucket,
-      getImageKeyFromS3Url(
-        url,
-        this.configService.getConfig('s3').offboardingBucket
-      )
+      offboardingBucket,
+      getImageKeyFromS3Url(url, getFullS3Url(region, offboardingBucket, ''))
     );
     return true;
   }

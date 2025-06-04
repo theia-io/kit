@@ -35,19 +35,15 @@ export class MediaService {
       avifFilePath = `${filePathWithoutExtension}.avif`;
 
     try {
-      const avifUploadAsync = this.s3ApiService.upload(
-        bucket,
-        avifFilePath,
-        avif
-      );
+      await this.s3ApiService.upload(bucket, avifFilePath, avif);
 
-      const defaultUploadAsync = this.s3ApiService.upload(
-        bucket,
-        filePath,
-        file
-      );
+      // const defaultUploadAsync = this.s3ApiService.upload(
+      //   bucket,
+      //   filePath,
+      //   file
+      // );
 
-      await Promise.all([avifUploadAsync, defaultUploadAsync]);
+      // await Promise.all([avifUploadAsync, defaultUploadAsync]);
     } catch (err) {
       console.error(err);
 
@@ -57,7 +53,8 @@ export class MediaService {
     }
 
     return {
-      url: filePath,
+      // url: filePath,
+      url: avifFilePath,
       optimizedUrls: [avifFilePath],
     };
   }

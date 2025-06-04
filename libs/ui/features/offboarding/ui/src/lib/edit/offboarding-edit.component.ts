@@ -25,10 +25,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { Router } from '@angular/router';
+import {
+  FeatKudoBoardCommentsComponent,
+  FeatKudoBoardViewComponent,
+} from '@kitouch/ui-kudoboard';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 
-import { UiKitSpinnerComponent } from '@kitouch/ui-components';
+import {
+  DividerComponent,
+  UiKitSpinnerComponent,
+  UiKitTweetButtonComponent,
+} from '@kitouch/ui-components';
 
 import {
   extractContent,
@@ -36,6 +44,7 @@ import {
   SharedCopyClipboardComponent,
   SharedEditorQuillComponent,
 } from '@kitouch/containers';
+import { FeatKudoBoardActions } from '@kitouch/data-kudoboard';
 import {
   FeatExpOffboardingActions,
   FeatOffboardingMediaActions,
@@ -47,8 +56,9 @@ import {
   ContractUploadedMedia,
   ExpOffboarding,
   ExpOffboardingStatus,
+  KudoBoardStatus,
 } from '@kitouch/shared-models';
-import { DeviceService } from '@kitouch/shared-services';
+import { DeviceService, validateEmail } from '@kitouch/shared-services';
 import { Actions, ofType } from '@ngrx/effects';
 import { select, Store } from '@ngrx/store';
 import { MessageService } from 'primeng/api';
@@ -62,6 +72,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import {
   combineLatest,
   debounceTime,
+  delay,
   filter,
   map,
   merge,
@@ -105,6 +116,10 @@ const TITLE_MAX_LENGTH = 128;
     FeatOffboardingInfoPanelComponent,
     UiKitSpinnerComponent,
     SharedEditorQuillComponent,
+    DividerComponent,
+    FeatKudoBoardViewComponent,
+    FeatKudoBoardCommentsComponent,
+    UiKitTweetButtonComponent,
   ],
   providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -151,6 +166,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   );
   offboarding = toSignal(this.#offboarding$);
 
+  // TODO add link and email validation
   offboardingFormGroup = inject(FormBuilder).nonNullable.group({
     collaboratorEmails: new FormControl<string>('', { nonNullable: true }),
     receiverEmail: new FormControl<string>('', { nonNullable: true }),
@@ -158,12 +174,14 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
       nonNullable: true,
       validators: [Validators.required, Validators.maxLength(TITLE_MAX_LENGTH)],
     }),
+    companyReviews: new FormControl<string>('', { nonNullable: true }),
     content: new FormControl<string>('', { nonNullable: true }),
     status: new FormControl<ExpOffboardingStatus>(ExpOffboardingStatus.Draft, {
       nonNullable: true,
     }),
   });
 
+  validateEmail = validateEmail;
   readonly titleMaxLength = TITLE_MAX_LENGTH;
   readonly CONTENT_MAX_LENGTH = 8_092;
   readonly offboardingStatus = ExpOffboardingStatus;
@@ -213,11 +231,11 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
       this.#autoCreateOffboarding();
     } else {
       this.#offboarding$.pipe(take(1)).subscribe((offboarding) => {
-        console.log('[OffboardingEditComponent] offboarding', offboarding);
         this.offboardingFormGroup.patchValue(
           {
             collaboratorEmails: offboarding.collaboratorEmails.join(', '),
             receiverEmail: offboarding.receiverEmail,
+            companyReviews: offboarding.companyReviews.join(', '),
             title: offboarding.title,
             content: offboarding.content,
             status: offboarding.status,
@@ -229,6 +247,15 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
         this.#cdr.detectChanges();
       });
     }
+
+    this.offboardingFormGroup.valueChanges
+      .pipe(
+        takeUntilDestroyed(this.#destroyRef),
+        delay(0) // to skip the prefill from initial (existing) value
+      )
+      .subscribe(() => {
+        this.disableEditorAutoFocus.set(true);
+      });
 
     merge(
       this.offboardingFormGroup.valueChanges.pipe(
@@ -247,7 +274,14 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
       )
       .subscribe(
         ([
-          { title, content, status, receiverEmail, collaboratorEmails },
+          {
+            title,
+            content,
+            status,
+            receiverEmail,
+            collaboratorEmails,
+            companyReviews,
+          },
           offboarding,
         ]) => {
           this.#updateOffboarding({
@@ -255,6 +289,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
             title: title ?? '',
             content: content ?? '',
             receiverEmail: receiverEmail ?? '',
+            companyReviews: [companyReviews ?? ''],
             collaboratorEmails: collaboratorEmails
               ? collaboratorEmails.split(',').map((email) => email.trim())
               : [],
@@ -269,6 +304,43 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(() => this.updating.set(false));
+  }
+
+  createKudoBoard() {
+    const offboardingId = this.id();
+    if (!offboardingId) {
+      console.error('No offboarding ID found, cannot create Kudo Board');
+
+      return;
+    }
+    this.#actions$
+      .pipe(
+        ofType(FeatKudoBoardActions.createKudoBoardSuccess),
+        take(1),
+        takeUntilDestroyed(this.#destroyRef)
+      )
+      .subscribe(({ kudoboard }) => {
+        console.log(kudoboard);
+        this.#store.dispatch(
+          FeatExpOffboardingActions.putExpOffboarding({
+            offboarding: {
+              ...this.offboarding(),
+              id: offboardingId,
+              kudoboardIds: [kudoboard.id],
+            } as any,
+          })
+        );
+      });
+
+    this.#store.dispatch(
+      FeatKudoBoardActions.createKudoBoard({
+        kudoboard: {
+          profileId: this.currentProfile()?.id ?? '',
+          title: '',
+          status: KudoBoardStatus.Published,
+        },
+      })
+    );
   }
 
   updateStatus(status: ExpOffboardingStatus) {
@@ -331,6 +403,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
               collaboratorEmails: collaboratorEmails
                 ? collaboratorEmails.split(',').map((email) => email.trim())
                 : [],
+              companyReviews: [],
               receiverEmail: receiverEmail ?? '',
               status: status ?? ExpOffboardingStatus.Draft,
             },

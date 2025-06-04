@@ -1,5 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { selectCurrentProfile } from '@kitouch/kit-data';
+import { FeatKudoBoardActions } from './../../../../kudoboard/data/src/lib/kudoboard.actions';
 
 import { FeatExpOffboardingActions } from '@kitouch/feat-offboarding-data';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
@@ -52,6 +53,17 @@ export class OffboardingEffects {
             )
           )
         )
+      )
+    )
+  );
+
+  getOffboardingKudos$ = createEffect(() =>
+    this.#actions$.pipe(
+      ofType(FeatExpOffboardingActions.getExpOffboardingSuccess),
+      map(({ offboarding }) => offboarding.kudoboardIds),
+      filter((kudoboardIds) => !!kudoboardIds.length),
+      map((kudoboardIds) =>
+        FeatKudoBoardActions.getKudoBoard({ id: kudoboardIds[0] })
       )
     )
   );

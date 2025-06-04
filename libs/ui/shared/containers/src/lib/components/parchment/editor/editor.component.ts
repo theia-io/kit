@@ -36,6 +36,7 @@ import {
 } from './bloats-leaf';
 import { quillBackspaceImageHandler } from './quill';
 import { registerKitEditorHandlers } from './bloats';
+import e from 'express';
 
 // import to register custom bloats
 
@@ -169,7 +170,7 @@ export class SharedEditorQuillComponent
   onTouched = () => {};
 
   writeValue(value: string): void {
-    this.editorControl.setValue(value);
+    this.editorControl.setValue(value, { emitEvent: false });
     // has to be done after quill sets value
     this.#autoFocusToEndTimeout = setTimeout(() => {
       this.#setFocusToEnd(this.quill());
@@ -395,6 +396,11 @@ export class SharedEditorQuillComponent
       return;
     }
 
+    if (this.disableEditorAutoFocus()) {
+      console.info('quill autofocus is disabled');
+      return;
+    }
+
     let length = quill.getLength();
     if (length > 100) {
       (this.editorComponent()?.el.nativeElement as HTMLElement).scrollIntoView({
@@ -406,7 +412,8 @@ export class SharedEditorQuillComponent
 
     this.#clearSetTimeouts.push(
       setTimeout(() => {
-        if (length > 1) {
+        const [block] = quill.getLine(length);
+        if (length > 1 && !(block && block.domNode.innerText === '\n')) {
           quill.insertText(length++, '\n', Quill.sources.USER);
         }
         quill.setSelection(length, Quill.sources.SILENT);

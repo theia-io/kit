@@ -1,6 +1,5 @@
 @if(canBeChanged()) {
 <!-- can be changed -->
-
 <div class="flex gap-2">
   @if(status() !== offboardingStatus.Draft) {
   <button
@@ -42,16 +41,34 @@
 <p-tag
   [pTooltip]="
     showTooltip()
-      ? 'Published kudoboard fully visible to everyone and it is public'
+      ? 'Published offboarding experience fully visible to everyone and it is public'
       : ''
   "
   severity="success"
   value="Published" />
-} @else if(status() === offboardingStatus.Draft) {
+} @if(status() === offboardingStatus.Collecting) {
 <p-tag
   [pTooltip]="
     showTooltip()
-      ? 'Draft kudoboard does not show any information and it is public'
+      ? 'Collecting offboarding experience is visible to everyone but in editor mode - people can add their kudos and comments'
+      : ''
+  "
+  severity="info"
+  value="Collecting" />
+} @if(status() === offboardingStatus.Deleted) {
+<p-tag
+  [pTooltip]="
+    showTooltip()
+      ? 'Deleted offboarding experience is not visible at all except you'
+      : ''
+  "
+  severity="danger"
+  value="Deleted" />
+} @if(status() === offboardingStatus.Draft) {
+<p-tag
+  [pTooltip]="
+    showTooltip()
+      ? 'Draft offboarding experience does not show any information and it is public'
       : ''
   "
   severity="warning"
