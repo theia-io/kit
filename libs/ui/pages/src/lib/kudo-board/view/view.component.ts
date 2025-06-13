@@ -5,7 +5,6 @@ import { ActivatedRoute, RouterModule } from '@angular/router';
 import {
   FeatKudoBoardActions,
   FeatKudoBoardAnalyticsActions,
-  FeatKudoBoardCommentActions,
   FeatKudoBoardReactionActions,
   selectKudoBoardById,
 } from '@kitouch/data-kudoboard';
@@ -162,7 +161,7 @@ export class PageKudoBoardViewComponent {
   ]).pipe(
     map(([_, kudoboard]) => [
       {
-        label: 'All KudoBoards',
+        label: 'KudoBoards',
         routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`,
         icon: 'pi pi-send mr-2',
         iconClass: 'text-lg font-semibold',
@@ -259,14 +258,6 @@ export class PageKudoBoardViewComponent {
           FeatKudoBoardAnalyticsActions.getAnalyticsKudoBoard({
             kudoBoardId: id,
           })
-        );
-        this.#store.dispatch(
-          FeatKudoBoardReactionActions.getReactionsKudoBoard({
-            kudoBoardId: id,
-          })
-        );
-        this.#store.dispatch(
-          FeatKudoBoardCommentActions.getCommentsKudoBoard({ kudoboardId: id })
         );
       });
 

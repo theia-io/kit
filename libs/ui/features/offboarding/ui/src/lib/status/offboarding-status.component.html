@@ -9,7 +9,8 @@
     severity="warning">
     <span class="text-xs font-semibold">Set to draft</span>
   </button>
-  } @if(status() !== offboardingStatus.Collecting) {
+  }
+  <!-- @if(status() !== offboardingStatus.Collecting) {
   <button
     pButton
     (click)="updateStatus(offboardingStatus.Collecting)"
@@ -17,15 +18,17 @@
     severity="info">
     <span class="text-xs font-semibold">Collect kudos</span>
   </button>
-  } @if(status() !== offboardingStatus.Shared) {
+  }  -->
+  @if(status() !== offboardingStatus.Shared) {
   <button
     pButton
     (click)="updateStatus(offboardingStatus.Shared)"
     [rounded]="true"
     severity="success">
-    <span class="text-xs font-semibold">Share with leaver</span>
+    <span class="text-xs font-semibold">Publish</span>
   </button>
-  } @if(status() !== offboardingStatus.Deleted) {
+  }
+  <!-- @if(status() !== offboardingStatus.Deleted) {
   <button
     pButton
     (click)="updateStatus(offboardingStatus.Deleted)"
@@ -33,7 +36,7 @@
     severity="danger">
     <span class="text-xs font-semibold">Delete</span>
   </button>
-  }
+  } -->
 </div>
 } @else {
 <!-- Cannot be changed -->

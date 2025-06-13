@@ -145,7 +145,7 @@ export class PageOffboardingViewComponent {
   ]).pipe(
     map(([_, offboarding]) => [
       {
-        label: 'All Offboardings',
+        label: 'Offboardings',
         routerLink: `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`,
         icon: 'pi pi-heart-fill mr-2',
         iconClass: 'text-lg font-semibold',

@@ -1,9 +1,10 @@
-import { AsyncPipe, DatePipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
   computed,
   DestroyRef,
+  effect,
   inject,
   input,
 } from '@angular/core';
@@ -181,6 +182,22 @@ export class FeatKudoBoardActionsComponent {
   readonly farewellViewUrlPath = `/${APP_PATH_ALLOW_ANONYMOUS.Farewell}/`;
 
   readonly emojiMap = emojiNameMap;
+
+  constructor() {
+    effect(
+      () => {
+        const id = this.kudoboardId();
+        if (id) {
+          this.#store.dispatch(
+            FeatKudoBoardReactionActions.getReactionsKudoBoard({
+              kudoBoardId: id,
+            })
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
 
   randomReaction(emojiList: Array<KudoBoardReaction>) {
     const length = emojiList.length;

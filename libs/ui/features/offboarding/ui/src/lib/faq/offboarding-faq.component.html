@@ -1,0 +1,10 @@
+@for (faq of faqs; track $index) { @if(faq.separate) {
+<ui-kit-divider class="block my-2" />
+} @else {
+<h4 class="font-semibold">{{ faq.question }}</h4>
+<ul class="list-disc pl-8">
+  <li>
+    {{ faq.answer }}
+  </li>
+</ul>
+} }

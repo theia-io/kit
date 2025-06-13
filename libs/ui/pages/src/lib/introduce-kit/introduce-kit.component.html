@@ -9,37 +9,54 @@
       <!-- Your next steps partner. -->
 
       <div
-        class="my-2 w-full flex items-center justify-center lg:justify-start gap-3 lg:gap-6 2xl:gap-12">
+        class="my-2 w-full flex flex-wrap items-center justify-center lg:justify-start gap-3 lg:gap-6 2xl:gap-12">
         <a
-          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2"
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold p-4 text-2xl font-semibold min-w-[200px]"
           routerLink="./"
           fragment="connections">
           <img
-            class="inline-block mr-1"
+            class="inline-block font-extrabold mr-1"
             priority
             ngSrc="/material-icons/connections.svg"
             alt=""
             width="24"
             height="24" />
+          <br />
 
           Connections
         </a>
         <a
-          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2"
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold p-4 text-2xl font-semibold min-w-[200px]"
+          routerLink="./"
+          fragment="offboardings">
+          <img
+            class="inline-block font-extrabold mr-1"
+            priority
+            ngSrc="/material-icons/potted_plant.svg"
+            alt=""
+            width="24"
+            height="24" />
+          <br />
+
+          Offboardings
+        </a>
+        <a
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold p-4 text-2xl font-semibold min-w-[200px]"
           routerLink="./"
           fragment="kudoboards">
           <img
-            class="inline-block mr-1"
+            class="inline-block font-extrabold mr-1"
             priority
             ngSrc="/material-icons/celebration.svg"
             alt=""
             width="24"
             height="24" />
+          <br />
 
-          Kudo boards
+          Kudoboards
         </a>
         <a
-          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold px-4 py-2"
+          class="block shadow-md duration-100 hover:shadow-lg hover:font-semibold p-4 text-2xl font-semibold min-w-[200px]"
           routerLink="./"
           fragment="farewells">
           <img
@@ -49,6 +66,7 @@
             alt=""
             width="24"
             height="24" />
+          <br />
 
           Farewells
         </a>
@@ -110,13 +128,21 @@
 
 <div class="w-full px-2 py-12">
   <section
+    id="offboardings"
+    class="container flex flex-col items-center lg:items-start mx-auto">
+    Meet offboarding experience.
+  </section>
+</div>
+
+<div class="w-full px-2 py-12 bg-secondary">
+  <section
     id="kudoboards"
     class="container flex flex-col items-center lg:items-start mx-auto">
     <kit-page-feature-kudoboard-page-benefits />
   </section>
 </div>
 
-<div class="w-full px-2 py-12 bg-secondary">
+<div class="w-full px-2 py-12">
   <section
     id="farewells"
     class="container flex flex-col items-center lg:items-start mx-auto">

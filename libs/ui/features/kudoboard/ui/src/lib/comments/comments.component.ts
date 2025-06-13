@@ -10,6 +10,7 @@ import {
   Component,
   computed,
   DestroyRef,
+  effect,
   ElementRef,
   inject,
   input,
@@ -193,6 +194,22 @@ export class FeatKudoBoardCommentsComponent implements AfterViewInit {
   commentsTmpl: ElementRef;
   #masonry?: Masonry;
   animatedCommentsSet = signal<Set<KudoBoardComment['id']>>(new Set());
+
+  constructor() {
+    effect(
+      () => {
+        const id = this.kudoboardId();
+        if (id) {
+          this.#store.dispatch(
+            FeatKudoBoardCommentActions.getCommentsKudoBoard({
+              kudoboardId: id,
+            })
+          );
+        }
+      },
+      { allowSignalWrites: true }
+    );
+  }
 
   ngAfterViewInit(): void {
     const masonryWrapper = this.commentsTmpl.nativeElement;

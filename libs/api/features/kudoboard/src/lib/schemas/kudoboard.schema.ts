@@ -35,7 +35,7 @@ export class KudoBoard {
   // @Prop()
   // profile: any;
 
-  @Prop({ required: true })
+  @Prop({ default: '' })
   title: string;
 
   @Prop()

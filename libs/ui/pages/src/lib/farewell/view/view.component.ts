@@ -158,7 +158,7 @@ export class PageFarewellViewComponent {
   ]).pipe(
     map(([_, farewell]) => [
       {
-        label: 'All Farewells',
+        label: 'Farewells',
         routerLink: `/${APP_PATH.Farewell}`,
         icon: 'pi pi-file-edit mr-2',
         iconClass: 'text-lg font-semibold',

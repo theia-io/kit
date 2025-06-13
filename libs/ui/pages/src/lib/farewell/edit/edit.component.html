@@ -50,10 +50,10 @@
             {{ item.label }}
           </a>
           @if(item?.label === farewell?.title) {
-          <feat-farewell-status
+          <!-- <feat-farewell-status
             class="ml-2"
             [status]="farewell.status"
-            [showTooltip]="true" />
+            [showTooltip]="true" /> -->
           @if(updating()) {
           <ui-kit-spinner size="ml-2 h-6 w-6" />
           } }

@@ -29,11 +29,13 @@ import {
   FeatKudoBoardCommentsComponent,
   FeatKudoBoardViewComponent,
 } from '@kitouch/ui-kudoboard';
+import { SidebarModule } from 'primeng/sidebar';
 
 import { selectCurrentProfile } from '@kitouch/kit-data';
 
 import {
   DividerComponent,
+  UiCompCardComponent,
   UiKitPicUploadableComponent,
   UiKitPicUploadableDirective,
   UiKitSpinnerComponent,
@@ -72,6 +74,7 @@ import { OverlayPanelModule } from 'primeng/overlaypanel';
 import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
+import { AccordionModule } from 'primeng/accordion';
 import {
   combineLatest,
   debounceTime,
@@ -92,6 +95,8 @@ import {
 } from 'rxjs';
 import { FeatOffboardingInfoPanelComponent } from '../info-panel/offboarding-info-panel.component';
 import { FeatOffboardingStatusComponent } from '../status/offboarding-status.component';
+import { FeatKitOffboardingTutorialComponent } from '../tutorial/offboarding-tutorial.component';
+import { FeatKitOffboardingFaqComponent } from '../faq/offboarding-faq.component';
 
 const TITLE_MAX_LENGTH = 128;
 
@@ -112,6 +117,8 @@ const TITLE_MAX_LENGTH = 128;
     OverlayPanelModule,
     ToastModule,
     StepsModule,
+    AccordionModule,
+    SidebarModule,
     //
     FeatOffboardingStatusComponent,
     FeatSideBarPreviewComponent,
@@ -126,6 +133,9 @@ const TITLE_MAX_LENGTH = 128;
     UiKitTweetButtonComponent,
     UiKitPicUploadableComponent,
     UiKitPicUploadableDirective,
+    FeatKitOffboardingTutorialComponent,
+    FeatKitOffboardingFaqComponent,
+    UiCompCardComponent,
   ],
   providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -197,12 +207,13 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   offboardingStep = signal(0);
   items = [
     {
-      label: 'Offboarding details',
+      label: 'Company',
     },
     {
-      label: 'Who is this for?',
+      label: 'Person who leaves',
     },
   ];
+  mobileSideBarVisible = signal(false);
 
   @ViewChild('doneTmpl', { read: TemplateRef })
   doneTmpl?: TemplateRef<unknown>;
@@ -467,7 +478,7 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   #updateJustCreatedOffboardingUrl(id: ExpOffboarding['id']) {
     this.id.set(id);
     this.#location.replaceState(
-      `/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/${id}/edit`
+      `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}/edit/${id}`
     );
   }
 

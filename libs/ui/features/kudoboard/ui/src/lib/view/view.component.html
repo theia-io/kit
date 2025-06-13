@@ -1,6 +1,7 @@
 @if(kudoBoard$ | async; as kudoBoard) { @let background = kudoBoard.background;
 
 <div class="flex flex-col">
+  @if(isBucketUrl(background) || isHexColor(background)) {
   <div class="relative flex justify-center items-center min-h-24">
     @if(isBucketUrl(background)) {
     <img class="h-auto w-full" [src]="background" />
@@ -16,8 +17,7 @@
       {{ kudoBoard.title }}
     </div>
   </div>
-
-  @if(!(smaller() && !!background) && kudoBoard.recipient) {
+  } @if(!(smaller() && !!background) && kudoBoard.recipient) {
   <div class="mt-4 text-2xl text-center">{{ kudoBoard.recipient }},</div>
   } @if(!(smaller() && !!background)) {
   <div class="mt-1 text-xl text-center">

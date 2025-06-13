@@ -86,12 +86,14 @@ i.helper {
     width: 250px;
   }
 }
+
 @media (min-width: 1024px) {
   .masonry-item {
     width: 350px;
     margin: 8px;
   }
 }
+
 @media (min-width: 1536px) {
   .masonry-item {
     width: 400px;
@@ -117,6 +119,13 @@ i.helper {
 }
 
 /** CSS bugfixes */
+p-breadcrumb .p-menuitem-link > a {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 40vw;
+}
+
 p-floatLabel .p-float-label p-dropdown input.p-placeholder {
   opacity: 1;
 }

@@ -54,10 +54,10 @@
           </a>
 
           @if(offboarding && item?.label === offboarding?.title) {
-          <feat-offboarding-status
+          <!-- <feat-offboarding-status
             class="ml-2"
             [status]="offboarding.status"
-            [showTooltip]="true" />
+            [showTooltip]="true" /> -->
 
           @if(updating()) {
           <ui-kit-spinner size="ml-2 h-6 w-6" />
@@ -66,7 +66,7 @@
       </p-breadcrumb>
 
       <feat-offboarding-edit
-        class="block grow container mx-auto p-6"
+        class="block grow container mx-auto p-2 lg:p-6"
         [id]="offboardingId$ | async"
         (doneKudoTmpl)="doneTmpl = $event"
         (statusKudoTmpl)="statusTmpl = $event"

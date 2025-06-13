@@ -40,7 +40,11 @@ export class SubnavComponent {
 
   createOffboardingHandler() {
     this.navbarService.triggerPrimengHighlight$$.next();
-    this.#router.navigate([APP_PATH_ALLOW_ANONYMOUS.Offboarding, 'generate']);
+    this.#router.navigate([
+      'app',
+      APP_PATH_ALLOW_ANONYMOUS.Offboarding,
+      'generate',
+    ]);
   }
 
   createFarewellHandler() {
