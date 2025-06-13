@@ -9,6 +9,7 @@
           uiKitSmallTextTailwindClasses
           class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
           Explore product
+          <i class="pi pi-external-link ml-1 text-xs helper"></i>
         </a>
       </li>
       <li>
@@ -22,6 +23,7 @@
           uiKitSmallTextTailwindClasses
           class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
           Email us
+          <i class="pi pi-external-link ml-1 text-xs helper"></i>
           <img
             ngSrc="/material-icons/mail.svg"
             alt="Email us, external link"
@@ -45,19 +47,20 @@
           [routerLink]="offboardingUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
-          <i class="pi pi-heart-fill mr-1"></i>
           All Offboardings
         </a>
       </li>
 
-      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
-        <ui-kit-tweet-button
-          icon=""
-          text="New Experience"
-          severity="secondary"
-          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
-          (click)="createOffboardingHandler()"
-          class="w-full" />
+      <li>
+        <a
+          role="button"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="createOffboardingHandler()">
+          New Experience
+          <i class="pi pi-external-link ml-1 text-xs helper"></i>
+          <i class="pi pi-heart-fill ml-auto"></i>
+        </a>
       </li>
     </ul>
   </li>
@@ -74,19 +77,20 @@
           [routerLink]="farewellUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
-          <i class="pi pi-file-edit mr-1"></i>
           All farewells
         </a>
       </li>
 
-      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
-        <ui-kit-tweet-button
-          icon=""
-          text="New Farewell"
-          severity="secondary"
-          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
-          (click)="createFarewellHandler()"
-          class="w-full" />
+      <li>
+        <a
+          role="button"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="createFarewellHandler()">
+          New Farewell
+          <i class="pi pi-external-link ml-1 text-xs helper"></i>
+          <i class="pi pi-file-edit ml-auto"></i>
+        </a>
       </li>
     </ul>
 
@@ -99,51 +103,23 @@
           [routerLink]="kudoBoardUrl()"
           routerLinkActive="bg-slate-200 rounded text-gray-900"
           [routerLinkActiveOptions]="{ exact: true }">
-          <i class="pi pi-sparkles mr-1"></i>
           All kudo boards
         </a>
       </li>
 
-      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
-        <ui-kit-tweet-button
-          icon=""
-          text="New Kudo board"
-          severity="secondary"
-          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
-          (click)="createKudoBoardHandler()"
-          class="w-full" />
+      <li>
+        <a
+          role="button"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="createKudoBoardHandler()">
+          New Kudo board
+          <i class="pi pi-external-link ml-1 text-xs helper"></i>
+          <i class="pi pi-sparkles ml-auto"></i>
+        </a>
       </li>
     </ul>
   </li>
-
-  <!-- <li>
-    <strong class="block text-xs font-semibold uppercase">Kudo Boards</strong>
-
-    <ul>
-      <li>
-        <a
-          uiKitSmallTextTailwindClasses
-          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
-          (click)="navbarService.triggerPrimengHighlight$$.next()"
-          [routerLink]="kudoBoardUrl()"
-          routerLinkActive="bg-slate-200 rounded text-gray-900"
-          [routerLinkActiveOptions]="{ exact: true }">
-          <i class="pi pi-sparkles mr-1"></i>
-          My kudo boards
-        </a>
-      </li>
-
-      <li class="px-4 py-2 transition hover:shadow-xl rounded-lg">
-        <ui-kit-tweet-button
-          icon=""
-          text="New Kudo board"
-          severity="secondary"
-          kClass="border-2 border-[#020617] py-1 text-sm font-medium"
-          (click)="createKudoBoardHandler()"
-          class="w-full" />
-      </li>
-    </ul>
-  </li> -->
 
   <li>
     <strong class="block text-xs font-semibold uppercase">Profile</strong>
@@ -160,13 +136,27 @@
         </a>
       </li> -->
       <li>
-        <button
-          (click)="logout.emit()"
+        <a
           uiKitSmallTextTailwindClasses
-          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl">
-          <i class="pi pi-sign-out mr-1"></i>
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="navbarService.triggerPrimengHighlight$$.next()"
+          [routerLink]="profileSettingsUrl()"
+          routerLinkActive="bg-slate-200 rounded text-gray-900"
+          [routerLinkActiveOptions]="{ exact: true }">
+          Settings
+        </a>
+      </li>
+      <li>
+        <a
+          role="button"
+          uiKitSmallTextTailwindClasses
+          class="flex items-center w-full px-4 py-2 transition hover:shadow-xl"
+          (click)="
+            navbarService.triggerPrimengHighlight$$.next(); logout.emit()
+          ">
           Logout
-        </button>
+          <i class="pi pi-sign-out ml-auto"></i>
+        </a>
       </li>
     </ul>
   </li>

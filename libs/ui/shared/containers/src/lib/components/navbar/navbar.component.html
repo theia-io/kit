@@ -18,7 +18,6 @@
     </div>
 
     <p-button (onClick)="toggleSideBar(true)" [text]="true">
-      <!-- <ui-kit-comp-account-tile [picture]="profile()?.pictures?.[0]?.url" /> -->
       <i class="pi pi-align-justify text-xl"></i>
     </p-button>
   </div>
@@ -52,6 +51,15 @@
       {{ desktopItem.label }}
     </a>
     } }
+
+    <a
+      class="p-2 w-full"
+      (click)="toggleSideBar(false)"
+      [routerLink]="profileSettingsUrl"
+      routerLinkActive="underline block bg-slate-200 rounded text-gray-900">
+      <i class="pi pi-cog mr-1 text-xl"></i>
+      Settings
+    </a>
 
     <button
       (click)="toggleSideBar(false); logoutHandler()"
@@ -87,9 +95,8 @@
   </ui-kit-comp-card>
 </a>
 
-<ui-kit-divider class="block mt-4" />
-
 <shared-sub-navbar
+  [profileSettingsUrl]="profileSettingsUrl"
   [introducingKitFarewell]="introducingKitFarewell"
   [offboardingUrl]="offboardingAllUrl"
   [kudoBoardUrl]="kudoBoardAllUrl"

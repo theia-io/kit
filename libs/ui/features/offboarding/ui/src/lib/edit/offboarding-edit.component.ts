@@ -34,6 +34,8 @@ import { selectCurrentProfile } from '@kitouch/kit-data';
 
 import {
   DividerComponent,
+  UiKitPicUploadableComponent,
+  UiKitPicUploadableDirective,
   UiKitSpinnerComponent,
   UiKitTweetButtonComponent,
 } from '@kitouch/ui-components';
@@ -67,6 +69,7 @@ import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { OverlayPanelModule } from 'primeng/overlaypanel';
+import { StepsModule } from 'primeng/steps';
 import { ToastModule } from 'primeng/toast';
 import { TooltipModule } from 'primeng/tooltip';
 import {
@@ -108,6 +111,7 @@ const TITLE_MAX_LENGTH = 128;
     TooltipModule,
     OverlayPanelModule,
     ToastModule,
+    StepsModule,
     //
     FeatOffboardingStatusComponent,
     FeatSideBarPreviewComponent,
@@ -120,6 +124,8 @@ const TITLE_MAX_LENGTH = 128;
     FeatKudoBoardViewComponent,
     FeatKudoBoardCommentsComponent,
     UiKitTweetButtonComponent,
+    UiKitPicUploadableComponent,
+    UiKitPicUploadableDirective,
   ],
   providers: [MessageService],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -188,6 +194,15 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
   previewVisible = signal(false);
   editorTextValue = signal<string>('');
   disableEditorAutoFocus = signal(false);
+  offboardingStep = signal(0);
+  items = [
+    {
+      label: 'Offboarding details',
+    },
+    {
+      label: 'Who is this for?',
+    },
+  ];
 
   @ViewChild('doneTmpl', { read: TemplateRef })
   doneTmpl?: TemplateRef<unknown>;
@@ -304,6 +319,25 @@ export class FeatOffboardingEditComponent implements AfterViewInit {
         takeUntilDestroyed(this.#destroyRef)
       )
       .subscribe(() => this.updating.set(false));
+  }
+
+  companyLogoHandler(files: Array<File>) {
+    console.log(files);
+    // const uploadFn = this.uploadMediaFilesCb();
+    // if (!uploadFn) {
+    //   console.error(
+    //     '[UIKitCommentAreaComponent] upload function was not provided'
+    //   );
+    //   return;
+    // }
+
+    // this.uploadingMedia.set(true);
+
+    // uploadFn(files).subscribe((mediaUrls) => {
+    //   this.uploadingMedia.set(false);
+    //   this.commentContentControlRows = 4;
+    //   this.uploadedMedias.update((medias) => [...medias, ...mediaUrls]);
+    // });
   }
 
   createKudoBoard() {

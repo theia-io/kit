@@ -57,7 +57,6 @@ const getFirstRoutePath = (url: string) => url.split('/')?.filter(Boolean)?.[1];
     /** Features */
     UiLogoComponent,
     UiCompCardComponent,
-    DividerComponent,
     AccountTileComponent,
     UiKitTweetButtonComponent,
     SubnavComponent,
@@ -83,6 +82,7 @@ export class NavBarComponent implements AfterViewInit {
   readonly kudoBoardAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.KudoBoard}`;
   readonly offboardingAllUrl = `/app/${APP_PATH_ALLOW_ANONYMOUS.Offboarding}`;
   readonly introducingKitFarewell = `/${APP_PATH_STATIC_PAGES.IntroduceKit}`;
+  readonly profileSettingsUrl = `/${APP_PATH.Settings}`;
   readonly suggestionUrl = APP_PATH.Suggestion;
 
   desktopItems = DESKTOP_NAV_ITEMS;
@@ -161,25 +161,24 @@ export class NavBarComponent implements AfterViewInit {
     // well, obviously this should not focus like this however p-menu
     // does not allow any better way than that
     /** @FIXME (not is scope of fixme ticket) focus initial routing better */
-    if (shouldInitiallyFocus) {
-      (this.#elemRef.nativeElement as HTMLElement)
-        .querySelectorAll('[role="menuitem"]')
-        .forEach((menuItemNativeElem) => {
-          if (
-            menuItemNativeElem.getAttribute('aria-label') ===
+    // if (shouldInitiallyFocus) {
+    (this.#elemRef.nativeElement as HTMLElement)
+      .querySelectorAll('[role="menuitem"]')
+      .forEach((menuItemNativeElem) => {
+        if (
+          shouldInitiallyFocus &&
+          menuItemNativeElem.getAttribute('aria-label') ===
             shouldInitiallyFocus.label
-          ) {
-            this.#menuItemNativeElemInitiallyFocused =
-              menuItemNativeElem as HTMLLIElement;
-            setTimeout(() => {
-              this.#menuItemNativeElemInitiallyFocused?.classList.add(
-                'p-focus'
-              );
-            }, 200);
-          } else {
-            (menuItemNativeElem as HTMLLIElement).classList.remove('p-focus');
-          }
-        });
-    }
+        ) {
+          this.#menuItemNativeElemInitiallyFocused =
+            menuItemNativeElem as HTMLLIElement;
+          setTimeout(() => {
+            this.#menuItemNativeElemInitiallyFocused?.classList.add('p-focus');
+          }, 200);
+        } else {
+          (menuItemNativeElem as HTMLLIElement).classList.remove('p-focus');
+        }
+      });
+    // }
   }
 }

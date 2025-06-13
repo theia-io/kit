@@ -31,6 +31,16 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+i.helper {
+  position: relative;
+
+  &::before {
+    position: absolute;
+    top: -14px;
+    right: -14px;
+  }
+}
+
 .login-with-google-btn {
   background-color: var(--background-color-secondary);
   transition: background-color 0.3s, box-shadow 0.3s;
@@ -120,6 +130,10 @@ p-timeline .p-timeline-event {
     flex-grow: 3;
     padding-bottom: 16px;
   }
+}
+
+p-steps li {
+  cursor: pointer;
 }
 
 .editor-like,

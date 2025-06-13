@@ -23,7 +23,11 @@ import { distinctUntilKeyChanged, filter } from 'rxjs';
   selector: 'app-kitouch',
   template: `
     <shared-layout>
-      <shared-navbar navbar [profile]="profile()" class="block"></shared-navbar>
+      <shared-navbar
+        navbar
+        [profile]="profile()"
+        class="block static [@media(min-height:1110px)]:md:sticky top-2"
+      ></shared-navbar>
 
       <router-outlet [name]="outletSecondary"></router-outlet>
       <router-outlet></router-outlet>

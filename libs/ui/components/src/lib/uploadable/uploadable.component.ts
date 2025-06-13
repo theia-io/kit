@@ -1,5 +1,6 @@
 import { NgClass, NgOptimizedImage, NgTemplateOutlet } from '@angular/common';
 import {
+  AfterViewInit,
   Component,
   computed,
   ContentChild,
@@ -64,7 +65,7 @@ export const UPLOAD_CONF_DEFAULT: UploadConf = {
   providers: [ConfirmationService],
   // changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class UiKitPicUploadableComponent {
+export class UiKitPicUploadableComponent implements AfterViewInit {
   defaultTmplConf = input<{
     imageConf?: Partial<UploadableDefaultImage>;
     iconConf?: Partial<UploadableDefaultIcon>;
@@ -111,6 +112,10 @@ export class UiKitPicUploadableComponent {
   customTmpl: Nullable<UiKitPicUploadableDirective>;
 
   #confirmationService = inject(ConfirmationService);
+
+  ngAfterViewInit(): void {
+    console.log('ngAfterViewInit', this.customTmpl);
+  }
 
   uploadInstantly(event: Event) {
     this.#confirmationService.confirm({

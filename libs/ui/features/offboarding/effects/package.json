@@ -11,7 +11,8 @@
     "@kitouch/shared-models": "7.1.0-0",
     "@kitouch/utils": "7.1.0-0",
     "@kitouch/kit-data": "7.1.0-0",
-    "@ngrx/store": "18.0.2"
+    "@ngrx/store": "18.0.2",
+    "@kitouch/data-kudoboard": "7.1.0-0"
   },
   "sideEffects": false
 }

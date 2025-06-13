@@ -34,6 +34,7 @@
 <!-- tweet actions -->
 @if(tweet.type !== tweetTypes.Retweet) {
 <feat-tweet-actions
+  class="block pl-10"
   [tweetUrl]="tweetUrl(tweet, true)"
   [comments]="tweetComments()?.length ?? 0"
   (comment)="commentOverlayTmpl.show($event)"

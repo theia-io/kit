@@ -7,15 +7,23 @@
     [offboarding]="offboarding" />
   }
 
-  <div
-    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
-    <i class="pi pi-info-circle text-xl"></i>
-    <span>Welcome to the offboarding process!</span>
-  </div>
+  <p-steps
+    [activeIndex]="offboardingStep()"
+    (activeIndexChange)="offboardingStep.set($event)"
+    [readonly]="false"
+    [model]="items" />
+
+  @if(offboardingStep() === 0) {
+
   <div class="flex flex-col justify-center items-center gap-4">
-    <img
-      class="rounded shadow-sm cursor-pointer"
-      src="/logo/lorenz-system-120x120.png" />
+    <ui-kit-pic-uploadable (files)="companyLogoHandler($event)">
+      <ng-template uiKitPicUploadableTemplate>
+        <!-- <img class="w-full object-cover max-h-[33vh]" [src]="background" /> -->
+        <img
+          class="rounded shadow-sm cursor-pointer"
+          src="/logo/lorenz-system-120x120.png" />
+      </ng-template>
+    </ui-kit-pic-uploadable>
   </div>
 
   <div class="block w-full underline">
@@ -40,7 +48,7 @@
   </section>
 
   <div
-    class="mt-4 flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
+    class="mt-4 mb-2 flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
     <span>
       Here below you can create a bespoke offboarding message for an employee
@@ -68,7 +76,7 @@
   <ui-kit-divider class="my-4" />
 
   <div
-    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
+    class="mb-2 flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
     <p class="text-xl">Create collaborative space</p>
     <span>
@@ -94,12 +102,9 @@
     [iconAnimate]="true"
     text="Create collaborative space"
     class="w-full mb-4" />
-  }
-
-  <ui-kit-divider class="my-4" />
-
+  } } @else {
   <div
-    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
+    class="mb-2 flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
     <span>
       Here below an employee will write a farewell message to their colleagues.
@@ -131,7 +136,7 @@
   <ui-kit-divider class="my-6" />
 
   <div
-    class="flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
+    class="mb-2 flex items-center gap-2 text-sm text-gray-500 shadow hover:shadow-xl p-2">
     <i class="pi pi-info-circle text-xl"></i>
     <span>(optional) Ask employee to add review on</span>
   </div>
@@ -166,18 +171,7 @@
       all.
     </small>
   </div>
-
-  <ui-kit-divider class="my-6" />
-
-  <!-- <div class="flex flex-col justify-center items-center gap-4">
-    <p class="text-xl">
-      Join community to
-      <span class="font-semibold">Keep in touch</span>
-    </p>
-    <img
-      class="rounded shadow-sm cursor-pointer h-36 w-36"
-      src="/offboarding/together.jpg" />
-  </div> -->
+  }
 
   <!-- id -->
   @let offboardingId = id();
@@ -221,8 +215,20 @@
   </div>
 
   <div class="flex justify-center items-center gap-2 mt-2">
+    @if(offboardingStep() === 0) {
+    <button
+      pButton
+      (click)="offboardingStep.set(1)"
+      [rounded]="true"
+      styleClass="p-1">
+      <span class="mr-1">Next</span>
+      <i class="pi pi-arrow-right"></i>
+    </button>
+    } @else {
+
     <ng-container *ngTemplateOutlet="statusTmpl"></ng-container>
     <ng-container *ngTemplateOutlet="doneTmpl"></ng-container>
+    }
   </div>
 </form>
 

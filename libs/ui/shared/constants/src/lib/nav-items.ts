@@ -81,16 +81,6 @@ export const DESKTOP_NAV_ITEMS: Array<MenuItem> = [
     iconClass: 'text-lg font-semibold',
     styleClass: 'text-lg font-semibold ml-[-12px]',
   },
-  {
-    separator: true,
-  },
-  {
-    label: 'Settings',
-    routerLink: `/${APP_PATH.Settings}`,
-    icon: 'pi pi-cog',
-    iconClass: 'text-lg font-semibold',
-    styleClass: 'text-lg font-semibold ml-[-12px]',
-  },
 ];
 
 export const MOBILE_NAV_ITEMS: Array<MenuItem> = [

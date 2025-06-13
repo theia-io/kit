@@ -5,7 +5,10 @@
 @let homeTweets = homeTweets$ | async;
 <!-- tweets -->
 @for (tweet of homeTweets; track $index) {
-<ui-kit-divider class="block my-2" [class.mt-12]="$first" />
+<!-- if not first -->
+@if(!$first) {
+<ui-kit-divider />
+}
 
 <ui-kit-comp-animate-ping [animate]="newlyAddedTweets().has(tweet.id)">
   <ui-kit-comp-card class="p-2">
