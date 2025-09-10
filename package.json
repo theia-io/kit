@@ -38,7 +38,7 @@
     "@angular/platform-browser-dynamic": "18.2.6",
     "@angular/platform-server": "18.2.6",
     "@angular/router": "18.2.6",
-    "@angular/ssr": "18.2.6",
+    "@angular/ssr": "18.2.21",
     "@aws-sdk/client-s3": "^3.627.0",
     "@aws-sdk/client-secrets-manager": "^3.796.0",
     "@ctrl/ngx-emoji-mart": "^9.2.0",
